@@ -164,13 +164,13 @@
  *      Character.isJavaIdentifierPart(int) returns true."
  */
 grammar Java;
-options {backtrack=true; memoize=true;}
+options {backtrack=true; memoize=true;output=AST;}
 
 @parser::header {
-package org.jnome.input.parser;
+package jnome.input.parser;
 }
 @lexer::header {
-package org.jnome.input.parser;
+package jnome.input.parser;
 }
 
 @lexer::members {

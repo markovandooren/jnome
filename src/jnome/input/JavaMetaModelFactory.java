@@ -41,12 +41,15 @@ import java.util.Set;
 
 import jnome.core.language.Java;
 import jnome.input.parser.JavaLexer;
+import jnome.input.parser.JavaParser;
 import jnome.input.parser.JavaWalker;
 
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
+import org.antlr.runtime.tree.CommonTree;
+import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.rejuse.io.fileset.FileNamePattern;
 import org.rejuse.io.fileset.FileSet;
 import org.rejuse.io.fileset.PatternPredicate;
@@ -223,8 +226,14 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         return new JavaLexer(in);
     }
 
-    public JavaWalker getParser(JavaLexer lexer) {
-        return new JavaWalker(new CommonTokenStream(lexer));
+    public JavaWalker getParser(JavaLexer lexer) throws RecognitionException {
+    	CommonTokenStream tokens = new CommonTokenStream(lexer);
+    	JavaParser parser = new JavaParser(tokens);
+    	JavaParser.compilationUnit_return r = parser.compilationUnit();
+    	CommonTree tree = (CommonTree) r.getTree();
+    	CommonTreeNodeStream nodes = new CommonTreeNodeStream(tree);
+    	nodes.setTokenStream(tokens);
+        return new JavaWalker(nodes);
     }
 
     // Parse a method
@@ -436,7 +445,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         // System.out.println("metamodel made of " + name);
     }
 
-    private JavaWalker getParser(CharStream inputStream, String fileName, IParseErrorHandler handler) {
+    private JavaWalker getParser(CharStream inputStream, String fileName, IParseErrorHandler handler) throws RecognitionException {
         JavaLexer lexer = getLexer(inputStream);
         // Tell the lexer the name of the file he is lexing
         // this name is used to generate more informative error messages

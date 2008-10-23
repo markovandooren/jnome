@@ -1,0 +1,54 @@
+public class TestVar {
+	private Object a;
+	
+	private Object q0 = a;
+	
+	private TestVar b;
+	
+	public static final Object c = null;
+	
+	public void m() {
+		Object q1 = a;
+	}
+	
+	public void n(TestVar a) {
+		Object q2 = this.a;
+	}
+	
+	public class Inner1 {
+		public void m() {
+			Object q3 = a;
+		}
+		
+		protected Object b;
+	}
+	
+	public class Inner2 extends Inner1 {
+		private TestVar a;
+		public void m() {
+			Object q4 = TestVar.this.a;
+			Object r1 = b;
+		}
+	}
+	
+	public class Inner3 extends Inner1 {
+	   private Inner2 b;
+	   public void m(TestVar b) {
+	   	  Object r2 = super.b;
+	   	  Object q6 = b.a;
+	   	  Object q7 = this.b.a.b.b.a;
+	   	  Object s1 = TestVar.c;
+	   	  Object s2 = TestVar.Inner4.c.c;
+	   	  Object s3 = TestVar.Inner4.c.b.b.b.b.c;
+	   	  Object s4 = TestVar.Inner4.Inner4.Inner4.c.a;
+	   	  Object s5 = TestVar.Inner4.Inner5.Inner4.Inner4.c.a;
+	   }
+	}
+	
+	public static class Inner4 extends TestVar {
+	  public static TestVar c;
+	  public static class Inner5 extends TestVar {
+	  }
+	  
+	}
+}

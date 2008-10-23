@@ -1,0 +1,10 @@
+public class A {
+
+	private Object a;
+	
+	public void m() {
+		Object a;
+		Object b = this.a;
+	}
+
+}

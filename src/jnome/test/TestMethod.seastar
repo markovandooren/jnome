@@ -1,0 +1,120 @@
+public class TestMethod {
+
+	public Object m() {
+	  n(this);
+	  o(m());
+	  p(i1,i1);
+	  q(i2,i1);
+	  return null;
+	}
+	
+	public TestMethod n(Object o) {
+	  return null;
+	}
+	
+	public Object n(TestMethod test) {
+	  return null;
+	}
+	
+	public Object o(Object other) {
+	  return null;
+	}
+	
+	public TestMethod o(TestMethod test) {
+	  return null;
+	}
+	
+	public Object p(Object o1, Object o2) {
+	  return null;
+	}
+	
+	public TestMethod p(TestMethod o1, Object o2) {
+	  return null;
+	}
+	
+	public TestMethod p(Object o1, TestMethod o2) {
+	  return null;
+	}
+	
+	public TestMethod p(TestMethod o1, TestMethod o2) {
+	  return null;
+	}
+	
+	public TestMethod q(Object o1, Object o2) {
+	  return null;
+	}
+	
+	public Object q(TestMethod o1, Object o2) {
+	  return null;
+	}
+	
+	public TestMethod q(Object o1, TestMethod o2) {
+	  return null;
+	}
+	
+	public TestMethod q(TestMethod o1, TestMethod o2) {
+	  return null;
+	}
+	
+	public Object invalid1(Object o1, Object o2) {
+	  return null;
+	}
+	
+	public Object invalid1(TestMethod o1, Object o2) {
+	  return null;
+	}
+	
+	public Object invalid1(Object o1, TestMethod o2) {
+	  return null;
+	}
+	
+	private Object i1;
+	
+	private TestMethod i2;
+	
+	public interface Inter {
+	   Object s();
+	   
+	   Object y();
+	}
+	
+	public class Inner1 {
+	    public abstract Object s();
+	    
+		public TestMethod q(Object o1, TestMethod o2) {
+	      return null;
+	    }
+	    
+	    public Object r(TestMethod test) {
+	      test.q((TestMethod)i1,i1);
+	      return null;
+	    }
+	    
+		public Object a() {
+			invalid1(i2,i2);
+			return TestMethod.this.q(i2,i1);
+		}
+	}
+	
+	public class Inner2 extends Inner1 implements Inter {
+	 
+	  public Object s() {
+	    return null;
+	  }
+	
+	  public TestMethod r(Object o) {
+	    return null;
+	  }
+	  
+	  public Object y() {
+	    return null;
+	  }
+	  
+	  public Object a() {
+	    super.r(i2);
+	    s();
+	    y();
+	    return r(i2);
+	  }
+	}
+}

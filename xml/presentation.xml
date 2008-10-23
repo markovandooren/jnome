@@ -1,0 +1,51 @@
+<presentationmodel>
+	<stylerule element="*" decorator="__Name" description="Variable and Function Names">
+		<foreground>#0000A0</foreground>
+		<background>#FFFFFF</background>
+		<bold />
+	</stylerule>
+	
+	<stylerule element="chameleon.core.expression.RegularLiteral" decorator="__ALL" description="Literals">
+		<foreground>#0000FF</foreground>
+		<background>#FFFFFF</background>
+	</stylerule>	
+	
+	<stylerule element="org.jnome.mm.type.JavaClass" decorator="__ALL" description="Classes">
+		<foldable />
+	</stylerule>
+	<stylerule element="chameleon.core.method.RegularMethod" decorator="__ALL" description="Methods">
+		<foldable />
+	</stylerule>
+	<stylerule element="chameleon.core.method.Constructor" decorator="__ALL" description="Constructors">
+		<foldable />
+	</stylerule>	
+	
+	<stylerule element="*" decorator="__Type" description="Types">
+		<foreground>#000000</foreground>
+		<background>#FFFFFF</background>
+		<italic />
+	</stylerule>
+	
+	<stylerule element="*" decorator="__Codeword"  description="Keywords">
+		<foreground>#A000E0</foreground>
+		<background>#FFFFFF</background>
+		<bold />
+	</stylerule>
+	<stylerule element="*" decorator="__AccessType"  description="Access Modifiers">
+		<foreground>#A000E0</foreground>
+		<background>#FFFFFF</background>
+		<bold />
+	</stylerule>		
+
+	<outline>
+		<element default="visible" description="Classes">JavaClass</element>
+		<element default="visible" description="Inner Classes">JavaInnerClass</element>
+		<element default="visible" description="Constructors">Constructor</element>
+		<element default="hidden" description="Compilation Units">CompilationUnit</element>
+		<element default="visible" description="Packages">NamespacePart</element>
+		<element default="visible" description="Variables">MemberVariable</element>
+		<element default="visible" description="Methods">RegularMethod</element>
+
+		
+	</outline>
+</presentationmodel>

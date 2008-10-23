@@ -1,4 +1,0 @@
-java -cp /home/marko/cvs/anchor/lib/antlr.jar antlr.Tool java.g
-#java -cp /home/marko/cvs/anchor/lib/antlr.jar antlr.Tool javaG.g
-#javac -classpath /home/marko/cvs/anchor/lib/antlr.jar JavaRecognizer.java JavaTokenTypes.java
-java -cp /home/marko/cvs/anchor/lib/antlr.jar antlr.Tool -glib java.g seastar.g

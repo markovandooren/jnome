@@ -10,7 +10,7 @@ options
  * Set the namespace of the parser, and provide imports for the Chameleon elements.
  */ 
 @treeparser::header {
-package org.jnome.input.parser;
+package jnome.input.parser;
 
 import chameleon.core.MetamodelException;
 
@@ -63,8 +63,8 @@ import jnome.core.type.JavaTypeReference;
   }
 
   public void processImport(CompilationUnit cu, Import imp){
-    if(imp instanceof TypeImport){cu.getDefaultNamespacePart().addImportedType((TypeImport)imp);}
-    else if(imp instanceof DemandImport){cu.getDefaultNamespacePart().addDemandImport((DemandImport)imp);}
+    if(imp instanceof TypeImport){cu.getDefaultNamespacePart().addImport((TypeImport)imp);}
+    else if(imp instanceof DemandImport){cu.getDefaultNamespacePart().addImport((DemandImport)imp);}
   }
   public void processType(CompilationUnit cu, Type type){
     cu.getDefaultNamespacePart().addType(type);

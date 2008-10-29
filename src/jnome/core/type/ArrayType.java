@@ -1,13 +1,8 @@
 package jnome.core.type;
 
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import chameleon.core.MetamodelException;
-import chameleon.core.accessibility.AccessibilityDomain;
+import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeSignature;
 import chameleon.core.variable.MemberVariable;
@@ -17,9 +12,9 @@ import chameleon.support.modifier.Final;
 /**
  * @author Marko van Dooren
  */
-public class ArrayType extends Type {
+public class ArrayType extends RegularType {
 //	TODO: this class should *NOT* be a member. This is just a quickfix
-  public ArrayType(Type type, int dimension) {
+  public ArrayType(Type<?extends Type> type, int dimension) {
     super(new TypeSignature(getArrayName(type.getName(), dimension)));
     //FIXME: copy the modifiers?
     //addModifier(type.getAccessModifier());
@@ -35,6 +30,13 @@ public class ArrayType extends Type {
     addSuperType(new JavaTypeReference("java.io.Serializable"));
   }
   
+	@Override
+	public ArrayType clone() {
+		ArrayType result = cloneThis();
+		result.copyContents(this);
+		return result;
+	}
+
   /**
 	 * @param string
 	 * @param dimension
@@ -101,7 +103,7 @@ public class ArrayType extends Type {
            );
   }
 
-  protected Type cloneThis() {
+  protected ArrayType cloneThis() {
     return new ArrayType(getComponentType(),getDimension());
   }
   

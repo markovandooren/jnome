@@ -320,16 +320,17 @@ public class JavaCodeWriter extends Syntax {
     StringBuffer result = new StringBuffer();
     result.append("package "+part.getDeclaredNamespace().getFullyQualifiedName() +";\n\n");
     
-    Iterator iter = part.getTypeImports().iterator();
+    Iterator iter = part.imports().iterator();
     while(iter.hasNext()) {
-      result.append("import "+toCode(((TypeImport)iter.next()).getTypeReference()) +";\n");
-    }
-    iter = part.getDemandImports().iterator();
-    while(iter.hasNext()) {
-      result.append("import "+toCode(((DemandImport)iter.next()).getNamespaceOrTypeReference()) +".*;\n");
+    	if(iter instanceof TypeImport) {
+        result.append("import "+toCode(((TypeImport)iter.next()).getTypeReference()) +";\n");
+    	}
+    	else if(iter instanceof DemandImport) {
+        result.append("import "+toCode(((DemandImport)iter.next()).getNamespaceOrTypeReference()) +".*;\n");
+    	}
     }
     result.append("\n");
-    Collection types = part.getTypes();
+    Collection types = part.types();
     new PrimitiveTotalPredicate() {
       public boolean eval(Object o) {
         return !(o instanceof ArrayType);
@@ -412,7 +413,7 @@ public class JavaCodeWriter extends Syntax {
     result.append("{\n");
     indent();
     
-    Set members = type.declaredElements();
+    Set members = type.directlyDeclaredElements();
     // Members
     new RobustVisitor() {
       public Object visit(Object element) throws MetamodelException {

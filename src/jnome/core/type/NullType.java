@@ -1,6 +1,7 @@
 package jnome.core.type;
 
 import chameleon.core.language.Language;
+import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeSignature;
 import chameleon.core.variable.FormalParameter;
@@ -13,10 +14,10 @@ import chameleon.support.modifier.Public;
 /**
  * @author Marko van Dooren
  */
-public class NullType extends Type {
+public class NullType extends RegularType {
 
   public NullType(Language lang) {
-    super(new TypeSignature("null"));
+    super(new TypeSignature("null type"));
     addModifier(new Public());
     addInfixOperator("boolean", "==", "java.lang.Object",lang);
     addInfixOperator("boolean", "!=", "java.lang.Object",lang);
@@ -37,7 +38,13 @@ public class NullType extends Type {
     return true; 
   }
 
-  protected Type cloneThis() {
+	public NullType clone() {
+		NullType result = cloneThis();
+		result.copyContents(this);
+		return result;
+	}
+
+  protected NullType cloneThis() {
     return new NullType(language());
   }
   

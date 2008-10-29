@@ -12,6 +12,7 @@ import org.rejuse.logic.ternary.Ternary;
 
 import chameleon.core.MetamodelException;
 import chameleon.core.accessibility.AccessibilityDomain;
+import chameleon.core.context.Context;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.DeclarationSelector;
 import chameleon.core.expression.Expression;
@@ -166,7 +167,10 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Reg
   	InvocationTarget target = getTarget();
   	RegularMethod result;
   	if(getAnonymousInnerType() != null) {
-  		result = getAnonymousInnerType().targetContext().lookUp(selector());
+  		// @STRANGE!!! Inline this, and it no longer compiles.
+  		Type<Type> anon = getAnonymousInnerType();
+  		Context tctx = anon.targetContext();
+  		result = tctx.lookUp(selector());
   	} else if(target == null) {
       result = lexicalContext().lookUp(selector());
   	} else {

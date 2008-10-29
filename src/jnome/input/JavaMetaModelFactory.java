@@ -63,6 +63,7 @@ import chameleon.core.namespace.NamespaceReference;
 import chameleon.core.namespacepart.DemandImport;
 import chameleon.core.namespacepart.NamespacePart;
 import chameleon.core.type.Type;
+import chameleon.core.type.RegularType;
 import chameleon.core.type.TypeReference;
 import chameleon.core.type.TypeSignature;
 import chameleon.core.variable.FormalParameter;
@@ -603,7 +604,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
 
         NamespacePart pp = new NamespacePart(pack);
         new CompilationUnit(pp);
-        pp.addDemandImport(new DemandImport(new NamespaceReference(
+        pp.addImport(new DemandImport(new NamespaceReference(
                 new NamespaceReference("java"), "lang")));
         return pp;
     }
@@ -611,7 +612,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
     public void addVoid(Namespace mm) {
         NamespacePart cu = getNamespacePart(mm);
         Public pub = new Public();
-        Type clas = new Type(new TypeSignature("void")) {
+        Type clas = new RegularType(new TypeSignature("void")) {
 
             public boolean assignableTo(Type other) {
                 return false;
@@ -627,7 +628,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
     public void addByte(Namespace mm) {
         NamespacePart cu = getNamespacePart(mm);
         Public pub = new Public();
-        Type byteT = new Type(new TypeSignature("byte")) {
+        Type byteT = new RegularType(new TypeSignature("byte")) {
             public boolean assignableTo(Type other) {
                 return other.equals(this)
                         || other.getFullyQualifiedName().equals("short")
@@ -652,7 +653,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
     public void addShort(Namespace mm) {
         NamespacePart cu = getNamespacePart(mm);
         Public pub = new Public();
-        Type shortT = new Type(new TypeSignature("short")) {
+        Type shortT = new RegularType(new TypeSignature("short")) {
             public boolean assignableTo(Type other) {
                 return other.equals(this)
                         || other.getFullyQualifiedName().equals("char")
@@ -676,7 +677,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         NamespacePart cu = getNamespacePart(mm);
         Public pub = new Public();
 
-        Type charT = new Type(new TypeSignature("char")) {
+        Type charT = new RegularType(new TypeSignature("char")) {
             public boolean assignableTo(Type other) {
                 return other.equals(this)
                         || other.getFullyQualifiedName().equals("int")
@@ -698,7 +699,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         NamespacePart cu = getNamespacePart(mm);
         Public pub = new Public();
 
-        Type intT = new Type(new TypeSignature("int")) {
+        Type intT = new RegularType(new TypeSignature("int")) {
             public boolean assignableTo(Type other) {
                 return other.equals(this)
                         || other.getFullyQualifiedName().equals("long")
@@ -719,7 +720,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         NamespacePart cu = getNamespacePart(mm);
         Public pub = new Public();
 
-        Type longT = new Type(new TypeSignature("long")) {
+        Type longT = new RegularType(new TypeSignature("long")) {
             public boolean assignableTo(Type other) {
                 return other.equals(this)
                         || other.getFullyQualifiedName().equals("float")
@@ -739,7 +740,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         NamespacePart cu = getNamespacePart(mm);
         Public pub = new Public();
 
-        Type floatT = new Type(new TypeSignature("float")) {
+        Type floatT = new RegularType(new TypeSignature("float")) {
             public boolean assignableTo(Type other) {
                 return other.equals(this)
                         || other.getFullyQualifiedName().equals("double");
@@ -758,7 +759,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         NamespacePart cu = getNamespacePart(mm);
         Public pub = new Public();
 
-        Type doubleT = new Type(new TypeSignature("double"));
+        Type doubleT = new RegularType(new TypeSignature("double"));
         doubleT.addModifier(pub);
         cu.addType(doubleT);
         doubleT.addModifier(new ValueType());
@@ -869,7 +870,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
 
     public void addBoolean(Namespace mm) {
         Public pub = new Public();
-        Type booleanT = new Type(new TypeSignature("boolean"));
+        Type booleanT = new RegularType(new TypeSignature("boolean"));
         booleanT.addModifier(pub);
         getNamespacePart(mm).addType(booleanT);
         addPrefixOperator(booleanT, "boolean", "!");

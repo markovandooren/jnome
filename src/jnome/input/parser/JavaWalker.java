@@ -1,32 +1,39 @@
-// $ANTLR 3.1.1 /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g 2008-10-17 00:18:05
+// $ANTLR 3.1.1 /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g 2008-10-29 20:52:20
 
 package jnome.input.parser;
 
-import jnome.core.language.Java;
-import jnome.core.type.JavaTypeReference;
-
-import org.antlr.runtime.BitSet;
-import org.antlr.runtime.EarlyExitException;
-import org.antlr.runtime.NoViableAltException;
-import org.antlr.runtime.RecognitionException;
-import org.antlr.runtime.RecognizerSharedState;
-import org.antlr.runtime.tree.CommonTree;
-import org.antlr.runtime.tree.TreeNodeStream;
-import org.antlr.runtime.tree.TreeParser;
-
 import chameleon.core.MetamodelException;
-import chameleon.core.compilationunit.CompilationUnit;
-import chameleon.core.context.ContextFactory;
+
 import chameleon.core.element.ChameleonProgrammerException;
-import chameleon.core.language.Language;
+
+import chameleon.core.compilationunit.CompilationUnit;
+
 import chameleon.core.namespace.Namespace;
 import chameleon.core.namespace.RootNamespace;
-import chameleon.core.namespacepart.DemandImport;
-import chameleon.core.namespacepart.Import;
+
+import chameleon.core.context.ContextFactory;
+
 import chameleon.core.namespacepart.NamespacePart;
+import chameleon.core.namespacepart.Import;
 import chameleon.core.namespacepart.TypeImport;
+import chameleon.core.namespacepart.DemandImport;
+
+import chameleon.core.language.Language;
+
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
+
+import jnome.core.language.Java;
+
+import jnome.core.type.JavaTypeReference;
+
+
+import org.antlr.runtime.*;
+import org.antlr.runtime.tree.*;import java.util.Stack;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 public class JavaWalker extends TreeParser {
     public static final String[] tokenNames = new String[] {
         "<invalid>", "<EOR>", "<DOWN>", "<UP>", "Identifier", "ENUM", "FloatingPointLiteral", "CharacterLiteral", "StringLiteral", "HexLiteral", "OctalLiteral", "DecimalLiteral", "ASSERT", "HexDigit", "IntegerTypeSuffix", "Exponent", "FloatTypeSuffix", "EscapeSequence", "UnicodeEscape", "OctalEscape", "Letter", "JavaIDDigit", "WS", "COMMENT", "LINE_COMMENT", "'package'", "';'", "'import'", "'static'", "'.'", "'*'", "'public'", "'protected'", "'private'", "'abstract'", "'final'", "'strictfp'", "'class'", "'extends'", "'implements'", "'<'", "','", "'>'", "'&'", "'{'", "'}'", "'interface'", "'void'", "'['", "']'", "'throws'", "'='", "'native'", "'synchronized'", "'transient'", "'volatile'", "'boolean'", "'char'", "'byte'", "'short'", "'int'", "'long'", "'float'", "'double'", "'?'", "'super'", "'('", "')'", "'...'", "'this'", "'null'", "'true'", "'false'", "'@'", "'default'", "':'", "'if'", "'else'", "'for'", "'while'", "'do'", "'try'", "'finally'", "'switch'", "'return'", "'throw'", "'break'", "'continue'", "'catch'", "'case'", "'+='", "'-='", "'*='", "'/='", "'&='", "'|='", "'^='", "'%='", "'||'", "'&&'", "'|'", "'^'", "'=='", "'!='", "'instanceof'", "'+'", "'-'", "'/'", "'%'", "'++'", "'--'", "'~'", "'!'", "'new'", "'qqqq'", "'error'"
@@ -159,7 +166,7 @@ public class JavaWalker extends TreeParser {
         
 
     public String[] getTokenNames() { return JavaWalker.tokenNames; }
-    public String getGrammarFileName() { return "/Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g"; }
+    public String getGrammarFileName() { return "/Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g"; }
 
 
       /* Sandbox the model until parsing is done. This way,
@@ -186,8 +193,8 @@ public class JavaWalker extends TreeParser {
       }
 
       public void processImport(CompilationUnit cu, Import imp){
-        if(imp instanceof TypeImport){cu.getDefaultNamespacePart().addImportedType((TypeImport)imp);}
-        else if(imp instanceof DemandImport){cu.getDefaultNamespacePart().addDemandImport((DemandImport)imp);}
+        if(imp instanceof TypeImport){cu.getDefaultNamespacePart().addImport((TypeImport)imp);}
+        else if(imp instanceof DemandImport){cu.getDefaultNamespacePart().addImport((DemandImport)imp);}
       }
       public void processType(CompilationUnit cu, Type type){
         cu.getDefaultNamespacePart().addType(type);
@@ -206,7 +213,7 @@ public class JavaWalker extends TreeParser {
 
 
     // $ANTLR start "compilationUnit"
-    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:85:1: compilationUnit returns [CompilationUnit cu = new CompilationUnit(new NamespacePart(language().defaultNamespace()))] : ( ( '@' )=> annotations ( packageDeclaration (imp= importDeclaration )* (type= typeDeclaration )* | classOrInterfaceDeclaration (type= typeDeclaration )* ) | (np= packageDeclaration )? (imp= importDeclaration )* (type= typeDeclaration )* );
+    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:85:1: compilationUnit returns [CompilationUnit cu = new CompilationUnit(new NamespacePart(language().defaultNamespace()))] : ( ( '@' )=> annotations ( packageDeclaration (imp= importDeclaration )* (type= typeDeclaration )* | classOrInterfaceDeclaration (type= typeDeclaration )* ) | (np= packageDeclaration )? (imp= importDeclaration )* (type= typeDeclaration )* );
     public final CompilationUnit compilationUnit() throws RecognitionException {
         CompilationUnit cu =  new CompilationUnit(new NamespacePart(language().defaultNamespace()));
 
@@ -218,7 +225,7 @@ public class JavaWalker extends TreeParser {
 
 
         try {
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:86:5: ( ( '@' )=> annotations ( packageDeclaration (imp= importDeclaration )* (type= typeDeclaration )* | classOrInterfaceDeclaration (type= typeDeclaration )* ) | (np= packageDeclaration )? (imp= importDeclaration )* (type= typeDeclaration )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:86:5: ( ( '@' )=> annotations ( packageDeclaration (imp= importDeclaration )* (type= typeDeclaration )* | classOrInterfaceDeclaration (type= typeDeclaration )* ) | (np= packageDeclaration )? (imp= importDeclaration )* (type= typeDeclaration )* )
             int alt8=2;
             int LA8_0 = input.LA(1);
 
@@ -237,14 +244,14 @@ public class JavaWalker extends TreeParser {
             }
             switch (alt8) {
                 case 1 :
-                    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:86:9: ( '@' )=> annotations ( packageDeclaration (imp= importDeclaration )* (type= typeDeclaration )* | classOrInterfaceDeclaration (type= typeDeclaration )* )
+                    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:86:9: ( '@' )=> annotations ( packageDeclaration (imp= importDeclaration )* (type= typeDeclaration )* | classOrInterfaceDeclaration (type= typeDeclaration )* )
                     {
                     pushFollow(FOLLOW_annotations_in_compilationUnit68);
                     annotations();
 
                     state._fsp--;
                     if (state.failed) return cu;
-                    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:87:9: ( packageDeclaration (imp= importDeclaration )* (type= typeDeclaration )* | classOrInterfaceDeclaration (type= typeDeclaration )* )
+                    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:87:9: ( packageDeclaration (imp= importDeclaration )* (type= typeDeclaration )* | classOrInterfaceDeclaration (type= typeDeclaration )* )
                     int alt4=2;
                     int LA4_0 = input.LA(1);
 
@@ -263,7 +270,7 @@ public class JavaWalker extends TreeParser {
                     }
                     switch (alt4) {
                         case 1 :
-                            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:87:13: packageDeclaration (imp= importDeclaration )* (type= typeDeclaration )*
+                            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:87:13: packageDeclaration (imp= importDeclaration )* (type= typeDeclaration )*
                             {
                             pushFollow(FOLLOW_packageDeclaration_in_compilationUnit83);
                             packageDeclaration();
@@ -273,7 +280,7 @@ public class JavaWalker extends TreeParser {
                             if ( state.backtracking==0 ) {
                               processPackageDeclaration(cu,np);
                             }
-                            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:87:67: (imp= importDeclaration )*
+                            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:87:67: (imp= importDeclaration )*
                             loop1:
                             do {
                                 int alt1=2;
@@ -286,7 +293,7 @@ public class JavaWalker extends TreeParser {
 
                                 switch (alt1) {
                             	case 1 :
-                            	    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:87:68: imp= importDeclaration
+                            	    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:87:68: imp= importDeclaration
                             	    {
                             	    pushFollow(FOLLOW_importDeclaration_in_compilationUnit89);
                             	    imp=importDeclaration();
@@ -305,7 +312,7 @@ public class JavaWalker extends TreeParser {
                                 }
                             } while (true);
 
-                            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:87:116: (type= typeDeclaration )*
+                            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:87:116: (type= typeDeclaration )*
                             loop2:
                             do {
                                 int alt2=2;
@@ -318,7 +325,7 @@ public class JavaWalker extends TreeParser {
 
                                 switch (alt2) {
                             	case 1 :
-                            	    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:87:117: type= typeDeclaration
+                            	    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:87:117: type= typeDeclaration
                             	    {
                             	    pushFollow(FOLLOW_typeDeclaration_in_compilationUnit97);
                             	    type=typeDeclaration();
@@ -341,14 +348,14 @@ public class JavaWalker extends TreeParser {
                             }
                             break;
                         case 2 :
-                            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:88:13: classOrInterfaceDeclaration (type= typeDeclaration )*
+                            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:88:13: classOrInterfaceDeclaration (type= typeDeclaration )*
                             {
                             pushFollow(FOLLOW_classOrInterfaceDeclaration_in_compilationUnit115);
                             classOrInterfaceDeclaration();
 
                             state._fsp--;
                             if (state.failed) return cu;
-                            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:88:41: (type= typeDeclaration )*
+                            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:88:41: (type= typeDeclaration )*
                             loop3:
                             do {
                                 int alt3=2;
@@ -361,7 +368,7 @@ public class JavaWalker extends TreeParser {
 
                                 switch (alt3) {
                             	case 1 :
-                            	    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:88:42: type= typeDeclaration
+                            	    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:88:42: type= typeDeclaration
                             	    {
                             	    pushFollow(FOLLOW_typeDeclaration_in_compilationUnit120);
                             	    type=typeDeclaration();
@@ -390,9 +397,9 @@ public class JavaWalker extends TreeParser {
                     }
                     break;
                 case 2 :
-                    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:92:8: (np= packageDeclaration )? (imp= importDeclaration )* (type= typeDeclaration )*
+                    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:92:8: (np= packageDeclaration )? (imp= importDeclaration )* (type= typeDeclaration )*
                     {
-                    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:92:10: (np= packageDeclaration )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:92:10: (np= packageDeclaration )?
                     int alt5=2;
                     int LA5_0 = input.LA(1);
 
@@ -401,7 +408,7 @@ public class JavaWalker extends TreeParser {
                     }
                     switch (alt5) {
                         case 1 :
-                            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:92:10: np= packageDeclaration
+                            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:92:10: np= packageDeclaration
                             {
                             pushFollow(FOLLOW_packageDeclaration_in_compilationUnit158);
                             np=packageDeclaration();
@@ -417,7 +424,7 @@ public class JavaWalker extends TreeParser {
                     if ( state.backtracking==0 ) {
                       processPackageDeclaration(cu,np);
                     }
-                    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:93:8: (imp= importDeclaration )*
+                    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:93:8: (imp= importDeclaration )*
                     loop6:
                     do {
                         int alt6=2;
@@ -430,7 +437,7 @@ public class JavaWalker extends TreeParser {
 
                         switch (alt6) {
                     	case 1 :
-                    	    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:93:9: imp= importDeclaration
+                    	    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:93:9: imp= importDeclaration
                     	    {
                     	    pushFollow(FOLLOW_importDeclaration_in_compilationUnit172);
                     	    imp=importDeclaration();
@@ -449,7 +456,7 @@ public class JavaWalker extends TreeParser {
                         }
                     } while (true);
 
-                    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:94:8: (type= typeDeclaration )*
+                    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:94:8: (type= typeDeclaration )*
                     loop7:
                     do {
                         int alt7=2;
@@ -462,7 +469,7 @@ public class JavaWalker extends TreeParser {
 
                         switch (alt7) {
                     	case 1 :
-                    	    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:94:9: type= typeDeclaration
+                    	    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:94:9: type= typeDeclaration
                     	    {
                     	    pushFollow(FOLLOW_typeDeclaration_in_compilationUnit188);
                     	    type=typeDeclaration();
@@ -499,7 +506,7 @@ public class JavaWalker extends TreeParser {
 
 
     // $ANTLR start "packageDeclaration"
-    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:97:1: packageDeclaration returns [NamespacePart np=null] : 'package' qn= qualifiedName ';' ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:97:1: packageDeclaration returns [NamespacePart np=null] : 'package' qn= qualifiedName ';' ;
     public final NamespacePart packageDeclaration() throws RecognitionException {
         NamespacePart np = null;
 
@@ -507,8 +514,8 @@ public class JavaWalker extends TreeParser {
 
 
         try {
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:98:5: ( 'package' qn= qualifiedName ';' )
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:98:9: 'package' qn= qualifiedName ';'
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:98:5: ( 'package' qn= qualifiedName ';' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:98:9: 'package' qn= qualifiedName ';'
             {
             match(input,25,FOLLOW_25_in_packageDeclaration215); if (state.failed) return np;
             pushFollow(FOLLOW_qualifiedName_in_packageDeclaration219);
@@ -543,7 +550,7 @@ public class JavaWalker extends TreeParser {
 
 
     // $ANTLR start "importDeclaration"
-    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:109:1: importDeclaration returns [Import imp=null] : 'import' (st= 'static' )? qn= qualifiedName (star= ( '.' '*' ) )? ';' ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:109:1: importDeclaration returns [Import imp=null] : 'import' (st= 'static' )? qn= qualifiedName (star= ( '.' '*' ) )? ';' ;
     public final Import importDeclaration() throws RecognitionException {
         Import imp = null;
 
@@ -553,11 +560,11 @@ public class JavaWalker extends TreeParser {
 
 
         try {
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:110:5: ( 'import' (st= 'static' )? qn= qualifiedName (star= ( '.' '*' ) )? ';' )
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:110:9: 'import' (st= 'static' )? qn= qualifiedName (star= ( '.' '*' ) )? ';'
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:110:5: ( 'import' (st= 'static' )? qn= qualifiedName (star= ( '.' '*' ) )? ';' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:110:9: 'import' (st= 'static' )? qn= qualifiedName (star= ( '.' '*' ) )? ';'
             {
             match(input,27,FOLLOW_27_in_importDeclaration259); if (state.failed) return imp;
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:110:20: (st= 'static' )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:110:20: (st= 'static' )?
             int alt9=2;
             int LA9_0 = input.LA(1);
 
@@ -566,7 +573,7 @@ public class JavaWalker extends TreeParser {
             }
             switch (alt9) {
                 case 1 :
-                    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:110:20: st= 'static'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:110:20: st= 'static'
                     {
                     st=(CommonTree)match(input,28,FOLLOW_28_in_importDeclaration263); if (state.failed) return imp;
 
@@ -580,7 +587,7 @@ public class JavaWalker extends TreeParser {
 
             state._fsp--;
             if (state.failed) return imp;
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:110:52: (star= ( '.' '*' ) )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:110:52: (star= ( '.' '*' ) )?
             int alt10=2;
             int LA10_0 = input.LA(1);
 
@@ -589,10 +596,10 @@ public class JavaWalker extends TreeParser {
             }
             switch (alt10) {
                 case 1 :
-                    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:110:52: star= ( '.' '*' )
+                    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:110:52: star= ( '.' '*' )
                     {
-                    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:110:53: ( '.' '*' )
-                    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:110:54: '.' '*'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:110:53: ( '.' '*' )
+                    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:110:54: '.' '*'
                     {
                     match(input,29,FOLLOW_29_in_importDeclaration273); if (state.failed) return imp;
                     match(input,30,FOLLOW_30_in_importDeclaration275); if (state.failed) return imp;
@@ -633,12 +640,12 @@ public class JavaWalker extends TreeParser {
 
 
     // $ANTLR start "typeDeclaration"
-    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:122:1: typeDeclaration returns [Type t=null] : ( classOrInterfaceDeclaration | ';' );
+    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:122:1: typeDeclaration returns [Type t=null] : ( classOrInterfaceDeclaration | ';' );
     public final Type typeDeclaration() throws RecognitionException {
         Type t = null;
 
         try {
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:123:5: ( classOrInterfaceDeclaration | ';' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:123:5: ( classOrInterfaceDeclaration | ';' )
             int alt11=2;
             int LA11_0 = input.LA(1);
 
@@ -657,7 +664,7 @@ public class JavaWalker extends TreeParser {
             }
             switch (alt11) {
                 case 1 :
-                    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:123:8: classOrInterfaceDeclaration
+                    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:123:8: classOrInterfaceDeclaration
                     {
                     pushFollow(FOLLOW_classOrInterfaceDeclaration_in_typeDeclaration315);
                     classOrInterfaceDeclaration();
@@ -668,7 +675,7 @@ public class JavaWalker extends TreeParser {
                     }
                     break;
                 case 2 :
-                    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:124:8: ';'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:124:8: ';'
                     {
                     match(input,26,FOLLOW_26_in_typeDeclaration324); if (state.failed) return t;
 
@@ -689,11 +696,11 @@ public class JavaWalker extends TreeParser {
 
 
     // $ANTLR start "classOrInterfaceDeclaration"
-    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:127:1: classOrInterfaceDeclaration : 'qqqq' ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:127:1: classOrInterfaceDeclaration : 'qqqq' ;
     public final void classOrInterfaceDeclaration() throws RecognitionException {
         try {
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:128:5: ( 'qqqq' )
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:128:8: 'qqqq'
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:128:5: ( 'qqqq' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:128:8: 'qqqq'
             {
             match(input,114,FOLLOW_114_in_classOrInterfaceDeclaration342); if (state.failed) return ;
 
@@ -712,16 +719,16 @@ public class JavaWalker extends TreeParser {
 
 
     // $ANTLR start "qualifiedName"
-    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:132:1: qualifiedName returns [String result=null] : Identifier ( '.' Identifier )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:132:1: qualifiedName returns [String result=null] : Identifier ( '.' Identifier )* ;
     public final String qualifiedName() throws RecognitionException {
         String result = null;
 
         try {
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:133:5: ( Identifier ( '.' Identifier )* )
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:133:9: Identifier ( '.' Identifier )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:133:5: ( Identifier ( '.' Identifier )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:133:9: Identifier ( '.' Identifier )*
             {
             match(input,Identifier,FOLLOW_Identifier_in_qualifiedName367); if (state.failed) return result;
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:133:20: ( '.' Identifier )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:133:20: ( '.' Identifier )*
             loop12:
             do {
                 int alt12=2;
@@ -740,7 +747,7 @@ public class JavaWalker extends TreeParser {
 
                 switch (alt12) {
             	case 1 :
-            	    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:133:21: '.' Identifier
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:133:21: '.' Identifier
             	    {
             	    match(input,29,FOLLOW_29_in_qualifiedName370); if (state.failed) return result;
             	    match(input,Identifier,FOLLOW_Identifier_in_qualifiedName372); if (state.failed) return result;
@@ -769,13 +776,13 @@ public class JavaWalker extends TreeParser {
 
 
     // $ANTLR start "annotations"
-    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:138:1: annotations : ( annotation )+ ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:138:1: annotations : ( annotation )+ ;
     public final void annotations() throws RecognitionException {
         try {
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:139:5: ( ( annotation )+ )
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:139:9: ( annotation )+
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:139:5: ( ( annotation )+ )
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:139:9: ( annotation )+
             {
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:139:9: ( annotation )+
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:139:9: ( annotation )+
             int cnt13=0;
             loop13:
             do {
@@ -789,7 +796,7 @@ public class JavaWalker extends TreeParser {
 
                 switch (alt13) {
             	case 1 :
-            	    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:139:9: annotation
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:139:9: annotation
             	    {
             	    pushFollow(FOLLOW_annotation_in_annotations395);
             	    annotation();
@@ -826,11 +833,11 @@ public class JavaWalker extends TreeParser {
 
 
     // $ANTLR start "annotation"
-    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:142:1: annotation : '@' annotationName ( '(' ( elementValuePairs | elementValue )? ')' )? ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:142:1: annotation : '@' annotationName ( '(' ( elementValuePairs | elementValue )? ')' )? ;
     public final void annotation() throws RecognitionException {
         try {
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:143:5: ( '@' annotationName ( '(' ( elementValuePairs | elementValue )? ')' )? )
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:143:9: '@' annotationName ( '(' ( elementValuePairs | elementValue )? ')' )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:143:5: ( '@' annotationName ( '(' ( elementValuePairs | elementValue )? ')' )? )
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:143:9: '@' annotationName ( '(' ( elementValuePairs | elementValue )? ')' )?
             {
             match(input,73,FOLLOW_73_in_annotation415); if (state.failed) return ;
             pushFollow(FOLLOW_annotationName_in_annotation417);
@@ -838,7 +845,7 @@ public class JavaWalker extends TreeParser {
 
             state._fsp--;
             if (state.failed) return ;
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:143:28: ( '(' ( elementValuePairs | elementValue )? ')' )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:143:28: ( '(' ( elementValuePairs | elementValue )? ')' )?
             int alt15=2;
             int LA15_0 = input.LA(1);
 
@@ -847,10 +854,10 @@ public class JavaWalker extends TreeParser {
             }
             switch (alt15) {
                 case 1 :
-                    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:143:30: '(' ( elementValuePairs | elementValue )? ')'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:143:30: '(' ( elementValuePairs | elementValue )? ')'
                     {
                     match(input,66,FOLLOW_66_in_annotation421); if (state.failed) return ;
-                    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:143:34: ( elementValuePairs | elementValue )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:143:34: ( elementValuePairs | elementValue )?
                     int alt14=3;
                     int LA14_0 = input.LA(1);
 
@@ -862,7 +869,7 @@ public class JavaWalker extends TreeParser {
                     }
                     switch (alt14) {
                         case 1 :
-                            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:143:36: elementValuePairs
+                            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:143:36: elementValuePairs
                             {
                             pushFollow(FOLLOW_elementValuePairs_in_annotation425);
                             elementValuePairs();
@@ -873,7 +880,7 @@ public class JavaWalker extends TreeParser {
                             }
                             break;
                         case 2 :
-                            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:143:56: elementValue
+                            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:143:56: elementValue
                             {
                             pushFollow(FOLLOW_elementValue_in_annotation429);
                             elementValue();
@@ -909,14 +916,14 @@ public class JavaWalker extends TreeParser {
 
 
     // $ANTLR start "annotationName"
-    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:146:1: annotationName : Identifier ( '.' Identifier )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:146:1: annotationName : Identifier ( '.' Identifier )* ;
     public final void annotationName() throws RecognitionException {
         try {
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:147:5: ( Identifier ( '.' Identifier )* )
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:147:7: Identifier ( '.' Identifier )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:147:5: ( Identifier ( '.' Identifier )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:147:7: Identifier ( '.' Identifier )*
             {
             match(input,Identifier,FOLLOW_Identifier_in_annotationName458); if (state.failed) return ;
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:147:18: ( '.' Identifier )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:147:18: ( '.' Identifier )*
             loop16:
             do {
                 int alt16=2;
@@ -929,7 +936,7 @@ public class JavaWalker extends TreeParser {
 
                 switch (alt16) {
             	case 1 :
-            	    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:147:19: '.' Identifier
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:147:19: '.' Identifier
             	    {
             	    match(input,29,FOLLOW_29_in_annotationName461); if (state.failed) return ;
             	    match(input,Identifier,FOLLOW_Identifier_in_annotationName463); if (state.failed) return ;
@@ -958,18 +965,18 @@ public class JavaWalker extends TreeParser {
 
 
     // $ANTLR start "elementValuePairs"
-    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:150:1: elementValuePairs : elementValuePair ( ',' elementValuePair )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:150:1: elementValuePairs : elementValuePair ( ',' elementValuePair )* ;
     public final void elementValuePairs() throws RecognitionException {
         try {
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:151:5: ( elementValuePair ( ',' elementValuePair )* )
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:151:9: elementValuePair ( ',' elementValuePair )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:151:5: ( elementValuePair ( ',' elementValuePair )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:151:9: elementValuePair ( ',' elementValuePair )*
             {
             pushFollow(FOLLOW_elementValuePair_in_elementValuePairs484);
             elementValuePair();
 
             state._fsp--;
             if (state.failed) return ;
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:151:26: ( ',' elementValuePair )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:151:26: ( ',' elementValuePair )*
             loop17:
             do {
                 int alt17=2;
@@ -982,7 +989,7 @@ public class JavaWalker extends TreeParser {
 
                 switch (alt17) {
             	case 1 :
-            	    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:151:27: ',' elementValuePair
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:151:27: ',' elementValuePair
             	    {
             	    match(input,41,FOLLOW_41_in_elementValuePairs487); if (state.failed) return ;
             	    pushFollow(FOLLOW_elementValuePair_in_elementValuePairs489);
@@ -1015,11 +1022,11 @@ public class JavaWalker extends TreeParser {
 
 
     // $ANTLR start "elementValuePair"
-    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:154:1: elementValuePair : Identifier '=' elementValue ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:154:1: elementValuePair : Identifier '=' elementValue ;
     public final void elementValuePair() throws RecognitionException {
         try {
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:155:5: ( Identifier '=' elementValue )
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:155:9: Identifier '=' elementValue
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:155:5: ( Identifier '=' elementValue )
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:155:9: Identifier '=' elementValue
             {
             match(input,Identifier,FOLLOW_Identifier_in_elementValuePair510); if (state.failed) return ;
             match(input,51,FOLLOW_51_in_elementValuePair512); if (state.failed) return ;
@@ -1044,11 +1051,11 @@ public class JavaWalker extends TreeParser {
 
 
     // $ANTLR start "elementValue"
-    // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:158:1: elementValue : 'error' ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:158:1: elementValue : 'error' ;
     public final void elementValue() throws RecognitionException {
         try {
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:159:5: ( 'error' )
-            // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:159:7: 'error'
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:159:5: ( 'error' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:159:7: 'error'
             {
             match(input,115,FOLLOW_115_in_elementValue535); if (state.failed) return ;
 
@@ -1067,8 +1074,8 @@ public class JavaWalker extends TreeParser {
 
     // $ANTLR start synpred1_JavaWalker
     public final void synpred1_JavaWalker_fragment() throws RecognitionException {   
-        // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:86:9: ( '@' )
-        // /Users/marko/Documents/workspace/Jnome Generics/src/org/jnome/input/parser/JavaWalker.g:86:10: '@'
+        // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:86:9: ( '@' )
+        // /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g:86:10: '@'
         {
         match(input,73,FOLLOW_73_in_synpred1_JavaWalker64); if (state.failed) return ;
 

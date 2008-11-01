@@ -33,17 +33,17 @@ import org.rejuse.property.PropertyMutex;
 import org.rejuse.property.StaticProperty;
 
 import chameleon.core.MetamodelException;
+import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.language.Language;
 import chameleon.core.member.Member;
 import chameleon.core.method.Method;
 import chameleon.core.method.MethodSignature;
-import chameleon.core.namespace.NamespaceSignature;
 import chameleon.core.namespace.RootNamespace;
 import chameleon.core.relation.StrictPartialOrder;
 import chameleon.core.type.Type;
 import chameleon.core.variable.MemberVariable;
-import chameleon.support.member.simplename.method.RegularMethod;
+import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.modifier.PrivateProperty;
 import chameleon.support.modifier.ProtectedProperty;
 import chameleon.support.modifier.PublicProperty;
@@ -70,7 +70,7 @@ public class Java extends Language {
 	public Java(){
 		super("Java");
 		_nullType = new NullType(this);
-		new RootNamespace(new NamespaceSignature(""), this);
+		new RootNamespace(new SimpleNameSignature(""), this);
 		//NamespacePart np = new NamespacePart(getDefaultNamespace(), getContextFactory().getNamespacePartLocalContext());
 		//np.addType(_nullType);
 		//new CompilationUnit(np);
@@ -182,7 +182,7 @@ public class Java extends Language {
 				@Override
 				public boolean contains(Member first, Member second) throws MetamodelException {
 					boolean result = false;
-					if((first instanceof RegularMethod) && (second instanceof RegularMethod)) {
+					if((first instanceof NormalMethod) && (second instanceof NormalMethod)) {
 						result = first.getNearestType().subTypeOf(second.getNearestType()) &&
 						         (first.is(CLASS) == Ternary.TRUE) && 
 						          first.signature().sameAs(second.signature());

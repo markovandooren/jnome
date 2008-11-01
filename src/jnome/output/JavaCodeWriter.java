@@ -68,7 +68,7 @@ import chameleon.support.expression.SuperConstructorDelegation;
 import chameleon.support.expression.SuperTarget;
 import chameleon.support.expression.ThisConstructorDelegation;
 import chameleon.support.expression.ThisLiteral;
-import chameleon.support.member.simplename.SimpleNameSignature;
+import chameleon.support.member.simplename.SimpleNameMethodSignature;
 import chameleon.support.member.simplename.method.RegularMethodInvocation;
 import chameleon.support.member.simplename.operator.infix.InfixOperatorInvocation;
 import chameleon.support.member.simplename.operator.postfix.PostfixOperatorInvocation;
@@ -579,7 +579,7 @@ public class JavaCodeWriter extends Syntax {
 	        result.append(" ");
 	      }
 	    
-	    result.append(((SimpleNameSignature)method.signature()).getName());
+	    result.append(((SimpleNameMethodSignature)method.signature()).getName());
 	    result.append("(");
 	    Iterator iter = method.getParameters().iterator();
 	    while(iter.hasNext()) {

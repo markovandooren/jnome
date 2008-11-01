@@ -24,7 +24,7 @@ import chameleon.core.type.Type;
 import chameleon.core.type.TypeContainer;
 import chameleon.core.type.TypeReference;
 import chameleon.support.member.MoreSpecificTypesOrder;
-import chameleon.support.member.simplename.method.RegularMethod;
+import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.property.accessibility.EmptyDomain;
 import chameleon.util.Util;
 
@@ -32,7 +32,7 @@ import chameleon.util.Util;
  * @author Marko van Dooren
  *
  */
-public class ConstructorInvocation extends Invocation<ConstructorInvocation, RegularMethod> implements TypeContainer<ConstructorInvocation, ExpressionContainer> {
+public class ConstructorInvocation extends Invocation<ConstructorInvocation, NormalMethod> implements TypeContainer<ConstructorInvocation, ExpressionContainer> {
 
   /**
    * @param target
@@ -163,12 +163,12 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Reg
     return result;
   }
   
-  public RegularMethod getMethod() throws MetamodelException {
+  public NormalMethod getMethod() throws MetamodelException {
   	InvocationTarget target = getTarget();
-  	RegularMethod result;
+  	NormalMethod result;
   	if(getAnonymousInnerType() != null) {
   		// @STRANGE!!! Inline this, and it no longer compiles.
-  		Type<Type> anon = getAnonymousInnerType();
+  		Type<? extends Type> anon = getAnonymousInnerType();
   		Context tctx = anon.targetContext();
   		result = tctx.lookUp(selector());
   	} else if(target == null) {
@@ -182,12 +182,12 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Reg
     return result;
   }
 
-  public class ConstructorSelector extends DeclarationSelector<RegularMethod> {
+  public class ConstructorSelector extends DeclarationSelector<NormalMethod> {
     
-    public RegularMethod filter(Declaration declaration) throws MetamodelException {
-    	RegularMethod result = null;
+    public NormalMethod filter(Declaration declaration) throws MetamodelException {
+    	NormalMethod result = null;
 			if (selectedClass().isInstance(declaration)) {
-				RegularMethod decl = (RegularMethod) declaration;
+				NormalMethod decl = (NormalMethod) declaration;
 				List<Type> actuals = getActualParameterTypes();
 				List<Type> formals = decl.signature().getParameterTypes();
 				if (new MoreSpecificTypesOrder().contains(actuals, formals) && (decl.is(language().CONSTRUCTOR)==Ternary.TRUE)) {
@@ -198,10 +198,10 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Reg
     }
 
     @Override
-    public WeakPartialOrder<RegularMethod> order() {
-      return new WeakPartialOrder<RegularMethod>() {
+    public WeakPartialOrder<NormalMethod> order() {
+      return new WeakPartialOrder<NormalMethod>() {
         @Override
-        public boolean contains(RegularMethod first, RegularMethod second)
+        public boolean contains(NormalMethod first, NormalMethod second)
             throws MetamodelException {
           return new MoreSpecificTypesOrder().contains(first.signature().getParameterTypes(), second.signature().getParameterTypes());
         }
@@ -209,13 +209,13 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Reg
     }
 
 		@Override
-		public Class<RegularMethod> selectedClass() {
-			return RegularMethod.class;
+		public Class<NormalMethod> selectedClass() {
+			return NormalMethod.class;
 		}
   }
   
 	@Override
-	public DeclarationSelector<RegularMethod> selector() {
+	public DeclarationSelector<NormalMethod> selector() {
 		return new ConstructorSelector();
 	}
 

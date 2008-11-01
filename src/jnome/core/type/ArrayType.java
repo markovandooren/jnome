@@ -2,11 +2,10 @@ package jnome.core.type;
 
 
 import chameleon.core.MetamodelException;
+import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
-import chameleon.core.type.TypeSignature;
 import chameleon.core.variable.MemberVariable;
-import chameleon.core.variable.VariableSignature;
 import chameleon.support.modifier.Final;
 
 /**
@@ -15,14 +14,14 @@ import chameleon.support.modifier.Final;
 public class ArrayType extends RegularType {
 //	TODO: this class should *NOT* be a member. This is just a quickfix
   public ArrayType(Type<?extends Type> type, int dimension) {
-    super(new TypeSignature(getArrayName(type.getName(), dimension)));
+    super(new SimpleNameSignature(getArrayName(type.getName(), dimension)));
     //FIXME: copy the modifiers?
     //addModifier(type.getAccessModifier());
     _arrayDimension = dimension;
     _type = type;
     setUniParent(type.getParent());
     JavaTypeReference jtr =new JavaTypeReference("int");
-    MemberVariable var = new MemberVariable(new VariableSignature("length"), jtr);
+    MemberVariable var = new MemberVariable(new SimpleNameSignature("length"), jtr);
     var.addModifier(new Final());
     add(var);
     addSuperType(new JavaTypeReference("java.lang.Object"));

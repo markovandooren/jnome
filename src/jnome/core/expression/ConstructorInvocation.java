@@ -168,7 +168,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
   	NormalMethod result;
   	if(getAnonymousInnerType() != null) {
   		// @STRANGE!!! Inline this, and it no longer compiles.
-  		Type<? extends Type> anon = getAnonymousInnerType();
+  		Type anon = getAnonymousInnerType();
   		Context tctx = anon.targetContext();
   		result = tctx.lookUp(selector());
   	} else if(target == null) {

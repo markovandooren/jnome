@@ -52,6 +52,7 @@ import chameleon.core.statement.Block;
 import chameleon.core.type.StaticInitializer;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
+import chameleon.core.type.inheritance.InheritanceRelation;
 import chameleon.core.variable.FormalParameter;
 import chameleon.core.variable.InitializableVariable;
 import chameleon.core.variable.MemberVariable;
@@ -466,34 +467,27 @@ public class JavaCodeWriter extends Syntax {
     //Name
     result.append("class ");
     result.append(type.getName());
-    List superTypes = type.getSuperTypeReferences();
-    final List classRefs = new ArrayList();
-    final List interfaceRefs = new ArrayList();
-    
-      new RobustVisitor() {
-        public Object visit(Object element) throws MetamodelException {
-          if(isClass(((TypeReference)element).getType())) {
-            classRefs.add(element);
-          } else {
-            interfaceRefs.add(element);
-          }
-          return null;
-        }
-
-        public void unvisit(Object element, Object undo) {
-          //NOP
-        }
-      }.applyTo(superTypes);
+    List<InheritanceRelation> superTypes = type.inheritanceRelations();
+    final List<TypeReference> classRefs = new ArrayList<TypeReference>();
+    final List<TypeReference> interfaceRefs = new ArrayList<TypeReference>();
+    for(InheritanceRelation rel:superTypes) {
+    	TypeReference typeRef = rel.superClassReference();
+      if(isClass(typeRef.getType())) {
+        classRefs.add(typeRef);
+      } else {
+        interfaceRefs.add(typeRef);
+      }
+    }
     if(classRefs.size() > 0) {
       result.append(" extends ");
-      result.append(toCode((Element)classRefs.get(0)));
+      result.append(toCode(classRefs.get(0)));
     }
     
     if(interfaceRefs.size() > 0) {
       result.append(" implements ");
-      Iterator iter = interfaceRefs.iterator();
+      Iterator<TypeReference> iter = interfaceRefs.iterator();
       while(iter.hasNext()) {
-        result.append(toCode((Element)iter.next()));
+        result.append(toCode(iter.next()));
         if(iter.hasNext()) {
           result.append(", ");
         }
@@ -530,10 +524,10 @@ public class JavaCodeWriter extends Syntax {
     //Name
     result.append("interface ");
     result.append(type.getName());
-    List superTypes = type.getSuperTypeReferences();
-    new PrimitivePredicate() {
-      public boolean eval(Object o) throws MetamodelException {
-        return ! toCode(((TypeReference)o)).equals("java.lang.Object");
+    List<InheritanceRelation> superTypes = type.inheritanceRelations();
+    new PrimitivePredicate<InheritanceRelation>() {
+      public boolean eval(InheritanceRelation rel) throws MetamodelException {
+        return ! toCode(rel.superClassReference()).equals("java.lang.Object");
       }
     }.filter(superTypes);
     if(superTypes.size() > 0) {

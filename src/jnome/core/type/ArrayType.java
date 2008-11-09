@@ -5,6 +5,7 @@ import chameleon.core.MetamodelException;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
+import chameleon.core.type.inheritance.SubtypeRelation;
 import chameleon.core.variable.MemberVariable;
 import chameleon.support.modifier.Final;
 
@@ -24,9 +25,9 @@ public class ArrayType extends RegularType {
     MemberVariable var = new MemberVariable(new SimpleNameSignature("length"), jtr);
     var.addModifier(new Final());
     add(var);
-    addSuperType(new JavaTypeReference("java.lang.Object"));
-    addSuperType(new JavaTypeReference("java.lang.Cloneable"));
-    addSuperType(new JavaTypeReference("java.io.Serializable"));
+    addInheritanceRelation(new SubtypeRelation(new JavaTypeReference("java.lang.Object")));
+    addInheritanceRelation(new SubtypeRelation(new JavaTypeReference("java.lang.Cloneable")));
+    addInheritanceRelation(new SubtypeRelation(new JavaTypeReference("java.io.Serializable")));
   }
   
 	@Override

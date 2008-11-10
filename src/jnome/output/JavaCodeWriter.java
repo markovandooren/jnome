@@ -54,8 +54,7 @@ import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
 import chameleon.core.type.inheritance.InheritanceRelation;
 import chameleon.core.variable.FormalParameter;
-import chameleon.core.variable.InitializableVariable;
-import chameleon.core.variable.MemberVariable;
+import chameleon.core.variable.RegularMemberVariable;
 import chameleon.core.variable.Variable;
 import chameleon.output.Syntax;
 import chameleon.support.expression.ArrayIndex;
@@ -214,7 +213,7 @@ public class JavaCodeWriter extends Syntax {
     } else if(isMethod(element)) {
       result = toCodeMethod((Method)element);
     } else if(isMemberVariable(element)) {
-      result = toCodeMemberVariable((MemberVariable)element);
+      result = toCodeMemberVariable((RegularMemberVariable)element);
     } else if(isStaticInitializer(element)) {
       result = toCodeStaticInitializer((StaticInitializer)element);
     } else if(isCompilationUnit(element)) {
@@ -256,7 +255,7 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public boolean isMemberVariable(Element element) {
-    return element instanceof MemberVariable;
+    return element instanceof RegularMemberVariable;
   }
   
   public boolean isStaticInitializer(Element element) {
@@ -671,7 +670,7 @@ public class JavaCodeWriter extends Syntax {
    * MEMBER VARIABLES *
    ********************/
   
-  public String toCodeMemberVariable(MemberVariable var) throws MetamodelException {
+  public String toCodeMemberVariable(RegularMemberVariable var) throws MetamodelException {
     return startLine() + toCodeVariable(var);
   }
   
@@ -686,13 +685,11 @@ public class JavaCodeWriter extends Syntax {
     result.append(toCode(var.getTypeReference()));
     result.append(" ");
     result.append(var.getName());
-    if(var instanceof InitializableVariable) {
-      if(((InitializableVariable)var).getInitialization() != null) {
+      if(var.getInitialization() != null) {
       result.append(" = ");
-      result.append(toCode(((InitializableVariable)var).getInitialization()));
+      result.append(toCode(var.getInitialization()));
       }
       result.append(";");
-    }
     return result.toString();
   }
   

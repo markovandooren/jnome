@@ -43,6 +43,7 @@ import chameleon.core.namespace.RootNamespace;
 import chameleon.core.relation.StrictPartialOrder;
 import chameleon.core.type.Type;
 import chameleon.core.variable.MemberVariable;
+import chameleon.core.variable.RegularMemberVariable;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.modifier.PrivateProperty;
 import chameleon.support.modifier.ProtectedProperty;
@@ -146,8 +147,8 @@ public class Java extends Language {
                    method1.getParent().subTypeOf(method2.getParent()) && 
                    method1.sameKind(method2);
         } else if ((first instanceof MemberVariable) && (second instanceof MemberVariable)) {
-          MemberVariable var1 = (MemberVariable)first;
-          MemberVariable var2 = (MemberVariable)second;
+          MemberVariable<? extends MemberVariable> var1 = (MemberVariable)first;
+          MemberVariable<? extends MemberVariable> var2 = (MemberVariable)second;
           
           result = var1.getParent().subTypeOf(var2.getParent());  
         } else {
@@ -186,8 +187,8 @@ public class Java extends Language {
 						result = first.getNearestType().subTypeOf(second.getNearestType()) &&
 						         (first.is(CLASS) == Ternary.TRUE) && 
 						          first.signature().sameAs(second.signature());
-					} else if(((first instanceof MemberVariable) && (second instanceof MemberVariable)) ||
-							((first instanceof MemberVariable) && (second instanceof MemberVariable))) {
+					} else if(((first instanceof RegularMemberVariable) && (second instanceof RegularMemberVariable)) ||
+							((first instanceof RegularMemberVariable) && (second instanceof RegularMemberVariable))) {
 						 result = first.getNearestType().subTypeOf(second.getNearestType()) &&
 						          first.signature().sameAs(second.signature());
 					}

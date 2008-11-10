@@ -6,7 +6,7 @@ import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
 import chameleon.core.type.inheritance.SubtypeRelation;
-import chameleon.core.variable.MemberVariable;
+import chameleon.core.variable.RegularMemberVariable;
 import chameleon.support.modifier.Final;
 
 /**
@@ -22,7 +22,7 @@ public class ArrayType extends RegularType {
     _type = type;
     setUniParent(type.getParent());
     JavaTypeReference jtr =new JavaTypeReference("int");
-    MemberVariable var = new MemberVariable(new SimpleNameSignature("length"), jtr);
+    RegularMemberVariable var = new RegularMemberVariable(new SimpleNameSignature("length"), jtr);
     var.addModifier(new Final());
     add(var);
     addInheritanceRelation(new SubtypeRelation(new JavaTypeReference("java.lang.Object")));

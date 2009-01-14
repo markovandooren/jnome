@@ -1,3 +1,13 @@
+
+/*
+
+TODO
+
+1) Support for annotations
+
+*/
+
+
 /*
  [The "BSD licence"]
  Copyright (c) 2007-2008 Terence Parr
@@ -171,28 +181,50 @@ package jnome.input.parser;
 
 import chameleon.core.MetamodelException;
 
-import chameleon.core.element.ChameleonProgrammerException;
+import chameleon.core.context.ContextFactory;
 
 import chameleon.core.compilationunit.CompilationUnit;
 
+import chameleon.core.declaration.SimpleNameSignature;
+
+import chameleon.core.element.ChameleonProgrammerException;
+
+import chameleon.core.language.Language;
+
+import chameleon.core.modifier.Modifier;
+
 import chameleon.core.namespace.Namespace;
 import chameleon.core.namespace.RootNamespace;
-
-import chameleon.core.context.ContextFactory;
 
 import chameleon.core.namespacepart.NamespacePart;
 import chameleon.core.namespacepart.Import;
 import chameleon.core.namespacepart.TypeImport;
 import chameleon.core.namespacepart.DemandImport;
 
-import chameleon.core.language.Language;
-
 import chameleon.core.type.Type;
+import chameleon.core.type.RegularType;
 import chameleon.core.type.TypeReference;
+
+import chameleon.support.modifier.Abstract;
+import chameleon.support.modifier.Final;
+import chameleon.support.modifier.Private;
+import chameleon.support.modifier.Protected;
+import chameleon.support.modifier.Public;
+import chameleon.support.modifier.Static;
+import chameleon.support.modifier.Native;
 
 import jnome.core.language.Java;
 
 import jnome.core.type.JavaTypeReference;
+
+import jnome.core.modifier.StrictFP;
+import jnome.core.modifier.Transient;
+import jnome.core.modifier.Volatile;
+import jnome.core.modifier.Synchronized;
+
+import java.util.List;
+import java.util.ArrayList;
+
 
 }
 @lexer::header {
@@ -254,51 +286,74 @@ compilationUnit returns [CompilationUnit element]
     ;
 
 packageDeclaration returns [NamespacePart element]
-    :   'package' qualifiedName ';'
+    :   'package' qn=qualifiedName ';'
+         {try{
+           retval.element = new NamespacePart(root.getOrCreateNamespace($qn.text));
+         }
+         catch(MetamodelException exc) {
+           //this should not happen, something is wrong with the tree parser
+           throw new ChameleonProgrammerException(exc);
+         }
+        }
     ;
     
 importDeclaration returns [Import element]
-    :   'import' 'static'? qualifiedName ('.' '*')? ';'
+    :   'import' st='static'? qn=qualifiedName star=('.' '*')? ';'
+    {
+         if(star==null) {
+           retval.element = new TypeImport(typeRef($qn.text));
+           // type import
+         } else {
+           // demand import
+           retval.element = new DemandImport(typeRef($qn.text));
+         }
+    }
     ;
+
     
 typeDeclaration returns [Type element]
-    :   classOrInterfaceDeclaration
+    :   cd=classOrInterfaceDeclaration {retval.element = cd.element;}
     |   ';'
     ;
+
+//DONE
+
     
 classOrInterfaceDeclaration returns [Type element]
     :   classOrInterfaceModifiers (classDeclaration | interfaceDeclaration)
     ;
     
-classOrInterfaceModifiers
-    :   classOrInterfaceModifier*
+classOrInterfaceModifiers returns [List<Modifier> element]
+@init {retval.element = new ArrayList<Modifier>();}
+    :   (mod=classOrInterfaceModifier{retval.element.add(mod.element);})* 
     ;
 
-classOrInterfaceModifier
+classOrInterfaceModifier returns [Modifier element]
     :   annotation   // class or interface
-    |   'public'     // class or interface
-    |   'protected'  // class or interface
-    |   'private'    // class or interface
-    |   'abstract'   // class or interface
-    |   'static'     // class or interface
-    |   'final'      // class only -- does not apply to interfaces
-    |   'strictfp'   // class or interface
+    |   'public' {retval.element = new Public();}    // class or interface
+    |   'protected' {retval.element = new Protected();} // class or interface
+    |   'private' {retval.element = new Private();}   // class or interface
+    |   'abstract' {retval.element = new Abstract();}  // class or interface
+    |   'static' {retval.element = new Static();}    // class or interface
+    |   'final' {retval.element = new Final();}     // class only -- does not apply to interfaces
+    |   'strictfp' {retval.element = new StrictFP();}  // class or interface
     ;
 
-modifiers
-    :   modifier*
+modifiers returns [List<Modifier> element]
+@init {retval.element = new ArrayList<Modifier>();}
+    :   (mod=modifier{retval.element.add(mod.element);})*
     ;
 
-classDeclaration
-    :   normalClassDeclaration
-    |   enumDeclaration
+classDeclaration returns [Type element]
+    :   cd=normalClassDeclaration { retval.element = cd.element;}
+    |   ed=enumDeclaration {retval.element = ed.element;}
     ;
     
-normalClassDeclaration
-    :   'class' Identifier typeParameters?
-        ('extends' type)?
-        ('implements' typeList)?
-        classBody
+normalClassDeclaration returns [Type element]
+    :   'class' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text));} params=typeParameters?
+        ('extends' sc=type)?
+        ('implements' ifs=typeList)?
+        body=classBody
     ;
     
 typeParameters
@@ -313,7 +368,7 @@ typeBound
     :   type ('&' type)*
     ;
 
-enumDeclaration
+enumDeclaration returns [Type element]
     :   ENUM Identifier ('implements' typeList)? enumBody
     ;
 
@@ -477,19 +532,13 @@ arrayInitializer
     :   '{' (variableInitializer (',' variableInitializer)* (',')? )? '}'
     ;
 
-modifier
+modifier returns [Modifier element]
     :   annotation
-    |   'public'
-    |   'protected'
-    |   'private'
-    |   'static'
-    |   'abstract'
-    |   'final'
-    |   'native'
-    |   'synchronized'
-    |   'transient'
-    |   'volatile'
-    |   'strictfp'
+    |   mod=classOrInterfaceModifier {retval.element = mod.element;}
+    |   'native' {retval.element = new Native();}
+    |   'synchronized' {retval.element = new Synchronized();}
+    |   'transient' {retval.element = new Transient();}
+    |   'volatile' {retval.element = new Volatile();}
     ;
 
 packageOrTypeName

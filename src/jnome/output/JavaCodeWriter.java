@@ -19,6 +19,7 @@ import jnome.core.modifier.Default;
 import jnome.core.modifier.StrictFP;
 import jnome.core.modifier.Synchronized;
 import jnome.core.type.ArrayType;
+import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.java.collections.RobustVisitor;
 import org.rejuse.java.collections.Visitor;
@@ -251,7 +252,16 @@ public class JavaCodeWriter extends Syntax {
     if(result.length() > 0) {
       result = result + ".";
     }
-    return result + typeReference.getName();
+    result = result + typeReference.getName();
+    if(typeReference instanceof JavaTypeReference) {
+    	JavaTypeReference tref = (JavaTypeReference)typeReference;
+    	int dimension = tref.arrayDimension();
+    	while(dimension > 0) {
+    		result = result + "[]";
+    		dimension--;
+    	}
+    }
+    return result;
   }
   
   public boolean isMemberVariable(Element element) {

@@ -205,6 +205,10 @@ import chameleon.core.type.Type;
 import chameleon.core.type.RegularType;
 import chameleon.core.type.TypeReference;
 
+import chameleon.core.type.generics.GenericParameter;
+
+import chameleon.core.type.inheritance.SubtypeRelation;
+
 import chameleon.support.modifier.Abstract;
 import chameleon.support.modifier.Final;
 import chameleon.support.modifier.Private;
@@ -350,18 +354,19 @@ classDeclaration returns [Type element]
     ;
     
 normalClassDeclaration returns [Type element]
-    :   'class' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text));} params=typeParameters?
-        ('extends' sc=type)?
+    :   'class' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text));} (params=typeParameters{for(GenericParameter par: params.element){retval.element.add(par);}})?
+        ('extends' sc=type{retval.element.addInheritanceRelation(new SubtypeRelation(sc.element));})?
         ('implements' ifs=typeList)?
         body=classBody
     ;
     
-typeParameters
-    :   '<' typeParameter (',' typeParameter)* '>'
+typeParameters returns [List<GenericParameter> element]
+@init{retval.element = new ArrayList<GenericParameter>();}
+    :   '<' par=typeParameter{retval.element.add(par.element);} (',' par=typeParameter{retval.element.add(par.element);})* '>'
     ;
 
-typeParameter
-    :   Identifier ('extends' typeBound)?
+typeParameter returns [GenericParameter element]
+    :   name=Identifier ('extends' typeBound)?
     ;
         
 typeBound
@@ -553,9 +558,10 @@ typeName
     :   qualifiedName
     ;
 
-type
-	:	classOrInterfaceType ('[' ']')*
-	|	primitiveType ('[' ']')*
+type returns [TypeReference element]
+@init{int dimension=0;}
+	:	cd=classOrInterfaceType ('[' ']' {dimension++;})* {retval.element = cd.element.toArray(dimension);}
+	|	pt=primitiveType ('[' ']'{dimension++;})* {retval.element = pt.element.toArray(dimension);}
 	;
 
 classOrInterfaceType

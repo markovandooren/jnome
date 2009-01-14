@@ -144,7 +144,7 @@ public class Java extends Language {
           }
           result = overridable && 
                    method1.signature().equals(method2.signature()) && 
-                   method1.getParent().subTypeOf(method2.getParent()) && 
+                   method1.getNearestType().subTypeOf(method2.getNearestType()) && 
                    method1.sameKind(method2);
         } else if ((first instanceof MemberVariable) && (second instanceof MemberVariable)) {
           MemberVariable<? extends MemberVariable> var1 = (MemberVariable)first;

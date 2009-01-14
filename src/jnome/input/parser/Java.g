@@ -168,6 +168,32 @@ options {backtrack=true; memoize=true;output=AST;}
 
 @parser::header {
 package jnome.input.parser;
+
+import chameleon.core.MetamodelException;
+
+import chameleon.core.element.ChameleonProgrammerException;
+
+import chameleon.core.compilationunit.CompilationUnit;
+
+import chameleon.core.namespace.Namespace;
+import chameleon.core.namespace.RootNamespace;
+
+import chameleon.core.context.ContextFactory;
+
+import chameleon.core.namespacepart.NamespacePart;
+import chameleon.core.namespacepart.Import;
+import chameleon.core.namespacepart.TypeImport;
+import chameleon.core.namespacepart.DemandImport;
+
+import chameleon.core.language.Language;
+
+import chameleon.core.type.Type;
+import chameleon.core.type.TypeReference;
+
+import jnome.core.language.Java;
+
+import jnome.core.type.JavaTypeReference;
+
 }
 @lexer::header {
 package jnome.input.parser;
@@ -178,31 +204,69 @@ package jnome.input.parser;
   protected boolean assertIsKeyword = true;
 }
 
+@parser::members {
+  Language lang;
+  
+  public Language language() {
+    return lang;
+  }
+  
+  public void setLanguage(Java language) {
+    lang = language;
+  }
+  
+  RootNamespace root = lang.defaultNamespace();
+  ContextFactory contextFactory = root.language().contextFactory();
+
+  public Namespace getDefaultNamespace() {
+    return root;
+  }
+
+  public void processImport(CompilationUnit cu, Import imp){
+    if(imp instanceof TypeImport){cu.getDefaultNamespacePart().addImport((TypeImport)imp);}
+    else if(imp instanceof DemandImport){cu.getDefaultNamespacePart().addImport((DemandImport)imp);}
+  }
+  public void processType(CompilationUnit cu, Type type){
+    cu.getDefaultNamespacePart().addType(type);
+  }
+  public void processPackageDeclaration(CompilationUnit cu, NamespacePart np){
+    if(np!=null){
+      cu.getDefaultNamespacePart().addNamespacePart(np);
+    }
+  }
+  
+  public TypeReference typeRef(String qn) {
+    return new JavaTypeReference(qn);
+  }
+
+}
+
 // starting point for parsing a java file
 /* The annotations are separated out to make parsing faster, but must be associated with
    a packageDeclaration or a typeDeclaration (and not an empty one). */
-compilationUnit
-    :   annotations
-        (   packageDeclaration importDeclaration* typeDeclaration*
-        |   classOrInterfaceDeclaration typeDeclaration*
+compilationUnit returns [CompilationUnit element] 
+@init{ retval.element = new CompilationUnit(new NamespacePart(language().defaultNamespace()));}
+    :    annotations
+        (   np=packageDeclaration{processPackageDeclaration(retval.element,np.element);} (imp=importDeclaration{processImport(retval.element,imp.element);})* (typech=typeDeclaration{processType(retval.element,typech.element);})*
+        |   cd=classOrInterfaceDeclaration{processType(retval.element,cd.element);} (typech=typeDeclaration{processType(retval.element,typech.element);})*
         )
-    |   packageDeclaration? importDeclaration* typeDeclaration*
+    |   (np=packageDeclaration{processPackageDeclaration(retval.element,np.element);})? (imp=importDeclaration{processImport(retval.element,imp.element);})* (typech=typeDeclaration{processType(retval.element,typech.element);})*
     ;
 
-packageDeclaration
+packageDeclaration returns [NamespacePart element]
     :   'package' qualifiedName ';'
     ;
     
-importDeclaration
+importDeclaration returns [Import element]
     :   'import' 'static'? qualifiedName ('.' '*')? ';'
     ;
     
-typeDeclaration
+typeDeclaration returns [Type element]
     :   classOrInterfaceDeclaration
     |   ';'
     ;
     
-classOrInterfaceDeclaration
+classOrInterfaceDeclaration returns [Type element]
     :   classOrInterfaceModifiers (classDeclaration | interfaceDeclaration)
     ;
     

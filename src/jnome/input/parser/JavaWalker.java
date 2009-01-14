@@ -1,4 +1,4 @@
-// $ANTLR 3.1.1 /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g 2008-10-29 20:52:20
+// $ANTLR 3.1.1 /Users/marko/git/jnome/src/jnome/input/parser/JavaWalker.g 2009-01-14 16:01:10
 
 package jnome.input.parser;
 

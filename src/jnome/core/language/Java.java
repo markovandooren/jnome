@@ -40,6 +40,7 @@ import chameleon.core.member.Member;
 import chameleon.core.method.Method;
 import chameleon.core.method.MethodSignature;
 import chameleon.core.namespace.RootNamespace;
+import chameleon.core.relation.EquivalenceRelation;
 import chameleon.core.relation.StrictPartialOrder;
 import chameleon.core.type.Type;
 import chameleon.core.variable.MemberVariable;
@@ -206,6 +207,18 @@ public class Java extends Language {
 		@Override
 		public Type voidType() throws MetamodelException {
 			return defaultNamespace().findType("void");
+		}
+
+		@Override
+		public EquivalenceRelation<Member> equivalenceRelation() {
+			return new EquivalenceRelation<Member>() {
+
+				@Override
+				public boolean contains(Member first, Member second) throws MetamodelException {
+					
+				}
+				
+			};
 		}
   
 }

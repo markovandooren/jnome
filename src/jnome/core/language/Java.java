@@ -151,7 +151,7 @@ public class Java extends Language {
           MemberVariable<? extends MemberVariable> var1 = (MemberVariable)first;
           MemberVariable<? extends MemberVariable> var2 = (MemberVariable)second;
           
-          result = var1.getParent().subTypeOf(var2.getParent());  
+          result = var1.parent().subTypeOf(var2.parent());  
         } else {
           result = false;
         }

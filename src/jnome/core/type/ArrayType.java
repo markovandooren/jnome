@@ -20,7 +20,7 @@ public class ArrayType extends RegularType {
     //addModifier(type.getAccessModifier());
     _arrayDimension = dimension;
     _type = type;
-    setUniParent(type.getParent());
+    setUniParent(type.parent());
     JavaTypeReference jtr =new JavaTypeReference("int");
     RegularMemberVariable var = new RegularMemberVariable(new SimpleNameSignature("length"), jtr);
     var.addModifier(new Final());

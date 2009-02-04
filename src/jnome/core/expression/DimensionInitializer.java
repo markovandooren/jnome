@@ -43,7 +43,7 @@ public class DimensionInitializer extends NamespacePartElementImpl<DimensionInit
 
   public void setExpression(Expression expression) {
     if (expression != null) {
-      _expression.connectTo(expression.getParentLink());
+      _expression.connectTo(expression.parentLink());
     }
     else {
       _expression.connectTo(null);
@@ -51,7 +51,7 @@ public class DimensionInitializer extends NamespacePartElementImpl<DimensionInit
   }
 
   public Type getNearestType() {
-    return getParent().getNearestType();
+    return parent().getNearestType();
   }
 
   /**
@@ -66,7 +66,7 @@ public class DimensionInitializer extends NamespacePartElementImpl<DimensionInit
   }
 
   public Namespace getNamespace() {
-    return getParent().getNamespace();
+    return parent().getNamespace();
   }
 
  /*@
@@ -75,7 +75,7 @@ public class DimensionInitializer extends NamespacePartElementImpl<DimensionInit
    @ post getExpression() != null ==> \result.contains(getExpression());
    @ post \result.size() == 1;
    @*/
-  public List getChildren() {
+  public List children() {
     return Util.createNonNullList(getExpression());
   }
   

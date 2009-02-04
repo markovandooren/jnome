@@ -352,7 +352,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
 //    }
 
     public void removeElement(Element element) {
-      element.getParentLink().connectTo(null);
+      element.parentLink().connectTo(null);
     }
 
 //    private void adaptLineAndColNumbersAST(ExtendedAST ast, int line, int column, int skipLines) {

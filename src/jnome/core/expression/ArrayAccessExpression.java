@@ -59,7 +59,7 @@ public class ArrayAccessExpression extends Expression implements ExpressionConta
   }
 
   public void setTarget(Expression expression) {
-    _target.connectTo(expression.getParentLink());
+    _target.connectTo(expression.parentLink());
   }
 
 	/**
@@ -72,11 +72,11 @@ public class ArrayAccessExpression extends Expression implements ExpressionConta
   }
 
   public void addIndex(ArrayIndex index) {
-	    _indicesLink.add(index.getParentLink());
+	    _indicesLink.add(index.parentLink());
 	  }
 
 	  public void removeIndex(ArrayIndex index) {
-	    _indicesLink.remove(index.getParentLink());
+	    _indicesLink.remove(index.parentLink());
 	  }
 	  
   public List<ArrayIndex> getIndices() {
@@ -135,7 +135,7 @@ public class ArrayAccessExpression extends Expression implements ExpressionConta
     return (Assignable)clone();
   }
 
-  public List getChildren() {
+  public List children() {
     List result = Util.createNonNullList(getTarget());
     result.addAll(getIndices());
     return result;

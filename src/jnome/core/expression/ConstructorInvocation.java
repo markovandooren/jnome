@@ -57,7 +57,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
   }
 
     public void setTypeReference(JavaTypeReference type) {
-        Reference<? extends TypeReference, ? super ConstructorInvocation> tref = type.getParentLink();
+        Reference<? extends TypeReference, ? super ConstructorInvocation> tref = type.parentLink();
         Reference<? extends JavaTypeReference, ? super ConstructorInvocation> ref = (Reference<? extends JavaTypeReference, ? super ConstructorInvocation>)tref;
         _typeReference.connectTo(ref);
     }
@@ -68,7 +68,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 
     public void setAnonymousType(Type type) {
       if(type != null) {
-        _anon.connectTo(type.getParentLink());
+        _anon.connectTo(type.parentLink());
       } else {
         _anon.connectTo(null);
       }
@@ -157,8 +157,8 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
    @
    @ post getAnonymousInnerType() != null ==> \result.contains(getAnonymousInnerType());
    @*/
-  public List getChildren() {
-    List result = super.getChildren();
+  public List children() {
+    List result = super.children();
     Util.addNonNull(getAnonymousInnerType(), result);
     return result;
   }

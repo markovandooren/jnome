@@ -81,7 +81,7 @@ public class JavaTypeReference extends TypeReference {
         result = target.targetContext().lookUp(selector());// findType(getName());
       }
     } else {
-      result = getParent().lexicalContext(this).lookUp(selector()); // (getName());
+      result = parent().lexicalContext(this).lookUp(selector()); // (getName());
     }
 
     if ((arrayDimension() != 0) && (result != null)) {

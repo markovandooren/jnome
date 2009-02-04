@@ -64,7 +64,7 @@ public class ArrayCreationExpression extends Expression<ArrayCreationExpression>
   }
 
     public void setTypeReference(JavaTypeReference type) {
-        Reference<? extends TypeReference, ? super ArrayCreationExpression> tref = type.getParentLink();
+        Reference<? extends TypeReference, ? super ArrayCreationExpression> tref = type.parentLink();
         Reference<? extends JavaTypeReference, ? super ArrayCreationExpression> ref = (Reference<? extends JavaTypeReference, ? super ArrayCreationExpression>)tref;
         _typeReference.connectTo(ref);
     }
@@ -81,11 +81,11 @@ public class ArrayCreationExpression extends Expression<ArrayCreationExpression>
   }
 
   public void addDimensionInitializer(ArrayIndex init) {
-	    _dimensionInitializers.add(init.getParentLink());
+	    _dimensionInitializers.add(init.parentLink());
 	  }
 
 	  public void removeDimensionInitializer(ArrayIndex init) {
-	    _dimensionInitializers.remove(init.getParentLink());
+	    _dimensionInitializers.remove(init.parentLink());
 	  }
 
   public List<ArrayIndex> getDimensionInitializers() {
@@ -107,7 +107,7 @@ public class ArrayCreationExpression extends Expression<ArrayCreationExpression>
 
   public void setInitializer(ArrayInitializer initializer) {
     if (initializer != null) {
-      _init.connectTo(initializer.getParentLink());
+      _init.connectTo(initializer.parentLink());
     }
     else {
       _init.connectTo(null);
@@ -162,7 +162,7 @@ public class ArrayCreationExpression extends Expression<ArrayCreationExpression>
    @ post \result.containsAll(getDimensionInitializers());
    @ post getInitializer() != null ==> \result.contains(getInitializer());
    @*/
-  public List<? extends Element> getChildren() {
+  public List<? extends Element> children() {
     final List<? extends Element> result = getDimensionInitializers();
     Util.addNonNull(getInitializer(), result);
     return result;

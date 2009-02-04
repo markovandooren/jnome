@@ -453,7 +453,7 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public boolean isAnonymousClass(Element element) {
-    return (element instanceof Type) && (element.getParent() instanceof ConstructorInvocation);
+    return (element instanceof Type) && (element.parent() instanceof ConstructorInvocation);
   }
   
   public String toCodeAnonymousClass(Type type) throws MetamodelException {
@@ -1374,7 +1374,7 @@ public class JavaCodeWriter extends Syntax {
       parent.mkdirs();
       out.createNewFile();
       FileWriter fw = new FileWriter(out);
-      fw.write(writer.toCode((Element)type.getParent()));
+      fw.write(writer.toCode((Element)type.parent()));
       fw.close();
       
       

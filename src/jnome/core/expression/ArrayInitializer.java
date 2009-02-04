@@ -62,11 +62,11 @@ public class ArrayInitializer extends Expression implements ExpressionContainer 
   }
 
   public void addInitializer(Expression init) {
-    _inits.add(init.getParentLink());
+    _inits.add(init.parentLink());
   }
 
   public void removeInitializer(Expression init) {
-    _inits.remove(init.getParentLink());
+    _inits.remove(init.parentLink());
   }
 
   public List<Expression> getVariableInitializers() {
@@ -74,18 +74,18 @@ public class ArrayInitializer extends Expression implements ExpressionContainer 
   }
 
   public Type getType() throws MetamodelException {
-    if (getParent() instanceof ArrayCreationExpression) {
-      return ((ArrayCreationExpression)getParent()).getType();
+    if (parent() instanceof ArrayCreationExpression) {
+      return ((ArrayCreationExpression)parent()).getType();
     }
-    else if (getParent() instanceof ArrayInitializer) {
-      ArrayType temp = (ArrayType)((ArrayInitializer)getParent()).getType();
+    else if (parent() instanceof ArrayInitializer) {
+      ArrayType temp = (ArrayType)((ArrayInitializer)parent()).getType();
       return new ArrayType(temp.getComponentType(), temp.getDimension() - 1);
     }
-    else if (getParent() instanceof Expression) {
-      return ((Expression)getParent()).getType();
+    else if (parent() instanceof Expression) {
+      return ((Expression)parent()).getType();
     }
-    else if (getParent() instanceof Variable) {
-      return ((Variable)getParent()).getType();
+    else if (parent() instanceof Variable) {
+      return ((Variable)parent()).getType();
     }
     else {
       throw new RuntimeException();
@@ -117,7 +117,7 @@ public class ArrayInitializer extends Expression implements ExpressionContainer 
     return result;
   }
 
-  public List<? extends Expression> getChildren() {
+  public List<? extends Expression> children() {
     return getVariableInitializers();
   }
 

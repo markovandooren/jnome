@@ -215,7 +215,7 @@ public class Java extends Language {
 
 				@Override
 				public boolean contains(Member first, Member second) throws MetamodelException {
-					
+					return first.equals(second);
 				}
 				
 			};

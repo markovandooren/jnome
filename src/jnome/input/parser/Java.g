@@ -206,6 +206,7 @@ import chameleon.core.type.RegularType;
 import chameleon.core.type.TypeReference;
 
 import chameleon.core.type.generics.GenericParameter;
+import chameleon.core.type.generics.TypeConstraint;
 
 import chameleon.core.type.inheritance.SubtypeRelation;
 
@@ -366,10 +367,11 @@ typeParameters returns [List<GenericParameter> element]
     ;
 
 typeParameter returns [GenericParameter element]
-    :   name=Identifier ('extends' typeBound)?
+    :   name=Identifier{retval.element = new GenericParameter(new SimpleNameSignature($name.text));} ('extends' bound=typeBound{retval.element.addConstraint(bound);})?
     ;
         
-typeBound
+typeBound returns [TypeConstraint element]
+@init{retval.element = new ExtendsConstraint(XXX);}
     :   type ('&' type)*
     ;
 

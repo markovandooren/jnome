@@ -24,16 +24,23 @@
  */
 package jnome.core.type;
 
+import java.util.List;
+
+import org.rejuse.association.ReferenceSet;
+
 import chameleon.core.Config;
 import chameleon.core.MetamodelException;
 import chameleon.core.element.ChameleonProgrammerException;
+import chameleon.core.element.Element;
 import chameleon.core.namespace.NamespaceOrType;
-import chameleon.core.namespace.NamespaceOrTypeReference;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
+import chameleon.core.type.generics.GenericArgument;
 
 /**
- * @author marko
+ * A class for Java type references. They add support for array types and generic parameters.
+ * 
+ * @author Marko van Dooren
  */
 public class JavaTypeReference extends TypeReference {
 
@@ -49,6 +56,30 @@ public class JavaTypeReference extends TypeReference {
   		}
   	}
   	setArrayDimension(arrayDimension);
+  }
+  
+  public List<GenericArgument> typeArguments() {
+  	return _genericParameters.getOtherEnds();
+  }
+  
+  public void addArgument(GenericArgument arg) {
+  	if(arg != null) {
+  		_genericParameters.add(arg.parentLink());
+  	}
+  }
+  
+  public void removeArgument(GenericArgument arg) {
+  	if(arg != null) {
+  		_genericParameters.remove(arg.parentLink());
+  	}
+  }
+  
+  private ReferenceSet<JavaTypeReference,GenericArgument> _genericParameters = new ReferenceSet<JavaTypeReference, GenericArgument>(this);
+  
+  public List<Element> children() {
+  	List<Element> result = super.children();
+  	result.addAll(_genericParameters.getOtherEnds());
+  	return result;
   }
   
   public JavaTypeReference toArray(int arrayDimension) {
@@ -70,10 +101,10 @@ public class JavaTypeReference extends TypeReference {
   public Type getType() throws MetamodelException {
     Type result = null;
 
-    result = getCache();
-    if (result != null) {
-      return result;
-    }
+//    result = getCache();
+//    if (result != null) {
+//      return result;
+//    }
 
     if (getTarget() != null) {
       NamespaceOrType target = getTarget().getNamespaceOrType();
@@ -83,13 +114,17 @@ public class JavaTypeReference extends TypeReference {
     } else {
       result = parent().lexicalContext(this).lookUp(selector()); // (getName());
     }
-
+    
+    // FILL IN GENERIC PARAMETERS
+    
+    
+    // ARRAY TYPE
     if ((arrayDimension() != 0) && (result != null)) {
       result = new ArrayType(result,arrayDimension());
     }
 
     if (result != null) {
-      setCache(result);
+//      setCache(result);
       return result;
     } else {
       throw new MetamodelException();

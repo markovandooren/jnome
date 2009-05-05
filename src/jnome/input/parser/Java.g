@@ -368,7 +368,7 @@ typeParameters returns [List<GenericParameter> element]
     ;
 
 typeParameter returns [GenericParameter element]
-    :   name=Identifier{retval.element = new GenericParameter(new SimpleNameSignature($name.text));} ('extends' bound=typeBound{retval.element.addConstraint(bound);})?
+    :   name=Identifier{retval.element = new GenericParameter(new SimpleNameSignature($name.text));} ('extends' bound=typeBound{retval.element.addConstraint(bound.element);})?
     ;
         
 typeBound returns [ExtendsConstraint element]

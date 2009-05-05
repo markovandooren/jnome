@@ -207,6 +207,7 @@ import chameleon.core.type.TypeReference;
 
 import chameleon.core.type.generics.GenericParameter;
 import chameleon.core.type.generics.TypeConstraint;
+import chameleon.core.type.generics.ExtendsConstraint;
 
 import chameleon.core.type.inheritance.SubtypeRelation;
 
@@ -370,9 +371,9 @@ typeParameter returns [GenericParameter element]
     :   name=Identifier{retval.element = new GenericParameter(new SimpleNameSignature($name.text));} ('extends' bound=typeBound{retval.element.addConstraint(bound);})?
     ;
         
-typeBound returns [TypeConstraint element]
-@init{retval.element = new ExtendsConstraint(XXX);}
-    :   type ('&' type)*
+typeBound returns [ExtendsConstraint element]
+@init{retval.element = new ExtendsConstraint();}
+    :   tp=type {retval.element.add(tp.element);}('&' tpp=type {retval.element.add(tpp.element);})*
     ;
 
 enumDeclaration returns [Type element]
@@ -566,11 +567,11 @@ type returns [TypeReference element]
 	|	pt=primitiveType ('[' ']'{dimension++;})* {retval.element = pt.element.toArray(dimension);}
 	;
 
-classOrInterfaceType
+classOrInterfaceType returns [TypeReference element]
 	:	Identifier typeArguments? ('.' Identifier typeArguments? )*
 	;
 
-primitiveType
+primitiveType returns [TypeReference element]
     :   'boolean'
     |   'char'
     |   'byte'

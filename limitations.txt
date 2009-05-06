@@ -1,0 +1,5 @@
+1) Geen wildcards
+2) Geen enum types. Er moet voorziening zijn voor
+   a) implicitly defined elements 
+   b) implicitly defined modifiers
+   c) lookup moet die constanten kunnen resolven, valt dat onder de normale procedure?

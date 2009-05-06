@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/marko/git/jnome/src/jnome/input/parser/Java.g 2009-05-05 21:45:59
+// $ANTLR 3.1.2 /Users/marko/git/jnome/src/jnome/input/parser/Java.g 2009-05-06 14:25:53
 
 package jnome.input.parser;
 
@@ -1978,7 +1978,7 @@ public class JavaParser extends Parser {
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, bound.getTree());
                     if ( state.backtracking==0 ) {
-                      retval.element.addConstraint(bound);
+                      retval.element.addConstraint(bound.element);
                     }
 
                     }
@@ -6540,13 +6540,13 @@ public class JavaParser extends Parser {
     // $ANTLR end "type"
 
     public static class classOrInterfaceType_return extends ParserRuleReturnScope {
-        public TypeReference element;
+        public JavaTypeReference element;
         Object tree;
         public Object getTree() { return tree; }
     };
 
     // $ANTLR start "classOrInterfaceType"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:570:1: classOrInterfaceType returns [TypeReference element] : Identifier ( typeArguments )? ( '.' Identifier ( typeArguments )? )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:570:1: classOrInterfaceType returns [JavaTypeReference element] : Identifier ( typeArguments )? ( '.' Identifier ( typeArguments )? )* ;
     public final JavaParser.classOrInterfaceType_return classOrInterfaceType() throws RecognitionException {
         JavaParser.classOrInterfaceType_return retval = new JavaParser.classOrInterfaceType_return();
         retval.start = input.LT(1);
@@ -6690,13 +6690,13 @@ public class JavaParser extends Parser {
     // $ANTLR end "classOrInterfaceType"
 
     public static class primitiveType_return extends ParserRuleReturnScope {
-        public TypeReference element;
+        public JavaTypeReference element;
         Object tree;
         public Object getTree() { return tree; }
     };
 
     // $ANTLR start "primitiveType"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:574:1: primitiveType returns [TypeReference element] : ( 'boolean' | 'char' | 'byte' | 'short' | 'int' | 'long' | 'float' | 'double' );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:574:1: primitiveType returns [JavaTypeReference element] : ( 'boolean' | 'char' | 'byte' | 'short' | 'int' | 'long' | 'float' | 'double' );
     public final JavaParser.primitiveType_return primitiveType() throws RecognitionException {
         JavaParser.primitiveType_return retval = new JavaParser.primitiveType_return();
         retval.start = input.LT(1);

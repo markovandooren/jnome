@@ -567,11 +567,11 @@ type returns [TypeReference element]
 	|	pt=primitiveType ('[' ']'{dimension++;})* {retval.element = pt.element.toArray(dimension);}
 	;
 
-classOrInterfaceType returns [TypeReference element]
+classOrInterfaceType returns [JavaTypeReference element]
 	:	Identifier typeArguments? ('.' Identifier typeArguments? )*
 	;
 
-primitiveType returns [TypeReference element]
+primitiveType returns [JavaTypeReference element]
     :   'boolean'
     |   'char'
     |   'byte'

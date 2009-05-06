@@ -218,6 +218,7 @@ import chameleon.support.modifier.Protected;
 import chameleon.support.modifier.Public;
 import chameleon.support.modifier.Static;
 import chameleon.support.modifier.Native;
+import chameleon.support.modifier.Enum;
 
 import jnome.core.language.Java;
 
@@ -377,7 +378,7 @@ typeBound returns [ExtendsConstraint element]
     ;
 
 enumDeclaration returns [Type element]
-    :   ENUM Identifier ('implements' typeList)? enumBody
+    :   ENUM name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text)); retval.element.addModifier(new Enum());}('implements' typeList )? enumBody
     ;
 
 enumBody
@@ -405,8 +406,8 @@ normalInterfaceDeclaration
     :   'interface' Identifier typeParameters? ('extends' typeList)? interfaceBody
     ;
     
-typeList
-    :   type (',' type)*
+typeList returns [List<TypeReference> element]
+    :   tp=type {retval.element = new ArrayList<TypeReference>(); retval.element.add(tp.element);}(',' tpp=type {retval.element.add(tpp.element);})*
     ;
     
 classBody

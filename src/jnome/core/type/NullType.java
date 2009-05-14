@@ -5,7 +5,7 @@ import chameleon.core.language.Language;
 import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
 import chameleon.core.variable.FormalParameter;
-import chameleon.support.member.simplename.SimpleNameMethodSignature;
+import chameleon.support.member.simplename.SimpleNameMethodHeader;
 import chameleon.support.member.simplename.operator.infix.InfixOperator;
 import chameleon.support.modifier.Native;
 import chameleon.support.modifier.Public;
@@ -26,9 +26,9 @@ public class NullType extends RegularType {
   private void addInfixOperator(String returnType, String symbol, String argType,Language lang) {
 	  JavaTypeReference jtr =new JavaTypeReference(returnType);
 	  Public pub = new Public();
-     InfixOperator op = new InfixOperator(new SimpleNameMethodSignature(symbol),jtr);
+     InfixOperator op = new InfixOperator(new SimpleNameMethodHeader(symbol),jtr);
      op.addModifier(pub);
-     op.signature().addParameter(new FormalParameter(new SimpleNameSignature("arg"), new JavaTypeReference(argType)));
+     op.header().addParameter(new FormalParameter(new SimpleNameSignature("arg"), new JavaTypeReference(argType)));
      op.addModifier(new Native());
      add(op);
    }

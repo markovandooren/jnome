@@ -73,6 +73,7 @@ import chameleon.linkage.ILinkage;
 import chameleon.linkage.ILinkageFactory;
 import chameleon.linkage.IParseErrorHandler;
 import chameleon.linkage.ISourceSupplier;
+import chameleon.support.member.simplename.SimpleNameMethodHeader;
 import chameleon.support.member.simplename.SimpleNameMethodSignature;
 import chameleon.support.member.simplename.operator.infix.InfixOperator;
 import chameleon.support.member.simplename.operator.postfix.PostfixOperator;
@@ -188,13 +189,17 @@ public class JavaMetaModelFactory implements MetaModelFactory {
 
     private void addInfixOperators(Namespace defaultPackage) {
         try {
-            Type obj = (Type) defaultPackage.findType("java.lang.Object");
+        	  TypeReference ref = new TypeReference("java.lang.Object");
+        	  ref.setUniParent(defaultPackage);
+            Type obj = ref.getType();
             if (obj != null) {
                 addInfixOperator(obj, "boolean", "==", "Object");
                 addInfixOperator(obj, "boolean", "!=", "Object");
                 addInfixOperator(obj, "String", "+", "String");
             }
-            Type string = (Type) defaultPackage.findType("java.lang.String");
+            ref = new TypeReference("java.lang.String");
+        	  ref.setUniParent(defaultPackage);
+            Type string = ref.getType();
             if (string != null) {
                 addInfixOperator(string, "String", "+", "Object");
                 addInfixOperator(string, "String", "+=", "Object");
@@ -569,7 +574,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
     public void addPrefixOperator(Type type, String returnType, String symbol) {
         TypeReference tr = new TypeReference(null, returnType);
         Public pub = new Public();
-        PrefixOperator op = new PrefixOperator(new SimpleNameMethodSignature(symbol), tr);
+        PrefixOperator op = new PrefixOperator(new SimpleNameMethodHeader(symbol), tr);
         op.addModifier(pub);
         op.addModifier(new Native());
         type.add(op);
@@ -578,7 +583,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
     public void addPostfixOperator(Type type, String returnType, String symbol) {
         TypeReference tr = new TypeReference(null, returnType);
         Public pub = new Public();
-        PostfixOperator op = new PostfixOperator(new SimpleNameMethodSignature(symbol), tr);
+        PostfixOperator op = new PostfixOperator(new SimpleNameMethodHeader(symbol), tr);
         op.addModifier(pub);
         op.addModifier(new Native());
         type.add(op);
@@ -587,7 +592,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
     public void addInfixOperator(Type type, String returnType, String symbol, String argType) {
         TypeReference tr = new TypeReference(null, returnType);
         Public pub = new Public();
-        SimpleNameMethodSignature sig =  new SimpleNameMethodSignature(symbol);
+        SimpleNameMethodHeader sig =  new SimpleNameMethodHeader(symbol);
         InfixOperator op = new InfixOperator(sig, tr);
         op.addModifier(pub);
 

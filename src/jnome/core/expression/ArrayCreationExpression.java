@@ -169,7 +169,9 @@ public class ArrayCreationExpression extends Expression<ArrayCreationExpression>
   }
 
   public Set getDirectExceptions() throws MetamodelException {
-    return Util.createNonNullSet(getDefaultNamespace().findType("java.lang.NegativeArraySizeException"));
+  	TypeReference ref = new TypeReference("java.lang.NegativeArraySizeException");
+  	ref.setUniParent(getNamespace().rootNamespace());
+    return Util.createNonNullSet(ref.getType());
   }
 
 //  public AccessibilityDomain getAccessibilityDomain() throws MetamodelException {

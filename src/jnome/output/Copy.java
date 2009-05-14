@@ -6,8 +6,8 @@ import java.net.MalformedURLException;
 
 import jnome.input.JavaMetaModelFactory;
 import chameleon.input.ParseException;
-import chameleon.tool.ArgumentParser;
-import chameleon.tool.Arguments;
+import chameleon.support.tool.ArgumentParser;
+import chameleon.support.tool.Arguments;
 
 /**
  * @author Tim Laeremans

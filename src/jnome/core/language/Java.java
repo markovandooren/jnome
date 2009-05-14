@@ -38,11 +38,13 @@ import chameleon.core.element.Element;
 import chameleon.core.language.Language;
 import chameleon.core.member.Member;
 import chameleon.core.method.Method;
+import chameleon.core.method.MethodHeader;
 import chameleon.core.method.MethodSignature;
 import chameleon.core.namespace.RootNamespace;
 import chameleon.core.relation.EquivalenceRelation;
 import chameleon.core.relation.StrictPartialOrder;
 import chameleon.core.type.Type;
+import chameleon.core.type.TypeReference;
 import chameleon.core.variable.MemberVariable;
 import chameleon.core.variable.RegularMemberVariable;
 import chameleon.support.member.simplename.method.NormalMethod;
@@ -90,7 +92,7 @@ public class Java extends Language {
    @ post \result.equals(getDefaultPackage().findType("java.lang.NullPointerException")); 
    @*/
   public Type getNullInvocationException() throws MetamodelException {
-    return defaultNamespace().findType("java.lang.NullPointerException");
+    return findType("java.lang.NullPointerException");
   }
 
  /*@
@@ -99,21 +101,21 @@ public class Java extends Language {
    @ post \result.equals(getDefaultPackage().findType("java.lang.RuntimeException")); 
    @*/
   public Type getUncheckedException() throws MetamodelException {
-    return defaultNamespace().findType("java.lang.RuntimeException");
+    return findType("java.lang.RuntimeException");
   }
   
   public Type getTopCheckedException() throws MetamodelException {
-    return defaultNamespace().findType("java.lang.Throwable");
+    return findType("java.lang.Throwable");
   }
 
   public boolean isCheckedException(Type type) throws MetamodelException{
-    Type error = defaultNamespace().findType("java.lang.Error");
-    Type runtimeExc = defaultNamespace().findType("java.lang.RuntimeException");
+    Type error = findType("java.lang.Error");
+    Type runtimeExc = findType("java.lang.RuntimeException");
     return isException(type) && (! type.assignableTo(error)) && (! type.assignableTo(runtimeExc));
   }
 
   public boolean isException(Type type) throws MetamodelException {
-    return type.assignableTo(defaultNamespace().findType("java.lang.Throwable"));
+    return type.assignableTo(findType("java.lang.Throwable"));
   }
   
 	  public String getDefaultSuperClassFQN() {
@@ -132,8 +134,8 @@ public class Java extends Language {
         if((first instanceof Method) && (second instanceof Method)) {
           assert first != null;
           assert second != null;
-          Method<? extends Method,? extends MethodSignature> method1 = (Method<? extends Method,? extends MethodSignature>) first;
-          Method<? extends Method,? extends MethodSignature> method2 = (Method<? extends Method,? extends MethodSignature>) second;
+          Method<? extends Method,? extends MethodHeader, ? extends MethodSignature> method1 = (Method<? extends Method,? extends MethodHeader, ? extends MethodSignature>) first;
+          Method<? extends Method,? extends MethodHeader, ? extends MethodSignature> method2 = (Method<? extends Method,? extends MethodHeader, ? extends MethodSignature>) second;
           Ternary temp = method2.is(OVERRIDABLE);
           boolean overridable;
           if(temp == Ternary.TRUE) {
@@ -167,14 +169,20 @@ public class Java extends Language {
      };
     }
 
+    public Type findType(String fqn) throws MetamodelException {
+    	TypeReference ref = new TypeReference(fqn);
+    	ref.setUniParent(defaultNamespace());
+    	return ref.getType();
+    }
+    
 		@Override
 		public Type booleanType() throws MetamodelException {
-			return defaultNamespace().findType("boolean");
+			return findType("boolean");
 		}
 
 		@Override
 		public Type classCastException() throws MetamodelException {
-			return defaultNamespace().findType("java.lang.ClassCastException");
+			return findType("java.lang.ClassCastException");
 		}
 
 		@Override
@@ -206,7 +214,7 @@ public class Java extends Language {
 
 		@Override
 		public Type voidType() throws MetamodelException {
-			return defaultNamespace().findType("void");
+			return findType("void");
 		}
 
 		@Override

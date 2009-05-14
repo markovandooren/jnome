@@ -5,6 +5,7 @@ import chameleon.core.MetamodelException;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
+import chameleon.core.type.TypeReference;
 import chameleon.core.type.inheritance.SubtypeRelation;
 import chameleon.core.variable.RegularMemberVariable;
 import chameleon.support.modifier.Final;
@@ -89,14 +90,17 @@ public class ArrayType extends RegularType {
   }
   
   public boolean assignableTo(Type other) throws MetamodelException {
+  	TypeReference ref = new TypeReference("java.lang.Object");
+  	ref.setUniParent(getNamespace().rootNamespace());
+  	Type objType = ref.getType();
     return super.assignableTo(other) ||
            ( // Reference type
-             getElementType().subTypeOf(getNamespace().getDefaultNamespace().findType("java.lang.Object")) &&
+             getElementType().subTypeOf(objType) &&
              (other instanceof ArrayType) &&
              getComponentType().assignableTo(((ArrayType)other).getComponentType())
            ) ||           
            ( // Primitive type
-             (! getElementType().subTypeOf(getNamespace().getDefaultNamespace().findType("java.lang.Object"))) &&
+             (! getElementType().subTypeOf(objType)) &&
              (other instanceof ArrayType) &&
              getComponentType().equals(((ArrayType)other).getComponentType()) &&
              ((ArrayType)other).getDimension() == getDimension()

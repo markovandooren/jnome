@@ -105,8 +105,8 @@ import chameleon.support.statement.SynchronizedStatement;
 import chameleon.support.statement.ThrowStatement;
 import chameleon.support.statement.TryStatement;
 import chameleon.support.statement.WhileStatement;
+import chameleon.support.tool.Arguments;
 import chameleon.support.variable.LocalVariable;
-import chameleon.tool.Arguments;
 
 import com.sun.org.apache.bcel.internal.classfile.JavaClass;
 

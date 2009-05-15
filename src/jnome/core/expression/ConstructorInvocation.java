@@ -11,7 +11,6 @@ import org.rejuse.association.Relation;
 import org.rejuse.logic.ternary.Ternary;
 
 import chameleon.core.MetamodelException;
-import chameleon.core.accessibility.AccessibilityDomain;
 import chameleon.core.context.Context;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.DeclarationSelector;
@@ -20,12 +19,13 @@ import chameleon.core.expression.ExpressionContainer;
 import chameleon.core.expression.Invocation;
 import chameleon.core.expression.InvocationTarget;
 import chameleon.core.relation.WeakPartialOrder;
+import chameleon.core.scope.Scope;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeContainer;
 import chameleon.core.type.TypeReference;
 import chameleon.support.member.MoreSpecificTypesOrder;
 import chameleon.support.member.simplename.method.NormalMethod;
-import chameleon.support.property.accessibility.EmptyDomain;
+import chameleon.support.property.accessibility.EmptyScope;
 import chameleon.util.Util;
 
 /**
@@ -148,8 +148,8 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
     }
   }
 
-  public AccessibilityDomain getTypeAccessibilityDomain() throws MetamodelException {
-    return new EmptyDomain();
+  public Scope getTypeAccessibilityDomain() throws MetamodelException {
+    return new EmptyScope();
   }
 
  /*@

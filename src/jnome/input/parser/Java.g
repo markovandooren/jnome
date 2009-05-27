@@ -378,7 +378,7 @@ typeBound returns [ExtendsConstraint element]
     ;
 
 enumDeclaration returns [Type element]
-    :   ENUM name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text)); retval.element.addModifier(new Enum());}('implements' typeList )? enumBody
+    :   ENUM name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text)); retval.element.addModifier(new Enum());}('implements' trefs=typeList {for(TypeReference ref: trefs.element){retval.element.addInheritanceRelation(new SubtypeRelation(ref));} } )? enumBody
     ;
 
 enumBody

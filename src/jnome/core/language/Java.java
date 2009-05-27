@@ -63,11 +63,10 @@ public class Java extends Language {
 	public final Property<Element> SYNCHRONIZED = new StaticProperty<Element>("synchronized", this);
 	public final Property<Element> TRANSIENT = new StaticProperty<Element>("transient", this);
 	public final Property<Element> VOLATILE = new StaticProperty<Element>("volatile", this);
-	public final PropertyMutex<Element> ACCESSIBILITY_MUTEX = new PropertyMutex<Element>();
-	public final Property<Element> PROTECTED = new ProtectedProperty(this, ACCESSIBILITY_MUTEX);
-	public final Property<Element> PRIVATE = new PrivateProperty(this, ACCESSIBILITY_MUTEX);
-	public final Property<Element> PUBLIC = new PublicProperty(this, ACCESSIBILITY_MUTEX);
-	public final Property<Element> PACKAGE_ACCESSIBLE = new PackageProperty(this, ACCESSIBILITY_MUTEX);
+	public final Property<Element> PROTECTED = new ProtectedProperty(this, SCOPE_MUTEX);
+	public final Property<Element> PRIVATE = new PrivateProperty(this, SCOPE_MUTEX);
+	public final Property<Element> PUBLIC = new PublicProperty(this, SCOPE_MUTEX);
+	public final Property<Element> PACKAGE_ACCESSIBLE = new PackageProperty(this, SCOPE_MUTEX);
 	
 	
 	

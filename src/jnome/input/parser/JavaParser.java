@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/marko/git/jnome/src/jnome/input/parser/Java.g 2009-05-27 17:01:04
+// $ANTLR 3.1.2 /Users/marko/git/jnome/src/jnome/input/parser/Java.g 2009-06-03 17:44:52
 
 package jnome.input.parser;
 
@@ -51,6 +51,8 @@ import jnome.core.modifier.StrictFP;
 import jnome.core.modifier.Transient;
 import jnome.core.modifier.Volatile;
 import jnome.core.modifier.Synchronized;
+
+import jnome.core.enumeration.EnumConstant;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -391,7 +393,7 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "compilationUnit"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:286:1: compilationUnit returns [CompilationUnit element] : ( annotations (np= packageDeclaration (imp= importDeclaration )* (typech= typeDeclaration )* | cd= classOrInterfaceDeclaration (typech= typeDeclaration )* ) | (np= packageDeclaration )? (imp= importDeclaration )* (typech= typeDeclaration )* );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:288:1: compilationUnit returns [CompilationUnit element] : ( annotations (np= packageDeclaration (imp= importDeclaration )* (typech= typeDeclaration )* | cd= classOrInterfaceDeclaration (typech= typeDeclaration )* ) | (np= packageDeclaration )? (imp= importDeclaration )* (typech= typeDeclaration )* );
     public final JavaParser.compilationUnit_return compilationUnit() throws RecognitionException {
         JavaParser.compilationUnit_return retval = new JavaParser.compilationUnit_return();
         retval.start = input.LT(1);
@@ -413,12 +415,12 @@ public class JavaParser extends Parser {
          retval.element = new CompilationUnit(new NamespacePart(language().defaultNamespace()));
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 1) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:288:5: ( annotations (np= packageDeclaration (imp= importDeclaration )* (typech= typeDeclaration )* | cd= classOrInterfaceDeclaration (typech= typeDeclaration )* ) | (np= packageDeclaration )? (imp= importDeclaration )* (typech= typeDeclaration )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:290:5: ( annotations (np= packageDeclaration (imp= importDeclaration )* (typech= typeDeclaration )* | cd= classOrInterfaceDeclaration (typech= typeDeclaration )* ) | (np= packageDeclaration )? (imp= importDeclaration )* (typech= typeDeclaration )* )
             int alt8=2;
             alt8 = dfa8.predict(input);
             switch (alt8) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:288:10: annotations (np= packageDeclaration (imp= importDeclaration )* (typech= typeDeclaration )* | cd= classOrInterfaceDeclaration (typech= typeDeclaration )* )
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:290:10: annotations (np= packageDeclaration (imp= importDeclaration )* (typech= typeDeclaration )* | cd= classOrInterfaceDeclaration (typech= typeDeclaration )* )
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -428,7 +430,7 @@ public class JavaParser extends Parser {
                     state._fsp--;
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, annotations1.getTree());
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:289:9: (np= packageDeclaration (imp= importDeclaration )* (typech= typeDeclaration )* | cd= classOrInterfaceDeclaration (typech= typeDeclaration )* )
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:291:9: (np= packageDeclaration (imp= importDeclaration )* (typech= typeDeclaration )* | cd= classOrInterfaceDeclaration (typech= typeDeclaration )* )
                     int alt4=2;
                     int LA4_0 = input.LA(1);
 
@@ -447,7 +449,7 @@ public class JavaParser extends Parser {
                     }
                     switch (alt4) {
                         case 1 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:289:13: np= packageDeclaration (imp= importDeclaration )* (typech= typeDeclaration )*
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:291:13: np= packageDeclaration (imp= importDeclaration )* (typech= typeDeclaration )*
                             {
                             pushFollow(FOLLOW_packageDeclaration_in_compilationUnit105);
                             np=packageDeclaration();
@@ -458,7 +460,7 @@ public class JavaParser extends Parser {
                             if ( state.backtracking==0 ) {
                               processPackageDeclaration(retval.element,np.element);
                             }
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:289:90: (imp= importDeclaration )*
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:291:90: (imp= importDeclaration )*
                             loop1:
                             do {
                                 int alt1=2;
@@ -471,7 +473,7 @@ public class JavaParser extends Parser {
 
                                 switch (alt1) {
                             	case 1 :
-                            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:289:91: imp= importDeclaration
+                            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:291:91: imp= importDeclaration
                             	    {
                             	    pushFollow(FOLLOW_importDeclaration_in_compilationUnit111);
                             	    imp=importDeclaration();
@@ -491,7 +493,7 @@ public class JavaParser extends Parser {
                                 }
                             } while (true);
 
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:289:159: (typech= typeDeclaration )*
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:291:159: (typech= typeDeclaration )*
                             loop2:
                             do {
                                 int alt2=2;
@@ -504,7 +506,7 @@ public class JavaParser extends Parser {
 
                                 switch (alt2) {
                             	case 1 :
-                            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:289:160: typech= typeDeclaration
+                            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:291:160: typech= typeDeclaration
                             	    {
                             	    pushFollow(FOLLOW_typeDeclaration_in_compilationUnit119);
                             	    typech=typeDeclaration();
@@ -528,7 +530,7 @@ public class JavaParser extends Parser {
                             }
                             break;
                         case 2 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:290:13: cd= classOrInterfaceDeclaration (typech= typeDeclaration )*
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:292:13: cd= classOrInterfaceDeclaration (typech= typeDeclaration )*
                             {
                             pushFollow(FOLLOW_classOrInterfaceDeclaration_in_compilationUnit138);
                             cd=classOrInterfaceDeclaration();
@@ -539,7 +541,7 @@ public class JavaParser extends Parser {
                             if ( state.backtracking==0 ) {
                               processType(retval.element,cd.element);
                             }
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:290:85: (typech= typeDeclaration )*
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:292:85: (typech= typeDeclaration )*
                             loop3:
                             do {
                                 int alt3=2;
@@ -552,7 +554,7 @@ public class JavaParser extends Parser {
 
                                 switch (alt3) {
                             	case 1 :
-                            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:290:86: typech= typeDeclaration
+                            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:292:86: typech= typeDeclaration
                             	    {
                             	    pushFollow(FOLLOW_typeDeclaration_in_compilationUnit144);
                             	    typech=typeDeclaration();
@@ -582,11 +584,11 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:292:9: (np= packageDeclaration )? (imp= importDeclaration )* (typech= typeDeclaration )*
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:294:9: (np= packageDeclaration )? (imp= importDeclaration )* (typech= typeDeclaration )*
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:292:9: (np= packageDeclaration )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:294:9: (np= packageDeclaration )?
                     int alt5=2;
                     int LA5_0 = input.LA(1);
 
@@ -595,7 +597,7 @@ public class JavaParser extends Parser {
                     }
                     switch (alt5) {
                         case 1 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:292:10: np= packageDeclaration
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:294:10: np= packageDeclaration
                             {
                             pushFollow(FOLLOW_packageDeclaration_in_compilationUnit170);
                             np=packageDeclaration();
@@ -612,7 +614,7 @@ public class JavaParser extends Parser {
 
                     }
 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:292:89: (imp= importDeclaration )*
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:294:89: (imp= importDeclaration )*
                     loop6:
                     do {
                         int alt6=2;
@@ -625,7 +627,7 @@ public class JavaParser extends Parser {
 
                         switch (alt6) {
                     	case 1 :
-                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:292:90: imp= importDeclaration
+                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:294:90: imp= importDeclaration
                     	    {
                     	    pushFollow(FOLLOW_importDeclaration_in_compilationUnit178);
                     	    imp=importDeclaration();
@@ -645,7 +647,7 @@ public class JavaParser extends Parser {
                         }
                     } while (true);
 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:292:158: (typech= typeDeclaration )*
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:294:158: (typech= typeDeclaration )*
                     loop7:
                     do {
                         int alt7=2;
@@ -658,7 +660,7 @@ public class JavaParser extends Parser {
 
                         switch (alt7) {
                     	case 1 :
-                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:292:159: typech= typeDeclaration
+                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:294:159: typech= typeDeclaration
                     	    {
                     	    pushFollow(FOLLOW_typeDeclaration_in_compilationUnit186);
                     	    typech=typeDeclaration();
@@ -711,7 +713,7 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "packageDeclaration"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:295:1: packageDeclaration returns [NamespacePart element] : 'package' qn= qualifiedName ';' ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:297:1: packageDeclaration returns [NamespacePart element] : 'package' qn= qualifiedName ';' ;
     public final JavaParser.packageDeclaration_return packageDeclaration() throws RecognitionException {
         JavaParser.packageDeclaration_return retval = new JavaParser.packageDeclaration_return();
         retval.start = input.LT(1);
@@ -728,8 +730,8 @@ public class JavaParser extends Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 2) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:296:5: ( 'package' qn= qualifiedName ';' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:296:9: 'package' qn= qualifiedName ';'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:298:5: ( 'package' qn= qualifiedName ';' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:298:9: 'package' qn= qualifiedName ';'
             {
             root_0 = (Object)adaptor.nil();
 
@@ -790,7 +792,7 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "importDeclaration"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:307:1: importDeclaration returns [Import element] : 'import' (st= 'static' )? qn= qualifiedName (star= ( '.' '*' ) )? ';' ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:309:1: importDeclaration returns [Import element] : 'import' (st= 'static' )? qn= qualifiedName (star= ( '.' '*' ) )? ';' ;
     public final JavaParser.importDeclaration_return importDeclaration() throws RecognitionException {
         JavaParser.importDeclaration_return retval = new JavaParser.importDeclaration_return();
         retval.start = input.LT(1);
@@ -815,8 +817,8 @@ public class JavaParser extends Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 3) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:308:5: ( 'import' (st= 'static' )? qn= qualifiedName (star= ( '.' '*' ) )? ';' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:308:9: 'import' (st= 'static' )? qn= qualifiedName (star= ( '.' '*' ) )? ';'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:310:5: ( 'import' (st= 'static' )? qn= qualifiedName (star= ( '.' '*' ) )? ';' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:310:9: 'import' (st= 'static' )? qn= qualifiedName (star= ( '.' '*' ) )? ';'
             {
             root_0 = (Object)adaptor.nil();
 
@@ -825,7 +827,7 @@ public class JavaParser extends Parser {
             string_literal4_tree = (Object)adaptor.create(string_literal4);
             adaptor.addChild(root_0, string_literal4_tree);
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:308:20: (st= 'static' )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:310:20: (st= 'static' )?
             int alt9=2;
             int LA9_0 = input.LA(1);
 
@@ -853,7 +855,7 @@ public class JavaParser extends Parser {
             state._fsp--;
             if (state.failed) return retval;
             if ( state.backtracking==0 ) adaptor.addChild(root_0, qn.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:308:52: (star= ( '.' '*' ) )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:310:52: (star= ( '.' '*' ) )?
             int alt10=2;
             int LA10_0 = input.LA(1);
 
@@ -864,8 +866,8 @@ public class JavaParser extends Parser {
                 case 1 :
                     // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: star= ( '.' '*' )
                     {
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:308:53: ( '.' '*' )
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:308:54: '.' '*'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:310:53: ( '.' '*' )
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:310:54: '.' '*'
                     {
                     char_literal5=(Token)match(input,29,FOLLOW_29_in_importDeclaration270); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
@@ -933,7 +935,7 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "typeDeclaration"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:321:1: typeDeclaration returns [Type element] : (cd= classOrInterfaceDeclaration | ';' );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:323:1: typeDeclaration returns [Type element] : (cd= classOrInterfaceDeclaration | ';' );
     public final JavaParser.typeDeclaration_return typeDeclaration() throws RecognitionException {
         JavaParser.typeDeclaration_return retval = new JavaParser.typeDeclaration_return();
         retval.start = input.LT(1);
@@ -948,7 +950,7 @@ public class JavaParser extends Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 4) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:322:5: (cd= classOrInterfaceDeclaration | ';' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:324:5: (cd= classOrInterfaceDeclaration | ';' )
             int alt11=2;
             int LA11_0 = input.LA(1);
 
@@ -967,7 +969,7 @@ public class JavaParser extends Parser {
             }
             switch (alt11) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:322:9: cd= classOrInterfaceDeclaration
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:324:9: cd= classOrInterfaceDeclaration
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -984,7 +986,7 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:323:9: ';'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:325:9: ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -1026,7 +1028,7 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "classOrInterfaceDeclaration"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:329:1: classOrInterfaceDeclaration returns [Type element] : classOrInterfaceModifiers ( classDeclaration | interfaceDeclaration ) ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:331:1: classOrInterfaceDeclaration returns [Type element] : classOrInterfaceModifiers ( classDeclaration | interfaceDeclaration ) ;
     public final JavaParser.classOrInterfaceDeclaration_return classOrInterfaceDeclaration() throws RecognitionException {
         JavaParser.classOrInterfaceDeclaration_return retval = new JavaParser.classOrInterfaceDeclaration_return();
         retval.start = input.LT(1);
@@ -1043,8 +1045,8 @@ public class JavaParser extends Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 5) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:330:5: ( classOrInterfaceModifiers ( classDeclaration | interfaceDeclaration ) )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:330:9: classOrInterfaceModifiers ( classDeclaration | interfaceDeclaration )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:332:5: ( classOrInterfaceModifiers ( classDeclaration | interfaceDeclaration ) )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:332:9: classOrInterfaceModifiers ( classDeclaration | interfaceDeclaration )
             {
             root_0 = (Object)adaptor.nil();
 
@@ -1054,7 +1056,7 @@ public class JavaParser extends Parser {
             state._fsp--;
             if (state.failed) return retval;
             if ( state.backtracking==0 ) adaptor.addChild(root_0, classOrInterfaceModifiers9.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:330:35: ( classDeclaration | interfaceDeclaration )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:332:35: ( classDeclaration | interfaceDeclaration )
             int alt12=2;
             int LA12_0 = input.LA(1);
 
@@ -1073,7 +1075,7 @@ public class JavaParser extends Parser {
             }
             switch (alt12) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:330:36: classDeclaration
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:332:36: classDeclaration
                     {
                     pushFollow(FOLLOW_classDeclaration_in_classOrInterfaceDeclaration357);
                     classDeclaration10=classDeclaration();
@@ -1085,7 +1087,7 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:330:55: interfaceDeclaration
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:332:55: interfaceDeclaration
                     {
                     pushFollow(FOLLOW_interfaceDeclaration_in_classOrInterfaceDeclaration361);
                     interfaceDeclaration11=interfaceDeclaration();
@@ -1130,7 +1132,7 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "classOrInterfaceModifiers"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:333:1: classOrInterfaceModifiers returns [List<Modifier> element] : (mod= classOrInterfaceModifier )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:335:1: classOrInterfaceModifiers returns [List<Modifier> element] : (mod= classOrInterfaceModifier )* ;
     public final JavaParser.classOrInterfaceModifiers_return classOrInterfaceModifiers() throws RecognitionException {
         JavaParser.classOrInterfaceModifiers_return retval = new JavaParser.classOrInterfaceModifiers_return();
         retval.start = input.LT(1);
@@ -1144,12 +1146,12 @@ public class JavaParser extends Parser {
         retval.element = new ArrayList<Modifier>();
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 6) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:335:5: ( (mod= classOrInterfaceModifier )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:335:9: (mod= classOrInterfaceModifier )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:337:5: ( (mod= classOrInterfaceModifier )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:337:9: (mod= classOrInterfaceModifier )*
             {
             root_0 = (Object)adaptor.nil();
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:335:9: (mod= classOrInterfaceModifier )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:337:9: (mod= classOrInterfaceModifier )*
             loop13:
             do {
                 int alt13=2;
@@ -1171,7 +1173,7 @@ public class JavaParser extends Parser {
 
                 switch (alt13) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:335:10: mod= classOrInterfaceModifier
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:337:10: mod= classOrInterfaceModifier
             	    {
             	    pushFollow(FOLLOW_classOrInterfaceModifier_in_classOrInterfaceModifiers397);
             	    mod=classOrInterfaceModifier();
@@ -1222,7 +1224,7 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "classOrInterfaceModifier"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:338:1: classOrInterfaceModifier returns [Modifier element] : ( annotation | 'public' | 'protected' | 'private' | 'abstract' | 'static' | 'final' | 'strictfp' );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:340:1: classOrInterfaceModifier returns [Modifier element] : ( annotation | 'public' | 'protected' | 'private' | 'abstract' | 'static' | 'final' | 'strictfp' );
     public final JavaParser.classOrInterfaceModifier_return classOrInterfaceModifier() throws RecognitionException {
         JavaParser.classOrInterfaceModifier_return retval = new JavaParser.classOrInterfaceModifier_return();
         retval.start = input.LT(1);
@@ -1249,7 +1251,7 @@ public class JavaParser extends Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 7) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:339:5: ( annotation | 'public' | 'protected' | 'private' | 'abstract' | 'static' | 'final' | 'strictfp' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:341:5: ( annotation | 'public' | 'protected' | 'private' | 'abstract' | 'static' | 'final' | 'strictfp' )
             int alt14=8;
             switch ( input.LA(1) ) {
             case 73:
@@ -1302,7 +1304,7 @@ public class JavaParser extends Parser {
 
             switch (alt14) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:339:9: annotation
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:341:9: annotation
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -1316,7 +1318,7 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:340:9: 'public'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:342:9: 'public'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -1332,7 +1334,7 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:341:9: 'protected'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:343:9: 'protected'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -1348,7 +1350,7 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:342:9: 'private'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:344:9: 'private'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -1364,7 +1366,7 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 5 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:343:9: 'abstract'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:345:9: 'abstract'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -1380,7 +1382,7 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 6 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:344:9: 'static'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:346:9: 'static'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -1396,7 +1398,7 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 7 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:345:9: 'final'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:347:9: 'final'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -1412,7 +1414,7 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 8 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:346:9: 'strictfp'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:348:9: 'strictfp'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -1457,7 +1459,7 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "modifiers"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:349:1: modifiers returns [List<Modifier> element] : (mod= modifier )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:351:1: modifiers returns [List<Modifier> element] : (mod= modifier )* ;
     public final JavaParser.modifiers_return modifiers() throws RecognitionException {
         JavaParser.modifiers_return retval = new JavaParser.modifiers_return();
         retval.start = input.LT(1);
@@ -1471,12 +1473,12 @@ public class JavaParser extends Parser {
         retval.element = new ArrayList<Modifier>();
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 8) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:351:5: ( (mod= modifier )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:351:9: (mod= modifier )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:353:5: ( (mod= modifier )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:353:9: (mod= modifier )*
             {
             root_0 = (Object)adaptor.nil();
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:351:9: (mod= modifier )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:353:9: (mod= modifier )*
             loop15:
             do {
                 int alt15=2;
@@ -1498,7 +1500,7 @@ public class JavaParser extends Parser {
 
                 switch (alt15) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:351:10: mod= modifier
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:353:10: mod= modifier
             	    {
             	    pushFollow(FOLLOW_modifier_in_modifiers563);
             	    mod=modifier();
@@ -1549,7 +1551,7 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "classDeclaration"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:354:1: classDeclaration returns [Type element] : (cd= normalClassDeclaration | ed= enumDeclaration );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:356:1: classDeclaration returns [Type element] : (cd= normalClassDeclaration | ed= enumDeclaration );
     public final JavaParser.classDeclaration_return classDeclaration() throws RecognitionException {
         JavaParser.classDeclaration_return retval = new JavaParser.classDeclaration_return();
         retval.start = input.LT(1);
@@ -1564,7 +1566,7 @@ public class JavaParser extends Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 9) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:355:5: (cd= normalClassDeclaration | ed= enumDeclaration )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:357:5: (cd= normalClassDeclaration | ed= enumDeclaration )
             int alt16=2;
             int LA16_0 = input.LA(1);
 
@@ -1583,7 +1585,7 @@ public class JavaParser extends Parser {
             }
             switch (alt16) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:355:9: cd= normalClassDeclaration
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:357:9: cd= normalClassDeclaration
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -1600,7 +1602,7 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:356:9: ed= enumDeclaration
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:358:9: ed= enumDeclaration
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -1646,7 +1648,7 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "normalClassDeclaration"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:359:1: normalClassDeclaration returns [Type element] : 'class' name= Identifier (params= typeParameters )? ( 'extends' sc= type )? ( 'implements' ifs= typeList )? body= classBody ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:361:1: normalClassDeclaration returns [Type element] : 'class' name= Identifier (params= typeParameters )? ( 'extends' sc= type )? ( 'implements' ifs= typeList )? body= classBody ;
     public final JavaParser.normalClassDeclaration_return normalClassDeclaration() throws RecognitionException {
         JavaParser.normalClassDeclaration_return retval = new JavaParser.normalClassDeclaration_return();
         retval.start = input.LT(1);
@@ -1673,8 +1675,8 @@ public class JavaParser extends Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 10) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:360:5: ( 'class' name= Identifier (params= typeParameters )? ( 'extends' sc= type )? ( 'implements' ifs= typeList )? body= classBody )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:360:9: 'class' name= Identifier (params= typeParameters )? ( 'extends' sc= type )? ( 'implements' ifs= typeList )? body= classBody
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:362:5: ( 'class' name= Identifier (params= typeParameters )? ( 'extends' sc= type )? ( 'implements' ifs= typeList )? body= classBody )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:362:9: 'class' name= Identifier (params= typeParameters )? ( 'extends' sc= type )? ( 'implements' ifs= typeList )? body= classBody
             {
             root_0 = (Object)adaptor.nil();
 
@@ -1691,7 +1693,7 @@ public class JavaParser extends Parser {
             if ( state.backtracking==0 ) {
               retval.element = new RegularType(new SimpleNameSignature((name!=null?name.getText():null)));
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:360:106: (params= typeParameters )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:362:106: (params= typeParameters )?
             int alt17=2;
             int LA17_0 = input.LA(1);
 
@@ -1700,7 +1702,7 @@ public class JavaParser extends Parser {
             }
             switch (alt17) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:360:107: params= typeParameters
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:362:107: params= typeParameters
                     {
                     pushFollow(FOLLOW_typeParameters_in_normalClassDeclaration645);
                     params=typeParameters();
@@ -1717,7 +1719,7 @@ public class JavaParser extends Parser {
 
             }
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:361:9: ( 'extends' sc= type )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:363:9: ( 'extends' sc= type )?
             int alt18=2;
             int LA18_0 = input.LA(1);
 
@@ -1726,7 +1728,7 @@ public class JavaParser extends Parser {
             }
             switch (alt18) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:361:10: 'extends' sc= type
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:363:10: 'extends' sc= type
                     {
                     string_literal21=(Token)match(input,38,FOLLOW_38_in_normalClassDeclaration659); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
@@ -1748,7 +1750,7 @@ public class JavaParser extends Parser {
 
             }
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:362:9: ( 'implements' ifs= typeList )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:364:9: ( 'implements' ifs= typeList )?
             int alt19=2;
             int LA19_0 = input.LA(1);
 
@@ -1757,7 +1759,7 @@ public class JavaParser extends Parser {
             }
             switch (alt19) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:362:10: 'implements' ifs= typeList
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:364:10: 'implements' ifs= typeList
                     {
                     string_literal22=(Token)match(input,39,FOLLOW_39_in_normalClassDeclaration677); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
@@ -1813,7 +1815,7 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "typeParameters"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:366:1: typeParameters returns [List<GenericParameter> element] : '<' par= typeParameter ( ',' par= typeParameter )* '>' ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:368:1: typeParameters returns [List<GenericParameter> element] : '<' par= typeParameter ( ',' par= typeParameter )* '>' ;
     public final JavaParser.typeParameters_return typeParameters() throws RecognitionException {
         JavaParser.typeParameters_return retval = new JavaParser.typeParameters_return();
         retval.start = input.LT(1);
@@ -1833,8 +1835,8 @@ public class JavaParser extends Parser {
         retval.element = new ArrayList<GenericParameter>();
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 11) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:368:5: ( '<' par= typeParameter ( ',' par= typeParameter )* '>' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:368:9: '<' par= typeParameter ( ',' par= typeParameter )* '>'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:370:5: ( '<' par= typeParameter ( ',' par= typeParameter )* '>' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:370:9: '<' par= typeParameter ( ',' par= typeParameter )* '>'
             {
             root_0 = (Object)adaptor.nil();
 
@@ -1852,7 +1854,7 @@ public class JavaParser extends Parser {
             if ( state.backtracking==0 ) {
               retval.element.add(par.element);
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:368:65: ( ',' par= typeParameter )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:370:65: ( ',' par= typeParameter )*
             loop20:
             do {
                 int alt20=2;
@@ -1865,7 +1867,7 @@ public class JavaParser extends Parser {
 
                 switch (alt20) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:368:66: ',' par= typeParameter
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:370:66: ',' par= typeParameter
             	    {
             	    char_literal24=(Token)match(input,41,FOLLOW_41_in_typeParameters734); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
@@ -1926,7 +1928,7 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "typeParameter"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:371:1: typeParameter returns [GenericParameter element] : name= Identifier ( 'extends' bound= typeBound )? ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:373:1: typeParameter returns [GenericParameter element] : name= Identifier ( 'extends' bound= typeBound )? ;
     public final JavaParser.typeParameter_return typeParameter() throws RecognitionException {
         JavaParser.typeParameter_return retval = new JavaParser.typeParameter_return();
         retval.start = input.LT(1);
@@ -1943,8 +1945,8 @@ public class JavaParser extends Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 12) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:372:5: (name= Identifier ( 'extends' bound= typeBound )? )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:372:9: name= Identifier ( 'extends' bound= typeBound )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:374:5: (name= Identifier ( 'extends' bound= typeBound )? )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:374:9: name= Identifier ( 'extends' bound= typeBound )?
             {
             root_0 = (Object)adaptor.nil();
 
@@ -1956,7 +1958,7 @@ public class JavaParser extends Parser {
             if ( state.backtracking==0 ) {
               retval.element = new GenericParameter(new SimpleNameSignature((name!=null?name.getText():null)));
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:372:102: ( 'extends' bound= typeBound )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:374:102: ( 'extends' bound= typeBound )?
             int alt21=2;
             int LA21_0 = input.LA(1);
 
@@ -1965,7 +1967,7 @@ public class JavaParser extends Parser {
             }
             switch (alt21) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:372:103: 'extends' bound= typeBound
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:374:103: 'extends' bound= typeBound
                     {
                     string_literal26=(Token)match(input,38,FOLLOW_38_in_typeParameter772); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
@@ -2018,7 +2020,7 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "typeBound"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:375:1: typeBound returns [ExtendsConstraint element] : tp= type ( '&' tpp= type )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:377:1: typeBound returns [ExtendsConstraint element] : tp= type ( '&' tpp= type )* ;
     public final JavaParser.typeBound_return typeBound() throws RecognitionException {
         JavaParser.typeBound_return retval = new JavaParser.typeBound_return();
         retval.start = input.LT(1);
@@ -2036,8 +2038,8 @@ public class JavaParser extends Parser {
         retval.element = new ExtendsConstraint();
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 13) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:377:5: (tp= type ( '&' tpp= type )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:377:9: tp= type ( '&' tpp= type )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:379:5: (tp= type ( '&' tpp= type )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:379:9: tp= type ( '&' tpp= type )*
             {
             root_0 = (Object)adaptor.nil();
 
@@ -2050,7 +2052,7 @@ public class JavaParser extends Parser {
             if ( state.backtracking==0 ) {
               retval.element.add(tp.element);
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:377:50: ( '&' tpp= type )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:379:50: ( '&' tpp= type )*
             loop22:
             do {
                 int alt22=2;
@@ -2063,7 +2065,7 @@ public class JavaParser extends Parser {
 
                 switch (alt22) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:377:51: '&' tpp= type
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:379:51: '&' tpp= type
             	    {
             	    char_literal27=(Token)match(input,43,FOLLOW_43_in_typeBound820); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
@@ -2112,6 +2114,11 @@ public class JavaParser extends Parser {
     }
     // $ANTLR end "typeBound"
 
+    protected static class enumDeclaration_scope {
+        Type enumType;
+    }
+    protected Stack enumDeclaration_stack = new Stack();
+
     public static class enumDeclaration_return extends ParserRuleReturnScope {
         public Type element;
         Object tree;
@@ -2119,8 +2126,9 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "enumDeclaration"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:380:1: enumDeclaration returns [Type element] : ENUM name= Identifier ( 'implements' trefs= typeList )? enumBody ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:382:1: enumDeclaration returns [Type element] : ENUM name= Identifier ( 'implements' trefs= typeList )? enumBody ;
     public final JavaParser.enumDeclaration_return enumDeclaration() throws RecognitionException {
+        enumDeclaration_stack.push(new enumDeclaration_scope());
         JavaParser.enumDeclaration_return retval = new JavaParser.enumDeclaration_return();
         retval.start = input.LT(1);
         int enumDeclaration_StartIndex = input.index();
@@ -2140,25 +2148,25 @@ public class JavaParser extends Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 14) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:381:5: ( ENUM name= Identifier ( 'implements' trefs= typeList )? enumBody )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:381:9: ENUM name= Identifier ( 'implements' trefs= typeList )? enumBody
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:386:5: ( ENUM name= Identifier ( 'implements' trefs= typeList )? enumBody )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:386:9: ENUM name= Identifier ( 'implements' trefs= typeList )? enumBody
             {
             root_0 = (Object)adaptor.nil();
 
-            ENUM28=(Token)match(input,ENUM,FOLLOW_ENUM_in_enumDeclaration851); if (state.failed) return retval;
+            ENUM28=(Token)match(input,ENUM,FOLLOW_ENUM_in_enumDeclaration854); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
             ENUM28_tree = (Object)adaptor.create(ENUM28);
             adaptor.addChild(root_0, ENUM28_tree);
             }
-            name=(Token)match(input,Identifier,FOLLOW_Identifier_in_enumDeclaration855); if (state.failed) return retval;
+            name=(Token)match(input,Identifier,FOLLOW_Identifier_in_enumDeclaration858); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
             name_tree = (Object)adaptor.create(name);
             adaptor.addChild(root_0, name_tree);
             }
             if ( state.backtracking==0 ) {
-              retval.element = new RegularType(new SimpleNameSignature((name!=null?name.getText():null))); retval.element.addModifier(new Enum());
+              retval.element = new RegularType(new SimpleNameSignature((name!=null?name.getText():null))); retval.element.addModifier(new Enum()); ((enumDeclaration_scope)enumDeclaration_stack.peek()).enumType =retval.element;
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:381:142: ( 'implements' trefs= typeList )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:386:185: ( 'implements' trefs= typeList )?
             int alt23=2;
             int LA23_0 = input.LA(1);
 
@@ -2167,14 +2175,14 @@ public class JavaParser extends Parser {
             }
             switch (alt23) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:381:143: 'implements' trefs= typeList
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:386:186: 'implements' trefs= typeList
                     {
-                    string_literal29=(Token)match(input,39,FOLLOW_39_in_enumDeclaration859); if (state.failed) return retval;
+                    string_literal29=(Token)match(input,39,FOLLOW_39_in_enumDeclaration862); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     string_literal29_tree = (Object)adaptor.create(string_literal29);
                     adaptor.addChild(root_0, string_literal29_tree);
                     }
-                    pushFollow(FOLLOW_typeList_in_enumDeclaration863);
+                    pushFollow(FOLLOW_typeList_in_enumDeclaration866);
                     trefs=typeList();
 
                     state._fsp--;
@@ -2189,7 +2197,7 @@ public class JavaParser extends Parser {
 
             }
 
-            pushFollow(FOLLOW_enumBody_in_enumDeclaration870);
+            pushFollow(FOLLOW_enumBody_in_enumDeclaration873);
             enumBody30=enumBody();
 
             state._fsp--;
@@ -2214,6 +2222,7 @@ public class JavaParser extends Parser {
         }
         finally {
             if ( state.backtracking>0 ) { memoize(input, 14, enumDeclaration_StartIndex); }
+            enumDeclaration_stack.pop();
         }
         return retval;
     }
@@ -2225,7 +2234,7 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "enumBody"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:384:1: enumBody : '{' ( enumConstants )? ( ',' )? ( enumBodyDeclarations )? '}' ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:389:1: enumBody : '{' ( enumConstants )? ( ',' )? ( enumBodyDeclarations )? '}' ;
     public final JavaParser.enumBody_return enumBody() throws RecognitionException {
         JavaParser.enumBody_return retval = new JavaParser.enumBody_return();
         retval.start = input.LT(1);
@@ -2246,17 +2255,17 @@ public class JavaParser extends Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 15) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:385:5: ( '{' ( enumConstants )? ( ',' )? ( enumBodyDeclarations )? '}' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:385:9: '{' ( enumConstants )? ( ',' )? ( enumBodyDeclarations )? '}'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:390:5: ( '{' ( enumConstants )? ( ',' )? ( enumBodyDeclarations )? '}' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:390:9: '{' ( enumConstants )? ( ',' )? ( enumBodyDeclarations )? '}'
             {
             root_0 = (Object)adaptor.nil();
 
-            char_literal31=(Token)match(input,44,FOLLOW_44_in_enumBody889); if (state.failed) return retval;
+            char_literal31=(Token)match(input,44,FOLLOW_44_in_enumBody892); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
             char_literal31_tree = (Object)adaptor.create(char_literal31);
             adaptor.addChild(root_0, char_literal31_tree);
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:385:13: ( enumConstants )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:390:13: ( enumConstants )?
             int alt24=2;
             int LA24_0 = input.LA(1);
 
@@ -2267,7 +2276,7 @@ public class JavaParser extends Parser {
                 case 1 :
                     // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: enumConstants
                     {
-                    pushFollow(FOLLOW_enumConstants_in_enumBody891);
+                    pushFollow(FOLLOW_enumConstants_in_enumBody894);
                     enumConstants32=enumConstants();
 
                     state._fsp--;
@@ -2279,7 +2288,7 @@ public class JavaParser extends Parser {
 
             }
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:385:28: ( ',' )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:390:28: ( ',' )?
             int alt25=2;
             int LA25_0 = input.LA(1);
 
@@ -2290,7 +2299,7 @@ public class JavaParser extends Parser {
                 case 1 :
                     // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: ','
                     {
-                    char_literal33=(Token)match(input,41,FOLLOW_41_in_enumBody894); if (state.failed) return retval;
+                    char_literal33=(Token)match(input,41,FOLLOW_41_in_enumBody897); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal33_tree = (Object)adaptor.create(char_literal33);
                     adaptor.addChild(root_0, char_literal33_tree);
@@ -2301,7 +2310,7 @@ public class JavaParser extends Parser {
 
             }
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:385:33: ( enumBodyDeclarations )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:390:33: ( enumBodyDeclarations )?
             int alt26=2;
             int LA26_0 = input.LA(1);
 
@@ -2312,7 +2321,7 @@ public class JavaParser extends Parser {
                 case 1 :
                     // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: enumBodyDeclarations
                     {
-                    pushFollow(FOLLOW_enumBodyDeclarations_in_enumBody897);
+                    pushFollow(FOLLOW_enumBodyDeclarations_in_enumBody900);
                     enumBodyDeclarations34=enumBodyDeclarations();
 
                     state._fsp--;
@@ -2324,7 +2333,7 @@ public class JavaParser extends Parser {
 
             }
 
-            char_literal35=(Token)match(input,45,FOLLOW_45_in_enumBody900); if (state.failed) return retval;
+            char_literal35=(Token)match(input,45,FOLLOW_45_in_enumBody903); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
             char_literal35_tree = (Object)adaptor.create(char_literal35);
             adaptor.addChild(root_0, char_literal35_tree);
@@ -2359,35 +2368,38 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "enumConstants"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:388:1: enumConstants : enumConstant ( ',' enumConstant )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:393:1: enumConstants : ct= enumConstant ( ',' cst= enumConstant )* ;
     public final JavaParser.enumConstants_return enumConstants() throws RecognitionException {
         JavaParser.enumConstants_return retval = new JavaParser.enumConstants_return();
         retval.start = input.LT(1);
         int enumConstants_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal37=null;
-        JavaParser.enumConstant_return enumConstant36 = null;
+        Token char_literal36=null;
+        JavaParser.enumConstant_return ct = null;
 
-        JavaParser.enumConstant_return enumConstant38 = null;
+        JavaParser.enumConstant_return cst = null;
 
 
-        Object char_literal37_tree=null;
+        Object char_literal36_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 16) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:389:5: ( enumConstant ( ',' enumConstant )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:389:9: enumConstant ( ',' enumConstant )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:394:5: (ct= enumConstant ( ',' cst= enumConstant )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:394:9: ct= enumConstant ( ',' cst= enumConstant )*
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_enumConstant_in_enumConstants919);
-            enumConstant36=enumConstant();
+            pushFollow(FOLLOW_enumConstant_in_enumConstants924);
+            ct=enumConstant();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, enumConstant36.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:389:22: ( ',' enumConstant )*
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, ct.getTree());
+            if ( state.backtracking==0 ) {
+              ((enumDeclaration_scope)enumDeclaration_stack.peek()).enumType.add(ct.element);
+            }
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:394:71: ( ',' cst= enumConstant )*
             loop27:
             do {
                 int alt27=2;
@@ -2406,19 +2418,22 @@ public class JavaParser extends Parser {
 
                 switch (alt27) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:389:23: ',' enumConstant
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:394:72: ',' cst= enumConstant
             	    {
-            	    char_literal37=(Token)match(input,41,FOLLOW_41_in_enumConstants922); if (state.failed) return retval;
+            	    char_literal36=(Token)match(input,41,FOLLOW_41_in_enumConstants929); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal37_tree = (Object)adaptor.create(char_literal37);
-            	    adaptor.addChild(root_0, char_literal37_tree);
+            	    char_literal36_tree = (Object)adaptor.create(char_literal36);
+            	    adaptor.addChild(root_0, char_literal36_tree);
             	    }
-            	    pushFollow(FOLLOW_enumConstant_in_enumConstants924);
-            	    enumConstant38=enumConstant();
+            	    pushFollow(FOLLOW_enumConstant_in_enumConstants933);
+            	    cst=enumConstant();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, enumConstant38.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, cst.getTree());
+            	    if ( state.backtracking==0 ) {
+            	      ((enumDeclaration_scope)enumDeclaration_stack.peek()).enumType.add(cst.element);
+            	    }
 
             	    }
             	    break;
@@ -2453,36 +2468,37 @@ public class JavaParser extends Parser {
     // $ANTLR end "enumConstants"
 
     public static class enumConstant_return extends ParserRuleReturnScope {
+        public EnumConstant element;
         Object tree;
         public Object getTree() { return tree; }
     };
 
     // $ANTLR start "enumConstant"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:392:1: enumConstant : ( annotations )? Identifier ( arguments )? ( classBody )? ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:397:1: enumConstant returns [EnumConstant element] : ( annotations )? Identifier ( arguments )? ( classBody )? ;
     public final JavaParser.enumConstant_return enumConstant() throws RecognitionException {
         JavaParser.enumConstant_return retval = new JavaParser.enumConstant_return();
         retval.start = input.LT(1);
         int enumConstant_StartIndex = input.index();
         Object root_0 = null;
 
-        Token Identifier40=null;
-        JavaParser.annotations_return annotations39 = null;
+        Token Identifier38=null;
+        JavaParser.annotations_return annotations37 = null;
 
-        JavaParser.arguments_return arguments41 = null;
+        JavaParser.arguments_return arguments39 = null;
 
-        JavaParser.classBody_return classBody42 = null;
+        JavaParser.classBody_return classBody40 = null;
 
 
-        Object Identifier40_tree=null;
+        Object Identifier38_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 17) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:393:5: ( ( annotations )? Identifier ( arguments )? ( classBody )? )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:393:9: ( annotations )? Identifier ( arguments )? ( classBody )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:398:5: ( ( annotations )? Identifier ( arguments )? ( classBody )? )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:398:9: ( annotations )? Identifier ( arguments )? ( classBody )?
             {
             root_0 = (Object)adaptor.nil();
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:393:9: ( annotations )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:398:9: ( annotations )?
             int alt28=2;
             int LA28_0 = input.LA(1);
 
@@ -2493,24 +2509,24 @@ public class JavaParser extends Parser {
                 case 1 :
                     // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: annotations
                     {
-                    pushFollow(FOLLOW_annotations_in_enumConstant949);
-                    annotations39=annotations();
+                    pushFollow(FOLLOW_annotations_in_enumConstant963);
+                    annotations37=annotations();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, annotations39.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, annotations37.getTree());
 
                     }
                     break;
 
             }
 
-            Identifier40=(Token)match(input,Identifier,FOLLOW_Identifier_in_enumConstant952); if (state.failed) return retval;
+            Identifier38=(Token)match(input,Identifier,FOLLOW_Identifier_in_enumConstant966); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            Identifier40_tree = (Object)adaptor.create(Identifier40);
-            adaptor.addChild(root_0, Identifier40_tree);
+            Identifier38_tree = (Object)adaptor.create(Identifier38);
+            adaptor.addChild(root_0, Identifier38_tree);
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:393:33: ( arguments )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:398:33: ( arguments )?
             int alt29=2;
             int LA29_0 = input.LA(1);
 
@@ -2521,19 +2537,19 @@ public class JavaParser extends Parser {
                 case 1 :
                     // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: arguments
                     {
-                    pushFollow(FOLLOW_arguments_in_enumConstant954);
-                    arguments41=arguments();
+                    pushFollow(FOLLOW_arguments_in_enumConstant968);
+                    arguments39=arguments();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, arguments41.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, arguments39.getTree());
 
                     }
                     break;
 
             }
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:393:44: ( classBody )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:398:44: ( classBody )?
             int alt30=2;
             int LA30_0 = input.LA(1);
 
@@ -2544,12 +2560,12 @@ public class JavaParser extends Parser {
                 case 1 :
                     // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: classBody
                     {
-                    pushFollow(FOLLOW_classBody_in_enumConstant957);
-                    classBody42=classBody();
+                    pushFollow(FOLLOW_classBody_in_enumConstant971);
+                    classBody40=classBody();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, classBody42.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, classBody40.getTree());
 
                     }
                     break;
@@ -2586,32 +2602,32 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "enumBodyDeclarations"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:396:1: enumBodyDeclarations : ';' ( classBodyDeclaration )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:401:1: enumBodyDeclarations : ';' ( classBodyDeclaration )* ;
     public final JavaParser.enumBodyDeclarations_return enumBodyDeclarations() throws RecognitionException {
         JavaParser.enumBodyDeclarations_return retval = new JavaParser.enumBodyDeclarations_return();
         retval.start = input.LT(1);
         int enumBodyDeclarations_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal43=null;
-        JavaParser.classBodyDeclaration_return classBodyDeclaration44 = null;
+        Token char_literal41=null;
+        JavaParser.classBodyDeclaration_return classBodyDeclaration42 = null;
 
 
-        Object char_literal43_tree=null;
+        Object char_literal41_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 18) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:397:5: ( ';' ( classBodyDeclaration )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:397:9: ';' ( classBodyDeclaration )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:402:5: ( ';' ( classBodyDeclaration )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:402:9: ';' ( classBodyDeclaration )*
             {
             root_0 = (Object)adaptor.nil();
 
-            char_literal43=(Token)match(input,26,FOLLOW_26_in_enumBodyDeclarations981); if (state.failed) return retval;
+            char_literal41=(Token)match(input,26,FOLLOW_26_in_enumBodyDeclarations995); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal43_tree = (Object)adaptor.create(char_literal43);
-            adaptor.addChild(root_0, char_literal43_tree);
+            char_literal41_tree = (Object)adaptor.create(char_literal41);
+            adaptor.addChild(root_0, char_literal41_tree);
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:397:13: ( classBodyDeclaration )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:402:13: ( classBodyDeclaration )*
             loop31:
             do {
                 int alt31=2;
@@ -2624,14 +2640,14 @@ public class JavaParser extends Parser {
 
                 switch (alt31) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:397:14: classBodyDeclaration
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:402:14: classBodyDeclaration
             	    {
-            	    pushFollow(FOLLOW_classBodyDeclaration_in_enumBodyDeclarations984);
-            	    classBodyDeclaration44=classBodyDeclaration();
+            	    pushFollow(FOLLOW_classBodyDeclaration_in_enumBodyDeclarations998);
+            	    classBodyDeclaration42=classBodyDeclaration();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, classBodyDeclaration44.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, classBodyDeclaration42.getTree());
 
             	    }
             	    break;
@@ -2671,22 +2687,22 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "interfaceDeclaration"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:400:1: interfaceDeclaration : ( normalInterfaceDeclaration | annotationTypeDeclaration );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:405:1: interfaceDeclaration : ( normalInterfaceDeclaration | annotationTypeDeclaration );
     public final JavaParser.interfaceDeclaration_return interfaceDeclaration() throws RecognitionException {
         JavaParser.interfaceDeclaration_return retval = new JavaParser.interfaceDeclaration_return();
         retval.start = input.LT(1);
         int interfaceDeclaration_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.normalInterfaceDeclaration_return normalInterfaceDeclaration45 = null;
+        JavaParser.normalInterfaceDeclaration_return normalInterfaceDeclaration43 = null;
 
-        JavaParser.annotationTypeDeclaration_return annotationTypeDeclaration46 = null;
+        JavaParser.annotationTypeDeclaration_return annotationTypeDeclaration44 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 19) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:401:5: ( normalInterfaceDeclaration | annotationTypeDeclaration )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:406:5: ( normalInterfaceDeclaration | annotationTypeDeclaration )
             int alt32=2;
             int LA32_0 = input.LA(1);
 
@@ -2705,30 +2721,30 @@ public class JavaParser extends Parser {
             }
             switch (alt32) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:401:9: normalInterfaceDeclaration
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:406:9: normalInterfaceDeclaration
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_normalInterfaceDeclaration_in_interfaceDeclaration1009);
-                    normalInterfaceDeclaration45=normalInterfaceDeclaration();
+                    pushFollow(FOLLOW_normalInterfaceDeclaration_in_interfaceDeclaration1023);
+                    normalInterfaceDeclaration43=normalInterfaceDeclaration();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, normalInterfaceDeclaration45.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, normalInterfaceDeclaration43.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:402:9: annotationTypeDeclaration
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:407:9: annotationTypeDeclaration
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_annotationTypeDeclaration_in_interfaceDeclaration1019);
-                    annotationTypeDeclaration46=annotationTypeDeclaration();
+                    pushFollow(FOLLOW_annotationTypeDeclaration_in_interfaceDeclaration1033);
+                    annotationTypeDeclaration44=annotationTypeDeclaration();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, annotationTypeDeclaration46.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, annotationTypeDeclaration44.getTree());
 
                     }
                     break;
@@ -2761,45 +2777,45 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "normalInterfaceDeclaration"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:405:1: normalInterfaceDeclaration : 'interface' Identifier ( typeParameters )? ( 'extends' typeList )? interfaceBody ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:410:1: normalInterfaceDeclaration : 'interface' Identifier ( typeParameters )? ( 'extends' typeList )? interfaceBody ;
     public final JavaParser.normalInterfaceDeclaration_return normalInterfaceDeclaration() throws RecognitionException {
         JavaParser.normalInterfaceDeclaration_return retval = new JavaParser.normalInterfaceDeclaration_return();
         retval.start = input.LT(1);
         int normalInterfaceDeclaration_StartIndex = input.index();
         Object root_0 = null;
 
-        Token string_literal47=null;
-        Token Identifier48=null;
-        Token string_literal50=null;
-        JavaParser.typeParameters_return typeParameters49 = null;
+        Token string_literal45=null;
+        Token Identifier46=null;
+        Token string_literal48=null;
+        JavaParser.typeParameters_return typeParameters47 = null;
 
-        JavaParser.typeList_return typeList51 = null;
+        JavaParser.typeList_return typeList49 = null;
 
-        JavaParser.interfaceBody_return interfaceBody52 = null;
+        JavaParser.interfaceBody_return interfaceBody50 = null;
 
 
-        Object string_literal47_tree=null;
-        Object Identifier48_tree=null;
-        Object string_literal50_tree=null;
+        Object string_literal45_tree=null;
+        Object Identifier46_tree=null;
+        Object string_literal48_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 20) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:406:5: ( 'interface' Identifier ( typeParameters )? ( 'extends' typeList )? interfaceBody )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:406:9: 'interface' Identifier ( typeParameters )? ( 'extends' typeList )? interfaceBody
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:411:5: ( 'interface' Identifier ( typeParameters )? ( 'extends' typeList )? interfaceBody )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:411:9: 'interface' Identifier ( typeParameters )? ( 'extends' typeList )? interfaceBody
             {
             root_0 = (Object)adaptor.nil();
 
-            string_literal47=(Token)match(input,46,FOLLOW_46_in_normalInterfaceDeclaration1042); if (state.failed) return retval;
+            string_literal45=(Token)match(input,46,FOLLOW_46_in_normalInterfaceDeclaration1056); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            string_literal47_tree = (Object)adaptor.create(string_literal47);
-            adaptor.addChild(root_0, string_literal47_tree);
+            string_literal45_tree = (Object)adaptor.create(string_literal45);
+            adaptor.addChild(root_0, string_literal45_tree);
             }
-            Identifier48=(Token)match(input,Identifier,FOLLOW_Identifier_in_normalInterfaceDeclaration1044); if (state.failed) return retval;
+            Identifier46=(Token)match(input,Identifier,FOLLOW_Identifier_in_normalInterfaceDeclaration1058); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            Identifier48_tree = (Object)adaptor.create(Identifier48);
-            adaptor.addChild(root_0, Identifier48_tree);
+            Identifier46_tree = (Object)adaptor.create(Identifier46);
+            adaptor.addChild(root_0, Identifier46_tree);
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:406:32: ( typeParameters )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:411:32: ( typeParameters )?
             int alt33=2;
             int LA33_0 = input.LA(1);
 
@@ -2810,19 +2826,19 @@ public class JavaParser extends Parser {
                 case 1 :
                     // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: typeParameters
                     {
-                    pushFollow(FOLLOW_typeParameters_in_normalInterfaceDeclaration1046);
-                    typeParameters49=typeParameters();
+                    pushFollow(FOLLOW_typeParameters_in_normalInterfaceDeclaration1060);
+                    typeParameters47=typeParameters();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, typeParameters49.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, typeParameters47.getTree());
 
                     }
                     break;
 
             }
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:406:48: ( 'extends' typeList )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:411:48: ( 'extends' typeList )?
             int alt34=2;
             int LA34_0 = input.LA(1);
 
@@ -2831,31 +2847,31 @@ public class JavaParser extends Parser {
             }
             switch (alt34) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:406:49: 'extends' typeList
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:411:49: 'extends' typeList
                     {
-                    string_literal50=(Token)match(input,38,FOLLOW_38_in_normalInterfaceDeclaration1050); if (state.failed) return retval;
+                    string_literal48=(Token)match(input,38,FOLLOW_38_in_normalInterfaceDeclaration1064); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal50_tree = (Object)adaptor.create(string_literal50);
-                    adaptor.addChild(root_0, string_literal50_tree);
+                    string_literal48_tree = (Object)adaptor.create(string_literal48);
+                    adaptor.addChild(root_0, string_literal48_tree);
                     }
-                    pushFollow(FOLLOW_typeList_in_normalInterfaceDeclaration1052);
-                    typeList51=typeList();
+                    pushFollow(FOLLOW_typeList_in_normalInterfaceDeclaration1066);
+                    typeList49=typeList();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, typeList51.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, typeList49.getTree());
 
                     }
                     break;
 
             }
 
-            pushFollow(FOLLOW_interfaceBody_in_normalInterfaceDeclaration1056);
-            interfaceBody52=interfaceBody();
+            pushFollow(FOLLOW_interfaceBody_in_normalInterfaceDeclaration1070);
+            interfaceBody50=interfaceBody();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, interfaceBody52.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, interfaceBody50.getTree());
 
             }
 
@@ -2887,29 +2903,29 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "typeList"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:409:1: typeList returns [List<TypeReference> element] : tp= type ( ',' tpp= type )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:414:1: typeList returns [List<TypeReference> element] : tp= type ( ',' tpp= type )* ;
     public final JavaParser.typeList_return typeList() throws RecognitionException {
         JavaParser.typeList_return retval = new JavaParser.typeList_return();
         retval.start = input.LT(1);
         int typeList_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal53=null;
+        Token char_literal51=null;
         JavaParser.type_return tp = null;
 
         JavaParser.type_return tpp = null;
 
 
-        Object char_literal53_tree=null;
+        Object char_literal51_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 21) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:410:5: (tp= type ( ',' tpp= type )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:410:9: tp= type ( ',' tpp= type )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:415:5: (tp= type ( ',' tpp= type )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:415:9: tp= type ( ',' tpp= type )*
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_type_in_typeList1085);
+            pushFollow(FOLLOW_type_in_typeList1099);
             tp=type();
 
             state._fsp--;
@@ -2918,7 +2934,7 @@ public class JavaParser extends Parser {
             if ( state.backtracking==0 ) {
               retval.element = new ArrayList<TypeReference>(); retval.element.add(tp.element);
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:410:99: ( ',' tpp= type )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:415:99: ( ',' tpp= type )*
             loop35:
             do {
                 int alt35=2;
@@ -2931,14 +2947,14 @@ public class JavaParser extends Parser {
 
                 switch (alt35) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:410:100: ',' tpp= type
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:415:100: ',' tpp= type
             	    {
-            	    char_literal53=(Token)match(input,41,FOLLOW_41_in_typeList1089); if (state.failed) return retval;
+            	    char_literal51=(Token)match(input,41,FOLLOW_41_in_typeList1103); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal53_tree = (Object)adaptor.create(char_literal53);
-            	    adaptor.addChild(root_0, char_literal53_tree);
+            	    char_literal51_tree = (Object)adaptor.create(char_literal51);
+            	    adaptor.addChild(root_0, char_literal51_tree);
             	    }
-            	    pushFollow(FOLLOW_type_in_typeList1093);
+            	    pushFollow(FOLLOW_type_in_typeList1107);
             	    tpp=type();
 
             	    state._fsp--;
@@ -2986,34 +3002,34 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "classBody"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:413:1: classBody : '{' ( classBodyDeclaration )* '}' ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:418:1: classBody : '{' ( classBodyDeclaration )* '}' ;
     public final JavaParser.classBody_return classBody() throws RecognitionException {
         JavaParser.classBody_return retval = new JavaParser.classBody_return();
         retval.start = input.LT(1);
         int classBody_StartIndex = input.index();
         Object root_0 = null;
 
+        Token char_literal52=null;
         Token char_literal54=null;
-        Token char_literal56=null;
-        JavaParser.classBodyDeclaration_return classBodyDeclaration55 = null;
+        JavaParser.classBodyDeclaration_return classBodyDeclaration53 = null;
 
 
+        Object char_literal52_tree=null;
         Object char_literal54_tree=null;
-        Object char_literal56_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 22) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:414:5: ( '{' ( classBodyDeclaration )* '}' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:414:9: '{' ( classBodyDeclaration )* '}'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:419:5: ( '{' ( classBodyDeclaration )* '}' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:419:9: '{' ( classBodyDeclaration )* '}'
             {
             root_0 = (Object)adaptor.nil();
 
-            char_literal54=(Token)match(input,44,FOLLOW_44_in_classBody1120); if (state.failed) return retval;
+            char_literal52=(Token)match(input,44,FOLLOW_44_in_classBody1134); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal54_tree = (Object)adaptor.create(char_literal54);
-            adaptor.addChild(root_0, char_literal54_tree);
+            char_literal52_tree = (Object)adaptor.create(char_literal52);
+            adaptor.addChild(root_0, char_literal52_tree);
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:414:13: ( classBodyDeclaration )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:419:13: ( classBodyDeclaration )*
             loop36:
             do {
                 int alt36=2;
@@ -3028,12 +3044,12 @@ public class JavaParser extends Parser {
             	case 1 :
             	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: classBodyDeclaration
             	    {
-            	    pushFollow(FOLLOW_classBodyDeclaration_in_classBody1122);
-            	    classBodyDeclaration55=classBodyDeclaration();
+            	    pushFollow(FOLLOW_classBodyDeclaration_in_classBody1136);
+            	    classBodyDeclaration53=classBodyDeclaration();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, classBodyDeclaration55.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, classBodyDeclaration53.getTree());
 
             	    }
             	    break;
@@ -3043,10 +3059,10 @@ public class JavaParser extends Parser {
                 }
             } while (true);
 
-            char_literal56=(Token)match(input,45,FOLLOW_45_in_classBody1125); if (state.failed) return retval;
+            char_literal54=(Token)match(input,45,FOLLOW_45_in_classBody1139); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal56_tree = (Object)adaptor.create(char_literal56);
-            adaptor.addChild(root_0, char_literal56_tree);
+            char_literal54_tree = (Object)adaptor.create(char_literal54);
+            adaptor.addChild(root_0, char_literal54_tree);
             }
 
             }
@@ -3078,34 +3094,34 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "interfaceBody"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:417:1: interfaceBody : '{' ( interfaceBodyDeclaration )* '}' ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:422:1: interfaceBody : '{' ( interfaceBodyDeclaration )* '}' ;
     public final JavaParser.interfaceBody_return interfaceBody() throws RecognitionException {
         JavaParser.interfaceBody_return retval = new JavaParser.interfaceBody_return();
         retval.start = input.LT(1);
         int interfaceBody_StartIndex = input.index();
         Object root_0 = null;
 
+        Token char_literal55=null;
         Token char_literal57=null;
-        Token char_literal59=null;
-        JavaParser.interfaceBodyDeclaration_return interfaceBodyDeclaration58 = null;
+        JavaParser.interfaceBodyDeclaration_return interfaceBodyDeclaration56 = null;
 
 
+        Object char_literal55_tree=null;
         Object char_literal57_tree=null;
-        Object char_literal59_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 23) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:418:5: ( '{' ( interfaceBodyDeclaration )* '}' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:418:9: '{' ( interfaceBodyDeclaration )* '}'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:423:5: ( '{' ( interfaceBodyDeclaration )* '}' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:423:9: '{' ( interfaceBodyDeclaration )* '}'
             {
             root_0 = (Object)adaptor.nil();
 
-            char_literal57=(Token)match(input,44,FOLLOW_44_in_interfaceBody1148); if (state.failed) return retval;
+            char_literal55=(Token)match(input,44,FOLLOW_44_in_interfaceBody1162); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal57_tree = (Object)adaptor.create(char_literal57);
-            adaptor.addChild(root_0, char_literal57_tree);
+            char_literal55_tree = (Object)adaptor.create(char_literal55);
+            adaptor.addChild(root_0, char_literal55_tree);
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:418:13: ( interfaceBodyDeclaration )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:423:13: ( interfaceBodyDeclaration )*
             loop37:
             do {
                 int alt37=2;
@@ -3120,12 +3136,12 @@ public class JavaParser extends Parser {
             	case 1 :
             	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: interfaceBodyDeclaration
             	    {
-            	    pushFollow(FOLLOW_interfaceBodyDeclaration_in_interfaceBody1150);
-            	    interfaceBodyDeclaration58=interfaceBodyDeclaration();
+            	    pushFollow(FOLLOW_interfaceBodyDeclaration_in_interfaceBody1164);
+            	    interfaceBodyDeclaration56=interfaceBodyDeclaration();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, interfaceBodyDeclaration58.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, interfaceBodyDeclaration56.getTree());
 
             	    }
             	    break;
@@ -3135,10 +3151,10 @@ public class JavaParser extends Parser {
                 }
             } while (true);
 
-            char_literal59=(Token)match(input,45,FOLLOW_45_in_interfaceBody1153); if (state.failed) return retval;
+            char_literal57=(Token)match(input,45,FOLLOW_45_in_interfaceBody1167); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal59_tree = (Object)adaptor.create(char_literal59);
-            adaptor.addChild(root_0, char_literal59_tree);
+            char_literal57_tree = (Object)adaptor.create(char_literal57);
+            adaptor.addChild(root_0, char_literal57_tree);
             }
 
             }
@@ -3170,28 +3186,28 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "classBodyDeclaration"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:421:1: classBodyDeclaration : ( ';' | ( 'static' )? block | modifiers memberDecl );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:426:1: classBodyDeclaration : ( ';' | ( 'static' )? block | modifiers memberDecl );
     public final JavaParser.classBodyDeclaration_return classBodyDeclaration() throws RecognitionException {
         JavaParser.classBodyDeclaration_return retval = new JavaParser.classBodyDeclaration_return();
         retval.start = input.LT(1);
         int classBodyDeclaration_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal60=null;
-        Token string_literal61=null;
-        JavaParser.block_return block62 = null;
+        Token char_literal58=null;
+        Token string_literal59=null;
+        JavaParser.block_return block60 = null;
 
-        JavaParser.modifiers_return modifiers63 = null;
+        JavaParser.modifiers_return modifiers61 = null;
 
-        JavaParser.memberDecl_return memberDecl64 = null;
+        JavaParser.memberDecl_return memberDecl62 = null;
 
 
-        Object char_literal60_tree=null;
-        Object string_literal61_tree=null;
+        Object char_literal58_tree=null;
+        Object string_literal59_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 24) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:422:5: ( ';' | ( 'static' )? block | modifiers memberDecl )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:427:5: ( ';' | ( 'static' )? block | modifiers memberDecl )
             int alt39=3;
             switch ( input.LA(1) ) {
             case 26:
@@ -3203,11 +3219,11 @@ public class JavaParser extends Parser {
                 {
                 int LA39_2 = input.LA(2);
 
-                if ( (LA39_2==44) ) {
-                    alt39=2;
-                }
-                else if ( ((LA39_2>=Identifier && LA39_2<=ENUM)||LA39_2==28||(LA39_2>=31 && LA39_2<=37)||LA39_2==40||(LA39_2>=46 && LA39_2<=47)||(LA39_2>=52 && LA39_2<=63)||LA39_2==73) ) {
+                if ( ((LA39_2>=Identifier && LA39_2<=ENUM)||LA39_2==28||(LA39_2>=31 && LA39_2<=37)||LA39_2==40||(LA39_2>=46 && LA39_2<=47)||(LA39_2>=52 && LA39_2<=63)||LA39_2==73) ) {
                     alt39=3;
+                }
+                else if ( (LA39_2==44) ) {
+                    alt39=2;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return retval;}
@@ -3262,24 +3278,24 @@ public class JavaParser extends Parser {
 
             switch (alt39) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:422:9: ';'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:427:9: ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal60=(Token)match(input,26,FOLLOW_26_in_classBodyDeclaration1172); if (state.failed) return retval;
+                    char_literal58=(Token)match(input,26,FOLLOW_26_in_classBodyDeclaration1186); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal60_tree = (Object)adaptor.create(char_literal60);
-                    adaptor.addChild(root_0, char_literal60_tree);
+                    char_literal58_tree = (Object)adaptor.create(char_literal58);
+                    adaptor.addChild(root_0, char_literal58_tree);
                     }
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:423:9: ( 'static' )? block
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:428:9: ( 'static' )? block
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:423:9: ( 'static' )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:428:9: ( 'static' )?
                     int alt38=2;
                     int LA38_0 = input.LA(1);
 
@@ -3290,10 +3306,10 @@ public class JavaParser extends Parser {
                         case 1 :
                             // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: 'static'
                             {
-                            string_literal61=(Token)match(input,28,FOLLOW_28_in_classBodyDeclaration1182); if (state.failed) return retval;
+                            string_literal59=(Token)match(input,28,FOLLOW_28_in_classBodyDeclaration1196); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
-                            string_literal61_tree = (Object)adaptor.create(string_literal61);
-                            adaptor.addChild(root_0, string_literal61_tree);
+                            string_literal59_tree = (Object)adaptor.create(string_literal59);
+                            adaptor.addChild(root_0, string_literal59_tree);
                             }
 
                             }
@@ -3301,32 +3317,32 @@ public class JavaParser extends Parser {
 
                     }
 
-                    pushFollow(FOLLOW_block_in_classBodyDeclaration1185);
-                    block62=block();
+                    pushFollow(FOLLOW_block_in_classBodyDeclaration1199);
+                    block60=block();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, block62.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, block60.getTree());
 
                     }
                     break;
                 case 3 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:424:9: modifiers memberDecl
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:429:9: modifiers memberDecl
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_modifiers_in_classBodyDeclaration1195);
-                    modifiers63=modifiers();
+                    pushFollow(FOLLOW_modifiers_in_classBodyDeclaration1209);
+                    modifiers61=modifiers();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, modifiers63.getTree());
-                    pushFollow(FOLLOW_memberDecl_in_classBodyDeclaration1197);
-                    memberDecl64=memberDecl();
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, modifiers61.getTree());
+                    pushFollow(FOLLOW_memberDecl_in_classBodyDeclaration1211);
+                    memberDecl62=memberDecl();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, memberDecl64.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, memberDecl62.getTree());
 
                     }
                     break;
@@ -3359,36 +3375,36 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "memberDecl"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:427:1: memberDecl : ( genericMethodOrConstructorDecl | memberDeclaration | 'void' Identifier voidMethodDeclaratorRest | Identifier constructorDeclaratorRest | interfaceDeclaration | classDeclaration );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:432:1: memberDecl : ( genericMethodOrConstructorDecl | memberDeclaration | 'void' Identifier voidMethodDeclaratorRest | Identifier constructorDeclaratorRest | interfaceDeclaration | classDeclaration );
     public final JavaParser.memberDecl_return memberDecl() throws RecognitionException {
         JavaParser.memberDecl_return retval = new JavaParser.memberDecl_return();
         retval.start = input.LT(1);
         int memberDecl_StartIndex = input.index();
         Object root_0 = null;
 
-        Token string_literal67=null;
+        Token string_literal65=null;
+        Token Identifier66=null;
         Token Identifier68=null;
-        Token Identifier70=null;
-        JavaParser.genericMethodOrConstructorDecl_return genericMethodOrConstructorDecl65 = null;
+        JavaParser.genericMethodOrConstructorDecl_return genericMethodOrConstructorDecl63 = null;
 
-        JavaParser.memberDeclaration_return memberDeclaration66 = null;
+        JavaParser.memberDeclaration_return memberDeclaration64 = null;
 
-        JavaParser.voidMethodDeclaratorRest_return voidMethodDeclaratorRest69 = null;
+        JavaParser.voidMethodDeclaratorRest_return voidMethodDeclaratorRest67 = null;
 
-        JavaParser.constructorDeclaratorRest_return constructorDeclaratorRest71 = null;
+        JavaParser.constructorDeclaratorRest_return constructorDeclaratorRest69 = null;
 
-        JavaParser.interfaceDeclaration_return interfaceDeclaration72 = null;
+        JavaParser.interfaceDeclaration_return interfaceDeclaration70 = null;
 
-        JavaParser.classDeclaration_return classDeclaration73 = null;
+        JavaParser.classDeclaration_return classDeclaration71 = null;
 
 
-        Object string_literal67_tree=null;
+        Object string_literal65_tree=null;
+        Object Identifier66_tree=null;
         Object Identifier68_tree=null;
-        Object Identifier70_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 25) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:428:5: ( genericMethodOrConstructorDecl | memberDeclaration | 'void' Identifier voidMethodDeclaratorRest | Identifier constructorDeclaratorRest | interfaceDeclaration | classDeclaration )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:433:5: ( genericMethodOrConstructorDecl | memberDeclaration | 'void' Identifier voidMethodDeclaratorRest | Identifier constructorDeclaratorRest | interfaceDeclaration | classDeclaration )
             int alt40=6;
             switch ( input.LA(1) ) {
             case 40:
@@ -3454,101 +3470,101 @@ public class JavaParser extends Parser {
 
             switch (alt40) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:428:9: genericMethodOrConstructorDecl
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:433:9: genericMethodOrConstructorDecl
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_genericMethodOrConstructorDecl_in_memberDecl1220);
-                    genericMethodOrConstructorDecl65=genericMethodOrConstructorDecl();
+                    pushFollow(FOLLOW_genericMethodOrConstructorDecl_in_memberDecl1234);
+                    genericMethodOrConstructorDecl63=genericMethodOrConstructorDecl();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, genericMethodOrConstructorDecl65.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, genericMethodOrConstructorDecl63.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:429:9: memberDeclaration
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:434:9: memberDeclaration
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_memberDeclaration_in_memberDecl1230);
-                    memberDeclaration66=memberDeclaration();
+                    pushFollow(FOLLOW_memberDeclaration_in_memberDecl1244);
+                    memberDeclaration64=memberDeclaration();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, memberDeclaration66.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, memberDeclaration64.getTree());
 
                     }
                     break;
                 case 3 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:430:9: 'void' Identifier voidMethodDeclaratorRest
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:435:9: 'void' Identifier voidMethodDeclaratorRest
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal67=(Token)match(input,47,FOLLOW_47_in_memberDecl1240); if (state.failed) return retval;
+                    string_literal65=(Token)match(input,47,FOLLOW_47_in_memberDecl1254); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal67_tree = (Object)adaptor.create(string_literal67);
-                    adaptor.addChild(root_0, string_literal67_tree);
+                    string_literal65_tree = (Object)adaptor.create(string_literal65);
+                    adaptor.addChild(root_0, string_literal65_tree);
                     }
-                    Identifier68=(Token)match(input,Identifier,FOLLOW_Identifier_in_memberDecl1242); if (state.failed) return retval;
+                    Identifier66=(Token)match(input,Identifier,FOLLOW_Identifier_in_memberDecl1256); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    Identifier68_tree = (Object)adaptor.create(Identifier68);
-                    adaptor.addChild(root_0, Identifier68_tree);
+                    Identifier66_tree = (Object)adaptor.create(Identifier66);
+                    adaptor.addChild(root_0, Identifier66_tree);
                     }
-                    pushFollow(FOLLOW_voidMethodDeclaratorRest_in_memberDecl1244);
-                    voidMethodDeclaratorRest69=voidMethodDeclaratorRest();
+                    pushFollow(FOLLOW_voidMethodDeclaratorRest_in_memberDecl1258);
+                    voidMethodDeclaratorRest67=voidMethodDeclaratorRest();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, voidMethodDeclaratorRest69.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, voidMethodDeclaratorRest67.getTree());
 
                     }
                     break;
                 case 4 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:431:9: Identifier constructorDeclaratorRest
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:436:9: Identifier constructorDeclaratorRest
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    Identifier70=(Token)match(input,Identifier,FOLLOW_Identifier_in_memberDecl1254); if (state.failed) return retval;
+                    Identifier68=(Token)match(input,Identifier,FOLLOW_Identifier_in_memberDecl1268); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    Identifier70_tree = (Object)adaptor.create(Identifier70);
-                    adaptor.addChild(root_0, Identifier70_tree);
+                    Identifier68_tree = (Object)adaptor.create(Identifier68);
+                    adaptor.addChild(root_0, Identifier68_tree);
                     }
-                    pushFollow(FOLLOW_constructorDeclaratorRest_in_memberDecl1256);
-                    constructorDeclaratorRest71=constructorDeclaratorRest();
+                    pushFollow(FOLLOW_constructorDeclaratorRest_in_memberDecl1270);
+                    constructorDeclaratorRest69=constructorDeclaratorRest();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, constructorDeclaratorRest71.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, constructorDeclaratorRest69.getTree());
 
                     }
                     break;
                 case 5 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:432:9: interfaceDeclaration
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:437:9: interfaceDeclaration
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_interfaceDeclaration_in_memberDecl1266);
-                    interfaceDeclaration72=interfaceDeclaration();
+                    pushFollow(FOLLOW_interfaceDeclaration_in_memberDecl1280);
+                    interfaceDeclaration70=interfaceDeclaration();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, interfaceDeclaration72.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, interfaceDeclaration70.getTree());
 
                     }
                     break;
                 case 6 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:433:9: classDeclaration
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:438:9: classDeclaration
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_classDeclaration_in_memberDecl1276);
-                    classDeclaration73=classDeclaration();
+                    pushFollow(FOLLOW_classDeclaration_in_memberDecl1290);
+                    classDeclaration71=classDeclaration();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, classDeclaration73.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, classDeclaration71.getTree());
 
                     }
                     break;
@@ -3581,35 +3597,35 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "memberDeclaration"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:436:1: memberDeclaration : type ( methodDeclaration | fieldDeclaration ) ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:441:1: memberDeclaration : type ( methodDeclaration | fieldDeclaration ) ;
     public final JavaParser.memberDeclaration_return memberDeclaration() throws RecognitionException {
         JavaParser.memberDeclaration_return retval = new JavaParser.memberDeclaration_return();
         retval.start = input.LT(1);
         int memberDeclaration_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.type_return type74 = null;
+        JavaParser.type_return type72 = null;
 
-        JavaParser.methodDeclaration_return methodDeclaration75 = null;
+        JavaParser.methodDeclaration_return methodDeclaration73 = null;
 
-        JavaParser.fieldDeclaration_return fieldDeclaration76 = null;
+        JavaParser.fieldDeclaration_return fieldDeclaration74 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 26) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:437:5: ( type ( methodDeclaration | fieldDeclaration ) )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:437:9: type ( methodDeclaration | fieldDeclaration )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:442:5: ( type ( methodDeclaration | fieldDeclaration ) )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:442:9: type ( methodDeclaration | fieldDeclaration )
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_type_in_memberDeclaration1299);
-            type74=type();
+            pushFollow(FOLLOW_type_in_memberDeclaration1313);
+            type72=type();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, type74.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:437:14: ( methodDeclaration | fieldDeclaration )
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, type72.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:442:14: ( methodDeclaration | fieldDeclaration )
             int alt41=2;
             int LA41_0 = input.LA(1);
 
@@ -3639,26 +3655,26 @@ public class JavaParser extends Parser {
             }
             switch (alt41) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:437:15: methodDeclaration
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:442:15: methodDeclaration
                     {
-                    pushFollow(FOLLOW_methodDeclaration_in_memberDeclaration1302);
-                    methodDeclaration75=methodDeclaration();
+                    pushFollow(FOLLOW_methodDeclaration_in_memberDeclaration1316);
+                    methodDeclaration73=methodDeclaration();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, methodDeclaration75.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, methodDeclaration73.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:437:35: fieldDeclaration
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:442:35: fieldDeclaration
                     {
-                    pushFollow(FOLLOW_fieldDeclaration_in_memberDeclaration1306);
-                    fieldDeclaration76=fieldDeclaration();
+                    pushFollow(FOLLOW_fieldDeclaration_in_memberDeclaration1320);
+                    fieldDeclaration74=fieldDeclaration();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, fieldDeclaration76.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, fieldDeclaration74.getTree());
 
                     }
                     break;
@@ -3695,38 +3711,38 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "genericMethodOrConstructorDecl"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:440:1: genericMethodOrConstructorDecl : typeParameters genericMethodOrConstructorRest ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:445:1: genericMethodOrConstructorDecl : typeParameters genericMethodOrConstructorRest ;
     public final JavaParser.genericMethodOrConstructorDecl_return genericMethodOrConstructorDecl() throws RecognitionException {
         JavaParser.genericMethodOrConstructorDecl_return retval = new JavaParser.genericMethodOrConstructorDecl_return();
         retval.start = input.LT(1);
         int genericMethodOrConstructorDecl_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.typeParameters_return typeParameters77 = null;
+        JavaParser.typeParameters_return typeParameters75 = null;
 
-        JavaParser.genericMethodOrConstructorRest_return genericMethodOrConstructorRest78 = null;
+        JavaParser.genericMethodOrConstructorRest_return genericMethodOrConstructorRest76 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 27) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:441:5: ( typeParameters genericMethodOrConstructorRest )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:441:9: typeParameters genericMethodOrConstructorRest
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:446:5: ( typeParameters genericMethodOrConstructorRest )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:446:9: typeParameters genericMethodOrConstructorRest
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_typeParameters_in_genericMethodOrConstructorDecl1326);
-            typeParameters77=typeParameters();
+            pushFollow(FOLLOW_typeParameters_in_genericMethodOrConstructorDecl1340);
+            typeParameters75=typeParameters();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, typeParameters77.getTree());
-            pushFollow(FOLLOW_genericMethodOrConstructorRest_in_genericMethodOrConstructorDecl1328);
-            genericMethodOrConstructorRest78=genericMethodOrConstructorRest();
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, typeParameters75.getTree());
+            pushFollow(FOLLOW_genericMethodOrConstructorRest_in_genericMethodOrConstructorDecl1342);
+            genericMethodOrConstructorRest76=genericMethodOrConstructorRest();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, genericMethodOrConstructorRest78.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, genericMethodOrConstructorRest76.getTree());
 
             }
 
@@ -3757,41 +3773,41 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "genericMethodOrConstructorRest"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:444:1: genericMethodOrConstructorRest : ( ( type | 'void' ) Identifier methodDeclaratorRest | Identifier constructorDeclaratorRest );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:449:1: genericMethodOrConstructorRest : ( ( type | 'void' ) Identifier methodDeclaratorRest | Identifier constructorDeclaratorRest );
     public final JavaParser.genericMethodOrConstructorRest_return genericMethodOrConstructorRest() throws RecognitionException {
         JavaParser.genericMethodOrConstructorRest_return retval = new JavaParser.genericMethodOrConstructorRest_return();
         retval.start = input.LT(1);
         int genericMethodOrConstructorRest_StartIndex = input.index();
         Object root_0 = null;
 
-        Token string_literal80=null;
+        Token string_literal78=null;
+        Token Identifier79=null;
         Token Identifier81=null;
-        Token Identifier83=null;
-        JavaParser.type_return type79 = null;
+        JavaParser.type_return type77 = null;
 
-        JavaParser.methodDeclaratorRest_return methodDeclaratorRest82 = null;
+        JavaParser.methodDeclaratorRest_return methodDeclaratorRest80 = null;
 
-        JavaParser.constructorDeclaratorRest_return constructorDeclaratorRest84 = null;
+        JavaParser.constructorDeclaratorRest_return constructorDeclaratorRest82 = null;
 
 
-        Object string_literal80_tree=null;
+        Object string_literal78_tree=null;
+        Object Identifier79_tree=null;
         Object Identifier81_tree=null;
-        Object Identifier83_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 28) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:445:5: ( ( type | 'void' ) Identifier methodDeclaratorRest | Identifier constructorDeclaratorRest )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:450:5: ( ( type | 'void' ) Identifier methodDeclaratorRest | Identifier constructorDeclaratorRest )
             int alt43=2;
             int LA43_0 = input.LA(1);
 
             if ( (LA43_0==Identifier) ) {
                 int LA43_1 = input.LA(2);
 
-                if ( (LA43_1==66) ) {
-                    alt43=2;
-                }
-                else if ( (LA43_1==Identifier||LA43_1==29||LA43_1==40||LA43_1==48) ) {
+                if ( (LA43_1==Identifier||LA43_1==29||LA43_1==40||LA43_1==48) ) {
                     alt43=1;
+                }
+                else if ( (LA43_1==66) ) {
+                    alt43=2;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return retval;}
@@ -3813,11 +3829,11 @@ public class JavaParser extends Parser {
             }
             switch (alt43) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:445:9: ( type | 'void' ) Identifier methodDeclaratorRest
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:450:9: ( type | 'void' ) Identifier methodDeclaratorRest
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:445:9: ( type | 'void' )
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:450:9: ( type | 'void' )
                     int alt42=2;
                     int LA42_0 = input.LA(1);
 
@@ -3836,24 +3852,24 @@ public class JavaParser extends Parser {
                     }
                     switch (alt42) {
                         case 1 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:445:10: type
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:450:10: type
                             {
-                            pushFollow(FOLLOW_type_in_genericMethodOrConstructorRest1352);
-                            type79=type();
+                            pushFollow(FOLLOW_type_in_genericMethodOrConstructorRest1366);
+                            type77=type();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, type79.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, type77.getTree());
 
                             }
                             break;
                         case 2 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:445:17: 'void'
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:450:17: 'void'
                             {
-                            string_literal80=(Token)match(input,47,FOLLOW_47_in_genericMethodOrConstructorRest1356); if (state.failed) return retval;
+                            string_literal78=(Token)match(input,47,FOLLOW_47_in_genericMethodOrConstructorRest1370); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
-                            string_literal80_tree = (Object)adaptor.create(string_literal80);
-                            adaptor.addChild(root_0, string_literal80_tree);
+                            string_literal78_tree = (Object)adaptor.create(string_literal78);
+                            adaptor.addChild(root_0, string_literal78_tree);
                             }
 
                             }
@@ -3861,36 +3877,36 @@ public class JavaParser extends Parser {
 
                     }
 
-                    Identifier81=(Token)match(input,Identifier,FOLLOW_Identifier_in_genericMethodOrConstructorRest1359); if (state.failed) return retval;
+                    Identifier79=(Token)match(input,Identifier,FOLLOW_Identifier_in_genericMethodOrConstructorRest1373); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    Identifier81_tree = (Object)adaptor.create(Identifier81);
-                    adaptor.addChild(root_0, Identifier81_tree);
+                    Identifier79_tree = (Object)adaptor.create(Identifier79);
+                    adaptor.addChild(root_0, Identifier79_tree);
                     }
-                    pushFollow(FOLLOW_methodDeclaratorRest_in_genericMethodOrConstructorRest1361);
-                    methodDeclaratorRest82=methodDeclaratorRest();
+                    pushFollow(FOLLOW_methodDeclaratorRest_in_genericMethodOrConstructorRest1375);
+                    methodDeclaratorRest80=methodDeclaratorRest();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, methodDeclaratorRest82.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, methodDeclaratorRest80.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:446:9: Identifier constructorDeclaratorRest
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:451:9: Identifier constructorDeclaratorRest
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    Identifier83=(Token)match(input,Identifier,FOLLOW_Identifier_in_genericMethodOrConstructorRest1371); if (state.failed) return retval;
+                    Identifier81=(Token)match(input,Identifier,FOLLOW_Identifier_in_genericMethodOrConstructorRest1385); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    Identifier83_tree = (Object)adaptor.create(Identifier83);
-                    adaptor.addChild(root_0, Identifier83_tree);
+                    Identifier81_tree = (Object)adaptor.create(Identifier81);
+                    adaptor.addChild(root_0, Identifier81_tree);
                     }
-                    pushFollow(FOLLOW_constructorDeclaratorRest_in_genericMethodOrConstructorRest1373);
-                    constructorDeclaratorRest84=constructorDeclaratorRest();
+                    pushFollow(FOLLOW_constructorDeclaratorRest_in_genericMethodOrConstructorRest1387);
+                    constructorDeclaratorRest82=constructorDeclaratorRest();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, constructorDeclaratorRest84.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, constructorDeclaratorRest82.getTree());
 
                     }
                     break;
@@ -3923,37 +3939,37 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "methodDeclaration"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:449:1: methodDeclaration : Identifier methodDeclaratorRest ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:454:1: methodDeclaration : Identifier methodDeclaratorRest ;
     public final JavaParser.methodDeclaration_return methodDeclaration() throws RecognitionException {
         JavaParser.methodDeclaration_return retval = new JavaParser.methodDeclaration_return();
         retval.start = input.LT(1);
         int methodDeclaration_StartIndex = input.index();
         Object root_0 = null;
 
-        Token Identifier85=null;
-        JavaParser.methodDeclaratorRest_return methodDeclaratorRest86 = null;
+        Token Identifier83=null;
+        JavaParser.methodDeclaratorRest_return methodDeclaratorRest84 = null;
 
 
-        Object Identifier85_tree=null;
+        Object Identifier83_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 29) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:450:5: ( Identifier methodDeclaratorRest )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:450:9: Identifier methodDeclaratorRest
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:455:5: ( Identifier methodDeclaratorRest )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:455:9: Identifier methodDeclaratorRest
             {
             root_0 = (Object)adaptor.nil();
 
-            Identifier85=(Token)match(input,Identifier,FOLLOW_Identifier_in_methodDeclaration1392); if (state.failed) return retval;
+            Identifier83=(Token)match(input,Identifier,FOLLOW_Identifier_in_methodDeclaration1406); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            Identifier85_tree = (Object)adaptor.create(Identifier85);
-            adaptor.addChild(root_0, Identifier85_tree);
+            Identifier83_tree = (Object)adaptor.create(Identifier83);
+            adaptor.addChild(root_0, Identifier83_tree);
             }
-            pushFollow(FOLLOW_methodDeclaratorRest_in_methodDeclaration1394);
-            methodDeclaratorRest86=methodDeclaratorRest();
+            pushFollow(FOLLOW_methodDeclaratorRest_in_methodDeclaration1408);
+            methodDeclaratorRest84=methodDeclaratorRest();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, methodDeclaratorRest86.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, methodDeclaratorRest84.getTree());
 
             }
 
@@ -3984,36 +4000,36 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "fieldDeclaration"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:453:1: fieldDeclaration : variableDeclarators ';' ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:458:1: fieldDeclaration : variableDeclarators ';' ;
     public final JavaParser.fieldDeclaration_return fieldDeclaration() throws RecognitionException {
         JavaParser.fieldDeclaration_return retval = new JavaParser.fieldDeclaration_return();
         retval.start = input.LT(1);
         int fieldDeclaration_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal88=null;
-        JavaParser.variableDeclarators_return variableDeclarators87 = null;
+        Token char_literal86=null;
+        JavaParser.variableDeclarators_return variableDeclarators85 = null;
 
 
-        Object char_literal88_tree=null;
+        Object char_literal86_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 30) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:454:5: ( variableDeclarators ';' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:454:9: variableDeclarators ';'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:459:5: ( variableDeclarators ';' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:459:9: variableDeclarators ';'
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_variableDeclarators_in_fieldDeclaration1413);
-            variableDeclarators87=variableDeclarators();
+            pushFollow(FOLLOW_variableDeclarators_in_fieldDeclaration1427);
+            variableDeclarators85=variableDeclarators();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, variableDeclarators87.getTree());
-            char_literal88=(Token)match(input,26,FOLLOW_26_in_fieldDeclaration1415); if (state.failed) return retval;
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, variableDeclarators85.getTree());
+            char_literal86=(Token)match(input,26,FOLLOW_26_in_fieldDeclaration1429); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal88_tree = (Object)adaptor.create(char_literal88);
-            adaptor.addChild(root_0, char_literal88_tree);
+            char_literal86_tree = (Object)adaptor.create(char_literal86);
+            adaptor.addChild(root_0, char_literal86_tree);
             }
 
             }
@@ -4045,24 +4061,24 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "interfaceBodyDeclaration"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:457:1: interfaceBodyDeclaration : ( modifiers interfaceMemberDecl | ';' );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:462:1: interfaceBodyDeclaration : ( modifiers interfaceMemberDecl | ';' );
     public final JavaParser.interfaceBodyDeclaration_return interfaceBodyDeclaration() throws RecognitionException {
         JavaParser.interfaceBodyDeclaration_return retval = new JavaParser.interfaceBodyDeclaration_return();
         retval.start = input.LT(1);
         int interfaceBodyDeclaration_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal91=null;
-        JavaParser.modifiers_return modifiers89 = null;
+        Token char_literal89=null;
+        JavaParser.modifiers_return modifiers87 = null;
 
-        JavaParser.interfaceMemberDecl_return interfaceMemberDecl90 = null;
+        JavaParser.interfaceMemberDecl_return interfaceMemberDecl88 = null;
 
 
-        Object char_literal91_tree=null;
+        Object char_literal89_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 31) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:458:5: ( modifiers interfaceMemberDecl | ';' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:463:5: ( modifiers interfaceMemberDecl | ';' )
             int alt44=2;
             int LA44_0 = input.LA(1);
 
@@ -4081,34 +4097,34 @@ public class JavaParser extends Parser {
             }
             switch (alt44) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:458:9: modifiers interfaceMemberDecl
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:463:9: modifiers interfaceMemberDecl
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_modifiers_in_interfaceBodyDeclaration1442);
-                    modifiers89=modifiers();
+                    pushFollow(FOLLOW_modifiers_in_interfaceBodyDeclaration1456);
+                    modifiers87=modifiers();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, modifiers89.getTree());
-                    pushFollow(FOLLOW_interfaceMemberDecl_in_interfaceBodyDeclaration1444);
-                    interfaceMemberDecl90=interfaceMemberDecl();
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, modifiers87.getTree());
+                    pushFollow(FOLLOW_interfaceMemberDecl_in_interfaceBodyDeclaration1458);
+                    interfaceMemberDecl88=interfaceMemberDecl();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, interfaceMemberDecl90.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, interfaceMemberDecl88.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:459:9: ';'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:464:9: ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal91=(Token)match(input,26,FOLLOW_26_in_interfaceBodyDeclaration1454); if (state.failed) return retval;
+                    char_literal89=(Token)match(input,26,FOLLOW_26_in_interfaceBodyDeclaration1468); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal91_tree = (Object)adaptor.create(char_literal91);
-                    adaptor.addChild(root_0, char_literal91_tree);
+                    char_literal89_tree = (Object)adaptor.create(char_literal89);
+                    adaptor.addChild(root_0, char_literal89_tree);
                     }
 
                     }
@@ -4142,32 +4158,32 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "interfaceMemberDecl"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:462:1: interfaceMemberDecl : ( interfaceMethodOrFieldDecl | interfaceGenericMethodDecl | 'void' Identifier voidInterfaceMethodDeclaratorRest | interfaceDeclaration | classDeclaration );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:467:1: interfaceMemberDecl : ( interfaceMethodOrFieldDecl | interfaceGenericMethodDecl | 'void' Identifier voidInterfaceMethodDeclaratorRest | interfaceDeclaration | classDeclaration );
     public final JavaParser.interfaceMemberDecl_return interfaceMemberDecl() throws RecognitionException {
         JavaParser.interfaceMemberDecl_return retval = new JavaParser.interfaceMemberDecl_return();
         retval.start = input.LT(1);
         int interfaceMemberDecl_StartIndex = input.index();
         Object root_0 = null;
 
-        Token string_literal94=null;
-        Token Identifier95=null;
-        JavaParser.interfaceMethodOrFieldDecl_return interfaceMethodOrFieldDecl92 = null;
+        Token string_literal92=null;
+        Token Identifier93=null;
+        JavaParser.interfaceMethodOrFieldDecl_return interfaceMethodOrFieldDecl90 = null;
 
-        JavaParser.interfaceGenericMethodDecl_return interfaceGenericMethodDecl93 = null;
+        JavaParser.interfaceGenericMethodDecl_return interfaceGenericMethodDecl91 = null;
 
-        JavaParser.voidInterfaceMethodDeclaratorRest_return voidInterfaceMethodDeclaratorRest96 = null;
+        JavaParser.voidInterfaceMethodDeclaratorRest_return voidInterfaceMethodDeclaratorRest94 = null;
 
-        JavaParser.interfaceDeclaration_return interfaceDeclaration97 = null;
+        JavaParser.interfaceDeclaration_return interfaceDeclaration95 = null;
 
-        JavaParser.classDeclaration_return classDeclaration98 = null;
+        JavaParser.classDeclaration_return classDeclaration96 = null;
 
 
-        Object string_literal94_tree=null;
-        Object Identifier95_tree=null;
+        Object string_literal92_tree=null;
+        Object Identifier93_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 32) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:463:5: ( interfaceMethodOrFieldDecl | interfaceGenericMethodDecl | 'void' Identifier voidInterfaceMethodDeclaratorRest | interfaceDeclaration | classDeclaration )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:468:5: ( interfaceMethodOrFieldDecl | interfaceGenericMethodDecl | 'void' Identifier voidInterfaceMethodDeclaratorRest | interfaceDeclaration | classDeclaration )
             int alt45=5;
             switch ( input.LA(1) ) {
             case Identifier:
@@ -4215,82 +4231,82 @@ public class JavaParser extends Parser {
 
             switch (alt45) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:463:9: interfaceMethodOrFieldDecl
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:468:9: interfaceMethodOrFieldDecl
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_interfaceMethodOrFieldDecl_in_interfaceMemberDecl1473);
-                    interfaceMethodOrFieldDecl92=interfaceMethodOrFieldDecl();
+                    pushFollow(FOLLOW_interfaceMethodOrFieldDecl_in_interfaceMemberDecl1487);
+                    interfaceMethodOrFieldDecl90=interfaceMethodOrFieldDecl();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, interfaceMethodOrFieldDecl92.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, interfaceMethodOrFieldDecl90.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:464:9: interfaceGenericMethodDecl
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:469:9: interfaceGenericMethodDecl
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_interfaceGenericMethodDecl_in_interfaceMemberDecl1483);
-                    interfaceGenericMethodDecl93=interfaceGenericMethodDecl();
+                    pushFollow(FOLLOW_interfaceGenericMethodDecl_in_interfaceMemberDecl1497);
+                    interfaceGenericMethodDecl91=interfaceGenericMethodDecl();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, interfaceGenericMethodDecl93.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, interfaceGenericMethodDecl91.getTree());
 
                     }
                     break;
                 case 3 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:465:9: 'void' Identifier voidInterfaceMethodDeclaratorRest
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:470:9: 'void' Identifier voidInterfaceMethodDeclaratorRest
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal94=(Token)match(input,47,FOLLOW_47_in_interfaceMemberDecl1493); if (state.failed) return retval;
+                    string_literal92=(Token)match(input,47,FOLLOW_47_in_interfaceMemberDecl1507); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal94_tree = (Object)adaptor.create(string_literal94);
-                    adaptor.addChild(root_0, string_literal94_tree);
+                    string_literal92_tree = (Object)adaptor.create(string_literal92);
+                    adaptor.addChild(root_0, string_literal92_tree);
                     }
-                    Identifier95=(Token)match(input,Identifier,FOLLOW_Identifier_in_interfaceMemberDecl1495); if (state.failed) return retval;
+                    Identifier93=(Token)match(input,Identifier,FOLLOW_Identifier_in_interfaceMemberDecl1509); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    Identifier95_tree = (Object)adaptor.create(Identifier95);
-                    adaptor.addChild(root_0, Identifier95_tree);
+                    Identifier93_tree = (Object)adaptor.create(Identifier93);
+                    adaptor.addChild(root_0, Identifier93_tree);
                     }
-                    pushFollow(FOLLOW_voidInterfaceMethodDeclaratorRest_in_interfaceMemberDecl1497);
-                    voidInterfaceMethodDeclaratorRest96=voidInterfaceMethodDeclaratorRest();
+                    pushFollow(FOLLOW_voidInterfaceMethodDeclaratorRest_in_interfaceMemberDecl1511);
+                    voidInterfaceMethodDeclaratorRest94=voidInterfaceMethodDeclaratorRest();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, voidInterfaceMethodDeclaratorRest96.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, voidInterfaceMethodDeclaratorRest94.getTree());
 
                     }
                     break;
                 case 4 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:466:9: interfaceDeclaration
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:471:9: interfaceDeclaration
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_interfaceDeclaration_in_interfaceMemberDecl1507);
-                    interfaceDeclaration97=interfaceDeclaration();
+                    pushFollow(FOLLOW_interfaceDeclaration_in_interfaceMemberDecl1521);
+                    interfaceDeclaration95=interfaceDeclaration();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, interfaceDeclaration97.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, interfaceDeclaration95.getTree());
 
                     }
                     break;
                 case 5 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:467:9: classDeclaration
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:472:9: classDeclaration
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_classDeclaration_in_interfaceMemberDecl1517);
-                    classDeclaration98=classDeclaration();
+                    pushFollow(FOLLOW_classDeclaration_in_interfaceMemberDecl1531);
+                    classDeclaration96=classDeclaration();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, classDeclaration98.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, classDeclaration96.getTree());
 
                     }
                     break;
@@ -4323,45 +4339,45 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "interfaceMethodOrFieldDecl"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:470:1: interfaceMethodOrFieldDecl : type Identifier interfaceMethodOrFieldRest ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:475:1: interfaceMethodOrFieldDecl : type Identifier interfaceMethodOrFieldRest ;
     public final JavaParser.interfaceMethodOrFieldDecl_return interfaceMethodOrFieldDecl() throws RecognitionException {
         JavaParser.interfaceMethodOrFieldDecl_return retval = new JavaParser.interfaceMethodOrFieldDecl_return();
         retval.start = input.LT(1);
         int interfaceMethodOrFieldDecl_StartIndex = input.index();
         Object root_0 = null;
 
-        Token Identifier100=null;
-        JavaParser.type_return type99 = null;
+        Token Identifier98=null;
+        JavaParser.type_return type97 = null;
 
-        JavaParser.interfaceMethodOrFieldRest_return interfaceMethodOrFieldRest101 = null;
+        JavaParser.interfaceMethodOrFieldRest_return interfaceMethodOrFieldRest99 = null;
 
 
-        Object Identifier100_tree=null;
+        Object Identifier98_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 33) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:471:5: ( type Identifier interfaceMethodOrFieldRest )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:471:9: type Identifier interfaceMethodOrFieldRest
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:476:5: ( type Identifier interfaceMethodOrFieldRest )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:476:9: type Identifier interfaceMethodOrFieldRest
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_type_in_interfaceMethodOrFieldDecl1540);
-            type99=type();
+            pushFollow(FOLLOW_type_in_interfaceMethodOrFieldDecl1554);
+            type97=type();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, type99.getTree());
-            Identifier100=(Token)match(input,Identifier,FOLLOW_Identifier_in_interfaceMethodOrFieldDecl1542); if (state.failed) return retval;
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, type97.getTree());
+            Identifier98=(Token)match(input,Identifier,FOLLOW_Identifier_in_interfaceMethodOrFieldDecl1556); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            Identifier100_tree = (Object)adaptor.create(Identifier100);
-            adaptor.addChild(root_0, Identifier100_tree);
+            Identifier98_tree = (Object)adaptor.create(Identifier98);
+            adaptor.addChild(root_0, Identifier98_tree);
             }
-            pushFollow(FOLLOW_interfaceMethodOrFieldRest_in_interfaceMethodOrFieldDecl1544);
-            interfaceMethodOrFieldRest101=interfaceMethodOrFieldRest();
+            pushFollow(FOLLOW_interfaceMethodOrFieldRest_in_interfaceMethodOrFieldDecl1558);
+            interfaceMethodOrFieldRest99=interfaceMethodOrFieldRest();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, interfaceMethodOrFieldRest101.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, interfaceMethodOrFieldRest99.getTree());
 
             }
 
@@ -4392,24 +4408,24 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "interfaceMethodOrFieldRest"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:474:1: interfaceMethodOrFieldRest : ( constantDeclaratorsRest ';' | interfaceMethodDeclaratorRest );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:479:1: interfaceMethodOrFieldRest : ( constantDeclaratorsRest ';' | interfaceMethodDeclaratorRest );
     public final JavaParser.interfaceMethodOrFieldRest_return interfaceMethodOrFieldRest() throws RecognitionException {
         JavaParser.interfaceMethodOrFieldRest_return retval = new JavaParser.interfaceMethodOrFieldRest_return();
         retval.start = input.LT(1);
         int interfaceMethodOrFieldRest_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal103=null;
-        JavaParser.constantDeclaratorsRest_return constantDeclaratorsRest102 = null;
+        Token char_literal101=null;
+        JavaParser.constantDeclaratorsRest_return constantDeclaratorsRest100 = null;
 
-        JavaParser.interfaceMethodDeclaratorRest_return interfaceMethodDeclaratorRest104 = null;
+        JavaParser.interfaceMethodDeclaratorRest_return interfaceMethodDeclaratorRest102 = null;
 
 
-        Object char_literal103_tree=null;
+        Object char_literal101_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 34) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:475:5: ( constantDeclaratorsRest ';' | interfaceMethodDeclaratorRest )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:480:5: ( constantDeclaratorsRest ';' | interfaceMethodDeclaratorRest )
             int alt46=2;
             int LA46_0 = input.LA(1);
 
@@ -4428,35 +4444,35 @@ public class JavaParser extends Parser {
             }
             switch (alt46) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:475:9: constantDeclaratorsRest ';'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:480:9: constantDeclaratorsRest ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_constantDeclaratorsRest_in_interfaceMethodOrFieldRest1567);
-                    constantDeclaratorsRest102=constantDeclaratorsRest();
+                    pushFollow(FOLLOW_constantDeclaratorsRest_in_interfaceMethodOrFieldRest1581);
+                    constantDeclaratorsRest100=constantDeclaratorsRest();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, constantDeclaratorsRest102.getTree());
-                    char_literal103=(Token)match(input,26,FOLLOW_26_in_interfaceMethodOrFieldRest1569); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, constantDeclaratorsRest100.getTree());
+                    char_literal101=(Token)match(input,26,FOLLOW_26_in_interfaceMethodOrFieldRest1583); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal103_tree = (Object)adaptor.create(char_literal103);
-                    adaptor.addChild(root_0, char_literal103_tree);
+                    char_literal101_tree = (Object)adaptor.create(char_literal101);
+                    adaptor.addChild(root_0, char_literal101_tree);
                     }
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:476:9: interfaceMethodDeclaratorRest
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:481:9: interfaceMethodDeclaratorRest
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_interfaceMethodDeclaratorRest_in_interfaceMethodOrFieldRest1579);
-                    interfaceMethodDeclaratorRest104=interfaceMethodDeclaratorRest();
+                    pushFollow(FOLLOW_interfaceMethodDeclaratorRest_in_interfaceMethodOrFieldRest1593);
+                    interfaceMethodDeclaratorRest102=interfaceMethodDeclaratorRest();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, interfaceMethodDeclaratorRest104.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, interfaceMethodDeclaratorRest102.getTree());
 
                     }
                     break;
@@ -4489,43 +4505,43 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "methodDeclaratorRest"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:479:1: methodDeclaratorRest : formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ( methodBody | ';' ) ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:484:1: methodDeclaratorRest : formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ( methodBody | ';' ) ;
     public final JavaParser.methodDeclaratorRest_return methodDeclaratorRest() throws RecognitionException {
         JavaParser.methodDeclaratorRest_return retval = new JavaParser.methodDeclaratorRest_return();
         retval.start = input.LT(1);
         int methodDeclaratorRest_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal106=null;
-        Token char_literal107=null;
-        Token string_literal108=null;
-        Token char_literal111=null;
-        JavaParser.formalParameters_return formalParameters105 = null;
+        Token char_literal104=null;
+        Token char_literal105=null;
+        Token string_literal106=null;
+        Token char_literal109=null;
+        JavaParser.formalParameters_return formalParameters103 = null;
 
-        JavaParser.qualifiedNameList_return qualifiedNameList109 = null;
+        JavaParser.qualifiedNameList_return qualifiedNameList107 = null;
 
-        JavaParser.methodBody_return methodBody110 = null;
+        JavaParser.methodBody_return methodBody108 = null;
 
 
-        Object char_literal106_tree=null;
-        Object char_literal107_tree=null;
-        Object string_literal108_tree=null;
-        Object char_literal111_tree=null;
+        Object char_literal104_tree=null;
+        Object char_literal105_tree=null;
+        Object string_literal106_tree=null;
+        Object char_literal109_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 35) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:480:5: ( formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ( methodBody | ';' ) )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:480:9: formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ( methodBody | ';' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:485:5: ( formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ( methodBody | ';' ) )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:485:9: formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ( methodBody | ';' )
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_formalParameters_in_methodDeclaratorRest1602);
-            formalParameters105=formalParameters();
+            pushFollow(FOLLOW_formalParameters_in_methodDeclaratorRest1616);
+            formalParameters103=formalParameters();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, formalParameters105.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:480:26: ( '[' ']' )*
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, formalParameters103.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:485:26: ( '[' ']' )*
             loop47:
             do {
                 int alt47=2;
@@ -4538,17 +4554,17 @@ public class JavaParser extends Parser {
 
                 switch (alt47) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:480:27: '[' ']'
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:485:27: '[' ']'
             	    {
-            	    char_literal106=(Token)match(input,48,FOLLOW_48_in_methodDeclaratorRest1605); if (state.failed) return retval;
+            	    char_literal104=(Token)match(input,48,FOLLOW_48_in_methodDeclaratorRest1619); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal106_tree = (Object)adaptor.create(char_literal106);
-            	    adaptor.addChild(root_0, char_literal106_tree);
+            	    char_literal104_tree = (Object)adaptor.create(char_literal104);
+            	    adaptor.addChild(root_0, char_literal104_tree);
             	    }
-            	    char_literal107=(Token)match(input,49,FOLLOW_49_in_methodDeclaratorRest1607); if (state.failed) return retval;
+            	    char_literal105=(Token)match(input,49,FOLLOW_49_in_methodDeclaratorRest1621); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal107_tree = (Object)adaptor.create(char_literal107);
-            	    adaptor.addChild(root_0, char_literal107_tree);
+            	    char_literal105_tree = (Object)adaptor.create(char_literal105);
+            	    adaptor.addChild(root_0, char_literal105_tree);
             	    }
 
             	    }
@@ -4559,7 +4575,7 @@ public class JavaParser extends Parser {
                 }
             } while (true);
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:481:9: ( 'throws' qualifiedNameList )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:486:9: ( 'throws' qualifiedNameList )?
             int alt48=2;
             int LA48_0 = input.LA(1);
 
@@ -4568,26 +4584,26 @@ public class JavaParser extends Parser {
             }
             switch (alt48) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:481:10: 'throws' qualifiedNameList
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:486:10: 'throws' qualifiedNameList
                     {
-                    string_literal108=(Token)match(input,50,FOLLOW_50_in_methodDeclaratorRest1620); if (state.failed) return retval;
+                    string_literal106=(Token)match(input,50,FOLLOW_50_in_methodDeclaratorRest1634); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal108_tree = (Object)adaptor.create(string_literal108);
-                    adaptor.addChild(root_0, string_literal108_tree);
+                    string_literal106_tree = (Object)adaptor.create(string_literal106);
+                    adaptor.addChild(root_0, string_literal106_tree);
                     }
-                    pushFollow(FOLLOW_qualifiedNameList_in_methodDeclaratorRest1622);
-                    qualifiedNameList109=qualifiedNameList();
+                    pushFollow(FOLLOW_qualifiedNameList_in_methodDeclaratorRest1636);
+                    qualifiedNameList107=qualifiedNameList();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, qualifiedNameList109.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, qualifiedNameList107.getTree());
 
                     }
                     break;
 
             }
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:482:9: ( methodBody | ';' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:487:9: ( methodBody | ';' )
             int alt49=2;
             int LA49_0 = input.LA(1);
 
@@ -4606,24 +4622,24 @@ public class JavaParser extends Parser {
             }
             switch (alt49) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:482:13: methodBody
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:487:13: methodBody
                     {
-                    pushFollow(FOLLOW_methodBody_in_methodDeclaratorRest1638);
-                    methodBody110=methodBody();
+                    pushFollow(FOLLOW_methodBody_in_methodDeclaratorRest1652);
+                    methodBody108=methodBody();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, methodBody110.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, methodBody108.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:483:13: ';'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:488:13: ';'
                     {
-                    char_literal111=(Token)match(input,26,FOLLOW_26_in_methodDeclaratorRest1652); if (state.failed) return retval;
+                    char_literal109=(Token)match(input,26,FOLLOW_26_in_methodDeclaratorRest1666); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal111_tree = (Object)adaptor.create(char_literal111);
-                    adaptor.addChild(root_0, char_literal111_tree);
+                    char_literal109_tree = (Object)adaptor.create(char_literal109);
+                    adaptor.addChild(root_0, char_literal109_tree);
                     }
 
                     }
@@ -4661,39 +4677,39 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "voidMethodDeclaratorRest"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:487:1: voidMethodDeclaratorRest : formalParameters ( 'throws' qualifiedNameList )? ( methodBody | ';' ) ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:492:1: voidMethodDeclaratorRest : formalParameters ( 'throws' qualifiedNameList )? ( methodBody | ';' ) ;
     public final JavaParser.voidMethodDeclaratorRest_return voidMethodDeclaratorRest() throws RecognitionException {
         JavaParser.voidMethodDeclaratorRest_return retval = new JavaParser.voidMethodDeclaratorRest_return();
         retval.start = input.LT(1);
         int voidMethodDeclaratorRest_StartIndex = input.index();
         Object root_0 = null;
 
-        Token string_literal113=null;
-        Token char_literal116=null;
-        JavaParser.formalParameters_return formalParameters112 = null;
+        Token string_literal111=null;
+        Token char_literal114=null;
+        JavaParser.formalParameters_return formalParameters110 = null;
 
-        JavaParser.qualifiedNameList_return qualifiedNameList114 = null;
+        JavaParser.qualifiedNameList_return qualifiedNameList112 = null;
 
-        JavaParser.methodBody_return methodBody115 = null;
+        JavaParser.methodBody_return methodBody113 = null;
 
 
-        Object string_literal113_tree=null;
-        Object char_literal116_tree=null;
+        Object string_literal111_tree=null;
+        Object char_literal114_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 36) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:488:5: ( formalParameters ( 'throws' qualifiedNameList )? ( methodBody | ';' ) )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:488:9: formalParameters ( 'throws' qualifiedNameList )? ( methodBody | ';' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:493:5: ( formalParameters ( 'throws' qualifiedNameList )? ( methodBody | ';' ) )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:493:9: formalParameters ( 'throws' qualifiedNameList )? ( methodBody | ';' )
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_formalParameters_in_voidMethodDeclaratorRest1685);
-            formalParameters112=formalParameters();
+            pushFollow(FOLLOW_formalParameters_in_voidMethodDeclaratorRest1699);
+            formalParameters110=formalParameters();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, formalParameters112.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:488:26: ( 'throws' qualifiedNameList )?
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, formalParameters110.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:493:26: ( 'throws' qualifiedNameList )?
             int alt50=2;
             int LA50_0 = input.LA(1);
 
@@ -4702,26 +4718,26 @@ public class JavaParser extends Parser {
             }
             switch (alt50) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:488:27: 'throws' qualifiedNameList
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:493:27: 'throws' qualifiedNameList
                     {
-                    string_literal113=(Token)match(input,50,FOLLOW_50_in_voidMethodDeclaratorRest1688); if (state.failed) return retval;
+                    string_literal111=(Token)match(input,50,FOLLOW_50_in_voidMethodDeclaratorRest1702); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal113_tree = (Object)adaptor.create(string_literal113);
-                    adaptor.addChild(root_0, string_literal113_tree);
+                    string_literal111_tree = (Object)adaptor.create(string_literal111);
+                    adaptor.addChild(root_0, string_literal111_tree);
                     }
-                    pushFollow(FOLLOW_qualifiedNameList_in_voidMethodDeclaratorRest1690);
-                    qualifiedNameList114=qualifiedNameList();
+                    pushFollow(FOLLOW_qualifiedNameList_in_voidMethodDeclaratorRest1704);
+                    qualifiedNameList112=qualifiedNameList();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, qualifiedNameList114.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, qualifiedNameList112.getTree());
 
                     }
                     break;
 
             }
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:489:9: ( methodBody | ';' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:494:9: ( methodBody | ';' )
             int alt51=2;
             int LA51_0 = input.LA(1);
 
@@ -4740,24 +4756,24 @@ public class JavaParser extends Parser {
             }
             switch (alt51) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:489:13: methodBody
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:494:13: methodBody
                     {
-                    pushFollow(FOLLOW_methodBody_in_voidMethodDeclaratorRest1706);
-                    methodBody115=methodBody();
+                    pushFollow(FOLLOW_methodBody_in_voidMethodDeclaratorRest1720);
+                    methodBody113=methodBody();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, methodBody115.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, methodBody113.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:490:13: ';'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:495:13: ';'
                     {
-                    char_literal116=(Token)match(input,26,FOLLOW_26_in_voidMethodDeclaratorRest1720); if (state.failed) return retval;
+                    char_literal114=(Token)match(input,26,FOLLOW_26_in_voidMethodDeclaratorRest1734); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal116_tree = (Object)adaptor.create(char_literal116);
-                    adaptor.addChild(root_0, char_literal116_tree);
+                    char_literal114_tree = (Object)adaptor.create(char_literal114);
+                    adaptor.addChild(root_0, char_literal114_tree);
                     }
 
                     }
@@ -4795,41 +4811,41 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "interfaceMethodDeclaratorRest"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:494:1: interfaceMethodDeclaratorRest : formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ';' ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:499:1: interfaceMethodDeclaratorRest : formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ';' ;
     public final JavaParser.interfaceMethodDeclaratorRest_return interfaceMethodDeclaratorRest() throws RecognitionException {
         JavaParser.interfaceMethodDeclaratorRest_return retval = new JavaParser.interfaceMethodDeclaratorRest_return();
         retval.start = input.LT(1);
         int interfaceMethodDeclaratorRest_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal118=null;
-        Token char_literal119=null;
-        Token string_literal120=null;
-        Token char_literal122=null;
-        JavaParser.formalParameters_return formalParameters117 = null;
+        Token char_literal116=null;
+        Token char_literal117=null;
+        Token string_literal118=null;
+        Token char_literal120=null;
+        JavaParser.formalParameters_return formalParameters115 = null;
 
-        JavaParser.qualifiedNameList_return qualifiedNameList121 = null;
+        JavaParser.qualifiedNameList_return qualifiedNameList119 = null;
 
 
-        Object char_literal118_tree=null;
-        Object char_literal119_tree=null;
-        Object string_literal120_tree=null;
-        Object char_literal122_tree=null;
+        Object char_literal116_tree=null;
+        Object char_literal117_tree=null;
+        Object string_literal118_tree=null;
+        Object char_literal120_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 37) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:495:5: ( formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ';' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:495:9: formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ';'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:500:5: ( formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ';' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:500:9: formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ';'
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_formalParameters_in_interfaceMethodDeclaratorRest1753);
-            formalParameters117=formalParameters();
+            pushFollow(FOLLOW_formalParameters_in_interfaceMethodDeclaratorRest1767);
+            formalParameters115=formalParameters();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, formalParameters117.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:495:26: ( '[' ']' )*
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, formalParameters115.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:500:26: ( '[' ']' )*
             loop52:
             do {
                 int alt52=2;
@@ -4842,17 +4858,17 @@ public class JavaParser extends Parser {
 
                 switch (alt52) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:495:27: '[' ']'
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:500:27: '[' ']'
             	    {
-            	    char_literal118=(Token)match(input,48,FOLLOW_48_in_interfaceMethodDeclaratorRest1756); if (state.failed) return retval;
+            	    char_literal116=(Token)match(input,48,FOLLOW_48_in_interfaceMethodDeclaratorRest1770); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal118_tree = (Object)adaptor.create(char_literal118);
-            	    adaptor.addChild(root_0, char_literal118_tree);
+            	    char_literal116_tree = (Object)adaptor.create(char_literal116);
+            	    adaptor.addChild(root_0, char_literal116_tree);
             	    }
-            	    char_literal119=(Token)match(input,49,FOLLOW_49_in_interfaceMethodDeclaratorRest1758); if (state.failed) return retval;
+            	    char_literal117=(Token)match(input,49,FOLLOW_49_in_interfaceMethodDeclaratorRest1772); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal119_tree = (Object)adaptor.create(char_literal119);
-            	    adaptor.addChild(root_0, char_literal119_tree);
+            	    char_literal117_tree = (Object)adaptor.create(char_literal117);
+            	    adaptor.addChild(root_0, char_literal117_tree);
             	    }
 
             	    }
@@ -4863,7 +4879,7 @@ public class JavaParser extends Parser {
                 }
             } while (true);
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:495:37: ( 'throws' qualifiedNameList )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:500:37: ( 'throws' qualifiedNameList )?
             int alt53=2;
             int LA53_0 = input.LA(1);
 
@@ -4872,29 +4888,29 @@ public class JavaParser extends Parser {
             }
             switch (alt53) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:495:38: 'throws' qualifiedNameList
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:500:38: 'throws' qualifiedNameList
                     {
-                    string_literal120=(Token)match(input,50,FOLLOW_50_in_interfaceMethodDeclaratorRest1763); if (state.failed) return retval;
+                    string_literal118=(Token)match(input,50,FOLLOW_50_in_interfaceMethodDeclaratorRest1777); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal120_tree = (Object)adaptor.create(string_literal120);
-                    adaptor.addChild(root_0, string_literal120_tree);
+                    string_literal118_tree = (Object)adaptor.create(string_literal118);
+                    adaptor.addChild(root_0, string_literal118_tree);
                     }
-                    pushFollow(FOLLOW_qualifiedNameList_in_interfaceMethodDeclaratorRest1765);
-                    qualifiedNameList121=qualifiedNameList();
+                    pushFollow(FOLLOW_qualifiedNameList_in_interfaceMethodDeclaratorRest1779);
+                    qualifiedNameList119=qualifiedNameList();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, qualifiedNameList121.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, qualifiedNameList119.getTree());
 
                     }
                     break;
 
             }
 
-            char_literal122=(Token)match(input,26,FOLLOW_26_in_interfaceMethodDeclaratorRest1769); if (state.failed) return retval;
+            char_literal120=(Token)match(input,26,FOLLOW_26_in_interfaceMethodDeclaratorRest1783); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal122_tree = (Object)adaptor.create(char_literal122);
-            adaptor.addChild(root_0, char_literal122_tree);
+            char_literal120_tree = (Object)adaptor.create(char_literal120);
+            adaptor.addChild(root_0, char_literal120_tree);
             }
 
             }
@@ -4926,39 +4942,39 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "interfaceGenericMethodDecl"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:498:1: interfaceGenericMethodDecl : typeParameters ( type | 'void' ) Identifier interfaceMethodDeclaratorRest ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:503:1: interfaceGenericMethodDecl : typeParameters ( type | 'void' ) Identifier interfaceMethodDeclaratorRest ;
     public final JavaParser.interfaceGenericMethodDecl_return interfaceGenericMethodDecl() throws RecognitionException {
         JavaParser.interfaceGenericMethodDecl_return retval = new JavaParser.interfaceGenericMethodDecl_return();
         retval.start = input.LT(1);
         int interfaceGenericMethodDecl_StartIndex = input.index();
         Object root_0 = null;
 
-        Token string_literal125=null;
-        Token Identifier126=null;
-        JavaParser.typeParameters_return typeParameters123 = null;
+        Token string_literal123=null;
+        Token Identifier124=null;
+        JavaParser.typeParameters_return typeParameters121 = null;
 
-        JavaParser.type_return type124 = null;
+        JavaParser.type_return type122 = null;
 
-        JavaParser.interfaceMethodDeclaratorRest_return interfaceMethodDeclaratorRest127 = null;
+        JavaParser.interfaceMethodDeclaratorRest_return interfaceMethodDeclaratorRest125 = null;
 
 
-        Object string_literal125_tree=null;
-        Object Identifier126_tree=null;
+        Object string_literal123_tree=null;
+        Object Identifier124_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 38) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:499:5: ( typeParameters ( type | 'void' ) Identifier interfaceMethodDeclaratorRest )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:499:9: typeParameters ( type | 'void' ) Identifier interfaceMethodDeclaratorRest
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:504:5: ( typeParameters ( type | 'void' ) Identifier interfaceMethodDeclaratorRest )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:504:9: typeParameters ( type | 'void' ) Identifier interfaceMethodDeclaratorRest
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_typeParameters_in_interfaceGenericMethodDecl1792);
-            typeParameters123=typeParameters();
+            pushFollow(FOLLOW_typeParameters_in_interfaceGenericMethodDecl1806);
+            typeParameters121=typeParameters();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, typeParameters123.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:499:24: ( type | 'void' )
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, typeParameters121.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:504:24: ( type | 'void' )
             int alt54=2;
             int LA54_0 = input.LA(1);
 
@@ -4977,24 +4993,24 @@ public class JavaParser extends Parser {
             }
             switch (alt54) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:499:25: type
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:504:25: type
                     {
-                    pushFollow(FOLLOW_type_in_interfaceGenericMethodDecl1795);
-                    type124=type();
+                    pushFollow(FOLLOW_type_in_interfaceGenericMethodDecl1809);
+                    type122=type();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, type124.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, type122.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:499:32: 'void'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:504:32: 'void'
                     {
-                    string_literal125=(Token)match(input,47,FOLLOW_47_in_interfaceGenericMethodDecl1799); if (state.failed) return retval;
+                    string_literal123=(Token)match(input,47,FOLLOW_47_in_interfaceGenericMethodDecl1813); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal125_tree = (Object)adaptor.create(string_literal125);
-                    adaptor.addChild(root_0, string_literal125_tree);
+                    string_literal123_tree = (Object)adaptor.create(string_literal123);
+                    adaptor.addChild(root_0, string_literal123_tree);
                     }
 
                     }
@@ -5002,17 +5018,17 @@ public class JavaParser extends Parser {
 
             }
 
-            Identifier126=(Token)match(input,Identifier,FOLLOW_Identifier_in_interfaceGenericMethodDecl1802); if (state.failed) return retval;
+            Identifier124=(Token)match(input,Identifier,FOLLOW_Identifier_in_interfaceGenericMethodDecl1816); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            Identifier126_tree = (Object)adaptor.create(Identifier126);
-            adaptor.addChild(root_0, Identifier126_tree);
+            Identifier124_tree = (Object)adaptor.create(Identifier124);
+            adaptor.addChild(root_0, Identifier124_tree);
             }
-            pushFollow(FOLLOW_interfaceMethodDeclaratorRest_in_interfaceGenericMethodDecl1812);
-            interfaceMethodDeclaratorRest127=interfaceMethodDeclaratorRest();
+            pushFollow(FOLLOW_interfaceMethodDeclaratorRest_in_interfaceGenericMethodDecl1826);
+            interfaceMethodDeclaratorRest125=interfaceMethodDeclaratorRest();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, interfaceMethodDeclaratorRest127.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, interfaceMethodDeclaratorRest125.getTree());
 
             }
 
@@ -5043,37 +5059,37 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "voidInterfaceMethodDeclaratorRest"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:503:1: voidInterfaceMethodDeclaratorRest : formalParameters ( 'throws' qualifiedNameList )? ';' ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:508:1: voidInterfaceMethodDeclaratorRest : formalParameters ( 'throws' qualifiedNameList )? ';' ;
     public final JavaParser.voidInterfaceMethodDeclaratorRest_return voidInterfaceMethodDeclaratorRest() throws RecognitionException {
         JavaParser.voidInterfaceMethodDeclaratorRest_return retval = new JavaParser.voidInterfaceMethodDeclaratorRest_return();
         retval.start = input.LT(1);
         int voidInterfaceMethodDeclaratorRest_StartIndex = input.index();
         Object root_0 = null;
 
-        Token string_literal129=null;
-        Token char_literal131=null;
-        JavaParser.formalParameters_return formalParameters128 = null;
+        Token string_literal127=null;
+        Token char_literal129=null;
+        JavaParser.formalParameters_return formalParameters126 = null;
 
-        JavaParser.qualifiedNameList_return qualifiedNameList130 = null;
+        JavaParser.qualifiedNameList_return qualifiedNameList128 = null;
 
 
-        Object string_literal129_tree=null;
-        Object char_literal131_tree=null;
+        Object string_literal127_tree=null;
+        Object char_literal129_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 39) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:504:5: ( formalParameters ( 'throws' qualifiedNameList )? ';' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:504:9: formalParameters ( 'throws' qualifiedNameList )? ';'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:509:5: ( formalParameters ( 'throws' qualifiedNameList )? ';' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:509:9: formalParameters ( 'throws' qualifiedNameList )? ';'
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_formalParameters_in_voidInterfaceMethodDeclaratorRest1835);
-            formalParameters128=formalParameters();
+            pushFollow(FOLLOW_formalParameters_in_voidInterfaceMethodDeclaratorRest1849);
+            formalParameters126=formalParameters();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, formalParameters128.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:504:26: ( 'throws' qualifiedNameList )?
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, formalParameters126.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:509:26: ( 'throws' qualifiedNameList )?
             int alt55=2;
             int LA55_0 = input.LA(1);
 
@@ -5082,29 +5098,29 @@ public class JavaParser extends Parser {
             }
             switch (alt55) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:504:27: 'throws' qualifiedNameList
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:509:27: 'throws' qualifiedNameList
                     {
-                    string_literal129=(Token)match(input,50,FOLLOW_50_in_voidInterfaceMethodDeclaratorRest1838); if (state.failed) return retval;
+                    string_literal127=(Token)match(input,50,FOLLOW_50_in_voidInterfaceMethodDeclaratorRest1852); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal129_tree = (Object)adaptor.create(string_literal129);
-                    adaptor.addChild(root_0, string_literal129_tree);
+                    string_literal127_tree = (Object)adaptor.create(string_literal127);
+                    adaptor.addChild(root_0, string_literal127_tree);
                     }
-                    pushFollow(FOLLOW_qualifiedNameList_in_voidInterfaceMethodDeclaratorRest1840);
-                    qualifiedNameList130=qualifiedNameList();
+                    pushFollow(FOLLOW_qualifiedNameList_in_voidInterfaceMethodDeclaratorRest1854);
+                    qualifiedNameList128=qualifiedNameList();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, qualifiedNameList130.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, qualifiedNameList128.getTree());
 
                     }
                     break;
 
             }
 
-            char_literal131=(Token)match(input,26,FOLLOW_26_in_voidInterfaceMethodDeclaratorRest1844); if (state.failed) return retval;
+            char_literal129=(Token)match(input,26,FOLLOW_26_in_voidInterfaceMethodDeclaratorRest1858); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal131_tree = (Object)adaptor.create(char_literal131);
-            adaptor.addChild(root_0, char_literal131_tree);
+            char_literal129_tree = (Object)adaptor.create(char_literal129);
+            adaptor.addChild(root_0, char_literal129_tree);
             }
 
             }
@@ -5136,37 +5152,37 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "constructorDeclaratorRest"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:507:1: constructorDeclaratorRest : formalParameters ( 'throws' qualifiedNameList )? constructorBody ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:512:1: constructorDeclaratorRest : formalParameters ( 'throws' qualifiedNameList )? constructorBody ;
     public final JavaParser.constructorDeclaratorRest_return constructorDeclaratorRest() throws RecognitionException {
         JavaParser.constructorDeclaratorRest_return retval = new JavaParser.constructorDeclaratorRest_return();
         retval.start = input.LT(1);
         int constructorDeclaratorRest_StartIndex = input.index();
         Object root_0 = null;
 
-        Token string_literal133=null;
-        JavaParser.formalParameters_return formalParameters132 = null;
+        Token string_literal131=null;
+        JavaParser.formalParameters_return formalParameters130 = null;
 
-        JavaParser.qualifiedNameList_return qualifiedNameList134 = null;
+        JavaParser.qualifiedNameList_return qualifiedNameList132 = null;
 
-        JavaParser.constructorBody_return constructorBody135 = null;
+        JavaParser.constructorBody_return constructorBody133 = null;
 
 
-        Object string_literal133_tree=null;
+        Object string_literal131_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 40) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:508:5: ( formalParameters ( 'throws' qualifiedNameList )? constructorBody )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:508:9: formalParameters ( 'throws' qualifiedNameList )? constructorBody
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:513:5: ( formalParameters ( 'throws' qualifiedNameList )? constructorBody )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:513:9: formalParameters ( 'throws' qualifiedNameList )? constructorBody
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_formalParameters_in_constructorDeclaratorRest1867);
-            formalParameters132=formalParameters();
+            pushFollow(FOLLOW_formalParameters_in_constructorDeclaratorRest1881);
+            formalParameters130=formalParameters();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, formalParameters132.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:508:26: ( 'throws' qualifiedNameList )?
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, formalParameters130.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:513:26: ( 'throws' qualifiedNameList )?
             int alt56=2;
             int LA56_0 = input.LA(1);
 
@@ -5175,31 +5191,31 @@ public class JavaParser extends Parser {
             }
             switch (alt56) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:508:27: 'throws' qualifiedNameList
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:513:27: 'throws' qualifiedNameList
                     {
-                    string_literal133=(Token)match(input,50,FOLLOW_50_in_constructorDeclaratorRest1870); if (state.failed) return retval;
+                    string_literal131=(Token)match(input,50,FOLLOW_50_in_constructorDeclaratorRest1884); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal133_tree = (Object)adaptor.create(string_literal133);
-                    adaptor.addChild(root_0, string_literal133_tree);
+                    string_literal131_tree = (Object)adaptor.create(string_literal131);
+                    adaptor.addChild(root_0, string_literal131_tree);
                     }
-                    pushFollow(FOLLOW_qualifiedNameList_in_constructorDeclaratorRest1872);
-                    qualifiedNameList134=qualifiedNameList();
+                    pushFollow(FOLLOW_qualifiedNameList_in_constructorDeclaratorRest1886);
+                    qualifiedNameList132=qualifiedNameList();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, qualifiedNameList134.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, qualifiedNameList132.getTree());
 
                     }
                     break;
 
             }
 
-            pushFollow(FOLLOW_constructorBody_in_constructorDeclaratorRest1876);
-            constructorBody135=constructorBody();
+            pushFollow(FOLLOW_constructorBody_in_constructorDeclaratorRest1890);
+            constructorBody133=constructorBody();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, constructorBody135.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, constructorBody133.getTree());
 
             }
 
@@ -5230,37 +5246,37 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "constantDeclarator"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:511:1: constantDeclarator : Identifier constantDeclaratorRest ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:516:1: constantDeclarator : Identifier constantDeclaratorRest ;
     public final JavaParser.constantDeclarator_return constantDeclarator() throws RecognitionException {
         JavaParser.constantDeclarator_return retval = new JavaParser.constantDeclarator_return();
         retval.start = input.LT(1);
         int constantDeclarator_StartIndex = input.index();
         Object root_0 = null;
 
-        Token Identifier136=null;
-        JavaParser.constantDeclaratorRest_return constantDeclaratorRest137 = null;
+        Token Identifier134=null;
+        JavaParser.constantDeclaratorRest_return constantDeclaratorRest135 = null;
 
 
-        Object Identifier136_tree=null;
+        Object Identifier134_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 41) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:512:5: ( Identifier constantDeclaratorRest )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:512:9: Identifier constantDeclaratorRest
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:517:5: ( Identifier constantDeclaratorRest )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:517:9: Identifier constantDeclaratorRest
             {
             root_0 = (Object)adaptor.nil();
 
-            Identifier136=(Token)match(input,Identifier,FOLLOW_Identifier_in_constantDeclarator1895); if (state.failed) return retval;
+            Identifier134=(Token)match(input,Identifier,FOLLOW_Identifier_in_constantDeclarator1909); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            Identifier136_tree = (Object)adaptor.create(Identifier136);
-            adaptor.addChild(root_0, Identifier136_tree);
+            Identifier134_tree = (Object)adaptor.create(Identifier134);
+            adaptor.addChild(root_0, Identifier134_tree);
             }
-            pushFollow(FOLLOW_constantDeclaratorRest_in_constantDeclarator1897);
-            constantDeclaratorRest137=constantDeclaratorRest();
+            pushFollow(FOLLOW_constantDeclaratorRest_in_constantDeclarator1911);
+            constantDeclaratorRest135=constantDeclaratorRest();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, constantDeclaratorRest137.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, constantDeclaratorRest135.getTree());
 
             }
 
@@ -5291,35 +5307,35 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "variableDeclarators"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:515:1: variableDeclarators : variableDeclarator ( ',' variableDeclarator )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:520:1: variableDeclarators : variableDeclarator ( ',' variableDeclarator )* ;
     public final JavaParser.variableDeclarators_return variableDeclarators() throws RecognitionException {
         JavaParser.variableDeclarators_return retval = new JavaParser.variableDeclarators_return();
         retval.start = input.LT(1);
         int variableDeclarators_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal139=null;
+        Token char_literal137=null;
+        JavaParser.variableDeclarator_return variableDeclarator136 = null;
+
         JavaParser.variableDeclarator_return variableDeclarator138 = null;
 
-        JavaParser.variableDeclarator_return variableDeclarator140 = null;
 
-
-        Object char_literal139_tree=null;
+        Object char_literal137_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 42) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:516:5: ( variableDeclarator ( ',' variableDeclarator )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:516:9: variableDeclarator ( ',' variableDeclarator )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:521:5: ( variableDeclarator ( ',' variableDeclarator )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:521:9: variableDeclarator ( ',' variableDeclarator )*
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_variableDeclarator_in_variableDeclarators1920);
-            variableDeclarator138=variableDeclarator();
+            pushFollow(FOLLOW_variableDeclarator_in_variableDeclarators1934);
+            variableDeclarator136=variableDeclarator();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, variableDeclarator138.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:516:28: ( ',' variableDeclarator )*
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, variableDeclarator136.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:521:28: ( ',' variableDeclarator )*
             loop57:
             do {
                 int alt57=2;
@@ -5332,19 +5348,19 @@ public class JavaParser extends Parser {
 
                 switch (alt57) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:516:29: ',' variableDeclarator
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:521:29: ',' variableDeclarator
             	    {
-            	    char_literal139=(Token)match(input,41,FOLLOW_41_in_variableDeclarators1923); if (state.failed) return retval;
+            	    char_literal137=(Token)match(input,41,FOLLOW_41_in_variableDeclarators1937); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal139_tree = (Object)adaptor.create(char_literal139);
-            	    adaptor.addChild(root_0, char_literal139_tree);
+            	    char_literal137_tree = (Object)adaptor.create(char_literal137);
+            	    adaptor.addChild(root_0, char_literal137_tree);
             	    }
-            	    pushFollow(FOLLOW_variableDeclarator_in_variableDeclarators1925);
-            	    variableDeclarator140=variableDeclarator();
+            	    pushFollow(FOLLOW_variableDeclarator_in_variableDeclarators1939);
+            	    variableDeclarator138=variableDeclarator();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, variableDeclarator140.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, variableDeclarator138.getTree());
 
             	    }
             	    break;
@@ -5384,35 +5400,35 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "variableDeclarator"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:519:1: variableDeclarator : variableDeclaratorId ( '=' variableInitializer )? ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:524:1: variableDeclarator : variableDeclaratorId ( '=' variableInitializer )? ;
     public final JavaParser.variableDeclarator_return variableDeclarator() throws RecognitionException {
         JavaParser.variableDeclarator_return retval = new JavaParser.variableDeclarator_return();
         retval.start = input.LT(1);
         int variableDeclarator_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal142=null;
-        JavaParser.variableDeclaratorId_return variableDeclaratorId141 = null;
+        Token char_literal140=null;
+        JavaParser.variableDeclaratorId_return variableDeclaratorId139 = null;
 
-        JavaParser.variableInitializer_return variableInitializer143 = null;
+        JavaParser.variableInitializer_return variableInitializer141 = null;
 
 
-        Object char_literal142_tree=null;
+        Object char_literal140_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 43) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:520:5: ( variableDeclaratorId ( '=' variableInitializer )? )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:520:9: variableDeclaratorId ( '=' variableInitializer )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:525:5: ( variableDeclaratorId ( '=' variableInitializer )? )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:525:9: variableDeclaratorId ( '=' variableInitializer )?
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_variableDeclaratorId_in_variableDeclarator1946);
-            variableDeclaratorId141=variableDeclaratorId();
+            pushFollow(FOLLOW_variableDeclaratorId_in_variableDeclarator1960);
+            variableDeclaratorId139=variableDeclaratorId();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, variableDeclaratorId141.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:520:30: ( '=' variableInitializer )?
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, variableDeclaratorId139.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:525:30: ( '=' variableInitializer )?
             int alt58=2;
             int LA58_0 = input.LA(1);
 
@@ -5421,19 +5437,19 @@ public class JavaParser extends Parser {
             }
             switch (alt58) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:520:31: '=' variableInitializer
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:525:31: '=' variableInitializer
                     {
-                    char_literal142=(Token)match(input,51,FOLLOW_51_in_variableDeclarator1949); if (state.failed) return retval;
+                    char_literal140=(Token)match(input,51,FOLLOW_51_in_variableDeclarator1963); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal142_tree = (Object)adaptor.create(char_literal142);
-                    adaptor.addChild(root_0, char_literal142_tree);
+                    char_literal140_tree = (Object)adaptor.create(char_literal140);
+                    adaptor.addChild(root_0, char_literal140_tree);
                     }
-                    pushFollow(FOLLOW_variableInitializer_in_variableDeclarator1951);
-                    variableInitializer143=variableInitializer();
+                    pushFollow(FOLLOW_variableInitializer_in_variableDeclarator1965);
+                    variableInitializer141=variableInitializer();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, variableInitializer143.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, variableInitializer141.getTree());
 
                     }
                     break;
@@ -5470,35 +5486,35 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "constantDeclaratorsRest"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:523:1: constantDeclaratorsRest : constantDeclaratorRest ( ',' constantDeclarator )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:528:1: constantDeclaratorsRest : constantDeclaratorRest ( ',' constantDeclarator )* ;
     public final JavaParser.constantDeclaratorsRest_return constantDeclaratorsRest() throws RecognitionException {
         JavaParser.constantDeclaratorsRest_return retval = new JavaParser.constantDeclaratorsRest_return();
         retval.start = input.LT(1);
         int constantDeclaratorsRest_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal145=null;
-        JavaParser.constantDeclaratorRest_return constantDeclaratorRest144 = null;
+        Token char_literal143=null;
+        JavaParser.constantDeclaratorRest_return constantDeclaratorRest142 = null;
 
-        JavaParser.constantDeclarator_return constantDeclarator146 = null;
+        JavaParser.constantDeclarator_return constantDeclarator144 = null;
 
 
-        Object char_literal145_tree=null;
+        Object char_literal143_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 44) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:524:5: ( constantDeclaratorRest ( ',' constantDeclarator )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:524:9: constantDeclaratorRest ( ',' constantDeclarator )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:529:5: ( constantDeclaratorRest ( ',' constantDeclarator )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:529:9: constantDeclaratorRest ( ',' constantDeclarator )*
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_constantDeclaratorRest_in_constantDeclaratorsRest1976);
-            constantDeclaratorRest144=constantDeclaratorRest();
+            pushFollow(FOLLOW_constantDeclaratorRest_in_constantDeclaratorsRest1990);
+            constantDeclaratorRest142=constantDeclaratorRest();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, constantDeclaratorRest144.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:524:32: ( ',' constantDeclarator )*
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, constantDeclaratorRest142.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:529:32: ( ',' constantDeclarator )*
             loop59:
             do {
                 int alt59=2;
@@ -5511,19 +5527,19 @@ public class JavaParser extends Parser {
 
                 switch (alt59) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:524:33: ',' constantDeclarator
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:529:33: ',' constantDeclarator
             	    {
-            	    char_literal145=(Token)match(input,41,FOLLOW_41_in_constantDeclaratorsRest1979); if (state.failed) return retval;
+            	    char_literal143=(Token)match(input,41,FOLLOW_41_in_constantDeclaratorsRest1993); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal145_tree = (Object)adaptor.create(char_literal145);
-            	    adaptor.addChild(root_0, char_literal145_tree);
+            	    char_literal143_tree = (Object)adaptor.create(char_literal143);
+            	    adaptor.addChild(root_0, char_literal143_tree);
             	    }
-            	    pushFollow(FOLLOW_constantDeclarator_in_constantDeclaratorsRest1981);
-            	    constantDeclarator146=constantDeclarator();
+            	    pushFollow(FOLLOW_constantDeclarator_in_constantDeclaratorsRest1995);
+            	    constantDeclarator144=constantDeclarator();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, constantDeclarator146.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, constantDeclarator144.getTree());
 
             	    }
             	    break;
@@ -5563,31 +5579,31 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "constantDeclaratorRest"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:527:1: constantDeclaratorRest : ( '[' ']' )* '=' variableInitializer ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:532:1: constantDeclaratorRest : ( '[' ']' )* '=' variableInitializer ;
     public final JavaParser.constantDeclaratorRest_return constantDeclaratorRest() throws RecognitionException {
         JavaParser.constantDeclaratorRest_return retval = new JavaParser.constantDeclaratorRest_return();
         retval.start = input.LT(1);
         int constantDeclaratorRest_StartIndex = input.index();
         Object root_0 = null;
 
+        Token char_literal145=null;
+        Token char_literal146=null;
         Token char_literal147=null;
-        Token char_literal148=null;
-        Token char_literal149=null;
-        JavaParser.variableInitializer_return variableInitializer150 = null;
+        JavaParser.variableInitializer_return variableInitializer148 = null;
 
 
+        Object char_literal145_tree=null;
+        Object char_literal146_tree=null;
         Object char_literal147_tree=null;
-        Object char_literal148_tree=null;
-        Object char_literal149_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 45) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:528:5: ( ( '[' ']' )* '=' variableInitializer )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:528:9: ( '[' ']' )* '=' variableInitializer
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:533:5: ( ( '[' ']' )* '=' variableInitializer )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:533:9: ( '[' ']' )* '=' variableInitializer
             {
             root_0 = (Object)adaptor.nil();
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:528:9: ( '[' ']' )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:533:9: ( '[' ']' )*
             loop60:
             do {
                 int alt60=2;
@@ -5600,17 +5616,17 @@ public class JavaParser extends Parser {
 
                 switch (alt60) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:528:10: '[' ']'
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:533:10: '[' ']'
             	    {
-            	    char_literal147=(Token)match(input,48,FOLLOW_48_in_constantDeclaratorRest2003); if (state.failed) return retval;
+            	    char_literal145=(Token)match(input,48,FOLLOW_48_in_constantDeclaratorRest2017); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal147_tree = (Object)adaptor.create(char_literal147);
-            	    adaptor.addChild(root_0, char_literal147_tree);
+            	    char_literal145_tree = (Object)adaptor.create(char_literal145);
+            	    adaptor.addChild(root_0, char_literal145_tree);
             	    }
-            	    char_literal148=(Token)match(input,49,FOLLOW_49_in_constantDeclaratorRest2005); if (state.failed) return retval;
+            	    char_literal146=(Token)match(input,49,FOLLOW_49_in_constantDeclaratorRest2019); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal148_tree = (Object)adaptor.create(char_literal148);
-            	    adaptor.addChild(root_0, char_literal148_tree);
+            	    char_literal146_tree = (Object)adaptor.create(char_literal146);
+            	    adaptor.addChild(root_0, char_literal146_tree);
             	    }
 
             	    }
@@ -5621,17 +5637,17 @@ public class JavaParser extends Parser {
                 }
             } while (true);
 
-            char_literal149=(Token)match(input,51,FOLLOW_51_in_constantDeclaratorRest2009); if (state.failed) return retval;
+            char_literal147=(Token)match(input,51,FOLLOW_51_in_constantDeclaratorRest2023); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal149_tree = (Object)adaptor.create(char_literal149);
-            adaptor.addChild(root_0, char_literal149_tree);
+            char_literal147_tree = (Object)adaptor.create(char_literal147);
+            adaptor.addChild(root_0, char_literal147_tree);
             }
-            pushFollow(FOLLOW_variableInitializer_in_constantDeclaratorRest2011);
-            variableInitializer150=variableInitializer();
+            pushFollow(FOLLOW_variableInitializer_in_constantDeclaratorRest2025);
+            variableInitializer148=variableInitializer();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, variableInitializer150.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, variableInitializer148.getTree());
 
             }
 
@@ -5662,34 +5678,34 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "variableDeclaratorId"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:531:1: variableDeclaratorId : Identifier ( '[' ']' )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:536:1: variableDeclaratorId : Identifier ( '[' ']' )* ;
     public final JavaParser.variableDeclaratorId_return variableDeclaratorId() throws RecognitionException {
         JavaParser.variableDeclaratorId_return retval = new JavaParser.variableDeclaratorId_return();
         retval.start = input.LT(1);
         int variableDeclaratorId_StartIndex = input.index();
         Object root_0 = null;
 
-        Token Identifier151=null;
-        Token char_literal152=null;
-        Token char_literal153=null;
+        Token Identifier149=null;
+        Token char_literal150=null;
+        Token char_literal151=null;
 
-        Object Identifier151_tree=null;
-        Object char_literal152_tree=null;
-        Object char_literal153_tree=null;
+        Object Identifier149_tree=null;
+        Object char_literal150_tree=null;
+        Object char_literal151_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 46) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:532:5: ( Identifier ( '[' ']' )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:532:9: Identifier ( '[' ']' )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:537:5: ( Identifier ( '[' ']' )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:537:9: Identifier ( '[' ']' )*
             {
             root_0 = (Object)adaptor.nil();
 
-            Identifier151=(Token)match(input,Identifier,FOLLOW_Identifier_in_variableDeclaratorId2034); if (state.failed) return retval;
+            Identifier149=(Token)match(input,Identifier,FOLLOW_Identifier_in_variableDeclaratorId2048); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            Identifier151_tree = (Object)adaptor.create(Identifier151);
-            adaptor.addChild(root_0, Identifier151_tree);
+            Identifier149_tree = (Object)adaptor.create(Identifier149);
+            adaptor.addChild(root_0, Identifier149_tree);
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:532:20: ( '[' ']' )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:537:20: ( '[' ']' )*
             loop61:
             do {
                 int alt61=2;
@@ -5702,17 +5718,17 @@ public class JavaParser extends Parser {
 
                 switch (alt61) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:532:21: '[' ']'
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:537:21: '[' ']'
             	    {
-            	    char_literal152=(Token)match(input,48,FOLLOW_48_in_variableDeclaratorId2037); if (state.failed) return retval;
+            	    char_literal150=(Token)match(input,48,FOLLOW_48_in_variableDeclaratorId2051); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal152_tree = (Object)adaptor.create(char_literal152);
-            	    adaptor.addChild(root_0, char_literal152_tree);
+            	    char_literal150_tree = (Object)adaptor.create(char_literal150);
+            	    adaptor.addChild(root_0, char_literal150_tree);
             	    }
-            	    char_literal153=(Token)match(input,49,FOLLOW_49_in_variableDeclaratorId2039); if (state.failed) return retval;
+            	    char_literal151=(Token)match(input,49,FOLLOW_49_in_variableDeclaratorId2053); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal153_tree = (Object)adaptor.create(char_literal153);
-            	    adaptor.addChild(root_0, char_literal153_tree);
+            	    char_literal151_tree = (Object)adaptor.create(char_literal151);
+            	    adaptor.addChild(root_0, char_literal151_tree);
             	    }
 
             	    }
@@ -5753,22 +5769,22 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "variableInitializer"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:535:1: variableInitializer : ( arrayInitializer | expression );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:540:1: variableInitializer : ( arrayInitializer | expression );
     public final JavaParser.variableInitializer_return variableInitializer() throws RecognitionException {
         JavaParser.variableInitializer_return retval = new JavaParser.variableInitializer_return();
         retval.start = input.LT(1);
         int variableInitializer_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.arrayInitializer_return arrayInitializer154 = null;
+        JavaParser.arrayInitializer_return arrayInitializer152 = null;
 
-        JavaParser.expression_return expression155 = null;
+        JavaParser.expression_return expression153 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 47) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:536:5: ( arrayInitializer | expression )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:541:5: ( arrayInitializer | expression )
             int alt62=2;
             int LA62_0 = input.LA(1);
 
@@ -5787,30 +5803,30 @@ public class JavaParser extends Parser {
             }
             switch (alt62) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:536:9: arrayInitializer
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:541:9: arrayInitializer
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_arrayInitializer_in_variableInitializer2060);
-                    arrayInitializer154=arrayInitializer();
+                    pushFollow(FOLLOW_arrayInitializer_in_variableInitializer2074);
+                    arrayInitializer152=arrayInitializer();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, arrayInitializer154.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, arrayInitializer152.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:537:9: expression
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:542:9: expression
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_expression_in_variableInitializer2070);
-                    expression155=expression();
+                    pushFollow(FOLLOW_expression_in_variableInitializer2084);
+                    expression153=expression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression155.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression153.getTree());
 
                     }
                     break;
@@ -5843,40 +5859,40 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "arrayInitializer"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:540:1: arrayInitializer : '{' ( variableInitializer ( ',' variableInitializer )* ( ',' )? )? '}' ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:545:1: arrayInitializer : '{' ( variableInitializer ( ',' variableInitializer )* ( ',' )? )? '}' ;
     public final JavaParser.arrayInitializer_return arrayInitializer() throws RecognitionException {
         JavaParser.arrayInitializer_return retval = new JavaParser.arrayInitializer_return();
         retval.start = input.LT(1);
         int arrayInitializer_StartIndex = input.index();
         Object root_0 = null;
 
+        Token char_literal154=null;
         Token char_literal156=null;
         Token char_literal158=null;
-        Token char_literal160=null;
-        Token char_literal161=null;
+        Token char_literal159=null;
+        JavaParser.variableInitializer_return variableInitializer155 = null;
+
         JavaParser.variableInitializer_return variableInitializer157 = null;
 
-        JavaParser.variableInitializer_return variableInitializer159 = null;
 
-
+        Object char_literal154_tree=null;
         Object char_literal156_tree=null;
         Object char_literal158_tree=null;
-        Object char_literal160_tree=null;
-        Object char_literal161_tree=null;
+        Object char_literal159_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 48) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:541:5: ( '{' ( variableInitializer ( ',' variableInitializer )* ( ',' )? )? '}' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:541:9: '{' ( variableInitializer ( ',' variableInitializer )* ( ',' )? )? '}'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:546:5: ( '{' ( variableInitializer ( ',' variableInitializer )* ( ',' )? )? '}' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:546:9: '{' ( variableInitializer ( ',' variableInitializer )* ( ',' )? )? '}'
             {
             root_0 = (Object)adaptor.nil();
 
-            char_literal156=(Token)match(input,44,FOLLOW_44_in_arrayInitializer2097); if (state.failed) return retval;
+            char_literal154=(Token)match(input,44,FOLLOW_44_in_arrayInitializer2111); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal156_tree = (Object)adaptor.create(char_literal156);
-            adaptor.addChild(root_0, char_literal156_tree);
+            char_literal154_tree = (Object)adaptor.create(char_literal154);
+            adaptor.addChild(root_0, char_literal154_tree);
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:541:13: ( variableInitializer ( ',' variableInitializer )* ( ',' )? )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:546:13: ( variableInitializer ( ',' variableInitializer )* ( ',' )? )?
             int alt65=2;
             int LA65_0 = input.LA(1);
 
@@ -5885,15 +5901,15 @@ public class JavaParser extends Parser {
             }
             switch (alt65) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:541:14: variableInitializer ( ',' variableInitializer )* ( ',' )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:546:14: variableInitializer ( ',' variableInitializer )* ( ',' )?
                     {
-                    pushFollow(FOLLOW_variableInitializer_in_arrayInitializer2100);
-                    variableInitializer157=variableInitializer();
+                    pushFollow(FOLLOW_variableInitializer_in_arrayInitializer2114);
+                    variableInitializer155=variableInitializer();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, variableInitializer157.getTree());
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:541:34: ( ',' variableInitializer )*
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, variableInitializer155.getTree());
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:546:34: ( ',' variableInitializer )*
                     loop63:
                     do {
                         int alt63=2;
@@ -5912,19 +5928,19 @@ public class JavaParser extends Parser {
 
                         switch (alt63) {
                     	case 1 :
-                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:541:35: ',' variableInitializer
+                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:546:35: ',' variableInitializer
                     	    {
-                    	    char_literal158=(Token)match(input,41,FOLLOW_41_in_arrayInitializer2103); if (state.failed) return retval;
+                    	    char_literal156=(Token)match(input,41,FOLLOW_41_in_arrayInitializer2117); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    char_literal158_tree = (Object)adaptor.create(char_literal158);
-                    	    adaptor.addChild(root_0, char_literal158_tree);
+                    	    char_literal156_tree = (Object)adaptor.create(char_literal156);
+                    	    adaptor.addChild(root_0, char_literal156_tree);
                     	    }
-                    	    pushFollow(FOLLOW_variableInitializer_in_arrayInitializer2105);
-                    	    variableInitializer159=variableInitializer();
+                    	    pushFollow(FOLLOW_variableInitializer_in_arrayInitializer2119);
+                    	    variableInitializer157=variableInitializer();
 
                     	    state._fsp--;
                     	    if (state.failed) return retval;
-                    	    if ( state.backtracking==0 ) adaptor.addChild(root_0, variableInitializer159.getTree());
+                    	    if ( state.backtracking==0 ) adaptor.addChild(root_0, variableInitializer157.getTree());
 
                     	    }
                     	    break;
@@ -5934,7 +5950,7 @@ public class JavaParser extends Parser {
                         }
                     } while (true);
 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:541:61: ( ',' )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:546:61: ( ',' )?
                     int alt64=2;
                     int LA64_0 = input.LA(1);
 
@@ -5943,12 +5959,12 @@ public class JavaParser extends Parser {
                     }
                     switch (alt64) {
                         case 1 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:541:62: ','
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:546:62: ','
                             {
-                            char_literal160=(Token)match(input,41,FOLLOW_41_in_arrayInitializer2110); if (state.failed) return retval;
+                            char_literal158=(Token)match(input,41,FOLLOW_41_in_arrayInitializer2124); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
-                            char_literal160_tree = (Object)adaptor.create(char_literal160);
-                            adaptor.addChild(root_0, char_literal160_tree);
+                            char_literal158_tree = (Object)adaptor.create(char_literal158);
+                            adaptor.addChild(root_0, char_literal158_tree);
                             }
 
                             }
@@ -5962,10 +5978,10 @@ public class JavaParser extends Parser {
 
             }
 
-            char_literal161=(Token)match(input,45,FOLLOW_45_in_arrayInitializer2117); if (state.failed) return retval;
+            char_literal159=(Token)match(input,45,FOLLOW_45_in_arrayInitializer2131); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal161_tree = (Object)adaptor.create(char_literal161);
-            adaptor.addChild(root_0, char_literal161_tree);
+            char_literal159_tree = (Object)adaptor.create(char_literal159);
+            adaptor.addChild(root_0, char_literal159_tree);
             }
 
             }
@@ -5998,30 +6014,30 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "modifier"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:544:1: modifier returns [Modifier element] : ( annotation | mod= classOrInterfaceModifier | 'native' | 'synchronized' | 'transient' | 'volatile' );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:549:1: modifier returns [Modifier element] : ( annotation | mod= classOrInterfaceModifier | 'native' | 'synchronized' | 'transient' | 'volatile' );
     public final JavaParser.modifier_return modifier() throws RecognitionException {
         JavaParser.modifier_return retval = new JavaParser.modifier_return();
         retval.start = input.LT(1);
         int modifier_StartIndex = input.index();
         Object root_0 = null;
 
+        Token string_literal161=null;
+        Token string_literal162=null;
         Token string_literal163=null;
         Token string_literal164=null;
-        Token string_literal165=null;
-        Token string_literal166=null;
         JavaParser.classOrInterfaceModifier_return mod = null;
 
-        JavaParser.annotation_return annotation162 = null;
+        JavaParser.annotation_return annotation160 = null;
 
 
+        Object string_literal161_tree=null;
+        Object string_literal162_tree=null;
         Object string_literal163_tree=null;
         Object string_literal164_tree=null;
-        Object string_literal165_tree=null;
-        Object string_literal166_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 49) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:545:5: ( annotation | mod= classOrInterfaceModifier | 'native' | 'synchronized' | 'transient' | 'volatile' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:550:5: ( annotation | mod= classOrInterfaceModifier | 'native' | 'synchronized' | 'transient' | 'volatile' )
             int alt66=6;
             switch ( input.LA(1) ) {
             case 73:
@@ -6095,25 +6111,25 @@ public class JavaParser extends Parser {
 
             switch (alt66) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:545:9: annotation
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:550:9: annotation
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_annotation_in_modifier2140);
-                    annotation162=annotation();
+                    pushFollow(FOLLOW_annotation_in_modifier2154);
+                    annotation160=annotation();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, annotation162.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, annotation160.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:546:9: mod= classOrInterfaceModifier
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:551:9: mod= classOrInterfaceModifier
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_classOrInterfaceModifier_in_modifier2152);
+                    pushFollow(FOLLOW_classOrInterfaceModifier_in_modifier2166);
                     mod=classOrInterfaceModifier();
 
                     state._fsp--;
@@ -6126,14 +6142,14 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:547:9: 'native'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:552:9: 'native'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal163=(Token)match(input,52,FOLLOW_52_in_modifier2164); if (state.failed) return retval;
+                    string_literal161=(Token)match(input,52,FOLLOW_52_in_modifier2178); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal163_tree = (Object)adaptor.create(string_literal163);
-                    adaptor.addChild(root_0, string_literal163_tree);
+                    string_literal161_tree = (Object)adaptor.create(string_literal161);
+                    adaptor.addChild(root_0, string_literal161_tree);
                     }
                     if ( state.backtracking==0 ) {
                       retval.element = new Native();
@@ -6142,14 +6158,14 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:548:9: 'synchronized'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:553:9: 'synchronized'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal164=(Token)match(input,53,FOLLOW_53_in_modifier2176); if (state.failed) return retval;
+                    string_literal162=(Token)match(input,53,FOLLOW_53_in_modifier2190); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal164_tree = (Object)adaptor.create(string_literal164);
-                    adaptor.addChild(root_0, string_literal164_tree);
+                    string_literal162_tree = (Object)adaptor.create(string_literal162);
+                    adaptor.addChild(root_0, string_literal162_tree);
                     }
                     if ( state.backtracking==0 ) {
                       retval.element = new Synchronized();
@@ -6158,14 +6174,14 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 5 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:549:9: 'transient'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:554:9: 'transient'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal165=(Token)match(input,54,FOLLOW_54_in_modifier2188); if (state.failed) return retval;
+                    string_literal163=(Token)match(input,54,FOLLOW_54_in_modifier2202); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal165_tree = (Object)adaptor.create(string_literal165);
-                    adaptor.addChild(root_0, string_literal165_tree);
+                    string_literal163_tree = (Object)adaptor.create(string_literal163);
+                    adaptor.addChild(root_0, string_literal163_tree);
                     }
                     if ( state.backtracking==0 ) {
                       retval.element = new Transient();
@@ -6174,14 +6190,14 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 6 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:550:9: 'volatile'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:555:9: 'volatile'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal166=(Token)match(input,55,FOLLOW_55_in_modifier2200); if (state.failed) return retval;
+                    string_literal164=(Token)match(input,55,FOLLOW_55_in_modifier2214); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal166_tree = (Object)adaptor.create(string_literal166);
-                    adaptor.addChild(root_0, string_literal166_tree);
+                    string_literal164_tree = (Object)adaptor.create(string_literal164);
+                    adaptor.addChild(root_0, string_literal164_tree);
                     }
                     if ( state.backtracking==0 ) {
                       retval.element = new Volatile();
@@ -6218,30 +6234,30 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "packageOrTypeName"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:553:1: packageOrTypeName : qualifiedName ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:558:1: packageOrTypeName : qualifiedName ;
     public final JavaParser.packageOrTypeName_return packageOrTypeName() throws RecognitionException {
         JavaParser.packageOrTypeName_return retval = new JavaParser.packageOrTypeName_return();
         retval.start = input.LT(1);
         int packageOrTypeName_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.qualifiedName_return qualifiedName167 = null;
+        JavaParser.qualifiedName_return qualifiedName165 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 50) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:554:5: ( qualifiedName )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:554:9: qualifiedName
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:559:5: ( qualifiedName )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:559:9: qualifiedName
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_qualifiedName_in_packageOrTypeName2221);
-            qualifiedName167=qualifiedName();
+            pushFollow(FOLLOW_qualifiedName_in_packageOrTypeName2235);
+            qualifiedName165=qualifiedName();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, qualifiedName167.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, qualifiedName165.getTree());
 
             }
 
@@ -6272,28 +6288,28 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "enumConstantName"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:557:1: enumConstantName : Identifier ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:562:1: enumConstantName : Identifier ;
     public final JavaParser.enumConstantName_return enumConstantName() throws RecognitionException {
         JavaParser.enumConstantName_return retval = new JavaParser.enumConstantName_return();
         retval.start = input.LT(1);
         int enumConstantName_StartIndex = input.index();
         Object root_0 = null;
 
-        Token Identifier168=null;
+        Token Identifier166=null;
 
-        Object Identifier168_tree=null;
+        Object Identifier166_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 51) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:558:5: ( Identifier )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:558:9: Identifier
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:563:5: ( Identifier )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:563:9: Identifier
             {
             root_0 = (Object)adaptor.nil();
 
-            Identifier168=(Token)match(input,Identifier,FOLLOW_Identifier_in_enumConstantName2240); if (state.failed) return retval;
+            Identifier166=(Token)match(input,Identifier,FOLLOW_Identifier_in_enumConstantName2254); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            Identifier168_tree = (Object)adaptor.create(Identifier168);
-            adaptor.addChild(root_0, Identifier168_tree);
+            Identifier166_tree = (Object)adaptor.create(Identifier166);
+            adaptor.addChild(root_0, Identifier166_tree);
             }
 
             }
@@ -6325,30 +6341,30 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "typeName"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:561:1: typeName : qualifiedName ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:566:1: typeName : qualifiedName ;
     public final JavaParser.typeName_return typeName() throws RecognitionException {
         JavaParser.typeName_return retval = new JavaParser.typeName_return();
         retval.start = input.LT(1);
         int typeName_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.qualifiedName_return qualifiedName169 = null;
+        JavaParser.qualifiedName_return qualifiedName167 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 52) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:562:5: ( qualifiedName )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:562:9: qualifiedName
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:567:5: ( qualifiedName )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:567:9: qualifiedName
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_qualifiedName_in_typeName2259);
-            qualifiedName169=qualifiedName();
+            pushFollow(FOLLOW_qualifiedName_in_typeName2273);
+            qualifiedName167=qualifiedName();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, qualifiedName169.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, qualifiedName167.getTree());
 
             }
 
@@ -6380,31 +6396,31 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "type"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:565:1: type returns [TypeReference element] : (cd= classOrInterfaceType ( '[' ']' )* | pt= primitiveType ( '[' ']' )* );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:570:1: type returns [TypeReference element] : (cd= classOrInterfaceType ( '[' ']' )* | pt= primitiveType ( '[' ']' )* );
     public final JavaParser.type_return type() throws RecognitionException {
         JavaParser.type_return retval = new JavaParser.type_return();
         retval.start = input.LT(1);
         int type_StartIndex = input.index();
         Object root_0 = null;
 
+        Token char_literal168=null;
+        Token char_literal169=null;
         Token char_literal170=null;
         Token char_literal171=null;
-        Token char_literal172=null;
-        Token char_literal173=null;
         JavaParser.classOrInterfaceType_return cd = null;
 
         JavaParser.primitiveType_return pt = null;
 
 
+        Object char_literal168_tree=null;
+        Object char_literal169_tree=null;
         Object char_literal170_tree=null;
         Object char_literal171_tree=null;
-        Object char_literal172_tree=null;
-        Object char_literal173_tree=null;
 
         int dimension=0;
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 53) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:567:2: (cd= classOrInterfaceType ( '[' ']' )* | pt= primitiveType ( '[' ']' )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:572:2: (cd= classOrInterfaceType ( '[' ']' )* | pt= primitiveType ( '[' ']' )* )
             int alt69=2;
             int LA69_0 = input.LA(1);
 
@@ -6423,17 +6439,17 @@ public class JavaParser extends Parser {
             }
             switch (alt69) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:567:4: cd= classOrInterfaceType ( '[' ']' )*
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:572:4: cd= classOrInterfaceType ( '[' ']' )*
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_classOrInterfaceType_in_type2283);
+                    pushFollow(FOLLOW_classOrInterfaceType_in_type2297);
                     cd=classOrInterfaceType();
 
                     state._fsp--;
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, cd.getTree());
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:567:28: ( '[' ']' )*
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:572:28: ( '[' ']' )*
                     loop67:
                     do {
                         int alt67=2;
@@ -6446,17 +6462,17 @@ public class JavaParser extends Parser {
 
                         switch (alt67) {
                     	case 1 :
-                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:567:29: '[' ']'
+                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:572:29: '[' ']'
                     	    {
-                    	    char_literal170=(Token)match(input,48,FOLLOW_48_in_type2286); if (state.failed) return retval;
+                    	    char_literal168=(Token)match(input,48,FOLLOW_48_in_type2300); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    char_literal170_tree = (Object)adaptor.create(char_literal170);
-                    	    adaptor.addChild(root_0, char_literal170_tree);
+                    	    char_literal168_tree = (Object)adaptor.create(char_literal168);
+                    	    adaptor.addChild(root_0, char_literal168_tree);
                     	    }
-                    	    char_literal171=(Token)match(input,49,FOLLOW_49_in_type2288); if (state.failed) return retval;
+                    	    char_literal169=(Token)match(input,49,FOLLOW_49_in_type2302); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    char_literal171_tree = (Object)adaptor.create(char_literal171);
-                    	    adaptor.addChild(root_0, char_literal171_tree);
+                    	    char_literal169_tree = (Object)adaptor.create(char_literal169);
+                    	    adaptor.addChild(root_0, char_literal169_tree);
                     	    }
                     	    if ( state.backtracking==0 ) {
                     	      dimension++;
@@ -6477,17 +6493,17 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:568:4: pt= primitiveType ( '[' ']' )*
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:573:4: pt= primitiveType ( '[' ']' )*
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_primitiveType_in_type2301);
+                    pushFollow(FOLLOW_primitiveType_in_type2315);
                     pt=primitiveType();
 
                     state._fsp--;
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, pt.getTree());
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:568:21: ( '[' ']' )*
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:573:21: ( '[' ']' )*
                     loop68:
                     do {
                         int alt68=2;
@@ -6500,17 +6516,17 @@ public class JavaParser extends Parser {
 
                         switch (alt68) {
                     	case 1 :
-                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:568:22: '[' ']'
+                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:573:22: '[' ']'
                     	    {
-                    	    char_literal172=(Token)match(input,48,FOLLOW_48_in_type2304); if (state.failed) return retval;
+                    	    char_literal170=(Token)match(input,48,FOLLOW_48_in_type2318); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    char_literal172_tree = (Object)adaptor.create(char_literal172);
-                    	    adaptor.addChild(root_0, char_literal172_tree);
+                    	    char_literal170_tree = (Object)adaptor.create(char_literal170);
+                    	    adaptor.addChild(root_0, char_literal170_tree);
                     	    }
-                    	    char_literal173=(Token)match(input,49,FOLLOW_49_in_type2306); if (state.failed) return retval;
+                    	    char_literal171=(Token)match(input,49,FOLLOW_49_in_type2320); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    char_literal173_tree = (Object)adaptor.create(char_literal173);
-                    	    adaptor.addChild(root_0, char_literal173_tree);
+                    	    char_literal171_tree = (Object)adaptor.create(char_literal171);
+                    	    adaptor.addChild(root_0, char_literal171_tree);
                     	    }
                     	    if ( state.backtracking==0 ) {
                     	      dimension++;
@@ -6560,38 +6576,38 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "classOrInterfaceType"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:571:1: classOrInterfaceType returns [JavaTypeReference element] : Identifier ( typeArguments )? ( '.' Identifier ( typeArguments )? )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:576:1: classOrInterfaceType returns [JavaTypeReference element] : Identifier ( typeArguments )? ( '.' Identifier ( typeArguments )? )* ;
     public final JavaParser.classOrInterfaceType_return classOrInterfaceType() throws RecognitionException {
         JavaParser.classOrInterfaceType_return retval = new JavaParser.classOrInterfaceType_return();
         retval.start = input.LT(1);
         int classOrInterfaceType_StartIndex = input.index();
         Object root_0 = null;
 
-        Token Identifier174=null;
-        Token char_literal176=null;
-        Token Identifier177=null;
-        JavaParser.typeArguments_return typeArguments175 = null;
+        Token Identifier172=null;
+        Token char_literal174=null;
+        Token Identifier175=null;
+        JavaParser.typeArguments_return typeArguments173 = null;
 
-        JavaParser.typeArguments_return typeArguments178 = null;
+        JavaParser.typeArguments_return typeArguments176 = null;
 
 
-        Object Identifier174_tree=null;
-        Object char_literal176_tree=null;
-        Object Identifier177_tree=null;
+        Object Identifier172_tree=null;
+        Object char_literal174_tree=null;
+        Object Identifier175_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 54) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:572:2: ( Identifier ( typeArguments )? ( '.' Identifier ( typeArguments )? )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:572:4: Identifier ( typeArguments )? ( '.' Identifier ( typeArguments )? )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:577:2: ( Identifier ( typeArguments )? ( '.' Identifier ( typeArguments )? )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:577:4: Identifier ( typeArguments )? ( '.' Identifier ( typeArguments )? )*
             {
             root_0 = (Object)adaptor.nil();
 
-            Identifier174=(Token)match(input,Identifier,FOLLOW_Identifier_in_classOrInterfaceType2326); if (state.failed) return retval;
+            Identifier172=(Token)match(input,Identifier,FOLLOW_Identifier_in_classOrInterfaceType2340); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            Identifier174_tree = (Object)adaptor.create(Identifier174);
-            adaptor.addChild(root_0, Identifier174_tree);
+            Identifier172_tree = (Object)adaptor.create(Identifier172);
+            adaptor.addChild(root_0, Identifier172_tree);
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:572:15: ( typeArguments )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:577:15: ( typeArguments )?
             int alt70=2;
             int LA70_0 = input.LA(1);
 
@@ -6606,19 +6622,19 @@ public class JavaParser extends Parser {
                 case 1 :
                     // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: typeArguments
                     {
-                    pushFollow(FOLLOW_typeArguments_in_classOrInterfaceType2328);
-                    typeArguments175=typeArguments();
+                    pushFollow(FOLLOW_typeArguments_in_classOrInterfaceType2342);
+                    typeArguments173=typeArguments();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, typeArguments175.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, typeArguments173.getTree());
 
                     }
                     break;
 
             }
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:572:30: ( '.' Identifier ( typeArguments )? )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:577:30: ( '.' Identifier ( typeArguments )? )*
             loop72:
             do {
                 int alt72=2;
@@ -6631,19 +6647,19 @@ public class JavaParser extends Parser {
 
                 switch (alt72) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:572:31: '.' Identifier ( typeArguments )?
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:577:31: '.' Identifier ( typeArguments )?
             	    {
-            	    char_literal176=(Token)match(input,29,FOLLOW_29_in_classOrInterfaceType2332); if (state.failed) return retval;
+            	    char_literal174=(Token)match(input,29,FOLLOW_29_in_classOrInterfaceType2346); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal176_tree = (Object)adaptor.create(char_literal176);
-            	    adaptor.addChild(root_0, char_literal176_tree);
+            	    char_literal174_tree = (Object)adaptor.create(char_literal174);
+            	    adaptor.addChild(root_0, char_literal174_tree);
             	    }
-            	    Identifier177=(Token)match(input,Identifier,FOLLOW_Identifier_in_classOrInterfaceType2334); if (state.failed) return retval;
+            	    Identifier175=(Token)match(input,Identifier,FOLLOW_Identifier_in_classOrInterfaceType2348); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    Identifier177_tree = (Object)adaptor.create(Identifier177);
-            	    adaptor.addChild(root_0, Identifier177_tree);
+            	    Identifier175_tree = (Object)adaptor.create(Identifier175);
+            	    adaptor.addChild(root_0, Identifier175_tree);
             	    }
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:572:46: ( typeArguments )?
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:577:46: ( typeArguments )?
             	    int alt71=2;
             	    int LA71_0 = input.LA(1);
 
@@ -6658,12 +6674,12 @@ public class JavaParser extends Parser {
             	        case 1 :
             	            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: typeArguments
             	            {
-            	            pushFollow(FOLLOW_typeArguments_in_classOrInterfaceType2336);
-            	            typeArguments178=typeArguments();
+            	            pushFollow(FOLLOW_typeArguments_in_classOrInterfaceType2350);
+            	            typeArguments176=typeArguments();
 
             	            state._fsp--;
             	            if (state.failed) return retval;
-            	            if ( state.backtracking==0 ) adaptor.addChild(root_0, typeArguments178.getTree());
+            	            if ( state.backtracking==0 ) adaptor.addChild(root_0, typeArguments176.getTree());
 
             	            }
             	            break;
@@ -6710,28 +6726,28 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "primitiveType"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:575:1: primitiveType returns [JavaTypeReference element] : ( 'boolean' | 'char' | 'byte' | 'short' | 'int' | 'long' | 'float' | 'double' );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:580:1: primitiveType returns [JavaTypeReference element] : ( 'boolean' | 'char' | 'byte' | 'short' | 'int' | 'long' | 'float' | 'double' );
     public final JavaParser.primitiveType_return primitiveType() throws RecognitionException {
         JavaParser.primitiveType_return retval = new JavaParser.primitiveType_return();
         retval.start = input.LT(1);
         int primitiveType_StartIndex = input.index();
         Object root_0 = null;
 
-        Token set179=null;
+        Token set177=null;
 
-        Object set179_tree=null;
+        Object set177_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 55) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:576:5: ( 'boolean' | 'char' | 'byte' | 'short' | 'int' | 'long' | 'float' | 'double' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:581:5: ( 'boolean' | 'char' | 'byte' | 'short' | 'int' | 'long' | 'float' | 'double' )
             // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:
             {
             root_0 = (Object)adaptor.nil();
 
-            set179=(Token)input.LT(1);
+            set177=(Token)input.LT(1);
             if ( (input.LA(1)>=56 && input.LA(1)<=63) ) {
                 input.consume();
-                if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set179));
+                if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set177));
                 state.errorRecovery=false;state.failed=false;
             }
             else {
@@ -6770,22 +6786,22 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "variableModifier"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:586:1: variableModifier : ( 'final' | annotation );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:591:1: variableModifier : ( 'final' | annotation );
     public final JavaParser.variableModifier_return variableModifier() throws RecognitionException {
         JavaParser.variableModifier_return retval = new JavaParser.variableModifier_return();
         retval.start = input.LT(1);
         int variableModifier_StartIndex = input.index();
         Object root_0 = null;
 
-        Token string_literal180=null;
-        JavaParser.annotation_return annotation181 = null;
+        Token string_literal178=null;
+        JavaParser.annotation_return annotation179 = null;
 
 
-        Object string_literal180_tree=null;
+        Object string_literal178_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 56) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:587:5: ( 'final' | annotation )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:592:5: ( 'final' | annotation )
             int alt73=2;
             int LA73_0 = input.LA(1);
 
@@ -6804,29 +6820,29 @@ public class JavaParser extends Parser {
             }
             switch (alt73) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:587:9: 'final'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:592:9: 'final'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal180=(Token)match(input,35,FOLLOW_35_in_variableModifier2449); if (state.failed) return retval;
+                    string_literal178=(Token)match(input,35,FOLLOW_35_in_variableModifier2463); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal180_tree = (Object)adaptor.create(string_literal180);
-                    adaptor.addChild(root_0, string_literal180_tree);
+                    string_literal178_tree = (Object)adaptor.create(string_literal178);
+                    adaptor.addChild(root_0, string_literal178_tree);
                     }
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:588:9: annotation
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:593:9: annotation
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_annotation_in_variableModifier2459);
-                    annotation181=annotation();
+                    pushFollow(FOLLOW_annotation_in_variableModifier2473);
+                    annotation179=annotation();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, annotation181.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, annotation179.getTree());
 
                     }
                     break;
@@ -6859,44 +6875,44 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "typeArguments"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:591:1: typeArguments : '<' typeArgument ( ',' typeArgument )* '>' ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:596:1: typeArguments : '<' typeArgument ( ',' typeArgument )* '>' ;
     public final JavaParser.typeArguments_return typeArguments() throws RecognitionException {
         JavaParser.typeArguments_return retval = new JavaParser.typeArguments_return();
         retval.start = input.LT(1);
         int typeArguments_StartIndex = input.index();
         Object root_0 = null;
 
+        Token char_literal180=null;
         Token char_literal182=null;
         Token char_literal184=null;
-        Token char_literal186=null;
+        JavaParser.typeArgument_return typeArgument181 = null;
+
         JavaParser.typeArgument_return typeArgument183 = null;
 
-        JavaParser.typeArgument_return typeArgument185 = null;
 
-
+        Object char_literal180_tree=null;
         Object char_literal182_tree=null;
         Object char_literal184_tree=null;
-        Object char_literal186_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 57) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:592:5: ( '<' typeArgument ( ',' typeArgument )* '>' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:592:9: '<' typeArgument ( ',' typeArgument )* '>'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:597:5: ( '<' typeArgument ( ',' typeArgument )* '>' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:597:9: '<' typeArgument ( ',' typeArgument )* '>'
             {
             root_0 = (Object)adaptor.nil();
 
-            char_literal182=(Token)match(input,40,FOLLOW_40_in_typeArguments2478); if (state.failed) return retval;
+            char_literal180=(Token)match(input,40,FOLLOW_40_in_typeArguments2492); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal182_tree = (Object)adaptor.create(char_literal182);
-            adaptor.addChild(root_0, char_literal182_tree);
+            char_literal180_tree = (Object)adaptor.create(char_literal180);
+            adaptor.addChild(root_0, char_literal180_tree);
             }
-            pushFollow(FOLLOW_typeArgument_in_typeArguments2480);
-            typeArgument183=typeArgument();
+            pushFollow(FOLLOW_typeArgument_in_typeArguments2494);
+            typeArgument181=typeArgument();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, typeArgument183.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:592:26: ( ',' typeArgument )*
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, typeArgument181.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:597:26: ( ',' typeArgument )*
             loop74:
             do {
                 int alt74=2;
@@ -6909,19 +6925,19 @@ public class JavaParser extends Parser {
 
                 switch (alt74) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:592:27: ',' typeArgument
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:597:27: ',' typeArgument
             	    {
-            	    char_literal184=(Token)match(input,41,FOLLOW_41_in_typeArguments2483); if (state.failed) return retval;
+            	    char_literal182=(Token)match(input,41,FOLLOW_41_in_typeArguments2497); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal184_tree = (Object)adaptor.create(char_literal184);
-            	    adaptor.addChild(root_0, char_literal184_tree);
+            	    char_literal182_tree = (Object)adaptor.create(char_literal182);
+            	    adaptor.addChild(root_0, char_literal182_tree);
             	    }
-            	    pushFollow(FOLLOW_typeArgument_in_typeArguments2485);
-            	    typeArgument185=typeArgument();
+            	    pushFollow(FOLLOW_typeArgument_in_typeArguments2499);
+            	    typeArgument183=typeArgument();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, typeArgument185.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, typeArgument183.getTree());
 
             	    }
             	    break;
@@ -6931,10 +6947,10 @@ public class JavaParser extends Parser {
                 }
             } while (true);
 
-            char_literal186=(Token)match(input,42,FOLLOW_42_in_typeArguments2489); if (state.failed) return retval;
+            char_literal184=(Token)match(input,42,FOLLOW_42_in_typeArguments2503); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal186_tree = (Object)adaptor.create(char_literal186);
-            adaptor.addChild(root_0, char_literal186_tree);
+            char_literal184_tree = (Object)adaptor.create(char_literal184);
+            adaptor.addChild(root_0, char_literal184_tree);
             }
 
             }
@@ -6966,26 +6982,26 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "typeArgument"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:595:1: typeArgument : ( type | '?' ( ( 'extends' | 'super' ) type )? );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:600:1: typeArgument : ( type | '?' ( ( 'extends' | 'super' ) type )? );
     public final JavaParser.typeArgument_return typeArgument() throws RecognitionException {
         JavaParser.typeArgument_return retval = new JavaParser.typeArgument_return();
         retval.start = input.LT(1);
         int typeArgument_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal188=null;
-        Token set189=null;
-        JavaParser.type_return type187 = null;
+        Token char_literal186=null;
+        Token set187=null;
+        JavaParser.type_return type185 = null;
 
-        JavaParser.type_return type190 = null;
+        JavaParser.type_return type188 = null;
 
 
-        Object char_literal188_tree=null;
-        Object set189_tree=null;
+        Object char_literal186_tree=null;
+        Object set187_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 58) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:596:5: ( type | '?' ( ( 'extends' | 'super' ) type )? )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:601:5: ( type | '?' ( ( 'extends' | 'super' ) type )? )
             int alt76=2;
             int LA76_0 = input.LA(1);
 
@@ -7004,30 +7020,30 @@ public class JavaParser extends Parser {
             }
             switch (alt76) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:596:9: type
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:601:9: type
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_type_in_typeArgument2512);
-                    type187=type();
+                    pushFollow(FOLLOW_type_in_typeArgument2526);
+                    type185=type();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, type187.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, type185.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:597:9: '?' ( ( 'extends' | 'super' ) type )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:602:9: '?' ( ( 'extends' | 'super' ) type )?
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal188=(Token)match(input,64,FOLLOW_64_in_typeArgument2522); if (state.failed) return retval;
+                    char_literal186=(Token)match(input,64,FOLLOW_64_in_typeArgument2536); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal188_tree = (Object)adaptor.create(char_literal188);
-                    adaptor.addChild(root_0, char_literal188_tree);
+                    char_literal186_tree = (Object)adaptor.create(char_literal186);
+                    adaptor.addChild(root_0, char_literal186_tree);
                     }
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:597:13: ( ( 'extends' | 'super' ) type )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:602:13: ( ( 'extends' | 'super' ) type )?
                     int alt75=2;
                     int LA75_0 = input.LA(1);
 
@@ -7036,12 +7052,12 @@ public class JavaParser extends Parser {
                     }
                     switch (alt75) {
                         case 1 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:597:14: ( 'extends' | 'super' ) type
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:602:14: ( 'extends' | 'super' ) type
                             {
-                            set189=(Token)input.LT(1);
+                            set187=(Token)input.LT(1);
                             if ( input.LA(1)==38||input.LA(1)==65 ) {
                                 input.consume();
-                                if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set189));
+                                if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set187));
                                 state.errorRecovery=false;state.failed=false;
                             }
                             else {
@@ -7050,12 +7066,12 @@ public class JavaParser extends Parser {
                                 throw mse;
                             }
 
-                            pushFollow(FOLLOW_type_in_typeArgument2533);
-                            type190=type();
+                            pushFollow(FOLLOW_type_in_typeArgument2547);
+                            type188=type();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, type190.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, type188.getTree());
 
                             }
                             break;
@@ -7094,35 +7110,35 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "qualifiedNameList"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:600:1: qualifiedNameList : qualifiedName ( ',' qualifiedName )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:605:1: qualifiedNameList : qualifiedName ( ',' qualifiedName )* ;
     public final JavaParser.qualifiedNameList_return qualifiedNameList() throws RecognitionException {
         JavaParser.qualifiedNameList_return retval = new JavaParser.qualifiedNameList_return();
         retval.start = input.LT(1);
         int qualifiedNameList_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal192=null;
+        Token char_literal190=null;
+        JavaParser.qualifiedName_return qualifiedName189 = null;
+
         JavaParser.qualifiedName_return qualifiedName191 = null;
 
-        JavaParser.qualifiedName_return qualifiedName193 = null;
 
-
-        Object char_literal192_tree=null;
+        Object char_literal190_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 59) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:601:5: ( qualifiedName ( ',' qualifiedName )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:601:9: qualifiedName ( ',' qualifiedName )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:606:5: ( qualifiedName ( ',' qualifiedName )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:606:9: qualifiedName ( ',' qualifiedName )*
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_qualifiedName_in_qualifiedNameList2558);
-            qualifiedName191=qualifiedName();
+            pushFollow(FOLLOW_qualifiedName_in_qualifiedNameList2572);
+            qualifiedName189=qualifiedName();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, qualifiedName191.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:601:23: ( ',' qualifiedName )*
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, qualifiedName189.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:606:23: ( ',' qualifiedName )*
             loop77:
             do {
                 int alt77=2;
@@ -7135,19 +7151,19 @@ public class JavaParser extends Parser {
 
                 switch (alt77) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:601:24: ',' qualifiedName
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:606:24: ',' qualifiedName
             	    {
-            	    char_literal192=(Token)match(input,41,FOLLOW_41_in_qualifiedNameList2561); if (state.failed) return retval;
+            	    char_literal190=(Token)match(input,41,FOLLOW_41_in_qualifiedNameList2575); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal192_tree = (Object)adaptor.create(char_literal192);
-            	    adaptor.addChild(root_0, char_literal192_tree);
+            	    char_literal190_tree = (Object)adaptor.create(char_literal190);
+            	    adaptor.addChild(root_0, char_literal190_tree);
             	    }
-            	    pushFollow(FOLLOW_qualifiedName_in_qualifiedNameList2563);
-            	    qualifiedName193=qualifiedName();
+            	    pushFollow(FOLLOW_qualifiedName_in_qualifiedNameList2577);
+            	    qualifiedName191=qualifiedName();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, qualifiedName193.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, qualifiedName191.getTree());
 
             	    }
             	    break;
@@ -7187,34 +7203,34 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "formalParameters"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:604:1: formalParameters : '(' ( formalParameterDecls )? ')' ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:609:1: formalParameters : '(' ( formalParameterDecls )? ')' ;
     public final JavaParser.formalParameters_return formalParameters() throws RecognitionException {
         JavaParser.formalParameters_return retval = new JavaParser.formalParameters_return();
         retval.start = input.LT(1);
         int formalParameters_StartIndex = input.index();
         Object root_0 = null;
 
+        Token char_literal192=null;
         Token char_literal194=null;
-        Token char_literal196=null;
-        JavaParser.formalParameterDecls_return formalParameterDecls195 = null;
+        JavaParser.formalParameterDecls_return formalParameterDecls193 = null;
 
 
+        Object char_literal192_tree=null;
         Object char_literal194_tree=null;
-        Object char_literal196_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 60) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:605:5: ( '(' ( formalParameterDecls )? ')' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:605:9: '(' ( formalParameterDecls )? ')'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:610:5: ( '(' ( formalParameterDecls )? ')' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:610:9: '(' ( formalParameterDecls )? ')'
             {
             root_0 = (Object)adaptor.nil();
 
-            char_literal194=(Token)match(input,66,FOLLOW_66_in_formalParameters2584); if (state.failed) return retval;
+            char_literal192=(Token)match(input,66,FOLLOW_66_in_formalParameters2598); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal194_tree = (Object)adaptor.create(char_literal194);
-            adaptor.addChild(root_0, char_literal194_tree);
+            char_literal192_tree = (Object)adaptor.create(char_literal192);
+            adaptor.addChild(root_0, char_literal192_tree);
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:605:13: ( formalParameterDecls )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:610:13: ( formalParameterDecls )?
             int alt78=2;
             int LA78_0 = input.LA(1);
 
@@ -7225,22 +7241,22 @@ public class JavaParser extends Parser {
                 case 1 :
                     // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: formalParameterDecls
                     {
-                    pushFollow(FOLLOW_formalParameterDecls_in_formalParameters2586);
-                    formalParameterDecls195=formalParameterDecls();
+                    pushFollow(FOLLOW_formalParameterDecls_in_formalParameters2600);
+                    formalParameterDecls193=formalParameterDecls();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, formalParameterDecls195.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, formalParameterDecls193.getTree());
 
                     }
                     break;
 
             }
 
-            char_literal196=(Token)match(input,67,FOLLOW_67_in_formalParameters2589); if (state.failed) return retval;
+            char_literal194=(Token)match(input,67,FOLLOW_67_in_formalParameters2603); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal196_tree = (Object)adaptor.create(char_literal196);
-            adaptor.addChild(root_0, char_literal196_tree);
+            char_literal194_tree = (Object)adaptor.create(char_literal194);
+            adaptor.addChild(root_0, char_literal194_tree);
             }
 
             }
@@ -7272,46 +7288,46 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "formalParameterDecls"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:608:1: formalParameterDecls : variableModifiers type formalParameterDeclsRest ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:613:1: formalParameterDecls : variableModifiers type formalParameterDeclsRest ;
     public final JavaParser.formalParameterDecls_return formalParameterDecls() throws RecognitionException {
         JavaParser.formalParameterDecls_return retval = new JavaParser.formalParameterDecls_return();
         retval.start = input.LT(1);
         int formalParameterDecls_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.variableModifiers_return variableModifiers197 = null;
+        JavaParser.variableModifiers_return variableModifiers195 = null;
 
-        JavaParser.type_return type198 = null;
+        JavaParser.type_return type196 = null;
 
-        JavaParser.formalParameterDeclsRest_return formalParameterDeclsRest199 = null;
+        JavaParser.formalParameterDeclsRest_return formalParameterDeclsRest197 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 61) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:609:5: ( variableModifiers type formalParameterDeclsRest )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:609:9: variableModifiers type formalParameterDeclsRest
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:614:5: ( variableModifiers type formalParameterDeclsRest )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:614:9: variableModifiers type formalParameterDeclsRest
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_variableModifiers_in_formalParameterDecls2612);
-            variableModifiers197=variableModifiers();
+            pushFollow(FOLLOW_variableModifiers_in_formalParameterDecls2626);
+            variableModifiers195=variableModifiers();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, variableModifiers197.getTree());
-            pushFollow(FOLLOW_type_in_formalParameterDecls2614);
-            type198=type();
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, variableModifiers195.getTree());
+            pushFollow(FOLLOW_type_in_formalParameterDecls2628);
+            type196=type();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, type198.getTree());
-            pushFollow(FOLLOW_formalParameterDeclsRest_in_formalParameterDecls2616);
-            formalParameterDeclsRest199=formalParameterDeclsRest();
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, type196.getTree());
+            pushFollow(FOLLOW_formalParameterDeclsRest_in_formalParameterDecls2630);
+            formalParameterDeclsRest197=formalParameterDeclsRest();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, formalParameterDeclsRest199.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, formalParameterDeclsRest197.getTree());
 
             }
 
@@ -7342,28 +7358,28 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "formalParameterDeclsRest"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:612:1: formalParameterDeclsRest : ( variableDeclaratorId ( ',' formalParameterDecls )? | '...' variableDeclaratorId );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:617:1: formalParameterDeclsRest : ( variableDeclaratorId ( ',' formalParameterDecls )? | '...' variableDeclaratorId );
     public final JavaParser.formalParameterDeclsRest_return formalParameterDeclsRest() throws RecognitionException {
         JavaParser.formalParameterDeclsRest_return retval = new JavaParser.formalParameterDeclsRest_return();
         retval.start = input.LT(1);
         int formalParameterDeclsRest_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal201=null;
-        Token string_literal203=null;
-        JavaParser.variableDeclaratorId_return variableDeclaratorId200 = null;
+        Token char_literal199=null;
+        Token string_literal201=null;
+        JavaParser.variableDeclaratorId_return variableDeclaratorId198 = null;
 
-        JavaParser.formalParameterDecls_return formalParameterDecls202 = null;
+        JavaParser.formalParameterDecls_return formalParameterDecls200 = null;
 
-        JavaParser.variableDeclaratorId_return variableDeclaratorId204 = null;
+        JavaParser.variableDeclaratorId_return variableDeclaratorId202 = null;
 
 
-        Object char_literal201_tree=null;
-        Object string_literal203_tree=null;
+        Object char_literal199_tree=null;
+        Object string_literal201_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 62) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:613:5: ( variableDeclaratorId ( ',' formalParameterDecls )? | '...' variableDeclaratorId )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:618:5: ( variableDeclaratorId ( ',' formalParameterDecls )? | '...' variableDeclaratorId )
             int alt80=2;
             int LA80_0 = input.LA(1);
 
@@ -7382,17 +7398,17 @@ public class JavaParser extends Parser {
             }
             switch (alt80) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:613:9: variableDeclaratorId ( ',' formalParameterDecls )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:618:9: variableDeclaratorId ( ',' formalParameterDecls )?
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_variableDeclaratorId_in_formalParameterDeclsRest2639);
-                    variableDeclaratorId200=variableDeclaratorId();
+                    pushFollow(FOLLOW_variableDeclaratorId_in_formalParameterDeclsRest2653);
+                    variableDeclaratorId198=variableDeclaratorId();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, variableDeclaratorId200.getTree());
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:613:30: ( ',' formalParameterDecls )?
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, variableDeclaratorId198.getTree());
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:618:30: ( ',' formalParameterDecls )?
                     int alt79=2;
                     int LA79_0 = input.LA(1);
 
@@ -7401,19 +7417,19 @@ public class JavaParser extends Parser {
                     }
                     switch (alt79) {
                         case 1 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:613:31: ',' formalParameterDecls
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:618:31: ',' formalParameterDecls
                             {
-                            char_literal201=(Token)match(input,41,FOLLOW_41_in_formalParameterDeclsRest2642); if (state.failed) return retval;
+                            char_literal199=(Token)match(input,41,FOLLOW_41_in_formalParameterDeclsRest2656); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
-                            char_literal201_tree = (Object)adaptor.create(char_literal201);
-                            adaptor.addChild(root_0, char_literal201_tree);
+                            char_literal199_tree = (Object)adaptor.create(char_literal199);
+                            adaptor.addChild(root_0, char_literal199_tree);
                             }
-                            pushFollow(FOLLOW_formalParameterDecls_in_formalParameterDeclsRest2644);
-                            formalParameterDecls202=formalParameterDecls();
+                            pushFollow(FOLLOW_formalParameterDecls_in_formalParameterDeclsRest2658);
+                            formalParameterDecls200=formalParameterDecls();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, formalParameterDecls202.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, formalParameterDecls200.getTree());
 
                             }
                             break;
@@ -7424,21 +7440,21 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:614:9: '...' variableDeclaratorId
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:619:9: '...' variableDeclaratorId
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal203=(Token)match(input,68,FOLLOW_68_in_formalParameterDeclsRest2656); if (state.failed) return retval;
+                    string_literal201=(Token)match(input,68,FOLLOW_68_in_formalParameterDeclsRest2670); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal203_tree = (Object)adaptor.create(string_literal203);
-                    adaptor.addChild(root_0, string_literal203_tree);
+                    string_literal201_tree = (Object)adaptor.create(string_literal201);
+                    adaptor.addChild(root_0, string_literal201_tree);
                     }
-                    pushFollow(FOLLOW_variableDeclaratorId_in_formalParameterDeclsRest2658);
-                    variableDeclaratorId204=variableDeclaratorId();
+                    pushFollow(FOLLOW_variableDeclaratorId_in_formalParameterDeclsRest2672);
+                    variableDeclaratorId202=variableDeclaratorId();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, variableDeclaratorId204.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, variableDeclaratorId202.getTree());
 
                     }
                     break;
@@ -7471,30 +7487,30 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "methodBody"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:617:1: methodBody : block ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:622:1: methodBody : block ;
     public final JavaParser.methodBody_return methodBody() throws RecognitionException {
         JavaParser.methodBody_return retval = new JavaParser.methodBody_return();
         retval.start = input.LT(1);
         int methodBody_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.block_return block205 = null;
+        JavaParser.block_return block203 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 63) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:618:5: ( block )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:618:9: block
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:623:5: ( block )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:623:9: block
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_block_in_methodBody2681);
-            block205=block();
+            pushFollow(FOLLOW_block_in_methodBody2695);
+            block203=block();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, block205.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, block203.getTree());
 
             }
 
@@ -7525,55 +7541,55 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "constructorBody"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:621:1: constructorBody : '{' ( explicitConstructorInvocation )? ( blockStatement )* '}' ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:626:1: constructorBody : '{' ( explicitConstructorInvocation )? ( blockStatement )* '}' ;
     public final JavaParser.constructorBody_return constructorBody() throws RecognitionException {
         JavaParser.constructorBody_return retval = new JavaParser.constructorBody_return();
         retval.start = input.LT(1);
         int constructorBody_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal206=null;
-        Token char_literal209=null;
-        JavaParser.explicitConstructorInvocation_return explicitConstructorInvocation207 = null;
+        Token char_literal204=null;
+        Token char_literal207=null;
+        JavaParser.explicitConstructorInvocation_return explicitConstructorInvocation205 = null;
 
-        JavaParser.blockStatement_return blockStatement208 = null;
+        JavaParser.blockStatement_return blockStatement206 = null;
 
 
-        Object char_literal206_tree=null;
-        Object char_literal209_tree=null;
+        Object char_literal204_tree=null;
+        Object char_literal207_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 64) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:622:5: ( '{' ( explicitConstructorInvocation )? ( blockStatement )* '}' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:622:9: '{' ( explicitConstructorInvocation )? ( blockStatement )* '}'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:627:5: ( '{' ( explicitConstructorInvocation )? ( blockStatement )* '}' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:627:9: '{' ( explicitConstructorInvocation )? ( blockStatement )* '}'
             {
             root_0 = (Object)adaptor.nil();
 
-            char_literal206=(Token)match(input,44,FOLLOW_44_in_constructorBody2700); if (state.failed) return retval;
+            char_literal204=(Token)match(input,44,FOLLOW_44_in_constructorBody2714); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal206_tree = (Object)adaptor.create(char_literal206);
-            adaptor.addChild(root_0, char_literal206_tree);
+            char_literal204_tree = (Object)adaptor.create(char_literal204);
+            adaptor.addChild(root_0, char_literal204_tree);
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:622:13: ( explicitConstructorInvocation )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:627:13: ( explicitConstructorInvocation )?
             int alt81=2;
             alt81 = dfa81.predict(input);
             switch (alt81) {
                 case 1 :
                     // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: explicitConstructorInvocation
                     {
-                    pushFollow(FOLLOW_explicitConstructorInvocation_in_constructorBody2702);
-                    explicitConstructorInvocation207=explicitConstructorInvocation();
+                    pushFollow(FOLLOW_explicitConstructorInvocation_in_constructorBody2716);
+                    explicitConstructorInvocation205=explicitConstructorInvocation();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, explicitConstructorInvocation207.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, explicitConstructorInvocation205.getTree());
 
                     }
                     break;
 
             }
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:622:44: ( blockStatement )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:627:44: ( blockStatement )*
             loop82:
             do {
                 int alt82=2;
@@ -7588,12 +7604,12 @@ public class JavaParser extends Parser {
             	case 1 :
             	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: blockStatement
             	    {
-            	    pushFollow(FOLLOW_blockStatement_in_constructorBody2705);
-            	    blockStatement208=blockStatement();
+            	    pushFollow(FOLLOW_blockStatement_in_constructorBody2719);
+            	    blockStatement206=blockStatement();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, blockStatement208.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, blockStatement206.getTree());
 
             	    }
             	    break;
@@ -7603,10 +7619,10 @@ public class JavaParser extends Parser {
                 }
             } while (true);
 
-            char_literal209=(Token)match(input,45,FOLLOW_45_in_constructorBody2708); if (state.failed) return retval;
+            char_literal207=(Token)match(input,45,FOLLOW_45_in_constructorBody2722); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal209_tree = (Object)adaptor.create(char_literal209);
-            adaptor.addChild(root_0, char_literal209_tree);
+            char_literal207_tree = (Object)adaptor.create(char_literal207);
+            adaptor.addChild(root_0, char_literal207_tree);
             }
 
             }
@@ -7638,47 +7654,47 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "explicitConstructorInvocation"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:625:1: explicitConstructorInvocation : ( ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';' | primary '.' ( nonWildcardTypeArguments )? 'super' arguments ';' );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:630:1: explicitConstructorInvocation : ( ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';' | primary '.' ( nonWildcardTypeArguments )? 'super' arguments ';' );
     public final JavaParser.explicitConstructorInvocation_return explicitConstructorInvocation() throws RecognitionException {
         JavaParser.explicitConstructorInvocation_return retval = new JavaParser.explicitConstructorInvocation_return();
         retval.start = input.LT(1);
         int explicitConstructorInvocation_StartIndex = input.index();
         Object root_0 = null;
 
-        Token set211=null;
+        Token set209=null;
+        Token char_literal211=null;
         Token char_literal213=null;
-        Token char_literal215=null;
-        Token string_literal217=null;
-        Token char_literal219=null;
-        JavaParser.nonWildcardTypeArguments_return nonWildcardTypeArguments210 = null;
+        Token string_literal215=null;
+        Token char_literal217=null;
+        JavaParser.nonWildcardTypeArguments_return nonWildcardTypeArguments208 = null;
 
-        JavaParser.arguments_return arguments212 = null;
+        JavaParser.arguments_return arguments210 = null;
 
-        JavaParser.primary_return primary214 = null;
+        JavaParser.primary_return primary212 = null;
 
-        JavaParser.nonWildcardTypeArguments_return nonWildcardTypeArguments216 = null;
+        JavaParser.nonWildcardTypeArguments_return nonWildcardTypeArguments214 = null;
 
-        JavaParser.arguments_return arguments218 = null;
+        JavaParser.arguments_return arguments216 = null;
 
 
-        Object set211_tree=null;
+        Object set209_tree=null;
+        Object char_literal211_tree=null;
         Object char_literal213_tree=null;
-        Object char_literal215_tree=null;
-        Object string_literal217_tree=null;
-        Object char_literal219_tree=null;
+        Object string_literal215_tree=null;
+        Object char_literal217_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 65) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:626:5: ( ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';' | primary '.' ( nonWildcardTypeArguments )? 'super' arguments ';' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:631:5: ( ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';' | primary '.' ( nonWildcardTypeArguments )? 'super' arguments ';' )
             int alt85=2;
             alt85 = dfa85.predict(input);
             switch (alt85) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:626:9: ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:631:9: ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:626:9: ( nonWildcardTypeArguments )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:631:9: ( nonWildcardTypeArguments )?
                     int alt83=2;
                     int LA83_0 = input.LA(1);
 
@@ -7689,22 +7705,22 @@ public class JavaParser extends Parser {
                         case 1 :
                             // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: nonWildcardTypeArguments
                             {
-                            pushFollow(FOLLOW_nonWildcardTypeArguments_in_explicitConstructorInvocation2727);
-                            nonWildcardTypeArguments210=nonWildcardTypeArguments();
+                            pushFollow(FOLLOW_nonWildcardTypeArguments_in_explicitConstructorInvocation2741);
+                            nonWildcardTypeArguments208=nonWildcardTypeArguments();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, nonWildcardTypeArguments210.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, nonWildcardTypeArguments208.getTree());
 
                             }
                             break;
 
                     }
 
-                    set211=(Token)input.LT(1);
+                    set209=(Token)input.LT(1);
                     if ( input.LA(1)==65||input.LA(1)==69 ) {
                         input.consume();
-                        if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set211));
+                        if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set209));
                         state.errorRecovery=false;state.failed=false;
                     }
                     else {
@@ -7713,37 +7729,37 @@ public class JavaParser extends Parser {
                         throw mse;
                     }
 
-                    pushFollow(FOLLOW_arguments_in_explicitConstructorInvocation2738);
-                    arguments212=arguments();
+                    pushFollow(FOLLOW_arguments_in_explicitConstructorInvocation2752);
+                    arguments210=arguments();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, arguments212.getTree());
-                    char_literal213=(Token)match(input,26,FOLLOW_26_in_explicitConstructorInvocation2740); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, arguments210.getTree());
+                    char_literal211=(Token)match(input,26,FOLLOW_26_in_explicitConstructorInvocation2754); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal213_tree = (Object)adaptor.create(char_literal213);
-                    adaptor.addChild(root_0, char_literal213_tree);
+                    char_literal211_tree = (Object)adaptor.create(char_literal211);
+                    adaptor.addChild(root_0, char_literal211_tree);
                     }
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:627:9: primary '.' ( nonWildcardTypeArguments )? 'super' arguments ';'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:632:9: primary '.' ( nonWildcardTypeArguments )? 'super' arguments ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_primary_in_explicitConstructorInvocation2750);
-                    primary214=primary();
+                    pushFollow(FOLLOW_primary_in_explicitConstructorInvocation2764);
+                    primary212=primary();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, primary214.getTree());
-                    char_literal215=(Token)match(input,29,FOLLOW_29_in_explicitConstructorInvocation2752); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, primary212.getTree());
+                    char_literal213=(Token)match(input,29,FOLLOW_29_in_explicitConstructorInvocation2766); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal215_tree = (Object)adaptor.create(char_literal215);
-                    adaptor.addChild(root_0, char_literal215_tree);
+                    char_literal213_tree = (Object)adaptor.create(char_literal213);
+                    adaptor.addChild(root_0, char_literal213_tree);
                     }
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:627:21: ( nonWildcardTypeArguments )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:632:21: ( nonWildcardTypeArguments )?
                     int alt84=2;
                     int LA84_0 = input.LA(1);
 
@@ -7754,33 +7770,33 @@ public class JavaParser extends Parser {
                         case 1 :
                             // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: nonWildcardTypeArguments
                             {
-                            pushFollow(FOLLOW_nonWildcardTypeArguments_in_explicitConstructorInvocation2754);
-                            nonWildcardTypeArguments216=nonWildcardTypeArguments();
+                            pushFollow(FOLLOW_nonWildcardTypeArguments_in_explicitConstructorInvocation2768);
+                            nonWildcardTypeArguments214=nonWildcardTypeArguments();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, nonWildcardTypeArguments216.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, nonWildcardTypeArguments214.getTree());
 
                             }
                             break;
 
                     }
 
-                    string_literal217=(Token)match(input,65,FOLLOW_65_in_explicitConstructorInvocation2757); if (state.failed) return retval;
+                    string_literal215=(Token)match(input,65,FOLLOW_65_in_explicitConstructorInvocation2771); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal217_tree = (Object)adaptor.create(string_literal217);
-                    adaptor.addChild(root_0, string_literal217_tree);
+                    string_literal215_tree = (Object)adaptor.create(string_literal215);
+                    adaptor.addChild(root_0, string_literal215_tree);
                     }
-                    pushFollow(FOLLOW_arguments_in_explicitConstructorInvocation2759);
-                    arguments218=arguments();
+                    pushFollow(FOLLOW_arguments_in_explicitConstructorInvocation2773);
+                    arguments216=arguments();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, arguments218.getTree());
-                    char_literal219=(Token)match(input,26,FOLLOW_26_in_explicitConstructorInvocation2761); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, arguments216.getTree());
+                    char_literal217=(Token)match(input,26,FOLLOW_26_in_explicitConstructorInvocation2775); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal219_tree = (Object)adaptor.create(char_literal219);
-                    adaptor.addChild(root_0, char_literal219_tree);
+                    char_literal217_tree = (Object)adaptor.create(char_literal217);
+                    adaptor.addChild(root_0, char_literal217_tree);
                     }
 
                     }
@@ -7814,34 +7830,34 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "qualifiedName"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:631:1: qualifiedName : Identifier ( '.' Identifier )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:636:1: qualifiedName : Identifier ( '.' Identifier )* ;
     public final JavaParser.qualifiedName_return qualifiedName() throws RecognitionException {
         JavaParser.qualifiedName_return retval = new JavaParser.qualifiedName_return();
         retval.start = input.LT(1);
         int qualifiedName_StartIndex = input.index();
         Object root_0 = null;
 
+        Token Identifier218=null;
+        Token char_literal219=null;
         Token Identifier220=null;
-        Token char_literal221=null;
-        Token Identifier222=null;
 
+        Object Identifier218_tree=null;
+        Object char_literal219_tree=null;
         Object Identifier220_tree=null;
-        Object char_literal221_tree=null;
-        Object Identifier222_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 66) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:632:5: ( Identifier ( '.' Identifier )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:632:9: Identifier ( '.' Identifier )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:637:5: ( Identifier ( '.' Identifier )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:637:9: Identifier ( '.' Identifier )*
             {
             root_0 = (Object)adaptor.nil();
 
-            Identifier220=(Token)match(input,Identifier,FOLLOW_Identifier_in_qualifiedName2781); if (state.failed) return retval;
+            Identifier218=(Token)match(input,Identifier,FOLLOW_Identifier_in_qualifiedName2795); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            Identifier220_tree = (Object)adaptor.create(Identifier220);
-            adaptor.addChild(root_0, Identifier220_tree);
+            Identifier218_tree = (Object)adaptor.create(Identifier218);
+            adaptor.addChild(root_0, Identifier218_tree);
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:632:20: ( '.' Identifier )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:637:20: ( '.' Identifier )*
             loop86:
             do {
                 int alt86=2;
@@ -7860,17 +7876,17 @@ public class JavaParser extends Parser {
 
                 switch (alt86) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:632:21: '.' Identifier
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:637:21: '.' Identifier
             	    {
-            	    char_literal221=(Token)match(input,29,FOLLOW_29_in_qualifiedName2784); if (state.failed) return retval;
+            	    char_literal219=(Token)match(input,29,FOLLOW_29_in_qualifiedName2798); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal221_tree = (Object)adaptor.create(char_literal221);
-            	    adaptor.addChild(root_0, char_literal221_tree);
+            	    char_literal219_tree = (Object)adaptor.create(char_literal219);
+            	    adaptor.addChild(root_0, char_literal219_tree);
             	    }
-            	    Identifier222=(Token)match(input,Identifier,FOLLOW_Identifier_in_qualifiedName2786); if (state.failed) return retval;
+            	    Identifier220=(Token)match(input,Identifier,FOLLOW_Identifier_in_qualifiedName2800); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    Identifier222_tree = (Object)adaptor.create(Identifier222);
-            	    adaptor.addChild(root_0, Identifier222_tree);
+            	    Identifier220_tree = (Object)adaptor.create(Identifier220);
+            	    adaptor.addChild(root_0, Identifier220_tree);
             	    }
 
             	    }
@@ -7911,30 +7927,30 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "literal"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:635:1: literal : ( integerLiteral | FloatingPointLiteral | CharacterLiteral | StringLiteral | booleanLiteral | 'null' );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:640:1: literal : ( integerLiteral | FloatingPointLiteral | CharacterLiteral | StringLiteral | booleanLiteral | 'null' );
     public final JavaParser.literal_return literal() throws RecognitionException {
         JavaParser.literal_return retval = new JavaParser.literal_return();
         retval.start = input.LT(1);
         int literal_StartIndex = input.index();
         Object root_0 = null;
 
-        Token FloatingPointLiteral224=null;
-        Token CharacterLiteral225=null;
-        Token StringLiteral226=null;
-        Token string_literal228=null;
-        JavaParser.integerLiteral_return integerLiteral223 = null;
+        Token FloatingPointLiteral222=null;
+        Token CharacterLiteral223=null;
+        Token StringLiteral224=null;
+        Token string_literal226=null;
+        JavaParser.integerLiteral_return integerLiteral221 = null;
 
-        JavaParser.booleanLiteral_return booleanLiteral227 = null;
+        JavaParser.booleanLiteral_return booleanLiteral225 = null;
 
 
-        Object FloatingPointLiteral224_tree=null;
-        Object CharacterLiteral225_tree=null;
-        Object StringLiteral226_tree=null;
-        Object string_literal228_tree=null;
+        Object FloatingPointLiteral222_tree=null;
+        Object CharacterLiteral223_tree=null;
+        Object StringLiteral224_tree=null;
+        Object string_literal226_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 67) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:636:5: ( integerLiteral | FloatingPointLiteral | CharacterLiteral | StringLiteral | booleanLiteral | 'null' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:641:5: ( integerLiteral | FloatingPointLiteral | CharacterLiteral | StringLiteral | booleanLiteral | 'null' )
             int alt87=6;
             switch ( input.LA(1) ) {
             case HexLiteral:
@@ -7980,81 +7996,81 @@ public class JavaParser extends Parser {
 
             switch (alt87) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:636:9: integerLiteral
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:641:9: integerLiteral
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_integerLiteral_in_literal2812);
-                    integerLiteral223=integerLiteral();
+                    pushFollow(FOLLOW_integerLiteral_in_literal2826);
+                    integerLiteral221=integerLiteral();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, integerLiteral223.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, integerLiteral221.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:637:9: FloatingPointLiteral
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:642:9: FloatingPointLiteral
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    FloatingPointLiteral224=(Token)match(input,FloatingPointLiteral,FOLLOW_FloatingPointLiteral_in_literal2822); if (state.failed) return retval;
+                    FloatingPointLiteral222=(Token)match(input,FloatingPointLiteral,FOLLOW_FloatingPointLiteral_in_literal2836); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    FloatingPointLiteral224_tree = (Object)adaptor.create(FloatingPointLiteral224);
-                    adaptor.addChild(root_0, FloatingPointLiteral224_tree);
+                    FloatingPointLiteral222_tree = (Object)adaptor.create(FloatingPointLiteral222);
+                    adaptor.addChild(root_0, FloatingPointLiteral222_tree);
                     }
 
                     }
                     break;
                 case 3 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:638:9: CharacterLiteral
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:643:9: CharacterLiteral
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    CharacterLiteral225=(Token)match(input,CharacterLiteral,FOLLOW_CharacterLiteral_in_literal2832); if (state.failed) return retval;
+                    CharacterLiteral223=(Token)match(input,CharacterLiteral,FOLLOW_CharacterLiteral_in_literal2846); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    CharacterLiteral225_tree = (Object)adaptor.create(CharacterLiteral225);
-                    adaptor.addChild(root_0, CharacterLiteral225_tree);
+                    CharacterLiteral223_tree = (Object)adaptor.create(CharacterLiteral223);
+                    adaptor.addChild(root_0, CharacterLiteral223_tree);
                     }
 
                     }
                     break;
                 case 4 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:639:9: StringLiteral
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:644:9: StringLiteral
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    StringLiteral226=(Token)match(input,StringLiteral,FOLLOW_StringLiteral_in_literal2842); if (state.failed) return retval;
+                    StringLiteral224=(Token)match(input,StringLiteral,FOLLOW_StringLiteral_in_literal2856); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    StringLiteral226_tree = (Object)adaptor.create(StringLiteral226);
-                    adaptor.addChild(root_0, StringLiteral226_tree);
+                    StringLiteral224_tree = (Object)adaptor.create(StringLiteral224);
+                    adaptor.addChild(root_0, StringLiteral224_tree);
                     }
 
                     }
                     break;
                 case 5 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:640:9: booleanLiteral
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:645:9: booleanLiteral
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_booleanLiteral_in_literal2852);
-                    booleanLiteral227=booleanLiteral();
+                    pushFollow(FOLLOW_booleanLiteral_in_literal2866);
+                    booleanLiteral225=booleanLiteral();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, booleanLiteral227.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, booleanLiteral225.getTree());
 
                     }
                     break;
                 case 6 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:641:9: 'null'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:646:9: 'null'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal228=(Token)match(input,70,FOLLOW_70_in_literal2862); if (state.failed) return retval;
+                    string_literal226=(Token)match(input,70,FOLLOW_70_in_literal2876); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal228_tree = (Object)adaptor.create(string_literal228);
-                    adaptor.addChild(root_0, string_literal228_tree);
+                    string_literal226_tree = (Object)adaptor.create(string_literal226);
+                    adaptor.addChild(root_0, string_literal226_tree);
                     }
 
                     }
@@ -8088,28 +8104,28 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "integerLiteral"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:644:1: integerLiteral : ( HexLiteral | OctalLiteral | DecimalLiteral );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:649:1: integerLiteral : ( HexLiteral | OctalLiteral | DecimalLiteral );
     public final JavaParser.integerLiteral_return integerLiteral() throws RecognitionException {
         JavaParser.integerLiteral_return retval = new JavaParser.integerLiteral_return();
         retval.start = input.LT(1);
         int integerLiteral_StartIndex = input.index();
         Object root_0 = null;
 
-        Token set229=null;
+        Token set227=null;
 
-        Object set229_tree=null;
+        Object set227_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 68) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:645:5: ( HexLiteral | OctalLiteral | DecimalLiteral )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:650:5: ( HexLiteral | OctalLiteral | DecimalLiteral )
             // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:
             {
             root_0 = (Object)adaptor.nil();
 
-            set229=(Token)input.LT(1);
+            set227=(Token)input.LT(1);
             if ( (input.LA(1)>=HexLiteral && input.LA(1)<=DecimalLiteral) ) {
                 input.consume();
-                if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set229));
+                if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set227));
                 state.errorRecovery=false;state.failed=false;
             }
             else {
@@ -8148,28 +8164,28 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "booleanLiteral"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:650:1: booleanLiteral : ( 'true' | 'false' );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:655:1: booleanLiteral : ( 'true' | 'false' );
     public final JavaParser.booleanLiteral_return booleanLiteral() throws RecognitionException {
         JavaParser.booleanLiteral_return retval = new JavaParser.booleanLiteral_return();
         retval.start = input.LT(1);
         int booleanLiteral_StartIndex = input.index();
         Object root_0 = null;
 
-        Token set230=null;
+        Token set228=null;
 
-        Object set230_tree=null;
+        Object set228_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 69) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:651:5: ( 'true' | 'false' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:656:5: ( 'true' | 'false' )
             // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:
             {
             root_0 = (Object)adaptor.nil();
 
-            set230=(Token)input.LT(1);
+            set228=(Token)input.LT(1);
             if ( (input.LA(1)>=71 && input.LA(1)<=72) ) {
                 input.consume();
-                if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set230));
+                if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set228));
                 state.errorRecovery=false;state.failed=false;
             }
             else {
@@ -8208,25 +8224,25 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "annotations"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:657:1: annotations : ( annotation )+ ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:662:1: annotations : ( annotation )+ ;
     public final JavaParser.annotations_return annotations() throws RecognitionException {
         JavaParser.annotations_return retval = new JavaParser.annotations_return();
         retval.start = input.LT(1);
         int annotations_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.annotation_return annotation231 = null;
+        JavaParser.annotation_return annotation229 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 70) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:658:5: ( ( annotation )+ )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:658:9: ( annotation )+
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:663:5: ( ( annotation )+ )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:663:9: ( annotation )+
             {
             root_0 = (Object)adaptor.nil();
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:658:9: ( annotation )+
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:663:9: ( annotation )+
             int cnt88=0;
             loop88:
             do {
@@ -8254,12 +8270,12 @@ public class JavaParser extends Parser {
             	case 1 :
             	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: annotation
             	    {
-            	    pushFollow(FOLLOW_annotation_in_annotations2951);
-            	    annotation231=annotation();
+            	    pushFollow(FOLLOW_annotation_in_annotations2965);
+            	    annotation229=annotation();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, annotation231.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, annotation229.getTree());
 
             	    }
             	    break;
@@ -8304,46 +8320,46 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "annotation"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:661:1: annotation : '@' annotationName ( '(' ( elementValuePairs | elementValue )? ')' )? ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:666:1: annotation : '@' annotationName ( '(' ( elementValuePairs | elementValue )? ')' )? ;
     public final JavaParser.annotation_return annotation() throws RecognitionException {
         JavaParser.annotation_return retval = new JavaParser.annotation_return();
         retval.start = input.LT(1);
         int annotation_StartIndex = input.index();
         Object root_0 = null;
 
+        Token char_literal230=null;
         Token char_literal232=null;
-        Token char_literal234=null;
-        Token char_literal237=null;
-        JavaParser.annotationName_return annotationName233 = null;
+        Token char_literal235=null;
+        JavaParser.annotationName_return annotationName231 = null;
 
-        JavaParser.elementValuePairs_return elementValuePairs235 = null;
+        JavaParser.elementValuePairs_return elementValuePairs233 = null;
 
-        JavaParser.elementValue_return elementValue236 = null;
+        JavaParser.elementValue_return elementValue234 = null;
 
 
+        Object char_literal230_tree=null;
         Object char_literal232_tree=null;
-        Object char_literal234_tree=null;
-        Object char_literal237_tree=null;
+        Object char_literal235_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 71) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:662:5: ( '@' annotationName ( '(' ( elementValuePairs | elementValue )? ')' )? )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:662:9: '@' annotationName ( '(' ( elementValuePairs | elementValue )? ')' )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:667:5: ( '@' annotationName ( '(' ( elementValuePairs | elementValue )? ')' )? )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:667:9: '@' annotationName ( '(' ( elementValuePairs | elementValue )? ')' )?
             {
             root_0 = (Object)adaptor.nil();
 
-            char_literal232=(Token)match(input,73,FOLLOW_73_in_annotation2971); if (state.failed) return retval;
+            char_literal230=(Token)match(input,73,FOLLOW_73_in_annotation2985); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal232_tree = (Object)adaptor.create(char_literal232);
-            adaptor.addChild(root_0, char_literal232_tree);
+            char_literal230_tree = (Object)adaptor.create(char_literal230);
+            adaptor.addChild(root_0, char_literal230_tree);
             }
-            pushFollow(FOLLOW_annotationName_in_annotation2973);
-            annotationName233=annotationName();
+            pushFollow(FOLLOW_annotationName_in_annotation2987);
+            annotationName231=annotationName();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, annotationName233.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:662:28: ( '(' ( elementValuePairs | elementValue )? ')' )?
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, annotationName231.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:667:28: ( '(' ( elementValuePairs | elementValue )? ')' )?
             int alt90=2;
             int LA90_0 = input.LA(1);
 
@@ -8352,14 +8368,14 @@ public class JavaParser extends Parser {
             }
             switch (alt90) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:662:30: '(' ( elementValuePairs | elementValue )? ')'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:667:30: '(' ( elementValuePairs | elementValue )? ')'
                     {
-                    char_literal234=(Token)match(input,66,FOLLOW_66_in_annotation2977); if (state.failed) return retval;
+                    char_literal232=(Token)match(input,66,FOLLOW_66_in_annotation2991); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal234_tree = (Object)adaptor.create(char_literal234);
-                    adaptor.addChild(root_0, char_literal234_tree);
+                    char_literal232_tree = (Object)adaptor.create(char_literal232);
+                    adaptor.addChild(root_0, char_literal232_tree);
                     }
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:662:34: ( elementValuePairs | elementValue )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:667:34: ( elementValuePairs | elementValue )?
                     int alt89=3;
                     int LA89_0 = input.LA(1);
 
@@ -8378,36 +8394,36 @@ public class JavaParser extends Parser {
                     }
                     switch (alt89) {
                         case 1 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:662:36: elementValuePairs
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:667:36: elementValuePairs
                             {
-                            pushFollow(FOLLOW_elementValuePairs_in_annotation2981);
-                            elementValuePairs235=elementValuePairs();
+                            pushFollow(FOLLOW_elementValuePairs_in_annotation2995);
+                            elementValuePairs233=elementValuePairs();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, elementValuePairs235.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, elementValuePairs233.getTree());
 
                             }
                             break;
                         case 2 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:662:56: elementValue
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:667:56: elementValue
                             {
-                            pushFollow(FOLLOW_elementValue_in_annotation2985);
-                            elementValue236=elementValue();
+                            pushFollow(FOLLOW_elementValue_in_annotation2999);
+                            elementValue234=elementValue();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, elementValue236.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, elementValue234.getTree());
 
                             }
                             break;
 
                     }
 
-                    char_literal237=(Token)match(input,67,FOLLOW_67_in_annotation2990); if (state.failed) return retval;
+                    char_literal235=(Token)match(input,67,FOLLOW_67_in_annotation3004); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal237_tree = (Object)adaptor.create(char_literal237);
-                    adaptor.addChild(root_0, char_literal237_tree);
+                    char_literal235_tree = (Object)adaptor.create(char_literal235);
+                    adaptor.addChild(root_0, char_literal235_tree);
                     }
 
                     }
@@ -8445,34 +8461,34 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "annotationName"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:665:1: annotationName : Identifier ( '.' Identifier )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:670:1: annotationName : Identifier ( '.' Identifier )* ;
     public final JavaParser.annotationName_return annotationName() throws RecognitionException {
         JavaParser.annotationName_return retval = new JavaParser.annotationName_return();
         retval.start = input.LT(1);
         int annotationName_StartIndex = input.index();
         Object root_0 = null;
 
+        Token Identifier236=null;
+        Token char_literal237=null;
         Token Identifier238=null;
-        Token char_literal239=null;
-        Token Identifier240=null;
 
+        Object Identifier236_tree=null;
+        Object char_literal237_tree=null;
         Object Identifier238_tree=null;
-        Object char_literal239_tree=null;
-        Object Identifier240_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 72) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:666:5: ( Identifier ( '.' Identifier )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:666:7: Identifier ( '.' Identifier )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:671:5: ( Identifier ( '.' Identifier )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:671:7: Identifier ( '.' Identifier )*
             {
             root_0 = (Object)adaptor.nil();
 
-            Identifier238=(Token)match(input,Identifier,FOLLOW_Identifier_in_annotationName3014); if (state.failed) return retval;
+            Identifier236=(Token)match(input,Identifier,FOLLOW_Identifier_in_annotationName3028); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            Identifier238_tree = (Object)adaptor.create(Identifier238);
-            adaptor.addChild(root_0, Identifier238_tree);
+            Identifier236_tree = (Object)adaptor.create(Identifier236);
+            adaptor.addChild(root_0, Identifier236_tree);
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:666:18: ( '.' Identifier )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:671:18: ( '.' Identifier )*
             loop91:
             do {
                 int alt91=2;
@@ -8485,17 +8501,17 @@ public class JavaParser extends Parser {
 
                 switch (alt91) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:666:19: '.' Identifier
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:671:19: '.' Identifier
             	    {
-            	    char_literal239=(Token)match(input,29,FOLLOW_29_in_annotationName3017); if (state.failed) return retval;
+            	    char_literal237=(Token)match(input,29,FOLLOW_29_in_annotationName3031); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal239_tree = (Object)adaptor.create(char_literal239);
-            	    adaptor.addChild(root_0, char_literal239_tree);
+            	    char_literal237_tree = (Object)adaptor.create(char_literal237);
+            	    adaptor.addChild(root_0, char_literal237_tree);
             	    }
-            	    Identifier240=(Token)match(input,Identifier,FOLLOW_Identifier_in_annotationName3019); if (state.failed) return retval;
+            	    Identifier238=(Token)match(input,Identifier,FOLLOW_Identifier_in_annotationName3033); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    Identifier240_tree = (Object)adaptor.create(Identifier240);
-            	    adaptor.addChild(root_0, Identifier240_tree);
+            	    Identifier238_tree = (Object)adaptor.create(Identifier238);
+            	    adaptor.addChild(root_0, Identifier238_tree);
             	    }
 
             	    }
@@ -8536,35 +8552,35 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "elementValuePairs"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:669:1: elementValuePairs : elementValuePair ( ',' elementValuePair )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:674:1: elementValuePairs : elementValuePair ( ',' elementValuePair )* ;
     public final JavaParser.elementValuePairs_return elementValuePairs() throws RecognitionException {
         JavaParser.elementValuePairs_return retval = new JavaParser.elementValuePairs_return();
         retval.start = input.LT(1);
         int elementValuePairs_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal242=null;
+        Token char_literal240=null;
+        JavaParser.elementValuePair_return elementValuePair239 = null;
+
         JavaParser.elementValuePair_return elementValuePair241 = null;
 
-        JavaParser.elementValuePair_return elementValuePair243 = null;
 
-
-        Object char_literal242_tree=null;
+        Object char_literal240_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 73) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:670:5: ( elementValuePair ( ',' elementValuePair )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:670:9: elementValuePair ( ',' elementValuePair )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:675:5: ( elementValuePair ( ',' elementValuePair )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:675:9: elementValuePair ( ',' elementValuePair )*
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_elementValuePair_in_elementValuePairs3040);
-            elementValuePair241=elementValuePair();
+            pushFollow(FOLLOW_elementValuePair_in_elementValuePairs3054);
+            elementValuePair239=elementValuePair();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, elementValuePair241.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:670:26: ( ',' elementValuePair )*
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, elementValuePair239.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:675:26: ( ',' elementValuePair )*
             loop92:
             do {
                 int alt92=2;
@@ -8577,19 +8593,19 @@ public class JavaParser extends Parser {
 
                 switch (alt92) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:670:27: ',' elementValuePair
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:675:27: ',' elementValuePair
             	    {
-            	    char_literal242=(Token)match(input,41,FOLLOW_41_in_elementValuePairs3043); if (state.failed) return retval;
+            	    char_literal240=(Token)match(input,41,FOLLOW_41_in_elementValuePairs3057); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal242_tree = (Object)adaptor.create(char_literal242);
-            	    adaptor.addChild(root_0, char_literal242_tree);
+            	    char_literal240_tree = (Object)adaptor.create(char_literal240);
+            	    adaptor.addChild(root_0, char_literal240_tree);
             	    }
-            	    pushFollow(FOLLOW_elementValuePair_in_elementValuePairs3045);
-            	    elementValuePair243=elementValuePair();
+            	    pushFollow(FOLLOW_elementValuePair_in_elementValuePairs3059);
+            	    elementValuePair241=elementValuePair();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, elementValuePair243.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, elementValuePair241.getTree());
 
             	    }
             	    break;
@@ -8629,44 +8645,44 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "elementValuePair"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:673:1: elementValuePair : Identifier '=' elementValue ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:678:1: elementValuePair : Identifier '=' elementValue ;
     public final JavaParser.elementValuePair_return elementValuePair() throws RecognitionException {
         JavaParser.elementValuePair_return retval = new JavaParser.elementValuePair_return();
         retval.start = input.LT(1);
         int elementValuePair_StartIndex = input.index();
         Object root_0 = null;
 
-        Token Identifier244=null;
-        Token char_literal245=null;
-        JavaParser.elementValue_return elementValue246 = null;
+        Token Identifier242=null;
+        Token char_literal243=null;
+        JavaParser.elementValue_return elementValue244 = null;
 
 
-        Object Identifier244_tree=null;
-        Object char_literal245_tree=null;
+        Object Identifier242_tree=null;
+        Object char_literal243_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 74) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:674:5: ( Identifier '=' elementValue )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:674:9: Identifier '=' elementValue
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:679:5: ( Identifier '=' elementValue )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:679:9: Identifier '=' elementValue
             {
             root_0 = (Object)adaptor.nil();
 
-            Identifier244=(Token)match(input,Identifier,FOLLOW_Identifier_in_elementValuePair3066); if (state.failed) return retval;
+            Identifier242=(Token)match(input,Identifier,FOLLOW_Identifier_in_elementValuePair3080); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            Identifier244_tree = (Object)adaptor.create(Identifier244);
-            adaptor.addChild(root_0, Identifier244_tree);
+            Identifier242_tree = (Object)adaptor.create(Identifier242);
+            adaptor.addChild(root_0, Identifier242_tree);
             }
-            char_literal245=(Token)match(input,51,FOLLOW_51_in_elementValuePair3068); if (state.failed) return retval;
+            char_literal243=(Token)match(input,51,FOLLOW_51_in_elementValuePair3082); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal245_tree = (Object)adaptor.create(char_literal245);
-            adaptor.addChild(root_0, char_literal245_tree);
+            char_literal243_tree = (Object)adaptor.create(char_literal243);
+            adaptor.addChild(root_0, char_literal243_tree);
             }
-            pushFollow(FOLLOW_elementValue_in_elementValuePair3070);
-            elementValue246=elementValue();
+            pushFollow(FOLLOW_elementValue_in_elementValuePair3084);
+            elementValue244=elementValue();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, elementValue246.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, elementValue244.getTree());
 
             }
 
@@ -8697,24 +8713,24 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "elementValue"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:677:1: elementValue : ( conditionalExpression | annotation | elementValueArrayInitializer );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:682:1: elementValue : ( conditionalExpression | annotation | elementValueArrayInitializer );
     public final JavaParser.elementValue_return elementValue() throws RecognitionException {
         JavaParser.elementValue_return retval = new JavaParser.elementValue_return();
         retval.start = input.LT(1);
         int elementValue_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.conditionalExpression_return conditionalExpression247 = null;
+        JavaParser.conditionalExpression_return conditionalExpression245 = null;
 
-        JavaParser.annotation_return annotation248 = null;
+        JavaParser.annotation_return annotation246 = null;
 
-        JavaParser.elementValueArrayInitializer_return elementValueArrayInitializer249 = null;
+        JavaParser.elementValueArrayInitializer_return elementValueArrayInitializer247 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 75) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:678:5: ( conditionalExpression | annotation | elementValueArrayInitializer )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:683:5: ( conditionalExpression | annotation | elementValueArrayInitializer )
             int alt93=3;
             switch ( input.LA(1) ) {
             case Identifier:
@@ -8770,44 +8786,44 @@ public class JavaParser extends Parser {
 
             switch (alt93) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:678:9: conditionalExpression
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:683:9: conditionalExpression
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_conditionalExpression_in_elementValue3093);
-                    conditionalExpression247=conditionalExpression();
+                    pushFollow(FOLLOW_conditionalExpression_in_elementValue3107);
+                    conditionalExpression245=conditionalExpression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, conditionalExpression247.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, conditionalExpression245.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:679:9: annotation
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:684:9: annotation
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_annotation_in_elementValue3103);
-                    annotation248=annotation();
+                    pushFollow(FOLLOW_annotation_in_elementValue3117);
+                    annotation246=annotation();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, annotation248.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, annotation246.getTree());
 
                     }
                     break;
                 case 3 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:680:9: elementValueArrayInitializer
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:685:9: elementValueArrayInitializer
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_elementValueArrayInitializer_in_elementValue3113);
-                    elementValueArrayInitializer249=elementValueArrayInitializer();
+                    pushFollow(FOLLOW_elementValueArrayInitializer_in_elementValue3127);
+                    elementValueArrayInitializer247=elementValueArrayInitializer();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, elementValueArrayInitializer249.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, elementValueArrayInitializer247.getTree());
 
                     }
                     break;
@@ -8840,40 +8856,40 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "elementValueArrayInitializer"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:683:1: elementValueArrayInitializer : '{' ( elementValue ( ',' elementValue )* )? ( ',' )? '}' ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:688:1: elementValueArrayInitializer : '{' ( elementValue ( ',' elementValue )* )? ( ',' )? '}' ;
     public final JavaParser.elementValueArrayInitializer_return elementValueArrayInitializer() throws RecognitionException {
         JavaParser.elementValueArrayInitializer_return retval = new JavaParser.elementValueArrayInitializer_return();
         retval.start = input.LT(1);
         int elementValueArrayInitializer_StartIndex = input.index();
         Object root_0 = null;
 
+        Token char_literal248=null;
         Token char_literal250=null;
         Token char_literal252=null;
-        Token char_literal254=null;
-        Token char_literal255=null;
+        Token char_literal253=null;
+        JavaParser.elementValue_return elementValue249 = null;
+
         JavaParser.elementValue_return elementValue251 = null;
 
-        JavaParser.elementValue_return elementValue253 = null;
 
-
+        Object char_literal248_tree=null;
         Object char_literal250_tree=null;
         Object char_literal252_tree=null;
-        Object char_literal254_tree=null;
-        Object char_literal255_tree=null;
+        Object char_literal253_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 76) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:684:5: ( '{' ( elementValue ( ',' elementValue )* )? ( ',' )? '}' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:684:9: '{' ( elementValue ( ',' elementValue )* )? ( ',' )? '}'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:689:5: ( '{' ( elementValue ( ',' elementValue )* )? ( ',' )? '}' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:689:9: '{' ( elementValue ( ',' elementValue )* )? ( ',' )? '}'
             {
             root_0 = (Object)adaptor.nil();
 
-            char_literal250=(Token)match(input,44,FOLLOW_44_in_elementValueArrayInitializer3136); if (state.failed) return retval;
+            char_literal248=(Token)match(input,44,FOLLOW_44_in_elementValueArrayInitializer3150); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal250_tree = (Object)adaptor.create(char_literal250);
-            adaptor.addChild(root_0, char_literal250_tree);
+            char_literal248_tree = (Object)adaptor.create(char_literal248);
+            adaptor.addChild(root_0, char_literal248_tree);
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:684:13: ( elementValue ( ',' elementValue )* )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:689:13: ( elementValue ( ',' elementValue )* )?
             int alt95=2;
             int LA95_0 = input.LA(1);
 
@@ -8882,15 +8898,15 @@ public class JavaParser extends Parser {
             }
             switch (alt95) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:684:14: elementValue ( ',' elementValue )*
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:689:14: elementValue ( ',' elementValue )*
                     {
-                    pushFollow(FOLLOW_elementValue_in_elementValueArrayInitializer3139);
-                    elementValue251=elementValue();
+                    pushFollow(FOLLOW_elementValue_in_elementValueArrayInitializer3153);
+                    elementValue249=elementValue();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, elementValue251.getTree());
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:684:27: ( ',' elementValue )*
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, elementValue249.getTree());
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:689:27: ( ',' elementValue )*
                     loop94:
                     do {
                         int alt94=2;
@@ -8909,19 +8925,19 @@ public class JavaParser extends Parser {
 
                         switch (alt94) {
                     	case 1 :
-                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:684:28: ',' elementValue
+                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:689:28: ',' elementValue
                     	    {
-                    	    char_literal252=(Token)match(input,41,FOLLOW_41_in_elementValueArrayInitializer3142); if (state.failed) return retval;
+                    	    char_literal250=(Token)match(input,41,FOLLOW_41_in_elementValueArrayInitializer3156); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    char_literal252_tree = (Object)adaptor.create(char_literal252);
-                    	    adaptor.addChild(root_0, char_literal252_tree);
+                    	    char_literal250_tree = (Object)adaptor.create(char_literal250);
+                    	    adaptor.addChild(root_0, char_literal250_tree);
                     	    }
-                    	    pushFollow(FOLLOW_elementValue_in_elementValueArrayInitializer3144);
-                    	    elementValue253=elementValue();
+                    	    pushFollow(FOLLOW_elementValue_in_elementValueArrayInitializer3158);
+                    	    elementValue251=elementValue();
 
                     	    state._fsp--;
                     	    if (state.failed) return retval;
-                    	    if ( state.backtracking==0 ) adaptor.addChild(root_0, elementValue253.getTree());
+                    	    if ( state.backtracking==0 ) adaptor.addChild(root_0, elementValue251.getTree());
 
                     	    }
                     	    break;
@@ -8937,7 +8953,7 @@ public class JavaParser extends Parser {
 
             }
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:684:49: ( ',' )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:689:49: ( ',' )?
             int alt96=2;
             int LA96_0 = input.LA(1);
 
@@ -8946,12 +8962,12 @@ public class JavaParser extends Parser {
             }
             switch (alt96) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:684:50: ','
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:689:50: ','
                     {
-                    char_literal254=(Token)match(input,41,FOLLOW_41_in_elementValueArrayInitializer3151); if (state.failed) return retval;
+                    char_literal252=(Token)match(input,41,FOLLOW_41_in_elementValueArrayInitializer3165); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal254_tree = (Object)adaptor.create(char_literal254);
-                    adaptor.addChild(root_0, char_literal254_tree);
+                    char_literal252_tree = (Object)adaptor.create(char_literal252);
+                    adaptor.addChild(root_0, char_literal252_tree);
                     }
 
                     }
@@ -8959,10 +8975,10 @@ public class JavaParser extends Parser {
 
             }
 
-            char_literal255=(Token)match(input,45,FOLLOW_45_in_elementValueArrayInitializer3155); if (state.failed) return retval;
+            char_literal253=(Token)match(input,45,FOLLOW_45_in_elementValueArrayInitializer3169); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal255_tree = (Object)adaptor.create(char_literal255);
-            adaptor.addChild(root_0, char_literal255_tree);
+            char_literal253_tree = (Object)adaptor.create(char_literal253);
+            adaptor.addChild(root_0, char_literal253_tree);
             }
 
             }
@@ -8994,51 +9010,51 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "annotationTypeDeclaration"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:687:1: annotationTypeDeclaration : '@' 'interface' Identifier annotationTypeBody ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:692:1: annotationTypeDeclaration : '@' 'interface' Identifier annotationTypeBody ;
     public final JavaParser.annotationTypeDeclaration_return annotationTypeDeclaration() throws RecognitionException {
         JavaParser.annotationTypeDeclaration_return retval = new JavaParser.annotationTypeDeclaration_return();
         retval.start = input.LT(1);
         int annotationTypeDeclaration_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal256=null;
-        Token string_literal257=null;
-        Token Identifier258=null;
-        JavaParser.annotationTypeBody_return annotationTypeBody259 = null;
+        Token char_literal254=null;
+        Token string_literal255=null;
+        Token Identifier256=null;
+        JavaParser.annotationTypeBody_return annotationTypeBody257 = null;
 
 
-        Object char_literal256_tree=null;
-        Object string_literal257_tree=null;
-        Object Identifier258_tree=null;
+        Object char_literal254_tree=null;
+        Object string_literal255_tree=null;
+        Object Identifier256_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 77) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:688:5: ( '@' 'interface' Identifier annotationTypeBody )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:688:9: '@' 'interface' Identifier annotationTypeBody
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:693:5: ( '@' 'interface' Identifier annotationTypeBody )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:693:9: '@' 'interface' Identifier annotationTypeBody
             {
             root_0 = (Object)adaptor.nil();
 
-            char_literal256=(Token)match(input,73,FOLLOW_73_in_annotationTypeDeclaration3178); if (state.failed) return retval;
+            char_literal254=(Token)match(input,73,FOLLOW_73_in_annotationTypeDeclaration3192); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal256_tree = (Object)adaptor.create(char_literal256);
-            adaptor.addChild(root_0, char_literal256_tree);
+            char_literal254_tree = (Object)adaptor.create(char_literal254);
+            adaptor.addChild(root_0, char_literal254_tree);
             }
-            string_literal257=(Token)match(input,46,FOLLOW_46_in_annotationTypeDeclaration3180); if (state.failed) return retval;
+            string_literal255=(Token)match(input,46,FOLLOW_46_in_annotationTypeDeclaration3194); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            string_literal257_tree = (Object)adaptor.create(string_literal257);
-            adaptor.addChild(root_0, string_literal257_tree);
+            string_literal255_tree = (Object)adaptor.create(string_literal255);
+            adaptor.addChild(root_0, string_literal255_tree);
             }
-            Identifier258=(Token)match(input,Identifier,FOLLOW_Identifier_in_annotationTypeDeclaration3182); if (state.failed) return retval;
+            Identifier256=(Token)match(input,Identifier,FOLLOW_Identifier_in_annotationTypeDeclaration3196); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            Identifier258_tree = (Object)adaptor.create(Identifier258);
-            adaptor.addChild(root_0, Identifier258_tree);
+            Identifier256_tree = (Object)adaptor.create(Identifier256);
+            adaptor.addChild(root_0, Identifier256_tree);
             }
-            pushFollow(FOLLOW_annotationTypeBody_in_annotationTypeDeclaration3184);
-            annotationTypeBody259=annotationTypeBody();
+            pushFollow(FOLLOW_annotationTypeBody_in_annotationTypeDeclaration3198);
+            annotationTypeBody257=annotationTypeBody();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, annotationTypeBody259.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, annotationTypeBody257.getTree());
 
             }
 
@@ -9069,34 +9085,34 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "annotationTypeBody"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:691:1: annotationTypeBody : '{' ( annotationTypeElementDeclaration )* '}' ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:696:1: annotationTypeBody : '{' ( annotationTypeElementDeclaration )* '}' ;
     public final JavaParser.annotationTypeBody_return annotationTypeBody() throws RecognitionException {
         JavaParser.annotationTypeBody_return retval = new JavaParser.annotationTypeBody_return();
         retval.start = input.LT(1);
         int annotationTypeBody_StartIndex = input.index();
         Object root_0 = null;
 
+        Token char_literal258=null;
         Token char_literal260=null;
-        Token char_literal262=null;
-        JavaParser.annotationTypeElementDeclaration_return annotationTypeElementDeclaration261 = null;
+        JavaParser.annotationTypeElementDeclaration_return annotationTypeElementDeclaration259 = null;
 
 
+        Object char_literal258_tree=null;
         Object char_literal260_tree=null;
-        Object char_literal262_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 78) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:692:5: ( '{' ( annotationTypeElementDeclaration )* '}' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:692:9: '{' ( annotationTypeElementDeclaration )* '}'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:697:5: ( '{' ( annotationTypeElementDeclaration )* '}' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:697:9: '{' ( annotationTypeElementDeclaration )* '}'
             {
             root_0 = (Object)adaptor.nil();
 
-            char_literal260=(Token)match(input,44,FOLLOW_44_in_annotationTypeBody3207); if (state.failed) return retval;
+            char_literal258=(Token)match(input,44,FOLLOW_44_in_annotationTypeBody3221); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal260_tree = (Object)adaptor.create(char_literal260);
-            adaptor.addChild(root_0, char_literal260_tree);
+            char_literal258_tree = (Object)adaptor.create(char_literal258);
+            adaptor.addChild(root_0, char_literal258_tree);
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:692:13: ( annotationTypeElementDeclaration )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:697:13: ( annotationTypeElementDeclaration )*
             loop97:
             do {
                 int alt97=2;
@@ -9109,14 +9125,14 @@ public class JavaParser extends Parser {
 
                 switch (alt97) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:692:14: annotationTypeElementDeclaration
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:697:14: annotationTypeElementDeclaration
             	    {
-            	    pushFollow(FOLLOW_annotationTypeElementDeclaration_in_annotationTypeBody3210);
-            	    annotationTypeElementDeclaration261=annotationTypeElementDeclaration();
+            	    pushFollow(FOLLOW_annotationTypeElementDeclaration_in_annotationTypeBody3224);
+            	    annotationTypeElementDeclaration259=annotationTypeElementDeclaration();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, annotationTypeElementDeclaration261.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, annotationTypeElementDeclaration259.getTree());
 
             	    }
             	    break;
@@ -9126,10 +9142,10 @@ public class JavaParser extends Parser {
                 }
             } while (true);
 
-            char_literal262=(Token)match(input,45,FOLLOW_45_in_annotationTypeBody3214); if (state.failed) return retval;
+            char_literal260=(Token)match(input,45,FOLLOW_45_in_annotationTypeBody3228); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal262_tree = (Object)adaptor.create(char_literal262);
-            adaptor.addChild(root_0, char_literal262_tree);
+            char_literal260_tree = (Object)adaptor.create(char_literal260);
+            adaptor.addChild(root_0, char_literal260_tree);
             }
 
             }
@@ -9161,38 +9177,38 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "annotationTypeElementDeclaration"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:695:1: annotationTypeElementDeclaration : modifiers annotationTypeElementRest ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:700:1: annotationTypeElementDeclaration : modifiers annotationTypeElementRest ;
     public final JavaParser.annotationTypeElementDeclaration_return annotationTypeElementDeclaration() throws RecognitionException {
         JavaParser.annotationTypeElementDeclaration_return retval = new JavaParser.annotationTypeElementDeclaration_return();
         retval.start = input.LT(1);
         int annotationTypeElementDeclaration_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.modifiers_return modifiers263 = null;
+        JavaParser.modifiers_return modifiers261 = null;
 
-        JavaParser.annotationTypeElementRest_return annotationTypeElementRest264 = null;
+        JavaParser.annotationTypeElementRest_return annotationTypeElementRest262 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 79) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:696:5: ( modifiers annotationTypeElementRest )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:696:9: modifiers annotationTypeElementRest
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:701:5: ( modifiers annotationTypeElementRest )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:701:9: modifiers annotationTypeElementRest
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_modifiers_in_annotationTypeElementDeclaration3237);
-            modifiers263=modifiers();
+            pushFollow(FOLLOW_modifiers_in_annotationTypeElementDeclaration3251);
+            modifiers261=modifiers();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, modifiers263.getTree());
-            pushFollow(FOLLOW_annotationTypeElementRest_in_annotationTypeElementDeclaration3239);
-            annotationTypeElementRest264=annotationTypeElementRest();
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, modifiers261.getTree());
+            pushFollow(FOLLOW_annotationTypeElementRest_in_annotationTypeElementDeclaration3253);
+            annotationTypeElementRest262=annotationTypeElementRest();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, annotationTypeElementRest264.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, annotationTypeElementRest262.getTree());
 
             }
 
@@ -9223,40 +9239,40 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "annotationTypeElementRest"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:699:1: annotationTypeElementRest : ( type annotationMethodOrConstantRest ';' | normalClassDeclaration ( ';' )? | normalInterfaceDeclaration ( ';' )? | enumDeclaration ( ';' )? | annotationTypeDeclaration ( ';' )? );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:704:1: annotationTypeElementRest : ( type annotationMethodOrConstantRest ';' | normalClassDeclaration ( ';' )? | normalInterfaceDeclaration ( ';' )? | enumDeclaration ( ';' )? | annotationTypeDeclaration ( ';' )? );
     public final JavaParser.annotationTypeElementRest_return annotationTypeElementRest() throws RecognitionException {
         JavaParser.annotationTypeElementRest_return retval = new JavaParser.annotationTypeElementRest_return();
         retval.start = input.LT(1);
         int annotationTypeElementRest_StartIndex = input.index();
         Object root_0 = null;
 
+        Token char_literal265=null;
         Token char_literal267=null;
         Token char_literal269=null;
         Token char_literal271=null;
         Token char_literal273=null;
-        Token char_literal275=null;
-        JavaParser.type_return type265 = null;
+        JavaParser.type_return type263 = null;
 
-        JavaParser.annotationMethodOrConstantRest_return annotationMethodOrConstantRest266 = null;
+        JavaParser.annotationMethodOrConstantRest_return annotationMethodOrConstantRest264 = null;
 
-        JavaParser.normalClassDeclaration_return normalClassDeclaration268 = null;
+        JavaParser.normalClassDeclaration_return normalClassDeclaration266 = null;
 
-        JavaParser.normalInterfaceDeclaration_return normalInterfaceDeclaration270 = null;
+        JavaParser.normalInterfaceDeclaration_return normalInterfaceDeclaration268 = null;
 
-        JavaParser.enumDeclaration_return enumDeclaration272 = null;
+        JavaParser.enumDeclaration_return enumDeclaration270 = null;
 
-        JavaParser.annotationTypeDeclaration_return annotationTypeDeclaration274 = null;
+        JavaParser.annotationTypeDeclaration_return annotationTypeDeclaration272 = null;
 
 
+        Object char_literal265_tree=null;
         Object char_literal267_tree=null;
         Object char_literal269_tree=null;
         Object char_literal271_tree=null;
         Object char_literal273_tree=null;
-        Object char_literal275_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 80) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:700:5: ( type annotationMethodOrConstantRest ';' | normalClassDeclaration ( ';' )? | normalInterfaceDeclaration ( ';' )? | enumDeclaration ( ';' )? | annotationTypeDeclaration ( ';' )? )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:705:5: ( type annotationMethodOrConstantRest ';' | normalClassDeclaration ( ';' )? | normalInterfaceDeclaration ( ';' )? | enumDeclaration ( ';' )? | annotationTypeDeclaration ( ';' )? )
             int alt102=5;
             switch ( input.LA(1) ) {
             case Identifier:
@@ -9302,42 +9318,42 @@ public class JavaParser extends Parser {
 
             switch (alt102) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:700:9: type annotationMethodOrConstantRest ';'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:705:9: type annotationMethodOrConstantRest ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_type_in_annotationTypeElementRest3262);
-                    type265=type();
+                    pushFollow(FOLLOW_type_in_annotationTypeElementRest3276);
+                    type263=type();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, type265.getTree());
-                    pushFollow(FOLLOW_annotationMethodOrConstantRest_in_annotationTypeElementRest3264);
-                    annotationMethodOrConstantRest266=annotationMethodOrConstantRest();
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, type263.getTree());
+                    pushFollow(FOLLOW_annotationMethodOrConstantRest_in_annotationTypeElementRest3278);
+                    annotationMethodOrConstantRest264=annotationMethodOrConstantRest();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, annotationMethodOrConstantRest266.getTree());
-                    char_literal267=(Token)match(input,26,FOLLOW_26_in_annotationTypeElementRest3266); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, annotationMethodOrConstantRest264.getTree());
+                    char_literal265=(Token)match(input,26,FOLLOW_26_in_annotationTypeElementRest3280); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal267_tree = (Object)adaptor.create(char_literal267);
-                    adaptor.addChild(root_0, char_literal267_tree);
+                    char_literal265_tree = (Object)adaptor.create(char_literal265);
+                    adaptor.addChild(root_0, char_literal265_tree);
                     }
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:701:9: normalClassDeclaration ( ';' )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:706:9: normalClassDeclaration ( ';' )?
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_normalClassDeclaration_in_annotationTypeElementRest3276);
-                    normalClassDeclaration268=normalClassDeclaration();
+                    pushFollow(FOLLOW_normalClassDeclaration_in_annotationTypeElementRest3290);
+                    normalClassDeclaration266=normalClassDeclaration();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, normalClassDeclaration268.getTree());
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:701:32: ( ';' )?
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, normalClassDeclaration266.getTree());
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:706:32: ( ';' )?
                     int alt98=2;
                     int LA98_0 = input.LA(1);
 
@@ -9348,7 +9364,43 @@ public class JavaParser extends Parser {
                         case 1 :
                             // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: ';'
                             {
-                            char_literal269=(Token)match(input,26,FOLLOW_26_in_annotationTypeElementRest3278); if (state.failed) return retval;
+                            char_literal267=(Token)match(input,26,FOLLOW_26_in_annotationTypeElementRest3292); if (state.failed) return retval;
+                            if ( state.backtracking==0 ) {
+                            char_literal267_tree = (Object)adaptor.create(char_literal267);
+                            adaptor.addChild(root_0, char_literal267_tree);
+                            }
+
+                            }
+                            break;
+
+                    }
+
+
+                    }
+                    break;
+                case 3 :
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:707:9: normalInterfaceDeclaration ( ';' )?
+                    {
+                    root_0 = (Object)adaptor.nil();
+
+                    pushFollow(FOLLOW_normalInterfaceDeclaration_in_annotationTypeElementRest3303);
+                    normalInterfaceDeclaration268=normalInterfaceDeclaration();
+
+                    state._fsp--;
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, normalInterfaceDeclaration268.getTree());
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:707:36: ( ';' )?
+                    int alt99=2;
+                    int LA99_0 = input.LA(1);
+
+                    if ( (LA99_0==26) ) {
+                        alt99=1;
+                    }
+                    switch (alt99) {
+                        case 1 :
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: ';'
+                            {
+                            char_literal269=(Token)match(input,26,FOLLOW_26_in_annotationTypeElementRest3305); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
                             char_literal269_tree = (Object)adaptor.create(char_literal269);
                             adaptor.addChild(root_0, char_literal269_tree);
@@ -9362,29 +9414,29 @@ public class JavaParser extends Parser {
 
                     }
                     break;
-                case 3 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:702:9: normalInterfaceDeclaration ( ';' )?
+                case 4 :
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:708:9: enumDeclaration ( ';' )?
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_normalInterfaceDeclaration_in_annotationTypeElementRest3289);
-                    normalInterfaceDeclaration270=normalInterfaceDeclaration();
+                    pushFollow(FOLLOW_enumDeclaration_in_annotationTypeElementRest3316);
+                    enumDeclaration270=enumDeclaration();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, normalInterfaceDeclaration270.getTree());
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:702:36: ( ';' )?
-                    int alt99=2;
-                    int LA99_0 = input.LA(1);
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, enumDeclaration270.getTree());
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:708:25: ( ';' )?
+                    int alt100=2;
+                    int LA100_0 = input.LA(1);
 
-                    if ( (LA99_0==26) ) {
-                        alt99=1;
+                    if ( (LA100_0==26) ) {
+                        alt100=1;
                     }
-                    switch (alt99) {
+                    switch (alt100) {
                         case 1 :
                             // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: ';'
                             {
-                            char_literal271=(Token)match(input,26,FOLLOW_26_in_annotationTypeElementRest3291); if (state.failed) return retval;
+                            char_literal271=(Token)match(input,26,FOLLOW_26_in_annotationTypeElementRest3318); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
                             char_literal271_tree = (Object)adaptor.create(char_literal271);
                             adaptor.addChild(root_0, char_literal271_tree);
@@ -9398,54 +9450,18 @@ public class JavaParser extends Parser {
 
                     }
                     break;
-                case 4 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:703:9: enumDeclaration ( ';' )?
-                    {
-                    root_0 = (Object)adaptor.nil();
-
-                    pushFollow(FOLLOW_enumDeclaration_in_annotationTypeElementRest3302);
-                    enumDeclaration272=enumDeclaration();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, enumDeclaration272.getTree());
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:703:25: ( ';' )?
-                    int alt100=2;
-                    int LA100_0 = input.LA(1);
-
-                    if ( (LA100_0==26) ) {
-                        alt100=1;
-                    }
-                    switch (alt100) {
-                        case 1 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: ';'
-                            {
-                            char_literal273=(Token)match(input,26,FOLLOW_26_in_annotationTypeElementRest3304); if (state.failed) return retval;
-                            if ( state.backtracking==0 ) {
-                            char_literal273_tree = (Object)adaptor.create(char_literal273);
-                            adaptor.addChild(root_0, char_literal273_tree);
-                            }
-
-                            }
-                            break;
-
-                    }
-
-
-                    }
-                    break;
                 case 5 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:704:9: annotationTypeDeclaration ( ';' )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:709:9: annotationTypeDeclaration ( ';' )?
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_annotationTypeDeclaration_in_annotationTypeElementRest3315);
-                    annotationTypeDeclaration274=annotationTypeDeclaration();
+                    pushFollow(FOLLOW_annotationTypeDeclaration_in_annotationTypeElementRest3329);
+                    annotationTypeDeclaration272=annotationTypeDeclaration();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, annotationTypeDeclaration274.getTree());
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:704:35: ( ';' )?
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, annotationTypeDeclaration272.getTree());
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:709:35: ( ';' )?
                     int alt101=2;
                     int LA101_0 = input.LA(1);
 
@@ -9456,10 +9472,10 @@ public class JavaParser extends Parser {
                         case 1 :
                             // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: ';'
                             {
-                            char_literal275=(Token)match(input,26,FOLLOW_26_in_annotationTypeElementRest3317); if (state.failed) return retval;
+                            char_literal273=(Token)match(input,26,FOLLOW_26_in_annotationTypeElementRest3331); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
-                            char_literal275_tree = (Object)adaptor.create(char_literal275);
-                            adaptor.addChild(root_0, char_literal275_tree);
+                            char_literal273_tree = (Object)adaptor.create(char_literal273);
+                            adaptor.addChild(root_0, char_literal273_tree);
                             }
 
                             }
@@ -9499,22 +9515,22 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "annotationMethodOrConstantRest"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:707:1: annotationMethodOrConstantRest : ( annotationMethodRest | annotationConstantRest );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:712:1: annotationMethodOrConstantRest : ( annotationMethodRest | annotationConstantRest );
     public final JavaParser.annotationMethodOrConstantRest_return annotationMethodOrConstantRest() throws RecognitionException {
         JavaParser.annotationMethodOrConstantRest_return retval = new JavaParser.annotationMethodOrConstantRest_return();
         retval.start = input.LT(1);
         int annotationMethodOrConstantRest_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.annotationMethodRest_return annotationMethodRest276 = null;
+        JavaParser.annotationMethodRest_return annotationMethodRest274 = null;
 
-        JavaParser.annotationConstantRest_return annotationConstantRest277 = null;
+        JavaParser.annotationConstantRest_return annotationConstantRest275 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 81) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:708:5: ( annotationMethodRest | annotationConstantRest )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:713:5: ( annotationMethodRest | annotationConstantRest )
             int alt103=2;
             int LA103_0 = input.LA(1);
 
@@ -9544,30 +9560,30 @@ public class JavaParser extends Parser {
             }
             switch (alt103) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:708:9: annotationMethodRest
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:713:9: annotationMethodRest
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_annotationMethodRest_in_annotationMethodOrConstantRest3341);
-                    annotationMethodRest276=annotationMethodRest();
+                    pushFollow(FOLLOW_annotationMethodRest_in_annotationMethodOrConstantRest3355);
+                    annotationMethodRest274=annotationMethodRest();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, annotationMethodRest276.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, annotationMethodRest274.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:709:9: annotationConstantRest
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:714:9: annotationConstantRest
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_annotationConstantRest_in_annotationMethodOrConstantRest3351);
-                    annotationConstantRest277=annotationConstantRest();
+                    pushFollow(FOLLOW_annotationConstantRest_in_annotationMethodOrConstantRest3365);
+                    annotationConstantRest275=annotationConstantRest();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, annotationConstantRest277.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, annotationConstantRest275.getTree());
 
                     }
                     break;
@@ -9600,46 +9616,46 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "annotationMethodRest"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:712:1: annotationMethodRest : Identifier '(' ')' ( defaultValue )? ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:717:1: annotationMethodRest : Identifier '(' ')' ( defaultValue )? ;
     public final JavaParser.annotationMethodRest_return annotationMethodRest() throws RecognitionException {
         JavaParser.annotationMethodRest_return retval = new JavaParser.annotationMethodRest_return();
         retval.start = input.LT(1);
         int annotationMethodRest_StartIndex = input.index();
         Object root_0 = null;
 
-        Token Identifier278=null;
-        Token char_literal279=null;
-        Token char_literal280=null;
-        JavaParser.defaultValue_return defaultValue281 = null;
+        Token Identifier276=null;
+        Token char_literal277=null;
+        Token char_literal278=null;
+        JavaParser.defaultValue_return defaultValue279 = null;
 
 
-        Object Identifier278_tree=null;
-        Object char_literal279_tree=null;
-        Object char_literal280_tree=null;
+        Object Identifier276_tree=null;
+        Object char_literal277_tree=null;
+        Object char_literal278_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 82) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:713:5: ( Identifier '(' ')' ( defaultValue )? )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:713:9: Identifier '(' ')' ( defaultValue )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:718:5: ( Identifier '(' ')' ( defaultValue )? )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:718:9: Identifier '(' ')' ( defaultValue )?
             {
             root_0 = (Object)adaptor.nil();
 
-            Identifier278=(Token)match(input,Identifier,FOLLOW_Identifier_in_annotationMethodRest3374); if (state.failed) return retval;
+            Identifier276=(Token)match(input,Identifier,FOLLOW_Identifier_in_annotationMethodRest3388); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            Identifier278_tree = (Object)adaptor.create(Identifier278);
-            adaptor.addChild(root_0, Identifier278_tree);
+            Identifier276_tree = (Object)adaptor.create(Identifier276);
+            adaptor.addChild(root_0, Identifier276_tree);
             }
-            char_literal279=(Token)match(input,66,FOLLOW_66_in_annotationMethodRest3376); if (state.failed) return retval;
+            char_literal277=(Token)match(input,66,FOLLOW_66_in_annotationMethodRest3390); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal279_tree = (Object)adaptor.create(char_literal279);
-            adaptor.addChild(root_0, char_literal279_tree);
+            char_literal277_tree = (Object)adaptor.create(char_literal277);
+            adaptor.addChild(root_0, char_literal277_tree);
             }
-            char_literal280=(Token)match(input,67,FOLLOW_67_in_annotationMethodRest3378); if (state.failed) return retval;
+            char_literal278=(Token)match(input,67,FOLLOW_67_in_annotationMethodRest3392); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal280_tree = (Object)adaptor.create(char_literal280);
-            adaptor.addChild(root_0, char_literal280_tree);
+            char_literal278_tree = (Object)adaptor.create(char_literal278);
+            adaptor.addChild(root_0, char_literal278_tree);
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:713:28: ( defaultValue )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:718:28: ( defaultValue )?
             int alt104=2;
             int LA104_0 = input.LA(1);
 
@@ -9650,12 +9666,12 @@ public class JavaParser extends Parser {
                 case 1 :
                     // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: defaultValue
                     {
-                    pushFollow(FOLLOW_defaultValue_in_annotationMethodRest3380);
-                    defaultValue281=defaultValue();
+                    pushFollow(FOLLOW_defaultValue_in_annotationMethodRest3394);
+                    defaultValue279=defaultValue();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, defaultValue281.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, defaultValue279.getTree());
 
                     }
                     break;
@@ -9692,30 +9708,30 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "annotationConstantRest"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:716:1: annotationConstantRest : variableDeclarators ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:721:1: annotationConstantRest : variableDeclarators ;
     public final JavaParser.annotationConstantRest_return annotationConstantRest() throws RecognitionException {
         JavaParser.annotationConstantRest_return retval = new JavaParser.annotationConstantRest_return();
         retval.start = input.LT(1);
         int annotationConstantRest_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.variableDeclarators_return variableDeclarators282 = null;
+        JavaParser.variableDeclarators_return variableDeclarators280 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 83) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:717:5: ( variableDeclarators )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:717:9: variableDeclarators
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:722:5: ( variableDeclarators )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:722:9: variableDeclarators
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_variableDeclarators_in_annotationConstantRest3404);
-            variableDeclarators282=variableDeclarators();
+            pushFollow(FOLLOW_variableDeclarators_in_annotationConstantRest3418);
+            variableDeclarators280=variableDeclarators();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, variableDeclarators282.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, variableDeclarators280.getTree());
 
             }
 
@@ -9746,37 +9762,37 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "defaultValue"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:720:1: defaultValue : 'default' elementValue ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:725:1: defaultValue : 'default' elementValue ;
     public final JavaParser.defaultValue_return defaultValue() throws RecognitionException {
         JavaParser.defaultValue_return retval = new JavaParser.defaultValue_return();
         retval.start = input.LT(1);
         int defaultValue_StartIndex = input.index();
         Object root_0 = null;
 
-        Token string_literal283=null;
-        JavaParser.elementValue_return elementValue284 = null;
+        Token string_literal281=null;
+        JavaParser.elementValue_return elementValue282 = null;
 
 
-        Object string_literal283_tree=null;
+        Object string_literal281_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 84) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:721:5: ( 'default' elementValue )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:721:9: 'default' elementValue
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:726:5: ( 'default' elementValue )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:726:9: 'default' elementValue
             {
             root_0 = (Object)adaptor.nil();
 
-            string_literal283=(Token)match(input,74,FOLLOW_74_in_defaultValue3427); if (state.failed) return retval;
+            string_literal281=(Token)match(input,74,FOLLOW_74_in_defaultValue3441); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            string_literal283_tree = (Object)adaptor.create(string_literal283);
-            adaptor.addChild(root_0, string_literal283_tree);
+            string_literal281_tree = (Object)adaptor.create(string_literal281);
+            adaptor.addChild(root_0, string_literal281_tree);
             }
-            pushFollow(FOLLOW_elementValue_in_defaultValue3429);
-            elementValue284=elementValue();
+            pushFollow(FOLLOW_elementValue_in_defaultValue3443);
+            elementValue282=elementValue();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, elementValue284.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, elementValue282.getTree());
 
             }
 
@@ -9807,34 +9823,34 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "block"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:726:1: block : '{' ( blockStatement )* '}' ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:731:1: block : '{' ( blockStatement )* '}' ;
     public final JavaParser.block_return block() throws RecognitionException {
         JavaParser.block_return retval = new JavaParser.block_return();
         retval.start = input.LT(1);
         int block_StartIndex = input.index();
         Object root_0 = null;
 
+        Token char_literal283=null;
         Token char_literal285=null;
-        Token char_literal287=null;
-        JavaParser.blockStatement_return blockStatement286 = null;
+        JavaParser.blockStatement_return blockStatement284 = null;
 
 
+        Object char_literal283_tree=null;
         Object char_literal285_tree=null;
-        Object char_literal287_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 85) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:727:5: ( '{' ( blockStatement )* '}' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:727:9: '{' ( blockStatement )* '}'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:732:5: ( '{' ( blockStatement )* '}' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:732:9: '{' ( blockStatement )* '}'
             {
             root_0 = (Object)adaptor.nil();
 
-            char_literal285=(Token)match(input,44,FOLLOW_44_in_block3450); if (state.failed) return retval;
+            char_literal283=(Token)match(input,44,FOLLOW_44_in_block3464); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal285_tree = (Object)adaptor.create(char_literal285);
-            adaptor.addChild(root_0, char_literal285_tree);
+            char_literal283_tree = (Object)adaptor.create(char_literal283);
+            adaptor.addChild(root_0, char_literal283_tree);
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:727:13: ( blockStatement )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:732:13: ( blockStatement )*
             loop105:
             do {
                 int alt105=2;
@@ -9849,12 +9865,12 @@ public class JavaParser extends Parser {
             	case 1 :
             	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: blockStatement
             	    {
-            	    pushFollow(FOLLOW_blockStatement_in_block3452);
-            	    blockStatement286=blockStatement();
+            	    pushFollow(FOLLOW_blockStatement_in_block3466);
+            	    blockStatement284=blockStatement();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, blockStatement286.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, blockStatement284.getTree());
 
             	    }
             	    break;
@@ -9864,10 +9880,10 @@ public class JavaParser extends Parser {
                 }
             } while (true);
 
-            char_literal287=(Token)match(input,45,FOLLOW_45_in_block3455); if (state.failed) return retval;
+            char_literal285=(Token)match(input,45,FOLLOW_45_in_block3469); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal287_tree = (Object)adaptor.create(char_literal287);
-            adaptor.addChild(root_0, char_literal287_tree);
+            char_literal285_tree = (Object)adaptor.create(char_literal285);
+            adaptor.addChild(root_0, char_literal285_tree);
             }
 
             }
@@ -9899,66 +9915,66 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "blockStatement"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:730:1: blockStatement : ( localVariableDeclarationStatement | classOrInterfaceDeclaration | statement );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:735:1: blockStatement : ( localVariableDeclarationStatement | classOrInterfaceDeclaration | statement );
     public final JavaParser.blockStatement_return blockStatement() throws RecognitionException {
         JavaParser.blockStatement_return retval = new JavaParser.blockStatement_return();
         retval.start = input.LT(1);
         int blockStatement_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.localVariableDeclarationStatement_return localVariableDeclarationStatement288 = null;
+        JavaParser.localVariableDeclarationStatement_return localVariableDeclarationStatement286 = null;
 
-        JavaParser.classOrInterfaceDeclaration_return classOrInterfaceDeclaration289 = null;
+        JavaParser.classOrInterfaceDeclaration_return classOrInterfaceDeclaration287 = null;
 
-        JavaParser.statement_return statement290 = null;
+        JavaParser.statement_return statement288 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 86) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:731:5: ( localVariableDeclarationStatement | classOrInterfaceDeclaration | statement )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:736:5: ( localVariableDeclarationStatement | classOrInterfaceDeclaration | statement )
             int alt106=3;
             alt106 = dfa106.predict(input);
             switch (alt106) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:731:9: localVariableDeclarationStatement
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:736:9: localVariableDeclarationStatement
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_localVariableDeclarationStatement_in_blockStatement3478);
-                    localVariableDeclarationStatement288=localVariableDeclarationStatement();
+                    pushFollow(FOLLOW_localVariableDeclarationStatement_in_blockStatement3492);
+                    localVariableDeclarationStatement286=localVariableDeclarationStatement();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, localVariableDeclarationStatement288.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, localVariableDeclarationStatement286.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:732:9: classOrInterfaceDeclaration
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:737:9: classOrInterfaceDeclaration
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_classOrInterfaceDeclaration_in_blockStatement3488);
-                    classOrInterfaceDeclaration289=classOrInterfaceDeclaration();
+                    pushFollow(FOLLOW_classOrInterfaceDeclaration_in_blockStatement3502);
+                    classOrInterfaceDeclaration287=classOrInterfaceDeclaration();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, classOrInterfaceDeclaration289.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, classOrInterfaceDeclaration287.getTree());
 
                     }
                     break;
                 case 3 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:733:9: statement
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:738:9: statement
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_statement_in_blockStatement3498);
-                    statement290=statement();
+                    pushFollow(FOLLOW_statement_in_blockStatement3512);
+                    statement288=statement();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, statement290.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, statement288.getTree());
 
                     }
                     break;
@@ -9991,36 +10007,36 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "localVariableDeclarationStatement"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:736:1: localVariableDeclarationStatement : localVariableDeclaration ';' ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:741:1: localVariableDeclarationStatement : localVariableDeclaration ';' ;
     public final JavaParser.localVariableDeclarationStatement_return localVariableDeclarationStatement() throws RecognitionException {
         JavaParser.localVariableDeclarationStatement_return retval = new JavaParser.localVariableDeclarationStatement_return();
         retval.start = input.LT(1);
         int localVariableDeclarationStatement_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal292=null;
-        JavaParser.localVariableDeclaration_return localVariableDeclaration291 = null;
+        Token char_literal290=null;
+        JavaParser.localVariableDeclaration_return localVariableDeclaration289 = null;
 
 
-        Object char_literal292_tree=null;
+        Object char_literal290_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 87) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:737:5: ( localVariableDeclaration ';' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:737:10: localVariableDeclaration ';'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:742:5: ( localVariableDeclaration ';' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:742:10: localVariableDeclaration ';'
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_localVariableDeclaration_in_localVariableDeclarationStatement3522);
-            localVariableDeclaration291=localVariableDeclaration();
+            pushFollow(FOLLOW_localVariableDeclaration_in_localVariableDeclarationStatement3536);
+            localVariableDeclaration289=localVariableDeclaration();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, localVariableDeclaration291.getTree());
-            char_literal292=(Token)match(input,26,FOLLOW_26_in_localVariableDeclarationStatement3524); if (state.failed) return retval;
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, localVariableDeclaration289.getTree());
+            char_literal290=(Token)match(input,26,FOLLOW_26_in_localVariableDeclarationStatement3538); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal292_tree = (Object)adaptor.create(char_literal292);
-            adaptor.addChild(root_0, char_literal292_tree);
+            char_literal290_tree = (Object)adaptor.create(char_literal290);
+            adaptor.addChild(root_0, char_literal290_tree);
             }
 
             }
@@ -10052,46 +10068,46 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "localVariableDeclaration"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:740:1: localVariableDeclaration : variableModifiers type variableDeclarators ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:745:1: localVariableDeclaration : variableModifiers type variableDeclarators ;
     public final JavaParser.localVariableDeclaration_return localVariableDeclaration() throws RecognitionException {
         JavaParser.localVariableDeclaration_return retval = new JavaParser.localVariableDeclaration_return();
         retval.start = input.LT(1);
         int localVariableDeclaration_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.variableModifiers_return variableModifiers293 = null;
+        JavaParser.variableModifiers_return variableModifiers291 = null;
 
-        JavaParser.type_return type294 = null;
+        JavaParser.type_return type292 = null;
 
-        JavaParser.variableDeclarators_return variableDeclarators295 = null;
+        JavaParser.variableDeclarators_return variableDeclarators293 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 88) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:741:5: ( variableModifiers type variableDeclarators )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:741:9: variableModifiers type variableDeclarators
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:746:5: ( variableModifiers type variableDeclarators )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:746:9: variableModifiers type variableDeclarators
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_variableModifiers_in_localVariableDeclaration3543);
-            variableModifiers293=variableModifiers();
+            pushFollow(FOLLOW_variableModifiers_in_localVariableDeclaration3557);
+            variableModifiers291=variableModifiers();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, variableModifiers293.getTree());
-            pushFollow(FOLLOW_type_in_localVariableDeclaration3545);
-            type294=type();
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, variableModifiers291.getTree());
+            pushFollow(FOLLOW_type_in_localVariableDeclaration3559);
+            type292=type();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, type294.getTree());
-            pushFollow(FOLLOW_variableDeclarators_in_localVariableDeclaration3547);
-            variableDeclarators295=variableDeclarators();
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, type292.getTree());
+            pushFollow(FOLLOW_variableDeclarators_in_localVariableDeclaration3561);
+            variableDeclarators293=variableDeclarators();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, variableDeclarators295.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, variableDeclarators293.getTree());
 
             }
 
@@ -10122,25 +10138,25 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "variableModifiers"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:744:1: variableModifiers : ( variableModifier )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:749:1: variableModifiers : ( variableModifier )* ;
     public final JavaParser.variableModifiers_return variableModifiers() throws RecognitionException {
         JavaParser.variableModifiers_return retval = new JavaParser.variableModifiers_return();
         retval.start = input.LT(1);
         int variableModifiers_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.variableModifier_return variableModifier296 = null;
+        JavaParser.variableModifier_return variableModifier294 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 89) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:745:5: ( ( variableModifier )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:745:9: ( variableModifier )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:750:5: ( ( variableModifier )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:750:9: ( variableModifier )*
             {
             root_0 = (Object)adaptor.nil();
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:745:9: ( variableModifier )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:750:9: ( variableModifier )*
             loop107:
             do {
                 int alt107=2;
@@ -10155,12 +10171,12 @@ public class JavaParser extends Parser {
             	case 1 :
             	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: variableModifier
             	    {
-            	    pushFollow(FOLLOW_variableModifier_in_variableModifiers3570);
-            	    variableModifier296=variableModifier();
+            	    pushFollow(FOLLOW_variableModifier_in_variableModifiers3584);
+            	    variableModifier294=variableModifier();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, variableModifier296.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, variableModifier294.getTree());
 
             	    }
             	    break;
@@ -10200,168 +10216,168 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "statement"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:748:1: statement : ( block | ASSERT expression ( ':' expression )? ';' | 'if' parExpression statement ( options {k=1; } : 'else' statement )? | 'for' '(' forControl ')' statement | 'while' parExpression statement | 'do' statement 'while' parExpression ';' | 'try' block ( catches 'finally' block | catches | 'finally' block ) | 'switch' parExpression '{' switchBlockStatementGroups '}' | 'synchronized' parExpression block | 'return' ( expression )? ';' | 'throw' expression ';' | 'break' ( Identifier )? ';' | 'continue' ( Identifier )? ';' | ';' | statementExpression ';' | Identifier ':' statement );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:753:1: statement : ( block | ASSERT expression ( ':' expression )? ';' | 'if' parExpression statement ( options {k=1; } : 'else' statement )? | 'for' '(' forControl ')' statement | 'while' parExpression statement | 'do' statement 'while' parExpression ';' | 'try' block ( catches 'finally' block | catches | 'finally' block ) | 'switch' parExpression '{' switchBlockStatementGroups '}' | 'synchronized' parExpression block | 'return' ( expression )? ';' | 'throw' expression ';' | 'break' ( Identifier )? ';' | 'continue' ( Identifier )? ';' | ';' | statementExpression ';' | Identifier ':' statement );
     public final JavaParser.statement_return statement() throws RecognitionException {
         JavaParser.statement_return retval = new JavaParser.statement_return();
         retval.start = input.LT(1);
         int statement_StartIndex = input.index();
         Object root_0 = null;
 
-        Token ASSERT298=null;
+        Token ASSERT296=null;
+        Token char_literal298=null;
         Token char_literal300=null;
-        Token char_literal302=null;
-        Token string_literal303=null;
+        Token string_literal301=null;
+        Token string_literal304=null;
         Token string_literal306=null;
-        Token string_literal308=null;
+        Token char_literal307=null;
         Token char_literal309=null;
-        Token char_literal311=null;
-        Token string_literal313=null;
+        Token string_literal311=null;
+        Token string_literal314=null;
         Token string_literal316=null;
-        Token string_literal318=null;
-        Token char_literal320=null;
-        Token string_literal321=null;
-        Token string_literal324=null;
+        Token char_literal318=null;
+        Token string_literal319=null;
+        Token string_literal322=null;
+        Token string_literal325=null;
         Token string_literal327=null;
-        Token string_literal329=null;
+        Token char_literal329=null;
         Token char_literal331=null;
-        Token char_literal333=null;
-        Token string_literal334=null;
-        Token string_literal337=null;
-        Token char_literal339=null;
-        Token string_literal340=null;
-        Token char_literal342=null;
-        Token string_literal343=null;
-        Token Identifier344=null;
-        Token char_literal345=null;
-        Token string_literal346=null;
-        Token Identifier347=null;
-        Token char_literal348=null;
+        Token string_literal332=null;
+        Token string_literal335=null;
+        Token char_literal337=null;
+        Token string_literal338=null;
+        Token char_literal340=null;
+        Token string_literal341=null;
+        Token Identifier342=null;
+        Token char_literal343=null;
+        Token string_literal344=null;
+        Token Identifier345=null;
+        Token char_literal346=null;
+        Token char_literal347=null;
         Token char_literal349=null;
+        Token Identifier350=null;
         Token char_literal351=null;
-        Token Identifier352=null;
-        Token char_literal353=null;
-        JavaParser.block_return block297 = null;
+        JavaParser.block_return block295 = null;
+
+        JavaParser.expression_return expression297 = null;
 
         JavaParser.expression_return expression299 = null;
 
-        JavaParser.expression_return expression301 = null;
+        JavaParser.parExpression_return parExpression302 = null;
 
-        JavaParser.parExpression_return parExpression304 = null;
+        JavaParser.statement_return statement303 = null;
 
         JavaParser.statement_return statement305 = null;
 
-        JavaParser.statement_return statement307 = null;
+        JavaParser.forControl_return forControl308 = null;
 
-        JavaParser.forControl_return forControl310 = null;
+        JavaParser.statement_return statement310 = null;
 
-        JavaParser.statement_return statement312 = null;
+        JavaParser.parExpression_return parExpression312 = null;
 
-        JavaParser.parExpression_return parExpression314 = null;
+        JavaParser.statement_return statement313 = null;
 
         JavaParser.statement_return statement315 = null;
 
-        JavaParser.statement_return statement317 = null;
+        JavaParser.parExpression_return parExpression317 = null;
 
-        JavaParser.parExpression_return parExpression319 = null;
+        JavaParser.block_return block320 = null;
 
-        JavaParser.block_return block322 = null;
+        JavaParser.catches_return catches321 = null;
 
-        JavaParser.catches_return catches323 = null;
+        JavaParser.block_return block323 = null;
 
-        JavaParser.block_return block325 = null;
+        JavaParser.catches_return catches324 = null;
 
-        JavaParser.catches_return catches326 = null;
+        JavaParser.block_return block326 = null;
 
-        JavaParser.block_return block328 = null;
+        JavaParser.parExpression_return parExpression328 = null;
 
-        JavaParser.parExpression_return parExpression330 = null;
+        JavaParser.switchBlockStatementGroups_return switchBlockStatementGroups330 = null;
 
-        JavaParser.switchBlockStatementGroups_return switchBlockStatementGroups332 = null;
+        JavaParser.parExpression_return parExpression333 = null;
 
-        JavaParser.parExpression_return parExpression335 = null;
+        JavaParser.block_return block334 = null;
 
-        JavaParser.block_return block336 = null;
+        JavaParser.expression_return expression336 = null;
 
-        JavaParser.expression_return expression338 = null;
+        JavaParser.expression_return expression339 = null;
 
-        JavaParser.expression_return expression341 = null;
+        JavaParser.statementExpression_return statementExpression348 = null;
 
-        JavaParser.statementExpression_return statementExpression350 = null;
-
-        JavaParser.statement_return statement354 = null;
+        JavaParser.statement_return statement352 = null;
 
 
-        Object ASSERT298_tree=null;
+        Object ASSERT296_tree=null;
+        Object char_literal298_tree=null;
         Object char_literal300_tree=null;
-        Object char_literal302_tree=null;
-        Object string_literal303_tree=null;
+        Object string_literal301_tree=null;
+        Object string_literal304_tree=null;
         Object string_literal306_tree=null;
-        Object string_literal308_tree=null;
+        Object char_literal307_tree=null;
         Object char_literal309_tree=null;
-        Object char_literal311_tree=null;
-        Object string_literal313_tree=null;
+        Object string_literal311_tree=null;
+        Object string_literal314_tree=null;
         Object string_literal316_tree=null;
-        Object string_literal318_tree=null;
-        Object char_literal320_tree=null;
-        Object string_literal321_tree=null;
-        Object string_literal324_tree=null;
+        Object char_literal318_tree=null;
+        Object string_literal319_tree=null;
+        Object string_literal322_tree=null;
+        Object string_literal325_tree=null;
         Object string_literal327_tree=null;
-        Object string_literal329_tree=null;
+        Object char_literal329_tree=null;
         Object char_literal331_tree=null;
-        Object char_literal333_tree=null;
-        Object string_literal334_tree=null;
-        Object string_literal337_tree=null;
-        Object char_literal339_tree=null;
-        Object string_literal340_tree=null;
-        Object char_literal342_tree=null;
-        Object string_literal343_tree=null;
-        Object Identifier344_tree=null;
-        Object char_literal345_tree=null;
-        Object string_literal346_tree=null;
-        Object Identifier347_tree=null;
-        Object char_literal348_tree=null;
+        Object string_literal332_tree=null;
+        Object string_literal335_tree=null;
+        Object char_literal337_tree=null;
+        Object string_literal338_tree=null;
+        Object char_literal340_tree=null;
+        Object string_literal341_tree=null;
+        Object Identifier342_tree=null;
+        Object char_literal343_tree=null;
+        Object string_literal344_tree=null;
+        Object Identifier345_tree=null;
+        Object char_literal346_tree=null;
+        Object char_literal347_tree=null;
         Object char_literal349_tree=null;
+        Object Identifier350_tree=null;
         Object char_literal351_tree=null;
-        Object Identifier352_tree=null;
-        Object char_literal353_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 90) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:749:5: ( block | ASSERT expression ( ':' expression )? ';' | 'if' parExpression statement ( options {k=1; } : 'else' statement )? | 'for' '(' forControl ')' statement | 'while' parExpression statement | 'do' statement 'while' parExpression ';' | 'try' block ( catches 'finally' block | catches | 'finally' block ) | 'switch' parExpression '{' switchBlockStatementGroups '}' | 'synchronized' parExpression block | 'return' ( expression )? ';' | 'throw' expression ';' | 'break' ( Identifier )? ';' | 'continue' ( Identifier )? ';' | ';' | statementExpression ';' | Identifier ':' statement )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:754:5: ( block | ASSERT expression ( ':' expression )? ';' | 'if' parExpression statement ( options {k=1; } : 'else' statement )? | 'for' '(' forControl ')' statement | 'while' parExpression statement | 'do' statement 'while' parExpression ';' | 'try' block ( catches 'finally' block | catches | 'finally' block ) | 'switch' parExpression '{' switchBlockStatementGroups '}' | 'synchronized' parExpression block | 'return' ( expression )? ';' | 'throw' expression ';' | 'break' ( Identifier )? ';' | 'continue' ( Identifier )? ';' | ';' | statementExpression ';' | Identifier ':' statement )
             int alt114=16;
             alt114 = dfa114.predict(input);
             switch (alt114) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:749:7: block
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:754:7: block
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_block_in_statement3588);
-                    block297=block();
+                    pushFollow(FOLLOW_block_in_statement3602);
+                    block295=block();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, block297.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, block295.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:750:9: ASSERT expression ( ':' expression )? ';'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:755:9: ASSERT expression ( ':' expression )? ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    ASSERT298=(Token)match(input,ASSERT,FOLLOW_ASSERT_in_statement3598); if (state.failed) return retval;
+                    ASSERT296=(Token)match(input,ASSERT,FOLLOW_ASSERT_in_statement3612); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    ASSERT298_tree = (Object)adaptor.create(ASSERT298);
-                    adaptor.addChild(root_0, ASSERT298_tree);
+                    ASSERT296_tree = (Object)adaptor.create(ASSERT296);
+                    adaptor.addChild(root_0, ASSERT296_tree);
                     }
-                    pushFollow(FOLLOW_expression_in_statement3600);
-                    expression299=expression();
+                    pushFollow(FOLLOW_expression_in_statement3614);
+                    expression297=expression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression299.getTree());
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:750:27: ( ':' expression )?
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression297.getTree());
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:755:27: ( ':' expression )?
                     int alt108=2;
                     int LA108_0 = input.LA(1);
 
@@ -10370,56 +10386,56 @@ public class JavaParser extends Parser {
                     }
                     switch (alt108) {
                         case 1 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:750:28: ':' expression
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:755:28: ':' expression
                             {
-                            char_literal300=(Token)match(input,75,FOLLOW_75_in_statement3603); if (state.failed) return retval;
+                            char_literal298=(Token)match(input,75,FOLLOW_75_in_statement3617); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
-                            char_literal300_tree = (Object)adaptor.create(char_literal300);
-                            adaptor.addChild(root_0, char_literal300_tree);
+                            char_literal298_tree = (Object)adaptor.create(char_literal298);
+                            adaptor.addChild(root_0, char_literal298_tree);
                             }
-                            pushFollow(FOLLOW_expression_in_statement3605);
-                            expression301=expression();
+                            pushFollow(FOLLOW_expression_in_statement3619);
+                            expression299=expression();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression301.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression299.getTree());
 
                             }
                             break;
 
                     }
 
-                    char_literal302=(Token)match(input,26,FOLLOW_26_in_statement3609); if (state.failed) return retval;
+                    char_literal300=(Token)match(input,26,FOLLOW_26_in_statement3623); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal302_tree = (Object)adaptor.create(char_literal302);
-                    adaptor.addChild(root_0, char_literal302_tree);
+                    char_literal300_tree = (Object)adaptor.create(char_literal300);
+                    adaptor.addChild(root_0, char_literal300_tree);
                     }
 
                     }
                     break;
                 case 3 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:751:9: 'if' parExpression statement ( options {k=1; } : 'else' statement )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:756:9: 'if' parExpression statement ( options {k=1; } : 'else' statement )?
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal303=(Token)match(input,76,FOLLOW_76_in_statement3619); if (state.failed) return retval;
+                    string_literal301=(Token)match(input,76,FOLLOW_76_in_statement3633); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal303_tree = (Object)adaptor.create(string_literal303);
-                    adaptor.addChild(root_0, string_literal303_tree);
+                    string_literal301_tree = (Object)adaptor.create(string_literal301);
+                    adaptor.addChild(root_0, string_literal301_tree);
                     }
-                    pushFollow(FOLLOW_parExpression_in_statement3621);
-                    parExpression304=parExpression();
+                    pushFollow(FOLLOW_parExpression_in_statement3635);
+                    parExpression302=parExpression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, parExpression304.getTree());
-                    pushFollow(FOLLOW_statement_in_statement3623);
-                    statement305=statement();
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, parExpression302.getTree());
+                    pushFollow(FOLLOW_statement_in_statement3637);
+                    statement303=statement();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, statement305.getTree());
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:751:38: ( options {k=1; } : 'else' statement )?
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, statement303.getTree());
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:756:38: ( options {k=1; } : 'else' statement )?
                     int alt109=2;
                     int LA109_0 = input.LA(1);
 
@@ -10432,19 +10448,19 @@ public class JavaParser extends Parser {
                     }
                     switch (alt109) {
                         case 1 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:751:54: 'else' statement
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:756:54: 'else' statement
                             {
-                            string_literal306=(Token)match(input,77,FOLLOW_77_in_statement3633); if (state.failed) return retval;
+                            string_literal304=(Token)match(input,77,FOLLOW_77_in_statement3647); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
-                            string_literal306_tree = (Object)adaptor.create(string_literal306);
-                            adaptor.addChild(root_0, string_literal306_tree);
+                            string_literal304_tree = (Object)adaptor.create(string_literal304);
+                            adaptor.addChild(root_0, string_literal304_tree);
                             }
-                            pushFollow(FOLLOW_statement_in_statement3635);
-                            statement307=statement();
+                            pushFollow(FOLLOW_statement_in_statement3649);
+                            statement305=statement();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, statement307.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, statement305.getTree());
 
                             }
                             break;
@@ -10455,117 +10471,117 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:752:9: 'for' '(' forControl ')' statement
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:757:9: 'for' '(' forControl ')' statement
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal308=(Token)match(input,78,FOLLOW_78_in_statement3647); if (state.failed) return retval;
+                    string_literal306=(Token)match(input,78,FOLLOW_78_in_statement3661); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal308_tree = (Object)adaptor.create(string_literal308);
-                    adaptor.addChild(root_0, string_literal308_tree);
+                    string_literal306_tree = (Object)adaptor.create(string_literal306);
+                    adaptor.addChild(root_0, string_literal306_tree);
                     }
-                    char_literal309=(Token)match(input,66,FOLLOW_66_in_statement3649); if (state.failed) return retval;
+                    char_literal307=(Token)match(input,66,FOLLOW_66_in_statement3663); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) {
+                    char_literal307_tree = (Object)adaptor.create(char_literal307);
+                    adaptor.addChild(root_0, char_literal307_tree);
+                    }
+                    pushFollow(FOLLOW_forControl_in_statement3665);
+                    forControl308=forControl();
+
+                    state._fsp--;
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, forControl308.getTree());
+                    char_literal309=(Token)match(input,67,FOLLOW_67_in_statement3667); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal309_tree = (Object)adaptor.create(char_literal309);
                     adaptor.addChild(root_0, char_literal309_tree);
                     }
-                    pushFollow(FOLLOW_forControl_in_statement3651);
-                    forControl310=forControl();
+                    pushFollow(FOLLOW_statement_in_statement3669);
+                    statement310=statement();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, forControl310.getTree());
-                    char_literal311=(Token)match(input,67,FOLLOW_67_in_statement3653); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    char_literal311_tree = (Object)adaptor.create(char_literal311);
-                    adaptor.addChild(root_0, char_literal311_tree);
-                    }
-                    pushFollow(FOLLOW_statement_in_statement3655);
-                    statement312=statement();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, statement312.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, statement310.getTree());
 
                     }
                     break;
                 case 5 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:753:9: 'while' parExpression statement
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:758:9: 'while' parExpression statement
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal313=(Token)match(input,79,FOLLOW_79_in_statement3665); if (state.failed) return retval;
+                    string_literal311=(Token)match(input,79,FOLLOW_79_in_statement3679); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal313_tree = (Object)adaptor.create(string_literal313);
-                    adaptor.addChild(root_0, string_literal313_tree);
+                    string_literal311_tree = (Object)adaptor.create(string_literal311);
+                    adaptor.addChild(root_0, string_literal311_tree);
                     }
-                    pushFollow(FOLLOW_parExpression_in_statement3667);
-                    parExpression314=parExpression();
+                    pushFollow(FOLLOW_parExpression_in_statement3681);
+                    parExpression312=parExpression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, parExpression314.getTree());
-                    pushFollow(FOLLOW_statement_in_statement3669);
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, parExpression312.getTree());
+                    pushFollow(FOLLOW_statement_in_statement3683);
+                    statement313=statement();
+
+                    state._fsp--;
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, statement313.getTree());
+
+                    }
+                    break;
+                case 6 :
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:759:9: 'do' statement 'while' parExpression ';'
+                    {
+                    root_0 = (Object)adaptor.nil();
+
+                    string_literal314=(Token)match(input,80,FOLLOW_80_in_statement3693); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) {
+                    string_literal314_tree = (Object)adaptor.create(string_literal314);
+                    adaptor.addChild(root_0, string_literal314_tree);
+                    }
+                    pushFollow(FOLLOW_statement_in_statement3695);
                     statement315=statement();
 
                     state._fsp--;
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, statement315.getTree());
-
-                    }
-                    break;
-                case 6 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:754:9: 'do' statement 'while' parExpression ';'
-                    {
-                    root_0 = (Object)adaptor.nil();
-
-                    string_literal316=(Token)match(input,80,FOLLOW_80_in_statement3679); if (state.failed) return retval;
+                    string_literal316=(Token)match(input,79,FOLLOW_79_in_statement3697); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     string_literal316_tree = (Object)adaptor.create(string_literal316);
                     adaptor.addChild(root_0, string_literal316_tree);
                     }
-                    pushFollow(FOLLOW_statement_in_statement3681);
-                    statement317=statement();
+                    pushFollow(FOLLOW_parExpression_in_statement3699);
+                    parExpression317=parExpression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, statement317.getTree());
-                    string_literal318=(Token)match(input,79,FOLLOW_79_in_statement3683); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, parExpression317.getTree());
+                    char_literal318=(Token)match(input,26,FOLLOW_26_in_statement3701); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal318_tree = (Object)adaptor.create(string_literal318);
-                    adaptor.addChild(root_0, string_literal318_tree);
-                    }
-                    pushFollow(FOLLOW_parExpression_in_statement3685);
-                    parExpression319=parExpression();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, parExpression319.getTree());
-                    char_literal320=(Token)match(input,26,FOLLOW_26_in_statement3687); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    char_literal320_tree = (Object)adaptor.create(char_literal320);
-                    adaptor.addChild(root_0, char_literal320_tree);
+                    char_literal318_tree = (Object)adaptor.create(char_literal318);
+                    adaptor.addChild(root_0, char_literal318_tree);
                     }
 
                     }
                     break;
                 case 7 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:755:9: 'try' block ( catches 'finally' block | catches | 'finally' block )
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:760:9: 'try' block ( catches 'finally' block | catches | 'finally' block )
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal321=(Token)match(input,81,FOLLOW_81_in_statement3697); if (state.failed) return retval;
+                    string_literal319=(Token)match(input,81,FOLLOW_81_in_statement3711); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal321_tree = (Object)adaptor.create(string_literal321);
-                    adaptor.addChild(root_0, string_literal321_tree);
+                    string_literal319_tree = (Object)adaptor.create(string_literal319);
+                    adaptor.addChild(root_0, string_literal319_tree);
                     }
-                    pushFollow(FOLLOW_block_in_statement3699);
-                    block322=block();
+                    pushFollow(FOLLOW_block_in_statement3713);
+                    block320=block();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, block322.getTree());
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:756:9: ( catches 'finally' block | catches | 'finally' block )
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, block320.getTree());
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:761:9: ( catches 'finally' block | catches | 'finally' block )
                     int alt110=3;
                     int LA110_0 = input.LA(1);
 
@@ -10598,54 +10614,54 @@ public class JavaParser extends Parser {
                     }
                     switch (alt110) {
                         case 1 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:756:11: catches 'finally' block
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:761:11: catches 'finally' block
                             {
-                            pushFollow(FOLLOW_catches_in_statement3711);
-                            catches323=catches();
+                            pushFollow(FOLLOW_catches_in_statement3725);
+                            catches321=catches();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, catches323.getTree());
-                            string_literal324=(Token)match(input,82,FOLLOW_82_in_statement3713); if (state.failed) return retval;
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, catches321.getTree());
+                            string_literal322=(Token)match(input,82,FOLLOW_82_in_statement3727); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
-                            string_literal324_tree = (Object)adaptor.create(string_literal324);
-                            adaptor.addChild(root_0, string_literal324_tree);
+                            string_literal322_tree = (Object)adaptor.create(string_literal322);
+                            adaptor.addChild(root_0, string_literal322_tree);
                             }
-                            pushFollow(FOLLOW_block_in_statement3715);
-                            block325=block();
+                            pushFollow(FOLLOW_block_in_statement3729);
+                            block323=block();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, block325.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, block323.getTree());
 
                             }
                             break;
                         case 2 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:757:11: catches
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:762:11: catches
                             {
-                            pushFollow(FOLLOW_catches_in_statement3727);
-                            catches326=catches();
+                            pushFollow(FOLLOW_catches_in_statement3741);
+                            catches324=catches();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, catches326.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, catches324.getTree());
 
                             }
                             break;
                         case 3 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:758:13: 'finally' block
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:763:13: 'finally' block
                             {
-                            string_literal327=(Token)match(input,82,FOLLOW_82_in_statement3741); if (state.failed) return retval;
+                            string_literal325=(Token)match(input,82,FOLLOW_82_in_statement3755); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
-                            string_literal327_tree = (Object)adaptor.create(string_literal327);
-                            adaptor.addChild(root_0, string_literal327_tree);
+                            string_literal325_tree = (Object)adaptor.create(string_literal325);
+                            adaptor.addChild(root_0, string_literal325_tree);
                             }
-                            pushFollow(FOLLOW_block_in_statement3743);
-                            block328=block();
+                            pushFollow(FOLLOW_block_in_statement3757);
+                            block326=block();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, block328.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, block326.getTree());
 
                             }
                             break;
@@ -10656,76 +10672,76 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 8 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:760:9: 'switch' parExpression '{' switchBlockStatementGroups '}'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:765:9: 'switch' parExpression '{' switchBlockStatementGroups '}'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal329=(Token)match(input,83,FOLLOW_83_in_statement3763); if (state.failed) return retval;
+                    string_literal327=(Token)match(input,83,FOLLOW_83_in_statement3777); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal329_tree = (Object)adaptor.create(string_literal329);
-                    adaptor.addChild(root_0, string_literal329_tree);
+                    string_literal327_tree = (Object)adaptor.create(string_literal327);
+                    adaptor.addChild(root_0, string_literal327_tree);
                     }
-                    pushFollow(FOLLOW_parExpression_in_statement3765);
-                    parExpression330=parExpression();
+                    pushFollow(FOLLOW_parExpression_in_statement3779);
+                    parExpression328=parExpression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, parExpression330.getTree());
-                    char_literal331=(Token)match(input,44,FOLLOW_44_in_statement3767); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, parExpression328.getTree());
+                    char_literal329=(Token)match(input,44,FOLLOW_44_in_statement3781); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) {
+                    char_literal329_tree = (Object)adaptor.create(char_literal329);
+                    adaptor.addChild(root_0, char_literal329_tree);
+                    }
+                    pushFollow(FOLLOW_switchBlockStatementGroups_in_statement3783);
+                    switchBlockStatementGroups330=switchBlockStatementGroups();
+
+                    state._fsp--;
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, switchBlockStatementGroups330.getTree());
+                    char_literal331=(Token)match(input,45,FOLLOW_45_in_statement3785); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal331_tree = (Object)adaptor.create(char_literal331);
                     adaptor.addChild(root_0, char_literal331_tree);
-                    }
-                    pushFollow(FOLLOW_switchBlockStatementGroups_in_statement3769);
-                    switchBlockStatementGroups332=switchBlockStatementGroups();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, switchBlockStatementGroups332.getTree());
-                    char_literal333=(Token)match(input,45,FOLLOW_45_in_statement3771); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    char_literal333_tree = (Object)adaptor.create(char_literal333);
-                    adaptor.addChild(root_0, char_literal333_tree);
                     }
 
                     }
                     break;
                 case 9 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:761:9: 'synchronized' parExpression block
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:766:9: 'synchronized' parExpression block
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal334=(Token)match(input,53,FOLLOW_53_in_statement3781); if (state.failed) return retval;
+                    string_literal332=(Token)match(input,53,FOLLOW_53_in_statement3795); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal334_tree = (Object)adaptor.create(string_literal334);
-                    adaptor.addChild(root_0, string_literal334_tree);
+                    string_literal332_tree = (Object)adaptor.create(string_literal332);
+                    adaptor.addChild(root_0, string_literal332_tree);
                     }
-                    pushFollow(FOLLOW_parExpression_in_statement3783);
-                    parExpression335=parExpression();
+                    pushFollow(FOLLOW_parExpression_in_statement3797);
+                    parExpression333=parExpression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, parExpression335.getTree());
-                    pushFollow(FOLLOW_block_in_statement3785);
-                    block336=block();
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, parExpression333.getTree());
+                    pushFollow(FOLLOW_block_in_statement3799);
+                    block334=block();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, block336.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, block334.getTree());
 
                     }
                     break;
                 case 10 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:762:9: 'return' ( expression )? ';'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:767:9: 'return' ( expression )? ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal337=(Token)match(input,84,FOLLOW_84_in_statement3795); if (state.failed) return retval;
+                    string_literal335=(Token)match(input,84,FOLLOW_84_in_statement3809); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal337_tree = (Object)adaptor.create(string_literal337);
-                    adaptor.addChild(root_0, string_literal337_tree);
+                    string_literal335_tree = (Object)adaptor.create(string_literal335);
+                    adaptor.addChild(root_0, string_literal335_tree);
                     }
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:762:18: ( expression )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:767:18: ( expression )?
                     int alt111=2;
                     int LA111_0 = input.LA(1);
 
@@ -10736,61 +10752,61 @@ public class JavaParser extends Parser {
                         case 1 :
                             // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: expression
                             {
-                            pushFollow(FOLLOW_expression_in_statement3797);
-                            expression338=expression();
+                            pushFollow(FOLLOW_expression_in_statement3811);
+                            expression336=expression();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression338.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression336.getTree());
 
                             }
                             break;
 
                     }
 
-                    char_literal339=(Token)match(input,26,FOLLOW_26_in_statement3800); if (state.failed) return retval;
+                    char_literal337=(Token)match(input,26,FOLLOW_26_in_statement3814); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal339_tree = (Object)adaptor.create(char_literal339);
-                    adaptor.addChild(root_0, char_literal339_tree);
+                    char_literal337_tree = (Object)adaptor.create(char_literal337);
+                    adaptor.addChild(root_0, char_literal337_tree);
                     }
 
                     }
                     break;
                 case 11 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:763:9: 'throw' expression ';'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:768:9: 'throw' expression ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal340=(Token)match(input,85,FOLLOW_85_in_statement3810); if (state.failed) return retval;
+                    string_literal338=(Token)match(input,85,FOLLOW_85_in_statement3824); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal340_tree = (Object)adaptor.create(string_literal340);
-                    adaptor.addChild(root_0, string_literal340_tree);
+                    string_literal338_tree = (Object)adaptor.create(string_literal338);
+                    adaptor.addChild(root_0, string_literal338_tree);
                     }
-                    pushFollow(FOLLOW_expression_in_statement3812);
-                    expression341=expression();
+                    pushFollow(FOLLOW_expression_in_statement3826);
+                    expression339=expression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression341.getTree());
-                    char_literal342=(Token)match(input,26,FOLLOW_26_in_statement3814); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression339.getTree());
+                    char_literal340=(Token)match(input,26,FOLLOW_26_in_statement3828); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal342_tree = (Object)adaptor.create(char_literal342);
-                    adaptor.addChild(root_0, char_literal342_tree);
+                    char_literal340_tree = (Object)adaptor.create(char_literal340);
+                    adaptor.addChild(root_0, char_literal340_tree);
                     }
 
                     }
                     break;
                 case 12 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:764:9: 'break' ( Identifier )? ';'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:769:9: 'break' ( Identifier )? ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal343=(Token)match(input,86,FOLLOW_86_in_statement3824); if (state.failed) return retval;
+                    string_literal341=(Token)match(input,86,FOLLOW_86_in_statement3838); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal343_tree = (Object)adaptor.create(string_literal343);
-                    adaptor.addChild(root_0, string_literal343_tree);
+                    string_literal341_tree = (Object)adaptor.create(string_literal341);
+                    adaptor.addChild(root_0, string_literal341_tree);
                     }
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:764:17: ( Identifier )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:769:17: ( Identifier )?
                     int alt112=2;
                     int LA112_0 = input.LA(1);
 
@@ -10801,10 +10817,10 @@ public class JavaParser extends Parser {
                         case 1 :
                             // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: Identifier
                             {
-                            Identifier344=(Token)match(input,Identifier,FOLLOW_Identifier_in_statement3826); if (state.failed) return retval;
+                            Identifier342=(Token)match(input,Identifier,FOLLOW_Identifier_in_statement3840); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
-                            Identifier344_tree = (Object)adaptor.create(Identifier344);
-                            adaptor.addChild(root_0, Identifier344_tree);
+                            Identifier342_tree = (Object)adaptor.create(Identifier342);
+                            adaptor.addChild(root_0, Identifier342_tree);
                             }
 
                             }
@@ -10812,25 +10828,25 @@ public class JavaParser extends Parser {
 
                     }
 
-                    char_literal345=(Token)match(input,26,FOLLOW_26_in_statement3829); if (state.failed) return retval;
+                    char_literal343=(Token)match(input,26,FOLLOW_26_in_statement3843); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal345_tree = (Object)adaptor.create(char_literal345);
-                    adaptor.addChild(root_0, char_literal345_tree);
+                    char_literal343_tree = (Object)adaptor.create(char_literal343);
+                    adaptor.addChild(root_0, char_literal343_tree);
                     }
 
                     }
                     break;
                 case 13 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:765:9: 'continue' ( Identifier )? ';'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:770:9: 'continue' ( Identifier )? ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal346=(Token)match(input,87,FOLLOW_87_in_statement3839); if (state.failed) return retval;
+                    string_literal344=(Token)match(input,87,FOLLOW_87_in_statement3853); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal346_tree = (Object)adaptor.create(string_literal346);
-                    adaptor.addChild(root_0, string_literal346_tree);
+                    string_literal344_tree = (Object)adaptor.create(string_literal344);
+                    adaptor.addChild(root_0, string_literal344_tree);
                     }
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:765:20: ( Identifier )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:770:20: ( Identifier )?
                     int alt113=2;
                     int LA113_0 = input.LA(1);
 
@@ -10841,10 +10857,10 @@ public class JavaParser extends Parser {
                         case 1 :
                             // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: Identifier
                             {
-                            Identifier347=(Token)match(input,Identifier,FOLLOW_Identifier_in_statement3841); if (state.failed) return retval;
+                            Identifier345=(Token)match(input,Identifier,FOLLOW_Identifier_in_statement3855); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
-                            Identifier347_tree = (Object)adaptor.create(Identifier347);
-                            adaptor.addChild(root_0, Identifier347_tree);
+                            Identifier345_tree = (Object)adaptor.create(Identifier345);
+                            adaptor.addChild(root_0, Identifier345_tree);
                             }
 
                             }
@@ -10852,20 +10868,39 @@ public class JavaParser extends Parser {
 
                     }
 
-                    char_literal348=(Token)match(input,26,FOLLOW_26_in_statement3844); if (state.failed) return retval;
+                    char_literal346=(Token)match(input,26,FOLLOW_26_in_statement3858); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal348_tree = (Object)adaptor.create(char_literal348);
-                    adaptor.addChild(root_0, char_literal348_tree);
+                    char_literal346_tree = (Object)adaptor.create(char_literal346);
+                    adaptor.addChild(root_0, char_literal346_tree);
                     }
 
                     }
                     break;
                 case 14 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:766:9: ';'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:771:9: ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal349=(Token)match(input,26,FOLLOW_26_in_statement3854); if (state.failed) return retval;
+                    char_literal347=(Token)match(input,26,FOLLOW_26_in_statement3868); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) {
+                    char_literal347_tree = (Object)adaptor.create(char_literal347);
+                    adaptor.addChild(root_0, char_literal347_tree);
+                    }
+
+                    }
+                    break;
+                case 15 :
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:772:9: statementExpression ';'
+                    {
+                    root_0 = (Object)adaptor.nil();
+
+                    pushFollow(FOLLOW_statementExpression_in_statement3879);
+                    statementExpression348=statementExpression();
+
+                    state._fsp--;
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, statementExpression348.getTree());
+                    char_literal349=(Token)match(input,26,FOLLOW_26_in_statement3881); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal349_tree = (Object)adaptor.create(char_literal349);
                     adaptor.addChild(root_0, char_literal349_tree);
@@ -10873,46 +10908,27 @@ public class JavaParser extends Parser {
 
                     }
                     break;
-                case 15 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:767:9: statementExpression ';'
+                case 16 :
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:773:9: Identifier ':' statement
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_statementExpression_in_statement3865);
-                    statementExpression350=statementExpression();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, statementExpression350.getTree());
-                    char_literal351=(Token)match(input,26,FOLLOW_26_in_statement3867); if (state.failed) return retval;
+                    Identifier350=(Token)match(input,Identifier,FOLLOW_Identifier_in_statement3891); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) {
+                    Identifier350_tree = (Object)adaptor.create(Identifier350);
+                    adaptor.addChild(root_0, Identifier350_tree);
+                    }
+                    char_literal351=(Token)match(input,75,FOLLOW_75_in_statement3893); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal351_tree = (Object)adaptor.create(char_literal351);
                     adaptor.addChild(root_0, char_literal351_tree);
                     }
-
-                    }
-                    break;
-                case 16 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:768:9: Identifier ':' statement
-                    {
-                    root_0 = (Object)adaptor.nil();
-
-                    Identifier352=(Token)match(input,Identifier,FOLLOW_Identifier_in_statement3877); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    Identifier352_tree = (Object)adaptor.create(Identifier352);
-                    adaptor.addChild(root_0, Identifier352_tree);
-                    }
-                    char_literal353=(Token)match(input,75,FOLLOW_75_in_statement3879); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    char_literal353_tree = (Object)adaptor.create(char_literal353);
-                    adaptor.addChild(root_0, char_literal353_tree);
-                    }
-                    pushFollow(FOLLOW_statement_in_statement3881);
-                    statement354=statement();
+                    pushFollow(FOLLOW_statement_in_statement3895);
+                    statement352=statement();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, statement354.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, statement352.getTree());
 
                     }
                     break;
@@ -10945,33 +10961,33 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "catches"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:771:1: catches : catchClause ( catchClause )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:776:1: catches : catchClause ( catchClause )* ;
     public final JavaParser.catches_return catches() throws RecognitionException {
         JavaParser.catches_return retval = new JavaParser.catches_return();
         retval.start = input.LT(1);
         int catches_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.catchClause_return catchClause355 = null;
+        JavaParser.catchClause_return catchClause353 = null;
 
-        JavaParser.catchClause_return catchClause356 = null;
+        JavaParser.catchClause_return catchClause354 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 91) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:772:5: ( catchClause ( catchClause )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:772:9: catchClause ( catchClause )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:777:5: ( catchClause ( catchClause )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:777:9: catchClause ( catchClause )*
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_catchClause_in_catches3904);
-            catchClause355=catchClause();
+            pushFollow(FOLLOW_catchClause_in_catches3918);
+            catchClause353=catchClause();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, catchClause355.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:772:21: ( catchClause )*
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, catchClause353.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:777:21: ( catchClause )*
             loop115:
             do {
                 int alt115=2;
@@ -10984,14 +11000,14 @@ public class JavaParser extends Parser {
 
                 switch (alt115) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:772:22: catchClause
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:777:22: catchClause
             	    {
-            	    pushFollow(FOLLOW_catchClause_in_catches3907);
-            	    catchClause356=catchClause();
+            	    pushFollow(FOLLOW_catchClause_in_catches3921);
+            	    catchClause354=catchClause();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, catchClause356.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, catchClause354.getTree());
 
             	    }
             	    break;
@@ -11031,59 +11047,59 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "catchClause"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:775:1: catchClause : 'catch' '(' formalParameter ')' block ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:780:1: catchClause : 'catch' '(' formalParameter ')' block ;
     public final JavaParser.catchClause_return catchClause() throws RecognitionException {
         JavaParser.catchClause_return retval = new JavaParser.catchClause_return();
         retval.start = input.LT(1);
         int catchClause_StartIndex = input.index();
         Object root_0 = null;
 
-        Token string_literal357=null;
+        Token string_literal355=null;
+        Token char_literal356=null;
         Token char_literal358=null;
-        Token char_literal360=null;
-        JavaParser.formalParameter_return formalParameter359 = null;
+        JavaParser.formalParameter_return formalParameter357 = null;
 
-        JavaParser.block_return block361 = null;
+        JavaParser.block_return block359 = null;
 
 
-        Object string_literal357_tree=null;
+        Object string_literal355_tree=null;
+        Object char_literal356_tree=null;
         Object char_literal358_tree=null;
-        Object char_literal360_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 92) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:776:5: ( 'catch' '(' formalParameter ')' block )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:776:9: 'catch' '(' formalParameter ')' block
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:781:5: ( 'catch' '(' formalParameter ')' block )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:781:9: 'catch' '(' formalParameter ')' block
             {
             root_0 = (Object)adaptor.nil();
 
-            string_literal357=(Token)match(input,88,FOLLOW_88_in_catchClause3932); if (state.failed) return retval;
+            string_literal355=(Token)match(input,88,FOLLOW_88_in_catchClause3946); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            string_literal357_tree = (Object)adaptor.create(string_literal357);
-            adaptor.addChild(root_0, string_literal357_tree);
+            string_literal355_tree = (Object)adaptor.create(string_literal355);
+            adaptor.addChild(root_0, string_literal355_tree);
             }
-            char_literal358=(Token)match(input,66,FOLLOW_66_in_catchClause3934); if (state.failed) return retval;
+            char_literal356=(Token)match(input,66,FOLLOW_66_in_catchClause3948); if (state.failed) return retval;
+            if ( state.backtracking==0 ) {
+            char_literal356_tree = (Object)adaptor.create(char_literal356);
+            adaptor.addChild(root_0, char_literal356_tree);
+            }
+            pushFollow(FOLLOW_formalParameter_in_catchClause3950);
+            formalParameter357=formalParameter();
+
+            state._fsp--;
+            if (state.failed) return retval;
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, formalParameter357.getTree());
+            char_literal358=(Token)match(input,67,FOLLOW_67_in_catchClause3952); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
             char_literal358_tree = (Object)adaptor.create(char_literal358);
             adaptor.addChild(root_0, char_literal358_tree);
             }
-            pushFollow(FOLLOW_formalParameter_in_catchClause3936);
-            formalParameter359=formalParameter();
+            pushFollow(FOLLOW_block_in_catchClause3954);
+            block359=block();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, formalParameter359.getTree());
-            char_literal360=(Token)match(input,67,FOLLOW_67_in_catchClause3938); if (state.failed) return retval;
-            if ( state.backtracking==0 ) {
-            char_literal360_tree = (Object)adaptor.create(char_literal360);
-            adaptor.addChild(root_0, char_literal360_tree);
-            }
-            pushFollow(FOLLOW_block_in_catchClause3940);
-            block361=block();
-
-            state._fsp--;
-            if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, block361.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, block359.getTree());
 
             }
 
@@ -11114,46 +11130,46 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "formalParameter"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:779:1: formalParameter : variableModifiers type variableDeclaratorId ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:784:1: formalParameter : variableModifiers type variableDeclaratorId ;
     public final JavaParser.formalParameter_return formalParameter() throws RecognitionException {
         JavaParser.formalParameter_return retval = new JavaParser.formalParameter_return();
         retval.start = input.LT(1);
         int formalParameter_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.variableModifiers_return variableModifiers362 = null;
+        JavaParser.variableModifiers_return variableModifiers360 = null;
 
-        JavaParser.type_return type363 = null;
+        JavaParser.type_return type361 = null;
 
-        JavaParser.variableDeclaratorId_return variableDeclaratorId364 = null;
+        JavaParser.variableDeclaratorId_return variableDeclaratorId362 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 93) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:780:5: ( variableModifiers type variableDeclaratorId )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:780:9: variableModifiers type variableDeclaratorId
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:785:5: ( variableModifiers type variableDeclaratorId )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:785:9: variableModifiers type variableDeclaratorId
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_variableModifiers_in_formalParameter3959);
-            variableModifiers362=variableModifiers();
+            pushFollow(FOLLOW_variableModifiers_in_formalParameter3973);
+            variableModifiers360=variableModifiers();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, variableModifiers362.getTree());
-            pushFollow(FOLLOW_type_in_formalParameter3961);
-            type363=type();
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, variableModifiers360.getTree());
+            pushFollow(FOLLOW_type_in_formalParameter3975);
+            type361=type();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, type363.getTree());
-            pushFollow(FOLLOW_variableDeclaratorId_in_formalParameter3963);
-            variableDeclaratorId364=variableDeclaratorId();
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, type361.getTree());
+            pushFollow(FOLLOW_variableDeclaratorId_in_formalParameter3977);
+            variableDeclaratorId362=variableDeclaratorId();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, variableDeclaratorId364.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, variableDeclaratorId362.getTree());
 
             }
 
@@ -11184,25 +11200,25 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "switchBlockStatementGroups"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:783:1: switchBlockStatementGroups : ( switchBlockStatementGroup )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:788:1: switchBlockStatementGroups : ( switchBlockStatementGroup )* ;
     public final JavaParser.switchBlockStatementGroups_return switchBlockStatementGroups() throws RecognitionException {
         JavaParser.switchBlockStatementGroups_return retval = new JavaParser.switchBlockStatementGroups_return();
         retval.start = input.LT(1);
         int switchBlockStatementGroups_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.switchBlockStatementGroup_return switchBlockStatementGroup365 = null;
+        JavaParser.switchBlockStatementGroup_return switchBlockStatementGroup363 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 94) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:784:5: ( ( switchBlockStatementGroup )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:784:9: ( switchBlockStatementGroup )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:789:5: ( ( switchBlockStatementGroup )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:789:9: ( switchBlockStatementGroup )*
             {
             root_0 = (Object)adaptor.nil();
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:784:9: ( switchBlockStatementGroup )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:789:9: ( switchBlockStatementGroup )*
             loop116:
             do {
                 int alt116=2;
@@ -11215,14 +11231,14 @@ public class JavaParser extends Parser {
 
                 switch (alt116) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:784:10: switchBlockStatementGroup
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:789:10: switchBlockStatementGroup
             	    {
-            	    pushFollow(FOLLOW_switchBlockStatementGroup_in_switchBlockStatementGroups3991);
-            	    switchBlockStatementGroup365=switchBlockStatementGroup();
+            	    pushFollow(FOLLOW_switchBlockStatementGroup_in_switchBlockStatementGroups4005);
+            	    switchBlockStatementGroup363=switchBlockStatementGroup();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, switchBlockStatementGroup365.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, switchBlockStatementGroup363.getTree());
 
             	    }
             	    break;
@@ -11262,27 +11278,27 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "switchBlockStatementGroup"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:791:1: switchBlockStatementGroup : ( switchLabel )+ ( blockStatement )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:796:1: switchBlockStatementGroup : ( switchLabel )+ ( blockStatement )* ;
     public final JavaParser.switchBlockStatementGroup_return switchBlockStatementGroup() throws RecognitionException {
         JavaParser.switchBlockStatementGroup_return retval = new JavaParser.switchBlockStatementGroup_return();
         retval.start = input.LT(1);
         int switchBlockStatementGroup_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.switchLabel_return switchLabel366 = null;
+        JavaParser.switchLabel_return switchLabel364 = null;
 
-        JavaParser.blockStatement_return blockStatement367 = null;
+        JavaParser.blockStatement_return blockStatement365 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 95) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:792:5: ( ( switchLabel )+ ( blockStatement )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:792:9: ( switchLabel )+ ( blockStatement )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:797:5: ( ( switchLabel )+ ( blockStatement )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:797:9: ( switchLabel )+ ( blockStatement )*
             {
             root_0 = (Object)adaptor.nil();
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:792:9: ( switchLabel )+
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:797:9: ( switchLabel )+
             int cnt117=0;
             loop117:
             do {
@@ -11313,12 +11329,12 @@ public class JavaParser extends Parser {
             	case 1 :
             	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: switchLabel
             	    {
-            	    pushFollow(FOLLOW_switchLabel_in_switchBlockStatementGroup4018);
-            	    switchLabel366=switchLabel();
+            	    pushFollow(FOLLOW_switchLabel_in_switchBlockStatementGroup4032);
+            	    switchLabel364=switchLabel();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, switchLabel366.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, switchLabel364.getTree());
 
             	    }
             	    break;
@@ -11333,7 +11349,7 @@ public class JavaParser extends Parser {
                 cnt117++;
             } while (true);
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:792:22: ( blockStatement )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:797:22: ( blockStatement )*
             loop118:
             do {
                 int alt118=2;
@@ -11348,12 +11364,12 @@ public class JavaParser extends Parser {
             	case 1 :
             	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: blockStatement
             	    {
-            	    pushFollow(FOLLOW_blockStatement_in_switchBlockStatementGroup4021);
-            	    blockStatement367=blockStatement();
+            	    pushFollow(FOLLOW_blockStatement_in_switchBlockStatementGroup4035);
+            	    blockStatement365=blockStatement();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, blockStatement367.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, blockStatement365.getTree());
 
             	    }
             	    break;
@@ -11393,44 +11409,50 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "switchLabel"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:795:1: switchLabel : ( 'case' constantExpression ':' | 'case' enumConstantName ':' | 'default' ':' );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:800:1: switchLabel : ( 'case' constantExpression ':' | 'case' enumConstantName ':' | 'default' ':' );
     public final JavaParser.switchLabel_return switchLabel() throws RecognitionException {
         JavaParser.switchLabel_return retval = new JavaParser.switchLabel_return();
         retval.start = input.LT(1);
         int switchLabel_StartIndex = input.index();
         Object root_0 = null;
 
-        Token string_literal368=null;
-        Token char_literal370=null;
-        Token string_literal371=null;
+        Token string_literal366=null;
+        Token char_literal368=null;
+        Token string_literal369=null;
+        Token char_literal371=null;
+        Token string_literal372=null;
         Token char_literal373=null;
-        Token string_literal374=null;
-        Token char_literal375=null;
-        JavaParser.constantExpression_return constantExpression369 = null;
+        JavaParser.constantExpression_return constantExpression367 = null;
 
-        JavaParser.enumConstantName_return enumConstantName372 = null;
+        JavaParser.enumConstantName_return enumConstantName370 = null;
 
 
-        Object string_literal368_tree=null;
-        Object char_literal370_tree=null;
-        Object string_literal371_tree=null;
+        Object string_literal366_tree=null;
+        Object char_literal368_tree=null;
+        Object string_literal369_tree=null;
+        Object char_literal371_tree=null;
+        Object string_literal372_tree=null;
         Object char_literal373_tree=null;
-        Object string_literal374_tree=null;
-        Object char_literal375_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 96) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:796:5: ( 'case' constantExpression ':' | 'case' enumConstantName ':' | 'default' ':' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:801:5: ( 'case' constantExpression ':' | 'case' enumConstantName ':' | 'default' ':' )
             int alt119=3;
             int LA119_0 = input.LA(1);
 
             if ( (LA119_0==89) ) {
                 int LA119_1 = input.LA(2);
 
-                if ( (LA119_1==Identifier) ) {
-                    int LA119_3 = input.LA(3);
+                if ( ((LA119_1>=FloatingPointLiteral && LA119_1<=DecimalLiteral)||LA119_1==47||(LA119_1>=56 && LA119_1<=63)||(LA119_1>=65 && LA119_1<=66)||(LA119_1>=69 && LA119_1<=72)||(LA119_1>=105 && LA119_1<=106)||(LA119_1>=109 && LA119_1<=113)) ) {
+                    alt119=1;
+                }
+                else if ( (LA119_1==Identifier) ) {
+                    int LA119_4 = input.LA(3);
 
-                    if ( (LA119_3==75) ) {
+                    if ( ((LA119_4>=29 && LA119_4<=30)||LA119_4==40||(LA119_4>=42 && LA119_4<=43)||LA119_4==48||LA119_4==51||LA119_4==64||LA119_4==66||(LA119_4>=90 && LA119_4<=110)) ) {
+                        alt119=1;
+                    }
+                    else if ( (LA119_4==75) ) {
                         int LA119_5 = input.LA(4);
 
                         if ( (synpred175_Java()) ) {
@@ -11447,19 +11469,13 @@ public class JavaParser extends Parser {
                             throw nvae;
                         }
                     }
-                    else if ( ((LA119_3>=29 && LA119_3<=30)||LA119_3==40||(LA119_3>=42 && LA119_3<=43)||LA119_3==48||LA119_3==51||LA119_3==64||LA119_3==66||(LA119_3>=90 && LA119_3<=110)) ) {
-                        alt119=1;
-                    }
                     else {
                         if (state.backtracking>0) {state.failed=true; return retval;}
                         NoViableAltException nvae =
-                            new NoViableAltException("", 119, 3, input);
+                            new NoViableAltException("", 119, 4, input);
 
                         throw nvae;
                     }
-                }
-                else if ( ((LA119_1>=FloatingPointLiteral && LA119_1<=DecimalLiteral)||LA119_1==47||(LA119_1>=56 && LA119_1<=63)||(LA119_1>=65 && LA119_1<=66)||(LA119_1>=69 && LA119_1<=72)||(LA119_1>=105 && LA119_1<=106)||(LA119_1>=109 && LA119_1<=113)) ) {
-                    alt119=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return retval;}
@@ -11481,67 +11497,67 @@ public class JavaParser extends Parser {
             }
             switch (alt119) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:796:9: 'case' constantExpression ':'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:801:9: 'case' constantExpression ':'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal368=(Token)match(input,89,FOLLOW_89_in_switchLabel4045); if (state.failed) return retval;
+                    string_literal366=(Token)match(input,89,FOLLOW_89_in_switchLabel4059); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal368_tree = (Object)adaptor.create(string_literal368);
-                    adaptor.addChild(root_0, string_literal368_tree);
+                    string_literal366_tree = (Object)adaptor.create(string_literal366);
+                    adaptor.addChild(root_0, string_literal366_tree);
                     }
-                    pushFollow(FOLLOW_constantExpression_in_switchLabel4047);
-                    constantExpression369=constantExpression();
+                    pushFollow(FOLLOW_constantExpression_in_switchLabel4061);
+                    constantExpression367=constantExpression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, constantExpression369.getTree());
-                    char_literal370=(Token)match(input,75,FOLLOW_75_in_switchLabel4049); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, constantExpression367.getTree());
+                    char_literal368=(Token)match(input,75,FOLLOW_75_in_switchLabel4063); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal370_tree = (Object)adaptor.create(char_literal370);
-                    adaptor.addChild(root_0, char_literal370_tree);
+                    char_literal368_tree = (Object)adaptor.create(char_literal368);
+                    adaptor.addChild(root_0, char_literal368_tree);
                     }
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:797:9: 'case' enumConstantName ':'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:802:9: 'case' enumConstantName ':'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal371=(Token)match(input,89,FOLLOW_89_in_switchLabel4059); if (state.failed) return retval;
+                    string_literal369=(Token)match(input,89,FOLLOW_89_in_switchLabel4073); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal371_tree = (Object)adaptor.create(string_literal371);
-                    adaptor.addChild(root_0, string_literal371_tree);
+                    string_literal369_tree = (Object)adaptor.create(string_literal369);
+                    adaptor.addChild(root_0, string_literal369_tree);
                     }
-                    pushFollow(FOLLOW_enumConstantName_in_switchLabel4061);
-                    enumConstantName372=enumConstantName();
+                    pushFollow(FOLLOW_enumConstantName_in_switchLabel4075);
+                    enumConstantName370=enumConstantName();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, enumConstantName372.getTree());
-                    char_literal373=(Token)match(input,75,FOLLOW_75_in_switchLabel4063); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, enumConstantName370.getTree());
+                    char_literal371=(Token)match(input,75,FOLLOW_75_in_switchLabel4077); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal373_tree = (Object)adaptor.create(char_literal373);
-                    adaptor.addChild(root_0, char_literal373_tree);
+                    char_literal371_tree = (Object)adaptor.create(char_literal371);
+                    adaptor.addChild(root_0, char_literal371_tree);
                     }
 
                     }
                     break;
                 case 3 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:798:9: 'default' ':'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:803:9: 'default' ':'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal374=(Token)match(input,74,FOLLOW_74_in_switchLabel4073); if (state.failed) return retval;
+                    string_literal372=(Token)match(input,74,FOLLOW_74_in_switchLabel4087); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal374_tree = (Object)adaptor.create(string_literal374);
-                    adaptor.addChild(root_0, string_literal374_tree);
+                    string_literal372_tree = (Object)adaptor.create(string_literal372);
+                    adaptor.addChild(root_0, string_literal372_tree);
                     }
-                    char_literal375=(Token)match(input,75,FOLLOW_75_in_switchLabel4075); if (state.failed) return retval;
+                    char_literal373=(Token)match(input,75,FOLLOW_75_in_switchLabel4089); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal375_tree = (Object)adaptor.create(char_literal375);
-                    adaptor.addChild(root_0, char_literal375_tree);
+                    char_literal373_tree = (Object)adaptor.create(char_literal373);
+                    adaptor.addChild(root_0, char_literal373_tree);
                     }
 
                     }
@@ -11575,53 +11591,53 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "forControl"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:801:1: forControl options {k=3; } : ( enhancedForControl | ( forInit )? ';' ( expression )? ';' ( forUpdate )? );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:806:1: forControl options {k=3; } : ( enhancedForControl | ( forInit )? ';' ( expression )? ';' ( forUpdate )? );
     public final JavaParser.forControl_return forControl() throws RecognitionException {
         JavaParser.forControl_return retval = new JavaParser.forControl_return();
         retval.start = input.LT(1);
         int forControl_StartIndex = input.index();
         Object root_0 = null;
 
+        Token char_literal376=null;
         Token char_literal378=null;
-        Token char_literal380=null;
-        JavaParser.enhancedForControl_return enhancedForControl376 = null;
+        JavaParser.enhancedForControl_return enhancedForControl374 = null;
 
-        JavaParser.forInit_return forInit377 = null;
+        JavaParser.forInit_return forInit375 = null;
 
-        JavaParser.expression_return expression379 = null;
+        JavaParser.expression_return expression377 = null;
 
-        JavaParser.forUpdate_return forUpdate381 = null;
+        JavaParser.forUpdate_return forUpdate379 = null;
 
 
+        Object char_literal376_tree=null;
         Object char_literal378_tree=null;
-        Object char_literal380_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 97) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:803:5: ( enhancedForControl | ( forInit )? ';' ( expression )? ';' ( forUpdate )? )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:808:5: ( enhancedForControl | ( forInit )? ';' ( expression )? ';' ( forUpdate )? )
             int alt123=2;
             alt123 = dfa123.predict(input);
             switch (alt123) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:803:9: enhancedForControl
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:808:9: enhancedForControl
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_enhancedForControl_in_forControl4106);
-                    enhancedForControl376=enhancedForControl();
+                    pushFollow(FOLLOW_enhancedForControl_in_forControl4120);
+                    enhancedForControl374=enhancedForControl();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, enhancedForControl376.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, enhancedForControl374.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:804:9: ( forInit )? ';' ( expression )? ';' ( forUpdate )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:809:9: ( forInit )? ';' ( expression )? ';' ( forUpdate )?
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:804:9: ( forInit )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:809:9: ( forInit )?
                     int alt120=2;
                     int LA120_0 = input.LA(1);
 
@@ -11632,24 +11648,24 @@ public class JavaParser extends Parser {
                         case 1 :
                             // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: forInit
                             {
-                            pushFollow(FOLLOW_forInit_in_forControl4116);
-                            forInit377=forInit();
+                            pushFollow(FOLLOW_forInit_in_forControl4130);
+                            forInit375=forInit();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, forInit377.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, forInit375.getTree());
 
                             }
                             break;
 
                     }
 
-                    char_literal378=(Token)match(input,26,FOLLOW_26_in_forControl4119); if (state.failed) return retval;
+                    char_literal376=(Token)match(input,26,FOLLOW_26_in_forControl4133); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal378_tree = (Object)adaptor.create(char_literal378);
-                    adaptor.addChild(root_0, char_literal378_tree);
+                    char_literal376_tree = (Object)adaptor.create(char_literal376);
+                    adaptor.addChild(root_0, char_literal376_tree);
                     }
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:804:22: ( expression )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:809:22: ( expression )?
                     int alt121=2;
                     int LA121_0 = input.LA(1);
 
@@ -11660,24 +11676,24 @@ public class JavaParser extends Parser {
                         case 1 :
                             // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: expression
                             {
-                            pushFollow(FOLLOW_expression_in_forControl4121);
-                            expression379=expression();
+                            pushFollow(FOLLOW_expression_in_forControl4135);
+                            expression377=expression();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression379.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression377.getTree());
 
                             }
                             break;
 
                     }
 
-                    char_literal380=(Token)match(input,26,FOLLOW_26_in_forControl4124); if (state.failed) return retval;
+                    char_literal378=(Token)match(input,26,FOLLOW_26_in_forControl4138); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal380_tree = (Object)adaptor.create(char_literal380);
-                    adaptor.addChild(root_0, char_literal380_tree);
+                    char_literal378_tree = (Object)adaptor.create(char_literal378);
+                    adaptor.addChild(root_0, char_literal378_tree);
                     }
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:804:38: ( forUpdate )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:809:38: ( forUpdate )?
                     int alt122=2;
                     int LA122_0 = input.LA(1);
 
@@ -11688,12 +11704,12 @@ public class JavaParser extends Parser {
                         case 1 :
                             // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: forUpdate
                             {
-                            pushFollow(FOLLOW_forUpdate_in_forControl4126);
-                            forUpdate381=forUpdate();
+                            pushFollow(FOLLOW_forUpdate_in_forControl4140);
+                            forUpdate379=forUpdate();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, forUpdate381.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, forUpdate379.getTree());
 
                             }
                             break;
@@ -11732,50 +11748,50 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "forInit"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:807:1: forInit : ( localVariableDeclaration | expressionList );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:812:1: forInit : ( localVariableDeclaration | expressionList );
     public final JavaParser.forInit_return forInit() throws RecognitionException {
         JavaParser.forInit_return retval = new JavaParser.forInit_return();
         retval.start = input.LT(1);
         int forInit_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.localVariableDeclaration_return localVariableDeclaration382 = null;
+        JavaParser.localVariableDeclaration_return localVariableDeclaration380 = null;
 
-        JavaParser.expressionList_return expressionList383 = null;
+        JavaParser.expressionList_return expressionList381 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 98) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:808:5: ( localVariableDeclaration | expressionList )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:813:5: ( localVariableDeclaration | expressionList )
             int alt124=2;
             alt124 = dfa124.predict(input);
             switch (alt124) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:808:9: localVariableDeclaration
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:813:9: localVariableDeclaration
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_localVariableDeclaration_in_forInit4146);
-                    localVariableDeclaration382=localVariableDeclaration();
+                    pushFollow(FOLLOW_localVariableDeclaration_in_forInit4160);
+                    localVariableDeclaration380=localVariableDeclaration();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, localVariableDeclaration382.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, localVariableDeclaration380.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:809:9: expressionList
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:814:9: expressionList
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_expressionList_in_forInit4156);
-                    expressionList383=expressionList();
+                    pushFollow(FOLLOW_expressionList_in_forInit4170);
+                    expressionList381=expressionList();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expressionList383.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expressionList381.getTree());
 
                     }
                     break;
@@ -11808,60 +11824,60 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "enhancedForControl"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:812:1: enhancedForControl : variableModifiers type Identifier ':' expression ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:817:1: enhancedForControl : variableModifiers type Identifier ':' expression ;
     public final JavaParser.enhancedForControl_return enhancedForControl() throws RecognitionException {
         JavaParser.enhancedForControl_return retval = new JavaParser.enhancedForControl_return();
         retval.start = input.LT(1);
         int enhancedForControl_StartIndex = input.index();
         Object root_0 = null;
 
-        Token Identifier386=null;
-        Token char_literal387=null;
-        JavaParser.variableModifiers_return variableModifiers384 = null;
+        Token Identifier384=null;
+        Token char_literal385=null;
+        JavaParser.variableModifiers_return variableModifiers382 = null;
 
-        JavaParser.type_return type385 = null;
+        JavaParser.type_return type383 = null;
 
-        JavaParser.expression_return expression388 = null;
+        JavaParser.expression_return expression386 = null;
 
 
-        Object Identifier386_tree=null;
-        Object char_literal387_tree=null;
+        Object Identifier384_tree=null;
+        Object char_literal385_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 99) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:813:5: ( variableModifiers type Identifier ':' expression )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:813:9: variableModifiers type Identifier ':' expression
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:818:5: ( variableModifiers type Identifier ':' expression )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:818:9: variableModifiers type Identifier ':' expression
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_variableModifiers_in_enhancedForControl4179);
-            variableModifiers384=variableModifiers();
+            pushFollow(FOLLOW_variableModifiers_in_enhancedForControl4193);
+            variableModifiers382=variableModifiers();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, variableModifiers384.getTree());
-            pushFollow(FOLLOW_type_in_enhancedForControl4181);
-            type385=type();
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, variableModifiers382.getTree());
+            pushFollow(FOLLOW_type_in_enhancedForControl4195);
+            type383=type();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, type385.getTree());
-            Identifier386=(Token)match(input,Identifier,FOLLOW_Identifier_in_enhancedForControl4183); if (state.failed) return retval;
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, type383.getTree());
+            Identifier384=(Token)match(input,Identifier,FOLLOW_Identifier_in_enhancedForControl4197); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            Identifier386_tree = (Object)adaptor.create(Identifier386);
-            adaptor.addChild(root_0, Identifier386_tree);
+            Identifier384_tree = (Object)adaptor.create(Identifier384);
+            adaptor.addChild(root_0, Identifier384_tree);
             }
-            char_literal387=(Token)match(input,75,FOLLOW_75_in_enhancedForControl4185); if (state.failed) return retval;
+            char_literal385=(Token)match(input,75,FOLLOW_75_in_enhancedForControl4199); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal387_tree = (Object)adaptor.create(char_literal387);
-            adaptor.addChild(root_0, char_literal387_tree);
+            char_literal385_tree = (Object)adaptor.create(char_literal385);
+            adaptor.addChild(root_0, char_literal385_tree);
             }
-            pushFollow(FOLLOW_expression_in_enhancedForControl4187);
-            expression388=expression();
+            pushFollow(FOLLOW_expression_in_enhancedForControl4201);
+            expression386=expression();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression388.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression386.getTree());
 
             }
 
@@ -11892,30 +11908,30 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "forUpdate"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:816:1: forUpdate : expressionList ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:821:1: forUpdate : expressionList ;
     public final JavaParser.forUpdate_return forUpdate() throws RecognitionException {
         JavaParser.forUpdate_return retval = new JavaParser.forUpdate_return();
         retval.start = input.LT(1);
         int forUpdate_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.expressionList_return expressionList389 = null;
+        JavaParser.expressionList_return expressionList387 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 100) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:817:5: ( expressionList )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:817:9: expressionList
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:822:5: ( expressionList )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:822:9: expressionList
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_expressionList_in_forUpdate4206);
-            expressionList389=expressionList();
+            pushFollow(FOLLOW_expressionList_in_forUpdate4220);
+            expressionList387=expressionList();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, expressionList389.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, expressionList387.getTree());
 
             }
 
@@ -11946,43 +11962,43 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "parExpression"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:822:1: parExpression : '(' expression ')' ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:827:1: parExpression : '(' expression ')' ;
     public final JavaParser.parExpression_return parExpression() throws RecognitionException {
         JavaParser.parExpression_return retval = new JavaParser.parExpression_return();
         retval.start = input.LT(1);
         int parExpression_StartIndex = input.index();
         Object root_0 = null;
 
+        Token char_literal388=null;
         Token char_literal390=null;
-        Token char_literal392=null;
-        JavaParser.expression_return expression391 = null;
+        JavaParser.expression_return expression389 = null;
 
 
+        Object char_literal388_tree=null;
         Object char_literal390_tree=null;
-        Object char_literal392_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 101) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:823:5: ( '(' expression ')' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:823:9: '(' expression ')'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:828:5: ( '(' expression ')' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:828:9: '(' expression ')'
             {
             root_0 = (Object)adaptor.nil();
 
-            char_literal390=(Token)match(input,66,FOLLOW_66_in_parExpression4227); if (state.failed) return retval;
+            char_literal388=(Token)match(input,66,FOLLOW_66_in_parExpression4241); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal390_tree = (Object)adaptor.create(char_literal390);
-            adaptor.addChild(root_0, char_literal390_tree);
+            char_literal388_tree = (Object)adaptor.create(char_literal388);
+            adaptor.addChild(root_0, char_literal388_tree);
             }
-            pushFollow(FOLLOW_expression_in_parExpression4229);
-            expression391=expression();
+            pushFollow(FOLLOW_expression_in_parExpression4243);
+            expression389=expression();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression391.getTree());
-            char_literal392=(Token)match(input,67,FOLLOW_67_in_parExpression4231); if (state.failed) return retval;
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression389.getTree());
+            char_literal390=(Token)match(input,67,FOLLOW_67_in_parExpression4245); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal392_tree = (Object)adaptor.create(char_literal392);
-            adaptor.addChild(root_0, char_literal392_tree);
+            char_literal390_tree = (Object)adaptor.create(char_literal390);
+            adaptor.addChild(root_0, char_literal390_tree);
             }
 
             }
@@ -12014,35 +12030,35 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "expressionList"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:826:1: expressionList : expression ( ',' expression )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:831:1: expressionList : expression ( ',' expression )* ;
     public final JavaParser.expressionList_return expressionList() throws RecognitionException {
         JavaParser.expressionList_return retval = new JavaParser.expressionList_return();
         retval.start = input.LT(1);
         int expressionList_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal394=null;
+        Token char_literal392=null;
+        JavaParser.expression_return expression391 = null;
+
         JavaParser.expression_return expression393 = null;
 
-        JavaParser.expression_return expression395 = null;
 
-
-        Object char_literal394_tree=null;
+        Object char_literal392_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 102) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:827:5: ( expression ( ',' expression )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:827:9: expression ( ',' expression )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:832:5: ( expression ( ',' expression )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:832:9: expression ( ',' expression )*
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_expression_in_expressionList4254);
-            expression393=expression();
+            pushFollow(FOLLOW_expression_in_expressionList4268);
+            expression391=expression();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression393.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:827:20: ( ',' expression )*
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression391.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:832:20: ( ',' expression )*
             loop125:
             do {
                 int alt125=2;
@@ -12055,19 +12071,19 @@ public class JavaParser extends Parser {
 
                 switch (alt125) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:827:21: ',' expression
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:832:21: ',' expression
             	    {
-            	    char_literal394=(Token)match(input,41,FOLLOW_41_in_expressionList4257); if (state.failed) return retval;
+            	    char_literal392=(Token)match(input,41,FOLLOW_41_in_expressionList4271); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal394_tree = (Object)adaptor.create(char_literal394);
-            	    adaptor.addChild(root_0, char_literal394_tree);
+            	    char_literal392_tree = (Object)adaptor.create(char_literal392);
+            	    adaptor.addChild(root_0, char_literal392_tree);
             	    }
-            	    pushFollow(FOLLOW_expression_in_expressionList4259);
-            	    expression395=expression();
+            	    pushFollow(FOLLOW_expression_in_expressionList4273);
+            	    expression393=expression();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression395.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression393.getTree());
 
             	    }
             	    break;
@@ -12107,30 +12123,30 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "statementExpression"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:830:1: statementExpression : expression ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:835:1: statementExpression : expression ;
     public final JavaParser.statementExpression_return statementExpression() throws RecognitionException {
         JavaParser.statementExpression_return retval = new JavaParser.statementExpression_return();
         retval.start = input.LT(1);
         int statementExpression_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.expression_return expression396 = null;
+        JavaParser.expression_return expression394 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 103) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:831:5: ( expression )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:831:9: expression
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:836:5: ( expression )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:836:9: expression
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_expression_in_statementExpression4280);
-            expression396=expression();
+            pushFollow(FOLLOW_expression_in_statementExpression4294);
+            expression394=expression();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression396.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression394.getTree());
 
             }
 
@@ -12161,30 +12177,30 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "constantExpression"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:834:1: constantExpression : expression ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:839:1: constantExpression : expression ;
     public final JavaParser.constantExpression_return constantExpression() throws RecognitionException {
         JavaParser.constantExpression_return retval = new JavaParser.constantExpression_return();
         retval.start = input.LT(1);
         int constantExpression_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.expression_return expression397 = null;
+        JavaParser.expression_return expression395 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 104) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:835:5: ( expression )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:835:9: expression
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:840:5: ( expression )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:840:9: expression
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_expression_in_constantExpression4303);
-            expression397=expression();
+            pushFollow(FOLLOW_expression_in_constantExpression4317);
+            expression395=expression();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression397.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression395.getTree());
 
             }
 
@@ -12215,53 +12231,53 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "expression"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:838:1: expression : conditionalExpression ( assignmentOperator expression )? ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:843:1: expression : conditionalExpression ( assignmentOperator expression )? ;
     public final JavaParser.expression_return expression() throws RecognitionException {
         JavaParser.expression_return retval = new JavaParser.expression_return();
         retval.start = input.LT(1);
         int expression_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.conditionalExpression_return conditionalExpression398 = null;
+        JavaParser.conditionalExpression_return conditionalExpression396 = null;
 
-        JavaParser.assignmentOperator_return assignmentOperator399 = null;
+        JavaParser.assignmentOperator_return assignmentOperator397 = null;
 
-        JavaParser.expression_return expression400 = null;
+        JavaParser.expression_return expression398 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 105) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:839:5: ( conditionalExpression ( assignmentOperator expression )? )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:839:9: conditionalExpression ( assignmentOperator expression )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:844:5: ( conditionalExpression ( assignmentOperator expression )? )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:844:9: conditionalExpression ( assignmentOperator expression )?
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_conditionalExpression_in_expression4326);
-            conditionalExpression398=conditionalExpression();
+            pushFollow(FOLLOW_conditionalExpression_in_expression4340);
+            conditionalExpression396=conditionalExpression();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, conditionalExpression398.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:839:31: ( assignmentOperator expression )?
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, conditionalExpression396.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:844:31: ( assignmentOperator expression )?
             int alt126=2;
             alt126 = dfa126.predict(input);
             switch (alt126) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:839:32: assignmentOperator expression
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:844:32: assignmentOperator expression
                     {
-                    pushFollow(FOLLOW_assignmentOperator_in_expression4329);
-                    assignmentOperator399=assignmentOperator();
+                    pushFollow(FOLLOW_assignmentOperator_in_expression4343);
+                    assignmentOperator397=assignmentOperator();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, assignmentOperator399.getTree());
-                    pushFollow(FOLLOW_expression_in_expression4331);
-                    expression400=expression();
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, assignmentOperator397.getTree());
+                    pushFollow(FOLLOW_expression_in_expression4345);
+                    expression398=expression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression400.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression398.getTree());
 
                     }
                     break;
@@ -12298,7 +12314,7 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "assignmentOperator"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:842:1: assignmentOperator : ( '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '%=' | ( '<' '<' '=' )=>t1= '<' t2= '<' t3= '=' {...}? | ( '>' '>' '>' '=' )=>t1= '>' t2= '>' t3= '>' t4= '=' {...}? | ( '>' '>' '=' )=>t1= '>' t2= '>' t3= '=' {...}?);
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:847:1: assignmentOperator : ( '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '%=' | ( '<' '<' '=' )=>t1= '<' t2= '<' t3= '=' {...}? | ( '>' '>' '>' '=' )=>t1= '>' t2= '>' t3= '>' t4= '=' {...}? | ( '>' '>' '=' )=>t1= '>' t2= '>' t3= '=' {...}?);
     public final JavaParser.assignmentOperator_return assignmentOperator() throws RecognitionException {
         JavaParser.assignmentOperator_return retval = new JavaParser.assignmentOperator_return();
         retval.start = input.LT(1);
@@ -12309,55 +12325,81 @@ public class JavaParser extends Parser {
         Token t2=null;
         Token t3=null;
         Token t4=null;
-        Token char_literal401=null;
+        Token char_literal399=null;
+        Token string_literal400=null;
+        Token string_literal401=null;
         Token string_literal402=null;
         Token string_literal403=null;
         Token string_literal404=null;
         Token string_literal405=null;
         Token string_literal406=null;
         Token string_literal407=null;
-        Token string_literal408=null;
-        Token string_literal409=null;
 
         Object t1_tree=null;
         Object t2_tree=null;
         Object t3_tree=null;
         Object t4_tree=null;
-        Object char_literal401_tree=null;
+        Object char_literal399_tree=null;
+        Object string_literal400_tree=null;
+        Object string_literal401_tree=null;
         Object string_literal402_tree=null;
         Object string_literal403_tree=null;
         Object string_literal404_tree=null;
         Object string_literal405_tree=null;
         Object string_literal406_tree=null;
         Object string_literal407_tree=null;
-        Object string_literal408_tree=null;
-        Object string_literal409_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 106) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:843:5: ( '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '%=' | ( '<' '<' '=' )=>t1= '<' t2= '<' t3= '=' {...}? | ( '>' '>' '>' '=' )=>t1= '>' t2= '>' t3= '>' t4= '=' {...}? | ( '>' '>' '=' )=>t1= '>' t2= '>' t3= '=' {...}?)
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:848:5: ( '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '%=' | ( '<' '<' '=' )=>t1= '<' t2= '<' t3= '=' {...}? | ( '>' '>' '>' '=' )=>t1= '>' t2= '>' t3= '>' t4= '=' {...}? | ( '>' '>' '=' )=>t1= '>' t2= '>' t3= '=' {...}?)
             int alt127=12;
             alt127 = dfa127.predict(input);
             switch (alt127) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:843:9: '='
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:848:9: '='
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal401=(Token)match(input,51,FOLLOW_51_in_assignmentOperator4356); if (state.failed) return retval;
+                    char_literal399=(Token)match(input,51,FOLLOW_51_in_assignmentOperator4370); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal401_tree = (Object)adaptor.create(char_literal401);
-                    adaptor.addChild(root_0, char_literal401_tree);
+                    char_literal399_tree = (Object)adaptor.create(char_literal399);
+                    adaptor.addChild(root_0, char_literal399_tree);
                     }
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:844:9: '+='
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:849:9: '+='
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal402=(Token)match(input,90,FOLLOW_90_in_assignmentOperator4366); if (state.failed) return retval;
+                    string_literal400=(Token)match(input,90,FOLLOW_90_in_assignmentOperator4380); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) {
+                    string_literal400_tree = (Object)adaptor.create(string_literal400);
+                    adaptor.addChild(root_0, string_literal400_tree);
+                    }
+
+                    }
+                    break;
+                case 3 :
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:850:9: '-='
+                    {
+                    root_0 = (Object)adaptor.nil();
+
+                    string_literal401=(Token)match(input,91,FOLLOW_91_in_assignmentOperator4390); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) {
+                    string_literal401_tree = (Object)adaptor.create(string_literal401);
+                    adaptor.addChild(root_0, string_literal401_tree);
+                    }
+
+                    }
+                    break;
+                case 4 :
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:851:9: '*='
+                    {
+                    root_0 = (Object)adaptor.nil();
+
+                    string_literal402=(Token)match(input,92,FOLLOW_92_in_assignmentOperator4400); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     string_literal402_tree = (Object)adaptor.create(string_literal402);
                     adaptor.addChild(root_0, string_literal402_tree);
@@ -12365,12 +12407,12 @@ public class JavaParser extends Parser {
 
                     }
                     break;
-                case 3 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:845:9: '-='
+                case 5 :
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:852:9: '/='
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal403=(Token)match(input,91,FOLLOW_91_in_assignmentOperator4376); if (state.failed) return retval;
+                    string_literal403=(Token)match(input,93,FOLLOW_93_in_assignmentOperator4410); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     string_literal403_tree = (Object)adaptor.create(string_literal403);
                     adaptor.addChild(root_0, string_literal403_tree);
@@ -12378,12 +12420,12 @@ public class JavaParser extends Parser {
 
                     }
                     break;
-                case 4 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:846:9: '*='
+                case 6 :
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:853:9: '&='
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal404=(Token)match(input,92,FOLLOW_92_in_assignmentOperator4386); if (state.failed) return retval;
+                    string_literal404=(Token)match(input,94,FOLLOW_94_in_assignmentOperator4420); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     string_literal404_tree = (Object)adaptor.create(string_literal404);
                     adaptor.addChild(root_0, string_literal404_tree);
@@ -12391,12 +12433,12 @@ public class JavaParser extends Parser {
 
                     }
                     break;
-                case 5 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:847:9: '/='
+                case 7 :
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:854:9: '|='
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal405=(Token)match(input,93,FOLLOW_93_in_assignmentOperator4396); if (state.failed) return retval;
+                    string_literal405=(Token)match(input,95,FOLLOW_95_in_assignmentOperator4430); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     string_literal405_tree = (Object)adaptor.create(string_literal405);
                     adaptor.addChild(root_0, string_literal405_tree);
@@ -12404,12 +12446,12 @@ public class JavaParser extends Parser {
 
                     }
                     break;
-                case 6 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:848:9: '&='
+                case 8 :
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:855:9: '^='
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal406=(Token)match(input,94,FOLLOW_94_in_assignmentOperator4406); if (state.failed) return retval;
+                    string_literal406=(Token)match(input,96,FOLLOW_96_in_assignmentOperator4440); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     string_literal406_tree = (Object)adaptor.create(string_literal406);
                     adaptor.addChild(root_0, string_literal406_tree);
@@ -12417,12 +12459,12 @@ public class JavaParser extends Parser {
 
                     }
                     break;
-                case 7 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:849:9: '|='
+                case 9 :
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:856:9: '%='
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal407=(Token)match(input,95,FOLLOW_95_in_assignmentOperator4416); if (state.failed) return retval;
+                    string_literal407=(Token)match(input,97,FOLLOW_97_in_assignmentOperator4450); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     string_literal407_tree = (Object)adaptor.create(string_literal407);
                     adaptor.addChild(root_0, string_literal407_tree);
@@ -12430,48 +12472,22 @@ public class JavaParser extends Parser {
 
                     }
                     break;
-                case 8 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:850:9: '^='
-                    {
-                    root_0 = (Object)adaptor.nil();
-
-                    string_literal408=(Token)match(input,96,FOLLOW_96_in_assignmentOperator4426); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    string_literal408_tree = (Object)adaptor.create(string_literal408);
-                    adaptor.addChild(root_0, string_literal408_tree);
-                    }
-
-                    }
-                    break;
-                case 9 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:851:9: '%='
-                    {
-                    root_0 = (Object)adaptor.nil();
-
-                    string_literal409=(Token)match(input,97,FOLLOW_97_in_assignmentOperator4436); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    string_literal409_tree = (Object)adaptor.create(string_literal409);
-                    adaptor.addChild(root_0, string_literal409_tree);
-                    }
-
-                    }
-                    break;
                 case 10 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:852:9: ( '<' '<' '=' )=>t1= '<' t2= '<' t3= '=' {...}?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:857:9: ( '<' '<' '=' )=>t1= '<' t2= '<' t3= '=' {...}?
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    t1=(Token)match(input,40,FOLLOW_40_in_assignmentOperator4457); if (state.failed) return retval;
+                    t1=(Token)match(input,40,FOLLOW_40_in_assignmentOperator4471); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     t1_tree = (Object)adaptor.create(t1);
                     adaptor.addChild(root_0, t1_tree);
                     }
-                    t2=(Token)match(input,40,FOLLOW_40_in_assignmentOperator4461); if (state.failed) return retval;
+                    t2=(Token)match(input,40,FOLLOW_40_in_assignmentOperator4475); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     t2_tree = (Object)adaptor.create(t2);
                     adaptor.addChild(root_0, t2_tree);
                     }
-                    t3=(Token)match(input,51,FOLLOW_51_in_assignmentOperator4465); if (state.failed) return retval;
+                    t3=(Token)match(input,51,FOLLOW_51_in_assignmentOperator4479); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     t3_tree = (Object)adaptor.create(t3);
                     adaptor.addChild(root_0, t3_tree);
@@ -12487,26 +12503,26 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 11 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:857:9: ( '>' '>' '>' '=' )=>t1= '>' t2= '>' t3= '>' t4= '=' {...}?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:862:9: ( '>' '>' '>' '=' )=>t1= '>' t2= '>' t3= '>' t4= '=' {...}?
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    t1=(Token)match(input,42,FOLLOW_42_in_assignmentOperator4499); if (state.failed) return retval;
+                    t1=(Token)match(input,42,FOLLOW_42_in_assignmentOperator4513); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     t1_tree = (Object)adaptor.create(t1);
                     adaptor.addChild(root_0, t1_tree);
                     }
-                    t2=(Token)match(input,42,FOLLOW_42_in_assignmentOperator4503); if (state.failed) return retval;
+                    t2=(Token)match(input,42,FOLLOW_42_in_assignmentOperator4517); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     t2_tree = (Object)adaptor.create(t2);
                     adaptor.addChild(root_0, t2_tree);
                     }
-                    t3=(Token)match(input,42,FOLLOW_42_in_assignmentOperator4507); if (state.failed) return retval;
+                    t3=(Token)match(input,42,FOLLOW_42_in_assignmentOperator4521); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     t3_tree = (Object)adaptor.create(t3);
                     adaptor.addChild(root_0, t3_tree);
                     }
-                    t4=(Token)match(input,51,FOLLOW_51_in_assignmentOperator4511); if (state.failed) return retval;
+                    t4=(Token)match(input,51,FOLLOW_51_in_assignmentOperator4525); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     t4_tree = (Object)adaptor.create(t4);
                     adaptor.addChild(root_0, t4_tree);
@@ -12524,21 +12540,21 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 12 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:864:9: ( '>' '>' '=' )=>t1= '>' t2= '>' t3= '=' {...}?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:869:9: ( '>' '>' '=' )=>t1= '>' t2= '>' t3= '=' {...}?
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    t1=(Token)match(input,42,FOLLOW_42_in_assignmentOperator4542); if (state.failed) return retval;
+                    t1=(Token)match(input,42,FOLLOW_42_in_assignmentOperator4556); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     t1_tree = (Object)adaptor.create(t1);
                     adaptor.addChild(root_0, t1_tree);
                     }
-                    t2=(Token)match(input,42,FOLLOW_42_in_assignmentOperator4546); if (state.failed) return retval;
+                    t2=(Token)match(input,42,FOLLOW_42_in_assignmentOperator4560); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     t2_tree = (Object)adaptor.create(t2);
                     adaptor.addChild(root_0, t2_tree);
                     }
-                    t3=(Token)match(input,51,FOLLOW_51_in_assignmentOperator4550); if (state.failed) return retval;
+                    t3=(Token)match(input,51,FOLLOW_51_in_assignmentOperator4564); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     t3_tree = (Object)adaptor.create(t3);
                     adaptor.addChild(root_0, t3_tree);
@@ -12582,39 +12598,39 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "conditionalExpression"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:871:1: conditionalExpression : conditionalOrExpression ( '?' expression ':' expression )? ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:876:1: conditionalExpression : conditionalOrExpression ( '?' expression ':' expression )? ;
     public final JavaParser.conditionalExpression_return conditionalExpression() throws RecognitionException {
         JavaParser.conditionalExpression_return retval = new JavaParser.conditionalExpression_return();
         retval.start = input.LT(1);
         int conditionalExpression_StartIndex = input.index();
         Object root_0 = null;
 
+        Token char_literal409=null;
         Token char_literal411=null;
-        Token char_literal413=null;
-        JavaParser.conditionalOrExpression_return conditionalOrExpression410 = null;
+        JavaParser.conditionalOrExpression_return conditionalOrExpression408 = null;
+
+        JavaParser.expression_return expression410 = null;
 
         JavaParser.expression_return expression412 = null;
 
-        JavaParser.expression_return expression414 = null;
 
-
+        Object char_literal409_tree=null;
         Object char_literal411_tree=null;
-        Object char_literal413_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 107) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:872:5: ( conditionalOrExpression ( '?' expression ':' expression )? )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:872:9: conditionalOrExpression ( '?' expression ':' expression )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:877:5: ( conditionalOrExpression ( '?' expression ':' expression )? )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:877:9: conditionalOrExpression ( '?' expression ':' expression )?
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_conditionalOrExpression_in_conditionalExpression4579);
-            conditionalOrExpression410=conditionalOrExpression();
+            pushFollow(FOLLOW_conditionalOrExpression_in_conditionalExpression4593);
+            conditionalOrExpression408=conditionalOrExpression();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, conditionalOrExpression410.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:872:33: ( '?' expression ':' expression )?
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, conditionalOrExpression408.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:877:33: ( '?' expression ':' expression )?
             int alt128=2;
             int LA128_0 = input.LA(1);
 
@@ -12623,30 +12639,30 @@ public class JavaParser extends Parser {
             }
             switch (alt128) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:872:35: '?' expression ':' expression
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:877:35: '?' expression ':' expression
                     {
-                    char_literal411=(Token)match(input,64,FOLLOW_64_in_conditionalExpression4583); if (state.failed) return retval;
+                    char_literal409=(Token)match(input,64,FOLLOW_64_in_conditionalExpression4597); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) {
+                    char_literal409_tree = (Object)adaptor.create(char_literal409);
+                    adaptor.addChild(root_0, char_literal409_tree);
+                    }
+                    pushFollow(FOLLOW_expression_in_conditionalExpression4599);
+                    expression410=expression();
+
+                    state._fsp--;
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression410.getTree());
+                    char_literal411=(Token)match(input,75,FOLLOW_75_in_conditionalExpression4601); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal411_tree = (Object)adaptor.create(char_literal411);
                     adaptor.addChild(root_0, char_literal411_tree);
                     }
-                    pushFollow(FOLLOW_expression_in_conditionalExpression4585);
+                    pushFollow(FOLLOW_expression_in_conditionalExpression4603);
                     expression412=expression();
 
                     state._fsp--;
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, expression412.getTree());
-                    char_literal413=(Token)match(input,75,FOLLOW_75_in_conditionalExpression4587); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    char_literal413_tree = (Object)adaptor.create(char_literal413);
-                    adaptor.addChild(root_0, char_literal413_tree);
-                    }
-                    pushFollow(FOLLOW_expression_in_conditionalExpression4589);
-                    expression414=expression();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression414.getTree());
 
                     }
                     break;
@@ -12683,35 +12699,35 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "conditionalOrExpression"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:875:1: conditionalOrExpression : conditionalAndExpression ( '||' conditionalAndExpression )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:880:1: conditionalOrExpression : conditionalAndExpression ( '||' conditionalAndExpression )* ;
     public final JavaParser.conditionalOrExpression_return conditionalOrExpression() throws RecognitionException {
         JavaParser.conditionalOrExpression_return retval = new JavaParser.conditionalOrExpression_return();
         retval.start = input.LT(1);
         int conditionalOrExpression_StartIndex = input.index();
         Object root_0 = null;
 
-        Token string_literal416=null;
+        Token string_literal414=null;
+        JavaParser.conditionalAndExpression_return conditionalAndExpression413 = null;
+
         JavaParser.conditionalAndExpression_return conditionalAndExpression415 = null;
 
-        JavaParser.conditionalAndExpression_return conditionalAndExpression417 = null;
 
-
-        Object string_literal416_tree=null;
+        Object string_literal414_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 108) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:876:5: ( conditionalAndExpression ( '||' conditionalAndExpression )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:876:9: conditionalAndExpression ( '||' conditionalAndExpression )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:881:5: ( conditionalAndExpression ( '||' conditionalAndExpression )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:881:9: conditionalAndExpression ( '||' conditionalAndExpression )*
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_conditionalAndExpression_in_conditionalOrExpression4611);
-            conditionalAndExpression415=conditionalAndExpression();
+            pushFollow(FOLLOW_conditionalAndExpression_in_conditionalOrExpression4625);
+            conditionalAndExpression413=conditionalAndExpression();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, conditionalAndExpression415.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:876:34: ( '||' conditionalAndExpression )*
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, conditionalAndExpression413.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:881:34: ( '||' conditionalAndExpression )*
             loop129:
             do {
                 int alt129=2;
@@ -12724,19 +12740,19 @@ public class JavaParser extends Parser {
 
                 switch (alt129) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:876:36: '||' conditionalAndExpression
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:881:36: '||' conditionalAndExpression
             	    {
-            	    string_literal416=(Token)match(input,98,FOLLOW_98_in_conditionalOrExpression4615); if (state.failed) return retval;
+            	    string_literal414=(Token)match(input,98,FOLLOW_98_in_conditionalOrExpression4629); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    string_literal416_tree = (Object)adaptor.create(string_literal416);
-            	    adaptor.addChild(root_0, string_literal416_tree);
+            	    string_literal414_tree = (Object)adaptor.create(string_literal414);
+            	    adaptor.addChild(root_0, string_literal414_tree);
             	    }
-            	    pushFollow(FOLLOW_conditionalAndExpression_in_conditionalOrExpression4617);
-            	    conditionalAndExpression417=conditionalAndExpression();
+            	    pushFollow(FOLLOW_conditionalAndExpression_in_conditionalOrExpression4631);
+            	    conditionalAndExpression415=conditionalAndExpression();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, conditionalAndExpression417.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, conditionalAndExpression415.getTree());
 
             	    }
             	    break;
@@ -12776,35 +12792,35 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "conditionalAndExpression"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:879:1: conditionalAndExpression : inclusiveOrExpression ( '&&' inclusiveOrExpression )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:884:1: conditionalAndExpression : inclusiveOrExpression ( '&&' inclusiveOrExpression )* ;
     public final JavaParser.conditionalAndExpression_return conditionalAndExpression() throws RecognitionException {
         JavaParser.conditionalAndExpression_return retval = new JavaParser.conditionalAndExpression_return();
         retval.start = input.LT(1);
         int conditionalAndExpression_StartIndex = input.index();
         Object root_0 = null;
 
-        Token string_literal419=null;
+        Token string_literal417=null;
+        JavaParser.inclusiveOrExpression_return inclusiveOrExpression416 = null;
+
         JavaParser.inclusiveOrExpression_return inclusiveOrExpression418 = null;
 
-        JavaParser.inclusiveOrExpression_return inclusiveOrExpression420 = null;
 
-
-        Object string_literal419_tree=null;
+        Object string_literal417_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 109) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:880:5: ( inclusiveOrExpression ( '&&' inclusiveOrExpression )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:880:9: inclusiveOrExpression ( '&&' inclusiveOrExpression )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:885:5: ( inclusiveOrExpression ( '&&' inclusiveOrExpression )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:885:9: inclusiveOrExpression ( '&&' inclusiveOrExpression )*
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_inclusiveOrExpression_in_conditionalAndExpression4639);
-            inclusiveOrExpression418=inclusiveOrExpression();
+            pushFollow(FOLLOW_inclusiveOrExpression_in_conditionalAndExpression4653);
+            inclusiveOrExpression416=inclusiveOrExpression();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, inclusiveOrExpression418.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:880:31: ( '&&' inclusiveOrExpression )*
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, inclusiveOrExpression416.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:885:31: ( '&&' inclusiveOrExpression )*
             loop130:
             do {
                 int alt130=2;
@@ -12817,19 +12833,19 @@ public class JavaParser extends Parser {
 
                 switch (alt130) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:880:33: '&&' inclusiveOrExpression
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:885:33: '&&' inclusiveOrExpression
             	    {
-            	    string_literal419=(Token)match(input,99,FOLLOW_99_in_conditionalAndExpression4643); if (state.failed) return retval;
+            	    string_literal417=(Token)match(input,99,FOLLOW_99_in_conditionalAndExpression4657); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    string_literal419_tree = (Object)adaptor.create(string_literal419);
-            	    adaptor.addChild(root_0, string_literal419_tree);
+            	    string_literal417_tree = (Object)adaptor.create(string_literal417);
+            	    adaptor.addChild(root_0, string_literal417_tree);
             	    }
-            	    pushFollow(FOLLOW_inclusiveOrExpression_in_conditionalAndExpression4645);
-            	    inclusiveOrExpression420=inclusiveOrExpression();
+            	    pushFollow(FOLLOW_inclusiveOrExpression_in_conditionalAndExpression4659);
+            	    inclusiveOrExpression418=inclusiveOrExpression();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, inclusiveOrExpression420.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, inclusiveOrExpression418.getTree());
 
             	    }
             	    break;
@@ -12869,35 +12885,35 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "inclusiveOrExpression"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:883:1: inclusiveOrExpression : exclusiveOrExpression ( '|' exclusiveOrExpression )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:888:1: inclusiveOrExpression : exclusiveOrExpression ( '|' exclusiveOrExpression )* ;
     public final JavaParser.inclusiveOrExpression_return inclusiveOrExpression() throws RecognitionException {
         JavaParser.inclusiveOrExpression_return retval = new JavaParser.inclusiveOrExpression_return();
         retval.start = input.LT(1);
         int inclusiveOrExpression_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal422=null;
+        Token char_literal420=null;
+        JavaParser.exclusiveOrExpression_return exclusiveOrExpression419 = null;
+
         JavaParser.exclusiveOrExpression_return exclusiveOrExpression421 = null;
 
-        JavaParser.exclusiveOrExpression_return exclusiveOrExpression423 = null;
 
-
-        Object char_literal422_tree=null;
+        Object char_literal420_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 110) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:884:5: ( exclusiveOrExpression ( '|' exclusiveOrExpression )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:884:9: exclusiveOrExpression ( '|' exclusiveOrExpression )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:889:5: ( exclusiveOrExpression ( '|' exclusiveOrExpression )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:889:9: exclusiveOrExpression ( '|' exclusiveOrExpression )*
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_exclusiveOrExpression_in_inclusiveOrExpression4667);
-            exclusiveOrExpression421=exclusiveOrExpression();
+            pushFollow(FOLLOW_exclusiveOrExpression_in_inclusiveOrExpression4681);
+            exclusiveOrExpression419=exclusiveOrExpression();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, exclusiveOrExpression421.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:884:31: ( '|' exclusiveOrExpression )*
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, exclusiveOrExpression419.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:889:31: ( '|' exclusiveOrExpression )*
             loop131:
             do {
                 int alt131=2;
@@ -12910,19 +12926,19 @@ public class JavaParser extends Parser {
 
                 switch (alt131) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:884:33: '|' exclusiveOrExpression
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:889:33: '|' exclusiveOrExpression
             	    {
-            	    char_literal422=(Token)match(input,100,FOLLOW_100_in_inclusiveOrExpression4671); if (state.failed) return retval;
+            	    char_literal420=(Token)match(input,100,FOLLOW_100_in_inclusiveOrExpression4685); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal422_tree = (Object)adaptor.create(char_literal422);
-            	    adaptor.addChild(root_0, char_literal422_tree);
+            	    char_literal420_tree = (Object)adaptor.create(char_literal420);
+            	    adaptor.addChild(root_0, char_literal420_tree);
             	    }
-            	    pushFollow(FOLLOW_exclusiveOrExpression_in_inclusiveOrExpression4673);
-            	    exclusiveOrExpression423=exclusiveOrExpression();
+            	    pushFollow(FOLLOW_exclusiveOrExpression_in_inclusiveOrExpression4687);
+            	    exclusiveOrExpression421=exclusiveOrExpression();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, exclusiveOrExpression423.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, exclusiveOrExpression421.getTree());
 
             	    }
             	    break;
@@ -12962,35 +12978,35 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "exclusiveOrExpression"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:887:1: exclusiveOrExpression : andExpression ( '^' andExpression )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:892:1: exclusiveOrExpression : andExpression ( '^' andExpression )* ;
     public final JavaParser.exclusiveOrExpression_return exclusiveOrExpression() throws RecognitionException {
         JavaParser.exclusiveOrExpression_return retval = new JavaParser.exclusiveOrExpression_return();
         retval.start = input.LT(1);
         int exclusiveOrExpression_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal425=null;
+        Token char_literal423=null;
+        JavaParser.andExpression_return andExpression422 = null;
+
         JavaParser.andExpression_return andExpression424 = null;
 
-        JavaParser.andExpression_return andExpression426 = null;
 
-
-        Object char_literal425_tree=null;
+        Object char_literal423_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 111) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:888:5: ( andExpression ( '^' andExpression )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:888:9: andExpression ( '^' andExpression )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:893:5: ( andExpression ( '^' andExpression )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:893:9: andExpression ( '^' andExpression )*
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_andExpression_in_exclusiveOrExpression4695);
-            andExpression424=andExpression();
+            pushFollow(FOLLOW_andExpression_in_exclusiveOrExpression4709);
+            andExpression422=andExpression();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, andExpression424.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:888:23: ( '^' andExpression )*
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, andExpression422.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:893:23: ( '^' andExpression )*
             loop132:
             do {
                 int alt132=2;
@@ -13003,19 +13019,19 @@ public class JavaParser extends Parser {
 
                 switch (alt132) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:888:25: '^' andExpression
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:893:25: '^' andExpression
             	    {
-            	    char_literal425=(Token)match(input,101,FOLLOW_101_in_exclusiveOrExpression4699); if (state.failed) return retval;
+            	    char_literal423=(Token)match(input,101,FOLLOW_101_in_exclusiveOrExpression4713); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal425_tree = (Object)adaptor.create(char_literal425);
-            	    adaptor.addChild(root_0, char_literal425_tree);
+            	    char_literal423_tree = (Object)adaptor.create(char_literal423);
+            	    adaptor.addChild(root_0, char_literal423_tree);
             	    }
-            	    pushFollow(FOLLOW_andExpression_in_exclusiveOrExpression4701);
-            	    andExpression426=andExpression();
+            	    pushFollow(FOLLOW_andExpression_in_exclusiveOrExpression4715);
+            	    andExpression424=andExpression();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, andExpression426.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, andExpression424.getTree());
 
             	    }
             	    break;
@@ -13055,35 +13071,35 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "andExpression"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:891:1: andExpression : equalityExpression ( '&' equalityExpression )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:896:1: andExpression : equalityExpression ( '&' equalityExpression )* ;
     public final JavaParser.andExpression_return andExpression() throws RecognitionException {
         JavaParser.andExpression_return retval = new JavaParser.andExpression_return();
         retval.start = input.LT(1);
         int andExpression_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal428=null;
+        Token char_literal426=null;
+        JavaParser.equalityExpression_return equalityExpression425 = null;
+
         JavaParser.equalityExpression_return equalityExpression427 = null;
 
-        JavaParser.equalityExpression_return equalityExpression429 = null;
 
-
-        Object char_literal428_tree=null;
+        Object char_literal426_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 112) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:892:5: ( equalityExpression ( '&' equalityExpression )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:892:9: equalityExpression ( '&' equalityExpression )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:897:5: ( equalityExpression ( '&' equalityExpression )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:897:9: equalityExpression ( '&' equalityExpression )*
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_equalityExpression_in_andExpression4723);
-            equalityExpression427=equalityExpression();
+            pushFollow(FOLLOW_equalityExpression_in_andExpression4737);
+            equalityExpression425=equalityExpression();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, equalityExpression427.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:892:28: ( '&' equalityExpression )*
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, equalityExpression425.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:897:28: ( '&' equalityExpression )*
             loop133:
             do {
                 int alt133=2;
@@ -13096,19 +13112,19 @@ public class JavaParser extends Parser {
 
                 switch (alt133) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:892:30: '&' equalityExpression
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:897:30: '&' equalityExpression
             	    {
-            	    char_literal428=(Token)match(input,43,FOLLOW_43_in_andExpression4727); if (state.failed) return retval;
+            	    char_literal426=(Token)match(input,43,FOLLOW_43_in_andExpression4741); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal428_tree = (Object)adaptor.create(char_literal428);
-            	    adaptor.addChild(root_0, char_literal428_tree);
+            	    char_literal426_tree = (Object)adaptor.create(char_literal426);
+            	    adaptor.addChild(root_0, char_literal426_tree);
             	    }
-            	    pushFollow(FOLLOW_equalityExpression_in_andExpression4729);
-            	    equalityExpression429=equalityExpression();
+            	    pushFollow(FOLLOW_equalityExpression_in_andExpression4743);
+            	    equalityExpression427=equalityExpression();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, equalityExpression429.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, equalityExpression427.getTree());
 
             	    }
             	    break;
@@ -13148,35 +13164,35 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "equalityExpression"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:895:1: equalityExpression : instanceOfExpression ( ( '==' | '!=' ) instanceOfExpression )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:900:1: equalityExpression : instanceOfExpression ( ( '==' | '!=' ) instanceOfExpression )* ;
     public final JavaParser.equalityExpression_return equalityExpression() throws RecognitionException {
         JavaParser.equalityExpression_return retval = new JavaParser.equalityExpression_return();
         retval.start = input.LT(1);
         int equalityExpression_StartIndex = input.index();
         Object root_0 = null;
 
-        Token set431=null;
+        Token set429=null;
+        JavaParser.instanceOfExpression_return instanceOfExpression428 = null;
+
         JavaParser.instanceOfExpression_return instanceOfExpression430 = null;
 
-        JavaParser.instanceOfExpression_return instanceOfExpression432 = null;
 
-
-        Object set431_tree=null;
+        Object set429_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 113) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:896:5: ( instanceOfExpression ( ( '==' | '!=' ) instanceOfExpression )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:896:9: instanceOfExpression ( ( '==' | '!=' ) instanceOfExpression )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:901:5: ( instanceOfExpression ( ( '==' | '!=' ) instanceOfExpression )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:901:9: instanceOfExpression ( ( '==' | '!=' ) instanceOfExpression )*
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_instanceOfExpression_in_equalityExpression4751);
-            instanceOfExpression430=instanceOfExpression();
+            pushFollow(FOLLOW_instanceOfExpression_in_equalityExpression4765);
+            instanceOfExpression428=instanceOfExpression();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, instanceOfExpression430.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:896:30: ( ( '==' | '!=' ) instanceOfExpression )*
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, instanceOfExpression428.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:901:30: ( ( '==' | '!=' ) instanceOfExpression )*
             loop134:
             do {
                 int alt134=2;
@@ -13189,12 +13205,12 @@ public class JavaParser extends Parser {
 
                 switch (alt134) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:896:32: ( '==' | '!=' ) instanceOfExpression
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:901:32: ( '==' | '!=' ) instanceOfExpression
             	    {
-            	    set431=(Token)input.LT(1);
+            	    set429=(Token)input.LT(1);
             	    if ( (input.LA(1)>=102 && input.LA(1)<=103) ) {
             	        input.consume();
-            	        if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set431));
+            	        if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set429));
             	        state.errorRecovery=false;state.failed=false;
             	    }
             	    else {
@@ -13203,12 +13219,12 @@ public class JavaParser extends Parser {
             	        throw mse;
             	    }
 
-            	    pushFollow(FOLLOW_instanceOfExpression_in_equalityExpression4763);
-            	    instanceOfExpression432=instanceOfExpression();
+            	    pushFollow(FOLLOW_instanceOfExpression_in_equalityExpression4777);
+            	    instanceOfExpression430=instanceOfExpression();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, instanceOfExpression432.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, instanceOfExpression430.getTree());
 
             	    }
             	    break;
@@ -13248,35 +13264,35 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "instanceOfExpression"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:899:1: instanceOfExpression : relationalExpression ( 'instanceof' type )? ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:904:1: instanceOfExpression : relationalExpression ( 'instanceof' type )? ;
     public final JavaParser.instanceOfExpression_return instanceOfExpression() throws RecognitionException {
         JavaParser.instanceOfExpression_return retval = new JavaParser.instanceOfExpression_return();
         retval.start = input.LT(1);
         int instanceOfExpression_StartIndex = input.index();
         Object root_0 = null;
 
-        Token string_literal434=null;
-        JavaParser.relationalExpression_return relationalExpression433 = null;
+        Token string_literal432=null;
+        JavaParser.relationalExpression_return relationalExpression431 = null;
 
-        JavaParser.type_return type435 = null;
+        JavaParser.type_return type433 = null;
 
 
-        Object string_literal434_tree=null;
+        Object string_literal432_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 114) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:900:5: ( relationalExpression ( 'instanceof' type )? )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:900:9: relationalExpression ( 'instanceof' type )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:905:5: ( relationalExpression ( 'instanceof' type )? )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:905:9: relationalExpression ( 'instanceof' type )?
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_relationalExpression_in_instanceOfExpression4785);
-            relationalExpression433=relationalExpression();
+            pushFollow(FOLLOW_relationalExpression_in_instanceOfExpression4799);
+            relationalExpression431=relationalExpression();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, relationalExpression433.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:900:30: ( 'instanceof' type )?
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, relationalExpression431.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:905:30: ( 'instanceof' type )?
             int alt135=2;
             int LA135_0 = input.LA(1);
 
@@ -13285,19 +13301,19 @@ public class JavaParser extends Parser {
             }
             switch (alt135) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:900:31: 'instanceof' type
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:905:31: 'instanceof' type
                     {
-                    string_literal434=(Token)match(input,104,FOLLOW_104_in_instanceOfExpression4788); if (state.failed) return retval;
+                    string_literal432=(Token)match(input,104,FOLLOW_104_in_instanceOfExpression4802); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal434_tree = (Object)adaptor.create(string_literal434);
-                    adaptor.addChild(root_0, string_literal434_tree);
+                    string_literal432_tree = (Object)adaptor.create(string_literal432);
+                    adaptor.addChild(root_0, string_literal432_tree);
                     }
-                    pushFollow(FOLLOW_type_in_instanceOfExpression4790);
-                    type435=type();
+                    pushFollow(FOLLOW_type_in_instanceOfExpression4804);
+                    type433=type();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, type435.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, type433.getTree());
 
                     }
                     break;
@@ -13334,35 +13350,35 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "relationalExpression"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:903:1: relationalExpression : shiftExpression ( relationalOp shiftExpression )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:908:1: relationalExpression : shiftExpression ( relationalOp shiftExpression )* ;
     public final JavaParser.relationalExpression_return relationalExpression() throws RecognitionException {
         JavaParser.relationalExpression_return retval = new JavaParser.relationalExpression_return();
         retval.start = input.LT(1);
         int relationalExpression_StartIndex = input.index();
         Object root_0 = null;
 
+        JavaParser.shiftExpression_return shiftExpression434 = null;
+
+        JavaParser.relationalOp_return relationalOp435 = null;
+
         JavaParser.shiftExpression_return shiftExpression436 = null;
-
-        JavaParser.relationalOp_return relationalOp437 = null;
-
-        JavaParser.shiftExpression_return shiftExpression438 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 115) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:904:5: ( shiftExpression ( relationalOp shiftExpression )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:904:9: shiftExpression ( relationalOp shiftExpression )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:909:5: ( shiftExpression ( relationalOp shiftExpression )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:909:9: shiftExpression ( relationalOp shiftExpression )*
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_shiftExpression_in_relationalExpression4811);
-            shiftExpression436=shiftExpression();
+            pushFollow(FOLLOW_shiftExpression_in_relationalExpression4825);
+            shiftExpression434=shiftExpression();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, shiftExpression436.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:904:25: ( relationalOp shiftExpression )*
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, shiftExpression434.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:909:25: ( relationalOp shiftExpression )*
             loop136:
             do {
                 int alt136=2;
@@ -13390,20 +13406,20 @@ public class JavaParser extends Parser {
 
                 switch (alt136) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:904:27: relationalOp shiftExpression
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:909:27: relationalOp shiftExpression
             	    {
-            	    pushFollow(FOLLOW_relationalOp_in_relationalExpression4815);
-            	    relationalOp437=relationalOp();
+            	    pushFollow(FOLLOW_relationalOp_in_relationalExpression4829);
+            	    relationalOp435=relationalOp();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, relationalOp437.getTree());
-            	    pushFollow(FOLLOW_shiftExpression_in_relationalExpression4817);
-            	    shiftExpression438=shiftExpression();
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, relationalOp435.getTree());
+            	    pushFollow(FOLLOW_shiftExpression_in_relationalExpression4831);
+            	    shiftExpression436=shiftExpression();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, shiftExpression438.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, shiftExpression436.getTree());
 
             	    }
             	    break;
@@ -13443,7 +13459,7 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "relationalOp"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:907:1: relationalOp : ( ( '<' '=' )=>t1= '<' t2= '=' {...}? | ( '>' '=' )=>t1= '>' t2= '=' {...}? | '<' | '>' );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:912:1: relationalOp : ( ( '<' '=' )=>t1= '<' t2= '=' {...}? | ( '>' '=' )=>t1= '>' t2= '=' {...}? | '<' | '>' );
     public final JavaParser.relationalOp_return relationalOp() throws RecognitionException {
         JavaParser.relationalOp_return retval = new JavaParser.relationalOp_return();
         retval.start = input.LT(1);
@@ -13452,17 +13468,17 @@ public class JavaParser extends Parser {
 
         Token t1=null;
         Token t2=null;
-        Token char_literal439=null;
-        Token char_literal440=null;
+        Token char_literal437=null;
+        Token char_literal438=null;
 
         Object t1_tree=null;
         Object t2_tree=null;
-        Object char_literal439_tree=null;
-        Object char_literal440_tree=null;
+        Object char_literal437_tree=null;
+        Object char_literal438_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 116) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:908:5: ( ( '<' '=' )=>t1= '<' t2= '=' {...}? | ( '>' '=' )=>t1= '>' t2= '=' {...}? | '<' | '>' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:913:5: ( ( '<' '=' )=>t1= '<' t2= '=' {...}? | ( '>' '=' )=>t1= '>' t2= '=' {...}? | '<' | '>' )
             int alt137=4;
             int LA137_0 = input.LA(1);
 
@@ -13509,16 +13525,16 @@ public class JavaParser extends Parser {
             }
             switch (alt137) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:908:9: ( '<' '=' )=>t1= '<' t2= '=' {...}?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:913:9: ( '<' '=' )=>t1= '<' t2= '=' {...}?
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    t1=(Token)match(input,40,FOLLOW_40_in_relationalOp4852); if (state.failed) return retval;
+                    t1=(Token)match(input,40,FOLLOW_40_in_relationalOp4866); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     t1_tree = (Object)adaptor.create(t1);
                     adaptor.addChild(root_0, t1_tree);
                     }
-                    t2=(Token)match(input,51,FOLLOW_51_in_relationalOp4856); if (state.failed) return retval;
+                    t2=(Token)match(input,51,FOLLOW_51_in_relationalOp4870); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     t2_tree = (Object)adaptor.create(t2);
                     adaptor.addChild(root_0, t2_tree);
@@ -13532,16 +13548,16 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:911:9: ( '>' '=' )=>t1= '>' t2= '=' {...}?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:916:9: ( '>' '=' )=>t1= '>' t2= '=' {...}?
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    t1=(Token)match(input,42,FOLLOW_42_in_relationalOp4886); if (state.failed) return retval;
+                    t1=(Token)match(input,42,FOLLOW_42_in_relationalOp4900); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     t1_tree = (Object)adaptor.create(t1);
                     adaptor.addChild(root_0, t1_tree);
                     }
-                    t2=(Token)match(input,51,FOLLOW_51_in_relationalOp4890); if (state.failed) return retval;
+                    t2=(Token)match(input,51,FOLLOW_51_in_relationalOp4904); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     t2_tree = (Object)adaptor.create(t2);
                     adaptor.addChild(root_0, t2_tree);
@@ -13555,27 +13571,27 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:914:9: '<'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:919:9: '<'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal439=(Token)match(input,40,FOLLOW_40_in_relationalOp4911); if (state.failed) return retval;
+                    char_literal437=(Token)match(input,40,FOLLOW_40_in_relationalOp4925); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal439_tree = (Object)adaptor.create(char_literal439);
-                    adaptor.addChild(root_0, char_literal439_tree);
+                    char_literal437_tree = (Object)adaptor.create(char_literal437);
+                    adaptor.addChild(root_0, char_literal437_tree);
                     }
 
                     }
                     break;
                 case 4 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:915:9: '>'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:920:9: '>'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal440=(Token)match(input,42,FOLLOW_42_in_relationalOp4922); if (state.failed) return retval;
+                    char_literal438=(Token)match(input,42,FOLLOW_42_in_relationalOp4936); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal440_tree = (Object)adaptor.create(char_literal440);
-                    adaptor.addChild(root_0, char_literal440_tree);
+                    char_literal438_tree = (Object)adaptor.create(char_literal438);
+                    adaptor.addChild(root_0, char_literal438_tree);
                     }
 
                     }
@@ -13609,35 +13625,35 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "shiftExpression"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:918:1: shiftExpression : additiveExpression ( shiftOp additiveExpression )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:923:1: shiftExpression : additiveExpression ( shiftOp additiveExpression )* ;
     public final JavaParser.shiftExpression_return shiftExpression() throws RecognitionException {
         JavaParser.shiftExpression_return retval = new JavaParser.shiftExpression_return();
         retval.start = input.LT(1);
         int shiftExpression_StartIndex = input.index();
         Object root_0 = null;
 
+        JavaParser.additiveExpression_return additiveExpression439 = null;
+
+        JavaParser.shiftOp_return shiftOp440 = null;
+
         JavaParser.additiveExpression_return additiveExpression441 = null;
-
-        JavaParser.shiftOp_return shiftOp442 = null;
-
-        JavaParser.additiveExpression_return additiveExpression443 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 117) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:919:5: ( additiveExpression ( shiftOp additiveExpression )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:919:9: additiveExpression ( shiftOp additiveExpression )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:924:5: ( additiveExpression ( shiftOp additiveExpression )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:924:9: additiveExpression ( shiftOp additiveExpression )*
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_additiveExpression_in_shiftExpression4942);
-            additiveExpression441=additiveExpression();
+            pushFollow(FOLLOW_additiveExpression_in_shiftExpression4956);
+            additiveExpression439=additiveExpression();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, additiveExpression441.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:919:28: ( shiftOp additiveExpression )*
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, additiveExpression439.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:924:28: ( shiftOp additiveExpression )*
             loop138:
             do {
                 int alt138=2;
@@ -13686,20 +13702,20 @@ public class JavaParser extends Parser {
 
                 switch (alt138) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:919:30: shiftOp additiveExpression
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:924:30: shiftOp additiveExpression
             	    {
-            	    pushFollow(FOLLOW_shiftOp_in_shiftExpression4946);
-            	    shiftOp442=shiftOp();
+            	    pushFollow(FOLLOW_shiftOp_in_shiftExpression4960);
+            	    shiftOp440=shiftOp();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, shiftOp442.getTree());
-            	    pushFollow(FOLLOW_additiveExpression_in_shiftExpression4948);
-            	    additiveExpression443=additiveExpression();
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, shiftOp440.getTree());
+            	    pushFollow(FOLLOW_additiveExpression_in_shiftExpression4962);
+            	    additiveExpression441=additiveExpression();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, additiveExpression443.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, additiveExpression441.getTree());
 
             	    }
             	    break;
@@ -13739,7 +13755,7 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "shiftOp"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:922:1: shiftOp : ( ( '<' '<' )=>t1= '<' t2= '<' {...}? | ( '>' '>' '>' )=>t1= '>' t2= '>' t3= '>' {...}? | ( '>' '>' )=>t1= '>' t2= '>' {...}?);
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:927:1: shiftOp : ( ( '<' '<' )=>t1= '<' t2= '<' {...}? | ( '>' '>' '>' )=>t1= '>' t2= '>' t3= '>' {...}? | ( '>' '>' )=>t1= '>' t2= '>' {...}?);
     public final JavaParser.shiftOp_return shiftOp() throws RecognitionException {
         JavaParser.shiftOp_return retval = new JavaParser.shiftOp_return();
         retval.start = input.LT(1);
@@ -13756,21 +13772,21 @@ public class JavaParser extends Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 118) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:923:5: ( ( '<' '<' )=>t1= '<' t2= '<' {...}? | ( '>' '>' '>' )=>t1= '>' t2= '>' t3= '>' {...}? | ( '>' '>' )=>t1= '>' t2= '>' {...}?)
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:928:5: ( ( '<' '<' )=>t1= '<' t2= '<' {...}? | ( '>' '>' '>' )=>t1= '>' t2= '>' t3= '>' {...}? | ( '>' '>' )=>t1= '>' t2= '>' {...}?)
             int alt139=3;
             alt139 = dfa139.predict(input);
             switch (alt139) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:923:9: ( '<' '<' )=>t1= '<' t2= '<' {...}?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:928:9: ( '<' '<' )=>t1= '<' t2= '<' {...}?
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    t1=(Token)match(input,40,FOLLOW_40_in_shiftOp4979); if (state.failed) return retval;
+                    t1=(Token)match(input,40,FOLLOW_40_in_shiftOp4993); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     t1_tree = (Object)adaptor.create(t1);
                     adaptor.addChild(root_0, t1_tree);
                     }
-                    t2=(Token)match(input,40,FOLLOW_40_in_shiftOp4983); if (state.failed) return retval;
+                    t2=(Token)match(input,40,FOLLOW_40_in_shiftOp4997); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     t2_tree = (Object)adaptor.create(t2);
                     adaptor.addChild(root_0, t2_tree);
@@ -13784,21 +13800,21 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:926:9: ( '>' '>' '>' )=>t1= '>' t2= '>' t3= '>' {...}?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:931:9: ( '>' '>' '>' )=>t1= '>' t2= '>' t3= '>' {...}?
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    t1=(Token)match(input,42,FOLLOW_42_in_shiftOp5015); if (state.failed) return retval;
+                    t1=(Token)match(input,42,FOLLOW_42_in_shiftOp5029); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     t1_tree = (Object)adaptor.create(t1);
                     adaptor.addChild(root_0, t1_tree);
                     }
-                    t2=(Token)match(input,42,FOLLOW_42_in_shiftOp5019); if (state.failed) return retval;
+                    t2=(Token)match(input,42,FOLLOW_42_in_shiftOp5033); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     t2_tree = (Object)adaptor.create(t2);
                     adaptor.addChild(root_0, t2_tree);
                     }
-                    t3=(Token)match(input,42,FOLLOW_42_in_shiftOp5023); if (state.failed) return retval;
+                    t3=(Token)match(input,42,FOLLOW_42_in_shiftOp5037); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     t3_tree = (Object)adaptor.create(t3);
                     adaptor.addChild(root_0, t3_tree);
@@ -13814,16 +13830,16 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:931:9: ( '>' '>' )=>t1= '>' t2= '>' {...}?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:936:9: ( '>' '>' )=>t1= '>' t2= '>' {...}?
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    t1=(Token)match(input,42,FOLLOW_42_in_shiftOp5053); if (state.failed) return retval;
+                    t1=(Token)match(input,42,FOLLOW_42_in_shiftOp5067); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     t1_tree = (Object)adaptor.create(t1);
                     adaptor.addChild(root_0, t1_tree);
                     }
-                    t2=(Token)match(input,42,FOLLOW_42_in_shiftOp5057); if (state.failed) return retval;
+                    t2=(Token)match(input,42,FOLLOW_42_in_shiftOp5071); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     t2_tree = (Object)adaptor.create(t2);
                     adaptor.addChild(root_0, t2_tree);
@@ -13865,35 +13881,35 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "additiveExpression"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:937:1: additiveExpression : multiplicativeExpression ( ( '+' | '-' ) multiplicativeExpression )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:942:1: additiveExpression : multiplicativeExpression ( ( '+' | '-' ) multiplicativeExpression )* ;
     public final JavaParser.additiveExpression_return additiveExpression() throws RecognitionException {
         JavaParser.additiveExpression_return retval = new JavaParser.additiveExpression_return();
         retval.start = input.LT(1);
         int additiveExpression_StartIndex = input.index();
         Object root_0 = null;
 
-        Token set445=null;
+        Token set443=null;
+        JavaParser.multiplicativeExpression_return multiplicativeExpression442 = null;
+
         JavaParser.multiplicativeExpression_return multiplicativeExpression444 = null;
 
-        JavaParser.multiplicativeExpression_return multiplicativeExpression446 = null;
 
-
-        Object set445_tree=null;
+        Object set443_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 119) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:938:5: ( multiplicativeExpression ( ( '+' | '-' ) multiplicativeExpression )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:938:9: multiplicativeExpression ( ( '+' | '-' ) multiplicativeExpression )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:943:5: ( multiplicativeExpression ( ( '+' | '-' ) multiplicativeExpression )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:943:9: multiplicativeExpression ( ( '+' | '-' ) multiplicativeExpression )*
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_multiplicativeExpression_in_additiveExpression5087);
-            multiplicativeExpression444=multiplicativeExpression();
+            pushFollow(FOLLOW_multiplicativeExpression_in_additiveExpression5101);
+            multiplicativeExpression442=multiplicativeExpression();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, multiplicativeExpression444.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:938:34: ( ( '+' | '-' ) multiplicativeExpression )*
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, multiplicativeExpression442.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:943:34: ( ( '+' | '-' ) multiplicativeExpression )*
             loop140:
             do {
                 int alt140=2;
@@ -13906,12 +13922,12 @@ public class JavaParser extends Parser {
 
                 switch (alt140) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:938:36: ( '+' | '-' ) multiplicativeExpression
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:943:36: ( '+' | '-' ) multiplicativeExpression
             	    {
-            	    set445=(Token)input.LT(1);
+            	    set443=(Token)input.LT(1);
             	    if ( (input.LA(1)>=105 && input.LA(1)<=106) ) {
             	        input.consume();
-            	        if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set445));
+            	        if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set443));
             	        state.errorRecovery=false;state.failed=false;
             	    }
             	    else {
@@ -13920,12 +13936,12 @@ public class JavaParser extends Parser {
             	        throw mse;
             	    }
 
-            	    pushFollow(FOLLOW_multiplicativeExpression_in_additiveExpression5099);
-            	    multiplicativeExpression446=multiplicativeExpression();
+            	    pushFollow(FOLLOW_multiplicativeExpression_in_additiveExpression5113);
+            	    multiplicativeExpression444=multiplicativeExpression();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, multiplicativeExpression446.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, multiplicativeExpression444.getTree());
 
             	    }
             	    break;
@@ -13965,35 +13981,35 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "multiplicativeExpression"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:941:1: multiplicativeExpression : unaryExpression ( ( '*' | '/' | '%' ) unaryExpression )* ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:946:1: multiplicativeExpression : unaryExpression ( ( '*' | '/' | '%' ) unaryExpression )* ;
     public final JavaParser.multiplicativeExpression_return multiplicativeExpression() throws RecognitionException {
         JavaParser.multiplicativeExpression_return retval = new JavaParser.multiplicativeExpression_return();
         retval.start = input.LT(1);
         int multiplicativeExpression_StartIndex = input.index();
         Object root_0 = null;
 
-        Token set448=null;
+        Token set446=null;
+        JavaParser.unaryExpression_return unaryExpression445 = null;
+
         JavaParser.unaryExpression_return unaryExpression447 = null;
 
-        JavaParser.unaryExpression_return unaryExpression449 = null;
 
-
-        Object set448_tree=null;
+        Object set446_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 120) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:942:5: ( unaryExpression ( ( '*' | '/' | '%' ) unaryExpression )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:942:9: unaryExpression ( ( '*' | '/' | '%' ) unaryExpression )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:947:5: ( unaryExpression ( ( '*' | '/' | '%' ) unaryExpression )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:947:9: unaryExpression ( ( '*' | '/' | '%' ) unaryExpression )*
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_unaryExpression_in_multiplicativeExpression5121);
-            unaryExpression447=unaryExpression();
+            pushFollow(FOLLOW_unaryExpression_in_multiplicativeExpression5135);
+            unaryExpression445=unaryExpression();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, unaryExpression447.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:942:25: ( ( '*' | '/' | '%' ) unaryExpression )*
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, unaryExpression445.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:947:25: ( ( '*' | '/' | '%' ) unaryExpression )*
             loop141:
             do {
                 int alt141=2;
@@ -14006,12 +14022,12 @@ public class JavaParser extends Parser {
 
                 switch (alt141) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:942:27: ( '*' | '/' | '%' ) unaryExpression
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:947:27: ( '*' | '/' | '%' ) unaryExpression
             	    {
-            	    set448=(Token)input.LT(1);
+            	    set446=(Token)input.LT(1);
             	    if ( input.LA(1)==30||(input.LA(1)>=107 && input.LA(1)<=108) ) {
             	        input.consume();
-            	        if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set448));
+            	        if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set446));
             	        state.errorRecovery=false;state.failed=false;
             	    }
             	    else {
@@ -14020,12 +14036,12 @@ public class JavaParser extends Parser {
             	        throw mse;
             	    }
 
-            	    pushFollow(FOLLOW_unaryExpression_in_multiplicativeExpression5139);
-            	    unaryExpression449=unaryExpression();
+            	    pushFollow(FOLLOW_unaryExpression_in_multiplicativeExpression5153);
+            	    unaryExpression447=unaryExpression();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, unaryExpression449.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, unaryExpression447.getTree());
 
             	    }
             	    break;
@@ -14065,36 +14081,36 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "unaryExpression"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:945:1: unaryExpression : ( '+' unaryExpression | '-' unaryExpression | '++' unaryExpression | '--' unaryExpression | unaryExpressionNotPlusMinus );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:950:1: unaryExpression : ( '+' unaryExpression | '-' unaryExpression | '++' unaryExpression | '--' unaryExpression | unaryExpressionNotPlusMinus );
     public final JavaParser.unaryExpression_return unaryExpression() throws RecognitionException {
         JavaParser.unaryExpression_return retval = new JavaParser.unaryExpression_return();
         retval.start = input.LT(1);
         int unaryExpression_StartIndex = input.index();
         Object root_0 = null;
 
+        Token char_literal448=null;
         Token char_literal450=null;
-        Token char_literal452=null;
+        Token string_literal452=null;
         Token string_literal454=null;
-        Token string_literal456=null;
+        JavaParser.unaryExpression_return unaryExpression449 = null;
+
         JavaParser.unaryExpression_return unaryExpression451 = null;
 
         JavaParser.unaryExpression_return unaryExpression453 = null;
 
         JavaParser.unaryExpression_return unaryExpression455 = null;
 
-        JavaParser.unaryExpression_return unaryExpression457 = null;
-
-        JavaParser.unaryExpressionNotPlusMinus_return unaryExpressionNotPlusMinus458 = null;
+        JavaParser.unaryExpressionNotPlusMinus_return unaryExpressionNotPlusMinus456 = null;
 
 
+        Object char_literal448_tree=null;
         Object char_literal450_tree=null;
-        Object char_literal452_tree=null;
+        Object string_literal452_tree=null;
         Object string_literal454_tree=null;
-        Object string_literal456_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 121) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:946:5: ( '+' unaryExpression | '-' unaryExpression | '++' unaryExpression | '--' unaryExpression | unaryExpressionNotPlusMinus )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:951:5: ( '+' unaryExpression | '-' unaryExpression | '++' unaryExpression | '--' unaryExpression | unaryExpressionNotPlusMinus )
             int alt142=5;
             switch ( input.LA(1) ) {
             case 105:
@@ -14156,16 +14172,35 @@ public class JavaParser extends Parser {
 
             switch (alt142) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:946:9: '+' unaryExpression
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:951:9: '+' unaryExpression
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal450=(Token)match(input,105,FOLLOW_105_in_unaryExpression5165); if (state.failed) return retval;
+                    char_literal448=(Token)match(input,105,FOLLOW_105_in_unaryExpression5179); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) {
+                    char_literal448_tree = (Object)adaptor.create(char_literal448);
+                    adaptor.addChild(root_0, char_literal448_tree);
+                    }
+                    pushFollow(FOLLOW_unaryExpression_in_unaryExpression5181);
+                    unaryExpression449=unaryExpression();
+
+                    state._fsp--;
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, unaryExpression449.getTree());
+
+                    }
+                    break;
+                case 2 :
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:952:9: '-' unaryExpression
+                    {
+                    root_0 = (Object)adaptor.nil();
+
+                    char_literal450=(Token)match(input,106,FOLLOW_106_in_unaryExpression5191); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal450_tree = (Object)adaptor.create(char_literal450);
                     adaptor.addChild(root_0, char_literal450_tree);
                     }
-                    pushFollow(FOLLOW_unaryExpression_in_unaryExpression5167);
+                    pushFollow(FOLLOW_unaryExpression_in_unaryExpression5193);
                     unaryExpression451=unaryExpression();
 
                     state._fsp--;
@@ -14174,17 +14209,17 @@ public class JavaParser extends Parser {
 
                     }
                     break;
-                case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:947:9: '-' unaryExpression
+                case 3 :
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:953:9: '++' unaryExpression
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal452=(Token)match(input,106,FOLLOW_106_in_unaryExpression5177); if (state.failed) return retval;
+                    string_literal452=(Token)match(input,109,FOLLOW_109_in_unaryExpression5203); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal452_tree = (Object)adaptor.create(char_literal452);
-                    adaptor.addChild(root_0, char_literal452_tree);
+                    string_literal452_tree = (Object)adaptor.create(string_literal452);
+                    adaptor.addChild(root_0, string_literal452_tree);
                     }
-                    pushFollow(FOLLOW_unaryExpression_in_unaryExpression5179);
+                    pushFollow(FOLLOW_unaryExpression_in_unaryExpression5205);
                     unaryExpression453=unaryExpression();
 
                     state._fsp--;
@@ -14193,17 +14228,17 @@ public class JavaParser extends Parser {
 
                     }
                     break;
-                case 3 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:948:9: '++' unaryExpression
+                case 4 :
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:954:9: '--' unaryExpression
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal454=(Token)match(input,109,FOLLOW_109_in_unaryExpression5189); if (state.failed) return retval;
+                    string_literal454=(Token)match(input,110,FOLLOW_110_in_unaryExpression5215); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     string_literal454_tree = (Object)adaptor.create(string_literal454);
                     adaptor.addChild(root_0, string_literal454_tree);
                     }
-                    pushFollow(FOLLOW_unaryExpression_in_unaryExpression5191);
+                    pushFollow(FOLLOW_unaryExpression_in_unaryExpression5217);
                     unaryExpression455=unaryExpression();
 
                     state._fsp--;
@@ -14212,36 +14247,17 @@ public class JavaParser extends Parser {
 
                     }
                     break;
-                case 4 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:949:9: '--' unaryExpression
-                    {
-                    root_0 = (Object)adaptor.nil();
-
-                    string_literal456=(Token)match(input,110,FOLLOW_110_in_unaryExpression5201); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    string_literal456_tree = (Object)adaptor.create(string_literal456);
-                    adaptor.addChild(root_0, string_literal456_tree);
-                    }
-                    pushFollow(FOLLOW_unaryExpression_in_unaryExpression5203);
-                    unaryExpression457=unaryExpression();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, unaryExpression457.getTree());
-
-                    }
-                    break;
                 case 5 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:950:9: unaryExpressionNotPlusMinus
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:955:9: unaryExpressionNotPlusMinus
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_unaryExpressionNotPlusMinus_in_unaryExpression5213);
-                    unaryExpressionNotPlusMinus458=unaryExpressionNotPlusMinus();
+                    pushFollow(FOLLOW_unaryExpressionNotPlusMinus_in_unaryExpression5227);
+                    unaryExpressionNotPlusMinus456=unaryExpressionNotPlusMinus();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, unaryExpressionNotPlusMinus458.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, unaryExpressionNotPlusMinus456.getTree());
 
                     }
                     break;
@@ -14274,48 +14290,67 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "unaryExpressionNotPlusMinus"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:953:1: unaryExpressionNotPlusMinus : ( '~' unaryExpression | '!' unaryExpression | castExpression | primary ( selector )* ( '++' | '--' )? );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:958:1: unaryExpressionNotPlusMinus : ( '~' unaryExpression | '!' unaryExpression | castExpression | primary ( selector )* ( '++' | '--' )? );
     public final JavaParser.unaryExpressionNotPlusMinus_return unaryExpressionNotPlusMinus() throws RecognitionException {
         JavaParser.unaryExpressionNotPlusMinus_return retval = new JavaParser.unaryExpressionNotPlusMinus_return();
         retval.start = input.LT(1);
         int unaryExpressionNotPlusMinus_StartIndex = input.index();
         Object root_0 = null;
 
+        Token char_literal457=null;
         Token char_literal459=null;
-        Token char_literal461=null;
-        Token set466=null;
+        Token set464=null;
+        JavaParser.unaryExpression_return unaryExpression458 = null;
+
         JavaParser.unaryExpression_return unaryExpression460 = null;
 
-        JavaParser.unaryExpression_return unaryExpression462 = null;
+        JavaParser.castExpression_return castExpression461 = null;
 
-        JavaParser.castExpression_return castExpression463 = null;
+        JavaParser.primary_return primary462 = null;
 
-        JavaParser.primary_return primary464 = null;
-
-        JavaParser.selector_return selector465 = null;
+        JavaParser.selector_return selector463 = null;
 
 
+        Object char_literal457_tree=null;
         Object char_literal459_tree=null;
-        Object char_literal461_tree=null;
-        Object set466_tree=null;
+        Object set464_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 122) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:954:5: ( '~' unaryExpression | '!' unaryExpression | castExpression | primary ( selector )* ( '++' | '--' )? )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:959:5: ( '~' unaryExpression | '!' unaryExpression | castExpression | primary ( selector )* ( '++' | '--' )? )
             int alt145=4;
             alt145 = dfa145.predict(input);
             switch (alt145) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:954:9: '~' unaryExpression
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:959:9: '~' unaryExpression
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal459=(Token)match(input,111,FOLLOW_111_in_unaryExpressionNotPlusMinus5232); if (state.failed) return retval;
+                    char_literal457=(Token)match(input,111,FOLLOW_111_in_unaryExpressionNotPlusMinus5246); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) {
+                    char_literal457_tree = (Object)adaptor.create(char_literal457);
+                    adaptor.addChild(root_0, char_literal457_tree);
+                    }
+                    pushFollow(FOLLOW_unaryExpression_in_unaryExpressionNotPlusMinus5248);
+                    unaryExpression458=unaryExpression();
+
+                    state._fsp--;
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, unaryExpression458.getTree());
+
+                    }
+                    break;
+                case 2 :
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:960:9: '!' unaryExpression
+                    {
+                    root_0 = (Object)adaptor.nil();
+
+                    char_literal459=(Token)match(input,112,FOLLOW_112_in_unaryExpressionNotPlusMinus5258); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal459_tree = (Object)adaptor.create(char_literal459);
                     adaptor.addChild(root_0, char_literal459_tree);
                     }
-                    pushFollow(FOLLOW_unaryExpression_in_unaryExpressionNotPlusMinus5234);
+                    pushFollow(FOLLOW_unaryExpression_in_unaryExpressionNotPlusMinus5260);
                     unaryExpression460=unaryExpression();
 
                     state._fsp--;
@@ -14324,51 +14359,32 @@ public class JavaParser extends Parser {
 
                     }
                     break;
-                case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:955:9: '!' unaryExpression
-                    {
-                    root_0 = (Object)adaptor.nil();
-
-                    char_literal461=(Token)match(input,112,FOLLOW_112_in_unaryExpressionNotPlusMinus5244); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    char_literal461_tree = (Object)adaptor.create(char_literal461);
-                    adaptor.addChild(root_0, char_literal461_tree);
-                    }
-                    pushFollow(FOLLOW_unaryExpression_in_unaryExpressionNotPlusMinus5246);
-                    unaryExpression462=unaryExpression();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, unaryExpression462.getTree());
-
-                    }
-                    break;
                 case 3 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:956:9: castExpression
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:961:9: castExpression
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_castExpression_in_unaryExpressionNotPlusMinus5256);
-                    castExpression463=castExpression();
+                    pushFollow(FOLLOW_castExpression_in_unaryExpressionNotPlusMinus5270);
+                    castExpression461=castExpression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, castExpression463.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, castExpression461.getTree());
 
                     }
                     break;
                 case 4 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:957:9: primary ( selector )* ( '++' | '--' )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:962:9: primary ( selector )* ( '++' | '--' )?
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_primary_in_unaryExpressionNotPlusMinus5266);
-                    primary464=primary();
+                    pushFollow(FOLLOW_primary_in_unaryExpressionNotPlusMinus5280);
+                    primary462=primary();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, primary464.getTree());
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:957:17: ( selector )*
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, primary462.getTree());
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:962:17: ( selector )*
                     loop143:
                     do {
                         int alt143=2;
@@ -14383,12 +14399,12 @@ public class JavaParser extends Parser {
                     	case 1 :
                     	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: selector
                     	    {
-                    	    pushFollow(FOLLOW_selector_in_unaryExpressionNotPlusMinus5268);
-                    	    selector465=selector();
+                    	    pushFollow(FOLLOW_selector_in_unaryExpressionNotPlusMinus5282);
+                    	    selector463=selector();
 
                     	    state._fsp--;
                     	    if (state.failed) return retval;
-                    	    if ( state.backtracking==0 ) adaptor.addChild(root_0, selector465.getTree());
+                    	    if ( state.backtracking==0 ) adaptor.addChild(root_0, selector463.getTree());
 
                     	    }
                     	    break;
@@ -14398,7 +14414,7 @@ public class JavaParser extends Parser {
                         }
                     } while (true);
 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:957:27: ( '++' | '--' )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:962:27: ( '++' | '--' )?
                     int alt144=2;
                     int LA144_0 = input.LA(1);
 
@@ -14409,10 +14425,10 @@ public class JavaParser extends Parser {
                         case 1 :
                             // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:
                             {
-                            set466=(Token)input.LT(1);
+                            set464=(Token)input.LT(1);
                             if ( (input.LA(1)>=109 && input.LA(1)<=110) ) {
                                 input.consume();
-                                if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set466));
+                                if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set464));
                                 state.errorRecovery=false;state.failed=false;
                             }
                             else {
@@ -14459,36 +14475,36 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "castExpression"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:960:1: castExpression : ( '(' primitiveType ')' unaryExpression | '(' ( type | expression ) ')' unaryExpressionNotPlusMinus );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:965:1: castExpression : ( '(' primitiveType ')' unaryExpression | '(' ( type | expression ) ')' unaryExpressionNotPlusMinus );
     public final JavaParser.castExpression_return castExpression() throws RecognitionException {
         JavaParser.castExpression_return retval = new JavaParser.castExpression_return();
         retval.start = input.LT(1);
         int castExpression_StartIndex = input.index();
         Object root_0 = null;
 
+        Token char_literal465=null;
         Token char_literal467=null;
         Token char_literal469=null;
-        Token char_literal471=null;
-        Token char_literal474=null;
-        JavaParser.primitiveType_return primitiveType468 = null;
+        Token char_literal472=null;
+        JavaParser.primitiveType_return primitiveType466 = null;
 
-        JavaParser.unaryExpression_return unaryExpression470 = null;
+        JavaParser.unaryExpression_return unaryExpression468 = null;
 
-        JavaParser.type_return type472 = null;
+        JavaParser.type_return type470 = null;
 
-        JavaParser.expression_return expression473 = null;
+        JavaParser.expression_return expression471 = null;
 
-        JavaParser.unaryExpressionNotPlusMinus_return unaryExpressionNotPlusMinus475 = null;
+        JavaParser.unaryExpressionNotPlusMinus_return unaryExpressionNotPlusMinus473 = null;
 
 
+        Object char_literal465_tree=null;
         Object char_literal467_tree=null;
         Object char_literal469_tree=null;
-        Object char_literal471_tree=null;
-        Object char_literal474_tree=null;
+        Object char_literal472_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 123) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:961:5: ( '(' primitiveType ')' unaryExpression | '(' ( type | expression ) ')' unaryExpressionNotPlusMinus )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:966:5: ( '(' primitiveType ')' unaryExpression | '(' ( type | expression ) ')' unaryExpressionNotPlusMinus )
             int alt147=2;
             int LA147_0 = input.LA(1);
 
@@ -14518,87 +14534,87 @@ public class JavaParser extends Parser {
             }
             switch (alt147) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:961:8: '(' primitiveType ')' unaryExpression
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:966:8: '(' primitiveType ')' unaryExpression
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal467=(Token)match(input,66,FOLLOW_66_in_castExpression5294); if (state.failed) return retval;
+                    char_literal465=(Token)match(input,66,FOLLOW_66_in_castExpression5308); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) {
+                    char_literal465_tree = (Object)adaptor.create(char_literal465);
+                    adaptor.addChild(root_0, char_literal465_tree);
+                    }
+                    pushFollow(FOLLOW_primitiveType_in_castExpression5310);
+                    primitiveType466=primitiveType();
+
+                    state._fsp--;
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, primitiveType466.getTree());
+                    char_literal467=(Token)match(input,67,FOLLOW_67_in_castExpression5312); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal467_tree = (Object)adaptor.create(char_literal467);
                     adaptor.addChild(root_0, char_literal467_tree);
                     }
-                    pushFollow(FOLLOW_primitiveType_in_castExpression5296);
-                    primitiveType468=primitiveType();
+                    pushFollow(FOLLOW_unaryExpression_in_castExpression5314);
+                    unaryExpression468=unaryExpression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, primitiveType468.getTree());
-                    char_literal469=(Token)match(input,67,FOLLOW_67_in_castExpression5298); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    char_literal469_tree = (Object)adaptor.create(char_literal469);
-                    adaptor.addChild(root_0, char_literal469_tree);
-                    }
-                    pushFollow(FOLLOW_unaryExpression_in_castExpression5300);
-                    unaryExpression470=unaryExpression();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, unaryExpression470.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, unaryExpression468.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:962:8: '(' ( type | expression ) ')' unaryExpressionNotPlusMinus
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:967:8: '(' ( type | expression ) ')' unaryExpressionNotPlusMinus
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal471=(Token)match(input,66,FOLLOW_66_in_castExpression5309); if (state.failed) return retval;
+                    char_literal469=(Token)match(input,66,FOLLOW_66_in_castExpression5323); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal471_tree = (Object)adaptor.create(char_literal471);
-                    adaptor.addChild(root_0, char_literal471_tree);
+                    char_literal469_tree = (Object)adaptor.create(char_literal469);
+                    adaptor.addChild(root_0, char_literal469_tree);
                     }
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:962:12: ( type | expression )
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:967:12: ( type | expression )
                     int alt146=2;
                     alt146 = dfa146.predict(input);
                     switch (alt146) {
                         case 1 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:962:13: type
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:967:13: type
                             {
-                            pushFollow(FOLLOW_type_in_castExpression5312);
-                            type472=type();
+                            pushFollow(FOLLOW_type_in_castExpression5326);
+                            type470=type();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, type472.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, type470.getTree());
 
                             }
                             break;
                         case 2 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:962:20: expression
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:967:20: expression
                             {
-                            pushFollow(FOLLOW_expression_in_castExpression5316);
-                            expression473=expression();
+                            pushFollow(FOLLOW_expression_in_castExpression5330);
+                            expression471=expression();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression473.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression471.getTree());
 
                             }
                             break;
 
                     }
 
-                    char_literal474=(Token)match(input,67,FOLLOW_67_in_castExpression5319); if (state.failed) return retval;
+                    char_literal472=(Token)match(input,67,FOLLOW_67_in_castExpression5333); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal474_tree = (Object)adaptor.create(char_literal474);
-                    adaptor.addChild(root_0, char_literal474_tree);
+                    char_literal472_tree = (Object)adaptor.create(char_literal472);
+                    adaptor.addChild(root_0, char_literal472_tree);
                     }
-                    pushFollow(FOLLOW_unaryExpressionNotPlusMinus_in_castExpression5321);
-                    unaryExpressionNotPlusMinus475=unaryExpressionNotPlusMinus();
+                    pushFollow(FOLLOW_unaryExpressionNotPlusMinus_in_castExpression5335);
+                    unaryExpressionNotPlusMinus473=unaryExpressionNotPlusMinus();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, unaryExpressionNotPlusMinus475.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, unaryExpressionNotPlusMinus473.getTree());
 
                     }
                     break;
@@ -14631,62 +14647,62 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "primary"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:965:1: primary : ( parExpression | 'this' ( '.' Identifier )* ( identifierSuffix )? | 'super' superSuffix | literal | 'new' creator | Identifier ( '.' Identifier )* ( identifierSuffix )? | primitiveType ( '[' ']' )* '.' 'class' | 'void' '.' 'class' );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:970:1: primary : ( parExpression | 'this' ( '.' Identifier )* ( identifierSuffix )? | 'super' superSuffix | literal | 'new' creator | Identifier ( '.' Identifier )* ( identifierSuffix )? | primitiveType ( '[' ']' )* '.' 'class' | 'void' '.' 'class' );
     public final JavaParser.primary_return primary() throws RecognitionException {
         JavaParser.primary_return retval = new JavaParser.primary_return();
         retval.start = input.LT(1);
         int primary_StartIndex = input.index();
         Object root_0 = null;
 
-        Token string_literal477=null;
-        Token char_literal478=null;
-        Token Identifier479=null;
-        Token string_literal481=null;
-        Token string_literal484=null;
+        Token string_literal475=null;
+        Token char_literal476=null;
+        Token Identifier477=null;
+        Token string_literal479=null;
+        Token string_literal482=null;
+        Token Identifier484=null;
+        Token char_literal485=null;
         Token Identifier486=null;
-        Token char_literal487=null;
-        Token Identifier488=null;
+        Token char_literal489=null;
+        Token char_literal490=null;
         Token char_literal491=null;
-        Token char_literal492=null;
-        Token char_literal493=null;
-        Token string_literal494=null;
+        Token string_literal492=null;
+        Token string_literal493=null;
+        Token char_literal494=null;
         Token string_literal495=null;
-        Token char_literal496=null;
-        Token string_literal497=null;
-        JavaParser.parExpression_return parExpression476 = null;
+        JavaParser.parExpression_return parExpression474 = null;
 
-        JavaParser.identifierSuffix_return identifierSuffix480 = null;
+        JavaParser.identifierSuffix_return identifierSuffix478 = null;
 
-        JavaParser.superSuffix_return superSuffix482 = null;
+        JavaParser.superSuffix_return superSuffix480 = null;
 
-        JavaParser.literal_return literal483 = null;
+        JavaParser.literal_return literal481 = null;
 
-        JavaParser.creator_return creator485 = null;
+        JavaParser.creator_return creator483 = null;
 
-        JavaParser.identifierSuffix_return identifierSuffix489 = null;
+        JavaParser.identifierSuffix_return identifierSuffix487 = null;
 
-        JavaParser.primitiveType_return primitiveType490 = null;
+        JavaParser.primitiveType_return primitiveType488 = null;
 
 
-        Object string_literal477_tree=null;
-        Object char_literal478_tree=null;
-        Object Identifier479_tree=null;
-        Object string_literal481_tree=null;
-        Object string_literal484_tree=null;
+        Object string_literal475_tree=null;
+        Object char_literal476_tree=null;
+        Object Identifier477_tree=null;
+        Object string_literal479_tree=null;
+        Object string_literal482_tree=null;
+        Object Identifier484_tree=null;
+        Object char_literal485_tree=null;
         Object Identifier486_tree=null;
-        Object char_literal487_tree=null;
-        Object Identifier488_tree=null;
+        Object char_literal489_tree=null;
+        Object char_literal490_tree=null;
         Object char_literal491_tree=null;
-        Object char_literal492_tree=null;
-        Object char_literal493_tree=null;
-        Object string_literal494_tree=null;
+        Object string_literal492_tree=null;
+        Object string_literal493_tree=null;
+        Object char_literal494_tree=null;
         Object string_literal495_tree=null;
-        Object char_literal496_tree=null;
-        Object string_literal497_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 124) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:966:5: ( parExpression | 'this' ( '.' Identifier )* ( identifierSuffix )? | 'super' superSuffix | literal | 'new' creator | Identifier ( '.' Identifier )* ( identifierSuffix )? | primitiveType ( '[' ']' )* '.' 'class' | 'void' '.' 'class' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:971:5: ( parExpression | 'this' ( '.' Identifier )* ( identifierSuffix )? | 'super' superSuffix | literal | 'new' creator | Identifier ( '.' Identifier )* ( identifierSuffix )? | primitiveType ( '[' ']' )* '.' 'class' | 'void' '.' 'class' )
             int alt153=8;
             switch ( input.LA(1) ) {
             case 66:
@@ -14754,30 +14770,30 @@ public class JavaParser extends Parser {
 
             switch (alt153) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:966:9: parExpression
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:971:9: parExpression
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_parExpression_in_primary5340);
-                    parExpression476=parExpression();
+                    pushFollow(FOLLOW_parExpression_in_primary5354);
+                    parExpression474=parExpression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, parExpression476.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, parExpression474.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:967:9: 'this' ( '.' Identifier )* ( identifierSuffix )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:972:9: 'this' ( '.' Identifier )* ( identifierSuffix )?
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal477=(Token)match(input,69,FOLLOW_69_in_primary5350); if (state.failed) return retval;
+                    string_literal475=(Token)match(input,69,FOLLOW_69_in_primary5364); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal477_tree = (Object)adaptor.create(string_literal477);
-                    adaptor.addChild(root_0, string_literal477_tree);
+                    string_literal475_tree = (Object)adaptor.create(string_literal475);
+                    adaptor.addChild(root_0, string_literal475_tree);
                     }
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:967:16: ( '.' Identifier )*
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:972:16: ( '.' Identifier )*
                     loop148:
                     do {
                         int alt148=2;
@@ -14802,17 +14818,17 @@ public class JavaParser extends Parser {
 
                         switch (alt148) {
                     	case 1 :
-                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:967:17: '.' Identifier
+                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:972:17: '.' Identifier
                     	    {
-                    	    char_literal478=(Token)match(input,29,FOLLOW_29_in_primary5353); if (state.failed) return retval;
+                    	    char_literal476=(Token)match(input,29,FOLLOW_29_in_primary5367); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    char_literal478_tree = (Object)adaptor.create(char_literal478);
-                    	    adaptor.addChild(root_0, char_literal478_tree);
+                    	    char_literal476_tree = (Object)adaptor.create(char_literal476);
+                    	    adaptor.addChild(root_0, char_literal476_tree);
                     	    }
-                    	    Identifier479=(Token)match(input,Identifier,FOLLOW_Identifier_in_primary5355); if (state.failed) return retval;
+                    	    Identifier477=(Token)match(input,Identifier,FOLLOW_Identifier_in_primary5369); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    Identifier479_tree = (Object)adaptor.create(Identifier479);
-                    	    adaptor.addChild(root_0, Identifier479_tree);
+                    	    Identifier477_tree = (Object)adaptor.create(Identifier477);
+                    	    adaptor.addChild(root_0, Identifier477_tree);
                     	    }
 
                     	    }
@@ -14823,19 +14839,19 @@ public class JavaParser extends Parser {
                         }
                     } while (true);
 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:967:34: ( identifierSuffix )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:972:34: ( identifierSuffix )?
                     int alt149=2;
                     alt149 = dfa149.predict(input);
                     switch (alt149) {
                         case 1 :
                             // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: identifierSuffix
                             {
-                            pushFollow(FOLLOW_identifierSuffix_in_primary5359);
-                            identifierSuffix480=identifierSuffix();
+                            pushFollow(FOLLOW_identifierSuffix_in_primary5373);
+                            identifierSuffix478=identifierSuffix();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, identifierSuffix480.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, identifierSuffix478.getTree());
 
                             }
                             break;
@@ -14846,68 +14862,68 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:968:9: 'super' superSuffix
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:973:9: 'super' superSuffix
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal481=(Token)match(input,65,FOLLOW_65_in_primary5370); if (state.failed) return retval;
+                    string_literal479=(Token)match(input,65,FOLLOW_65_in_primary5384); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal481_tree = (Object)adaptor.create(string_literal481);
-                    adaptor.addChild(root_0, string_literal481_tree);
+                    string_literal479_tree = (Object)adaptor.create(string_literal479);
+                    adaptor.addChild(root_0, string_literal479_tree);
                     }
-                    pushFollow(FOLLOW_superSuffix_in_primary5372);
-                    superSuffix482=superSuffix();
+                    pushFollow(FOLLOW_superSuffix_in_primary5386);
+                    superSuffix480=superSuffix();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, superSuffix482.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, superSuffix480.getTree());
 
                     }
                     break;
                 case 4 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:969:9: literal
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:974:9: literal
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_literal_in_primary5382);
-                    literal483=literal();
+                    pushFollow(FOLLOW_literal_in_primary5396);
+                    literal481=literal();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, literal483.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, literal481.getTree());
 
                     }
                     break;
                 case 5 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:970:9: 'new' creator
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:975:9: 'new' creator
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal484=(Token)match(input,113,FOLLOW_113_in_primary5392); if (state.failed) return retval;
+                    string_literal482=(Token)match(input,113,FOLLOW_113_in_primary5406); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal484_tree = (Object)adaptor.create(string_literal484);
-                    adaptor.addChild(root_0, string_literal484_tree);
+                    string_literal482_tree = (Object)adaptor.create(string_literal482);
+                    adaptor.addChild(root_0, string_literal482_tree);
                     }
-                    pushFollow(FOLLOW_creator_in_primary5394);
-                    creator485=creator();
+                    pushFollow(FOLLOW_creator_in_primary5408);
+                    creator483=creator();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, creator485.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, creator483.getTree());
 
                     }
                     break;
                 case 6 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:971:9: Identifier ( '.' Identifier )* ( identifierSuffix )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:976:9: Identifier ( '.' Identifier )* ( identifierSuffix )?
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    Identifier486=(Token)match(input,Identifier,FOLLOW_Identifier_in_primary5404); if (state.failed) return retval;
+                    Identifier484=(Token)match(input,Identifier,FOLLOW_Identifier_in_primary5418); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    Identifier486_tree = (Object)adaptor.create(Identifier486);
-                    adaptor.addChild(root_0, Identifier486_tree);
+                    Identifier484_tree = (Object)adaptor.create(Identifier484);
+                    adaptor.addChild(root_0, Identifier484_tree);
                     }
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:971:20: ( '.' Identifier )*
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:976:20: ( '.' Identifier )*
                     loop150:
                     do {
                         int alt150=2;
@@ -14932,17 +14948,17 @@ public class JavaParser extends Parser {
 
                         switch (alt150) {
                     	case 1 :
-                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:971:21: '.' Identifier
+                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:976:21: '.' Identifier
                     	    {
-                    	    char_literal487=(Token)match(input,29,FOLLOW_29_in_primary5407); if (state.failed) return retval;
+                    	    char_literal485=(Token)match(input,29,FOLLOW_29_in_primary5421); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    char_literal487_tree = (Object)adaptor.create(char_literal487);
-                    	    adaptor.addChild(root_0, char_literal487_tree);
+                    	    char_literal485_tree = (Object)adaptor.create(char_literal485);
+                    	    adaptor.addChild(root_0, char_literal485_tree);
                     	    }
-                    	    Identifier488=(Token)match(input,Identifier,FOLLOW_Identifier_in_primary5409); if (state.failed) return retval;
+                    	    Identifier486=(Token)match(input,Identifier,FOLLOW_Identifier_in_primary5423); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    Identifier488_tree = (Object)adaptor.create(Identifier488);
-                    	    adaptor.addChild(root_0, Identifier488_tree);
+                    	    Identifier486_tree = (Object)adaptor.create(Identifier486);
+                    	    adaptor.addChild(root_0, Identifier486_tree);
                     	    }
 
                     	    }
@@ -14953,19 +14969,19 @@ public class JavaParser extends Parser {
                         }
                     } while (true);
 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:971:38: ( identifierSuffix )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:976:38: ( identifierSuffix )?
                     int alt151=2;
                     alt151 = dfa151.predict(input);
                     switch (alt151) {
                         case 1 :
                             // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: identifierSuffix
                             {
-                            pushFollow(FOLLOW_identifierSuffix_in_primary5413);
-                            identifierSuffix489=identifierSuffix();
+                            pushFollow(FOLLOW_identifierSuffix_in_primary5427);
+                            identifierSuffix487=identifierSuffix();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, identifierSuffix489.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, identifierSuffix487.getTree());
 
                             }
                             break;
@@ -14976,17 +14992,17 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 7 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:972:9: primitiveType ( '[' ']' )* '.' 'class'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:977:9: primitiveType ( '[' ']' )* '.' 'class'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_primitiveType_in_primary5424);
-                    primitiveType490=primitiveType();
+                    pushFollow(FOLLOW_primitiveType_in_primary5438);
+                    primitiveType488=primitiveType();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, primitiveType490.getTree());
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:972:23: ( '[' ']' )*
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, primitiveType488.getTree());
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:977:23: ( '[' ']' )*
                     loop152:
                     do {
                         int alt152=2;
@@ -14999,17 +15015,17 @@ public class JavaParser extends Parser {
 
                         switch (alt152) {
                     	case 1 :
-                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:972:24: '[' ']'
+                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:977:24: '[' ']'
                     	    {
-                    	    char_literal491=(Token)match(input,48,FOLLOW_48_in_primary5427); if (state.failed) return retval;
+                    	    char_literal489=(Token)match(input,48,FOLLOW_48_in_primary5441); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    char_literal491_tree = (Object)adaptor.create(char_literal491);
-                    	    adaptor.addChild(root_0, char_literal491_tree);
+                    	    char_literal489_tree = (Object)adaptor.create(char_literal489);
+                    	    adaptor.addChild(root_0, char_literal489_tree);
                     	    }
-                    	    char_literal492=(Token)match(input,49,FOLLOW_49_in_primary5429); if (state.failed) return retval;
+                    	    char_literal490=(Token)match(input,49,FOLLOW_49_in_primary5443); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    char_literal492_tree = (Object)adaptor.create(char_literal492);
-                    	    adaptor.addChild(root_0, char_literal492_tree);
+                    	    char_literal490_tree = (Object)adaptor.create(char_literal490);
+                    	    adaptor.addChild(root_0, char_literal490_tree);
                     	    }
 
                     	    }
@@ -15020,38 +15036,38 @@ public class JavaParser extends Parser {
                         }
                     } while (true);
 
-                    char_literal493=(Token)match(input,29,FOLLOW_29_in_primary5433); if (state.failed) return retval;
+                    char_literal491=(Token)match(input,29,FOLLOW_29_in_primary5447); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal493_tree = (Object)adaptor.create(char_literal493);
-                    adaptor.addChild(root_0, char_literal493_tree);
+                    char_literal491_tree = (Object)adaptor.create(char_literal491);
+                    adaptor.addChild(root_0, char_literal491_tree);
                     }
-                    string_literal494=(Token)match(input,37,FOLLOW_37_in_primary5435); if (state.failed) return retval;
+                    string_literal492=(Token)match(input,37,FOLLOW_37_in_primary5449); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal494_tree = (Object)adaptor.create(string_literal494);
-                    adaptor.addChild(root_0, string_literal494_tree);
+                    string_literal492_tree = (Object)adaptor.create(string_literal492);
+                    adaptor.addChild(root_0, string_literal492_tree);
                     }
 
                     }
                     break;
                 case 8 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:973:9: 'void' '.' 'class'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:978:9: 'void' '.' 'class'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal495=(Token)match(input,47,FOLLOW_47_in_primary5445); if (state.failed) return retval;
+                    string_literal493=(Token)match(input,47,FOLLOW_47_in_primary5459); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) {
+                    string_literal493_tree = (Object)adaptor.create(string_literal493);
+                    adaptor.addChild(root_0, string_literal493_tree);
+                    }
+                    char_literal494=(Token)match(input,29,FOLLOW_29_in_primary5461); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) {
+                    char_literal494_tree = (Object)adaptor.create(char_literal494);
+                    adaptor.addChild(root_0, char_literal494_tree);
+                    }
+                    string_literal495=(Token)match(input,37,FOLLOW_37_in_primary5463); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     string_literal495_tree = (Object)adaptor.create(string_literal495);
                     adaptor.addChild(root_0, string_literal495_tree);
-                    }
-                    char_literal496=(Token)match(input,29,FOLLOW_29_in_primary5447); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    char_literal496_tree = (Object)adaptor.create(char_literal496);
-                    adaptor.addChild(root_0, char_literal496_tree);
-                    }
-                    string_literal497=(Token)match(input,37,FOLLOW_37_in_primary5449); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    string_literal497_tree = (Object)adaptor.create(string_literal497);
-                    adaptor.addChild(root_0, string_literal497_tree);
                     }
 
                     }
@@ -15085,67 +15101,67 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "identifierSuffix"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:976:1: identifierSuffix : ( ( '[' ']' )+ '.' 'class' | ( '[' expression ']' )+ | arguments | '.' 'class' | '.' explicitGenericInvocation | '.' 'this' | '.' 'super' arguments | '.' 'new' innerCreator );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:981:1: identifierSuffix : ( ( '[' ']' )+ '.' 'class' | ( '[' expression ']' )+ | arguments | '.' 'class' | '.' explicitGenericInvocation | '.' 'this' | '.' 'super' arguments | '.' 'new' innerCreator );
     public final JavaParser.identifierSuffix_return identifierSuffix() throws RecognitionException {
         JavaParser.identifierSuffix_return retval = new JavaParser.identifierSuffix_return();
         retval.start = input.LT(1);
         int identifierSuffix_StartIndex = input.index();
         Object root_0 = null;
 
+        Token char_literal496=null;
+        Token char_literal497=null;
         Token char_literal498=null;
-        Token char_literal499=null;
+        Token string_literal499=null;
         Token char_literal500=null;
-        Token string_literal501=null;
         Token char_literal502=null;
         Token char_literal504=null;
+        Token string_literal505=null;
         Token char_literal506=null;
-        Token string_literal507=null;
         Token char_literal508=null;
+        Token string_literal509=null;
         Token char_literal510=null;
         Token string_literal511=null;
-        Token char_literal512=null;
-        Token string_literal513=null;
-        Token char_literal515=null;
-        Token string_literal516=null;
-        JavaParser.expression_return expression503 = null;
+        Token char_literal513=null;
+        Token string_literal514=null;
+        JavaParser.expression_return expression501 = null;
 
-        JavaParser.arguments_return arguments505 = null;
+        JavaParser.arguments_return arguments503 = null;
 
-        JavaParser.explicitGenericInvocation_return explicitGenericInvocation509 = null;
+        JavaParser.explicitGenericInvocation_return explicitGenericInvocation507 = null;
 
-        JavaParser.arguments_return arguments514 = null;
+        JavaParser.arguments_return arguments512 = null;
 
-        JavaParser.innerCreator_return innerCreator517 = null;
+        JavaParser.innerCreator_return innerCreator515 = null;
 
 
+        Object char_literal496_tree=null;
+        Object char_literal497_tree=null;
         Object char_literal498_tree=null;
-        Object char_literal499_tree=null;
+        Object string_literal499_tree=null;
         Object char_literal500_tree=null;
-        Object string_literal501_tree=null;
         Object char_literal502_tree=null;
         Object char_literal504_tree=null;
+        Object string_literal505_tree=null;
         Object char_literal506_tree=null;
-        Object string_literal507_tree=null;
         Object char_literal508_tree=null;
+        Object string_literal509_tree=null;
         Object char_literal510_tree=null;
         Object string_literal511_tree=null;
-        Object char_literal512_tree=null;
-        Object string_literal513_tree=null;
-        Object char_literal515_tree=null;
-        Object string_literal516_tree=null;
+        Object char_literal513_tree=null;
+        Object string_literal514_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 125) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:977:5: ( ( '[' ']' )+ '.' 'class' | ( '[' expression ']' )+ | arguments | '.' 'class' | '.' explicitGenericInvocation | '.' 'this' | '.' 'super' arguments | '.' 'new' innerCreator )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:982:5: ( ( '[' ']' )+ '.' 'class' | ( '[' expression ']' )+ | arguments | '.' 'class' | '.' explicitGenericInvocation | '.' 'this' | '.' 'super' arguments | '.' 'new' innerCreator )
             int alt156=8;
             alt156 = dfa156.predict(input);
             switch (alt156) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:977:9: ( '[' ']' )+ '.' 'class'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:982:9: ( '[' ']' )+ '.' 'class'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:977:9: ( '[' ']' )+
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:982:9: ( '[' ']' )+
                     int cnt154=0;
                     loop154:
                     do {
@@ -15159,17 +15175,17 @@ public class JavaParser extends Parser {
 
                         switch (alt154) {
                     	case 1 :
-                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:977:10: '[' ']'
+                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:982:10: '[' ']'
                     	    {
-                    	    char_literal498=(Token)match(input,48,FOLLOW_48_in_identifierSuffix5469); if (state.failed) return retval;
+                    	    char_literal496=(Token)match(input,48,FOLLOW_48_in_identifierSuffix5483); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    char_literal498_tree = (Object)adaptor.create(char_literal498);
-                    	    adaptor.addChild(root_0, char_literal498_tree);
+                    	    char_literal496_tree = (Object)adaptor.create(char_literal496);
+                    	    adaptor.addChild(root_0, char_literal496_tree);
                     	    }
-                    	    char_literal499=(Token)match(input,49,FOLLOW_49_in_identifierSuffix5471); if (state.failed) return retval;
+                    	    char_literal497=(Token)match(input,49,FOLLOW_49_in_identifierSuffix5485); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    char_literal499_tree = (Object)adaptor.create(char_literal499);
-                    	    adaptor.addChild(root_0, char_literal499_tree);
+                    	    char_literal497_tree = (Object)adaptor.create(char_literal497);
+                    	    adaptor.addChild(root_0, char_literal497_tree);
                     	    }
 
                     	    }
@@ -15185,25 +15201,25 @@ public class JavaParser extends Parser {
                         cnt154++;
                     } while (true);
 
-                    char_literal500=(Token)match(input,29,FOLLOW_29_in_identifierSuffix5475); if (state.failed) return retval;
+                    char_literal498=(Token)match(input,29,FOLLOW_29_in_identifierSuffix5489); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal500_tree = (Object)adaptor.create(char_literal500);
-                    adaptor.addChild(root_0, char_literal500_tree);
+                    char_literal498_tree = (Object)adaptor.create(char_literal498);
+                    adaptor.addChild(root_0, char_literal498_tree);
                     }
-                    string_literal501=(Token)match(input,37,FOLLOW_37_in_identifierSuffix5477); if (state.failed) return retval;
+                    string_literal499=(Token)match(input,37,FOLLOW_37_in_identifierSuffix5491); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal501_tree = (Object)adaptor.create(string_literal501);
-                    adaptor.addChild(root_0, string_literal501_tree);
+                    string_literal499_tree = (Object)adaptor.create(string_literal499);
+                    adaptor.addChild(root_0, string_literal499_tree);
                     }
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:978:9: ( '[' expression ']' )+
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:983:9: ( '[' expression ']' )+
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:978:9: ( '[' expression ']' )+
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:983:9: ( '[' expression ']' )+
                     int cnt155=0;
                     loop155:
                     do {
@@ -15211,23 +15227,23 @@ public class JavaParser extends Parser {
                         alt155 = dfa155.predict(input);
                         switch (alt155) {
                     	case 1 :
-                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:978:10: '[' expression ']'
+                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:983:10: '[' expression ']'
                     	    {
-                    	    char_literal502=(Token)match(input,48,FOLLOW_48_in_identifierSuffix5488); if (state.failed) return retval;
+                    	    char_literal500=(Token)match(input,48,FOLLOW_48_in_identifierSuffix5502); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    char_literal502_tree = (Object)adaptor.create(char_literal502);
-                    	    adaptor.addChild(root_0, char_literal502_tree);
+                    	    char_literal500_tree = (Object)adaptor.create(char_literal500);
+                    	    adaptor.addChild(root_0, char_literal500_tree);
                     	    }
-                    	    pushFollow(FOLLOW_expression_in_identifierSuffix5490);
-                    	    expression503=expression();
+                    	    pushFollow(FOLLOW_expression_in_identifierSuffix5504);
+                    	    expression501=expression();
 
                     	    state._fsp--;
                     	    if (state.failed) return retval;
-                    	    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression503.getTree());
-                    	    char_literal504=(Token)match(input,49,FOLLOW_49_in_identifierSuffix5492); if (state.failed) return retval;
+                    	    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression501.getTree());
+                    	    char_literal502=(Token)match(input,49,FOLLOW_49_in_identifierSuffix5506); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    char_literal504_tree = (Object)adaptor.create(char_literal504);
-                    	    adaptor.addChild(root_0, char_literal504_tree);
+                    	    char_literal502_tree = (Object)adaptor.create(char_literal502);
+                    	    adaptor.addChild(root_0, char_literal502_tree);
                     	    }
 
                     	    }
@@ -15247,119 +15263,119 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:979:9: arguments
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:984:9: arguments
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_arguments_in_identifierSuffix5505);
-                    arguments505=arguments();
+                    pushFollow(FOLLOW_arguments_in_identifierSuffix5519);
+                    arguments503=arguments();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, arguments505.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, arguments503.getTree());
 
                     }
                     break;
                 case 4 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:980:9: '.' 'class'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:985:9: '.' 'class'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal506=(Token)match(input,29,FOLLOW_29_in_identifierSuffix5515); if (state.failed) return retval;
+                    char_literal504=(Token)match(input,29,FOLLOW_29_in_identifierSuffix5529); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal506_tree = (Object)adaptor.create(char_literal506);
-                    adaptor.addChild(root_0, char_literal506_tree);
+                    char_literal504_tree = (Object)adaptor.create(char_literal504);
+                    adaptor.addChild(root_0, char_literal504_tree);
                     }
-                    string_literal507=(Token)match(input,37,FOLLOW_37_in_identifierSuffix5517); if (state.failed) return retval;
+                    string_literal505=(Token)match(input,37,FOLLOW_37_in_identifierSuffix5531); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal507_tree = (Object)adaptor.create(string_literal507);
-                    adaptor.addChild(root_0, string_literal507_tree);
+                    string_literal505_tree = (Object)adaptor.create(string_literal505);
+                    adaptor.addChild(root_0, string_literal505_tree);
                     }
 
                     }
                     break;
                 case 5 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:981:9: '.' explicitGenericInvocation
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:986:9: '.' explicitGenericInvocation
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal508=(Token)match(input,29,FOLLOW_29_in_identifierSuffix5527); if (state.failed) return retval;
+                    char_literal506=(Token)match(input,29,FOLLOW_29_in_identifierSuffix5541); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal508_tree = (Object)adaptor.create(char_literal508);
-                    adaptor.addChild(root_0, char_literal508_tree);
+                    char_literal506_tree = (Object)adaptor.create(char_literal506);
+                    adaptor.addChild(root_0, char_literal506_tree);
                     }
-                    pushFollow(FOLLOW_explicitGenericInvocation_in_identifierSuffix5529);
-                    explicitGenericInvocation509=explicitGenericInvocation();
+                    pushFollow(FOLLOW_explicitGenericInvocation_in_identifierSuffix5543);
+                    explicitGenericInvocation507=explicitGenericInvocation();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, explicitGenericInvocation509.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, explicitGenericInvocation507.getTree());
 
                     }
                     break;
                 case 6 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:982:9: '.' 'this'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:987:9: '.' 'this'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal510=(Token)match(input,29,FOLLOW_29_in_identifierSuffix5539); if (state.failed) return retval;
+                    char_literal508=(Token)match(input,29,FOLLOW_29_in_identifierSuffix5553); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal510_tree = (Object)adaptor.create(char_literal510);
-                    adaptor.addChild(root_0, char_literal510_tree);
+                    char_literal508_tree = (Object)adaptor.create(char_literal508);
+                    adaptor.addChild(root_0, char_literal508_tree);
                     }
-                    string_literal511=(Token)match(input,69,FOLLOW_69_in_identifierSuffix5541); if (state.failed) return retval;
+                    string_literal509=(Token)match(input,69,FOLLOW_69_in_identifierSuffix5555); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal511_tree = (Object)adaptor.create(string_literal511);
-                    adaptor.addChild(root_0, string_literal511_tree);
+                    string_literal509_tree = (Object)adaptor.create(string_literal509);
+                    adaptor.addChild(root_0, string_literal509_tree);
                     }
 
                     }
                     break;
                 case 7 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:983:9: '.' 'super' arguments
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:988:9: '.' 'super' arguments
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal512=(Token)match(input,29,FOLLOW_29_in_identifierSuffix5551); if (state.failed) return retval;
+                    char_literal510=(Token)match(input,29,FOLLOW_29_in_identifierSuffix5565); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal512_tree = (Object)adaptor.create(char_literal512);
-                    adaptor.addChild(root_0, char_literal512_tree);
+                    char_literal510_tree = (Object)adaptor.create(char_literal510);
+                    adaptor.addChild(root_0, char_literal510_tree);
                     }
-                    string_literal513=(Token)match(input,65,FOLLOW_65_in_identifierSuffix5553); if (state.failed) return retval;
+                    string_literal511=(Token)match(input,65,FOLLOW_65_in_identifierSuffix5567); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal513_tree = (Object)adaptor.create(string_literal513);
-                    adaptor.addChild(root_0, string_literal513_tree);
+                    string_literal511_tree = (Object)adaptor.create(string_literal511);
+                    adaptor.addChild(root_0, string_literal511_tree);
                     }
-                    pushFollow(FOLLOW_arguments_in_identifierSuffix5555);
-                    arguments514=arguments();
+                    pushFollow(FOLLOW_arguments_in_identifierSuffix5569);
+                    arguments512=arguments();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, arguments514.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, arguments512.getTree());
 
                     }
                     break;
                 case 8 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:984:9: '.' 'new' innerCreator
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:989:9: '.' 'new' innerCreator
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal515=(Token)match(input,29,FOLLOW_29_in_identifierSuffix5565); if (state.failed) return retval;
+                    char_literal513=(Token)match(input,29,FOLLOW_29_in_identifierSuffix5579); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal515_tree = (Object)adaptor.create(char_literal515);
-                    adaptor.addChild(root_0, char_literal515_tree);
+                    char_literal513_tree = (Object)adaptor.create(char_literal513);
+                    adaptor.addChild(root_0, char_literal513_tree);
                     }
-                    string_literal516=(Token)match(input,113,FOLLOW_113_in_identifierSuffix5567); if (state.failed) return retval;
+                    string_literal514=(Token)match(input,113,FOLLOW_113_in_identifierSuffix5581); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal516_tree = (Object)adaptor.create(string_literal516);
-                    adaptor.addChild(root_0, string_literal516_tree);
+                    string_literal514_tree = (Object)adaptor.create(string_literal514);
+                    adaptor.addChild(root_0, string_literal514_tree);
                     }
-                    pushFollow(FOLLOW_innerCreator_in_identifierSuffix5569);
-                    innerCreator517=innerCreator();
+                    pushFollow(FOLLOW_innerCreator_in_identifierSuffix5583);
+                    innerCreator515=innerCreator();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, innerCreator517.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, innerCreator515.getTree());
 
                     }
                     break;
@@ -15392,30 +15408,30 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "creator"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:987:1: creator : ( nonWildcardTypeArguments createdName classCreatorRest | createdName ( arrayCreatorRest | classCreatorRest ) );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:992:1: creator : ( nonWildcardTypeArguments createdName classCreatorRest | createdName ( arrayCreatorRest | classCreatorRest ) );
     public final JavaParser.creator_return creator() throws RecognitionException {
         JavaParser.creator_return retval = new JavaParser.creator_return();
         retval.start = input.LT(1);
         int creator_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.nonWildcardTypeArguments_return nonWildcardTypeArguments518 = null;
+        JavaParser.nonWildcardTypeArguments_return nonWildcardTypeArguments516 = null;
+
+        JavaParser.createdName_return createdName517 = null;
+
+        JavaParser.classCreatorRest_return classCreatorRest518 = null;
 
         JavaParser.createdName_return createdName519 = null;
 
-        JavaParser.classCreatorRest_return classCreatorRest520 = null;
+        JavaParser.arrayCreatorRest_return arrayCreatorRest520 = null;
 
-        JavaParser.createdName_return createdName521 = null;
-
-        JavaParser.arrayCreatorRest_return arrayCreatorRest522 = null;
-
-        JavaParser.classCreatorRest_return classCreatorRest523 = null;
+        JavaParser.classCreatorRest_return classCreatorRest521 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 126) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:988:5: ( nonWildcardTypeArguments createdName classCreatorRest | createdName ( arrayCreatorRest | classCreatorRest ) )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:993:5: ( nonWildcardTypeArguments createdName classCreatorRest | createdName ( arrayCreatorRest | classCreatorRest ) )
             int alt158=2;
             int LA158_0 = input.LA(1);
 
@@ -15434,43 +15450,43 @@ public class JavaParser extends Parser {
             }
             switch (alt158) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:988:9: nonWildcardTypeArguments createdName classCreatorRest
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:993:9: nonWildcardTypeArguments createdName classCreatorRest
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_nonWildcardTypeArguments_in_creator5588);
-                    nonWildcardTypeArguments518=nonWildcardTypeArguments();
+                    pushFollow(FOLLOW_nonWildcardTypeArguments_in_creator5602);
+                    nonWildcardTypeArguments516=nonWildcardTypeArguments();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, nonWildcardTypeArguments518.getTree());
-                    pushFollow(FOLLOW_createdName_in_creator5590);
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, nonWildcardTypeArguments516.getTree());
+                    pushFollow(FOLLOW_createdName_in_creator5604);
+                    createdName517=createdName();
+
+                    state._fsp--;
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, createdName517.getTree());
+                    pushFollow(FOLLOW_classCreatorRest_in_creator5606);
+                    classCreatorRest518=classCreatorRest();
+
+                    state._fsp--;
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, classCreatorRest518.getTree());
+
+                    }
+                    break;
+                case 2 :
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:994:9: createdName ( arrayCreatorRest | classCreatorRest )
+                    {
+                    root_0 = (Object)adaptor.nil();
+
+                    pushFollow(FOLLOW_createdName_in_creator5616);
                     createdName519=createdName();
 
                     state._fsp--;
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, createdName519.getTree());
-                    pushFollow(FOLLOW_classCreatorRest_in_creator5592);
-                    classCreatorRest520=classCreatorRest();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, classCreatorRest520.getTree());
-
-                    }
-                    break;
-                case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:989:9: createdName ( arrayCreatorRest | classCreatorRest )
-                    {
-                    root_0 = (Object)adaptor.nil();
-
-                    pushFollow(FOLLOW_createdName_in_creator5602);
-                    createdName521=createdName();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, createdName521.getTree());
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:989:21: ( arrayCreatorRest | classCreatorRest )
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:994:21: ( arrayCreatorRest | classCreatorRest )
                     int alt157=2;
                     int LA157_0 = input.LA(1);
 
@@ -15489,26 +15505,26 @@ public class JavaParser extends Parser {
                     }
                     switch (alt157) {
                         case 1 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:989:22: arrayCreatorRest
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:994:22: arrayCreatorRest
                             {
-                            pushFollow(FOLLOW_arrayCreatorRest_in_creator5605);
-                            arrayCreatorRest522=arrayCreatorRest();
+                            pushFollow(FOLLOW_arrayCreatorRest_in_creator5619);
+                            arrayCreatorRest520=arrayCreatorRest();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, arrayCreatorRest522.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, arrayCreatorRest520.getTree());
 
                             }
                             break;
                         case 2 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:989:41: classCreatorRest
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:994:41: classCreatorRest
                             {
-                            pushFollow(FOLLOW_classCreatorRest_in_creator5609);
-                            classCreatorRest523=classCreatorRest();
+                            pushFollow(FOLLOW_classCreatorRest_in_creator5623);
+                            classCreatorRest521=classCreatorRest();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, classCreatorRest523.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, classCreatorRest521.getTree());
 
                             }
                             break;
@@ -15547,22 +15563,22 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "createdName"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:992:1: createdName : ( classOrInterfaceType | primitiveType );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:997:1: createdName : ( classOrInterfaceType | primitiveType );
     public final JavaParser.createdName_return createdName() throws RecognitionException {
         JavaParser.createdName_return retval = new JavaParser.createdName_return();
         retval.start = input.LT(1);
         int createdName_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.classOrInterfaceType_return classOrInterfaceType524 = null;
+        JavaParser.classOrInterfaceType_return classOrInterfaceType522 = null;
 
-        JavaParser.primitiveType_return primitiveType525 = null;
+        JavaParser.primitiveType_return primitiveType523 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 127) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:993:5: ( classOrInterfaceType | primitiveType )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:998:5: ( classOrInterfaceType | primitiveType )
             int alt159=2;
             int LA159_0 = input.LA(1);
 
@@ -15581,30 +15597,30 @@ public class JavaParser extends Parser {
             }
             switch (alt159) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:993:9: classOrInterfaceType
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:998:9: classOrInterfaceType
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_classOrInterfaceType_in_createdName5629);
-                    classOrInterfaceType524=classOrInterfaceType();
+                    pushFollow(FOLLOW_classOrInterfaceType_in_createdName5643);
+                    classOrInterfaceType522=classOrInterfaceType();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, classOrInterfaceType524.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, classOrInterfaceType522.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:994:9: primitiveType
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:999:9: primitiveType
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_primitiveType_in_createdName5639);
-                    primitiveType525=primitiveType();
+                    pushFollow(FOLLOW_primitiveType_in_createdName5653);
+                    primitiveType523=primitiveType();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, primitiveType525.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, primitiveType523.getTree());
 
                     }
                     break;
@@ -15637,29 +15653,29 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "innerCreator"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:997:1: innerCreator : ( nonWildcardTypeArguments )? Identifier classCreatorRest ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1002:1: innerCreator : ( nonWildcardTypeArguments )? Identifier classCreatorRest ;
     public final JavaParser.innerCreator_return innerCreator() throws RecognitionException {
         JavaParser.innerCreator_return retval = new JavaParser.innerCreator_return();
         retval.start = input.LT(1);
         int innerCreator_StartIndex = input.index();
         Object root_0 = null;
 
-        Token Identifier527=null;
-        JavaParser.nonWildcardTypeArguments_return nonWildcardTypeArguments526 = null;
+        Token Identifier525=null;
+        JavaParser.nonWildcardTypeArguments_return nonWildcardTypeArguments524 = null;
 
-        JavaParser.classCreatorRest_return classCreatorRest528 = null;
+        JavaParser.classCreatorRest_return classCreatorRest526 = null;
 
 
-        Object Identifier527_tree=null;
+        Object Identifier525_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 128) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:998:5: ( ( nonWildcardTypeArguments )? Identifier classCreatorRest )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:998:9: ( nonWildcardTypeArguments )? Identifier classCreatorRest
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1003:5: ( ( nonWildcardTypeArguments )? Identifier classCreatorRest )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1003:9: ( nonWildcardTypeArguments )? Identifier classCreatorRest
             {
             root_0 = (Object)adaptor.nil();
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:998:9: ( nonWildcardTypeArguments )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1003:9: ( nonWildcardTypeArguments )?
             int alt160=2;
             int LA160_0 = input.LA(1);
 
@@ -15670,29 +15686,29 @@ public class JavaParser extends Parser {
                 case 1 :
                     // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: nonWildcardTypeArguments
                     {
-                    pushFollow(FOLLOW_nonWildcardTypeArguments_in_innerCreator5662);
-                    nonWildcardTypeArguments526=nonWildcardTypeArguments();
+                    pushFollow(FOLLOW_nonWildcardTypeArguments_in_innerCreator5676);
+                    nonWildcardTypeArguments524=nonWildcardTypeArguments();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, nonWildcardTypeArguments526.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, nonWildcardTypeArguments524.getTree());
 
                     }
                     break;
 
             }
 
-            Identifier527=(Token)match(input,Identifier,FOLLOW_Identifier_in_innerCreator5665); if (state.failed) return retval;
+            Identifier525=(Token)match(input,Identifier,FOLLOW_Identifier_in_innerCreator5679); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            Identifier527_tree = (Object)adaptor.create(Identifier527);
-            adaptor.addChild(root_0, Identifier527_tree);
+            Identifier525_tree = (Object)adaptor.create(Identifier525);
+            adaptor.addChild(root_0, Identifier525_tree);
             }
-            pushFollow(FOLLOW_classCreatorRest_in_innerCreator5667);
-            classCreatorRest528=classCreatorRest();
+            pushFollow(FOLLOW_classCreatorRest_in_innerCreator5681);
+            classCreatorRest526=classCreatorRest();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, classCreatorRest528.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, classCreatorRest526.getTree());
 
             }
 
@@ -15723,52 +15739,52 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "arrayCreatorRest"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1001:1: arrayCreatorRest : '[' ( ']' ( '[' ']' )* arrayInitializer | expression ']' ( '[' expression ']' )* ( '[' ']' )* ) ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1006:1: arrayCreatorRest : '[' ( ']' ( '[' ']' )* arrayInitializer | expression ']' ( '[' expression ']' )* ( '[' ']' )* ) ;
     public final JavaParser.arrayCreatorRest_return arrayCreatorRest() throws RecognitionException {
         JavaParser.arrayCreatorRest_return retval = new JavaParser.arrayCreatorRest_return();
         retval.start = input.LT(1);
         int arrayCreatorRest_StartIndex = input.index();
         Object root_0 = null;
 
+        Token char_literal527=null;
+        Token char_literal528=null;
         Token char_literal529=null;
         Token char_literal530=null;
-        Token char_literal531=null;
-        Token char_literal532=null;
-        Token char_literal535=null;
+        Token char_literal533=null;
+        Token char_literal534=null;
         Token char_literal536=null;
+        Token char_literal537=null;
         Token char_literal538=null;
-        Token char_literal539=null;
-        Token char_literal540=null;
-        JavaParser.arrayInitializer_return arrayInitializer533 = null;
+        JavaParser.arrayInitializer_return arrayInitializer531 = null;
 
-        JavaParser.expression_return expression534 = null;
+        JavaParser.expression_return expression532 = null;
 
-        JavaParser.expression_return expression537 = null;
+        JavaParser.expression_return expression535 = null;
 
 
+        Object char_literal527_tree=null;
+        Object char_literal528_tree=null;
         Object char_literal529_tree=null;
         Object char_literal530_tree=null;
-        Object char_literal531_tree=null;
-        Object char_literal532_tree=null;
-        Object char_literal535_tree=null;
+        Object char_literal533_tree=null;
+        Object char_literal534_tree=null;
         Object char_literal536_tree=null;
+        Object char_literal537_tree=null;
         Object char_literal538_tree=null;
-        Object char_literal539_tree=null;
-        Object char_literal540_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 129) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1002:5: ( '[' ( ']' ( '[' ']' )* arrayInitializer | expression ']' ( '[' expression ']' )* ( '[' ']' )* ) )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1002:9: '[' ( ']' ( '[' ']' )* arrayInitializer | expression ']' ( '[' expression ']' )* ( '[' ']' )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1007:5: ( '[' ( ']' ( '[' ']' )* arrayInitializer | expression ']' ( '[' expression ']' )* ( '[' ']' )* ) )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1007:9: '[' ( ']' ( '[' ']' )* arrayInitializer | expression ']' ( '[' expression ']' )* ( '[' ']' )* )
             {
             root_0 = (Object)adaptor.nil();
 
-            char_literal529=(Token)match(input,48,FOLLOW_48_in_arrayCreatorRest5686); if (state.failed) return retval;
+            char_literal527=(Token)match(input,48,FOLLOW_48_in_arrayCreatorRest5700); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal529_tree = (Object)adaptor.create(char_literal529);
-            adaptor.addChild(root_0, char_literal529_tree);
+            char_literal527_tree = (Object)adaptor.create(char_literal527);
+            adaptor.addChild(root_0, char_literal527_tree);
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1003:9: ( ']' ( '[' ']' )* arrayInitializer | expression ']' ( '[' expression ']' )* ( '[' ']' )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1008:9: ( ']' ( '[' ']' )* arrayInitializer | expression ']' ( '[' expression ']' )* ( '[' ']' )* )
             int alt164=2;
             int LA164_0 = input.LA(1);
 
@@ -15787,14 +15803,14 @@ public class JavaParser extends Parser {
             }
             switch (alt164) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1003:13: ']' ( '[' ']' )* arrayInitializer
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1008:13: ']' ( '[' ']' )* arrayInitializer
                     {
-                    char_literal530=(Token)match(input,49,FOLLOW_49_in_arrayCreatorRest5700); if (state.failed) return retval;
+                    char_literal528=(Token)match(input,49,FOLLOW_49_in_arrayCreatorRest5714); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal530_tree = (Object)adaptor.create(char_literal530);
-                    adaptor.addChild(root_0, char_literal530_tree);
+                    char_literal528_tree = (Object)adaptor.create(char_literal528);
+                    adaptor.addChild(root_0, char_literal528_tree);
                     }
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1003:17: ( '[' ']' )*
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1008:17: ( '[' ']' )*
                     loop161:
                     do {
                         int alt161=2;
@@ -15807,17 +15823,17 @@ public class JavaParser extends Parser {
 
                         switch (alt161) {
                     	case 1 :
-                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1003:18: '[' ']'
+                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1008:18: '[' ']'
                     	    {
-                    	    char_literal531=(Token)match(input,48,FOLLOW_48_in_arrayCreatorRest5703); if (state.failed) return retval;
+                    	    char_literal529=(Token)match(input,48,FOLLOW_48_in_arrayCreatorRest5717); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    char_literal531_tree = (Object)adaptor.create(char_literal531);
-                    	    adaptor.addChild(root_0, char_literal531_tree);
+                    	    char_literal529_tree = (Object)adaptor.create(char_literal529);
+                    	    adaptor.addChild(root_0, char_literal529_tree);
                     	    }
-                    	    char_literal532=(Token)match(input,49,FOLLOW_49_in_arrayCreatorRest5705); if (state.failed) return retval;
+                    	    char_literal530=(Token)match(input,49,FOLLOW_49_in_arrayCreatorRest5719); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    char_literal532_tree = (Object)adaptor.create(char_literal532);
-                    	    adaptor.addChild(root_0, char_literal532_tree);
+                    	    char_literal530_tree = (Object)adaptor.create(char_literal530);
+                    	    adaptor.addChild(root_0, char_literal530_tree);
                     	    }
 
                     	    }
@@ -15828,53 +15844,53 @@ public class JavaParser extends Parser {
                         }
                     } while (true);
 
-                    pushFollow(FOLLOW_arrayInitializer_in_arrayCreatorRest5709);
-                    arrayInitializer533=arrayInitializer();
+                    pushFollow(FOLLOW_arrayInitializer_in_arrayCreatorRest5723);
+                    arrayInitializer531=arrayInitializer();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, arrayInitializer533.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, arrayInitializer531.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1004:13: expression ']' ( '[' expression ']' )* ( '[' ']' )*
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1009:13: expression ']' ( '[' expression ']' )* ( '[' ']' )*
                     {
-                    pushFollow(FOLLOW_expression_in_arrayCreatorRest5723);
-                    expression534=expression();
+                    pushFollow(FOLLOW_expression_in_arrayCreatorRest5737);
+                    expression532=expression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression534.getTree());
-                    char_literal535=(Token)match(input,49,FOLLOW_49_in_arrayCreatorRest5725); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression532.getTree());
+                    char_literal533=(Token)match(input,49,FOLLOW_49_in_arrayCreatorRest5739); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal535_tree = (Object)adaptor.create(char_literal535);
-                    adaptor.addChild(root_0, char_literal535_tree);
+                    char_literal533_tree = (Object)adaptor.create(char_literal533);
+                    adaptor.addChild(root_0, char_literal533_tree);
                     }
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1004:28: ( '[' expression ']' )*
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1009:28: ( '[' expression ']' )*
                     loop162:
                     do {
                         int alt162=2;
                         alt162 = dfa162.predict(input);
                         switch (alt162) {
                     	case 1 :
-                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1004:29: '[' expression ']'
+                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1009:29: '[' expression ']'
                     	    {
-                    	    char_literal536=(Token)match(input,48,FOLLOW_48_in_arrayCreatorRest5728); if (state.failed) return retval;
+                    	    char_literal534=(Token)match(input,48,FOLLOW_48_in_arrayCreatorRest5742); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    char_literal536_tree = (Object)adaptor.create(char_literal536);
-                    	    adaptor.addChild(root_0, char_literal536_tree);
+                    	    char_literal534_tree = (Object)adaptor.create(char_literal534);
+                    	    adaptor.addChild(root_0, char_literal534_tree);
                     	    }
-                    	    pushFollow(FOLLOW_expression_in_arrayCreatorRest5730);
-                    	    expression537=expression();
+                    	    pushFollow(FOLLOW_expression_in_arrayCreatorRest5744);
+                    	    expression535=expression();
 
                     	    state._fsp--;
                     	    if (state.failed) return retval;
-                    	    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression537.getTree());
-                    	    char_literal538=(Token)match(input,49,FOLLOW_49_in_arrayCreatorRest5732); if (state.failed) return retval;
+                    	    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression535.getTree());
+                    	    char_literal536=(Token)match(input,49,FOLLOW_49_in_arrayCreatorRest5746); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    char_literal538_tree = (Object)adaptor.create(char_literal538);
-                    	    adaptor.addChild(root_0, char_literal538_tree);
+                    	    char_literal536_tree = (Object)adaptor.create(char_literal536);
+                    	    adaptor.addChild(root_0, char_literal536_tree);
                     	    }
 
                     	    }
@@ -15885,7 +15901,7 @@ public class JavaParser extends Parser {
                         }
                     } while (true);
 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1004:50: ( '[' ']' )*
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1009:50: ( '[' ']' )*
                     loop163:
                     do {
                         int alt163=2;
@@ -15904,17 +15920,17 @@ public class JavaParser extends Parser {
 
                         switch (alt163) {
                     	case 1 :
-                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1004:51: '[' ']'
+                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1009:51: '[' ']'
                     	    {
-                    	    char_literal539=(Token)match(input,48,FOLLOW_48_in_arrayCreatorRest5737); if (state.failed) return retval;
+                    	    char_literal537=(Token)match(input,48,FOLLOW_48_in_arrayCreatorRest5751); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    char_literal539_tree = (Object)adaptor.create(char_literal539);
-                    	    adaptor.addChild(root_0, char_literal539_tree);
+                    	    char_literal537_tree = (Object)adaptor.create(char_literal537);
+                    	    adaptor.addChild(root_0, char_literal537_tree);
                     	    }
-                    	    char_literal540=(Token)match(input,49,FOLLOW_49_in_arrayCreatorRest5739); if (state.failed) return retval;
+                    	    char_literal538=(Token)match(input,49,FOLLOW_49_in_arrayCreatorRest5753); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    char_literal540_tree = (Object)adaptor.create(char_literal540);
-                    	    adaptor.addChild(root_0, char_literal540_tree);
+                    	    char_literal538_tree = (Object)adaptor.create(char_literal538);
+                    	    adaptor.addChild(root_0, char_literal538_tree);
                     	    }
 
                     	    }
@@ -15961,33 +15977,33 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "classCreatorRest"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1008:1: classCreatorRest : arguments ( classBody )? ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1013:1: classCreatorRest : arguments ( classBody )? ;
     public final JavaParser.classCreatorRest_return classCreatorRest() throws RecognitionException {
         JavaParser.classCreatorRest_return retval = new JavaParser.classCreatorRest_return();
         retval.start = input.LT(1);
         int classCreatorRest_StartIndex = input.index();
         Object root_0 = null;
 
-        JavaParser.arguments_return arguments541 = null;
+        JavaParser.arguments_return arguments539 = null;
 
-        JavaParser.classBody_return classBody542 = null;
+        JavaParser.classBody_return classBody540 = null;
 
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 130) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1009:5: ( arguments ( classBody )? )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1009:9: arguments ( classBody )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1014:5: ( arguments ( classBody )? )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1014:9: arguments ( classBody )?
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_arguments_in_classCreatorRest5770);
-            arguments541=arguments();
+            pushFollow(FOLLOW_arguments_in_classCreatorRest5784);
+            arguments539=arguments();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, arguments541.getTree());
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1009:19: ( classBody )?
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, arguments539.getTree());
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1014:19: ( classBody )?
             int alt165=2;
             int LA165_0 = input.LA(1);
 
@@ -15998,12 +16014,12 @@ public class JavaParser extends Parser {
                 case 1 :
                     // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: classBody
                     {
-                    pushFollow(FOLLOW_classBody_in_classCreatorRest5772);
-                    classBody542=classBody();
+                    pushFollow(FOLLOW_classBody_in_classCreatorRest5786);
+                    classBody540=classBody();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, classBody542.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, classBody540.getTree());
 
                     }
                     break;
@@ -16040,45 +16056,45 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "explicitGenericInvocation"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1012:1: explicitGenericInvocation : nonWildcardTypeArguments Identifier arguments ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1017:1: explicitGenericInvocation : nonWildcardTypeArguments Identifier arguments ;
     public final JavaParser.explicitGenericInvocation_return explicitGenericInvocation() throws RecognitionException {
         JavaParser.explicitGenericInvocation_return retval = new JavaParser.explicitGenericInvocation_return();
         retval.start = input.LT(1);
         int explicitGenericInvocation_StartIndex = input.index();
         Object root_0 = null;
 
-        Token Identifier544=null;
-        JavaParser.nonWildcardTypeArguments_return nonWildcardTypeArguments543 = null;
+        Token Identifier542=null;
+        JavaParser.nonWildcardTypeArguments_return nonWildcardTypeArguments541 = null;
 
-        JavaParser.arguments_return arguments545 = null;
+        JavaParser.arguments_return arguments543 = null;
 
 
-        Object Identifier544_tree=null;
+        Object Identifier542_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 131) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1013:5: ( nonWildcardTypeArguments Identifier arguments )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1013:9: nonWildcardTypeArguments Identifier arguments
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1018:5: ( nonWildcardTypeArguments Identifier arguments )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1018:9: nonWildcardTypeArguments Identifier arguments
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_nonWildcardTypeArguments_in_explicitGenericInvocation5796);
-            nonWildcardTypeArguments543=nonWildcardTypeArguments();
+            pushFollow(FOLLOW_nonWildcardTypeArguments_in_explicitGenericInvocation5810);
+            nonWildcardTypeArguments541=nonWildcardTypeArguments();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, nonWildcardTypeArguments543.getTree());
-            Identifier544=(Token)match(input,Identifier,FOLLOW_Identifier_in_explicitGenericInvocation5798); if (state.failed) return retval;
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, nonWildcardTypeArguments541.getTree());
+            Identifier542=(Token)match(input,Identifier,FOLLOW_Identifier_in_explicitGenericInvocation5812); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            Identifier544_tree = (Object)adaptor.create(Identifier544);
-            adaptor.addChild(root_0, Identifier544_tree);
+            Identifier542_tree = (Object)adaptor.create(Identifier542);
+            adaptor.addChild(root_0, Identifier542_tree);
             }
-            pushFollow(FOLLOW_arguments_in_explicitGenericInvocation5800);
-            arguments545=arguments();
+            pushFollow(FOLLOW_arguments_in_explicitGenericInvocation5814);
+            arguments543=arguments();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, arguments545.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, arguments543.getTree());
 
             }
 
@@ -16109,43 +16125,43 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "nonWildcardTypeArguments"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1016:1: nonWildcardTypeArguments : '<' typeList '>' ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1021:1: nonWildcardTypeArguments : '<' typeList '>' ;
     public final JavaParser.nonWildcardTypeArguments_return nonWildcardTypeArguments() throws RecognitionException {
         JavaParser.nonWildcardTypeArguments_return retval = new JavaParser.nonWildcardTypeArguments_return();
         retval.start = input.LT(1);
         int nonWildcardTypeArguments_StartIndex = input.index();
         Object root_0 = null;
 
+        Token char_literal544=null;
         Token char_literal546=null;
-        Token char_literal548=null;
-        JavaParser.typeList_return typeList547 = null;
+        JavaParser.typeList_return typeList545 = null;
 
 
+        Object char_literal544_tree=null;
         Object char_literal546_tree=null;
-        Object char_literal548_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 132) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1017:5: ( '<' typeList '>' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1017:9: '<' typeList '>'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1022:5: ( '<' typeList '>' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1022:9: '<' typeList '>'
             {
             root_0 = (Object)adaptor.nil();
 
-            char_literal546=(Token)match(input,40,FOLLOW_40_in_nonWildcardTypeArguments5823); if (state.failed) return retval;
+            char_literal544=(Token)match(input,40,FOLLOW_40_in_nonWildcardTypeArguments5837); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal546_tree = (Object)adaptor.create(char_literal546);
-            adaptor.addChild(root_0, char_literal546_tree);
+            char_literal544_tree = (Object)adaptor.create(char_literal544);
+            adaptor.addChild(root_0, char_literal544_tree);
             }
-            pushFollow(FOLLOW_typeList_in_nonWildcardTypeArguments5825);
-            typeList547=typeList();
+            pushFollow(FOLLOW_typeList_in_nonWildcardTypeArguments5839);
+            typeList545=typeList();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, typeList547.getTree());
-            char_literal548=(Token)match(input,42,FOLLOW_42_in_nonWildcardTypeArguments5827); if (state.failed) return retval;
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, typeList545.getTree());
+            char_literal546=(Token)match(input,42,FOLLOW_42_in_nonWildcardTypeArguments5841); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal548_tree = (Object)adaptor.create(char_literal548);
-            adaptor.addChild(root_0, char_literal548_tree);
+            char_literal546_tree = (Object)adaptor.create(char_literal546);
+            adaptor.addChild(root_0, char_literal546_tree);
             }
 
             }
@@ -16177,46 +16193,46 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "selector"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1020:1: selector : ( '.' Identifier ( arguments )? | '.' 'this' | '.' 'super' superSuffix | '.' 'new' innerCreator | '[' expression ']' );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1025:1: selector : ( '.' Identifier ( arguments )? | '.' 'this' | '.' 'super' superSuffix | '.' 'new' innerCreator | '[' expression ']' );
     public final JavaParser.selector_return selector() throws RecognitionException {
         JavaParser.selector_return retval = new JavaParser.selector_return();
         retval.start = input.LT(1);
         int selector_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal549=null;
-        Token Identifier550=null;
+        Token char_literal547=null;
+        Token Identifier548=null;
+        Token char_literal550=null;
+        Token string_literal551=null;
         Token char_literal552=null;
         Token string_literal553=null;
-        Token char_literal554=null;
-        Token string_literal555=null;
-        Token char_literal557=null;
-        Token string_literal558=null;
+        Token char_literal555=null;
+        Token string_literal556=null;
+        Token char_literal558=null;
         Token char_literal560=null;
-        Token char_literal562=null;
-        JavaParser.arguments_return arguments551 = null;
+        JavaParser.arguments_return arguments549 = null;
 
-        JavaParser.superSuffix_return superSuffix556 = null;
+        JavaParser.superSuffix_return superSuffix554 = null;
 
-        JavaParser.innerCreator_return innerCreator559 = null;
+        JavaParser.innerCreator_return innerCreator557 = null;
 
-        JavaParser.expression_return expression561 = null;
+        JavaParser.expression_return expression559 = null;
 
 
-        Object char_literal549_tree=null;
-        Object Identifier550_tree=null;
+        Object char_literal547_tree=null;
+        Object Identifier548_tree=null;
+        Object char_literal550_tree=null;
+        Object string_literal551_tree=null;
         Object char_literal552_tree=null;
         Object string_literal553_tree=null;
-        Object char_literal554_tree=null;
-        Object string_literal555_tree=null;
-        Object char_literal557_tree=null;
-        Object string_literal558_tree=null;
+        Object char_literal555_tree=null;
+        Object string_literal556_tree=null;
+        Object char_literal558_tree=null;
         Object char_literal560_tree=null;
-        Object char_literal562_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 133) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1021:5: ( '.' Identifier ( arguments )? | '.' 'this' | '.' 'super' superSuffix | '.' 'new' innerCreator | '[' expression ']' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1026:5: ( '.' Identifier ( arguments )? | '.' 'this' | '.' 'super' superSuffix | '.' 'new' innerCreator | '[' expression ']' )
             int alt167=5;
             int LA167_0 = input.LA(1);
 
@@ -16263,21 +16279,21 @@ public class JavaParser extends Parser {
             }
             switch (alt167) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1021:9: '.' Identifier ( arguments )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1026:9: '.' Identifier ( arguments )?
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal549=(Token)match(input,29,FOLLOW_29_in_selector5850); if (state.failed) return retval;
+                    char_literal547=(Token)match(input,29,FOLLOW_29_in_selector5864); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal549_tree = (Object)adaptor.create(char_literal549);
-                    adaptor.addChild(root_0, char_literal549_tree);
+                    char_literal547_tree = (Object)adaptor.create(char_literal547);
+                    adaptor.addChild(root_0, char_literal547_tree);
                     }
-                    Identifier550=(Token)match(input,Identifier,FOLLOW_Identifier_in_selector5852); if (state.failed) return retval;
+                    Identifier548=(Token)match(input,Identifier,FOLLOW_Identifier_in_selector5866); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    Identifier550_tree = (Object)adaptor.create(Identifier550);
-                    adaptor.addChild(root_0, Identifier550_tree);
+                    Identifier548_tree = (Object)adaptor.create(Identifier548);
+                    adaptor.addChild(root_0, Identifier548_tree);
                     }
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1021:24: ( arguments )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1026:24: ( arguments )?
                     int alt166=2;
                     int LA166_0 = input.LA(1);
 
@@ -16288,12 +16304,12 @@ public class JavaParser extends Parser {
                         case 1 :
                             // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: arguments
                             {
-                            pushFollow(FOLLOW_arguments_in_selector5854);
-                            arguments551=arguments();
+                            pushFollow(FOLLOW_arguments_in_selector5868);
+                            arguments549=arguments();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, arguments551.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, arguments549.getTree());
 
                             }
                             break;
@@ -16304,91 +16320,91 @@ public class JavaParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1022:9: '.' 'this'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1027:9: '.' 'this'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal552=(Token)match(input,29,FOLLOW_29_in_selector5865); if (state.failed) return retval;
+                    char_literal550=(Token)match(input,29,FOLLOW_29_in_selector5879); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal552_tree = (Object)adaptor.create(char_literal552);
-                    adaptor.addChild(root_0, char_literal552_tree);
+                    char_literal550_tree = (Object)adaptor.create(char_literal550);
+                    adaptor.addChild(root_0, char_literal550_tree);
                     }
-                    string_literal553=(Token)match(input,69,FOLLOW_69_in_selector5867); if (state.failed) return retval;
+                    string_literal551=(Token)match(input,69,FOLLOW_69_in_selector5881); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal553_tree = (Object)adaptor.create(string_literal553);
-                    adaptor.addChild(root_0, string_literal553_tree);
+                    string_literal551_tree = (Object)adaptor.create(string_literal551);
+                    adaptor.addChild(root_0, string_literal551_tree);
                     }
 
                     }
                     break;
                 case 3 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1023:9: '.' 'super' superSuffix
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1028:9: '.' 'super' superSuffix
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal554=(Token)match(input,29,FOLLOW_29_in_selector5877); if (state.failed) return retval;
+                    char_literal552=(Token)match(input,29,FOLLOW_29_in_selector5891); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal554_tree = (Object)adaptor.create(char_literal554);
-                    adaptor.addChild(root_0, char_literal554_tree);
+                    char_literal552_tree = (Object)adaptor.create(char_literal552);
+                    adaptor.addChild(root_0, char_literal552_tree);
                     }
-                    string_literal555=(Token)match(input,65,FOLLOW_65_in_selector5879); if (state.failed) return retval;
+                    string_literal553=(Token)match(input,65,FOLLOW_65_in_selector5893); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal555_tree = (Object)adaptor.create(string_literal555);
-                    adaptor.addChild(root_0, string_literal555_tree);
+                    string_literal553_tree = (Object)adaptor.create(string_literal553);
+                    adaptor.addChild(root_0, string_literal553_tree);
                     }
-                    pushFollow(FOLLOW_superSuffix_in_selector5881);
-                    superSuffix556=superSuffix();
+                    pushFollow(FOLLOW_superSuffix_in_selector5895);
+                    superSuffix554=superSuffix();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, superSuffix556.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, superSuffix554.getTree());
 
                     }
                     break;
                 case 4 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1024:9: '.' 'new' innerCreator
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1029:9: '.' 'new' innerCreator
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal557=(Token)match(input,29,FOLLOW_29_in_selector5891); if (state.failed) return retval;
+                    char_literal555=(Token)match(input,29,FOLLOW_29_in_selector5905); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal557_tree = (Object)adaptor.create(char_literal557);
-                    adaptor.addChild(root_0, char_literal557_tree);
+                    char_literal555_tree = (Object)adaptor.create(char_literal555);
+                    adaptor.addChild(root_0, char_literal555_tree);
                     }
-                    string_literal558=(Token)match(input,113,FOLLOW_113_in_selector5893); if (state.failed) return retval;
+                    string_literal556=(Token)match(input,113,FOLLOW_113_in_selector5907); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal558_tree = (Object)adaptor.create(string_literal558);
-                    adaptor.addChild(root_0, string_literal558_tree);
+                    string_literal556_tree = (Object)adaptor.create(string_literal556);
+                    adaptor.addChild(root_0, string_literal556_tree);
                     }
-                    pushFollow(FOLLOW_innerCreator_in_selector5895);
-                    innerCreator559=innerCreator();
+                    pushFollow(FOLLOW_innerCreator_in_selector5909);
+                    innerCreator557=innerCreator();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, innerCreator559.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, innerCreator557.getTree());
 
                     }
                     break;
                 case 5 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1025:9: '[' expression ']'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1030:9: '[' expression ']'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal560=(Token)match(input,48,FOLLOW_48_in_selector5905); if (state.failed) return retval;
+                    char_literal558=(Token)match(input,48,FOLLOW_48_in_selector5919); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal560_tree = (Object)adaptor.create(char_literal560);
-                    adaptor.addChild(root_0, char_literal560_tree);
+                    char_literal558_tree = (Object)adaptor.create(char_literal558);
+                    adaptor.addChild(root_0, char_literal558_tree);
                     }
-                    pushFollow(FOLLOW_expression_in_selector5907);
-                    expression561=expression();
+                    pushFollow(FOLLOW_expression_in_selector5921);
+                    expression559=expression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression561.getTree());
-                    char_literal562=(Token)match(input,49,FOLLOW_49_in_selector5909); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression559.getTree());
+                    char_literal560=(Token)match(input,49,FOLLOW_49_in_selector5923); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal562_tree = (Object)adaptor.create(char_literal562);
-                    adaptor.addChild(root_0, char_literal562_tree);
+                    char_literal560_tree = (Object)adaptor.create(char_literal560);
+                    adaptor.addChild(root_0, char_literal560_tree);
                     }
 
                     }
@@ -16422,26 +16438,26 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "superSuffix"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1028:1: superSuffix : ( arguments | '.' Identifier ( arguments )? );
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1033:1: superSuffix : ( arguments | '.' Identifier ( arguments )? );
     public final JavaParser.superSuffix_return superSuffix() throws RecognitionException {
         JavaParser.superSuffix_return retval = new JavaParser.superSuffix_return();
         retval.start = input.LT(1);
         int superSuffix_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal564=null;
-        Token Identifier565=null;
-        JavaParser.arguments_return arguments563 = null;
+        Token char_literal562=null;
+        Token Identifier563=null;
+        JavaParser.arguments_return arguments561 = null;
 
-        JavaParser.arguments_return arguments566 = null;
+        JavaParser.arguments_return arguments564 = null;
 
 
-        Object char_literal564_tree=null;
-        Object Identifier565_tree=null;
+        Object char_literal562_tree=null;
+        Object Identifier563_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 134) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1029:5: ( arguments | '.' Identifier ( arguments )? )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1034:5: ( arguments | '.' Identifier ( arguments )? )
             int alt169=2;
             int LA169_0 = input.LA(1);
 
@@ -16460,35 +16476,35 @@ public class JavaParser extends Parser {
             }
             switch (alt169) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1029:9: arguments
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1034:9: arguments
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_arguments_in_superSuffix5932);
-                    arguments563=arguments();
+                    pushFollow(FOLLOW_arguments_in_superSuffix5946);
+                    arguments561=arguments();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, arguments563.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, arguments561.getTree());
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1030:9: '.' Identifier ( arguments )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1035:9: '.' Identifier ( arguments )?
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    char_literal564=(Token)match(input,29,FOLLOW_29_in_superSuffix5942); if (state.failed) return retval;
+                    char_literal562=(Token)match(input,29,FOLLOW_29_in_superSuffix5956); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal564_tree = (Object)adaptor.create(char_literal564);
-                    adaptor.addChild(root_0, char_literal564_tree);
+                    char_literal562_tree = (Object)adaptor.create(char_literal562);
+                    adaptor.addChild(root_0, char_literal562_tree);
                     }
-                    Identifier565=(Token)match(input,Identifier,FOLLOW_Identifier_in_superSuffix5944); if (state.failed) return retval;
+                    Identifier563=(Token)match(input,Identifier,FOLLOW_Identifier_in_superSuffix5958); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    Identifier565_tree = (Object)adaptor.create(Identifier565);
-                    adaptor.addChild(root_0, Identifier565_tree);
+                    Identifier563_tree = (Object)adaptor.create(Identifier563);
+                    adaptor.addChild(root_0, Identifier563_tree);
                     }
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1030:24: ( arguments )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1035:24: ( arguments )?
                     int alt168=2;
                     int LA168_0 = input.LA(1);
 
@@ -16499,12 +16515,12 @@ public class JavaParser extends Parser {
                         case 1 :
                             // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: arguments
                             {
-                            pushFollow(FOLLOW_arguments_in_superSuffix5946);
-                            arguments566=arguments();
+                            pushFollow(FOLLOW_arguments_in_superSuffix5960);
+                            arguments564=arguments();
 
                             state._fsp--;
                             if (state.failed) return retval;
-                            if ( state.backtracking==0 ) adaptor.addChild(root_0, arguments566.getTree());
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, arguments564.getTree());
 
                             }
                             break;
@@ -16543,34 +16559,34 @@ public class JavaParser extends Parser {
     };
 
     // $ANTLR start "arguments"
-    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1033:1: arguments : '(' ( expressionList )? ')' ;
+    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1038:1: arguments : '(' ( expressionList )? ')' ;
     public final JavaParser.arguments_return arguments() throws RecognitionException {
         JavaParser.arguments_return retval = new JavaParser.arguments_return();
         retval.start = input.LT(1);
         int arguments_StartIndex = input.index();
         Object root_0 = null;
 
+        Token char_literal565=null;
         Token char_literal567=null;
-        Token char_literal569=null;
-        JavaParser.expressionList_return expressionList568 = null;
+        JavaParser.expressionList_return expressionList566 = null;
 
 
+        Object char_literal565_tree=null;
         Object char_literal567_tree=null;
-        Object char_literal569_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 135) ) { return retval; }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1034:5: ( '(' ( expressionList )? ')' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1034:9: '(' ( expressionList )? ')'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1039:5: ( '(' ( expressionList )? ')' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1039:9: '(' ( expressionList )? ')'
             {
             root_0 = (Object)adaptor.nil();
 
-            char_literal567=(Token)match(input,66,FOLLOW_66_in_arguments5966); if (state.failed) return retval;
+            char_literal565=(Token)match(input,66,FOLLOW_66_in_arguments5980); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal567_tree = (Object)adaptor.create(char_literal567);
-            adaptor.addChild(root_0, char_literal567_tree);
+            char_literal565_tree = (Object)adaptor.create(char_literal565);
+            adaptor.addChild(root_0, char_literal565_tree);
             }
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1034:13: ( expressionList )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1039:13: ( expressionList )?
             int alt170=2;
             int LA170_0 = input.LA(1);
 
@@ -16581,22 +16597,22 @@ public class JavaParser extends Parser {
                 case 1 :
                     // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: expressionList
                     {
-                    pushFollow(FOLLOW_expressionList_in_arguments5968);
-                    expressionList568=expressionList();
+                    pushFollow(FOLLOW_expressionList_in_arguments5982);
+                    expressionList566=expressionList();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expressionList568.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expressionList566.getTree());
 
                     }
                     break;
 
             }
 
-            char_literal569=(Token)match(input,67,FOLLOW_67_in_arguments5971); if (state.failed) return retval;
+            char_literal567=(Token)match(input,67,FOLLOW_67_in_arguments5985); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal569_tree = (Object)adaptor.create(char_literal569);
-            adaptor.addChild(root_0, char_literal569_tree);
+            char_literal567_tree = (Object)adaptor.create(char_literal567);
+            adaptor.addChild(root_0, char_literal567_tree);
             }
 
             }
@@ -16633,15 +16649,15 @@ public class JavaParser extends Parser {
         JavaParser.classOrInterfaceDeclaration_return cd = null;
 
 
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:288:10: ( annotations (np= packageDeclaration (imp= importDeclaration )* (typech= typeDeclaration )* | cd= classOrInterfaceDeclaration (typech= typeDeclaration )* ) )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:288:10: annotations (np= packageDeclaration (imp= importDeclaration )* (typech= typeDeclaration )* | cd= classOrInterfaceDeclaration (typech= typeDeclaration )* )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:290:10: ( annotations (np= packageDeclaration (imp= importDeclaration )* (typech= typeDeclaration )* | cd= classOrInterfaceDeclaration (typech= typeDeclaration )* ) )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:290:10: annotations (np= packageDeclaration (imp= importDeclaration )* (typech= typeDeclaration )* | cd= classOrInterfaceDeclaration (typech= typeDeclaration )* )
         {
         pushFollow(FOLLOW_annotations_in_synpred5_Java89);
         annotations();
 
         state._fsp--;
         if (state.failed) return ;
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:289:9: (np= packageDeclaration (imp= importDeclaration )* (typech= typeDeclaration )* | cd= classOrInterfaceDeclaration (typech= typeDeclaration )* )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:291:9: (np= packageDeclaration (imp= importDeclaration )* (typech= typeDeclaration )* | cd= classOrInterfaceDeclaration (typech= typeDeclaration )* )
         int alt176=2;
         int LA176_0 = input.LA(1);
 
@@ -16660,14 +16676,14 @@ public class JavaParser extends Parser {
         }
         switch (alt176) {
             case 1 :
-                // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:289:13: np= packageDeclaration (imp= importDeclaration )* (typech= typeDeclaration )*
+                // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:291:13: np= packageDeclaration (imp= importDeclaration )* (typech= typeDeclaration )*
                 {
                 pushFollow(FOLLOW_packageDeclaration_in_synpred5_Java105);
                 np=packageDeclaration();
 
                 state._fsp--;
                 if (state.failed) return ;
-                // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:289:90: (imp= importDeclaration )*
+                // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:291:90: (imp= importDeclaration )*
                 loop173:
                 do {
                     int alt173=2;
@@ -16680,7 +16696,7 @@ public class JavaParser extends Parser {
 
                     switch (alt173) {
                 	case 1 :
-                	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:289:91: imp= importDeclaration
+                	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:291:91: imp= importDeclaration
                 	    {
                 	    pushFollow(FOLLOW_importDeclaration_in_synpred5_Java111);
                 	    imp=importDeclaration();
@@ -16696,7 +16712,7 @@ public class JavaParser extends Parser {
                     }
                 } while (true);
 
-                // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:289:159: (typech= typeDeclaration )*
+                // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:291:159: (typech= typeDeclaration )*
                 loop174:
                 do {
                     int alt174=2;
@@ -16709,7 +16725,7 @@ public class JavaParser extends Parser {
 
                     switch (alt174) {
                 	case 1 :
-                	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:289:160: typech= typeDeclaration
+                	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:291:160: typech= typeDeclaration
                 	    {
                 	    pushFollow(FOLLOW_typeDeclaration_in_synpred5_Java119);
                 	    typech=typeDeclaration();
@@ -16729,14 +16745,14 @@ public class JavaParser extends Parser {
                 }
                 break;
             case 2 :
-                // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:290:13: cd= classOrInterfaceDeclaration (typech= typeDeclaration )*
+                // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:292:13: cd= classOrInterfaceDeclaration (typech= typeDeclaration )*
                 {
                 pushFollow(FOLLOW_classOrInterfaceDeclaration_in_synpred5_Java138);
                 cd=classOrInterfaceDeclaration();
 
                 state._fsp--;
                 if (state.failed) return ;
-                // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:290:85: (typech= typeDeclaration )*
+                // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:292:85: (typech= typeDeclaration )*
                 loop175:
                 do {
                     int alt175=2;
@@ -16749,7 +16765,7 @@ public class JavaParser extends Parser {
 
                     switch (alt175) {
                 	case 1 :
-                	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:290:86: typech= typeDeclaration
+                	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:292:86: typech= typeDeclaration
                 	    {
                 	    pushFollow(FOLLOW_typeDeclaration_in_synpred5_Java144);
                 	    typech=typeDeclaration();
@@ -16778,10 +16794,10 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred81_Java
     public final void synpred81_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:545:9: ( annotation )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:545:9: annotation
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:550:9: ( annotation )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:550:9: annotation
         {
-        pushFollow(FOLLOW_annotation_in_synpred81_Java2140);
+        pushFollow(FOLLOW_annotation_in_synpred81_Java2154);
         annotation();
 
         state._fsp--;
@@ -16796,10 +16812,10 @@ public class JavaParser extends Parser {
         JavaParser.classOrInterfaceModifier_return mod = null;
 
 
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:546:9: (mod= classOrInterfaceModifier )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:546:9: mod= classOrInterfaceModifier
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:551:9: (mod= classOrInterfaceModifier )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:551:9: mod= classOrInterfaceModifier
         {
-        pushFollow(FOLLOW_classOrInterfaceModifier_in_synpred82_Java2152);
+        pushFollow(FOLLOW_classOrInterfaceModifier_in_synpred82_Java2166);
         mod=classOrInterfaceModifier();
 
         state._fsp--;
@@ -16811,10 +16827,10 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred108_Java
     public final void synpred108_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:622:13: ( explicitConstructorInvocation )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:622:13: explicitConstructorInvocation
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:627:13: ( explicitConstructorInvocation )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:627:13: explicitConstructorInvocation
         {
-        pushFollow(FOLLOW_explicitConstructorInvocation_in_synpred108_Java2702);
+        pushFollow(FOLLOW_explicitConstructorInvocation_in_synpred108_Java2716);
         explicitConstructorInvocation();
 
         state._fsp--;
@@ -16826,10 +16842,10 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred112_Java
     public final void synpred112_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:626:9: ( ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';' )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:626:9: ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';'
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:631:9: ( ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';' )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:631:9: ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';'
         {
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:626:9: ( nonWildcardTypeArguments )?
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:631:9: ( nonWildcardTypeArguments )?
         int alt184=2;
         int LA184_0 = input.LA(1);
 
@@ -16840,7 +16856,7 @@ public class JavaParser extends Parser {
             case 1 :
                 // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:0:0: nonWildcardTypeArguments
                 {
-                pushFollow(FOLLOW_nonWildcardTypeArguments_in_synpred112_Java2727);
+                pushFollow(FOLLOW_nonWildcardTypeArguments_in_synpred112_Java2741);
                 nonWildcardTypeArguments();
 
                 state._fsp--;
@@ -16861,12 +16877,12 @@ public class JavaParser extends Parser {
             throw mse;
         }
 
-        pushFollow(FOLLOW_arguments_in_synpred112_Java2738);
+        pushFollow(FOLLOW_arguments_in_synpred112_Java2752);
         arguments();
 
         state._fsp--;
         if (state.failed) return ;
-        match(input,26,FOLLOW_26_in_synpred112_Java2740); if (state.failed) return ;
+        match(input,26,FOLLOW_26_in_synpred112_Java2754); if (state.failed) return ;
 
         }
     }
@@ -16874,10 +16890,10 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred123_Java
     public final void synpred123_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:658:9: ( annotation )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:658:9: annotation
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:663:9: ( annotation )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:663:9: annotation
         {
-        pushFollow(FOLLOW_annotation_in_synpred123_Java2951);
+        pushFollow(FOLLOW_annotation_in_synpred123_Java2965);
         annotation();
 
         state._fsp--;
@@ -16889,10 +16905,10 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred146_Java
     public final void synpred146_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:731:9: ( localVariableDeclarationStatement )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:731:9: localVariableDeclarationStatement
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:736:9: ( localVariableDeclarationStatement )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:736:9: localVariableDeclarationStatement
         {
-        pushFollow(FOLLOW_localVariableDeclarationStatement_in_synpred146_Java3478);
+        pushFollow(FOLLOW_localVariableDeclarationStatement_in_synpred146_Java3492);
         localVariableDeclarationStatement();
 
         state._fsp--;
@@ -16904,10 +16920,10 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred147_Java
     public final void synpred147_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:732:9: ( classOrInterfaceDeclaration )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:732:9: classOrInterfaceDeclaration
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:737:9: ( classOrInterfaceDeclaration )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:737:9: classOrInterfaceDeclaration
         {
-        pushFollow(FOLLOW_classOrInterfaceDeclaration_in_synpred147_Java3488);
+        pushFollow(FOLLOW_classOrInterfaceDeclaration_in_synpred147_Java3502);
         classOrInterfaceDeclaration();
 
         state._fsp--;
@@ -16919,11 +16935,11 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred152_Java
     public final void synpred152_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:751:54: ( 'else' statement )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:751:54: 'else' statement
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:756:54: ( 'else' statement )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:756:54: 'else' statement
         {
-        match(input,77,FOLLOW_77_in_synpred152_Java3633); if (state.failed) return ;
-        pushFollow(FOLLOW_statement_in_synpred152_Java3635);
+        match(input,77,FOLLOW_77_in_synpred152_Java3647); if (state.failed) return ;
+        pushFollow(FOLLOW_statement_in_synpred152_Java3649);
         statement();
 
         state._fsp--;
@@ -16935,16 +16951,16 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred157_Java
     public final void synpred157_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:756:11: ( catches 'finally' block )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:756:11: catches 'finally' block
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:761:11: ( catches 'finally' block )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:761:11: catches 'finally' block
         {
-        pushFollow(FOLLOW_catches_in_synpred157_Java3711);
+        pushFollow(FOLLOW_catches_in_synpred157_Java3725);
         catches();
 
         state._fsp--;
         if (state.failed) return ;
-        match(input,82,FOLLOW_82_in_synpred157_Java3713); if (state.failed) return ;
-        pushFollow(FOLLOW_block_in_synpred157_Java3715);
+        match(input,82,FOLLOW_82_in_synpred157_Java3727); if (state.failed) return ;
+        pushFollow(FOLLOW_block_in_synpred157_Java3729);
         block();
 
         state._fsp--;
@@ -16956,10 +16972,10 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred158_Java
     public final void synpred158_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:757:11: ( catches )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:757:11: catches
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:762:11: ( catches )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:762:11: catches
         {
-        pushFollow(FOLLOW_catches_in_synpred158_Java3727);
+        pushFollow(FOLLOW_catches_in_synpred158_Java3741);
         catches();
 
         state._fsp--;
@@ -16971,10 +16987,10 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred173_Java
     public final void synpred173_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:792:9: ( switchLabel )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:792:9: switchLabel
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:797:9: ( switchLabel )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:797:9: switchLabel
         {
-        pushFollow(FOLLOW_switchLabel_in_synpred173_Java4018);
+        pushFollow(FOLLOW_switchLabel_in_synpred173_Java4032);
         switchLabel();
 
         state._fsp--;
@@ -16986,16 +17002,16 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred175_Java
     public final void synpred175_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:796:9: ( 'case' constantExpression ':' )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:796:9: 'case' constantExpression ':'
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:801:9: ( 'case' constantExpression ':' )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:801:9: 'case' constantExpression ':'
         {
-        match(input,89,FOLLOW_89_in_synpred175_Java4045); if (state.failed) return ;
-        pushFollow(FOLLOW_constantExpression_in_synpred175_Java4047);
+        match(input,89,FOLLOW_89_in_synpred175_Java4059); if (state.failed) return ;
+        pushFollow(FOLLOW_constantExpression_in_synpred175_Java4061);
         constantExpression();
 
         state._fsp--;
         if (state.failed) return ;
-        match(input,75,FOLLOW_75_in_synpred175_Java4049); if (state.failed) return ;
+        match(input,75,FOLLOW_75_in_synpred175_Java4063); if (state.failed) return ;
 
         }
     }
@@ -17003,16 +17019,16 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred176_Java
     public final void synpred176_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:797:9: ( 'case' enumConstantName ':' )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:797:9: 'case' enumConstantName ':'
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:802:9: ( 'case' enumConstantName ':' )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:802:9: 'case' enumConstantName ':'
         {
-        match(input,89,FOLLOW_89_in_synpred176_Java4059); if (state.failed) return ;
-        pushFollow(FOLLOW_enumConstantName_in_synpred176_Java4061);
+        match(input,89,FOLLOW_89_in_synpred176_Java4073); if (state.failed) return ;
+        pushFollow(FOLLOW_enumConstantName_in_synpred176_Java4075);
         enumConstantName();
 
         state._fsp--;
         if (state.failed) return ;
-        match(input,75,FOLLOW_75_in_synpred176_Java4063); if (state.failed) return ;
+        match(input,75,FOLLOW_75_in_synpred176_Java4077); if (state.failed) return ;
 
         }
     }
@@ -17020,10 +17036,10 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred177_Java
     public final void synpred177_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:803:9: ( enhancedForControl )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:803:9: enhancedForControl
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:808:9: ( enhancedForControl )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:808:9: enhancedForControl
         {
-        pushFollow(FOLLOW_enhancedForControl_in_synpred177_Java4106);
+        pushFollow(FOLLOW_enhancedForControl_in_synpred177_Java4120);
         enhancedForControl();
 
         state._fsp--;
@@ -17035,10 +17051,10 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred181_Java
     public final void synpred181_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:808:9: ( localVariableDeclaration )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:808:9: localVariableDeclaration
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:813:9: ( localVariableDeclaration )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:813:9: localVariableDeclaration
         {
-        pushFollow(FOLLOW_localVariableDeclaration_in_synpred181_Java4146);
+        pushFollow(FOLLOW_localVariableDeclaration_in_synpred181_Java4160);
         localVariableDeclaration();
 
         state._fsp--;
@@ -17050,15 +17066,15 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred183_Java
     public final void synpred183_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:839:32: ( assignmentOperator expression )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:839:32: assignmentOperator expression
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:844:32: ( assignmentOperator expression )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:844:32: assignmentOperator expression
         {
-        pushFollow(FOLLOW_assignmentOperator_in_synpred183_Java4329);
+        pushFollow(FOLLOW_assignmentOperator_in_synpred183_Java4343);
         assignmentOperator();
 
         state._fsp--;
         if (state.failed) return ;
-        pushFollow(FOLLOW_expression_in_synpred183_Java4331);
+        pushFollow(FOLLOW_expression_in_synpred183_Java4345);
         expression();
 
         state._fsp--;
@@ -17070,12 +17086,12 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred193_Java
     public final void synpred193_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:852:9: ( '<' '<' '=' )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:852:10: '<' '<' '='
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:857:9: ( '<' '<' '=' )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:857:10: '<' '<' '='
         {
-        match(input,40,FOLLOW_40_in_synpred193_Java4447); if (state.failed) return ;
-        match(input,40,FOLLOW_40_in_synpred193_Java4449); if (state.failed) return ;
-        match(input,51,FOLLOW_51_in_synpred193_Java4451); if (state.failed) return ;
+        match(input,40,FOLLOW_40_in_synpred193_Java4461); if (state.failed) return ;
+        match(input,40,FOLLOW_40_in_synpred193_Java4463); if (state.failed) return ;
+        match(input,51,FOLLOW_51_in_synpred193_Java4465); if (state.failed) return ;
 
         }
     }
@@ -17083,13 +17099,13 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred194_Java
     public final void synpred194_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:857:9: ( '>' '>' '>' '=' )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:857:10: '>' '>' '>' '='
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:862:9: ( '>' '>' '>' '=' )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:862:10: '>' '>' '>' '='
         {
-        match(input,42,FOLLOW_42_in_synpred194_Java4487); if (state.failed) return ;
-        match(input,42,FOLLOW_42_in_synpred194_Java4489); if (state.failed) return ;
-        match(input,42,FOLLOW_42_in_synpred194_Java4491); if (state.failed) return ;
-        match(input,51,FOLLOW_51_in_synpred194_Java4493); if (state.failed) return ;
+        match(input,42,FOLLOW_42_in_synpred194_Java4501); if (state.failed) return ;
+        match(input,42,FOLLOW_42_in_synpred194_Java4503); if (state.failed) return ;
+        match(input,42,FOLLOW_42_in_synpred194_Java4505); if (state.failed) return ;
+        match(input,51,FOLLOW_51_in_synpred194_Java4507); if (state.failed) return ;
 
         }
     }
@@ -17097,12 +17113,12 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred195_Java
     public final void synpred195_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:864:9: ( '>' '>' '=' )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:864:10: '>' '>' '='
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:869:9: ( '>' '>' '=' )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:869:10: '>' '>' '='
         {
-        match(input,42,FOLLOW_42_in_synpred195_Java4532); if (state.failed) return ;
-        match(input,42,FOLLOW_42_in_synpred195_Java4534); if (state.failed) return ;
-        match(input,51,FOLLOW_51_in_synpred195_Java4536); if (state.failed) return ;
+        match(input,42,FOLLOW_42_in_synpred195_Java4546); if (state.failed) return ;
+        match(input,42,FOLLOW_42_in_synpred195_Java4548); if (state.failed) return ;
+        match(input,51,FOLLOW_51_in_synpred195_Java4550); if (state.failed) return ;
 
         }
     }
@@ -17110,11 +17126,11 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred206_Java
     public final void synpred206_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:908:9: ( '<' '=' )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:908:10: '<' '='
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:913:9: ( '<' '=' )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:913:10: '<' '='
         {
-        match(input,40,FOLLOW_40_in_synpred206_Java4844); if (state.failed) return ;
-        match(input,51,FOLLOW_51_in_synpred206_Java4846); if (state.failed) return ;
+        match(input,40,FOLLOW_40_in_synpred206_Java4858); if (state.failed) return ;
+        match(input,51,FOLLOW_51_in_synpred206_Java4860); if (state.failed) return ;
 
         }
     }
@@ -17122,11 +17138,11 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred207_Java
     public final void synpred207_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:911:9: ( '>' '=' )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:911:10: '>' '='
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:916:9: ( '>' '=' )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:916:10: '>' '='
         {
-        match(input,42,FOLLOW_42_in_synpred207_Java4878); if (state.failed) return ;
-        match(input,51,FOLLOW_51_in_synpred207_Java4880); if (state.failed) return ;
+        match(input,42,FOLLOW_42_in_synpred207_Java4892); if (state.failed) return ;
+        match(input,51,FOLLOW_51_in_synpred207_Java4894); if (state.failed) return ;
 
         }
     }
@@ -17134,11 +17150,11 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred210_Java
     public final void synpred210_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:923:9: ( '<' '<' )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:923:10: '<' '<'
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:928:9: ( '<' '<' )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:928:10: '<' '<'
         {
-        match(input,40,FOLLOW_40_in_synpred210_Java4971); if (state.failed) return ;
-        match(input,40,FOLLOW_40_in_synpred210_Java4973); if (state.failed) return ;
+        match(input,40,FOLLOW_40_in_synpred210_Java4985); if (state.failed) return ;
+        match(input,40,FOLLOW_40_in_synpred210_Java4987); if (state.failed) return ;
 
         }
     }
@@ -17146,12 +17162,12 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred211_Java
     public final void synpred211_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:926:9: ( '>' '>' '>' )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:926:10: '>' '>' '>'
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:931:9: ( '>' '>' '>' )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:931:10: '>' '>' '>'
         {
-        match(input,42,FOLLOW_42_in_synpred211_Java5005); if (state.failed) return ;
-        match(input,42,FOLLOW_42_in_synpred211_Java5007); if (state.failed) return ;
-        match(input,42,FOLLOW_42_in_synpred211_Java5009); if (state.failed) return ;
+        match(input,42,FOLLOW_42_in_synpred211_Java5019); if (state.failed) return ;
+        match(input,42,FOLLOW_42_in_synpred211_Java5021); if (state.failed) return ;
+        match(input,42,FOLLOW_42_in_synpred211_Java5023); if (state.failed) return ;
 
         }
     }
@@ -17159,11 +17175,11 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred212_Java
     public final void synpred212_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:931:9: ( '>' '>' )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:931:10: '>' '>'
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:936:9: ( '>' '>' )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:936:10: '>' '>'
         {
-        match(input,42,FOLLOW_42_in_synpred212_Java5045); if (state.failed) return ;
-        match(input,42,FOLLOW_42_in_synpred212_Java5047); if (state.failed) return ;
+        match(input,42,FOLLOW_42_in_synpred212_Java5059); if (state.failed) return ;
+        match(input,42,FOLLOW_42_in_synpred212_Java5061); if (state.failed) return ;
 
         }
     }
@@ -17171,10 +17187,10 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred224_Java
     public final void synpred224_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:956:9: ( castExpression )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:956:9: castExpression
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:961:9: ( castExpression )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:961:9: castExpression
         {
-        pushFollow(FOLLOW_castExpression_in_synpred224_Java5256);
+        pushFollow(FOLLOW_castExpression_in_synpred224_Java5270);
         castExpression();
 
         state._fsp--;
@@ -17186,17 +17202,17 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred228_Java
     public final void synpred228_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:961:8: ( '(' primitiveType ')' unaryExpression )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:961:8: '(' primitiveType ')' unaryExpression
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:966:8: ( '(' primitiveType ')' unaryExpression )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:966:8: '(' primitiveType ')' unaryExpression
         {
-        match(input,66,FOLLOW_66_in_synpred228_Java5294); if (state.failed) return ;
-        pushFollow(FOLLOW_primitiveType_in_synpred228_Java5296);
+        match(input,66,FOLLOW_66_in_synpred228_Java5308); if (state.failed) return ;
+        pushFollow(FOLLOW_primitiveType_in_synpred228_Java5310);
         primitiveType();
 
         state._fsp--;
         if (state.failed) return ;
-        match(input,67,FOLLOW_67_in_synpred228_Java5298); if (state.failed) return ;
-        pushFollow(FOLLOW_unaryExpression_in_synpred228_Java5300);
+        match(input,67,FOLLOW_67_in_synpred228_Java5312); if (state.failed) return ;
+        pushFollow(FOLLOW_unaryExpression_in_synpred228_Java5314);
         unaryExpression();
 
         state._fsp--;
@@ -17208,10 +17224,10 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred229_Java
     public final void synpred229_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:962:13: ( type )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:962:13: type
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:967:13: ( type )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:967:13: type
         {
-        pushFollow(FOLLOW_type_in_synpred229_Java5312);
+        pushFollow(FOLLOW_type_in_synpred229_Java5326);
         type();
 
         state._fsp--;
@@ -17223,11 +17239,11 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred231_Java
     public final void synpred231_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:967:17: ( '.' Identifier )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:967:17: '.' Identifier
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:972:17: ( '.' Identifier )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:972:17: '.' Identifier
         {
-        match(input,29,FOLLOW_29_in_synpred231_Java5353); if (state.failed) return ;
-        match(input,Identifier,FOLLOW_Identifier_in_synpred231_Java5355); if (state.failed) return ;
+        match(input,29,FOLLOW_29_in_synpred231_Java5367); if (state.failed) return ;
+        match(input,Identifier,FOLLOW_Identifier_in_synpred231_Java5369); if (state.failed) return ;
 
         }
     }
@@ -17235,10 +17251,10 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred232_Java
     public final void synpred232_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:967:34: ( identifierSuffix )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:967:34: identifierSuffix
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:972:34: ( identifierSuffix )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:972:34: identifierSuffix
         {
-        pushFollow(FOLLOW_identifierSuffix_in_synpred232_Java5359);
+        pushFollow(FOLLOW_identifierSuffix_in_synpred232_Java5373);
         identifierSuffix();
 
         state._fsp--;
@@ -17250,11 +17266,11 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred237_Java
     public final void synpred237_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:971:21: ( '.' Identifier )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:971:21: '.' Identifier
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:976:21: ( '.' Identifier )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:976:21: '.' Identifier
         {
-        match(input,29,FOLLOW_29_in_synpred237_Java5407); if (state.failed) return ;
-        match(input,Identifier,FOLLOW_Identifier_in_synpred237_Java5409); if (state.failed) return ;
+        match(input,29,FOLLOW_29_in_synpred237_Java5421); if (state.failed) return ;
+        match(input,Identifier,FOLLOW_Identifier_in_synpred237_Java5423); if (state.failed) return ;
 
         }
     }
@@ -17262,10 +17278,10 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred238_Java
     public final void synpred238_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:971:38: ( identifierSuffix )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:971:38: identifierSuffix
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:976:38: ( identifierSuffix )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:976:38: identifierSuffix
         {
-        pushFollow(FOLLOW_identifierSuffix_in_synpred238_Java5413);
+        pushFollow(FOLLOW_identifierSuffix_in_synpred238_Java5427);
         identifierSuffix();
 
         state._fsp--;
@@ -17277,16 +17293,16 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred244_Java
     public final void synpred244_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:978:10: ( '[' expression ']' )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:978:10: '[' expression ']'
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:983:10: ( '[' expression ']' )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:983:10: '[' expression ']'
         {
-        match(input,48,FOLLOW_48_in_synpred244_Java5488); if (state.failed) return ;
-        pushFollow(FOLLOW_expression_in_synpred244_Java5490);
+        match(input,48,FOLLOW_48_in_synpred244_Java5502); if (state.failed) return ;
+        pushFollow(FOLLOW_expression_in_synpred244_Java5504);
         expression();
 
         state._fsp--;
         if (state.failed) return ;
-        match(input,49,FOLLOW_49_in_synpred244_Java5492); if (state.failed) return ;
+        match(input,49,FOLLOW_49_in_synpred244_Java5506); if (state.failed) return ;
 
         }
     }
@@ -17294,16 +17310,16 @@ public class JavaParser extends Parser {
 
     // $ANTLR start synpred257_Java
     public final void synpred257_Java_fragment() throws RecognitionException {   
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1004:29: ( '[' expression ']' )
-        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1004:29: '[' expression ']'
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1009:29: ( '[' expression ']' )
+        // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1009:29: '[' expression ']'
         {
-        match(input,48,FOLLOW_48_in_synpred257_Java5728); if (state.failed) return ;
-        pushFollow(FOLLOW_expression_in_synpred257_Java5730);
+        match(input,48,FOLLOW_48_in_synpred257_Java5742); if (state.failed) return ;
+        pushFollow(FOLLOW_expression_in_synpred257_Java5744);
         expression();
 
         state._fsp--;
         if (state.failed) return ;
-        match(input,49,FOLLOW_49_in_synpred257_Java5732); if (state.failed) return ;
+        match(input,49,FOLLOW_49_in_synpred257_Java5746); if (state.failed) return ;
 
         }
     }
@@ -17689,11 +17705,11 @@ public class JavaParser extends Parser {
         state.failed=false;
         return success;
     }
-    public final boolean synpred176_Java() {
+    public final boolean synpred123_Java() {
         state.backtracking++;
         int start = input.mark();
         try {
-            synpred176_Java_fragment(); // can never throw exception
+            synpred123_Java_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -17703,11 +17719,11 @@ public class JavaParser extends Parser {
         state.failed=false;
         return success;
     }
-    public final boolean synpred123_Java() {
+    public final boolean synpred176_Java() {
         state.backtracking++;
         int start = input.mark();
         try {
-            synpred123_Java_fragment(); // can never throw exception
+            synpred176_Java_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -17868,7 +17884,7 @@ public class JavaParser extends Parser {
             this.transition = DFA8_transition;
         }
         public String getDescription() {
-            return "286:1: compilationUnit returns [CompilationUnit element] : ( annotations (np= packageDeclaration (imp= importDeclaration )* (typech= typeDeclaration )* | cd= classOrInterfaceDeclaration (typech= typeDeclaration )* ) | (np= packageDeclaration )? (imp= importDeclaration )* (typech= typeDeclaration )* );";
+            return "288:1: compilationUnit returns [CompilationUnit element] : ( annotations (np= packageDeclaration (imp= importDeclaration )* (typech= typeDeclaration )* | cd= classOrInterfaceDeclaration (typech= typeDeclaration )* ) | (np= packageDeclaration )? (imp= importDeclaration )* (typech= typeDeclaration )* );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -17993,7 +18009,7 @@ public class JavaParser extends Parser {
             this.transition = DFA81_transition;
         }
         public String getDescription() {
-            return "622:13: ( explicitConstructorInvocation )?";
+            return "627:13: ( explicitConstructorInvocation )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -18263,7 +18279,7 @@ public class JavaParser extends Parser {
             this.transition = DFA85_transition;
         }
         public String getDescription() {
-            return "625:1: explicitConstructorInvocation : ( ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';' | primary '.' ( nonWildcardTypeArguments )? 'super' arguments ';' );";
+            return "630:1: explicitConstructorInvocation : ( ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';' | primary '.' ( nonWildcardTypeArguments )? 'super' arguments ';' );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -18401,7 +18417,7 @@ public class JavaParser extends Parser {
             this.transition = DFA106_transition;
         }
         public String getDescription() {
-            return "730:1: blockStatement : ( localVariableDeclarationStatement | classOrInterfaceDeclaration | statement );";
+            return "735:1: blockStatement : ( localVariableDeclarationStatement | classOrInterfaceDeclaration | statement );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -18544,7 +18560,7 @@ public class JavaParser extends Parser {
             this.transition = DFA114_transition;
         }
         public String getDescription() {
-            return "748:1: statement : ( block | ASSERT expression ( ':' expression )? ';' | 'if' parExpression statement ( options {k=1; } : 'else' statement )? | 'for' '(' forControl ')' statement | 'while' parExpression statement | 'do' statement 'while' parExpression ';' | 'try' block ( catches 'finally' block | catches | 'finally' block ) | 'switch' parExpression '{' switchBlockStatementGroups '}' | 'synchronized' parExpression block | 'return' ( expression )? ';' | 'throw' expression ';' | 'break' ( Identifier )? ';' | 'continue' ( Identifier )? ';' | ';' | statementExpression ';' | Identifier ':' statement );";
+            return "753:1: statement : ( block | ASSERT expression ( ':' expression )? ';' | 'if' parExpression statement ( options {k=1; } : 'else' statement )? | 'for' '(' forControl ')' statement | 'while' parExpression statement | 'do' statement 'while' parExpression ';' | 'try' block ( catches 'finally' block | catches | 'finally' block ) | 'switch' parExpression '{' switchBlockStatementGroups '}' | 'synchronized' parExpression block | 'return' ( expression )? ';' | 'throw' expression ';' | 'break' ( Identifier )? ';' | 'continue' ( Identifier )? ';' | ';' | statementExpression ';' | Identifier ':' statement );";
         }
     }
     static final String DFA123_eotS =
@@ -18738,7 +18754,7 @@ public class JavaParser extends Parser {
             this.transition = DFA123_transition;
         }
         public String getDescription() {
-            return "801:1: forControl options {k=3; } : ( enhancedForControl | ( forInit )? ';' ( expression )? ';' ( forUpdate )? );";
+            return "806:1: forControl options {k=3; } : ( enhancedForControl | ( forInit )? ';' ( expression )? ';' ( forUpdate )? );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -19165,7 +19181,7 @@ public class JavaParser extends Parser {
             this.transition = DFA124_transition;
         }
         public String getDescription() {
-            return "807:1: forInit : ( localVariableDeclaration | expressionList );";
+            return "812:1: forInit : ( localVariableDeclaration | expressionList );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -19220,7 +19236,7 @@ public class JavaParser extends Parser {
     static final String DFA126_acceptS =
         "\14\uffff\1\2\1\1";
     static final String DFA126_specialS =
-        "\1\uffff\1\7\1\11\1\3\1\2\1\6\1\4\1\10\1\12\1\1\1\5\1\0\2\uffff}>";
+        "\1\uffff\1\10\1\6\1\2\1\0\1\12\1\7\1\1\1\5\1\11\1\4\1\3\2\uffff}>";
     static final String[] DFA126_transitionS = {
             "\1\14\15\uffff\1\12\1\14\1\13\2\uffff\1\14\3\uffff\1\14\1\uffff"+
             "\1\1\17\uffff\1\14\7\uffff\1\14\16\uffff\1\2\1\3\1\4\1\5\1\6"+
@@ -19270,43 +19286,13 @@ public class JavaParser extends Parser {
             this.transition = DFA126_transition;
         }
         public String getDescription() {
-            return "839:31: ( assignmentOperator expression )?";
+            return "844:31: ( assignmentOperator expression )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
         	int _s = s;
             switch ( s ) {
                     case 0 : 
-                        int LA126_11 = input.LA(1);
-
-                         
-                        int index126_11 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred183_Java()) ) {s = 13;}
-
-                        else if ( (true) ) {s = 12;}
-
-                         
-                        input.seek(index126_11);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 1 : 
-                        int LA126_9 = input.LA(1);
-
-                         
-                        int index126_9 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred183_Java()) ) {s = 13;}
-
-                        else if ( (true) ) {s = 12;}
-
-                         
-                        input.seek(index126_9);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 2 : 
                         int LA126_4 = input.LA(1);
 
                          
@@ -19321,82 +19307,7 @@ public class JavaParser extends Parser {
                         input.seek(index126_4);
                         if ( s>=0 ) return s;
                         break;
-                    case 3 : 
-                        int LA126_3 = input.LA(1);
-
-                         
-                        int index126_3 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred183_Java()) ) {s = 13;}
-
-                        else if ( (true) ) {s = 12;}
-
-                         
-                        input.seek(index126_3);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 4 : 
-                        int LA126_6 = input.LA(1);
-
-                         
-                        int index126_6 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred183_Java()) ) {s = 13;}
-
-                        else if ( (true) ) {s = 12;}
-
-                         
-                        input.seek(index126_6);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 5 : 
-                        int LA126_10 = input.LA(1);
-
-                         
-                        int index126_10 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred183_Java()) ) {s = 13;}
-
-                        else if ( (true) ) {s = 12;}
-
-                         
-                        input.seek(index126_10);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 6 : 
-                        int LA126_5 = input.LA(1);
-
-                         
-                        int index126_5 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred183_Java()) ) {s = 13;}
-
-                        else if ( (true) ) {s = 12;}
-
-                         
-                        input.seek(index126_5);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 7 : 
-                        int LA126_1 = input.LA(1);
-
-                         
-                        int index126_1 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred183_Java()) ) {s = 13;}
-
-                        else if ( (true) ) {s = 12;}
-
-                         
-                        input.seek(index126_1);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 8 : 
+                    case 1 : 
                         int LA126_7 = input.LA(1);
 
                          
@@ -19411,7 +19322,67 @@ public class JavaParser extends Parser {
                         input.seek(index126_7);
                         if ( s>=0 ) return s;
                         break;
-                    case 9 : 
+                    case 2 : 
+                        int LA126_3 = input.LA(1);
+
+                         
+                        int index126_3 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred183_Java()) ) {s = 13;}
+
+                        else if ( (true) ) {s = 12;}
+
+                         
+                        input.seek(index126_3);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 3 : 
+                        int LA126_11 = input.LA(1);
+
+                         
+                        int index126_11 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred183_Java()) ) {s = 13;}
+
+                        else if ( (true) ) {s = 12;}
+
+                         
+                        input.seek(index126_11);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 4 : 
+                        int LA126_10 = input.LA(1);
+
+                         
+                        int index126_10 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred183_Java()) ) {s = 13;}
+
+                        else if ( (true) ) {s = 12;}
+
+                         
+                        input.seek(index126_10);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 5 : 
+                        int LA126_8 = input.LA(1);
+
+                         
+                        int index126_8 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred183_Java()) ) {s = 13;}
+
+                        else if ( (true) ) {s = 12;}
+
+                         
+                        input.seek(index126_8);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 6 : 
                         int LA126_2 = input.LA(1);
 
                          
@@ -19426,11 +19397,11 @@ public class JavaParser extends Parser {
                         input.seek(index126_2);
                         if ( s>=0 ) return s;
                         break;
-                    case 10 : 
-                        int LA126_8 = input.LA(1);
+                    case 7 : 
+                        int LA126_6 = input.LA(1);
 
                          
-                        int index126_8 = input.index();
+                        int index126_6 = input.index();
                         input.rewind();
                         s = -1;
                         if ( (synpred183_Java()) ) {s = 13;}
@@ -19438,7 +19409,52 @@ public class JavaParser extends Parser {
                         else if ( (true) ) {s = 12;}
 
                          
-                        input.seek(index126_8);
+                        input.seek(index126_6);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 8 : 
+                        int LA126_1 = input.LA(1);
+
+                         
+                        int index126_1 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred183_Java()) ) {s = 13;}
+
+                        else if ( (true) ) {s = 12;}
+
+                         
+                        input.seek(index126_1);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 9 : 
+                        int LA126_9 = input.LA(1);
+
+                         
+                        int index126_9 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred183_Java()) ) {s = 13;}
+
+                        else if ( (true) ) {s = 12;}
+
+                         
+                        input.seek(index126_9);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 10 : 
+                        int LA126_5 = input.LA(1);
+
+                         
+                        int index126_5 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred183_Java()) ) {s = 13;}
+
+                        else if ( (true) ) {s = 12;}
+
+                         
+                        input.seek(index126_5);
                         if ( s>=0 ) return s;
                         break;
             }
@@ -19511,7 +19527,7 @@ public class JavaParser extends Parser {
             this.transition = DFA127_transition;
         }
         public String getDescription() {
-            return "842:1: assignmentOperator : ( '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '%=' | ( '<' '<' '=' )=>t1= '<' t2= '<' t3= '=' {...}? | ( '>' '>' '>' '=' )=>t1= '>' t2= '>' t3= '>' t4= '=' {...}? | ( '>' '>' '=' )=>t1= '>' t2= '>' t3= '=' {...}?);";
+            return "847:1: assignmentOperator : ( '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '%=' | ( '<' '<' '=' )=>t1= '<' t2= '<' t3= '=' {...}? | ( '>' '>' '>' '=' )=>t1= '>' t2= '>' t3= '>' t4= '=' {...}? | ( '>' '>' '=' )=>t1= '>' t2= '>' t3= '=' {...}?);";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -19644,7 +19660,7 @@ public class JavaParser extends Parser {
             this.transition = DFA139_transition;
         }
         public String getDescription() {
-            return "922:1: shiftOp : ( ( '<' '<' )=>t1= '<' t2= '<' {...}? | ( '>' '>' '>' )=>t1= '>' t2= '>' t3= '>' {...}? | ( '>' '>' )=>t1= '>' t2= '>' {...}?);";
+            return "927:1: shiftOp : ( ( '<' '<' )=>t1= '<' t2= '<' {...}? | ( '>' '>' '>' )=>t1= '>' t2= '>' t3= '>' {...}? | ( '>' '>' )=>t1= '>' t2= '>' {...}?);";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -19787,7 +19803,7 @@ public class JavaParser extends Parser {
             this.transition = DFA145_transition;
         }
         public String getDescription() {
-            return "953:1: unaryExpressionNotPlusMinus : ( '~' unaryExpression | '!' unaryExpression | castExpression | primary ( selector )* ( '++' | '--' )? );";
+            return "958:1: unaryExpressionNotPlusMinus : ( '~' unaryExpression | '!' unaryExpression | castExpression | primary ( selector )* ( '++' | '--' )? );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -19869,7 +19885,7 @@ public class JavaParser extends Parser {
             this.transition = DFA146_transition;
         }
         public String getDescription() {
-            return "962:12: ( type | expression )";
+            return "967:12: ( type | expression )";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -19978,7 +19994,7 @@ public class JavaParser extends Parser {
             this.transition = DFA149_transition;
         }
         public String getDescription() {
-            return "967:34: ( identifierSuffix )?";
+            return "972:34: ( identifierSuffix )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -20102,7 +20118,7 @@ public class JavaParser extends Parser {
             this.transition = DFA151_transition;
         }
         public String getDescription() {
-            return "971:38: ( identifierSuffix )?";
+            return "976:38: ( identifierSuffix )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -20203,7 +20219,7 @@ public class JavaParser extends Parser {
             this.transition = DFA156_transition;
         }
         public String getDescription() {
-            return "976:1: identifierSuffix : ( ( '[' ']' )+ '.' 'class' | ( '[' expression ']' )+ | arguments | '.' 'class' | '.' explicitGenericInvocation | '.' 'this' | '.' 'super' arguments | '.' 'new' innerCreator );";
+            return "981:1: identifierSuffix : ( ( '[' ']' )+ '.' 'class' | ( '[' expression ']' )+ | arguments | '.' 'class' | '.' explicitGenericInvocation | '.' 'this' | '.' 'super' arguments | '.' 'new' innerCreator );";
         }
     }
     static final String DFA155_eotS =
@@ -20286,7 +20302,7 @@ public class JavaParser extends Parser {
             this.transition = DFA155_transition;
         }
         public String getDescription() {
-            return "()+ loopback of 978:9: ( '[' expression ']' )+";
+            return "()+ loopback of 983:9: ( '[' expression ']' )+";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -20395,7 +20411,7 @@ public class JavaParser extends Parser {
             this.transition = DFA162_transition;
         }
         public String getDescription() {
-            return "()* loopback of 1004:28: ( '[' expression ']' )*";
+            return "()* loopback of 1009:28: ( '[' expression ']' )*";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -20480,647 +20496,647 @@ public class JavaParser extends Parser {
     public static final BitSet FOLLOW_type_in_typeBound816 = new BitSet(new long[]{0x0000080000000002L});
     public static final BitSet FOLLOW_43_in_typeBound820 = new BitSet(new long[]{0xFF00000000000010L});
     public static final BitSet FOLLOW_type_in_typeBound824 = new BitSet(new long[]{0x0000080000000002L});
-    public static final BitSet FOLLOW_ENUM_in_enumDeclaration851 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_Identifier_in_enumDeclaration855 = new BitSet(new long[]{0x0000108000000000L});
-    public static final BitSet FOLLOW_39_in_enumDeclaration859 = new BitSet(new long[]{0xFF00000000000010L});
-    public static final BitSet FOLLOW_typeList_in_enumDeclaration863 = new BitSet(new long[]{0x0000108000000000L});
-    public static final BitSet FOLLOW_enumBody_in_enumDeclaration870 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_44_in_enumBody889 = new BitSet(new long[]{0x0000220004000010L,0x0000000000000200L});
-    public static final BitSet FOLLOW_enumConstants_in_enumBody891 = new BitSet(new long[]{0x0000220004000000L});
-    public static final BitSet FOLLOW_41_in_enumBody894 = new BitSet(new long[]{0x0000200004000000L});
-    public static final BitSet FOLLOW_enumBodyDeclarations_in_enumBody897 = new BitSet(new long[]{0x0000200000000000L});
-    public static final BitSet FOLLOW_45_in_enumBody900 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_enumConstant_in_enumConstants919 = new BitSet(new long[]{0x0000020000000002L});
-    public static final BitSet FOLLOW_41_in_enumConstants922 = new BitSet(new long[]{0x0000000000000010L,0x0000000000000200L});
+    public static final BitSet FOLLOW_ENUM_in_enumDeclaration854 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_Identifier_in_enumDeclaration858 = new BitSet(new long[]{0x0000108000000000L});
+    public static final BitSet FOLLOW_39_in_enumDeclaration862 = new BitSet(new long[]{0xFF00000000000010L});
+    public static final BitSet FOLLOW_typeList_in_enumDeclaration866 = new BitSet(new long[]{0x0000108000000000L});
+    public static final BitSet FOLLOW_enumBody_in_enumDeclaration873 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_44_in_enumBody892 = new BitSet(new long[]{0x0000220004000010L,0x0000000000000200L});
+    public static final BitSet FOLLOW_enumConstants_in_enumBody894 = new BitSet(new long[]{0x0000220004000000L});
+    public static final BitSet FOLLOW_41_in_enumBody897 = new BitSet(new long[]{0x0000200004000000L});
+    public static final BitSet FOLLOW_enumBodyDeclarations_in_enumBody900 = new BitSet(new long[]{0x0000200000000000L});
+    public static final BitSet FOLLOW_45_in_enumBody903 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_enumConstant_in_enumConstants924 = new BitSet(new long[]{0x0000020000000002L});
-    public static final BitSet FOLLOW_annotations_in_enumConstant949 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_Identifier_in_enumConstant952 = new BitSet(new long[]{0x000011C000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_arguments_in_enumConstant954 = new BitSet(new long[]{0x000011C000000002L});
-    public static final BitSet FOLLOW_classBody_in_enumConstant957 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_26_in_enumBodyDeclarations981 = new BitSet(new long[]{0x00F0101F94000002L,0x0000000000000200L});
-    public static final BitSet FOLLOW_classBodyDeclaration_in_enumBodyDeclarations984 = new BitSet(new long[]{0x00F0101F94000002L,0x0000000000000200L});
-    public static final BitSet FOLLOW_normalInterfaceDeclaration_in_interfaceDeclaration1009 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_annotationTypeDeclaration_in_interfaceDeclaration1019 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_46_in_normalInterfaceDeclaration1042 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_Identifier_in_normalInterfaceDeclaration1044 = new BitSet(new long[]{0x0000114000000000L});
-    public static final BitSet FOLLOW_typeParameters_in_normalInterfaceDeclaration1046 = new BitSet(new long[]{0x0000114000000000L});
-    public static final BitSet FOLLOW_38_in_normalInterfaceDeclaration1050 = new BitSet(new long[]{0xFF00000000000010L});
-    public static final BitSet FOLLOW_typeList_in_normalInterfaceDeclaration1052 = new BitSet(new long[]{0x0000114000000000L});
-    public static final BitSet FOLLOW_interfaceBody_in_normalInterfaceDeclaration1056 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_type_in_typeList1085 = new BitSet(new long[]{0x0000020000000002L});
-    public static final BitSet FOLLOW_41_in_typeList1089 = new BitSet(new long[]{0xFF00000000000010L});
-    public static final BitSet FOLLOW_type_in_typeList1093 = new BitSet(new long[]{0x0000020000000002L});
-    public static final BitSet FOLLOW_44_in_classBody1120 = new BitSet(new long[]{0x00F0301F94000000L,0x0000000000000200L});
-    public static final BitSet FOLLOW_classBodyDeclaration_in_classBody1122 = new BitSet(new long[]{0x00F0301F94000000L,0x0000000000000200L});
-    public static final BitSet FOLLOW_45_in_classBody1125 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_44_in_interfaceBody1148 = new BitSet(new long[]{0x00F0301F94000000L,0x0000000000000200L});
-    public static final BitSet FOLLOW_interfaceBodyDeclaration_in_interfaceBody1150 = new BitSet(new long[]{0x00F0301F94000000L,0x0000000000000200L});
-    public static final BitSet FOLLOW_45_in_interfaceBody1153 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_26_in_classBodyDeclaration1172 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_28_in_classBodyDeclaration1182 = new BitSet(new long[]{0x0000100010000000L});
-    public static final BitSet FOLLOW_block_in_classBodyDeclaration1185 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_classBodyDeclaration1195 = new BitSet(new long[]{0xFF00C13F92000030L,0x0000000000000200L});
-    public static final BitSet FOLLOW_memberDecl_in_classBodyDeclaration1197 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_genericMethodOrConstructorDecl_in_memberDecl1220 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_memberDeclaration_in_memberDecl1230 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_47_in_memberDecl1240 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_Identifier_in_memberDecl1242 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_voidMethodDeclaratorRest_in_memberDecl1244 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_memberDecl1254 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_constructorDeclaratorRest_in_memberDecl1256 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceDeclaration_in_memberDecl1266 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classDeclaration_in_memberDecl1276 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_type_in_memberDeclaration1299 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_methodDeclaration_in_memberDeclaration1302 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_fieldDeclaration_in_memberDeclaration1306 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_typeParameters_in_genericMethodOrConstructorDecl1326 = new BitSet(new long[]{0xFF00800000000010L});
-    public static final BitSet FOLLOW_genericMethodOrConstructorRest_in_genericMethodOrConstructorDecl1328 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_type_in_genericMethodOrConstructorRest1352 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_47_in_genericMethodOrConstructorRest1356 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_Identifier_in_genericMethodOrConstructorRest1359 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_methodDeclaratorRest_in_genericMethodOrConstructorRest1361 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_genericMethodOrConstructorRest1371 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_constructorDeclaratorRest_in_genericMethodOrConstructorRest1373 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_methodDeclaration1392 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_methodDeclaratorRest_in_methodDeclaration1394 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_variableDeclarators_in_fieldDeclaration1413 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_26_in_fieldDeclaration1415 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_interfaceBodyDeclaration1442 = new BitSet(new long[]{0xFF00C13F92000030L,0x0000000000000200L});
-    public static final BitSet FOLLOW_interfaceMemberDecl_in_interfaceBodyDeclaration1444 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_26_in_interfaceBodyDeclaration1454 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceMethodOrFieldDecl_in_interfaceMemberDecl1473 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceGenericMethodDecl_in_interfaceMemberDecl1483 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_47_in_interfaceMemberDecl1493 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_Identifier_in_interfaceMemberDecl1495 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_voidInterfaceMethodDeclaratorRest_in_interfaceMemberDecl1497 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceDeclaration_in_interfaceMemberDecl1507 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classDeclaration_in_interfaceMemberDecl1517 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_type_in_interfaceMethodOrFieldDecl1540 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_Identifier_in_interfaceMethodOrFieldDecl1542 = new BitSet(new long[]{0x0009000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_interfaceMethodOrFieldRest_in_interfaceMethodOrFieldDecl1544 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_constantDeclaratorsRest_in_interfaceMethodOrFieldRest1567 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_26_in_interfaceMethodOrFieldRest1569 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceMethodDeclaratorRest_in_interfaceMethodOrFieldRest1579 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_formalParameters_in_methodDeclaratorRest1602 = new BitSet(new long[]{0x0005100014000000L});
-    public static final BitSet FOLLOW_48_in_methodDeclaratorRest1605 = new BitSet(new long[]{0x0002000000000000L});
-    public static final BitSet FOLLOW_49_in_methodDeclaratorRest1607 = new BitSet(new long[]{0x0005100014000000L});
-    public static final BitSet FOLLOW_50_in_methodDeclaratorRest1620 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_qualifiedNameList_in_methodDeclaratorRest1622 = new BitSet(new long[]{0x0000100014000000L});
-    public static final BitSet FOLLOW_methodBody_in_methodDeclaratorRest1638 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_26_in_methodDeclaratorRest1652 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_formalParameters_in_voidMethodDeclaratorRest1685 = new BitSet(new long[]{0x0004100014000000L});
-    public static final BitSet FOLLOW_50_in_voidMethodDeclaratorRest1688 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_qualifiedNameList_in_voidMethodDeclaratorRest1690 = new BitSet(new long[]{0x0000100014000000L});
-    public static final BitSet FOLLOW_methodBody_in_voidMethodDeclaratorRest1706 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_26_in_voidMethodDeclaratorRest1720 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_formalParameters_in_interfaceMethodDeclaratorRest1753 = new BitSet(new long[]{0x0005000004000000L});
-    public static final BitSet FOLLOW_48_in_interfaceMethodDeclaratorRest1756 = new BitSet(new long[]{0x0002000000000000L});
-    public static final BitSet FOLLOW_49_in_interfaceMethodDeclaratorRest1758 = new BitSet(new long[]{0x0005000004000000L});
-    public static final BitSet FOLLOW_50_in_interfaceMethodDeclaratorRest1763 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_qualifiedNameList_in_interfaceMethodDeclaratorRest1765 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_26_in_interfaceMethodDeclaratorRest1769 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_typeParameters_in_interfaceGenericMethodDecl1792 = new BitSet(new long[]{0xFF00800000000010L});
-    public static final BitSet FOLLOW_type_in_interfaceGenericMethodDecl1795 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_47_in_interfaceGenericMethodDecl1799 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_Identifier_in_interfaceGenericMethodDecl1802 = new BitSet(new long[]{0x0009000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_interfaceMethodDeclaratorRest_in_interfaceGenericMethodDecl1812 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_formalParameters_in_voidInterfaceMethodDeclaratorRest1835 = new BitSet(new long[]{0x0004000004000000L});
-    public static final BitSet FOLLOW_50_in_voidInterfaceMethodDeclaratorRest1838 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_qualifiedNameList_in_voidInterfaceMethodDeclaratorRest1840 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_26_in_voidInterfaceMethodDeclaratorRest1844 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_formalParameters_in_constructorDeclaratorRest1867 = new BitSet(new long[]{0x0004100000000000L});
-    public static final BitSet FOLLOW_50_in_constructorDeclaratorRest1870 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_qualifiedNameList_in_constructorDeclaratorRest1872 = new BitSet(new long[]{0x0004100000000000L});
-    public static final BitSet FOLLOW_constructorBody_in_constructorDeclaratorRest1876 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_constantDeclarator1895 = new BitSet(new long[]{0x0009000000000000L});
-    public static final BitSet FOLLOW_constantDeclaratorRest_in_constantDeclarator1897 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_variableDeclarator_in_variableDeclarators1920 = new BitSet(new long[]{0x0000020000000002L});
-    public static final BitSet FOLLOW_41_in_variableDeclarators1923 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_variableDeclarator_in_variableDeclarators1925 = new BitSet(new long[]{0x0000020000000002L});
-    public static final BitSet FOLLOW_variableDeclaratorId_in_variableDeclarator1946 = new BitSet(new long[]{0x0008000000000002L});
-    public static final BitSet FOLLOW_51_in_variableDeclarator1949 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_variableInitializer_in_variableDeclarator1951 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_constantDeclaratorRest_in_constantDeclaratorsRest1976 = new BitSet(new long[]{0x0000020000000002L});
-    public static final BitSet FOLLOW_41_in_constantDeclaratorsRest1979 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_constantDeclarator_in_constantDeclaratorsRest1981 = new BitSet(new long[]{0x0000020000000002L});
-    public static final BitSet FOLLOW_48_in_constantDeclaratorRest2003 = new BitSet(new long[]{0x0002000000000000L});
-    public static final BitSet FOLLOW_49_in_constantDeclaratorRest2005 = new BitSet(new long[]{0x0009000000000000L});
-    public static final BitSet FOLLOW_51_in_constantDeclaratorRest2009 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_variableInitializer_in_constantDeclaratorRest2011 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_variableDeclaratorId2034 = new BitSet(new long[]{0x0001000000000002L});
-    public static final BitSet FOLLOW_48_in_variableDeclaratorId2037 = new BitSet(new long[]{0x0002000000000000L});
-    public static final BitSet FOLLOW_49_in_variableDeclaratorId2039 = new BitSet(new long[]{0x0001000000000002L});
-    public static final BitSet FOLLOW_arrayInitializer_in_variableInitializer2060 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expression_in_variableInitializer2070 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_44_in_arrayInitializer2097 = new BitSet(new long[]{0xFF00B00000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_variableInitializer_in_arrayInitializer2100 = new BitSet(new long[]{0x0000220000000000L});
-    public static final BitSet FOLLOW_41_in_arrayInitializer2103 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_variableInitializer_in_arrayInitializer2105 = new BitSet(new long[]{0x0000220000000000L});
-    public static final BitSet FOLLOW_41_in_arrayInitializer2110 = new BitSet(new long[]{0x0000200000000000L});
-    public static final BitSet FOLLOW_45_in_arrayInitializer2117 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_annotation_in_modifier2140 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classOrInterfaceModifier_in_modifier2152 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_52_in_modifier2164 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_53_in_modifier2176 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_54_in_modifier2188 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_55_in_modifier2200 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_qualifiedName_in_packageOrTypeName2221 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_enumConstantName2240 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_qualifiedName_in_typeName2259 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classOrInterfaceType_in_type2283 = new BitSet(new long[]{0x0001000000000002L});
-    public static final BitSet FOLLOW_48_in_type2286 = new BitSet(new long[]{0x0002000000000000L});
-    public static final BitSet FOLLOW_49_in_type2288 = new BitSet(new long[]{0x0001000000000002L});
-    public static final BitSet FOLLOW_primitiveType_in_type2301 = new BitSet(new long[]{0x0001000000000002L});
-    public static final BitSet FOLLOW_48_in_type2304 = new BitSet(new long[]{0x0002000000000000L});
-    public static final BitSet FOLLOW_49_in_type2306 = new BitSet(new long[]{0x0001000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_classOrInterfaceType2326 = new BitSet(new long[]{0x0000010020000002L});
-    public static final BitSet FOLLOW_typeArguments_in_classOrInterfaceType2328 = new BitSet(new long[]{0x0000000020000002L});
-    public static final BitSet FOLLOW_29_in_classOrInterfaceType2332 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_Identifier_in_classOrInterfaceType2334 = new BitSet(new long[]{0x0000010020000002L});
-    public static final BitSet FOLLOW_typeArguments_in_classOrInterfaceType2336 = new BitSet(new long[]{0x0000000020000002L});
+    public static final BitSet FOLLOW_41_in_enumConstants929 = new BitSet(new long[]{0x0000000000000010L,0x0000000000000200L});
+    public static final BitSet FOLLOW_enumConstant_in_enumConstants933 = new BitSet(new long[]{0x0000020000000002L});
+    public static final BitSet FOLLOW_annotations_in_enumConstant963 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_Identifier_in_enumConstant966 = new BitSet(new long[]{0x000011C000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_arguments_in_enumConstant968 = new BitSet(new long[]{0x000011C000000002L});
+    public static final BitSet FOLLOW_classBody_in_enumConstant971 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_26_in_enumBodyDeclarations995 = new BitSet(new long[]{0x00F0101F94000002L,0x0000000000000200L});
+    public static final BitSet FOLLOW_classBodyDeclaration_in_enumBodyDeclarations998 = new BitSet(new long[]{0x00F0101F94000002L,0x0000000000000200L});
+    public static final BitSet FOLLOW_normalInterfaceDeclaration_in_interfaceDeclaration1023 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotationTypeDeclaration_in_interfaceDeclaration1033 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_46_in_normalInterfaceDeclaration1056 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_Identifier_in_normalInterfaceDeclaration1058 = new BitSet(new long[]{0x0000114000000000L});
+    public static final BitSet FOLLOW_typeParameters_in_normalInterfaceDeclaration1060 = new BitSet(new long[]{0x0000114000000000L});
+    public static final BitSet FOLLOW_38_in_normalInterfaceDeclaration1064 = new BitSet(new long[]{0xFF00000000000010L});
+    public static final BitSet FOLLOW_typeList_in_normalInterfaceDeclaration1066 = new BitSet(new long[]{0x0000114000000000L});
+    public static final BitSet FOLLOW_interfaceBody_in_normalInterfaceDeclaration1070 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_type_in_typeList1099 = new BitSet(new long[]{0x0000020000000002L});
+    public static final BitSet FOLLOW_41_in_typeList1103 = new BitSet(new long[]{0xFF00000000000010L});
+    public static final BitSet FOLLOW_type_in_typeList1107 = new BitSet(new long[]{0x0000020000000002L});
+    public static final BitSet FOLLOW_44_in_classBody1134 = new BitSet(new long[]{0x00F0301F94000000L,0x0000000000000200L});
+    public static final BitSet FOLLOW_classBodyDeclaration_in_classBody1136 = new BitSet(new long[]{0x00F0301F94000000L,0x0000000000000200L});
+    public static final BitSet FOLLOW_45_in_classBody1139 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_44_in_interfaceBody1162 = new BitSet(new long[]{0x00F0301F94000000L,0x0000000000000200L});
+    public static final BitSet FOLLOW_interfaceBodyDeclaration_in_interfaceBody1164 = new BitSet(new long[]{0x00F0301F94000000L,0x0000000000000200L});
+    public static final BitSet FOLLOW_45_in_interfaceBody1167 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_26_in_classBodyDeclaration1186 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_28_in_classBodyDeclaration1196 = new BitSet(new long[]{0x0000100010000000L});
+    public static final BitSet FOLLOW_block_in_classBodyDeclaration1199 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_classBodyDeclaration1209 = new BitSet(new long[]{0xFF00C13F92000030L,0x0000000000000200L});
+    public static final BitSet FOLLOW_memberDecl_in_classBodyDeclaration1211 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_genericMethodOrConstructorDecl_in_memberDecl1234 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_memberDeclaration_in_memberDecl1244 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_47_in_memberDecl1254 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_Identifier_in_memberDecl1256 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_voidMethodDeclaratorRest_in_memberDecl1258 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_memberDecl1268 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_constructorDeclaratorRest_in_memberDecl1270 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceDeclaration_in_memberDecl1280 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classDeclaration_in_memberDecl1290 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_type_in_memberDeclaration1313 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_methodDeclaration_in_memberDeclaration1316 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_fieldDeclaration_in_memberDeclaration1320 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_typeParameters_in_genericMethodOrConstructorDecl1340 = new BitSet(new long[]{0xFF00800000000010L});
+    public static final BitSet FOLLOW_genericMethodOrConstructorRest_in_genericMethodOrConstructorDecl1342 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_type_in_genericMethodOrConstructorRest1366 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_47_in_genericMethodOrConstructorRest1370 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_Identifier_in_genericMethodOrConstructorRest1373 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_methodDeclaratorRest_in_genericMethodOrConstructorRest1375 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_genericMethodOrConstructorRest1385 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_constructorDeclaratorRest_in_genericMethodOrConstructorRest1387 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_methodDeclaration1406 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_methodDeclaratorRest_in_methodDeclaration1408 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_variableDeclarators_in_fieldDeclaration1427 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_26_in_fieldDeclaration1429 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_interfaceBodyDeclaration1456 = new BitSet(new long[]{0xFF00C13F92000030L,0x0000000000000200L});
+    public static final BitSet FOLLOW_interfaceMemberDecl_in_interfaceBodyDeclaration1458 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_26_in_interfaceBodyDeclaration1468 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceMethodOrFieldDecl_in_interfaceMemberDecl1487 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceGenericMethodDecl_in_interfaceMemberDecl1497 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_47_in_interfaceMemberDecl1507 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_Identifier_in_interfaceMemberDecl1509 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_voidInterfaceMethodDeclaratorRest_in_interfaceMemberDecl1511 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceDeclaration_in_interfaceMemberDecl1521 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classDeclaration_in_interfaceMemberDecl1531 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_type_in_interfaceMethodOrFieldDecl1554 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_Identifier_in_interfaceMethodOrFieldDecl1556 = new BitSet(new long[]{0x0009000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_interfaceMethodOrFieldRest_in_interfaceMethodOrFieldDecl1558 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_constantDeclaratorsRest_in_interfaceMethodOrFieldRest1581 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_26_in_interfaceMethodOrFieldRest1583 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceMethodDeclaratorRest_in_interfaceMethodOrFieldRest1593 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_formalParameters_in_methodDeclaratorRest1616 = new BitSet(new long[]{0x0005100014000000L});
+    public static final BitSet FOLLOW_48_in_methodDeclaratorRest1619 = new BitSet(new long[]{0x0002000000000000L});
+    public static final BitSet FOLLOW_49_in_methodDeclaratorRest1621 = new BitSet(new long[]{0x0005100014000000L});
+    public static final BitSet FOLLOW_50_in_methodDeclaratorRest1634 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_qualifiedNameList_in_methodDeclaratorRest1636 = new BitSet(new long[]{0x0000100014000000L});
+    public static final BitSet FOLLOW_methodBody_in_methodDeclaratorRest1652 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_26_in_methodDeclaratorRest1666 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_formalParameters_in_voidMethodDeclaratorRest1699 = new BitSet(new long[]{0x0004100014000000L});
+    public static final BitSet FOLLOW_50_in_voidMethodDeclaratorRest1702 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_qualifiedNameList_in_voidMethodDeclaratorRest1704 = new BitSet(new long[]{0x0000100014000000L});
+    public static final BitSet FOLLOW_methodBody_in_voidMethodDeclaratorRest1720 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_26_in_voidMethodDeclaratorRest1734 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_formalParameters_in_interfaceMethodDeclaratorRest1767 = new BitSet(new long[]{0x0005000004000000L});
+    public static final BitSet FOLLOW_48_in_interfaceMethodDeclaratorRest1770 = new BitSet(new long[]{0x0002000000000000L});
+    public static final BitSet FOLLOW_49_in_interfaceMethodDeclaratorRest1772 = new BitSet(new long[]{0x0005000004000000L});
+    public static final BitSet FOLLOW_50_in_interfaceMethodDeclaratorRest1777 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_qualifiedNameList_in_interfaceMethodDeclaratorRest1779 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_26_in_interfaceMethodDeclaratorRest1783 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_typeParameters_in_interfaceGenericMethodDecl1806 = new BitSet(new long[]{0xFF00800000000010L});
+    public static final BitSet FOLLOW_type_in_interfaceGenericMethodDecl1809 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_47_in_interfaceGenericMethodDecl1813 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_Identifier_in_interfaceGenericMethodDecl1816 = new BitSet(new long[]{0x0009000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_interfaceMethodDeclaratorRest_in_interfaceGenericMethodDecl1826 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_formalParameters_in_voidInterfaceMethodDeclaratorRest1849 = new BitSet(new long[]{0x0004000004000000L});
+    public static final BitSet FOLLOW_50_in_voidInterfaceMethodDeclaratorRest1852 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_qualifiedNameList_in_voidInterfaceMethodDeclaratorRest1854 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_26_in_voidInterfaceMethodDeclaratorRest1858 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_formalParameters_in_constructorDeclaratorRest1881 = new BitSet(new long[]{0x0004100000000000L});
+    public static final BitSet FOLLOW_50_in_constructorDeclaratorRest1884 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_qualifiedNameList_in_constructorDeclaratorRest1886 = new BitSet(new long[]{0x0004100000000000L});
+    public static final BitSet FOLLOW_constructorBody_in_constructorDeclaratorRest1890 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_constantDeclarator1909 = new BitSet(new long[]{0x0009000000000000L});
+    public static final BitSet FOLLOW_constantDeclaratorRest_in_constantDeclarator1911 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_variableDeclarator_in_variableDeclarators1934 = new BitSet(new long[]{0x0000020000000002L});
+    public static final BitSet FOLLOW_41_in_variableDeclarators1937 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_variableDeclarator_in_variableDeclarators1939 = new BitSet(new long[]{0x0000020000000002L});
+    public static final BitSet FOLLOW_variableDeclaratorId_in_variableDeclarator1960 = new BitSet(new long[]{0x0008000000000002L});
+    public static final BitSet FOLLOW_51_in_variableDeclarator1963 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_variableInitializer_in_variableDeclarator1965 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_constantDeclaratorRest_in_constantDeclaratorsRest1990 = new BitSet(new long[]{0x0000020000000002L});
+    public static final BitSet FOLLOW_41_in_constantDeclaratorsRest1993 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_constantDeclarator_in_constantDeclaratorsRest1995 = new BitSet(new long[]{0x0000020000000002L});
+    public static final BitSet FOLLOW_48_in_constantDeclaratorRest2017 = new BitSet(new long[]{0x0002000000000000L});
+    public static final BitSet FOLLOW_49_in_constantDeclaratorRest2019 = new BitSet(new long[]{0x0009000000000000L});
+    public static final BitSet FOLLOW_51_in_constantDeclaratorRest2023 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_variableInitializer_in_constantDeclaratorRest2025 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_variableDeclaratorId2048 = new BitSet(new long[]{0x0001000000000002L});
+    public static final BitSet FOLLOW_48_in_variableDeclaratorId2051 = new BitSet(new long[]{0x0002000000000000L});
+    public static final BitSet FOLLOW_49_in_variableDeclaratorId2053 = new BitSet(new long[]{0x0001000000000002L});
+    public static final BitSet FOLLOW_arrayInitializer_in_variableInitializer2074 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_variableInitializer2084 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_44_in_arrayInitializer2111 = new BitSet(new long[]{0xFF00B00000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_variableInitializer_in_arrayInitializer2114 = new BitSet(new long[]{0x0000220000000000L});
+    public static final BitSet FOLLOW_41_in_arrayInitializer2117 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_variableInitializer_in_arrayInitializer2119 = new BitSet(new long[]{0x0000220000000000L});
+    public static final BitSet FOLLOW_41_in_arrayInitializer2124 = new BitSet(new long[]{0x0000200000000000L});
+    public static final BitSet FOLLOW_45_in_arrayInitializer2131 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotation_in_modifier2154 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classOrInterfaceModifier_in_modifier2166 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_52_in_modifier2178 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_53_in_modifier2190 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_54_in_modifier2202 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_55_in_modifier2214 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_qualifiedName_in_packageOrTypeName2235 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_enumConstantName2254 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_qualifiedName_in_typeName2273 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classOrInterfaceType_in_type2297 = new BitSet(new long[]{0x0001000000000002L});
+    public static final BitSet FOLLOW_48_in_type2300 = new BitSet(new long[]{0x0002000000000000L});
+    public static final BitSet FOLLOW_49_in_type2302 = new BitSet(new long[]{0x0001000000000002L});
+    public static final BitSet FOLLOW_primitiveType_in_type2315 = new BitSet(new long[]{0x0001000000000002L});
+    public static final BitSet FOLLOW_48_in_type2318 = new BitSet(new long[]{0x0002000000000000L});
+    public static final BitSet FOLLOW_49_in_type2320 = new BitSet(new long[]{0x0001000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_classOrInterfaceType2340 = new BitSet(new long[]{0x0000010020000002L});
+    public static final BitSet FOLLOW_typeArguments_in_classOrInterfaceType2342 = new BitSet(new long[]{0x0000000020000002L});
+    public static final BitSet FOLLOW_29_in_classOrInterfaceType2346 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_Identifier_in_classOrInterfaceType2348 = new BitSet(new long[]{0x0000010020000002L});
+    public static final BitSet FOLLOW_typeArguments_in_classOrInterfaceType2350 = new BitSet(new long[]{0x0000000020000002L});
     public static final BitSet FOLLOW_set_in_primitiveType0 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_35_in_variableModifier2449 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_annotation_in_variableModifier2459 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_40_in_typeArguments2478 = new BitSet(new long[]{0xFF00000000000010L,0x0000000000000001L});
-    public static final BitSet FOLLOW_typeArgument_in_typeArguments2480 = new BitSet(new long[]{0x0000060000000000L});
-    public static final BitSet FOLLOW_41_in_typeArguments2483 = new BitSet(new long[]{0xFF00000000000010L,0x0000000000000001L});
-    public static final BitSet FOLLOW_typeArgument_in_typeArguments2485 = new BitSet(new long[]{0x0000060000000000L});
-    public static final BitSet FOLLOW_42_in_typeArguments2489 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_type_in_typeArgument2512 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_64_in_typeArgument2522 = new BitSet(new long[]{0x0000004000000002L,0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_typeArgument2525 = new BitSet(new long[]{0xFF00000000000010L});
-    public static final BitSet FOLLOW_type_in_typeArgument2533 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_qualifiedName_in_qualifiedNameList2558 = new BitSet(new long[]{0x0000020000000002L});
-    public static final BitSet FOLLOW_41_in_qualifiedNameList2561 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_qualifiedName_in_qualifiedNameList2563 = new BitSet(new long[]{0x0000020000000002L});
-    public static final BitSet FOLLOW_66_in_formalParameters2584 = new BitSet(new long[]{0xFF00000800000010L,0x0000000000000208L});
-    public static final BitSet FOLLOW_formalParameterDecls_in_formalParameters2586 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
-    public static final BitSet FOLLOW_67_in_formalParameters2589 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_variableModifiers_in_formalParameterDecls2612 = new BitSet(new long[]{0xFF00000000000010L});
-    public static final BitSet FOLLOW_type_in_formalParameterDecls2614 = new BitSet(new long[]{0x0000000000000010L,0x0000000000000010L});
-    public static final BitSet FOLLOW_formalParameterDeclsRest_in_formalParameterDecls2616 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_variableDeclaratorId_in_formalParameterDeclsRest2639 = new BitSet(new long[]{0x0000020000000002L});
-    public static final BitSet FOLLOW_41_in_formalParameterDeclsRest2642 = new BitSet(new long[]{0xFF00000800000010L,0x0000000000000200L});
-    public static final BitSet FOLLOW_formalParameterDecls_in_formalParameterDeclsRest2644 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_68_in_formalParameterDeclsRest2656 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_variableDeclaratorId_in_formalParameterDeclsRest2658 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_block_in_methodBody2681 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_44_in_constructorBody2700 = new BitSet(new long[]{0xFF20F13F96001FF0L,0x0003E60000FBD3E6L});
-    public static final BitSet FOLLOW_explicitConstructorInvocation_in_constructorBody2702 = new BitSet(new long[]{0xFF20F03F96001FF0L,0x0003E60000FBD3E6L});
-    public static final BitSet FOLLOW_blockStatement_in_constructorBody2705 = new BitSet(new long[]{0xFF20F03F96001FF0L,0x0003E60000FBD3E6L});
-    public static final BitSet FOLLOW_45_in_constructorBody2708 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_explicitConstructorInvocation2727 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000022L});
-    public static final BitSet FOLLOW_set_in_explicitConstructorInvocation2730 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_arguments_in_explicitConstructorInvocation2738 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_26_in_explicitConstructorInvocation2740 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_primary_in_explicitConstructorInvocation2750 = new BitSet(new long[]{0x0000000020000000L});
-    public static final BitSet FOLLOW_29_in_explicitConstructorInvocation2752 = new BitSet(new long[]{0x0000010000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_explicitConstructorInvocation2754 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_65_in_explicitConstructorInvocation2757 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_arguments_in_explicitConstructorInvocation2759 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_26_in_explicitConstructorInvocation2761 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_qualifiedName2781 = new BitSet(new long[]{0x0000000020000002L});
-    public static final BitSet FOLLOW_29_in_qualifiedName2784 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_Identifier_in_qualifiedName2786 = new BitSet(new long[]{0x0000000020000002L});
-    public static final BitSet FOLLOW_integerLiteral_in_literal2812 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_FloatingPointLiteral_in_literal2822 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_CharacterLiteral_in_literal2832 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_StringLiteral_in_literal2842 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_booleanLiteral_in_literal2852 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_70_in_literal2862 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_35_in_variableModifier2463 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotation_in_variableModifier2473 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_40_in_typeArguments2492 = new BitSet(new long[]{0xFF00000000000010L,0x0000000000000001L});
+    public static final BitSet FOLLOW_typeArgument_in_typeArguments2494 = new BitSet(new long[]{0x0000060000000000L});
+    public static final BitSet FOLLOW_41_in_typeArguments2497 = new BitSet(new long[]{0xFF00000000000010L,0x0000000000000001L});
+    public static final BitSet FOLLOW_typeArgument_in_typeArguments2499 = new BitSet(new long[]{0x0000060000000000L});
+    public static final BitSet FOLLOW_42_in_typeArguments2503 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_type_in_typeArgument2526 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_64_in_typeArgument2536 = new BitSet(new long[]{0x0000004000000002L,0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_typeArgument2539 = new BitSet(new long[]{0xFF00000000000010L});
+    public static final BitSet FOLLOW_type_in_typeArgument2547 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_qualifiedName_in_qualifiedNameList2572 = new BitSet(new long[]{0x0000020000000002L});
+    public static final BitSet FOLLOW_41_in_qualifiedNameList2575 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_qualifiedName_in_qualifiedNameList2577 = new BitSet(new long[]{0x0000020000000002L});
+    public static final BitSet FOLLOW_66_in_formalParameters2598 = new BitSet(new long[]{0xFF00000800000010L,0x0000000000000208L});
+    public static final BitSet FOLLOW_formalParameterDecls_in_formalParameters2600 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
+    public static final BitSet FOLLOW_67_in_formalParameters2603 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_variableModifiers_in_formalParameterDecls2626 = new BitSet(new long[]{0xFF00000000000010L});
+    public static final BitSet FOLLOW_type_in_formalParameterDecls2628 = new BitSet(new long[]{0x0000000000000010L,0x0000000000000010L});
+    public static final BitSet FOLLOW_formalParameterDeclsRest_in_formalParameterDecls2630 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_variableDeclaratorId_in_formalParameterDeclsRest2653 = new BitSet(new long[]{0x0000020000000002L});
+    public static final BitSet FOLLOW_41_in_formalParameterDeclsRest2656 = new BitSet(new long[]{0xFF00000800000010L,0x0000000000000200L});
+    public static final BitSet FOLLOW_formalParameterDecls_in_formalParameterDeclsRest2658 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_68_in_formalParameterDeclsRest2670 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_variableDeclaratorId_in_formalParameterDeclsRest2672 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_block_in_methodBody2695 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_44_in_constructorBody2714 = new BitSet(new long[]{0xFF20F13F96001FF0L,0x0003E60000FBD3E6L});
+    public static final BitSet FOLLOW_explicitConstructorInvocation_in_constructorBody2716 = new BitSet(new long[]{0xFF20F03F96001FF0L,0x0003E60000FBD3E6L});
+    public static final BitSet FOLLOW_blockStatement_in_constructorBody2719 = new BitSet(new long[]{0xFF20F03F96001FF0L,0x0003E60000FBD3E6L});
+    public static final BitSet FOLLOW_45_in_constructorBody2722 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_explicitConstructorInvocation2741 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000022L});
+    public static final BitSet FOLLOW_set_in_explicitConstructorInvocation2744 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_arguments_in_explicitConstructorInvocation2752 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_26_in_explicitConstructorInvocation2754 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_primary_in_explicitConstructorInvocation2764 = new BitSet(new long[]{0x0000000020000000L});
+    public static final BitSet FOLLOW_29_in_explicitConstructorInvocation2766 = new BitSet(new long[]{0x0000010000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_explicitConstructorInvocation2768 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_65_in_explicitConstructorInvocation2771 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_arguments_in_explicitConstructorInvocation2773 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_26_in_explicitConstructorInvocation2775 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_qualifiedName2795 = new BitSet(new long[]{0x0000000020000002L});
+    public static final BitSet FOLLOW_29_in_qualifiedName2798 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_Identifier_in_qualifiedName2800 = new BitSet(new long[]{0x0000000020000002L});
+    public static final BitSet FOLLOW_integerLiteral_in_literal2826 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_FloatingPointLiteral_in_literal2836 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_CharacterLiteral_in_literal2846 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_StringLiteral_in_literal2856 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_booleanLiteral_in_literal2866 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_70_in_literal2876 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_set_in_integerLiteral0 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_set_in_booleanLiteral0 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_annotation_in_annotations2951 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000200L});
-    public static final BitSet FOLLOW_73_in_annotation2971 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_annotationName_in_annotation2973 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_66_in_annotation2977 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000003EEL});
-    public static final BitSet FOLLOW_elementValuePairs_in_annotation2981 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
-    public static final BitSet FOLLOW_elementValue_in_annotation2985 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
-    public static final BitSet FOLLOW_67_in_annotation2990 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_annotationName3014 = new BitSet(new long[]{0x0000000020000002L});
-    public static final BitSet FOLLOW_29_in_annotationName3017 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_Identifier_in_annotationName3019 = new BitSet(new long[]{0x0000000020000002L});
-    public static final BitSet FOLLOW_elementValuePair_in_elementValuePairs3040 = new BitSet(new long[]{0x0000020000000002L});
-    public static final BitSet FOLLOW_41_in_elementValuePairs3043 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_elementValuePair_in_elementValuePairs3045 = new BitSet(new long[]{0x0000020000000002L});
-    public static final BitSet FOLLOW_Identifier_in_elementValuePair3066 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_51_in_elementValuePair3068 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000003E6L});
-    public static final BitSet FOLLOW_elementValue_in_elementValuePair3070 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionalExpression_in_elementValue3093 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_annotation_in_elementValue3103 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_elementValueArrayInitializer_in_elementValue3113 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_44_in_elementValueArrayInitializer3136 = new BitSet(new long[]{0xFF00B20000000FD0L,0x0003E600000003E6L});
-    public static final BitSet FOLLOW_elementValue_in_elementValueArrayInitializer3139 = new BitSet(new long[]{0x0000220000000000L});
-    public static final BitSet FOLLOW_41_in_elementValueArrayInitializer3142 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000003E6L});
-    public static final BitSet FOLLOW_elementValue_in_elementValueArrayInitializer3144 = new BitSet(new long[]{0x0000220000000000L});
-    public static final BitSet FOLLOW_41_in_elementValueArrayInitializer3151 = new BitSet(new long[]{0x0000200000000000L});
-    public static final BitSet FOLLOW_45_in_elementValueArrayInitializer3155 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_73_in_annotationTypeDeclaration3178 = new BitSet(new long[]{0x0000400000000000L});
-    public static final BitSet FOLLOW_46_in_annotationTypeDeclaration3180 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_Identifier_in_annotationTypeDeclaration3182 = new BitSet(new long[]{0x0000100000000000L});
-    public static final BitSet FOLLOW_annotationTypeBody_in_annotationTypeDeclaration3184 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_44_in_annotationTypeBody3207 = new BitSet(new long[]{0x00F0301F94000000L,0x0000000000000200L});
-    public static final BitSet FOLLOW_annotationTypeElementDeclaration_in_annotationTypeBody3210 = new BitSet(new long[]{0x00F0301F94000000L,0x0000000000000200L});
-    public static final BitSet FOLLOW_45_in_annotationTypeBody3214 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_annotationTypeElementDeclaration3237 = new BitSet(new long[]{0xFF00403F92000030L,0x0000000000000200L});
-    public static final BitSet FOLLOW_annotationTypeElementRest_in_annotationTypeElementDeclaration3239 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_type_in_annotationTypeElementRest3262 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_annotationMethodOrConstantRest_in_annotationTypeElementRest3264 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_26_in_annotationTypeElementRest3266 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_normalClassDeclaration_in_annotationTypeElementRest3276 = new BitSet(new long[]{0x0000000004000002L});
-    public static final BitSet FOLLOW_26_in_annotationTypeElementRest3278 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_normalInterfaceDeclaration_in_annotationTypeElementRest3289 = new BitSet(new long[]{0x0000000004000002L});
-    public static final BitSet FOLLOW_26_in_annotationTypeElementRest3291 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_enumDeclaration_in_annotationTypeElementRest3302 = new BitSet(new long[]{0x0000000004000002L});
-    public static final BitSet FOLLOW_26_in_annotationTypeElementRest3304 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_annotationTypeDeclaration_in_annotationTypeElementRest3315 = new BitSet(new long[]{0x0000000004000002L});
-    public static final BitSet FOLLOW_26_in_annotationTypeElementRest3317 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_annotationMethodRest_in_annotationMethodOrConstantRest3341 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_annotationConstantRest_in_annotationMethodOrConstantRest3351 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_annotationMethodRest3374 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_66_in_annotationMethodRest3376 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
-    public static final BitSet FOLLOW_67_in_annotationMethodRest3378 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000400L});
-    public static final BitSet FOLLOW_defaultValue_in_annotationMethodRest3380 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_variableDeclarators_in_annotationConstantRest3404 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_74_in_defaultValue3427 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000003E6L});
-    public static final BitSet FOLLOW_elementValue_in_defaultValue3429 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_44_in_block3450 = new BitSet(new long[]{0xFF20F03F96001FF0L,0x0003E60000FBD3E6L});
-    public static final BitSet FOLLOW_blockStatement_in_block3452 = new BitSet(new long[]{0xFF20F03F96001FF0L,0x0003E60000FBD3E6L});
-    public static final BitSet FOLLOW_45_in_block3455 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_localVariableDeclarationStatement_in_blockStatement3478 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classOrInterfaceDeclaration_in_blockStatement3488 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_statement_in_blockStatement3498 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_localVariableDeclaration_in_localVariableDeclarationStatement3522 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_26_in_localVariableDeclarationStatement3524 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_variableModifiers_in_localVariableDeclaration3543 = new BitSet(new long[]{0xFF00000000000010L});
-    public static final BitSet FOLLOW_type_in_localVariableDeclaration3545 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_variableDeclarators_in_localVariableDeclaration3547 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_variableModifier_in_variableModifiers3570 = new BitSet(new long[]{0x0000000800000002L,0x0000000000000200L});
-    public static final BitSet FOLLOW_block_in_statement3588 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ASSERT_in_statement3598 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_expression_in_statement3600 = new BitSet(new long[]{0x0000000004000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_75_in_statement3603 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_expression_in_statement3605 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_26_in_statement3609 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_76_in_statement3619 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_parExpression_in_statement3621 = new BitSet(new long[]{0xFF20D03F96001FF0L,0x0003E60000FBD3E6L});
-    public static final BitSet FOLLOW_statement_in_statement3623 = new BitSet(new long[]{0x0000000000000002L,0x0000000000002000L});
-    public static final BitSet FOLLOW_77_in_statement3633 = new BitSet(new long[]{0xFF20D03F96001FF0L,0x0003E60000FBD3E6L});
-    public static final BitSet FOLLOW_statement_in_statement3635 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_78_in_statement3647 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_66_in_statement3649 = new BitSet(new long[]{0xFF00900804000FD0L,0x0003E600000003E6L});
-    public static final BitSet FOLLOW_forControl_in_statement3651 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
-    public static final BitSet FOLLOW_67_in_statement3653 = new BitSet(new long[]{0xFF20D03F96001FF0L,0x0003E60000FBD3E6L});
-    public static final BitSet FOLLOW_statement_in_statement3655 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_79_in_statement3665 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_parExpression_in_statement3667 = new BitSet(new long[]{0xFF20D03F96001FF0L,0x0003E60000FBD3E6L});
+    public static final BitSet FOLLOW_annotation_in_annotations2965 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000200L});
+    public static final BitSet FOLLOW_73_in_annotation2985 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_annotationName_in_annotation2987 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_66_in_annotation2991 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000003EEL});
+    public static final BitSet FOLLOW_elementValuePairs_in_annotation2995 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
+    public static final BitSet FOLLOW_elementValue_in_annotation2999 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
+    public static final BitSet FOLLOW_67_in_annotation3004 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_annotationName3028 = new BitSet(new long[]{0x0000000020000002L});
+    public static final BitSet FOLLOW_29_in_annotationName3031 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_Identifier_in_annotationName3033 = new BitSet(new long[]{0x0000000020000002L});
+    public static final BitSet FOLLOW_elementValuePair_in_elementValuePairs3054 = new BitSet(new long[]{0x0000020000000002L});
+    public static final BitSet FOLLOW_41_in_elementValuePairs3057 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_elementValuePair_in_elementValuePairs3059 = new BitSet(new long[]{0x0000020000000002L});
+    public static final BitSet FOLLOW_Identifier_in_elementValuePair3080 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_51_in_elementValuePair3082 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000003E6L});
+    public static final BitSet FOLLOW_elementValue_in_elementValuePair3084 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionalExpression_in_elementValue3107 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotation_in_elementValue3117 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_elementValueArrayInitializer_in_elementValue3127 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_44_in_elementValueArrayInitializer3150 = new BitSet(new long[]{0xFF00B20000000FD0L,0x0003E600000003E6L});
+    public static final BitSet FOLLOW_elementValue_in_elementValueArrayInitializer3153 = new BitSet(new long[]{0x0000220000000000L});
+    public static final BitSet FOLLOW_41_in_elementValueArrayInitializer3156 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000003E6L});
+    public static final BitSet FOLLOW_elementValue_in_elementValueArrayInitializer3158 = new BitSet(new long[]{0x0000220000000000L});
+    public static final BitSet FOLLOW_41_in_elementValueArrayInitializer3165 = new BitSet(new long[]{0x0000200000000000L});
+    public static final BitSet FOLLOW_45_in_elementValueArrayInitializer3169 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_73_in_annotationTypeDeclaration3192 = new BitSet(new long[]{0x0000400000000000L});
+    public static final BitSet FOLLOW_46_in_annotationTypeDeclaration3194 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_Identifier_in_annotationTypeDeclaration3196 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_annotationTypeBody_in_annotationTypeDeclaration3198 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_44_in_annotationTypeBody3221 = new BitSet(new long[]{0x00F0301F94000000L,0x0000000000000200L});
+    public static final BitSet FOLLOW_annotationTypeElementDeclaration_in_annotationTypeBody3224 = new BitSet(new long[]{0x00F0301F94000000L,0x0000000000000200L});
+    public static final BitSet FOLLOW_45_in_annotationTypeBody3228 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_annotationTypeElementDeclaration3251 = new BitSet(new long[]{0xFF00403F92000030L,0x0000000000000200L});
+    public static final BitSet FOLLOW_annotationTypeElementRest_in_annotationTypeElementDeclaration3253 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_type_in_annotationTypeElementRest3276 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_annotationMethodOrConstantRest_in_annotationTypeElementRest3278 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_26_in_annotationTypeElementRest3280 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_normalClassDeclaration_in_annotationTypeElementRest3290 = new BitSet(new long[]{0x0000000004000002L});
+    public static final BitSet FOLLOW_26_in_annotationTypeElementRest3292 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_normalInterfaceDeclaration_in_annotationTypeElementRest3303 = new BitSet(new long[]{0x0000000004000002L});
+    public static final BitSet FOLLOW_26_in_annotationTypeElementRest3305 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_enumDeclaration_in_annotationTypeElementRest3316 = new BitSet(new long[]{0x0000000004000002L});
+    public static final BitSet FOLLOW_26_in_annotationTypeElementRest3318 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotationTypeDeclaration_in_annotationTypeElementRest3329 = new BitSet(new long[]{0x0000000004000002L});
+    public static final BitSet FOLLOW_26_in_annotationTypeElementRest3331 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotationMethodRest_in_annotationMethodOrConstantRest3355 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotationConstantRest_in_annotationMethodOrConstantRest3365 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_annotationMethodRest3388 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_66_in_annotationMethodRest3390 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
+    public static final BitSet FOLLOW_67_in_annotationMethodRest3392 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000400L});
+    public static final BitSet FOLLOW_defaultValue_in_annotationMethodRest3394 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_variableDeclarators_in_annotationConstantRest3418 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_74_in_defaultValue3441 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000003E6L});
+    public static final BitSet FOLLOW_elementValue_in_defaultValue3443 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_44_in_block3464 = new BitSet(new long[]{0xFF20F03F96001FF0L,0x0003E60000FBD3E6L});
+    public static final BitSet FOLLOW_blockStatement_in_block3466 = new BitSet(new long[]{0xFF20F03F96001FF0L,0x0003E60000FBD3E6L});
+    public static final BitSet FOLLOW_45_in_block3469 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_localVariableDeclarationStatement_in_blockStatement3492 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classOrInterfaceDeclaration_in_blockStatement3502 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_statement_in_blockStatement3512 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_localVariableDeclaration_in_localVariableDeclarationStatement3536 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_26_in_localVariableDeclarationStatement3538 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_variableModifiers_in_localVariableDeclaration3557 = new BitSet(new long[]{0xFF00000000000010L});
+    public static final BitSet FOLLOW_type_in_localVariableDeclaration3559 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_variableDeclarators_in_localVariableDeclaration3561 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_variableModifier_in_variableModifiers3584 = new BitSet(new long[]{0x0000000800000002L,0x0000000000000200L});
+    public static final BitSet FOLLOW_block_in_statement3602 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ASSERT_in_statement3612 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_expression_in_statement3614 = new BitSet(new long[]{0x0000000004000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_75_in_statement3617 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_expression_in_statement3619 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_26_in_statement3623 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_76_in_statement3633 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_parExpression_in_statement3635 = new BitSet(new long[]{0xFF20D03F96001FF0L,0x0003E60000FBD3E6L});
+    public static final BitSet FOLLOW_statement_in_statement3637 = new BitSet(new long[]{0x0000000000000002L,0x0000000000002000L});
+    public static final BitSet FOLLOW_77_in_statement3647 = new BitSet(new long[]{0xFF20D03F96001FF0L,0x0003E60000FBD3E6L});
+    public static final BitSet FOLLOW_statement_in_statement3649 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_78_in_statement3661 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_66_in_statement3663 = new BitSet(new long[]{0xFF00900804000FD0L,0x0003E600000003E6L});
+    public static final BitSet FOLLOW_forControl_in_statement3665 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
+    public static final BitSet FOLLOW_67_in_statement3667 = new BitSet(new long[]{0xFF20D03F96001FF0L,0x0003E60000FBD3E6L});
     public static final BitSet FOLLOW_statement_in_statement3669 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_80_in_statement3679 = new BitSet(new long[]{0xFF20D03F96001FF0L,0x0003E60000FBD3E6L});
-    public static final BitSet FOLLOW_statement_in_statement3681 = new BitSet(new long[]{0x0000000000000000L,0x0000000000008000L});
-    public static final BitSet FOLLOW_79_in_statement3683 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_parExpression_in_statement3685 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_26_in_statement3687 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_81_in_statement3697 = new BitSet(new long[]{0x0000100010000000L});
-    public static final BitSet FOLLOW_block_in_statement3699 = new BitSet(new long[]{0x0000000000000000L,0x0000000001040000L});
-    public static final BitSet FOLLOW_catches_in_statement3711 = new BitSet(new long[]{0x0000000000000000L,0x0000000000040000L});
-    public static final BitSet FOLLOW_82_in_statement3713 = new BitSet(new long[]{0x0000100010000000L});
-    public static final BitSet FOLLOW_block_in_statement3715 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_catches_in_statement3727 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_82_in_statement3741 = new BitSet(new long[]{0x0000100010000000L});
-    public static final BitSet FOLLOW_block_in_statement3743 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_83_in_statement3763 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_parExpression_in_statement3765 = new BitSet(new long[]{0x0000100000000000L});
-    public static final BitSet FOLLOW_44_in_statement3767 = new BitSet(new long[]{0x0000200000000000L,0x0000000002000400L});
-    public static final BitSet FOLLOW_switchBlockStatementGroups_in_statement3769 = new BitSet(new long[]{0x0000200000000000L});
-    public static final BitSet FOLLOW_45_in_statement3771 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_53_in_statement3781 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_parExpression_in_statement3783 = new BitSet(new long[]{0x0000100010000000L});
-    public static final BitSet FOLLOW_block_in_statement3785 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_84_in_statement3795 = new BitSet(new long[]{0xFF00900004000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_expression_in_statement3797 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_26_in_statement3800 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_85_in_statement3810 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_expression_in_statement3812 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_79_in_statement3679 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_parExpression_in_statement3681 = new BitSet(new long[]{0xFF20D03F96001FF0L,0x0003E60000FBD3E6L});
+    public static final BitSet FOLLOW_statement_in_statement3683 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_80_in_statement3693 = new BitSet(new long[]{0xFF20D03F96001FF0L,0x0003E60000FBD3E6L});
+    public static final BitSet FOLLOW_statement_in_statement3695 = new BitSet(new long[]{0x0000000000000000L,0x0000000000008000L});
+    public static final BitSet FOLLOW_79_in_statement3697 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_parExpression_in_statement3699 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_26_in_statement3701 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_81_in_statement3711 = new BitSet(new long[]{0x0000100010000000L});
+    public static final BitSet FOLLOW_block_in_statement3713 = new BitSet(new long[]{0x0000000000000000L,0x0000000001040000L});
+    public static final BitSet FOLLOW_catches_in_statement3725 = new BitSet(new long[]{0x0000000000000000L,0x0000000000040000L});
+    public static final BitSet FOLLOW_82_in_statement3727 = new BitSet(new long[]{0x0000100010000000L});
+    public static final BitSet FOLLOW_block_in_statement3729 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_catches_in_statement3741 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_82_in_statement3755 = new BitSet(new long[]{0x0000100010000000L});
+    public static final BitSet FOLLOW_block_in_statement3757 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_83_in_statement3777 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_parExpression_in_statement3779 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_44_in_statement3781 = new BitSet(new long[]{0x0000200000000000L,0x0000000002000400L});
+    public static final BitSet FOLLOW_switchBlockStatementGroups_in_statement3783 = new BitSet(new long[]{0x0000200000000000L});
+    public static final BitSet FOLLOW_45_in_statement3785 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_53_in_statement3795 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_parExpression_in_statement3797 = new BitSet(new long[]{0x0000100010000000L});
+    public static final BitSet FOLLOW_block_in_statement3799 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_84_in_statement3809 = new BitSet(new long[]{0xFF00900004000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_expression_in_statement3811 = new BitSet(new long[]{0x0000000004000000L});
     public static final BitSet FOLLOW_26_in_statement3814 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_86_in_statement3824 = new BitSet(new long[]{0x0000000004000010L});
-    public static final BitSet FOLLOW_Identifier_in_statement3826 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_26_in_statement3829 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_87_in_statement3839 = new BitSet(new long[]{0x0000000004000010L});
-    public static final BitSet FOLLOW_Identifier_in_statement3841 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_26_in_statement3844 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_26_in_statement3854 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_statementExpression_in_statement3865 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_26_in_statement3867 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_statement3877 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_75_in_statement3879 = new BitSet(new long[]{0xFF20D03F96001FF0L,0x0003E60000FBD3E6L});
-    public static final BitSet FOLLOW_statement_in_statement3881 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_catchClause_in_catches3904 = new BitSet(new long[]{0x0000000000000002L,0x0000000001000000L});
-    public static final BitSet FOLLOW_catchClause_in_catches3907 = new BitSet(new long[]{0x0000000000000002L,0x0000000001000000L});
-    public static final BitSet FOLLOW_88_in_catchClause3932 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_66_in_catchClause3934 = new BitSet(new long[]{0xFF00000800000010L,0x0000000000000200L});
-    public static final BitSet FOLLOW_formalParameter_in_catchClause3936 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
-    public static final BitSet FOLLOW_67_in_catchClause3938 = new BitSet(new long[]{0x0000100010000000L});
-    public static final BitSet FOLLOW_block_in_catchClause3940 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_variableModifiers_in_formalParameter3959 = new BitSet(new long[]{0xFF00000000000010L});
-    public static final BitSet FOLLOW_type_in_formalParameter3961 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_variableDeclaratorId_in_formalParameter3963 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_switchBlockStatementGroup_in_switchBlockStatementGroups3991 = new BitSet(new long[]{0x0000000000000002L,0x0000000002000400L});
-    public static final BitSet FOLLOW_switchLabel_in_switchBlockStatementGroup4018 = new BitSet(new long[]{0xFF20D03F96001FF2L,0x0003E60002FBD7E6L});
-    public static final BitSet FOLLOW_blockStatement_in_switchBlockStatementGroup4021 = new BitSet(new long[]{0xFF20D03F96001FF2L,0x0003E60000FBD3E6L});
-    public static final BitSet FOLLOW_89_in_switchLabel4045 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_constantExpression_in_switchLabel4047 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_75_in_switchLabel4049 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_89_in_switchLabel4059 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_enumConstantName_in_switchLabel4061 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_85_in_statement3824 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_expression_in_statement3826 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_26_in_statement3828 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_86_in_statement3838 = new BitSet(new long[]{0x0000000004000010L});
+    public static final BitSet FOLLOW_Identifier_in_statement3840 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_26_in_statement3843 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_87_in_statement3853 = new BitSet(new long[]{0x0000000004000010L});
+    public static final BitSet FOLLOW_Identifier_in_statement3855 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_26_in_statement3858 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_26_in_statement3868 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_statementExpression_in_statement3879 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_26_in_statement3881 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_statement3891 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_75_in_statement3893 = new BitSet(new long[]{0xFF20D03F96001FF0L,0x0003E60000FBD3E6L});
+    public static final BitSet FOLLOW_statement_in_statement3895 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_catchClause_in_catches3918 = new BitSet(new long[]{0x0000000000000002L,0x0000000001000000L});
+    public static final BitSet FOLLOW_catchClause_in_catches3921 = new BitSet(new long[]{0x0000000000000002L,0x0000000001000000L});
+    public static final BitSet FOLLOW_88_in_catchClause3946 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_66_in_catchClause3948 = new BitSet(new long[]{0xFF00000800000010L,0x0000000000000200L});
+    public static final BitSet FOLLOW_formalParameter_in_catchClause3950 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
+    public static final BitSet FOLLOW_67_in_catchClause3952 = new BitSet(new long[]{0x0000100010000000L});
+    public static final BitSet FOLLOW_block_in_catchClause3954 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_variableModifiers_in_formalParameter3973 = new BitSet(new long[]{0xFF00000000000010L});
+    public static final BitSet FOLLOW_type_in_formalParameter3975 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_variableDeclaratorId_in_formalParameter3977 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_switchBlockStatementGroup_in_switchBlockStatementGroups4005 = new BitSet(new long[]{0x0000000000000002L,0x0000000002000400L});
+    public static final BitSet FOLLOW_switchLabel_in_switchBlockStatementGroup4032 = new BitSet(new long[]{0xFF20D03F96001FF2L,0x0003E60002FBD7E6L});
+    public static final BitSet FOLLOW_blockStatement_in_switchBlockStatementGroup4035 = new BitSet(new long[]{0xFF20D03F96001FF2L,0x0003E60000FBD3E6L});
+    public static final BitSet FOLLOW_89_in_switchLabel4059 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_constantExpression_in_switchLabel4061 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
     public static final BitSet FOLLOW_75_in_switchLabel4063 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_74_in_switchLabel4073 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_75_in_switchLabel4075 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_enhancedForControl_in_forControl4106 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_forInit_in_forControl4116 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_26_in_forControl4119 = new BitSet(new long[]{0xFF00900004000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_expression_in_forControl4121 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_26_in_forControl4124 = new BitSet(new long[]{0xFF00900800000FD2L,0x0003E600000003E6L});
-    public static final BitSet FOLLOW_forUpdate_in_forControl4126 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_localVariableDeclaration_in_forInit4146 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expressionList_in_forInit4156 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_variableModifiers_in_enhancedForControl4179 = new BitSet(new long[]{0xFF00000000000010L});
-    public static final BitSet FOLLOW_type_in_enhancedForControl4181 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_Identifier_in_enhancedForControl4183 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_75_in_enhancedForControl4185 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_expression_in_enhancedForControl4187 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expressionList_in_forUpdate4206 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_66_in_parExpression4227 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_expression_in_parExpression4229 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
-    public static final BitSet FOLLOW_67_in_parExpression4231 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expression_in_expressionList4254 = new BitSet(new long[]{0x0000020000000002L});
-    public static final BitSet FOLLOW_41_in_expressionList4257 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_expression_in_expressionList4259 = new BitSet(new long[]{0x0000020000000002L});
-    public static final BitSet FOLLOW_expression_in_statementExpression4280 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expression_in_constantExpression4303 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionalExpression_in_expression4326 = new BitSet(new long[]{0x0008050000000002L,0x00000003FC000000L});
-    public static final BitSet FOLLOW_assignmentOperator_in_expression4329 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_expression_in_expression4331 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_51_in_assignmentOperator4356 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_90_in_assignmentOperator4366 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_91_in_assignmentOperator4376 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_92_in_assignmentOperator4386 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_93_in_assignmentOperator4396 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_94_in_assignmentOperator4406 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_95_in_assignmentOperator4416 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_96_in_assignmentOperator4426 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_97_in_assignmentOperator4436 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_40_in_assignmentOperator4457 = new BitSet(new long[]{0x0000010000000000L});
-    public static final BitSet FOLLOW_40_in_assignmentOperator4461 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_51_in_assignmentOperator4465 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_42_in_assignmentOperator4499 = new BitSet(new long[]{0x0000040000000000L});
-    public static final BitSet FOLLOW_42_in_assignmentOperator4503 = new BitSet(new long[]{0x0000040000000000L});
-    public static final BitSet FOLLOW_42_in_assignmentOperator4507 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_51_in_assignmentOperator4511 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_42_in_assignmentOperator4542 = new BitSet(new long[]{0x0000040000000000L});
-    public static final BitSet FOLLOW_42_in_assignmentOperator4546 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_51_in_assignmentOperator4550 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionalOrExpression_in_conditionalExpression4579 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000001L});
-    public static final BitSet FOLLOW_64_in_conditionalExpression4583 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_expression_in_conditionalExpression4585 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_75_in_conditionalExpression4587 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_expression_in_conditionalExpression4589 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionalAndExpression_in_conditionalOrExpression4611 = new BitSet(new long[]{0x0000000000000002L,0x0000000400000000L});
-    public static final BitSet FOLLOW_98_in_conditionalOrExpression4615 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_conditionalAndExpression_in_conditionalOrExpression4617 = new BitSet(new long[]{0x0000000000000002L,0x0000000400000000L});
-    public static final BitSet FOLLOW_inclusiveOrExpression_in_conditionalAndExpression4639 = new BitSet(new long[]{0x0000000000000002L,0x0000000800000000L});
-    public static final BitSet FOLLOW_99_in_conditionalAndExpression4643 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_inclusiveOrExpression_in_conditionalAndExpression4645 = new BitSet(new long[]{0x0000000000000002L,0x0000000800000000L});
-    public static final BitSet FOLLOW_exclusiveOrExpression_in_inclusiveOrExpression4667 = new BitSet(new long[]{0x0000000000000002L,0x0000001000000000L});
-    public static final BitSet FOLLOW_100_in_inclusiveOrExpression4671 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_exclusiveOrExpression_in_inclusiveOrExpression4673 = new BitSet(new long[]{0x0000000000000002L,0x0000001000000000L});
-    public static final BitSet FOLLOW_andExpression_in_exclusiveOrExpression4695 = new BitSet(new long[]{0x0000000000000002L,0x0000002000000000L});
-    public static final BitSet FOLLOW_101_in_exclusiveOrExpression4699 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_andExpression_in_exclusiveOrExpression4701 = new BitSet(new long[]{0x0000000000000002L,0x0000002000000000L});
-    public static final BitSet FOLLOW_equalityExpression_in_andExpression4723 = new BitSet(new long[]{0x0000080000000002L});
-    public static final BitSet FOLLOW_43_in_andExpression4727 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_equalityExpression_in_andExpression4729 = new BitSet(new long[]{0x0000080000000002L});
-    public static final BitSet FOLLOW_instanceOfExpression_in_equalityExpression4751 = new BitSet(new long[]{0x0000000000000002L,0x000000C000000000L});
-    public static final BitSet FOLLOW_set_in_equalityExpression4755 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_instanceOfExpression_in_equalityExpression4763 = new BitSet(new long[]{0x0000000000000002L,0x000000C000000000L});
-    public static final BitSet FOLLOW_relationalExpression_in_instanceOfExpression4785 = new BitSet(new long[]{0x0000000000000002L,0x0000010000000000L});
-    public static final BitSet FOLLOW_104_in_instanceOfExpression4788 = new BitSet(new long[]{0xFF00000000000010L});
-    public static final BitSet FOLLOW_type_in_instanceOfExpression4790 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_shiftExpression_in_relationalExpression4811 = new BitSet(new long[]{0x0000050000000002L});
-    public static final BitSet FOLLOW_relationalOp_in_relationalExpression4815 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_shiftExpression_in_relationalExpression4817 = new BitSet(new long[]{0x0000050000000002L});
-    public static final BitSet FOLLOW_40_in_relationalOp4852 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_51_in_relationalOp4856 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_42_in_relationalOp4886 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_51_in_relationalOp4890 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_40_in_relationalOp4911 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_42_in_relationalOp4922 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_additiveExpression_in_shiftExpression4942 = new BitSet(new long[]{0x0000050000000002L});
-    public static final BitSet FOLLOW_shiftOp_in_shiftExpression4946 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_additiveExpression_in_shiftExpression4948 = new BitSet(new long[]{0x0000050000000002L});
-    public static final BitSet FOLLOW_40_in_shiftOp4979 = new BitSet(new long[]{0x0000010000000000L});
-    public static final BitSet FOLLOW_40_in_shiftOp4983 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_42_in_shiftOp5015 = new BitSet(new long[]{0x0000040000000000L});
-    public static final BitSet FOLLOW_42_in_shiftOp5019 = new BitSet(new long[]{0x0000040000000000L});
-    public static final BitSet FOLLOW_42_in_shiftOp5023 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_42_in_shiftOp5053 = new BitSet(new long[]{0x0000040000000000L});
-    public static final BitSet FOLLOW_42_in_shiftOp5057 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_multiplicativeExpression_in_additiveExpression5087 = new BitSet(new long[]{0x0000000000000002L,0x0000060000000000L});
-    public static final BitSet FOLLOW_set_in_additiveExpression5091 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_multiplicativeExpression_in_additiveExpression5099 = new BitSet(new long[]{0x0000000000000002L,0x0000060000000000L});
-    public static final BitSet FOLLOW_unaryExpression_in_multiplicativeExpression5121 = new BitSet(new long[]{0x0000000040000002L,0x0000180000000000L});
-    public static final BitSet FOLLOW_set_in_multiplicativeExpression5125 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_unaryExpression_in_multiplicativeExpression5139 = new BitSet(new long[]{0x0000000040000002L,0x0000180000000000L});
-    public static final BitSet FOLLOW_105_in_unaryExpression5165 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_unaryExpression_in_unaryExpression5167 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_106_in_unaryExpression5177 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_unaryExpression_in_unaryExpression5179 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_109_in_unaryExpression5189 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_unaryExpression_in_unaryExpression5191 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_110_in_unaryExpression5201 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_unaryExpression_in_unaryExpression5203 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_unaryExpressionNotPlusMinus_in_unaryExpression5213 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_111_in_unaryExpressionNotPlusMinus5232 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_unaryExpression_in_unaryExpressionNotPlusMinus5234 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_112_in_unaryExpressionNotPlusMinus5244 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_unaryExpression_in_unaryExpressionNotPlusMinus5246 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_castExpression_in_unaryExpressionNotPlusMinus5256 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_primary_in_unaryExpressionNotPlusMinus5266 = new BitSet(new long[]{0x0001000020000002L,0x0000600000000000L});
-    public static final BitSet FOLLOW_selector_in_unaryExpressionNotPlusMinus5268 = new BitSet(new long[]{0x0001000020000002L,0x0000600000000000L});
-    public static final BitSet FOLLOW_set_in_unaryExpressionNotPlusMinus5271 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_66_in_castExpression5294 = new BitSet(new long[]{0xFF00000000000010L});
-    public static final BitSet FOLLOW_primitiveType_in_castExpression5296 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
-    public static final BitSet FOLLOW_67_in_castExpression5298 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_unaryExpression_in_castExpression5300 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_66_in_castExpression5309 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_type_in_castExpression5312 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
-    public static final BitSet FOLLOW_expression_in_castExpression5316 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
-    public static final BitSet FOLLOW_67_in_castExpression5319 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_unaryExpressionNotPlusMinus_in_castExpression5321 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_parExpression_in_primary5340 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_69_in_primary5350 = new BitSet(new long[]{0x0001000020000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_29_in_primary5353 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_Identifier_in_primary5355 = new BitSet(new long[]{0x0001000020000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_identifierSuffix_in_primary5359 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_65_in_primary5370 = new BitSet(new long[]{0x0000000020000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_superSuffix_in_primary5372 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_literal_in_primary5382 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_113_in_primary5392 = new BitSet(new long[]{0xFF00010000000010L});
-    public static final BitSet FOLLOW_creator_in_primary5394 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_primary5404 = new BitSet(new long[]{0x0001000020000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_29_in_primary5407 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_Identifier_in_primary5409 = new BitSet(new long[]{0x0001000020000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_identifierSuffix_in_primary5413 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_primitiveType_in_primary5424 = new BitSet(new long[]{0x0001000020000000L});
-    public static final BitSet FOLLOW_48_in_primary5427 = new BitSet(new long[]{0x0002000000000000L});
-    public static final BitSet FOLLOW_49_in_primary5429 = new BitSet(new long[]{0x0001000020000000L});
-    public static final BitSet FOLLOW_29_in_primary5433 = new BitSet(new long[]{0x0000002000000000L});
-    public static final BitSet FOLLOW_37_in_primary5435 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_47_in_primary5445 = new BitSet(new long[]{0x0000000020000000L});
+    public static final BitSet FOLLOW_89_in_switchLabel4073 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_enumConstantName_in_switchLabel4075 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_75_in_switchLabel4077 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_74_in_switchLabel4087 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_75_in_switchLabel4089 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_enhancedForControl_in_forControl4120 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_forInit_in_forControl4130 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_26_in_forControl4133 = new BitSet(new long[]{0xFF00900004000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_expression_in_forControl4135 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_26_in_forControl4138 = new BitSet(new long[]{0xFF00900800000FD2L,0x0003E600000003E6L});
+    public static final BitSet FOLLOW_forUpdate_in_forControl4140 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_localVariableDeclaration_in_forInit4160 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expressionList_in_forInit4170 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_variableModifiers_in_enhancedForControl4193 = new BitSet(new long[]{0xFF00000000000010L});
+    public static final BitSet FOLLOW_type_in_enhancedForControl4195 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_Identifier_in_enhancedForControl4197 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_75_in_enhancedForControl4199 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_expression_in_enhancedForControl4201 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expressionList_in_forUpdate4220 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_66_in_parExpression4241 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_expression_in_parExpression4243 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
+    public static final BitSet FOLLOW_67_in_parExpression4245 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_expressionList4268 = new BitSet(new long[]{0x0000020000000002L});
+    public static final BitSet FOLLOW_41_in_expressionList4271 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_expression_in_expressionList4273 = new BitSet(new long[]{0x0000020000000002L});
+    public static final BitSet FOLLOW_expression_in_statementExpression4294 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_constantExpression4317 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionalExpression_in_expression4340 = new BitSet(new long[]{0x0008050000000002L,0x00000003FC000000L});
+    public static final BitSet FOLLOW_assignmentOperator_in_expression4343 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_expression_in_expression4345 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_51_in_assignmentOperator4370 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_90_in_assignmentOperator4380 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_91_in_assignmentOperator4390 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_92_in_assignmentOperator4400 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_93_in_assignmentOperator4410 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_94_in_assignmentOperator4420 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_95_in_assignmentOperator4430 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_96_in_assignmentOperator4440 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_97_in_assignmentOperator4450 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_40_in_assignmentOperator4471 = new BitSet(new long[]{0x0000010000000000L});
+    public static final BitSet FOLLOW_40_in_assignmentOperator4475 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_51_in_assignmentOperator4479 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_42_in_assignmentOperator4513 = new BitSet(new long[]{0x0000040000000000L});
+    public static final BitSet FOLLOW_42_in_assignmentOperator4517 = new BitSet(new long[]{0x0000040000000000L});
+    public static final BitSet FOLLOW_42_in_assignmentOperator4521 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_51_in_assignmentOperator4525 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_42_in_assignmentOperator4556 = new BitSet(new long[]{0x0000040000000000L});
+    public static final BitSet FOLLOW_42_in_assignmentOperator4560 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_51_in_assignmentOperator4564 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionalOrExpression_in_conditionalExpression4593 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000001L});
+    public static final BitSet FOLLOW_64_in_conditionalExpression4597 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_expression_in_conditionalExpression4599 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_75_in_conditionalExpression4601 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_expression_in_conditionalExpression4603 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionalAndExpression_in_conditionalOrExpression4625 = new BitSet(new long[]{0x0000000000000002L,0x0000000400000000L});
+    public static final BitSet FOLLOW_98_in_conditionalOrExpression4629 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_conditionalAndExpression_in_conditionalOrExpression4631 = new BitSet(new long[]{0x0000000000000002L,0x0000000400000000L});
+    public static final BitSet FOLLOW_inclusiveOrExpression_in_conditionalAndExpression4653 = new BitSet(new long[]{0x0000000000000002L,0x0000000800000000L});
+    public static final BitSet FOLLOW_99_in_conditionalAndExpression4657 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_inclusiveOrExpression_in_conditionalAndExpression4659 = new BitSet(new long[]{0x0000000000000002L,0x0000000800000000L});
+    public static final BitSet FOLLOW_exclusiveOrExpression_in_inclusiveOrExpression4681 = new BitSet(new long[]{0x0000000000000002L,0x0000001000000000L});
+    public static final BitSet FOLLOW_100_in_inclusiveOrExpression4685 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_exclusiveOrExpression_in_inclusiveOrExpression4687 = new BitSet(new long[]{0x0000000000000002L,0x0000001000000000L});
+    public static final BitSet FOLLOW_andExpression_in_exclusiveOrExpression4709 = new BitSet(new long[]{0x0000000000000002L,0x0000002000000000L});
+    public static final BitSet FOLLOW_101_in_exclusiveOrExpression4713 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_andExpression_in_exclusiveOrExpression4715 = new BitSet(new long[]{0x0000000000000002L,0x0000002000000000L});
+    public static final BitSet FOLLOW_equalityExpression_in_andExpression4737 = new BitSet(new long[]{0x0000080000000002L});
+    public static final BitSet FOLLOW_43_in_andExpression4741 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_equalityExpression_in_andExpression4743 = new BitSet(new long[]{0x0000080000000002L});
+    public static final BitSet FOLLOW_instanceOfExpression_in_equalityExpression4765 = new BitSet(new long[]{0x0000000000000002L,0x000000C000000000L});
+    public static final BitSet FOLLOW_set_in_equalityExpression4769 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_instanceOfExpression_in_equalityExpression4777 = new BitSet(new long[]{0x0000000000000002L,0x000000C000000000L});
+    public static final BitSet FOLLOW_relationalExpression_in_instanceOfExpression4799 = new BitSet(new long[]{0x0000000000000002L,0x0000010000000000L});
+    public static final BitSet FOLLOW_104_in_instanceOfExpression4802 = new BitSet(new long[]{0xFF00000000000010L});
+    public static final BitSet FOLLOW_type_in_instanceOfExpression4804 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_shiftExpression_in_relationalExpression4825 = new BitSet(new long[]{0x0000050000000002L});
+    public static final BitSet FOLLOW_relationalOp_in_relationalExpression4829 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_shiftExpression_in_relationalExpression4831 = new BitSet(new long[]{0x0000050000000002L});
+    public static final BitSet FOLLOW_40_in_relationalOp4866 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_51_in_relationalOp4870 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_42_in_relationalOp4900 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_51_in_relationalOp4904 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_40_in_relationalOp4925 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_42_in_relationalOp4936 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_additiveExpression_in_shiftExpression4956 = new BitSet(new long[]{0x0000050000000002L});
+    public static final BitSet FOLLOW_shiftOp_in_shiftExpression4960 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_additiveExpression_in_shiftExpression4962 = new BitSet(new long[]{0x0000050000000002L});
+    public static final BitSet FOLLOW_40_in_shiftOp4993 = new BitSet(new long[]{0x0000010000000000L});
+    public static final BitSet FOLLOW_40_in_shiftOp4997 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_42_in_shiftOp5029 = new BitSet(new long[]{0x0000040000000000L});
+    public static final BitSet FOLLOW_42_in_shiftOp5033 = new BitSet(new long[]{0x0000040000000000L});
+    public static final BitSet FOLLOW_42_in_shiftOp5037 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_42_in_shiftOp5067 = new BitSet(new long[]{0x0000040000000000L});
+    public static final BitSet FOLLOW_42_in_shiftOp5071 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_multiplicativeExpression_in_additiveExpression5101 = new BitSet(new long[]{0x0000000000000002L,0x0000060000000000L});
+    public static final BitSet FOLLOW_set_in_additiveExpression5105 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_multiplicativeExpression_in_additiveExpression5113 = new BitSet(new long[]{0x0000000000000002L,0x0000060000000000L});
+    public static final BitSet FOLLOW_unaryExpression_in_multiplicativeExpression5135 = new BitSet(new long[]{0x0000000040000002L,0x0000180000000000L});
+    public static final BitSet FOLLOW_set_in_multiplicativeExpression5139 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_unaryExpression_in_multiplicativeExpression5153 = new BitSet(new long[]{0x0000000040000002L,0x0000180000000000L});
+    public static final BitSet FOLLOW_105_in_unaryExpression5179 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_unaryExpression_in_unaryExpression5181 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_106_in_unaryExpression5191 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_unaryExpression_in_unaryExpression5193 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_109_in_unaryExpression5203 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_unaryExpression_in_unaryExpression5205 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_110_in_unaryExpression5215 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_unaryExpression_in_unaryExpression5217 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_unaryExpressionNotPlusMinus_in_unaryExpression5227 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_111_in_unaryExpressionNotPlusMinus5246 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_unaryExpression_in_unaryExpressionNotPlusMinus5248 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_112_in_unaryExpressionNotPlusMinus5258 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_unaryExpression_in_unaryExpressionNotPlusMinus5260 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_castExpression_in_unaryExpressionNotPlusMinus5270 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_primary_in_unaryExpressionNotPlusMinus5280 = new BitSet(new long[]{0x0001000020000002L,0x0000600000000000L});
+    public static final BitSet FOLLOW_selector_in_unaryExpressionNotPlusMinus5282 = new BitSet(new long[]{0x0001000020000002L,0x0000600000000000L});
+    public static final BitSet FOLLOW_set_in_unaryExpressionNotPlusMinus5285 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_66_in_castExpression5308 = new BitSet(new long[]{0xFF00000000000010L});
+    public static final BitSet FOLLOW_primitiveType_in_castExpression5310 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
+    public static final BitSet FOLLOW_67_in_castExpression5312 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_unaryExpression_in_castExpression5314 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_66_in_castExpression5323 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_type_in_castExpression5326 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
+    public static final BitSet FOLLOW_expression_in_castExpression5330 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
+    public static final BitSet FOLLOW_67_in_castExpression5333 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_unaryExpressionNotPlusMinus_in_castExpression5335 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_parExpression_in_primary5354 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_69_in_primary5364 = new BitSet(new long[]{0x0001000020000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_29_in_primary5367 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_Identifier_in_primary5369 = new BitSet(new long[]{0x0001000020000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_identifierSuffix_in_primary5373 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_65_in_primary5384 = new BitSet(new long[]{0x0000000020000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_superSuffix_in_primary5386 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_literal_in_primary5396 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_113_in_primary5406 = new BitSet(new long[]{0xFF00010000000010L});
+    public static final BitSet FOLLOW_creator_in_primary5408 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_primary5418 = new BitSet(new long[]{0x0001000020000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_29_in_primary5421 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_Identifier_in_primary5423 = new BitSet(new long[]{0x0001000020000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_identifierSuffix_in_primary5427 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_primitiveType_in_primary5438 = new BitSet(new long[]{0x0001000020000000L});
+    public static final BitSet FOLLOW_48_in_primary5441 = new BitSet(new long[]{0x0002000000000000L});
+    public static final BitSet FOLLOW_49_in_primary5443 = new BitSet(new long[]{0x0001000020000000L});
     public static final BitSet FOLLOW_29_in_primary5447 = new BitSet(new long[]{0x0000002000000000L});
     public static final BitSet FOLLOW_37_in_primary5449 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_48_in_identifierSuffix5469 = new BitSet(new long[]{0x0002000000000000L});
-    public static final BitSet FOLLOW_49_in_identifierSuffix5471 = new BitSet(new long[]{0x0001000020000000L});
-    public static final BitSet FOLLOW_29_in_identifierSuffix5475 = new BitSet(new long[]{0x0000002000000000L});
-    public static final BitSet FOLLOW_37_in_identifierSuffix5477 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_48_in_identifierSuffix5488 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_expression_in_identifierSuffix5490 = new BitSet(new long[]{0x0002000000000000L});
-    public static final BitSet FOLLOW_49_in_identifierSuffix5492 = new BitSet(new long[]{0x0001000000000002L});
-    public static final BitSet FOLLOW_arguments_in_identifierSuffix5505 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_29_in_identifierSuffix5515 = new BitSet(new long[]{0x0000002000000000L});
-    public static final BitSet FOLLOW_37_in_identifierSuffix5517 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_29_in_identifierSuffix5527 = new BitSet(new long[]{0x0000010000000000L});
-    public static final BitSet FOLLOW_explicitGenericInvocation_in_identifierSuffix5529 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_29_in_identifierSuffix5539 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000020L});
-    public static final BitSet FOLLOW_69_in_identifierSuffix5541 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_29_in_identifierSuffix5551 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_65_in_identifierSuffix5553 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_arguments_in_identifierSuffix5555 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_29_in_identifierSuffix5565 = new BitSet(new long[]{0x0000000000000000L,0x0002000000000000L});
-    public static final BitSet FOLLOW_113_in_identifierSuffix5567 = new BitSet(new long[]{0x0000010000000010L});
-    public static final BitSet FOLLOW_innerCreator_in_identifierSuffix5569 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_creator5588 = new BitSet(new long[]{0xFF00010000000010L});
-    public static final BitSet FOLLOW_createdName_in_creator5590 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_classCreatorRest_in_creator5592 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_createdName_in_creator5602 = new BitSet(new long[]{0x0001000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_arrayCreatorRest_in_creator5605 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classCreatorRest_in_creator5609 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classOrInterfaceType_in_createdName5629 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_primitiveType_in_createdName5639 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_innerCreator5662 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_Identifier_in_innerCreator5665 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_classCreatorRest_in_innerCreator5667 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_48_in_arrayCreatorRest5686 = new BitSet(new long[]{0xFF02900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_49_in_arrayCreatorRest5700 = new BitSet(new long[]{0x0001100000000000L});
-    public static final BitSet FOLLOW_48_in_arrayCreatorRest5703 = new BitSet(new long[]{0x0002000000000000L});
-    public static final BitSet FOLLOW_49_in_arrayCreatorRest5705 = new BitSet(new long[]{0x0001100000000000L});
-    public static final BitSet FOLLOW_arrayInitializer_in_arrayCreatorRest5709 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expression_in_arrayCreatorRest5723 = new BitSet(new long[]{0x0002000000000000L});
-    public static final BitSet FOLLOW_49_in_arrayCreatorRest5725 = new BitSet(new long[]{0x0001000000000002L});
-    public static final BitSet FOLLOW_48_in_arrayCreatorRest5728 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_expression_in_arrayCreatorRest5730 = new BitSet(new long[]{0x0002000000000000L});
-    public static final BitSet FOLLOW_49_in_arrayCreatorRest5732 = new BitSet(new long[]{0x0001000000000002L});
-    public static final BitSet FOLLOW_48_in_arrayCreatorRest5737 = new BitSet(new long[]{0x0002000000000000L});
+    public static final BitSet FOLLOW_47_in_primary5459 = new BitSet(new long[]{0x0000000020000000L});
+    public static final BitSet FOLLOW_29_in_primary5461 = new BitSet(new long[]{0x0000002000000000L});
+    public static final BitSet FOLLOW_37_in_primary5463 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_48_in_identifierSuffix5483 = new BitSet(new long[]{0x0002000000000000L});
+    public static final BitSet FOLLOW_49_in_identifierSuffix5485 = new BitSet(new long[]{0x0001000020000000L});
+    public static final BitSet FOLLOW_29_in_identifierSuffix5489 = new BitSet(new long[]{0x0000002000000000L});
+    public static final BitSet FOLLOW_37_in_identifierSuffix5491 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_48_in_identifierSuffix5502 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_expression_in_identifierSuffix5504 = new BitSet(new long[]{0x0002000000000000L});
+    public static final BitSet FOLLOW_49_in_identifierSuffix5506 = new BitSet(new long[]{0x0001000000000002L});
+    public static final BitSet FOLLOW_arguments_in_identifierSuffix5519 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_29_in_identifierSuffix5529 = new BitSet(new long[]{0x0000002000000000L});
+    public static final BitSet FOLLOW_37_in_identifierSuffix5531 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_29_in_identifierSuffix5541 = new BitSet(new long[]{0x0000010000000000L});
+    public static final BitSet FOLLOW_explicitGenericInvocation_in_identifierSuffix5543 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_29_in_identifierSuffix5553 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000020L});
+    public static final BitSet FOLLOW_69_in_identifierSuffix5555 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_29_in_identifierSuffix5565 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_65_in_identifierSuffix5567 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_arguments_in_identifierSuffix5569 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_29_in_identifierSuffix5579 = new BitSet(new long[]{0x0000000000000000L,0x0002000000000000L});
+    public static final BitSet FOLLOW_113_in_identifierSuffix5581 = new BitSet(new long[]{0x0000010000000010L});
+    public static final BitSet FOLLOW_innerCreator_in_identifierSuffix5583 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_creator5602 = new BitSet(new long[]{0xFF00010000000010L});
+    public static final BitSet FOLLOW_createdName_in_creator5604 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_classCreatorRest_in_creator5606 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_createdName_in_creator5616 = new BitSet(new long[]{0x0001000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_arrayCreatorRest_in_creator5619 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classCreatorRest_in_creator5623 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classOrInterfaceType_in_createdName5643 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_primitiveType_in_createdName5653 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_innerCreator5676 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_Identifier_in_innerCreator5679 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_classCreatorRest_in_innerCreator5681 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_48_in_arrayCreatorRest5700 = new BitSet(new long[]{0xFF02900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_49_in_arrayCreatorRest5714 = new BitSet(new long[]{0x0001100000000000L});
+    public static final BitSet FOLLOW_48_in_arrayCreatorRest5717 = new BitSet(new long[]{0x0002000000000000L});
+    public static final BitSet FOLLOW_49_in_arrayCreatorRest5719 = new BitSet(new long[]{0x0001100000000000L});
+    public static final BitSet FOLLOW_arrayInitializer_in_arrayCreatorRest5723 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_arrayCreatorRest5737 = new BitSet(new long[]{0x0002000000000000L});
     public static final BitSet FOLLOW_49_in_arrayCreatorRest5739 = new BitSet(new long[]{0x0001000000000002L});
-    public static final BitSet FOLLOW_arguments_in_classCreatorRest5770 = new BitSet(new long[]{0x000011C000000002L});
-    public static final BitSet FOLLOW_classBody_in_classCreatorRest5772 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_explicitGenericInvocation5796 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_Identifier_in_explicitGenericInvocation5798 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_arguments_in_explicitGenericInvocation5800 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_40_in_nonWildcardTypeArguments5823 = new BitSet(new long[]{0xFF00000000000010L});
-    public static final BitSet FOLLOW_typeList_in_nonWildcardTypeArguments5825 = new BitSet(new long[]{0x0000040000000000L});
-    public static final BitSet FOLLOW_42_in_nonWildcardTypeArguments5827 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_29_in_selector5850 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_Identifier_in_selector5852 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_arguments_in_selector5854 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_29_in_selector5865 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000020L});
-    public static final BitSet FOLLOW_69_in_selector5867 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_29_in_selector5877 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_65_in_selector5879 = new BitSet(new long[]{0x0000000020000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_superSuffix_in_selector5881 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_29_in_selector5891 = new BitSet(new long[]{0x0000000000000000L,0x0002000000000000L});
-    public static final BitSet FOLLOW_113_in_selector5893 = new BitSet(new long[]{0x0000010000000010L});
-    public static final BitSet FOLLOW_innerCreator_in_selector5895 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_48_in_selector5905 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_expression_in_selector5907 = new BitSet(new long[]{0x0002000000000000L});
-    public static final BitSet FOLLOW_49_in_selector5909 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_arguments_in_superSuffix5932 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_29_in_superSuffix5942 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_Identifier_in_superSuffix5944 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_48_in_arrayCreatorRest5742 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_expression_in_arrayCreatorRest5744 = new BitSet(new long[]{0x0002000000000000L});
+    public static final BitSet FOLLOW_49_in_arrayCreatorRest5746 = new BitSet(new long[]{0x0001000000000002L});
+    public static final BitSet FOLLOW_48_in_arrayCreatorRest5751 = new BitSet(new long[]{0x0002000000000000L});
+    public static final BitSet FOLLOW_49_in_arrayCreatorRest5753 = new BitSet(new long[]{0x0001000000000002L});
+    public static final BitSet FOLLOW_arguments_in_classCreatorRest5784 = new BitSet(new long[]{0x000011C000000002L});
+    public static final BitSet FOLLOW_classBody_in_classCreatorRest5786 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_explicitGenericInvocation5810 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_Identifier_in_explicitGenericInvocation5812 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_arguments_in_explicitGenericInvocation5814 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_40_in_nonWildcardTypeArguments5837 = new BitSet(new long[]{0xFF00000000000010L});
+    public static final BitSet FOLLOW_typeList_in_nonWildcardTypeArguments5839 = new BitSet(new long[]{0x0000040000000000L});
+    public static final BitSet FOLLOW_42_in_nonWildcardTypeArguments5841 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_29_in_selector5864 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_Identifier_in_selector5866 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_arguments_in_selector5868 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_29_in_selector5879 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000020L});
+    public static final BitSet FOLLOW_69_in_selector5881 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_29_in_selector5891 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_65_in_selector5893 = new BitSet(new long[]{0x0000000020000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_superSuffix_in_selector5895 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_29_in_selector5905 = new BitSet(new long[]{0x0000000000000000L,0x0002000000000000L});
+    public static final BitSet FOLLOW_113_in_selector5907 = new BitSet(new long[]{0x0000010000000010L});
+    public static final BitSet FOLLOW_innerCreator_in_selector5909 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_48_in_selector5919 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_expression_in_selector5921 = new BitSet(new long[]{0x0002000000000000L});
+    public static final BitSet FOLLOW_49_in_selector5923 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_arguments_in_superSuffix5946 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_66_in_arguments5966 = new BitSet(new long[]{0xFF00900800000FD0L,0x0003E600000003EEL});
-    public static final BitSet FOLLOW_expressionList_in_arguments5968 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
-    public static final BitSet FOLLOW_67_in_arguments5971 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_29_in_superSuffix5956 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_Identifier_in_superSuffix5958 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_arguments_in_superSuffix5960 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_66_in_arguments5980 = new BitSet(new long[]{0xFF00900800000FD0L,0x0003E600000003EEL});
+    public static final BitSet FOLLOW_expressionList_in_arguments5982 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
+    public static final BitSet FOLLOW_67_in_arguments5985 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_annotations_in_synpred5_Java89 = new BitSet(new long[]{0x0000403F92000020L,0x0000000000000200L});
     public static final BitSet FOLLOW_packageDeclaration_in_synpred5_Java105 = new BitSet(new long[]{0x0000403F9E000022L,0x0000000000000200L});
     public static final BitSet FOLLOW_importDeclaration_in_synpred5_Java111 = new BitSet(new long[]{0x0000403F9E000022L,0x0000000000000200L});
     public static final BitSet FOLLOW_typeDeclaration_in_synpred5_Java119 = new BitSet(new long[]{0x0000403F96000022L,0x0000000000000200L});
     public static final BitSet FOLLOW_classOrInterfaceDeclaration_in_synpred5_Java138 = new BitSet(new long[]{0x0000403F96000022L,0x0000000000000200L});
     public static final BitSet FOLLOW_typeDeclaration_in_synpred5_Java144 = new BitSet(new long[]{0x0000403F96000022L,0x0000000000000200L});
-    public static final BitSet FOLLOW_annotation_in_synpred81_Java2140 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classOrInterfaceModifier_in_synpred82_Java2152 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_explicitConstructorInvocation_in_synpred108_Java2702 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_synpred112_Java2727 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000022L});
-    public static final BitSet FOLLOW_set_in_synpred112_Java2730 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_arguments_in_synpred112_Java2738 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_26_in_synpred112_Java2740 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_annotation_in_synpred123_Java2951 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_localVariableDeclarationStatement_in_synpred146_Java3478 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classOrInterfaceDeclaration_in_synpred147_Java3488 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_77_in_synpred152_Java3633 = new BitSet(new long[]{0xFF20D03F96001FF0L,0x0003E60000FBD3E6L});
-    public static final BitSet FOLLOW_statement_in_synpred152_Java3635 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_catches_in_synpred157_Java3711 = new BitSet(new long[]{0x0000000000000000L,0x0000000000040000L});
-    public static final BitSet FOLLOW_82_in_synpred157_Java3713 = new BitSet(new long[]{0x0000100010000000L});
-    public static final BitSet FOLLOW_block_in_synpred157_Java3715 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_catches_in_synpred158_Java3727 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_switchLabel_in_synpred173_Java4018 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_89_in_synpred175_Java4045 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_constantExpression_in_synpred175_Java4047 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_75_in_synpred175_Java4049 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_89_in_synpred176_Java4059 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_enumConstantName_in_synpred176_Java4061 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_75_in_synpred176_Java4063 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_enhancedForControl_in_synpred177_Java4106 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_localVariableDeclaration_in_synpred181_Java4146 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_assignmentOperator_in_synpred183_Java4329 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_expression_in_synpred183_Java4331 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_40_in_synpred193_Java4447 = new BitSet(new long[]{0x0000010000000000L});
-    public static final BitSet FOLLOW_40_in_synpred193_Java4449 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_51_in_synpred193_Java4451 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_42_in_synpred194_Java4487 = new BitSet(new long[]{0x0000040000000000L});
-    public static final BitSet FOLLOW_42_in_synpred194_Java4489 = new BitSet(new long[]{0x0000040000000000L});
-    public static final BitSet FOLLOW_42_in_synpred194_Java4491 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_51_in_synpred194_Java4493 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_42_in_synpred195_Java4532 = new BitSet(new long[]{0x0000040000000000L});
-    public static final BitSet FOLLOW_42_in_synpred195_Java4534 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_51_in_synpred195_Java4536 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_40_in_synpred206_Java4844 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_51_in_synpred206_Java4846 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_42_in_synpred207_Java4878 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_51_in_synpred207_Java4880 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_40_in_synpred210_Java4971 = new BitSet(new long[]{0x0000010000000000L});
-    public static final BitSet FOLLOW_40_in_synpred210_Java4973 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_42_in_synpred211_Java5005 = new BitSet(new long[]{0x0000040000000000L});
-    public static final BitSet FOLLOW_42_in_synpred211_Java5007 = new BitSet(new long[]{0x0000040000000000L});
-    public static final BitSet FOLLOW_42_in_synpred211_Java5009 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_42_in_synpred212_Java5045 = new BitSet(new long[]{0x0000040000000000L});
-    public static final BitSet FOLLOW_42_in_synpred212_Java5047 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_castExpression_in_synpred224_Java5256 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_66_in_synpred228_Java5294 = new BitSet(new long[]{0xFF00000000000010L});
-    public static final BitSet FOLLOW_primitiveType_in_synpred228_Java5296 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
-    public static final BitSet FOLLOW_67_in_synpred228_Java5298 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_unaryExpression_in_synpred228_Java5300 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_type_in_synpred229_Java5312 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_29_in_synpred231_Java5353 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_Identifier_in_synpred231_Java5355 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifierSuffix_in_synpred232_Java5359 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_29_in_synpred237_Java5407 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_Identifier_in_synpred237_Java5409 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifierSuffix_in_synpred238_Java5413 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_48_in_synpred244_Java5488 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_expression_in_synpred244_Java5490 = new BitSet(new long[]{0x0002000000000000L});
-    public static final BitSet FOLLOW_49_in_synpred244_Java5492 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_48_in_synpred257_Java5728 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
-    public static final BitSet FOLLOW_expression_in_synpred257_Java5730 = new BitSet(new long[]{0x0002000000000000L});
-    public static final BitSet FOLLOW_49_in_synpred257_Java5732 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotation_in_synpred81_Java2154 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classOrInterfaceModifier_in_synpred82_Java2166 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_explicitConstructorInvocation_in_synpred108_Java2716 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_synpred112_Java2741 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000022L});
+    public static final BitSet FOLLOW_set_in_synpred112_Java2744 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_arguments_in_synpred112_Java2752 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_26_in_synpred112_Java2754 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotation_in_synpred123_Java2965 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_localVariableDeclarationStatement_in_synpred146_Java3492 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classOrInterfaceDeclaration_in_synpred147_Java3502 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_77_in_synpred152_Java3647 = new BitSet(new long[]{0xFF20D03F96001FF0L,0x0003E60000FBD3E6L});
+    public static final BitSet FOLLOW_statement_in_synpred152_Java3649 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_catches_in_synpred157_Java3725 = new BitSet(new long[]{0x0000000000000000L,0x0000000000040000L});
+    public static final BitSet FOLLOW_82_in_synpred157_Java3727 = new BitSet(new long[]{0x0000100010000000L});
+    public static final BitSet FOLLOW_block_in_synpred157_Java3729 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_catches_in_synpred158_Java3741 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_switchLabel_in_synpred173_Java4032 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_89_in_synpred175_Java4059 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_constantExpression_in_synpred175_Java4061 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_75_in_synpred175_Java4063 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_89_in_synpred176_Java4073 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_enumConstantName_in_synpred176_Java4075 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_75_in_synpred176_Java4077 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_enhancedForControl_in_synpred177_Java4120 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_localVariableDeclaration_in_synpred181_Java4160 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_assignmentOperator_in_synpred183_Java4343 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_expression_in_synpred183_Java4345 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_40_in_synpred193_Java4461 = new BitSet(new long[]{0x0000010000000000L});
+    public static final BitSet FOLLOW_40_in_synpred193_Java4463 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_51_in_synpred193_Java4465 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_42_in_synpred194_Java4501 = new BitSet(new long[]{0x0000040000000000L});
+    public static final BitSet FOLLOW_42_in_synpred194_Java4503 = new BitSet(new long[]{0x0000040000000000L});
+    public static final BitSet FOLLOW_42_in_synpred194_Java4505 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_51_in_synpred194_Java4507 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_42_in_synpred195_Java4546 = new BitSet(new long[]{0x0000040000000000L});
+    public static final BitSet FOLLOW_42_in_synpred195_Java4548 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_51_in_synpred195_Java4550 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_40_in_synpred206_Java4858 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_51_in_synpred206_Java4860 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_42_in_synpred207_Java4892 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_51_in_synpred207_Java4894 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_40_in_synpred210_Java4985 = new BitSet(new long[]{0x0000010000000000L});
+    public static final BitSet FOLLOW_40_in_synpred210_Java4987 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_42_in_synpred211_Java5019 = new BitSet(new long[]{0x0000040000000000L});
+    public static final BitSet FOLLOW_42_in_synpred211_Java5021 = new BitSet(new long[]{0x0000040000000000L});
+    public static final BitSet FOLLOW_42_in_synpred211_Java5023 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_42_in_synpred212_Java5059 = new BitSet(new long[]{0x0000040000000000L});
+    public static final BitSet FOLLOW_42_in_synpred212_Java5061 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_castExpression_in_synpred224_Java5270 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_66_in_synpred228_Java5308 = new BitSet(new long[]{0xFF00000000000010L});
+    public static final BitSet FOLLOW_primitiveType_in_synpred228_Java5310 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
+    public static final BitSet FOLLOW_67_in_synpred228_Java5312 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_unaryExpression_in_synpred228_Java5314 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_type_in_synpred229_Java5326 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_29_in_synpred231_Java5367 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_Identifier_in_synpred231_Java5369 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifierSuffix_in_synpred232_Java5373 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_29_in_synpred237_Java5421 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_Identifier_in_synpred237_Java5423 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifierSuffix_in_synpred238_Java5427 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_48_in_synpred244_Java5502 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_expression_in_synpred244_Java5504 = new BitSet(new long[]{0x0002000000000000L});
+    public static final BitSet FOLLOW_49_in_synpred244_Java5506 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_48_in_synpred257_Java5742 = new BitSet(new long[]{0xFF00900000000FD0L,0x0003E600000001E6L});
+    public static final BitSet FOLLOW_expression_in_synpred257_Java5744 = new BitSet(new long[]{0x0002000000000000L});
+    public static final BitSet FOLLOW_49_in_synpred257_Java5746 = new BitSet(new long[]{0x0000000000000002L});
 
 }

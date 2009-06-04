@@ -7,19 +7,24 @@ import java.util.Set;
 import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.association.Reference;
-import org.rejuse.association.Relation;
 import org.rejuse.logic.ternary.Ternary;
+import org.rejuse.predicate.PrimitiveTotalPredicate;
 
 import chameleon.core.MetamodelException;
 import chameleon.core.context.Context;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.DeclarationSelector;
+import chameleon.core.declaration.SimpleNameSignature;
+import chameleon.core.element.Element;
 import chameleon.core.expression.Expression;
 import chameleon.core.expression.ExpressionContainer;
 import chameleon.core.expression.Invocation;
 import chameleon.core.expression.InvocationTarget;
+import chameleon.core.member.Member;
 import chameleon.core.relation.WeakPartialOrder;
 import chameleon.core.scope.Scope;
+import chameleon.core.type.ClassBody;
+import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeContainer;
 import chameleon.core.type.TypeReference;
@@ -62,40 +67,93 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
         _typeReference.connectTo(ref);
     }
 
-    /*****************************************************************************
+  /******************
    * ANONYMOUS TYPE *
-   ****************************************************************************/
+   ******************/
 
-    public void setAnonymousType(Type type) {
-      if(type != null) {
-        _anon.connectTo(type.parentLink());
-      } else {
-        _anon.connectTo(null);
-      }
-    }
+//    public void setAnonymousType(Type type) {
+//      if(type != null) {
+//        _anon.connectTo(type.parentLink());
+//      } else {
+//        _anon.connectTo(null);
+//      }
+//    }
+//
+//    public Type getAnonymousInnerType() {
+//    return _anon.getOtherEnd();
+//  }
 
-    public Type getAnonymousInnerType() {
-    return _anon.getOtherEnd();
-  }
+	private Reference<ConstructorInvocation,ClassBody> _body = new Reference<ConstructorInvocation,ClassBody>(this);
+	
+	public ClassBody body() {
+		return _body.getOtherEnd();
+	}
+	
+	public void setBody(ClassBody body) {
+		if(body == null) {
+			_body.connectTo(null);
+			_anonymousType.connectTo(null);
+		} else {
+			_body.connectTo(body.parentLink());
+			createAnonymousType();
+		}
+	}
 
-	private Reference<ConstructorInvocation,Type> _anon = new Reference<ConstructorInvocation,Type>(this);
+  private void createAnonymousType() {
+  	final Type anon = new RegularType(new SimpleNameSignature("TODO")) {
+  		
+  		@Override
+  		public Set<Member> members() throws MetamodelException {
+  			Set<Member> result = super.members();
+  			Type writtenType = ConstructorInvocation.this.getTypeReference().getType();
+  			Set<NormalMethod> superMembers = writtenType.members(NormalMethod.class);
+  			new PrimitiveTotalPredicate<NormalMethod>() {
 
-  public Relation getTypesLink() {
-    return _anon;
-  }
+					@Override
+					public boolean eval(NormalMethod object) {
+						return object.is(language().CONSTRUCTOR) == Ternary.TRUE;
+					}
+  				
+  			}.filter(superMembers);
+  			for(NormalMethod method: superMembers) {
+  				method.setUniParent(this);
+  			}
+  			result.addAll(superMembers);
+  			return result;
+  		}
+  		
+  		public ClassBody body() {
+  			return ConstructorInvocation.this.body();
+  		}
+  	};
+		_anonymousType.connectTo(
+				anon.parentLink()
+		);
+	}
+
+//  public Relation getTypesLink() {
+//    return _anon;
+//  }
 
 //  public NamespacePart getNamespacePart() {
 //	  return ((TypeContainer)this.getParent()).getNamespacePart();
 //  }
 
   public Type getType() throws MetamodelException {
-    if (getAnonymousInnerType() == null) {
+    if (body() == null) {
       // Switching to target or not happens in getContext(Element) invoked by the type reference.
       return getTypeReference().getType();
     }
     else {
       return getAnonymousInnerType();
     }
+  }
+  
+	private Reference<ConstructorInvocation,Type> _anonymousType= new Reference<ConstructorInvocation,Type>(this);
+
+  
+  public Type getAnonymousInnerType() {
+  	return _anonymousType.getOtherEnd();
   }
 
 //  public RegularMethod getConstructor() throws MetamodelException {
@@ -115,7 +173,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
     if(! getMethod().equals(acc.getMethod())) {
       return false;
     }
-    if((getAnonymousInnerType() != null) || (acc.getAnonymousInnerType() != null)) {
+    if((body() != null) || (acc.body() != null)) {
       return false;
     }
     List varInits = getActualParameters();
@@ -136,8 +194,8 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 
   protected ConstructorInvocation cloneInvocation(InvocationTarget target) {
     ConstructorInvocation result = new ConstructorInvocation((JavaTypeReference)getTypeReference().clone(), (Expression)target);
-    if(getAnonymousInnerType() != null) {
-      result.setAnonymousType(getAnonymousInnerType().clone());
+    if(body() != null) {
+      result.setBody(body().clone());
     }
     return result;
   }
@@ -157,9 +215,9 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
    @
    @ post getAnonymousInnerType() != null ==> \result.contains(getAnonymousInnerType());
    @*/
-  public List children() {
-    List result = super.children();
-    Util.addNonNull(getAnonymousInnerType(), result);
+  public List<Element> children() {
+    List<Element> result = super.children();
+    Util.addNonNull(body(), result);
     return result;
   }
   
@@ -221,7 +279,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 
 	public Set<Declaration> declarations() throws MetamodelException {
 		Set<Declaration> result = new HashSet<Declaration>();
-		result.add(getAnonymousInnerType());
+//		result.add(getAnonymousInnerType());
 		return result;
 	}
 

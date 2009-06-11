@@ -225,6 +225,7 @@ import chameleon.support.modifier.Native;
 import chameleon.support.modifier.Enum;
 
 import chameleon.support.type.EmptyTypeElement;
+import chameleon.support.type.StaticInitializer;
 
 import jnome.core.language.Java;
 
@@ -432,7 +433,7 @@ interfaceBody returns [ClassBody element]
 
 classBodyDeclaration returns [TypeElement element]
     :   ';' {retval.element = new EmptyTypeElement();}
-    |   'static'? block
+    |   'static'? block {retval.element = new StaticInitializer();}
     |   modifiers memberDecl
     ;
     

@@ -50,7 +50,6 @@ import chameleon.core.namespacepart.DemandImport;
 import chameleon.core.namespacepart.NamespacePart;
 import chameleon.core.namespacepart.TypeImport;
 import chameleon.core.statement.Block;
-import chameleon.core.type.StaticInitializer;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
 import chameleon.core.type.inheritance.InheritanceRelation;
@@ -106,6 +105,7 @@ import chameleon.support.statement.ThrowStatement;
 import chameleon.support.statement.TryStatement;
 import chameleon.support.statement.WhileStatement;
 import chameleon.support.tool.Arguments;
+import chameleon.support.type.StaticInitializer;
 import chameleon.support.variable.LocalVariable;
 
 import com.sun.org.apache.bcel.internal.classfile.JavaClass;

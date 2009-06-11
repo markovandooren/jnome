@@ -436,10 +436,10 @@ interfaceBody returns [ClassBody element]
 classBodyDeclaration returns [TypeElement element]
     :   ';' {retval.element = new EmptyTypeElement();}
     |   'static'? bl=block {retval.element = new StaticInitializer(bl.element);}
-    |   modifiers memberDecl
+    |   mods=modifiers decl=memberDecl {retval.element = decl.element; retval.element.addModifiers(mods.element);};
     ;
     
-memberDecl
+memberDecl returns [Member element]
     :   genericMethodOrConstructorDecl
     |   memberDeclaration
     |   'void' Identifier voidMethodDeclaratorRest

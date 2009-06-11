@@ -189,6 +189,8 @@ import chameleon.core.declaration.SimpleNameSignature;
 
 import chameleon.core.element.ChameleonProgrammerException;
 
+import chameleon.core.expression.ActualParameter;
+
 import chameleon.core.language.Language;
 
 import chameleon.core.modifier.Modifier;
@@ -201,9 +203,11 @@ import chameleon.core.namespacepart.Import;
 import chameleon.core.namespacepart.TypeImport;
 import chameleon.core.namespacepart.DemandImport;
 
-import chameleon.core.type.Type;
+import chameleon.core.type.ClassBody;
 import chameleon.core.type.RegularType;
+import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
+import chameleon.core.type.TypeElement;
 
 import chameleon.core.type.generics.GenericParameter;
 import chameleon.core.type.generics.TypeConstraint;
@@ -219,6 +223,8 @@ import chameleon.support.modifier.Public;
 import chameleon.support.modifier.Static;
 import chameleon.support.modifier.Native;
 import chameleon.support.modifier.Enum;
+
+import chameleon.support.type.EmptyTypeElement;
 
 import jnome.core.language.Java;
 
@@ -329,7 +335,7 @@ typeDeclaration returns [Type element]
 
     
 classOrInterfaceDeclaration returns [Type element]
-    :   classOrInterfaceModifiers (classDeclaration | interfaceDeclaration)
+    :   classOrInterfaceModifiers (cd=classDeclaration {retval.element=cd.element;} | id=interfaceDeclaration {retval.element=id.element;})
     ;
     
 classOrInterfaceModifiers returns [List<Modifier> element]
@@ -386,6 +392,7 @@ scope{
     :   ENUM name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text)); retval.element.addModifier(new Enum()); $enumDeclaration::enumType=retval.element;}('implements' trefs=typeList {for(TypeReference ref: trefs.element){retval.element.addInheritanceRelation(new SubtypeRelation(ref));} } )? enumBody
     ;
 
+// Nothing must be done here
 enumBody
     :   '{' enumConstants? ','? enumBodyDeclarations? '}'
     ;
@@ -395,19 +402,19 @@ enumConstants
     ;
     
 enumConstant returns [EnumConstant element]
-    :   annotations? Identifier arguments? classBody?
+    :   annotations? name=Identifier {retval.element = new EnumConstant(new SimpleNameSignature($name.text));} (args=arguments {retval.element.addAllParameters(args.element);})? (body=classBody {retval.element.setBody(body.element);})?
     ;
     
 enumBodyDeclarations
-    :   ';' (classBodyDeclaration)*
+    :   ';' (decl=classBodyDeclaration {$enumDeclaration::enumType.add(decl.element);})*
     ;
     
-interfaceDeclaration
+interfaceDeclaration returns [Type element]
     :   normalInterfaceDeclaration
     |   annotationTypeDeclaration
     ;
     
-normalInterfaceDeclaration
+normalInterfaceDeclaration returns [Type element]
     :   'interface' Identifier typeParameters? ('extends' typeList)? interfaceBody
     ;
     
@@ -415,16 +422,16 @@ typeList returns [List<TypeReference> element]
     :   tp=type {retval.element = new ArrayList<TypeReference>(); retval.element.add(tp.element);}(',' tpp=type {retval.element.add(tpp.element);})*
     ;
     
-classBody
-    :   '{' classBodyDeclaration* '}'
+classBody returns [ClassBody element]
+    :   '{' {retval.element = new ClassBody();} (decl=classBodyDeclaration {retval.element.add(decl.element);})* '}'
     ;
     
-interfaceBody
-    :   '{' interfaceBodyDeclaration* '}'
+interfaceBody returns [ClassBody element]
+    :   '{' {retval.element = new ClassBody();} (decl=interfaceBodyDeclaration {retval.element.add(decl.element);})* '}'
     ;
 
-classBodyDeclaration
-    :   ';'
+classBodyDeclaration returns [TypeElement element]
+    :   ';' {retval.element = new EmptyTypeElement();}
     |   'static'? block
     |   modifiers memberDecl
     ;
@@ -459,7 +466,7 @@ fieldDeclaration
     :   variableDeclarators ';'
     ;
         
-interfaceBodyDeclaration
+interfaceBodyDeclaration returns [TypeElement element]
     :   modifiers interfaceMemberDecl
     |   ';'
     ;
@@ -689,7 +696,7 @@ elementValueArrayInitializer
     :   '{' (elementValue (',' elementValue)*)? (',')? '}'
     ;
     
-annotationTypeDeclaration
+annotationTypeDeclaration returns [Type element]
     :   '@' 'interface' Identifier annotationTypeBody
     ;
     
@@ -1035,7 +1042,7 @@ superSuffix
     |   '.' Identifier arguments?
     ;
 
-arguments
+arguments returns [List<ActualParameter> element]
     :   '(' expressionList? ')'
     ;
 

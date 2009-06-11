@@ -11,11 +11,10 @@ import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.expression.ActualArgumentList;
 import chameleon.core.expression.ActualParameter;
-import chameleon.core.expression.Invocation;
 import chameleon.core.member.FixedSignatureMember;
 import chameleon.core.member.Member;
+import chameleon.core.type.ClassBody;
 import chameleon.core.type.Type;
-import chameleon.util.Util;
 
 public class EnumConstant extends FixedSignatureMember<EnumConstant,Type,SimpleNameSignature,EnumConstant> {
 
@@ -57,6 +56,12 @@ public class EnumConstant extends FixedSignatureMember<EnumConstant,Type,SimpleN
   public void addParameter(ActualParameter parameter) {
   	actualArgumentList().addParameter(parameter);
   }
+  
+  public void addAllParameters(List<ActualParameter> parameters) {
+  	for(ActualParameter param: parameters) {
+  		addParameter(param);
+  	}
+  }
 
   public void removeParameter(ActualParameter parameter) {
   	actualArgumentList().removeParameter(parameter);
@@ -65,5 +70,19 @@ public class EnumConstant extends FixedSignatureMember<EnumConstant,Type,SimpleN
   public List<ActualParameter> getActualParameters() {
     return actualArgumentList().getActualParameters();
   }
+  
+  public ClassBody getBody() {
+  	return _body.getOtherEnd();
+  }
+  
+  public void setBody(ClassBody body) {
+  	if(body == null) {
+  		_body.connectTo(null);
+  	} else {
+  		_body.connectTo(body.parentLink());
+  	}
+  }
+  
+  private Reference<EnumConstant,ClassBody> _body = new Reference<EnumConstant, ClassBody>(this);
 
 }

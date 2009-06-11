@@ -203,6 +203,8 @@ import chameleon.core.namespacepart.Import;
 import chameleon.core.namespacepart.TypeImport;
 import chameleon.core.namespacepart.DemandImport;
 
+import chameleon.core.statement.Block;
+
 import chameleon.core.type.ClassBody;
 import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
@@ -433,7 +435,7 @@ interfaceBody returns [ClassBody element]
 
 classBodyDeclaration returns [TypeElement element]
     :   ';' {retval.element = new EmptyTypeElement();}
-    |   'static'? block {retval.element = new StaticInitializer();}
+    |   'static'? bl=block {retval.element = new StaticInitializer(bl.element);}
     |   modifiers memberDecl
     ;
     
@@ -736,7 +738,7 @@ defaultValue
 
 // STATEMENTS / BLOCKS
 
-block
+block returns [Block element]
     :   '{' blockStatement* '}'
     ;
     

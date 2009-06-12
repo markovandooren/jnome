@@ -176,6 +176,10 @@ TODO
 grammar Java;
 options {backtrack=true; memoize=true;output=AST;}
 
+scope MethodScope {
+  Method method;
+}
+
 @parser::header {
 package jnome.input.parser;
 
@@ -192,6 +196,9 @@ import chameleon.core.element.ChameleonProgrammerException;
 import chameleon.core.expression.ActualParameter;
 
 import chameleon.core.language.Language;
+
+import chameleon.core.member.Member;
+import chameleon.core.method.Method;
 
 import chameleon.core.modifier.Modifier;
 
@@ -216,6 +223,9 @@ import chameleon.core.type.generics.TypeConstraint;
 import chameleon.core.type.generics.ExtendsConstraint;
 
 import chameleon.core.type.inheritance.SubtypeRelation;
+
+import chameleon.support.member.simplename.method.NormalMethod;
+import chameleon.support.member.simplename.SimpleNameMethodHeader;
 
 import chameleon.support.modifier.Abstract;
 import chameleon.support.modifier.Final;
@@ -367,11 +377,11 @@ classDeclaration returns [Type element]
     |   ed=enumDeclaration {retval.element = ed.element;}
     ;
     
-normalClassDeclaration returns [Type element]
+normalClassDeclaration returns [RegularType element]
     :   'class' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text));} (params=typeParameters{for(GenericParameter par: params.element){retval.element.add(par);}})?
         ('extends' sc=type{retval.element.addInheritanceRelation(new SubtypeRelation(sc.element));})?
         ('implements' ifs=typeList)?
-        body=classBody
+        body=classBody {retval.element.setBody(body.element);}
     ;
     
 typeParameters returns [List<GenericParameter> element]
@@ -388,33 +398,33 @@ typeBound returns [ExtendsConstraint element]
     :   tp=type {retval.element.add(tp.element);}('&' tpp=type {retval.element.add(tpp.element);})*
     ;
 
-enumDeclaration returns [Type element]
+enumDeclaration returns [RegularType element]
 scope{
   Type enumType;
 }
-    :   ENUM name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text)); retval.element.addModifier(new Enum()); $enumDeclaration::enumType=retval.element;}('implements' trefs=typeList {for(TypeReference ref: trefs.element){retval.element.addInheritanceRelation(new SubtypeRelation(ref));} } )? enumBody
+    :   ENUM name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text)); retval.element.addModifier(new Enum()); $enumDeclaration::enumType=retval.element;}('implements' trefs=typeList {for(TypeReference ref: trefs.element){retval.element.addInheritanceRelation(new SubtypeRelation(ref));} } )? body=enumBody {retval.element.setBody(body.element);}
     ;
 
 // Nothing must be done here
-enumBody
-    :   '{' enumConstants? ','? enumBodyDeclarations? '}'
+enumBody returns [ClassBody element]
+    :   '{' (csts=enumConstants{for(EnumConstant el: csts.element){retval.element.add(el);}})? ','? (decls=enumBodyDeclarations {for(TypeElement el: decls.element){retval.element.add(el);}})? '}'
     ;
 
-enumConstants
-    :   ct=enumConstant {$enumDeclaration::enumType.add(ct.element);} (',' cst=enumConstant{$enumDeclaration::enumType.add(cst.element);})*
+enumConstants returns [List<EnumConstant> element]
+    :   ct=enumConstant {retval.element = new ArrayList<EnumConstant>(); retval.element.add(ct.element);} (',' cst=enumConstant{$enumDeclaration::enumType.add(cst.element);})*
     ;
     
 enumConstant returns [EnumConstant element]
     :   annotations? name=Identifier {retval.element = new EnumConstant(new SimpleNameSignature($name.text));} (args=arguments {retval.element.addAllParameters(args.element);})? (body=classBody {retval.element.setBody(body.element);})?
     ;
     
-enumBodyDeclarations
-    :   ';' (decl=classBodyDeclaration {$enumDeclaration::enumType.add(decl.element);})*
+enumBodyDeclarations returns [List<TypeElement> element]
+    :   ';' {retval.element= new ArrayList<TypeElement>();} (decl=classBodyDeclaration {retval.element.add(decl.element);})*
     ;
     
 interfaceDeclaration returns [Type element]
-    :   normalInterfaceDeclaration
-    |   annotationTypeDeclaration
+    :   id=normalInterfaceDeclaration {retval.element = id.element;}
+    |   ad=annotationTypeDeclaration {retval.element = ad.element;}
     ;
     
 normalInterfaceDeclaration returns [Type element]
@@ -436,37 +446,52 @@ interfaceBody returns [ClassBody element]
 classBodyDeclaration returns [TypeElement element]
     :   ';' {retval.element = new EmptyTypeElement();}
     |   'static'? bl=block {retval.element = new StaticInitializer(bl.element);}
-    |   mods=modifiers decl=memberDecl {retval.element = decl.element; retval.element.addModifiers(mods.element);};
+    |   mods=modifiers decl=memberDecl {retval.element = decl.element; retval.element.addModifiers(mods.element);}
     ;
     
 memberDecl returns [Member element]
-    :   genericMethodOrConstructorDecl
-    |   memberDeclaration
-    |   'void' Identifier voidMethodDeclaratorRest
-    |   Identifier constructorDeclaratorRest
-    |   interfaceDeclaration
-    |   classDeclaration
+    :   gen=genericMethodOrConstructorDecl {retval.element = gen.element;}
+    |   mem=memberDeclaration {retval.element = mem.element;}
+    |   vmd=voidMethodDeclaration {retval.element = vmd.element;}
+    |   cs=constructorDeclaration {retval.element = cs.element;}
+    |   id=interfaceDeclaration {retval.element=id.element;}
+    |   cd=classDeclaration {retval.element=cd.element;}
     ;
     
-memberDeclaration
-    :   type (methodDeclaration | fieldDeclaration)
+voidMethodDeclaration returns [Method element]
+scope MethodScope;
+    	: 'void' methodname=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($methodname.text), new JavaTypeReference("void")); $MethodScope::method = retval.element;} voidMethodDeclaratorRest	
+    	;
+    	
+constructorDeclaration returns [Method element]
+scope MethodScope;
+        : consname=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($consname.text), new JavaTypeReference($consname.text)); $MethodScope::method = retval.element;} constructorDeclaratorRest
+	;
+    
+memberDeclaration returns [Member element]
+    :   method=methodDeclaration {retval.element=method.element;}
+    |   field=fieldDeclaration {retval.element=field.element;}
     ;
 
-genericMethodOrConstructorDecl
-    :   typeParameters genericMethodOrConstructorRest
+//TODO parse generics parameters for methods and constructors
+genericMethodOrConstructorDecl returns [Member element]
+    :   params=typeParameters rest=genericMethodOrConstructorRest {retval.element = rest.element;}
     ;
     
-genericMethodOrConstructorRest
-    :   (type | 'void') Identifier methodDeclaratorRest
-    |   Identifier constructorDeclaratorRest
+genericMethodOrConstructorRest returns [Method element]
+scope MethodScope;
+@init{TypeReference tref = null;}
+    :   (t=type {tref=t.element;}| 'void' {tref = new JavaTypeReference("void");}) name=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($name.text),tref); $MethodScope::method = retval.element;} methodDeclaratorRest
+    |   name=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($name.text),new JavaTypeReference($name.text)); $MethodScope::method = retval.element;} constructorDeclaratorRest
     ;
 
-methodDeclaration
-    :   Identifier methodDeclaratorRest
+methodDeclaration returns [Method element]
+scope MethodScope;
+    :   t=type name=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($name.text),t.element); $MethodScope::method = retval.element;} methodDeclaratorRest
     ;
 
-fieldDeclaration
-    :   variableDeclarators ';'
+fieldDeclaration returns [FieldDeclaration element]
+    :   type variableDeclarators ';'
     ;
         
 interfaceBodyDeclaration returns [TypeElement element]

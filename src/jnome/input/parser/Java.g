@@ -519,19 +519,19 @@ fieldDeclaration returns [MemberVariableDeclarator element]
     ;
         
 interfaceBodyDeclaration returns [TypeElement element]
-    :   modifiers interfaceMemberDecl
+    :   mods=modifiers decl=interfaceMemberDecl {retval.element = decl.element; for(Modifier mod: mods.element){retval.element.addModifier(mod);}}
     |   ';'
     ;
 
-interfaceMemberDecl
-    :   interfaceMethodOrFieldDecl
-    |   interfaceGenericMethodDecl
+interfaceMemberDecl returns [TypeElement element]
+    :   decl=interfaceMethodOrFieldDecl {retval.element = decl.element;}
+    |   decl2=interfaceGenericMethodDecl {retval.element = decl2.element;}
     |   'void' Identifier voidInterfaceMethodDeclaratorRest
-    |   interfaceDeclaration
-    |   classDeclaration
+    |   decl3=interfaceDeclaration {retval.element = decl3.element;}
+    |   decl4=classDeclaration {retval.element = decl4.element;}
     ;
     
-interfaceMethodOrFieldDecl
+interfaceMethodOrFieldDecl returns [TypeElement element]
     :   type Identifier interfaceMethodOrFieldRest
     ;
     
@@ -559,7 +559,7 @@ interfaceMethodDeclaratorRest
     :   formalParameters ('[' ']')* ('throws' qualifiedNameList)? ';'
     ;
     
-interfaceGenericMethodDecl
+interfaceGenericMethodDecl returns [TypeElement element]
     :   typeParameters (type | 'void') Identifier
         interfaceMethodDeclaratorRest
     ;

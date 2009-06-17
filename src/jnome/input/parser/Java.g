@@ -194,6 +194,7 @@ import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.ChameleonProgrammerException;
 
 import chameleon.core.expression.ActualParameter;
+import chameleon.core.expression.Expression;
 
 import chameleon.core.language.Language;
 
@@ -226,7 +227,9 @@ import chameleon.core.type.inheritance.SubtypeRelation;
 
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.member.simplename.SimpleNameMethodHeader;
-
+import chameleon.support.member.simplename.variable.VariableDeclaration;
+import chameleon.support.member.simplename.variable.VariableDeclarator;
+import chameleon.support.member.simplename.variable.MemberVariableDeclarator;
 import chameleon.support.modifier.Abstract;
 import chameleon.support.modifier.Final;
 import chameleon.support.modifier.Private;
@@ -235,6 +238,7 @@ import chameleon.support.modifier.Public;
 import chameleon.support.modifier.Static;
 import chameleon.support.modifier.Native;
 import chameleon.support.modifier.Enum;
+import chameleon.support.modifier.Interface;
 
 import chameleon.support.type.EmptyTypeElement;
 import chameleon.support.type.StaticInitializer;
@@ -249,6 +253,8 @@ import jnome.core.modifier.Volatile;
 import jnome.core.modifier.Synchronized;
 
 import jnome.core.enumeration.EnumConstant;
+
+import jnome.core.variable.JavaVariableDeclaration;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -265,6 +271,24 @@ package jnome.input.parser;
 }
 
 @parser::members {
+
+  public static class StupidVariableDeclaratorId {
+       public StupidVariableDeclaratorId(String name, int dimension) {
+         _name = name;
+         _dimension = dimension;
+       }
+       private final String _name;
+       private final int _dimension;
+       
+       public String name() {
+         return _name;
+       }
+       
+       public int dimension() {
+         return _dimension;
+       }
+  }
+
   Language lang;
   
   public Language language() {
@@ -380,7 +404,7 @@ classDeclaration returns [Type element]
 normalClassDeclaration returns [RegularType element]
     :   'class' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text));} (params=typeParameters{for(GenericParameter par: params.element){retval.element.add(par);}})?
         ('extends' sc=type{retval.element.addInheritanceRelation(new SubtypeRelation(sc.element));})?
-        ('implements' ifs=typeList)?
+        ('implements' trefs=typeList {for(TypeReference ref: trefs.element){retval.element.addInheritanceRelation(new SubtypeRelation(ref));} } )?
         body=classBody {retval.element.setBody(body.element);}
     ;
     
@@ -427,8 +451,8 @@ interfaceDeclaration returns [Type element]
     |   ad=annotationTypeDeclaration {retval.element = ad.element;}
     ;
     
-normalInterfaceDeclaration returns [Type element]
-    :   'interface' Identifier typeParameters? ('extends' typeList)? interfaceBody
+normalInterfaceDeclaration returns [RegularType element]
+    :   'interface' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text)); retval.element.addModifier(new Interface());} (params=typeParameters{for(GenericParameter par: params.element){retval.element.add(par);}})? ('extends' trefs=typeList {for(TypeReference ref: trefs.element){retval.element.addInheritanceRelation(new SubtypeRelation(ref));} } )? body=classBody {retval.element.setBody(body.element);}
     ;
     
 typeList returns [List<TypeReference> element]
@@ -449,7 +473,7 @@ classBodyDeclaration returns [TypeElement element]
     |   mods=modifiers decl=memberDecl {retval.element = decl.element; retval.element.addModifiers(mods.element);}
     ;
     
-memberDecl returns [Member element]
+memberDecl returns [TypeElement element]
     :   gen=genericMethodOrConstructorDecl {retval.element = gen.element;}
     |   mem=memberDeclaration {retval.element = mem.element;}
     |   vmd=voidMethodDeclaration {retval.element = vmd.element;}
@@ -468,7 +492,7 @@ scope MethodScope;
         : consname=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($consname.text), new JavaTypeReference($consname.text)); $MethodScope::method = retval.element;} constructorDeclaratorRest
 	;
     
-memberDeclaration returns [Member element]
+memberDeclaration returns [TypeElement element]
     :   method=methodDeclaration {retval.element=method.element;}
     |   field=fieldDeclaration {retval.element=field.element;}
     ;
@@ -490,8 +514,8 @@ scope MethodScope;
     :   t=type name=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($name.text),t.element); $MethodScope::method = retval.element;} methodDeclaratorRest
     ;
 
-fieldDeclaration returns [FieldDeclaration element]
-    :   type variableDeclarators ';'
+fieldDeclaration returns [MemberVariableDeclarator element]
+    :   ref=type {retval.element = new MemberVariableDeclarator(ref.element);} decls=variableDeclarators {for(VariableDeclaration decl: decls.element) {retval.element.add(decl);}} ';'
     ;
         
 interfaceBodyDeclaration returns [TypeElement element]
@@ -552,12 +576,12 @@ constantDeclarator
     :   Identifier constantDeclaratorRest
     ;
     
-variableDeclarators
-    :   variableDeclarator (',' variableDeclarator)*
+variableDeclarators returns [List<VariableDeclaration> element]
+    :   decl=variableDeclarator {retval.element = new ArrayList<VariableDeclaration>(); retval.element.add(decl.element);}(',' decll=variableDeclarator {retval.element.add(decll.element);})*
     ;
 
-variableDeclarator
-    :   variableDeclaratorId ('=' variableInitializer)?
+variableDeclarator returns [JavaVariableDeclaration element]
+    :   id=variableDeclaratorId {retval.element = new JavaVariableDeclaration(id.element.name()); retval.element.setArrayDimension(id.element.dimension());} ('=' init=variableInitializer {retval.element.setExpression(init.element);})?
     ;
     
 constantDeclaratorsRest
@@ -568,16 +592,17 @@ constantDeclaratorRest
     :   ('[' ']')* '=' variableInitializer
     ;
     
-variableDeclaratorId
-    :   Identifier ('[' ']')*
+variableDeclaratorId returns [StupidVariableDeclaratorId element]
+@init{int count = 0;}
+    :   name=Identifier ('[' ']' {count++;})* { retval.element = new StupidVariableDeclaratorId($name.text, count);}
     ;
 
-variableInitializer
-    :   arrayInitializer
-    |   expression
+variableInitializer returns [Expression element]
+    :   init=arrayInitializer {retval.element = init.element;}
+    |   expr=expression {retval.element = expr.element;}
     ;
         
-arrayInitializer
+arrayInitializer returns [Expression element]
     :   '{' (variableInitializer (',' variableInitializer)* (',')? )? '}'
     ;
 
@@ -875,7 +900,7 @@ constantExpression
     :   expression
     ;
     
-expression
+expression returns [Expression element]
     :   conditionalExpression (assignmentOperator expression)?
     ;
     

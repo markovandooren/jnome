@@ -94,7 +94,7 @@ public class JavaTypeReference extends TypeReference {
   	return _arrayDimension;
   }
   
-  protected void setArrayDimension(int arrayDimension) {
+  public void setArrayDimension(int arrayDimension) {
   	_arrayDimension = arrayDimension;
   }
   

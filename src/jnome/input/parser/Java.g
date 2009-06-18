@@ -199,7 +199,13 @@ import chameleon.core.expression.Expression;
 import chameleon.core.language.Language;
 
 import chameleon.core.member.Member;
+
 import chameleon.core.method.Method;
+import chameleon.core.method.Implementation;
+import chameleon.core.method.RegularImplementation;
+
+import chameleon.core.method.exception.ExceptionClause;
+import chameleon.core.method.exception.TypeExceptionDeclaration;
 
 import chameleon.core.modifier.Modifier;
 
@@ -224,6 +230,9 @@ import chameleon.core.type.generics.TypeConstraint;
 import chameleon.core.type.generics.ExtendsConstraint;
 
 import chameleon.core.type.inheritance.SubtypeRelation;
+
+import chameleon.core.variable.Variable;
+import chameleon.core.variable.FormalParameter;
 
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.member.simplename.SimpleNameMethodHeader;
@@ -372,7 +381,10 @@ typeDeclaration returns [Type element]
 
     
 classOrInterfaceDeclaration returns [Type element]
-    :   classOrInterfaceModifiers (cd=classDeclaration {retval.element=cd.element;} | id=interfaceDeclaration {retval.element=id.element;})
+    :   mods=classOrInterfaceModifiers (cd=classDeclaration {retval.element=cd.element;} | id=interfaceDeclaration {retval.element=id.element;}) 
+        {for(Modifier mod:mods.element) {
+          retval.element.addModifier(mod);
+        }}
     ;
     
 classOrInterfaceModifiers returns [List<Modifier> element]
@@ -542,8 +554,8 @@ interfaceMethodOrFieldDecl returns [TypeElement element]
     ;
     
     
-interfaceConstant returns [TypeElement element]
-    :   type Identifier constantDeclaratorsRest ';'
+interfaceConstant returns [MemberVariableDeclarator element]
+    :   ref=type {retval.element = new MemberVariableDeclarator(ref.element);} decl=constantDeclarator {retval.element.add(decl.element);}(',' dec=constantDeclarator {retval.element.add(dec.element);})* ';'
     ;
 
 interfaceMethod returns [Method element]
@@ -553,9 +565,10 @@ scope MethodScope;
 
     
 methodDeclaratorRest
-    :   formalParameters ('[' ']')*
-        ('throws' qualifiedNameList)?
-        (   methodBody
+@init{int count = 0;}
+    :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}} ('[' ']' {count++;})* {((JavaTypeReference)$MethodScope::method.getReturnTypeReference()).setArrayDimension(count);}
+        ('throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));}})?
+        (   body=methodBody {$MethodScope::method.setImplementation(new RegularImplementation(body.element));}
         |   ';'
         )
     ;
@@ -584,8 +597,10 @@ constructorDeclaratorRest
     :   formalParameters ('throws' qualifiedNameList)? constructorBody
     ;
 
-constantDeclarator
-    :   Identifier constantDeclaratorRest
+constantDeclarator returns [JavaVariableDeclaration element]
+@init{int count = 0;}
+    :   name=Identifier (('[' ']' {count++;})* '=' init=variableInitializer) 
+       {retval.element = new JavaVariableDeclaration($name.text); retval.element.setArrayDimension(count); retval.element.setExpression(init.element);}
     ;
     
 variableDeclarators returns [List<VariableDeclaration> element]
@@ -596,13 +611,7 @@ variableDeclarator returns [JavaVariableDeclaration element]
     :   id=variableDeclaratorId {retval.element = new JavaVariableDeclaration(id.element.name()); retval.element.setArrayDimension(id.element.dimension());} ('=' init=variableInitializer {retval.element.setExpression(init.element);})?
     ;
     
-constantDeclaratorsRest
-    :   constantDeclaratorRest (',' constantDeclarator)*
-    ;
 
-constantDeclaratorRest
-    :   ('[' ']')* '=' variableInitializer
-    ;
     
 variableDeclaratorId returns [StupidVariableDeclaratorId element]
 @init{int count = 0;}
@@ -674,15 +683,17 @@ typeArgument
     |   '?' (('extends' | 'super') type)?
     ;
     
-qualifiedNameList
-    :   qualifiedName (',' qualifiedName)*
+qualifiedNameList returns[List<String> element]
+@init{retval.element = new ArrayList<String>();}
+    :   q=qualifiedName {retval.element.add($q.text);} (',' qn=qualifiedName {retval.element.add($qn.text);})*
     ;
 
-formalParameters
-    :   '(' formalParameterDecls? ')'
+formalParameters returns [List<FormalParameter> element]
+@init{retval.element = new ArrayList<FormalParameter>();}
+    :   '(' (pars=formalParameterDecls {retval.element=pars.element;})? ')'
     ;
     
-formalParameterDecls
+formalParameterDecls returns [List<FormalParameter> element]
     :   variableModifiers type formalParameterDeclsRest
     ;
     
@@ -691,7 +702,7 @@ formalParameterDeclsRest
     |   '...' variableDeclaratorId
     ;
     
-methodBody
+methodBody returns [Block element]
     :   block
     ;
 

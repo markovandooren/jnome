@@ -714,7 +714,7 @@ formalParameterDecls returns [List<FormalParameter> element]
          retval.element.add(param);}
     |   modss=variableModifiers tt=type '...' idd=variableDeclaratorId 
         {retval.element = new ArrayList<FormalParameter>(); 
-         FormalParameter param = new FormalParameter(new SimpleNameSignature(idd.element.name()),tt.element.toArray(idd.element.dimension()));
+         FormalParameter param = new MultiFormalParameter(new SimpleNameSignature(idd.element.name()),tt.element.toArray(idd.element.dimension()));
          param.addAllModifiers(modss.element);
          retval.element.add(param);}
     ;

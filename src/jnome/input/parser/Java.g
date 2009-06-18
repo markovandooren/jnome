@@ -226,6 +226,7 @@ import chameleon.core.type.TypeReference;
 import chameleon.core.type.TypeElement;
 
 import chameleon.core.type.generics.GenericParameter;
+import chameleon.core.type.generics.GenericArgument;
 import chameleon.core.type.generics.TypeConstraint;
 import chameleon.core.type.generics.ExtendsConstraint;
 
@@ -651,10 +652,6 @@ modifier returns [Modifier element]
     |   'volatile' {retval.element = new Volatile();}
     ;
 
-packageOrTypeName
-    :   qualifiedName
-    ;
-
 enumConstantName returns [String element]
     :   id=Identifier {retval.element=$id.text;}
     ;
@@ -663,39 +660,39 @@ typeName returns [String element]
     :   name=qualifiedName {retval.element=name.element;}
     ;
 
-type returns [TypeReference element]
+type returns [JavaTypeReference element]
 @init{int dimension=0;}
 	:	cd=classOrInterfaceType ('[' ']' {dimension++;})* {retval.element = cd.element.toArray(dimension);}
 	|	pt=primitiveType ('[' ']'{dimension++;})* {retval.element = pt.element.toArray(dimension);}
 	;
 
 classOrInterfaceType returns [JavaTypeReference element]
-	:	Identifier typeArguments? ('.' Identifier typeArguments? )*
+	:	name=Identifier {retval.element = new JavaTypeReference($name.text);} (args=typeArguments {retval.element.addAllArguments(args.element);})?  ('.' namex=Identifier {retval.element = new JavaTypeReference(retval.element,$namex.text);} (argsx=typeArguments {retval.element.addAllArguments(argsx.element);})? )*
 	;
 
 primitiveType returns [JavaTypeReference element]
-    :   'boolean'
-    |   'char'
-    |   'byte'
-    |   'short'
-    |   'int'
-    |   'long'
-    |   'float'
-    |   'double'
+    :   'boolean' {retval.element = new JavaTypeReference("boolean");}
+    |   'char' {retval.element = new JavaTypeReference("char");}
+    |   'byte' {retval.element = new JavaTypeReference("byte");}
+    |   'short' {retval.element = new JavaTypeReference("short");}
+    |   'int' {retval.element = new JavaTypeReference("int");}
+    |   'long' {retval.element = new JavaTypeReference("long");}
+    |   'float' {retval.element = new JavaTypeReference("float");}
+    |   'double' {retval.element = new JavaTypeReference("double");}
     ;
 
-variableModifier
-    :   'final'
+variableModifier returns [Modifier element]
+    :   'final' {retval.element = new Final();}
     |   annotation
     ;
 
-typeArguments
-    :   '<' typeArgument (',' typeArgument)* '>'
+typeArguments returns [List<GenericArgument> element]
+    :   '<' {retval.element = new ArrayList<GenericArgument>();} arg=typeArgument {retval.element.add(arg.element);}(',' argx=typeArgument {retval.element.add(argx.element);})* '>'
     ;
     
-typeArgument
-    :   type
-    |   '?' (('extends' | 'super') type)?
+typeArgument returns [GenericArgument element]
+    :   t=type {retval.element = new GenericArgument(t.element);}
+    |   '?' {throw new Error("We do not currently support wildcards.");} (('extends' | 'super') type)?
     ;
     
 qualifiedNameList returns[List<String> element]
@@ -709,13 +706,19 @@ formalParameters returns [List<FormalParameter> element]
     ;
     
 formalParameterDecls returns [List<FormalParameter> element]
-    :   variableModifiers type formalParameterDeclsRest
+    :   mods=variableModifiers t=type id=variableDeclaratorId 
+        (',' decls=formalParameterDecls {retval.element=decls.element; })?
+        {if(retval.element == null) {retval.element=new ArrayList<FormalParameter>();}
+         FormalParameter param = new FormalParameter(new SimpleNameSignature(idd.element.name()),tt.element.toArray(idd.element.dimension()));
+         param.addAllModifiers(modss.element);
+         retval.element.add(param);}
+    |   modss=variableModifiers tt=type '...' idd=variableDeclaratorId 
+        {retval.element = new ArrayList<FormalParameter>(); 
+         FormalParameter param = new FormalParameter(new SimpleNameSignature(idd.element.name()),tt.element.toArray(idd.element.dimension()));
+         param.addAllModifiers(modss.element);
+         retval.element.add(param);}
     ;
     
-formalParameterDeclsRest
-    :   variableDeclaratorId (',' formalParameterDecls)?
-    |   '...' variableDeclaratorId
-    ;
     
 methodBody returns [Block element]
     :   b=block {retval.element = b.element;}
@@ -845,8 +848,9 @@ localVariableDeclaration
     :   variableModifiers type variableDeclarators
     ;
     
-variableModifiers
-    :   variableModifier*
+variableModifiers returns [List<Modifier> element]
+@init{retval.element = new ArrayList<Modifier>();}
+    :   (mod=variableModifier {retval.element.add(mod.element);})*
     ;
 
 statement

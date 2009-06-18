@@ -48,6 +48,10 @@ public class JavaTypeReference extends TypeReference {
     this(name,0);
   }
   
+  public JavaTypeReference(JavaTypeReference target, String name) {
+  	super(target,name);
+  }
+  
   public JavaTypeReference(String name, int arrayDimension) {
   	super(name);
   	if(Config.DEBUG) {
@@ -65,6 +69,12 @@ public class JavaTypeReference extends TypeReference {
   public void addArgument(GenericArgument arg) {
   	if(arg != null) {
   		_genericParameters.add(arg.parentLink());
+  	}
+  }
+  
+  public void addAllArguments(List<GenericArgument> args) {
+  	for(GenericArgument argument : args) {
+  		addArgument(argument);
   	}
   }
   

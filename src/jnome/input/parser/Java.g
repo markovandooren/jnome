@@ -569,19 +569,23 @@ methodDeclaratorRest
     :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}} ('[' ']' {count++;})* {((JavaTypeReference)$MethodScope::method.getReturnTypeReference()).setArrayDimension(count);}
         ('throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));}})?
         (   body=methodBody {$MethodScope::method.setImplementation(new RegularImplementation(body.element));}
-        |   ';'
+        |   ';' {$MethodScope::method.setImplementation(null);}
         )
     ;
     
 voidMethodDeclaratorRest
-    :   formalParameters ('throws' qualifiedNameList)?
-        (   methodBody
-        |   ';'
+    :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}}
+         ('throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));}})?
+        (   body=methodBody {$MethodScope::method.setImplementation(new RegularImplementation(body.element));}
+        |   ';' {$MethodScope::method.setImplementation(null);}
         )
     ;
     
 interfaceMethodDeclaratorRest
-    :   formalParameters ('[' ']')* ('throws' qualifiedNameList)? ';'
+@init{int count = 0;}
+    :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}}
+       ('[' ']' {count++;})* {((JavaTypeReference)$MethodScope::method.getReturnTypeReference()).setArrayDimension(count);}
+       ('throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));}})? ';'
     ;
     
 interfaceGenericMethodDecl returns [TypeElement element]
@@ -640,12 +644,12 @@ packageOrTypeName
     :   qualifiedName
     ;
 
-enumConstantName
-    :   Identifier
+enumConstantName returns [String element]
+    :   id=Identifier {retval.element=$id.text;}
     ;
 
-typeName
-    :   qualifiedName
+typeName returns [String element]
+    :   name=qualifiedName {retval.element=name.element;}
     ;
 
 type returns [TypeReference element]
@@ -703,7 +707,7 @@ formalParameterDeclsRest
     ;
     
 methodBody returns [Block element]
-    :   block
+    :   b=block {retval.element = b.element;}
     ;
 
 constructorBody
@@ -716,8 +720,9 @@ explicitConstructorInvocation
     ;
 
 
-qualifiedName
-    :   Identifier ('.' Identifier)*
+qualifiedName returns [String element]
+@init{StringBuffer buffer = new StringBuffer();}
+    :   id=Identifier {buffer.append($id.text);}('.' idx=Identifier {buffer.append($idx.text);})*
     ;
     
 literal 

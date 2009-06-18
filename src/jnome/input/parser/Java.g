@@ -234,11 +234,14 @@ import chameleon.core.type.inheritance.SubtypeRelation;
 import chameleon.core.variable.Variable;
 import chameleon.core.variable.FormalParameter;
 
+import chameleon.support.expression.RegularLiteral;
+
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.member.simplename.SimpleNameMethodHeader;
 import chameleon.support.member.simplename.variable.VariableDeclaration;
 import chameleon.support.member.simplename.variable.VariableDeclarator;
 import chameleon.support.member.simplename.variable.MemberVariableDeclarator;
+
 import chameleon.support.modifier.Abstract;
 import chameleon.support.modifier.Final;
 import chameleon.support.modifier.Private;
@@ -249,17 +252,21 @@ import chameleon.support.modifier.Native;
 import chameleon.support.modifier.Enum;
 import chameleon.support.modifier.Interface;
 
+import chameleon.support.statement.StatementExpression;
+
 import chameleon.support.type.EmptyTypeElement;
 import chameleon.support.type.StaticInitializer;
 
-import jnome.core.language.Java;
+import jnome.core.expression.ArrayInitializer;
 
-import jnome.core.type.JavaTypeReference;
+import jnome.core.language.Java;
 
 import jnome.core.modifier.StrictFP;
 import jnome.core.modifier.Transient;
 import jnome.core.modifier.Volatile;
 import jnome.core.modifier.Synchronized;
+
+import jnome.core.type.JavaTypeReference;
 
 import jnome.core.enumeration.EnumConstant;
 
@@ -594,11 +601,15 @@ interfaceGenericMethodDecl returns [TypeElement element]
     ;
     
 voidInterfaceMethodDeclaratorRest
-    :   formalParameters ('throws' qualifiedNameList)? ';'
+    :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}}
+     ('throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));}})?
+      ';'
     ;
     
 constructorDeclaratorRest
-    :   formalParameters ('throws' qualifiedNameList)? constructorBody
+    :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}} 
+    ('throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));}})?
+     body=constructorBody {$MethodScope::method.setImplementation(new RegularImplementation(body.element));}
     ;
 
 constantDeclarator returns [JavaVariableDeclaration element]
@@ -627,8 +638,8 @@ variableInitializer returns [Expression element]
     |   expr=expression {retval.element = expr.element;}
     ;
         
-arrayInitializer returns [Expression element]
-    :   '{' (variableInitializer (',' variableInitializer)* (',')? )? '}'
+arrayInitializer returns [ArrayInitializer element]
+    :   '{' {retval.element = new ArrayInitializer();} (init=variableInitializer {retval.element.addInitializer(init.element);}(',' initt=variableInitializer{retval.element.addInitializer(initt.element);})* (',')? )? '}'
     ;
 
 modifier returns [Modifier element]
@@ -710,11 +721,11 @@ methodBody returns [Block element]
     :   b=block {retval.element = b.element;}
     ;
 
-constructorBody
-    :   '{' explicitConstructorInvocation? blockStatement* '}'
+constructorBody returns [Block element]
+    :   '{' {retval.element = new Block();} (inv=explicitConstructorInvocation {retval.element.addStatement(new StatementExpression(inv.element));})? blockStatement* '}'
     ;
 
-explicitConstructorInvocation
+explicitConstructorInvocation returns [Expression element]
     :   nonWildcardTypeArguments? ('this' | 'super') arguments ';'
     |   primary '.' nonWildcardTypeArguments? 'super' arguments ';'
     ;
@@ -740,9 +751,9 @@ integerLiteral
     |   DecimalLiteral
     ;
 
-booleanLiteral
-    :   'true'
-    |   'false'
+booleanLiteral returns [Expression element]
+    :   'true' {retval.element = new RegularLiteral(new JavaTypeReference("boolean"),"true");}
+    |   'false' {retval.element = new RegularLiteral(new JavaTypeReference("boolean"),"false");}
     ;
 
 // ANNOTATIONS
@@ -752,7 +763,7 @@ annotations
     ;
 
 annotation
-    :   '@' annotationName ( '(' ( elementValuePairs | elementValue )? ')' )?
+    :   {throw new Error("annotations are not yet supported");} '@' annotationName ( '(' ( elementValuePairs | elementValue )? ')' )?
     ;
     
 annotationName

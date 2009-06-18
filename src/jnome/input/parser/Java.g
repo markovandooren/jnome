@@ -526,19 +526,31 @@ interfaceBodyDeclaration returns [TypeElement element]
 interfaceMemberDecl returns [TypeElement element]
     :   decl=interfaceMethodOrFieldDecl {retval.element = decl.element;}
     |   decl2=interfaceGenericMethodDecl {retval.element = decl2.element;}
-    |   'void' Identifier voidInterfaceMethodDeclaratorRest
+    |   decl5=voidInterfaceMethodDeclaration {retval.element = decl5.element;}
     |   decl3=interfaceDeclaration {retval.element = decl3.element;}
     |   decl4=classDeclaration {retval.element = decl4.element;}
     ;
     
+voidInterfaceMethodDeclaration  returns [Method element]
+scope MethodScope;
+    	: 'void' methodname=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($methodname.text), new JavaTypeReference("void")); $MethodScope::method = retval.element;} voidInterfaceMethodDeclaratorRest
+    	;    
+    
 interfaceMethodOrFieldDecl returns [TypeElement element]
-    :   type Identifier interfaceMethodOrFieldRest
+    :   cst=interfaceConstant {retval.element = cst.element;}
+    |   m=interfaceMethod {retval.element = m.element;}
     ;
     
-interfaceMethodOrFieldRest
-    :   constantDeclaratorsRest ';'
-    |   interfaceMethodDeclaratorRest
+    
+interfaceConstant returns [TypeElement element]
+    :   type Identifier constantDeclaratorsRest ';'
     ;
+
+interfaceMethod returns [Method element]
+scope MethodScope;
+	: tref=type methodname=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($methodname.text), tref.element); $MethodScope::method = retval.element;} interfaceMethodDeclaratorRest
+	;
+
     
 methodDeclaratorRest
     :   formalParameters ('[' ']')*

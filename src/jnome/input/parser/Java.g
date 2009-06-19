@@ -220,6 +220,7 @@ import chameleon.core.namespacepart.TypeImport;
 import chameleon.core.namespacepart.DemandImport;
 
 import chameleon.core.statement.Block;
+import chameleon.core.statement.Statement;
 
 import chameleon.core.type.ClassBody;
 import chameleon.core.type.RegularType;
@@ -244,8 +245,6 @@ import chameleon.support.expression.SuperConstructorDelegation;
 
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.member.simplename.SimpleNameMethodHeader;
-import chameleon.support.member.simplename.variable.VariableDeclaration;
-import chameleon.support.member.simplename.variable.VariableDeclarator;
 import chameleon.support.member.simplename.variable.MemberVariableDeclarator;
 
 import chameleon.support.modifier.Abstract;
@@ -259,9 +258,22 @@ import chameleon.support.modifier.Enum;
 import chameleon.support.modifier.Interface;
 
 import chameleon.support.statement.StatementExpression;
+import chameleon.support.statement.LocalClassStatement;
+import chameleon.support.statement.AssertStatement;
+import chameleon.support.statement.IfThenElseStatement;
+import chameleon.support.statement.ForStatement;
+import chameleon.support.statement.ForControl;
+import chameleon.support.statement.ForInit;
+import chameleon.support.statement.SimpleForControl;
+import chameleon.support.statement.EnhancedForControl;
+import chameleon.support.statement.StatementExprList;
 
 import chameleon.support.type.EmptyTypeElement;
 import chameleon.support.type.StaticInitializer;
+
+import chameleon.support.variable.VariableDeclaration;
+import chameleon.support.variable.LocalVariableDeclarator;
+import chameleon.support.variable.VariableDeclarator;
 
 import jnome.core.expression.ArrayInitializer;
 
@@ -311,7 +323,7 @@ package jnome.input.parser;
          return _dimension;
        }
   }
-
+  
   Language lang;
   
   public Language language() {
@@ -846,21 +858,22 @@ defaultValue
 // STATEMENTS / BLOCKS
 
 block returns [Block element]
-    :   '{' {retval.element = new Block();} (stat=blockStatement {retval.element.addStatement(stat.element)})* '}'
+    :   '{' {retval.element = new Block();} (stat=blockStatement {retval.element.addStatement(stat.element);})* '}'
     ;
     
 blockStatement returns [Statement element]
     :   local=localVariableDeclarationStatement {retval.element = local.element;}
-    |   cd=classOrInterfaceDeclaration {retval.element = cd.element;}
+    |   cd=classOrInterfaceDeclaration {retval.element = new LocalClassStatement(cd.element);}
     |   stat=statement {retval.element = stat.element;}
     ;
     
-localVariableDeclarationStatement [Statement element]
-    :    localVariableDeclaration {} ';'
+localVariableDeclarationStatement returns [Statement element]
+    :    local=localVariableDeclaration {retval.element=local.element;} ';'
     ;
 
-localVariableDeclaration
-    :   variableModifiers type variableDeclarators
+localVariableDeclaration returns [LocalVariableDeclarator element]
+    :   mods=variableModifiers ref=type {retval.element = new LocalVariableDeclarator(ref.element);} decls=variableDeclarators {for(VariableDeclaration decl: decls.element) {retval.element.add(decl);}}
+        {for(Modifier mod : mods.element) {retval.element.addModifier(mod);}}
     ;
     
 variableModifiers returns [List<Modifier> element]
@@ -868,11 +881,11 @@ variableModifiers returns [List<Modifier> element]
     :   (mod=variableModifier {retval.element.add(mod.element);})*
     ;
 
-statement
-    : block
-    |   ASSERT expression (':' expression)? ';'
-    |   'if' parExpression statement (options {k=1;}:'else' statement)?
-    |   'for' '(' forControl ')' statement
+statement returns [Statement element]
+    : bl=block {retval.element = bl.element;}
+    |   ASSERT asexpr=expression {retval.element=new AssertStatement(asexpr.element);}(':' asexprx=expression {((AssertStatement)retval.element).setMessageExpression(asexprx.element);})? ';'
+    |   'if' ifexpr=parExpression ifif=statement (options {k=1;}:'else' ifelse=statement)? {retval.element=new IfThenElseStatement(ifexpr.element, ifif.element,ifelse.element);}
+    |   'for' '(' forc=forControl ')' forstat=statement {retval.element = new ForStatement(forc.element,forstat.element);}
     |   'while' parExpression statement
     |   'do' statement 'while' parExpression ';'
     |   'try' block
@@ -921,29 +934,29 @@ switchLabel
     |   'default' ':'
     ;
     
-forControl
+forControl returns [ForControl element]
 options {k=3;} // be efficient for common case: for (ID ID : ID) ...
-    :   enhancedForControl
-    |   forInit? ';' expression? ';' forUpdate?
+    :   enh=enhancedForControl {retval.element=enh.element;}
+    |   in=forInit? ';' e=expression? ';' u=forUpdate? {retval.element = new SimpleForControl(in.element,e.element,u.element);}
     ;
 
-forInit
+forInit returns [ForInit element]
     :   localVariableDeclaration
     |   expressionList
     ;
     
-enhancedForControl
+enhancedForControl returns [ForControl element]
     :   variableModifiers type Identifier ':' expression
     ;
 
-forUpdate
+forUpdate returns [StatementExprList element]
     :   expressionList
     ;
 
 // EXPRESSIONS
 
-parExpression
-    :   '(' expression ')'
+parExpression returns [Expression element]
+    :   '(' expr=expression {retval.element = expr.element;} ')'
     ;
     
 expressionList

@@ -28,6 +28,7 @@ import org.rejuse.predicate.PrimitiveTotalPredicate;
 
 import chameleon.core.MetamodelException;
 import chameleon.core.compilationunit.CompilationUnit;
+import chameleon.core.element.ChameleonProgrammerException;
 import chameleon.core.element.Element;
 import chameleon.core.expression.ActualArgument;
 import chameleon.core.expression.ConditionalAndExpression;
@@ -88,6 +89,7 @@ import chameleon.support.statement.ContinueStatement;
 import chameleon.support.statement.DefaultLabel;
 import chameleon.support.statement.DoStatement;
 import chameleon.support.statement.EmptyStatement;
+import chameleon.support.statement.EnhancedForControl;
 import chameleon.support.statement.FinallyClause;
 import chameleon.support.statement.ForStatement;
 import chameleon.support.statement.IfThenElseStatement;
@@ -95,6 +97,7 @@ import chameleon.support.statement.LabeledStatement;
 import chameleon.support.statement.LocalClassStatement;
 import chameleon.support.statement.LocalVariableDeclarationStatement;
 import chameleon.support.statement.ReturnStatement;
+import chameleon.support.statement.SimpleForControl;
 import chameleon.support.statement.StatementExprList;
 import chameleon.support.statement.StatementExpression;
 import chameleon.support.statement.SwitchCase;
@@ -107,6 +110,8 @@ import chameleon.support.statement.WhileStatement;
 import chameleon.support.tool.Arguments;
 import chameleon.support.type.StaticInitializer;
 import chameleon.support.variable.LocalVariable;
+import chameleon.support.variable.LocalVariableDeclarator;
+import chameleon.support.variable.VariableDeclaration;
 
 import com.sun.org.apache.bcel.internal.classfile.JavaClass;
 
@@ -131,9 +136,9 @@ public class JavaCodeWriter extends Syntax {
       result = toCodeConstructorInvocation((ConstructorInvocation)element);
     } else if(isCondAnd(element)) {
       result = toCodeCondAnd((ConditionalAndExpression)element);
-	} else if(isEmptyArrayIndex(element)) {
+	  } else if(isEmptyArrayIndex(element)) {
 		result = toCodeEmptyArrayIndex((EmptyArrayIndex)element);
-	} else if(isFilledArrayIndex(element)) {
+	  } else if(isFilledArrayIndex(element)) {
 		result = toCodeFilledArrayIndex((FilledArrayIndex)element);
     } else if(isCondOr(element)) {
       result = toCodeCondOr((ConditionalOrExpression)element);
@@ -194,7 +199,7 @@ public class JavaCodeWriter extends Syntax {
     } else if(isReturn(element)) {
       result = toCodeReturn((ReturnStatement)element);
     } else if(isLocalVar(element)) {
-      result = toCodeLocalVar((LocalVariableDeclarationStatement)element);
+      result = toCodeLocalVar((LocalVariableDeclarator)element);
     } else if(isLocalClass(element)) {
       result = toCodeLocalClass((LocalClassStatement)element);
     } else if(isLabeledStatement(element)) {
@@ -225,6 +230,10 @@ public class JavaCodeWriter extends Syntax {
     	result = toCodeNamespacePart((NamespacePart) element);
     } else if(isActualParameter(element)) {
     	result = toCodeActualParameter((ActualArgument) element);
+    } else if(isSimpleForControl(element)) {
+    	result = toCodeSimpleForControl((SimpleForControl) element);
+    } else if(isEnhancedForControl(element)) {
+    	result = toCodeEnhancedForControl((EnhancedForControl) element);
     }
     else if(element == null) {
       result = "";
@@ -777,7 +786,7 @@ public class JavaCodeWriter extends Syntax {
   public String toCodeWhile(WhileStatement element) throws MetamodelException {
     StringBuffer result = new StringBuffer();
     result.append("while (");
-    result.append(toCode(element.getExpression()));
+    result.append(toCode(element.condition()));
     result.append(") ");
     result.append(toCode(element.getStatement()));
     return result.toString();
@@ -940,17 +949,17 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public boolean isLocalVar(Element element) {
-    return element instanceof LocalVariableDeclarationStatement;
+    return element instanceof LocalVariableDeclarator;
   }
 
-  public String toCodeLocalVar(LocalVariableDeclarationStatement local) throws MetamodelException {
+  public String toCodeLocalVar(LocalVariableDeclarator local) throws MetamodelException {
     return toCodeLocalVarForInit(local) + ";";
   }
   
-  public String toCodeLocalVarForInit(LocalVariableDeclarationStatement local) throws MetamodelException {
-    Variable var = (Variable)local.getVariables().get(0);
+  public String toCodeLocalVarForInit(LocalVariableDeclarator local) throws MetamodelException {
+//    Variable var = (Variable)local.getVariables().get(0);
     final StringBuffer result = new StringBuffer();
-    List modifiers = var.modifiers();
+    List modifiers = local.modifiers();
     if (modifiers.size() != 0) {
       new Visitor() {
         public void visit(Object o) {
@@ -958,33 +967,33 @@ public class JavaCodeWriter extends Syntax {
         }
       }.applyTo(modifiers);
     }
-    result.append(toCode(var.getTypeReference()));
+    result.append(toCode(local.typeReference()));
     result.append(" ");
     try {
-      new RobustVisitor() {
+      new RobustVisitor<VariableDeclaration<LocalVariable>>() {
         private boolean first = true;
 
-        public Object visit(Object element) throws MetamodelException {
-          LocalVariable variable = (LocalVariable)element;
+        public Object visit(VariableDeclaration<LocalVariable> element) throws MetamodelException {
+//          LocalVariable variable = (LocalVariable)element;
           if (!first) {
             result.append(", ");
           }
           else {
             first = false;
           }
-          result.append(variable.getName());
-          Expression initCode = variable.getInitialization();
+          result.append(element.signature().getName());
+          Expression initCode = element.expression();
           if (initCode != null) {
             result.append(" = ");
-            result.append(toCode(initCode));
+							result.append(toCode(initCode));
           }
           return null;
         }
 
-        public void unvisit(Object el, Object undo) {
+        public void unvisit(VariableDeclaration<LocalVariable> el, Object undo) {
           //NOP
         }
-      }.applyTo(local.getVariables());
+      }.applyTo(local.declarations());
     }
     catch (MetamodelException e) {
       throw e;
@@ -1017,12 +1026,28 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public String toCodeFor(ForStatement statement) throws MetamodelException {
-    return "for ("+toCodeForInit((Element)statement.getForInit())+"; "+toCode(statement.getExpression())+"; "+toCode(statement.getUpdate())+") " + toCode(statement.getStatement());
+    return "for "+toCode(statement.forControl()) + toCode(statement.getStatement());
   }
   
+  public boolean isSimpleForControl(Element element) {
+  	return element instanceof SimpleForControl;
+  }
+  
+  public String toCodeSimpleForControl(SimpleForControl control) throws MetamodelException {
+  	return "("+toCodeForInit((Element)control.getForInit())+"; "+toCode(control.condition())+"; "+toCode(control.getUpdate())+") ";
+  }
+  
+  public boolean isEnhancedForControl(Element element) {
+  	return element instanceof EnhancedForControl;
+  }
+
+  public String toCodeEnhancedForControl(EnhancedForControl control) throws MetamodelException {
+  	return "("+toCodeForInit((Element)control.variableDeclarator())+": "+toCode(control.collection())+") ";
+  }
+
   public String toCodeForInit(Element element) throws MetamodelException {
-    if(element instanceof LocalVariableDeclarationStatement) {
-      return toCodeLocalVarForInit((LocalVariableDeclarationStatement)element);
+    if(element instanceof LocalVariableDeclarator) {
+      return toCodeLocalVarForInit((LocalVariableDeclarator)element);
     } else {
       return toCode(element);
     }
@@ -1041,7 +1066,7 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public String toCodeDo(DoStatement statement) throws MetamodelException {
-    return "do "+toCode(statement.getStatement())+ "while("+toCode(statement.getCondition())+");";
+    return "do "+toCode(statement.getStatement())+ "while("+toCode(statement.condition())+");";
   }
   
   

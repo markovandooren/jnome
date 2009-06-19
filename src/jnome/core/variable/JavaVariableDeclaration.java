@@ -5,7 +5,7 @@ import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.ChameleonProgrammerException;
 import chameleon.core.expression.Expression;
 import chameleon.core.variable.Variable;
-import chameleon.support.member.simplename.variable.VariableDeclaration;
+import chameleon.support.variable.VariableDeclaration;
 
 /**
  * Because the idiots who created Java had to allow array brackets after the name of a variable, we

@@ -846,17 +846,17 @@ defaultValue
 // STATEMENTS / BLOCKS
 
 block returns [Block element]
-    :   '{' blockStatement* '}'
+    :   '{' {retval.element = new Block();} (stat=blockStatement {retval.element.addStatement(stat.element)})* '}'
     ;
     
-blockStatement
-    :   localVariableDeclarationStatement
-    |   classOrInterfaceDeclaration
-    |   statement
+blockStatement returns [Statement element]
+    :   local=localVariableDeclarationStatement {retval.element = local.element;}
+    |   cd=classOrInterfaceDeclaration {retval.element = cd.element;}
+    |   stat=statement {retval.element = stat.element;}
     ;
     
-localVariableDeclarationStatement
-    :    localVariableDeclaration ';'
+localVariableDeclarationStatement [Statement element]
+    :    localVariableDeclaration {} ';'
     ;
 
 localVariableDeclaration

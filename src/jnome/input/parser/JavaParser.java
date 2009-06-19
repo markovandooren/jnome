@@ -63,8 +63,6 @@ import chameleon.support.expression.SuperConstructorDelegation;
 
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.member.simplename.SimpleNameMethodHeader;
-import chameleon.support.member.simplename.variable.VariableDeclaration;
-import chameleon.support.member.simplename.variable.VariableDeclarator;
 import chameleon.support.member.simplename.variable.MemberVariableDeclarator;
 
 import chameleon.support.modifier.Abstract;
@@ -81,6 +79,8 @@ import chameleon.support.statement.StatementExpression;
 
 import chameleon.support.type.EmptyTypeElement;
 import chameleon.support.type.StaticInitializer;
+import chameleon.support.variable.VariableDeclaration;
+import chameleon.support.variable.VariableDeclarator;
 
 import jnome.core.expression.ArrayInitializer;
 

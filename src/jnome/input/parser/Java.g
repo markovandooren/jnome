@@ -193,8 +193,10 @@ import chameleon.core.declaration.SimpleNameSignature;
 
 import chameleon.core.element.ChameleonProgrammerException;
 
-import chameleon.core.expression.ActualParameter;
+import chameleon.core.expression.ActualArgument;
 import chameleon.core.expression.Expression;
+import chameleon.core.expression.Invocation;
+import chameleon.core.expression.Literal;
 
 import chameleon.core.language.Language;
 
@@ -236,6 +238,9 @@ import chameleon.core.variable.Variable;
 import chameleon.core.variable.FormalParameter;
 
 import chameleon.support.expression.RegularLiteral;
+import chameleon.support.expression.NullLiteral;
+import chameleon.support.expression.ThisConstructorDelegation;
+import chameleon.support.expression.SuperConstructorDelegation;
 
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.member.simplename.SimpleNameMethodHeader;
@@ -272,6 +277,7 @@ import jnome.core.type.JavaTypeReference;
 import jnome.core.enumeration.EnumConstant;
 
 import jnome.core.variable.JavaVariableDeclaration;
+import jnome.core.variable.MultiFormalParameter;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -728,9 +734,18 @@ constructorBody returns [Block element]
     :   '{' {retval.element = new Block();} (inv=explicitConstructorInvocation {retval.element.addStatement(new StatementExpression(inv.element));})? blockStatement* '}'
     ;
 
-explicitConstructorInvocation returns [Expression element]
-    :   nonWildcardTypeArguments? ('this' | 'super') arguments ';'
-    |   primary '.' nonWildcardTypeArguments? 'super' arguments ';'
+explicitConstructorInvocation returns [Invocation element]
+@init{Expression target=null;}
+    :   nonWildcardTypeArguments? 'this' args=arguments ';'
+       {retval.element = new ThisConstructorDelegation();
+        retval.element.addAllArguments(args.element);}
+    | (prim=primary '.' {target=prim.element;})? nonWildcardTypeArguments? 'super' argsx=arguments ';' 
+      {retval.element = new SuperConstructorDelegation();
+       retval.element.addAllArguments(argsx.element);
+       if(target != null) {
+         retval.element.setTarget(target);
+       }
+      }
     ;
 
 
@@ -739,22 +754,22 @@ qualifiedName returns [String element]
     :   id=Identifier {buffer.append($id.text);}('.' idx=Identifier {buffer.append($idx.text);})*
     ;
     
-literal 
-    :   integerLiteral
-    |   FloatingPointLiteral
-    |   CharacterLiteral
-    |   StringLiteral
-    |   booleanLiteral
-    |   'null'
+literal returns [Literal element]
+    :   intl=integerLiteral {retval.element=intl.element;}
+    |   fl=FloatingPointLiteral {retval.element=new RegularLiteral(new JavaTypeReference("float"),$fl.text);}
+    |   charl=CharacterLiteral {retval.element=new RegularLiteral(new JavaTypeReference("char"),$charl.text);}
+    |   strl=StringLiteral {retval.element=new RegularLiteral(new JavaTypeReference("java.lang.String"),$strl.text);}
+    |   booll=booleanLiteral {retval.element=booll.element;}
+    |   'null' {retval.element = new NullLiteral();}
     ;
 
-integerLiteral
-    :   HexLiteral
-    |   OctalLiteral
-    |   DecimalLiteral
+integerLiteral returns [Literal element]
+    :   hexl=HexLiteral {retval.element=new RegularLiteral(new JavaTypeReference("int"),$hexl.text);}
+    |   octl=OctalLiteral {retval.element=new RegularLiteral(new JavaTypeReference("int"),$octl.text);}
+    |   decl=DecimalLiteral {retval.element=new RegularLiteral(new JavaTypeReference("int"),$decl.text);}
     ;
 
-booleanLiteral returns [Expression element]
+booleanLiteral returns [Literal element]
     :   'true' {retval.element = new RegularLiteral(new JavaTypeReference("boolean"),"true");}
     |   'false' {retval.element = new RegularLiteral(new JavaTypeReference("boolean"),"false");}
     ;
@@ -1070,7 +1085,7 @@ castExpression
     |  '(' (type | expression) ')' unaryExpressionNotPlusMinus
     ;
 
-primary
+primary returns [Expression element]
     :   parExpression
     |   'this' ('.' Identifier)* identifierSuffix?
     |   'super' superSuffix
@@ -1138,7 +1153,7 @@ superSuffix
     |   '.' Identifier arguments?
     ;
 
-arguments returns [List<ActualParameter> element]
+arguments returns [List<ActualArgument> element]
     :   '(' expressionList? ')'
     ;
 

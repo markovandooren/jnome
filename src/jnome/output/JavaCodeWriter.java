@@ -29,7 +29,7 @@ import org.rejuse.predicate.PrimitiveTotalPredicate;
 import chameleon.core.MetamodelException;
 import chameleon.core.compilationunit.CompilationUnit;
 import chameleon.core.element.Element;
-import chameleon.core.expression.ActualParameter;
+import chameleon.core.expression.ActualArgument;
 import chameleon.core.expression.ConditionalAndExpression;
 import chameleon.core.expression.ConditionalOrExpression;
 import chameleon.core.expression.Expression;
@@ -224,7 +224,7 @@ public class JavaCodeWriter extends Syntax {
     } else if(isNamespacePart(element)) {
     	result = toCodeNamespacePart((NamespacePart) element);
     } else if(isActualParameter(element)) {
-    	result = toCodeActualParameter((ActualParameter) element);
+    	result = toCodeActualParameter((ActualArgument) element);
     }
     else if(element == null) {
       result = "";
@@ -236,10 +236,10 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public boolean isActualParameter(Element element) {
-  	return element instanceof ActualParameter;
+  	return element instanceof ActualArgument;
   }
   
-  public String toCodeActualParameter(ActualParameter parameter) throws MetamodelException {
+  public String toCodeActualParameter(ActualArgument parameter) throws MetamodelException {
   	return toCode(parameter.getExpression());
   }
   
@@ -1073,7 +1073,7 @@ public class JavaCodeWriter extends Syntax {
     result.append("(");
     Iterator iter = inv.getActualParameters().iterator();
     while(iter.hasNext()) {
-      Expression expr = ((ActualParameter)iter.next()).getExpression();
+      Expression expr = ((ActualArgument)iter.next()).getExpression();
       result.append(toCode(expr));
       if(iter.hasNext()) {
         result.append(", ");

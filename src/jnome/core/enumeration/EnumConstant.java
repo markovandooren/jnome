@@ -10,7 +10,7 @@ import org.rejuse.association.Reference;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.expression.ActualArgumentList;
-import chameleon.core.expression.ActualParameter;
+import chameleon.core.expression.ActualArgument;
 import chameleon.core.member.FixedSignatureMember;
 import chameleon.core.member.Member;
 import chameleon.core.type.ClassBody;
@@ -53,21 +53,21 @@ public class EnumConstant extends FixedSignatureMember<EnumConstant,Type,SimpleN
 	 return _parameters.getOtherEnd();
  }
 
-  public void addParameter(ActualParameter parameter) {
+  public void addParameter(ActualArgument parameter) {
   	actualArgumentList().addParameter(parameter);
   }
   
-  public void addAllParameters(List<ActualParameter> parameters) {
-  	for(ActualParameter param: parameters) {
+  public void addAllParameters(List<ActualArgument> parameters) {
+  	for(ActualArgument param: parameters) {
   		addParameter(param);
   	}
   }
 
-  public void removeParameter(ActualParameter parameter) {
+  public void removeParameter(ActualArgument parameter) {
   	actualArgumentList().removeParameter(parameter);
   }
 
-  public List<ActualParameter> getActualParameters() {
+  public List<ActualArgument> getActualParameters() {
     return actualArgumentList().getActualParameters();
   }
   

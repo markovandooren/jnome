@@ -941,16 +941,16 @@ options {k=3;} // be efficient for common case: for (ID ID : ID) ...
     ;
 
 forInit returns [ForInit element]
-    :   localVariableDeclaration
-    |   expressionList
+    :   local=localVariableDeclaration {retval.element=local.element;}
+    |   el=expressionList {retval.element = new StatementExprList(); for(Expression expr: el.element){((StatementExprList)retval.element).addStatement(new StatementExpression(expr));};}
     ;
     
 enhancedForControl returns [ForControl element]
-    :   variableModifiers type Identifier ':' expression
+    :   local=localVariableDeclaration ':' ex=expression {retval.element = new EnhancedForControl(local.element, ex.element);}
     ;
 
 forUpdate returns [StatementExprList element]
-    :   expressionList
+    :   el=expressionList {retval.element = new StatementExprList(); for(Expression expr: el.element){((StatementExprList)retval.element).addStatement(new StatementExpression(expr));};}
     ;
 
 // EXPRESSIONS
@@ -959,11 +959,11 @@ parExpression returns [Expression element]
     :   '(' expr=expression {retval.element = expr.element;} ')'
     ;
     
-expressionList
-    :   expression (',' expression)*
+expressionList returns [List<Expression> element]
+    :   {retval.element = new ArrayList<Expression>();} e=expression {retval.element.add(e.element);}(',' ex=expression {retval.element.add(ex.element);})*
     ;
 
-statementExpression
+statementExpression returns [Expression element]
     :   expression
     ;
     

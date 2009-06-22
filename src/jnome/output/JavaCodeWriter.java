@@ -993,7 +993,7 @@ public class JavaCodeWriter extends Syntax {
         public void unvisit(VariableDeclaration<LocalVariable> el, Object undo) {
           //NOP
         }
-      }.applyTo(local.declarations());
+      }.applyTo(local.variableDeclarations());
     }
     catch (MetamodelException e) {
       throw e;

@@ -267,6 +267,11 @@ import chameleon.support.statement.ForInit;
 import chameleon.support.statement.SimpleForControl;
 import chameleon.support.statement.EnhancedForControl;
 import chameleon.support.statement.StatementExprList;
+import chameleon.support.statement.TryStatement;
+import chameleon.support.statement.CatchClause;
+import chameleon.support.statement.FinallyClause;
+import chameleon.support.statement.DoStatement;
+import chameleon.support.statement.WhileStatement;
 
 import chameleon.support.type.EmptyTypeElement;
 import chameleon.support.type.StaticInitializer;
@@ -886,12 +891,12 @@ statement returns [Statement element]
     |   ASSERT asexpr=expression {retval.element=new AssertStatement(asexpr.element);}(':' asexprx=expression {((AssertStatement)retval.element).setMessageExpression(asexprx.element);})? ';'
     |   'if' ifexpr=parExpression ifif=statement (options {k=1;}:'else' ifelse=statement)? {retval.element=new IfThenElseStatement(ifexpr.element, ifif.element,ifelse.element);}
     |   'for' '(' forc=forControl ')' forstat=statement {retval.element = new ForStatement(forc.element,forstat.element);}
-    |   'while' parExpression statement
-    |   'do' statement 'while' parExpression ';'
-    |   'try' block
-        ( catches 'finally' block
-        | catches
-        |   'finally' block
+    |   'while' wexs=parExpression wstat=statement {retval.element = new WhileStatement(wexs.element, wstat.element);}
+    |   'do' dostat=statement 'while' doex=parExpression ';' {retval.element= new DoStatement(doex.element, dostat.element);}
+    |   'try' traaibl=block {retval.element = new TryStatement(traaibl.element);}
+        ( cts=catches 'finally' trybl=block {((TryStatement)retval.element).addAllCatchClauses(cts.element); ((TryStatement)retval.element).setFinallyClause(new FinallyClause(trybl.element));}
+        | ctss=catches {((TryStatement)retval.element).addAllCatchClauses(ctss.element);}
+        |   'finally' trybll=block {((TryStatement)retval.element).setFinallyClause(new FinallyClause(trybll.element));}
         )
     |   'switch' parExpression '{' switchBlockStatementGroups '}'
     |   'synchronized' parExpression block
@@ -904,7 +909,7 @@ statement returns [Statement element]
     |   Identifier ':' statement
     ;
     
-catches
+catches returns [List<CatchClause> element]
     :   catchClause (catchClause)*
     ;
     

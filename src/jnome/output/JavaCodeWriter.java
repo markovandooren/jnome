@@ -873,24 +873,7 @@ public class JavaCodeWriter extends Syntax {
   public String toCodeSwitchCase(SwitchCase sc) throws MetamodelException {
     final StringBuffer result = new StringBuffer();
     result.append(startLine());
-    try {
-      new RobustVisitor() {
-        public Object visit(Object o) throws MetamodelException {
-          result.append(toCodeSwitchLabel((SwitchLabel)o));
-          return null;
-        }
-
-        public void unvisit(Object o, Object e) {
-          //NOP
-        }
-      }.applyTo(sc.getLabels());
-    }
-    catch (MetamodelException e1) {
-      throw e1;
-    }
-    catch (Exception e1) {
-      throw new Error();
-    }
+    result.append(toCodeSwitchLabel(sc.getLabel()));
     result.append("\n");
     indent();
     try {

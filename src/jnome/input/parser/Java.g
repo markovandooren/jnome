@@ -272,6 +272,19 @@ import chameleon.support.statement.CatchClause;
 import chameleon.support.statement.FinallyClause;
 import chameleon.support.statement.DoStatement;
 import chameleon.support.statement.WhileStatement;
+import chameleon.support.statement.SwitchStatement;
+import chameleon.support.statement.SwitchCase;
+import chameleon.support.statement.SwitchLabel;
+import chameleon.support.statement.CaseLabel;
+import chameleon.support.statement.DefaultLabel;
+import chameleon.support.statement.EnumLabel;
+import chameleon.support.statement.ReturnStatement;
+import chameleon.support.statement.ThrowStatement;
+import chameleon.support.statement.BreakStatement;
+import chameleon.support.statement.ContinueStatement;
+import chameleon.support.statement.SynchronizedStatement;
+import chameleon.support.statement.EmptyStatement;
+import chameleon.support.statement.LabeledStatement;
 
 import chameleon.support.type.EmptyTypeElement;
 import chameleon.support.type.StaticInitializer;
@@ -898,45 +911,46 @@ statement returns [Statement element]
         | ctss=catches {((TryStatement)retval.element).addAllCatchClauses(ctss.element);}
         |   'finally' trybll=block {((TryStatement)retval.element).setFinallyClause(new FinallyClause(trybll.element));}
         )
-    |   'switch' parExpression '{' switchBlockStatementGroups '}'
-    |   'synchronized' parExpression block
-    |   'return' expression? ';'
-    |   'throw' expression ';'
-    |   'break' Identifier? ';'
-    |   'continue' Identifier? ';'
-    |   ';' 
-    |   statementExpression ';'
-    |   Identifier ':' statement
+    |   'switch' swexpr=parExpression {retval.element = new SwitchStatement(swexpr.element);}'{' cases=switchBlockStatementGroups {((SwitchStatement)retval.element).addAllCases(cases.element);}'}'
+    |   'synchronized' synexpr=parExpression synstat=block {retval.element = new SynchronizedStatement(synexpr.element,synstat.element);}
+    |   'return' {retval.element = new ReturnStatement();} (retex=expression {((ReturnStatement)retval.element).setExpression(retex.element);})? ';'
+    |   'throw' threx=expression {retval.element = new ThrowStatement(threx.element);}';'
+    |   'break' {retval.element = new BreakStatement();} (name=Identifier {((BreakStatement)retval.element).setLabel($name.text);})? ';'
+    |   'continue' {retval.element = new ContinueStatement();} (name=Identifier {((ContinueStatement)retval.element).setLabel($name.text);})? ';'
+    |   ';' {retval.element = new EmptyStatement();}
+    |   stattex=statementExpression {retval.element = new StatementExpression(stattex.element);}';'
+    |   name=Identifier ':' labstat=statement {retval.element = new LabeledStatement($name.text,labstat.element);}
     ;
     
 catches returns [List<CatchClause> element]
-    :   catchClause (catchClause)*
+    :   {retval.element = new ArrayList<CatchClause>();} (ct=catchClause {retval.element.add(ct.element);})+
     ;
     
-catchClause
-    :   'catch' '(' formalParameter ')' block
+catchClause returns [CatchClause element]
+    :   'catch' '(' par=formalParameter ')' bl=block {retval.element = new CatchClause(par.element, bl.element);}
     ;
 
-formalParameter
-    :   variableModifiers type variableDeclaratorId
+formalParameter returns [FormalParameter element]
+    :   mods=variableModifiers tref=type name=variableDeclaratorId 
+        {tref.element.setArrayDimension(name.element.dimension()); retval.element = new FormalParameter(new SimpleNameSignature(name.element.name()), tref.element);}
     ;
         
-switchBlockStatementGroups
-    :   (switchBlockStatementGroup)*
+switchBlockStatementGroups returns [List<SwitchCase> element]
+    :   {retval.element = new ArrayList<SwitchCase>();}(cs=switchCase {retval.element.add(cs.element);})*
     ;
     
 /* The change here (switchLabel -> switchLabel+) technically makes this grammar
    ambiguous; but with appropriately greedy parsing it yields the most
    appropriate AST, one in which each group, except possibly the last one, has
    labels and statements. */
-switchBlockStatementGroup
-    :   switchLabel+ blockStatement*
+switchCase returns [SwitchCase element]
+    :   label=switchLabel {retval.element = new SwitchCase(label.element);} blockStatement*
     ;
     
-switchLabel
-    :   'case' constantExpression ':'
-    |   'case' enumConstantName ':'
-    |   'default' ':'
+switchLabel returns [SwitchLabel element]
+    :   'case' csexpr=constantExpression ':' {retval.element = new CaseLabel(csexpr.element);}
+    |   'case' enumname=enumConstantName ':' {retval.element = new EnumLabel(enumname.element);}
+    |   'default' ':'{retval.element = new DefaultLabel();}
     ;
     
 forControl returns [ForControl element]
@@ -969,11 +983,11 @@ expressionList returns [List<Expression> element]
     ;
 
 statementExpression returns [Expression element]
-    :   expression
+    :   e=expression {retval.element = e.element;}
     ;
     
-constantExpression
-    :   expression
+constantExpression returns [Expression element]
+    :   e=expression {retval.element = e.element;}
     ;
     
 expression returns [Expression element]

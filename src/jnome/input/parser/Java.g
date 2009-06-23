@@ -1140,25 +1140,35 @@ shiftOp
 
 
 additiveExpression returns [Expression element]
-    :   multiplicativeExpression ( ('+' | '-') multiplicativeExpression )*
+@init{String op = null;}
+    :   ex=multiplicativeExpression ( ('+' {op="+";} | '-' {op="-";}) exx=multiplicativeExpression 
+    {InfixOperatorInvocation tmp = new InfixOperatorInvocation(op, exx.element);
+     tmp.setTarget(retval.element);
+     retval.element = tmp;
+    })*
     ;
 
 multiplicativeExpression returns [Expression element]
-    :   unaryExpression ( ( '*' | '/' | '%' ) unaryExpression )*
+@init{String op = null;}
+    :   ex=unaryExpression ( ( '*' {op="*";} | '/' {op="/";} | '%' {op="\%";}) exx=unaryExpression 
+    {InfixOperatorInvocation tmp = new InfixOperatorInvocation(op, exx.element);
+     tmp.setTarget(retval.element);
+     retval.element = tmp;
+    })*
     ;
     
 unaryExpression returns [Expression element]
-    :   '+' unaryExpression
-    |   '-' unaryExpression
-    |   '++' unaryExpression
-    |   '--' unaryExpression
-    |   unaryExpressionNotPlusMinus
+    :   '+' ex=unaryExpression {retval.element = new PrefixOperatorInvocation("+",ex.element);}
+    |   '-' exx=unaryExpression {retval.element = new PrefixOperatorInvocation("-",exx.element);}
+    |   '++' exxx=unaryExpression {retval.element = new PrefixOperatorInvocation("++",exxx.element);}
+    |   '--' exxxx=unaryExpression {retval.element = new PrefixOperatorInvocation("--",exxxx.element);}
+    |   eks=unaryExpressionNotPlusMinus {retval.element = eks.element;}
     ;
 
 unaryExpressionNotPlusMinus returns [Expression element]
-    :   '~' unaryExpression
-    |   '!' unaryExpression
-    |   castExpression
+    :   '~' ex=unaryExpression {retval.element = new PrefixOperatorInvocation("~",ex.element);}
+    |   '!' exx=unaryExpression {retval.element = new PrefixOperatorInvocation("!",exx.element);}
+    |   castex=castExpression {retval.element = castex.element;}
     |   primary selector* ('++'|'--')?
     ;
 

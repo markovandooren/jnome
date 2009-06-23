@@ -197,6 +197,7 @@ import chameleon.core.expression.ActualArgument;
 import chameleon.core.expression.Expression;
 import chameleon.core.expression.Invocation;
 import chameleon.core.expression.Literal;
+import chameleon.core.expression.Assignable;
 
 import chameleon.core.language.Language;
 
@@ -242,10 +243,19 @@ import chameleon.support.expression.RegularLiteral;
 import chameleon.support.expression.NullLiteral;
 import chameleon.support.expression.ThisConstructorDelegation;
 import chameleon.support.expression.SuperConstructorDelegation;
+import chameleon.support.expression.AssignmentExpression;
+import chameleon.support.expression.ConditionalExpression;
+import chameleon.support.expression.ConditionalAndExpression;
+import chameleon.support.expression.ConditionalOrExpression;
+import chameleon.support.expression.InstanceofExpression;
 
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.member.simplename.SimpleNameMethodHeader;
 import chameleon.support.member.simplename.variable.MemberVariableDeclarator;
+import chameleon.support.member.simplename.operator.infix.InfixOperatorInvocation;
+import chameleon.support.member.simplename.operator.prefix.PrefixOperatorInvocation;
+import chameleon.support.member.simplename.operator.postfix.PostfixOperatorInvocation;
+
 
 import chameleon.support.modifier.Abstract;
 import chameleon.support.modifier.Final;
@@ -991,7 +1001,16 @@ constantExpression returns [Expression element]
     ;
     
 expression returns [Expression element]
-    :   conditionalExpression (assignmentOperator expression)?
+    :   ex=conditionalExpression {retval.element=ex.element;} (op=assignmentOperator exx=expression 
+        {String txt = $op.text; 
+         if(txt.equals("=")) {
+           retval.element = new AssignmentExpression((Assignable)ex.element,exx.element);
+         } else {
+           retval.element = new InfixOperatorInvocation($op.text,ex.element);
+           ((InfixOperatorInvocation)retval.element).setTarget(exx.element);
+         }
+        }
+        )?
     ;
     
 assignmentOperator
@@ -1023,40 +1042,66 @@ assignmentOperator
           $t2.getCharPositionInLine() + 1 == $t3.getCharPositionInLine() }?
     ;
 
-conditionalExpression
-    :   conditionalOrExpression ( '?' expression ':' expression )?
+conditionalExpression returns [Expression element]
+    :   ex=conditionalOrExpression {retval.element = ex.element;}( '?' exx=expression ':' exxx=expression 
+    {retval.element = new ConditionalExpression(retval.element,exx.element,exxx.element);}
+    )?
     ;
 
-conditionalOrExpression
-    :   conditionalAndExpression ( '||' conditionalAndExpression )*
+conditionalOrExpression returns [Expression element]
+    :   ex=conditionalAndExpression {retval.element = ex.element;} ( '||' exx=conditionalAndExpression 
+        {retval.element = new ConditionalOrExpression(retval.element, exx.element);})*
     ;
 
-conditionalAndExpression
-    :   inclusiveOrExpression ( '&&' inclusiveOrExpression )*
+conditionalAndExpression returns [Expression element]
+    :   ex=inclusiveOrExpression {retval.element = ex.element;} ( '&&' exx=inclusiveOrExpression 
+        {retval.element = new ConditionalAndExpression(retval.element, exx.element);})*
     ;
 
-inclusiveOrExpression
-    :   exclusiveOrExpression ( '|' exclusiveOrExpression )*
+inclusiveOrExpression returns [Expression element]
+    :   ex=exclusiveOrExpression {retval.element = ex.element;} ( '|' exx=exclusiveOrExpression 
+        {InfixOperatorInvocation tmp = new InfixOperatorInvocation("|", exx.element);
+         tmp.setTarget(retval.element);
+         retval.element = tmp;
+          } )*
     ;
 
-exclusiveOrExpression
-    :   andExpression ( '^' andExpression )*
+exclusiveOrExpression returns [Expression element]
+    :   ex=andExpression {retval.element = ex.element;} ( '^' exx=andExpression
+    {InfixOperatorInvocation tmp = new InfixOperatorInvocation("^", exx.element);
+         tmp.setTarget(retval.element);
+         retval.element = tmp;
+          } )*
     ;
 
-andExpression
-    :   equalityExpression ( '&' equalityExpression )*
+andExpression returns [Expression element]
+    :   ex=equalityExpression {retval.element = ex.element;} ( '&' exx=equalityExpression
+    {InfixOperatorInvocation tmp = new InfixOperatorInvocation("&", exx.element);
+         tmp.setTarget(retval.element);
+         retval.element = tmp;
+          } )*
     ;
 
-equalityExpression
-    :   instanceOfExpression ( ('==' | '!=') instanceOfExpression )*
+equalityExpression returns [Expression element]
+@init{String op=null;}
+    :   ex=instanceOfExpression  {retval.element = ex.element;} ( ('==' {op="==";} | '!=' {op="!=";}) exx=instanceOfExpression 
+        {InfixOperatorInvocation tmp = new InfixOperatorInvocation(op, exx.element);
+         tmp.setTarget(retval.element);
+         retval.element = tmp;
+          } )*
     ;
 
-instanceOfExpression
-    :   relationalExpression ('instanceof' type)?
+instanceOfExpression returns [Expression element]
+    :   ex=relationalExpression {retval.element = ex.element;} ('instanceof' tref=type {retval.element = new InstanceofExpression(ex.element, tref.element);})?
     ;
 
-relationalExpression
-    :   shiftExpression ( relationalOp shiftExpression )*
+relationalExpression returns [Expression element]
+    :   ex=shiftExpression {retval.element = ex.element;} ( op=relationalOp exx=shiftExpression 
+    {InfixOperatorInvocation tmp = new InfixOperatorInvocation($op.text, exx.element);
+     tmp.setTarget(retval.element);
+     retval.element = tmp;
+    }
+    )*
     ;
     
 relationalOp
@@ -1070,8 +1115,13 @@ relationalOp
     |   '>' 
     ;
 
-shiftExpression
-    :   additiveExpression ( shiftOp additiveExpression )*
+shiftExpression returns [Expression element]
+    :   ex=additiveExpression {retval.element = ex.element;} ( op=shiftOp exx=additiveExpression 
+    {InfixOperatorInvocation tmp = new InfixOperatorInvocation($op.text, exx.element);
+     tmp.setTarget(retval.element);
+     retval.element = tmp;
+    }
+    )*
     ;
 
 shiftOp
@@ -1089,15 +1139,15 @@ shiftOp
     ;
 
 
-additiveExpression
+additiveExpression returns [Expression element]
     :   multiplicativeExpression ( ('+' | '-') multiplicativeExpression )*
     ;
 
-multiplicativeExpression
+multiplicativeExpression returns [Expression element]
     :   unaryExpression ( ( '*' | '/' | '%' ) unaryExpression )*
     ;
     
-unaryExpression
+unaryExpression returns [Expression element]
     :   '+' unaryExpression
     |   '-' unaryExpression
     |   '++' unaryExpression
@@ -1105,14 +1155,14 @@ unaryExpression
     |   unaryExpressionNotPlusMinus
     ;
 
-unaryExpressionNotPlusMinus
+unaryExpressionNotPlusMinus returns [Expression element]
     :   '~' unaryExpression
     |   '!' unaryExpression
     |   castExpression
     |   primary selector* ('++'|'--')?
     ;
 
-castExpression
+castExpression returns [Expression element]
     :  '(' primitiveType ')' unaryExpression
     |  '(' (type | expression) ')' unaryExpressionNotPlusMinus
     ;

@@ -42,7 +42,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
   /**
    * @param target
    */
-  public ConstructorInvocation(JavaTypeReference type, Expression target) {
+  public ConstructorInvocation(JavaTypeReference type, InvocationTarget target) {
     super(target);
     setTypeReference(type);
   }

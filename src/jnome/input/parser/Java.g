@@ -180,6 +180,10 @@ scope MethodScope {
   Method method;
 }
 
+scope TargetScope {
+  InvocationTarget target;
+}
+
 @parser::header {
 package jnome.input.parser;
 
@@ -198,6 +202,9 @@ import chameleon.core.expression.Expression;
 import chameleon.core.expression.Invocation;
 import chameleon.core.expression.Literal;
 import chameleon.core.expression.Assignable;
+import chameleon.core.expression.NamedTarget;
+import chameleon.core.expression.InvocationTarget;
+import chameleon.core.expression.VariableReference;
 
 import chameleon.core.language.Language;
 
@@ -248,6 +255,10 @@ import chameleon.support.expression.ConditionalExpression;
 import chameleon.support.expression.ConditionalAndExpression;
 import chameleon.support.expression.ConditionalOrExpression;
 import chameleon.support.expression.InstanceofExpression;
+import chameleon.support.expression.ThisLiteral;
+import chameleon.support.expression.FilledArrayIndex;
+import chameleon.support.expression.ArrayIndex;
+import chameleon.support.expression.ClassCastExpression;
 
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.member.simplename.SimpleNameMethodHeader;
@@ -255,6 +266,7 @@ import chameleon.support.member.simplename.variable.MemberVariableDeclarator;
 import chameleon.support.member.simplename.operator.infix.InfixOperatorInvocation;
 import chameleon.support.member.simplename.operator.prefix.PrefixOperatorInvocation;
 import chameleon.support.member.simplename.operator.postfix.PostfixOperatorInvocation;
+import chameleon.support.member.simplename.method.RegularMethodInvocation;
 
 
 import chameleon.support.modifier.Abstract;
@@ -304,6 +316,9 @@ import chameleon.support.variable.LocalVariableDeclarator;
 import chameleon.support.variable.VariableDeclarator;
 
 import jnome.core.expression.ArrayInitializer;
+import jnome.core.expression.ClassLiteral;
+import jnome.core.expression.ArrayAccessExpression;
+import jnome.core.expression.ConstructorInvocation;
 
 import jnome.core.language.Java;
 
@@ -334,6 +349,28 @@ package jnome.input.parser;
 }
 
 @parser::members {
+
+  public static class ClassCreatorRest {
+    public ClassCreatorRest(List<ActualArgument> args) {
+      _args = args; // NO ENCAPSULATION, BUT IT IS JUST THE PARSER.
+    }
+    
+    public List<ActualArgument> arguments() {
+      return _args;
+    }
+    
+    private List<ActualArgument> _args;
+    
+    public void setBody(ClassBody body) {
+      _body = body;
+    }
+    
+    public ClassBody body() {
+      return _body;
+    }
+    
+    private ClassBody _body;
+  }
 
   public static class StupidVariableDeclaratorId {
        public StupidVariableDeclaratorId(String name, int dimension) {
@@ -1166,83 +1203,143 @@ unaryExpression returns [Expression element]
     ;
 
 unaryExpressionNotPlusMinus returns [Expression element]
+scope TargetScope;
     :   '~' ex=unaryExpression {retval.element = new PrefixOperatorInvocation("~",ex.element);}
     |   '!' exx=unaryExpression {retval.element = new PrefixOperatorInvocation("!",exx.element);}
     |   castex=castExpression {retval.element = castex.element;}
-    |   primary selector* ('++'|'--')?
+    |   prim=primary {$TargetScope::target=prim.element; retval.element=prim.element;} 
+       (sel=selector 
+           {$TargetScope::target=sel.element;
+            retval.element = sel.element;
+           }
+       )* ('++' {retval.element = new PostfixOperatorInvocation("++", retval.element);}
+          |'--' {retval.element = new PostfixOperatorInvocation("--", retval.element);})?
     ;
 
 castExpression returns [Expression element]
-    :  '(' primitiveType ')' unaryExpression
-    |  '(' (type | expression) ')' unaryExpressionNotPlusMinus
+    :  '(' tref=primitiveType ')' unex=unaryExpression {retval.element = new ClassCastExpression(tref.element,unex.element);}
+    |  '(' treff=type ')' unexx=unaryExpressionNotPlusMinus {retval.element = new ClassCastExpression(treff.element,unexx.element);}
     ;
 
 primary returns [Expression element]
-    :   parExpression
-    |   'this' ('.' Identifier)* identifierSuffix?
-    |   'super' superSuffix
-    |   literal
+scope TargetScope;
+    :   parex=parExpression {retval.element = parex.element;}
+    |   rubex=identifierSuffixRubbush {retval.element = rubex.element;}
+    |   {$TargetScope::target=null; } 'super' supsuf=superSuffix {retval.element = supsuf.element;}
+    |   lit=literal {retval.element = lit.element;}
     |   'new' creator
-    |   Identifier ('.' Identifier)* identifierSuffix?
+    |   moreIdentifierSuffixRubbish
     |   primitiveType ('[' ']')* '.' 'class'
-    |   'void' '.' 'class'
+    |   'void' '.' 'class' {retval.element = new ClassLiteral(new JavaTypeReference("void"));}
+    |   tref=type '.' 'class' {retval.element = new ClassLiteral(tref.element);}
     ;
 
-identifierSuffix
-    :   ('[' ']')+ '.' 'class'
-    |   ('[' expression ']')+ // can also be matched by selector, but do here
-    |   arguments
-    |   '.' 'class'
-    |   '.' explicitGenericInvocation
-    |   '.' 'this'
-    |   '.' 'super' arguments
-    |   '.' 'new' innerCreator
+moreIdentifierSuffixRubbish returns [Expression element]
+scope TargetScope;
+	:	id=Identifier {$TargetScope::target = new NamedTarget($id.text);} ('.' idx=Identifier {$TargetScope::target = new NamedTarget($idx.text,$TargetScope::target);})* 
+(   //    ('[' ']')+ '.' 'class'
+    //|   
+        arr=arrayAccessSuffixRubbish {retval.element = arr.element;}
+    |   arg=argumentsSuffixRubbish {retval.element = arg.element;}
+    |   '.' gen=explicitGenericInvocation {retval.element = gen.element;}
+    |   '.' 'this' {retval.element = new ThisLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));}
+    |   '.' 'super' supsuf=superSuffix {retval.element = supsuf.element;}
+    |   '.' 'new' in=innerCreator {retval.element = in.element;})?
+	;
+
+identifierSuffixRubbush returns [Expression element]
+scope TargetScope;
+	:	'this' {$TargetScope::target = new ThisLiteral();}('.' id=Identifier {$TargetScope::target = new NamedTarget($id.text,$TargetScope::target);})* 
+	{retval.element = new VariableReference((NamedTarget)$TargetScope::target);}
+   (
+        arr=arrayAccessSuffixRubbish {retval.element = arr.element;}
+    |   arg=argumentsSuffixRubbish {retval.element = arg.element;}
+    |   '.' gen=explicitGenericInvocation {retval.element = gen.element;}
+    |   '.' 'super' supsuf=superSuffix {retval.element = supsuf.element;}
+    |   '.' 'new' in=innerCreator {retval.element = in.element;}
+   )?
+	;
+
+argumentsSuffixRubbish returns [RegularMethodInvocation element]
+// the last part of target is the method name (what a hopeless grammar)
+	:	args=arguments 
+	        {String name = ((NamedTarget)$TargetScope::target).getName();
+	         $TargetScope::target = ((NamedTarget)$TargetScope::target).getTarget(); //chop off head
+	         retval.element = new RegularMethodInvocation(name, $TargetScope::target);
+	         retval.element.addAllArguments(args.element);
+	        }
+	;
+
+arrayAccessSuffixRubbish returns [Expression element]
+	:	{retval.element = new ArrayAccessExpression(new VariableReference((NamedTarget)$TargetScope::target));} ('[' arrex=expression ']' {((ArrayAccessExpression)retval.element).addIndex(new FilledArrayIndex(arrex.element));} )+ // can also be matched by selector, but do here
+
+	;
+
+
+creator returns [Expression element]
+    :   nonWildcardTypeArguments {throw new ChameleonProgrammerException("Generic constructors are not yet supported");} createdName classCreatorRest
+    |   t=createdName 
+           (
+             arrayCreatorRest 
+           | rest=classCreatorRest 
+             {retval.element = new ConstructorInvocation(t.element,$TargetScope::target);
+              ((ConstructorInvocation)retval.element).setBody(rest.element.body());
+              ((ConstructorInvocation)retval.element).addAllArguments(rest.element.arguments());
+             }
+           )
     ;
 
-creator
-    :   nonWildcardTypeArguments createdName classCreatorRest
-    |   createdName (arrayCreatorRest | classCreatorRest)
-    ;
-
-createdName
-    :   classOrInterfaceType
-    |   primitiveType
+createdName returns [JavaTypeReference element]
+    :   cd=classOrInterfaceType {retval.element = cd.element;}
+    |   prim=primitiveType {retval.element = prim.element;}
     ;
     
-innerCreator
-    :   nonWildcardTypeArguments? Identifier classCreatorRest
+innerCreator returns [ConstructorInvocation element]
+    :   (nonWildcardTypeArguments {throw new ChameleonProgrammerException("Generic constructors are not yet supported");})? 
+        name=Identifier rest=classCreatorRest 
+        {retval.element = new ConstructorInvocation(new JavaTypeReference($name.text),$TargetScope::target);
+         retval.element.setBody(rest.element.body());
+         retval.element.addAllArguments(rest.element.arguments());
+        }
     ;
 
-arrayCreatorRest
-    :   '['
-        (   ']' ('[' ']')* arrayInitializer
-        |   expression ']' ('[' expression ']')* ('[' ']')*
-        )
+arrayCreatorRest returns [Expression element]
+    :   
+         ('[' ']')+ arrayInitializer
+        | '['  expression ']' ('[' expression ']')* ('[' ']')*
+       
     ;
 
-classCreatorRest
-    :   arguments classBody?
+classCreatorRest returns [ClassCreatorRest element]
+    :   args=arguments {retval.element = new ClassCreatorRest(args.element);}(body=classBody {retval.element.setBody(body.element);})?
     ;
     
-explicitGenericInvocation
-    :   nonWildcardTypeArguments Identifier arguments
+explicitGenericInvocation returns [Expression element]
+    :   {throw new ChameleonProgrammerException("Generic method are currently not supported.");}nonWildcardTypeArguments Identifier arguments
     ;
     
-nonWildcardTypeArguments
-    :   '<' typeList '>'
+nonWildcardTypeArguments returns [List<TypeReference> element]
+    :   '<' list=typeList {retval.element = list.element;}'>'
     ;
     
-selector
+selector returns [Expression element]
+scope TargetScope;
     :   '.' Identifier arguments?
     |   '.' 'this'
-    |   '.' 'super' superSuffix
-    |   '.' 'new' innerCreator
+    |   '.' 'super' supsuf=superSuffix {retval.element = supsuf.element;}
+    |   '.' 'new' in=innerCreator {retval.element = in.element;}
     |   '[' expression ']'
     ;
     
-superSuffix
-    :   arguments
-    |   '.' Identifier arguments?
+superSuffix returns [Expression element]
+    :   //arguments
+        //|   
+    '.' name=Identifier {retval.element = new VariableReference(new NamedTarget($name.text,$TargetScope::target));} 
+        (args=arguments
+          {retval.element = new RegularMethodInvocation($name.text,$TargetScope::target);
+          ((RegularMethodInvocation)retval.element).addAllArguments(args.element);
+          }
+        )?
     ;
 
 arguments returns [List<ActualArgument> element]

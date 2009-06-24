@@ -1227,9 +1227,8 @@ scope TargetScope;
     |   rubex=identifierSuffixRubbush {retval.element = rubex.element;}
     |   {$TargetScope::target=null; } 'super' supsuf=superSuffix {retval.element = supsuf.element;}
     |   lit=literal {retval.element = lit.element;}
-    |   'new' creator
-    |   moreIdentifierSuffixRubbish
-    |   primitiveType ('[' ']')* '.' 'class'
+    |   'new' cr=creator {retval.element = cr.element;}
+    |   morerubex=moreIdentifierSuffixRubbish {retval.element = morerubex.element;}
     |   'void' '.' 'class' {retval.element = new ClassLiteral(new JavaTypeReference("void"));}
     |   tref=type '.' 'class' {retval.element = new ClassLiteral(tref.element);}
     ;
@@ -1278,15 +1277,14 @@ arrayAccessSuffixRubbish returns [Expression element]
 
 creator returns [Expression element]
     :   nonWildcardTypeArguments {throw new ChameleonProgrammerException("Generic constructors are not yet supported");} createdName classCreatorRest
-    |   t=createdName 
-           (
-             arrayCreatorRest 
-           | rest=classCreatorRest 
-             {retval.element = new ConstructorInvocation(t.element,$TargetScope::target);
-              ((ConstructorInvocation)retval.element).setBody(rest.element.body());
-              ((ConstructorInvocation)retval.element).addAllArguments(rest.element.arguments());
-             }
-           )
+    |    tt=createdName  ('[' ']')+ arrayInitializer
+    |    ttt=createdName  ('[' expression ']')+ ('[' ']')*
+    |   t=createdName rest=classCreatorRest 
+         {retval.element = new ConstructorInvocation(t.element,$TargetScope::target);
+          ((ConstructorInvocation)retval.element).setBody(rest.element.body());
+          ((ConstructorInvocation)retval.element).addAllArguments(rest.element.arguments());
+         }
+           
     ;
 
 createdName returns [JavaTypeReference element]
@@ -1303,12 +1301,6 @@ innerCreator returns [ConstructorInvocation element]
         }
     ;
 
-arrayCreatorRest returns [Expression element]
-    :   
-         ('[' ']')+ arrayInitializer
-        | '['  expression ']' ('[' expression ']')* ('[' ']')*
-       
-    ;
 
 classCreatorRest returns [ClassCreatorRest element]
     :   args=arguments {retval.element = new ClassCreatorRest(args.element);}(body=classBody {retval.element.setBody(body.element);})?

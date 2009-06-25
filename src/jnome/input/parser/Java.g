@@ -1220,22 +1220,22 @@ unaryExpression returns [Expression element]
     ;
 
 unaryExpressionNotPlusMinus returns [Expression element]
+scope TargetScope;
     :   '~' ex=unaryExpression {retval.element = new PrefixOperatorInvocation("~",ex.element);}
     |   '!' exx=unaryExpression {retval.element = new PrefixOperatorInvocation("!",exx.element);}
     |   castex=castExpression {check_null(castex.element); retval.element = castex.element;}
-    |   pr=primarySelector  {check_null(pr.element); retval.element = pr.element;}
+    |   prim=primary 
+           {check_null(prim.element); $TargetScope::target=prim.element; retval.element=prim.element;}
+        (sel=selector 
+           {$TargetScope::target=sel.element; retval.element = sel.element;}
+        )*
+        (
+           '++' {retval.element = new PostfixOperatorInvocation("++", retval.element);}
+         | '--' {retval.element = new PostfixOperatorInvocation("--", retval.element);}
+        )?
     ;
 
-primarySelector returns [Expression element]
-	: pr=primarySelectorAux {check_null(pr.element);retval.element = pr.element;}('++' {retval.element = new PostfixOperatorInvocation("++", retval.element);}
-          |'--' {retval.element = new PostfixOperatorInvocation("--", retval.element);})?
-	;
 
-primarySelectorAux returns [Expression element]
-scope TargetScope;
-	:	prim=primary {check_null(prim.element); $TargetScope::target=prim.element; retval.element=prim.element;}
-       (sel=selector {$TargetScope::target=sel.element; retval.element = sel.element;})*
-	;
 
 // NEEDS_TARGET
 selector returns [Expression element]

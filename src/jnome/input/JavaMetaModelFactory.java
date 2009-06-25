@@ -1,27 +1,3 @@
-/*
- * Copyright 2000-2004 the Jnome development team.
- *
- * @author Marko van Dooren
- * @author Nele Smeets
- * @author Kristof Mertens
- * @author Jan Dockx
- *
- * This file is part of Jnome.
- *
- * Jnome is free software; you can redistribute it and/or modify it under the
- * terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later
- * version.
- *
- * Jnome is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * Jnome; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
- * Suite 330, Boston, MA 02111-1307 USA
- */
 package jnome.input;
 
 import java.io.File;
@@ -42,7 +18,6 @@ import java.util.Set;
 import jnome.core.language.Java;
 import jnome.input.parser.JavaLexer;
 import jnome.input.parser.JavaParser;
-import jnome.input.parser.JavaWalker;
 
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CharStream;
@@ -74,7 +49,6 @@ import chameleon.linkage.ILinkageFactory;
 import chameleon.linkage.IParseErrorHandler;
 import chameleon.linkage.ISourceSupplier;
 import chameleon.support.member.simplename.SimpleNameMethodHeader;
-import chameleon.support.member.simplename.SimpleNameMethodSignature;
 import chameleon.support.member.simplename.operator.infix.InfixOperator;
 import chameleon.support.member.simplename.operator.postfix.PostfixOperator;
 import chameleon.support.member.simplename.operator.prefix.PrefixOperator;
@@ -114,15 +88,17 @@ public class JavaMetaModelFactory implements MetaModelFactory {
 
 //		final Namespace defaultPackage = new RootNamespace(null, "",
 //				new Java(), new JavaNamespacePartLocalContext());
+    	 if(fact ==null) {
+    		 throw new IllegalArgumentException("Linkage factory is null");
+    	 }
         Java lang = new Java();
         setToolExtensions(lang);
         final Namespace defaultPackage = lang.defaultNamespace();
-        final ILinkageFactory fact2 = fact;
         int count = 0;
         for (File file : files) {
             System.out.println(++count + " Parsing "+ file.getAbsolutePath());
             try {
-              addFileToGraph(fact2.createLinkage(file), file, lang);
+              addFileToGraph(fact.createLinkage(file), file, lang);
             } catch (RecognitionException e) {
               throw new ParseException(e);
             }
@@ -227,20 +203,20 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         }
     }
 
-    public JavaLexer getLexer(CharStream in) {
-        return new JavaLexer(in);
-    }
+//    public JavaLexer getLexer(CharStream in) {
+//        return new JavaLexer(in);
+//    }
 
-    public JavaWalker getParser(JavaLexer lexer) throws RecognitionException {
-    	CommonTokenStream tokens = new CommonTokenStream(lexer);
-    	JavaParser parser = new JavaParser(tokens);
-    	JavaParser.compilationUnit_return r = parser.compilationUnit();
-    	CommonTree tree = (CommonTree) r.getTree();
-    	CommonTreeNodeStream nodes = new CommonTreeNodeStream(tree);
-    	nodes.setTokenStream(tokens);
-        return new JavaWalker(nodes);
-    }
-
+//    public JavaWalker getParser(JavaLexer lexer) throws RecognitionException {
+//    	CommonTokenStream tokens = new CommonTokenStream(lexer);
+//    	JavaParser parser = new JavaParser(tokens);
+//    	JavaParser.compilationUnit_return r = parser.compilationUnit();
+//    	CommonTree tree = (CommonTree) r.getTree();
+//    	CommonTreeNodeStream nodes = new CommonTreeNodeStream(tree);
+//    	nodes.setTokenStream(tokens);
+//        return new JavaWalker(nodes);
+//    }
+//
     // Parse a method
 //    public void replaceMethod(ILinkage linkage, String methodCode, Method method) throws IOException, RecognitionException, TokenStreamException, MetamodelException {
 //
@@ -418,13 +394,12 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         // The constructor throws an FileNotFoundException if for some
         // reason the file can't be read.
         InputStream fileInputStream = new FileInputStream(file);
-        CharStream charStream = new ANTLRInputStream(fileInputStream);
         
         // This message is printed here because we don't want that this
         // message will be printed if the file doesn't exist
         // LOGGER.debug("Adding " + absolutePath + "...");
 
-        lexAndParse(linkage, charStream, fileName, language, linkage
+        lexAndParse(linkage, fileInputStream, fileName, language, linkage
                 .getParseErrorHandler());
     }
 
@@ -443,15 +418,26 @@ public class JavaMetaModelFactory implements MetaModelFactory {
     private void addStringToGraph(ILinkage linkage, String string, Java language) throws IOException, MalformedURLException, RecognitionException, MetamodelException {
         String name = "document";
         InputStream inputStream = new StringBufferInputStream(string);
-        CharStream charStream = new ANTLRInputStream(inputStream);
         
-        lexAndParse(linkage, charStream, name, language, linkage
+        lexAndParse(linkage, inputStream, name, language, linkage
                 .getParseErrorHandler());
         // System.out.println("metamodel made of " + name);
     }
 
-    private JavaWalker getParser(CharStream inputStream, String fileName, IParseErrorHandler handler) throws RecognitionException {
-        JavaLexer lexer = getLexer(inputStream);
+    private JavaParser getParser(InputStream inputStream, String fileName, IParseErrorHandler handler) throws RecognitionException, IOException {
+//        JavaLexer lexer = getLexer(inputStream);
+        
+//    		File file = new File(fileName);
+//    		System.out.println("getParser receives:" + file.getAbsolutePath());
+    	
+//        InputStream fileInputStream = new FileInputStream(file);
+        ANTLRInputStream input = new ANTLRInputStream(inputStream);
+        JavaLexer lexer = new JavaLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        JavaParser parser = new JavaParser(tokens);
+     
+        
+        
         // Tell the lexer the name of the file he is lexing
         // this name is used to generate more informative error messages
 
@@ -464,7 +450,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         // Create a parser
         // The parser reads from the selector
         //@FIXME restore use of error handler
-        JavaWalker parser = getParser(lexer);//, handler);
+//        JavaWalker parser = getParser(lexer);//, handler);
 
         // Tell the parser the filename for more informative error messages
         //parser.setFilename(fileName);
@@ -476,9 +462,9 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         return parser;
     }
 
-    private void lexAndParse(ILinkage linkage, CharStream inputStream, String fileName, Java language, IParseErrorHandler handler) throws IOException, MalformedURLException, RecognitionException, MetamodelException {
+    private void lexAndParse(ILinkage linkage, InputStream inputStream, String fileName, Java language, IParseErrorHandler handler) throws IOException, MalformedURLException, RecognitionException, MetamodelException {
 
-        JavaWalker parser = getParser(inputStream, fileName, handler);
+        JavaParser parser = getParser(inputStream, fileName, handler);
         parser.setLanguage(language);
 
         // Parse the compilationUnit
@@ -550,9 +536,35 @@ public class JavaMetaModelFactory implements MetaModelFactory {
      * @param parser
      * @throws RecognitionException 
      */
-    protected void parse(JavaWalker parser) throws RecognitionException  {
+    protected void parse(JavaParser parser) throws RecognitionException  {
         parser.compilationUnit();
     }
+    
+    static class DummyLinkageFactory implements ILinkageFactory{
+
+    	public ILinkage createLinkage(File file) {
+    		return new ILinkage(){
+
+    			public IParseErrorHandler getParseErrorHandler() {
+    				return null;
+    			}
+
+    			public String getSource() {
+    				return null;
+    			}
+
+    			public void decoratePosition(int offset, int length, String dectype, Element el) {
+    			}
+
+    			public int getLineOffset(int i) {
+    				return 0;
+    			}
+
+    			public void addCompilationUnit(CompilationUnit cu) {
+    				
+    			}};
+    	}}
+
 
     public static void main(String[] args) {
         try {
@@ -561,7 +573,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
             fileSet.include(new PatternPredicate(new File(args[0]),
                     new FileNamePattern(args[1])));
             Set files = fileSet.getFiles();
-            new JavaMetaModelFactory().getMetaModel(null, files);
+            new JavaMetaModelFactory().getMetaModel(new DummyLinkageFactory(), files);
             long stop = Calendar.getInstance().getTimeInMillis();
             System.out.println("DONE !!!");
             System.out.println("Acquiring took " + (stop - start) + "ms.");

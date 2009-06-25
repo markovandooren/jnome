@@ -257,6 +257,7 @@ import chameleon.support.expression.ConditionalOrExpression;
 import chameleon.support.expression.InstanceofExpression;
 import chameleon.support.expression.ThisLiteral;
 import chameleon.support.expression.FilledArrayIndex;
+import chameleon.support.expression.EmptyArrayIndex;
 import chameleon.support.expression.ArrayIndex;
 import chameleon.support.expression.ClassCastExpression;
 
@@ -318,6 +319,7 @@ import chameleon.support.variable.VariableDeclarator;
 import jnome.core.expression.ArrayInitializer;
 import jnome.core.expression.ClassLiteral;
 import jnome.core.expression.ArrayAccessExpression;
+import jnome.core.expression.ArrayCreationExpression;
 import jnome.core.expression.ConstructorInvocation;
 
 import jnome.core.language.Java;
@@ -349,6 +351,18 @@ package jnome.input.parser;
 }
 
 @parser::members {
+
+  public void check_null(Object o) {
+    if(o == null) {
+      throw new RuntimeException("Object returned by parsing rule is null.");
+    }
+  }
+  
+  public void check_stack(Object s) {
+   if(s == null) {
+     throw new RuntimeException("The stack element is null.");
+   }
+  }
 
   public static class ClassCreatorRest {
     public ClassCreatorRest(List<ActualArgument> args) {
@@ -389,7 +403,7 @@ package jnome.input.parser;
        }
   }
   
-  Language lang;
+  Language lang = new Java();
   
   public Language language() {
     return lang;
@@ -792,8 +806,8 @@ formalParameterDecls returns [List<FormalParameter> element]
     :   mods=variableModifiers t=type id=variableDeclaratorId 
         (',' decls=formalParameterDecls {retval.element=decls.element; })?
         {if(retval.element == null) {retval.element=new ArrayList<FormalParameter>();}
-         FormalParameter param = new FormalParameter(new SimpleNameSignature(idd.element.name()),tt.element.toArray(idd.element.dimension()));
-         param.addAllModifiers(modss.element);
+         FormalParameter param = new FormalParameter(new SimpleNameSignature(id.element.name()),t.element.toArray(id.element.dimension()));
+         param.addAllModifiers(mods.element);
          retval.element.add(param);}
     |   modss=variableModifiers tt=type '...' idd=variableDeclaratorId 
         {retval.element = new ArrayList<FormalParameter>(); 
@@ -949,7 +963,7 @@ variableModifiers returns [List<Modifier> element]
 statement returns [Statement element]
     : bl=block {retval.element = bl.element;}
     |   ASSERT asexpr=expression {retval.element=new AssertStatement(asexpr.element);}(':' asexprx=expression {((AssertStatement)retval.element).setMessageExpression(asexprx.element);})? ';'
-    |   'if' ifexpr=parExpression ifif=statement (options {k=1;}:'else' ifelse=statement)? {retval.element=new IfThenElseStatement(ifexpr.element, ifif.element,ifelse.element);}
+    |   'if' ifexpr=parExpression ifif=statement (options {k=1;}:'else' ifelse=statement)? {retval.element=new IfThenElseStatement(ifexpr.element, ifif.element, (ifelse == null ? null : ifelse.element));}
     |   'for' '(' forc=forControl ')' forstat=statement {retval.element = new ForStatement(forc.element,forstat.element);}
     |   'while' wexs=parExpression wstat=statement {retval.element = new WhileStatement(wexs.element, wstat.element);}
     |   'do' dostat=statement 'while' doex=parExpression ';' {retval.element= new DoStatement(doex.element, dostat.element);}
@@ -1026,7 +1040,10 @@ parExpression returns [Expression element]
     ;
     
 expressionList returns [List<Expression> element]
-    :   {retval.element = new ArrayList<Expression>();} e=expression {retval.element.add(e.element);}(',' ex=expression {retval.element.add(ex.element);})*
+    :   {retval.element = new ArrayList<Expression>();} e=expression 
+        {if(e.element == null) {System.out.println($e.text);throw new RuntimeException("parser error");}
+         retval.element.add(e.element);}
+         (',' ex=expression {retval.element.add(ex.element);})*
     ;
 
 statementExpression returns [Expression element]
@@ -1129,11 +1146,11 @@ equalityExpression returns [Expression element]
     ;
 
 instanceOfExpression returns [Expression element]
-    :   ex=relationalExpression {retval.element = ex.element;} ('instanceof' tref=type {retval.element = new InstanceofExpression(ex.element, tref.element);})?
+    :   ex=relationalExpression {if(ex.element == null) {throw new Error("retval is null");} retval.element = ex.element;} ('instanceof' tref=type {retval.element = new InstanceofExpression(ex.element, tref.element);})?
     ;
 
 relationalExpression returns [Expression element]
-    :   ex=shiftExpression {retval.element = ex.element;} ( op=relationalOp exx=shiftExpression 
+    :   ex=shiftExpression {if(ex.element == null) {throw new Error("retval is null");}retval.element = ex.element;} ( op=relationalOp exx=shiftExpression 
     {InfixOperatorInvocation tmp = new InfixOperatorInvocation($op.text, exx.element);
      tmp.setTarget(retval.element);
      retval.element = tmp;
@@ -1153,7 +1170,7 @@ relationalOp
     ;
 
 shiftExpression returns [Expression element]
-    :   ex=additiveExpression {retval.element = ex.element;} ( op=shiftOp exx=additiveExpression 
+    :   ex=additiveExpression {check_null(ex.element); retval.element = ex.element;} ( op=shiftOp exx=additiveExpression 
     {InfixOperatorInvocation tmp = new InfixOperatorInvocation($op.text, exx.element);
      tmp.setTarget(retval.element);
      retval.element = tmp;
@@ -1178,7 +1195,7 @@ shiftOp
 
 additiveExpression returns [Expression element]
 @init{String op = null;}
-    :   ex=multiplicativeExpression ( ('+' {op="+";} | '-' {op="-";}) exx=multiplicativeExpression 
+    :   ex=multiplicativeExpression {check_null(ex.element); retval.element = ex.element;} ( ('+' {op="+";} | '-' {op="-";}) exx=multiplicativeExpression 
     {InfixOperatorInvocation tmp = new InfixOperatorInvocation(op, exx.element);
      tmp.setTarget(retval.element);
      retval.element = tmp;
@@ -1187,7 +1204,7 @@ additiveExpression returns [Expression element]
 
 multiplicativeExpression returns [Expression element]
 @init{String op = null;}
-    :   ex=unaryExpression ( ( '*' {op="*";} | '/' {op="/";} | '%' {op="\%";}) exx=unaryExpression 
+    :   ex=unaryExpression {check_null(ex.element); retval.element = ex.element;} ( ( '*' {op="*";} | '/' {op="/";} | '%' {op="\%";}) exx=unaryExpression 
     {InfixOperatorInvocation tmp = new InfixOperatorInvocation(op, exx.element);
      tmp.setTarget(retval.element);
      retval.element = tmp;
@@ -1199,22 +1216,42 @@ unaryExpression returns [Expression element]
     |   '-' exx=unaryExpression {retval.element = new PrefixOperatorInvocation("-",exx.element);}
     |   '++' exxx=unaryExpression {retval.element = new PrefixOperatorInvocation("++",exxx.element);}
     |   '--' exxxx=unaryExpression {retval.element = new PrefixOperatorInvocation("--",exxxx.element);}
-    |   eks=unaryExpressionNotPlusMinus {retval.element = eks.element;}
+    |   eks=unaryExpressionNotPlusMinus {check_null(eks.element); retval.element = eks.element;}
     ;
 
 unaryExpressionNotPlusMinus returns [Expression element]
-scope TargetScope;
     :   '~' ex=unaryExpression {retval.element = new PrefixOperatorInvocation("~",ex.element);}
     |   '!' exx=unaryExpression {retval.element = new PrefixOperatorInvocation("!",exx.element);}
-    |   castex=castExpression {retval.element = castex.element;}
-    |   prim=primary {$TargetScope::target=prim.element; retval.element=prim.element;} 
-       (sel=selector 
-           {$TargetScope::target=sel.element;
-            retval.element = sel.element;
-           }
-       )* ('++' {retval.element = new PostfixOperatorInvocation("++", retval.element);}
-          |'--' {retval.element = new PostfixOperatorInvocation("--", retval.element);})?
+    |   castex=castExpression {check_null(castex.element); retval.element = castex.element;}
+    |   pr=primarySelector  {check_null(pr.element); retval.element = pr.element;}
     ;
+
+primarySelector returns [Expression element]
+	: pr=primarySelectorAux {check_null(pr.element);retval.element = pr.element;}('++' {retval.element = new PostfixOperatorInvocation("++", retval.element);}
+          |'--' {retval.element = new PostfixOperatorInvocation("--", retval.element);})?
+	;
+
+primarySelectorAux returns [Expression element]
+scope TargetScope;
+	:	prim=primary {check_null(prim.element); $TargetScope::target=prim.element; retval.element=prim.element;}
+       (sel=selector {$TargetScope::target=sel.element; retval.element = sel.element;})*
+	;
+
+// NEEDS_TARGET
+selector returns [Expression element]
+	:	
+	'.' name=Identifier (args=arguments 
+	        {retval.element = new RegularMethodInvocation($name.text, $TargetScope::target);
+	         ((RegularMethodInvocation)retval.element).addAllArguments(args.element);
+	        })?
+    |   '.' 'this' {retval.element = new ThisLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));}
+    |   '.' 'super' supsuf=superSuffix {retval.element = supsuf.element;}
+    |   '.' 'new' in=innerCreator {retval.element = in.element;}
+    |   '[' arrex=expression ']' 
+          {retval.element = new ArrayAccessExpression((Expression)$TargetScope::target);
+           ((ArrayAccessExpression)retval.element).addIndex(new FilledArrayIndex(arrex.element));
+          }       
+	;
 
 castExpression returns [Expression element]
     :  '(' tref=primitiveType ')' unex=unaryExpression {retval.element = new ClassCastExpression(tref.element,unex.element);}
@@ -1236,10 +1273,12 @@ scope TargetScope;
 moreIdentifierSuffixRubbish returns [Expression element]
 scope TargetScope;
 	:	id=Identifier {$TargetScope::target = new NamedTarget($id.text);} ('.' idx=Identifier {$TargetScope::target = new NamedTarget($idx.text,$TargetScope::target);})* 
+	{retval.element = new VariableReference(new NamedTarget($id.text,$TargetScope::target));}
 (   //    ('[' ']')+ '.' 'class'
     //|   
         arr=arrayAccessSuffixRubbish {retval.element = arr.element;}
     |   arg=argumentsSuffixRubbish {retval.element = arg.element;}
+    |   '.' 'class' {retval.element = new ClassLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));}
     |   '.' gen=explicitGenericInvocation {retval.element = gen.element;}
     |   '.' 'this' {retval.element = new ThisLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));}
     |   '.' 'super' supsuf=superSuffix {retval.element = supsuf.element;}
@@ -1249,16 +1288,18 @@ scope TargetScope;
 identifierSuffixRubbush returns [Expression element]
 scope TargetScope;
 	:	'this' {$TargetScope::target = new ThisLiteral();}('.' id=Identifier {$TargetScope::target = new NamedTarget($id.text,$TargetScope::target);})* 
-	{retval.element = new VariableReference((NamedTarget)$TargetScope::target);}
+	{if($TargetScope::target instanceof ThisLiteral) {retval.element = (ThisLiteral)$TargetScope::target;} else {retval.element = new VariableReference((NamedTarget)$TargetScope::target);}}
    (
         arr=arrayAccessSuffixRubbish {retval.element = arr.element;}
     |   arg=argumentsSuffixRubbish {retval.element = arg.element;}
+    |   '.' 'class' {retval.element = new ClassLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));}
     |   '.' gen=explicitGenericInvocation {retval.element = gen.element;}
     |   '.' 'super' supsuf=superSuffix {retval.element = supsuf.element;}
     |   '.' 'new' in=innerCreator {retval.element = in.element;}
    )?
 	;
 
+// NEEDS_TARGET
 argumentsSuffixRubbish returns [RegularMethodInvocation element]
 // the last part of target is the method name (what a hopeless grammar)
 	:	args=arguments 
@@ -1269,16 +1310,20 @@ argumentsSuffixRubbish returns [RegularMethodInvocation element]
 	        }
 	;
 
+// NEEDS_TARGET
 arrayAccessSuffixRubbish returns [Expression element]
 	:	{retval.element = new ArrayAccessExpression(new VariableReference((NamedTarget)$TargetScope::target));} ('[' arrex=expression ']' {((ArrayAccessExpression)retval.element).addIndex(new FilledArrayIndex(arrex.element));} )+ // can also be matched by selector, but do here
 
 	;
 
-
+// NEEDS_TARGET
 creator returns [Expression element]
     :   nonWildcardTypeArguments {throw new ChameleonProgrammerException("Generic constructors are not yet supported");} createdName classCreatorRest
-    |    tt=createdName  ('[' ']')+ arrayInitializer
-    |    ttt=createdName  ('[' expression ']')+ ('[' ']')*
+    |    tt=createdName  ('[' ']')+ init=arrayInitializer {retval.element = new ArrayCreationExpression(tt.element);
+         ((ArrayCreationExpression)retval.element).setInitializer(init.element);}
+    |    ttt=createdName  {retval.element = new ArrayCreationExpression(ttt.element);} 
+          ('[' exx=expression ']' {((ArrayCreationExpression)retval.element).addDimensionInitializer(new FilledArrayIndex(exx.element));})+ 
+            ('[' ']' {((ArrayCreationExpression)retval.element).addDimensionInitializer(new EmptyArrayIndex(1));})*
     |   t=createdName rest=classCreatorRest 
          {retval.element = new ConstructorInvocation(t.element,$TargetScope::target);
           ((ConstructorInvocation)retval.element).setBody(rest.element.body());
@@ -1291,7 +1336,8 @@ createdName returns [JavaTypeReference element]
     :   cd=classOrInterfaceType {retval.element = cd.element;}
     |   prim=primitiveType {retval.element = prim.element;}
     ;
-    
+
+// NEEDS_TARGET
 innerCreator returns [ConstructorInvocation element]
     :   (nonWildcardTypeArguments {throw new ChameleonProgrammerException("Generic constructors are not yet supported");})? 
         name=Identifier rest=classCreatorRest 
@@ -1314,15 +1360,7 @@ nonWildcardTypeArguments returns [List<TypeReference> element]
     :   '<' list=typeList {retval.element = list.element;}'>'
     ;
     
-selector returns [Expression element]
-scope TargetScope;
-    :   '.' Identifier arguments?
-    |   '.' 'this'
-    |   '.' 'super' supsuf=superSuffix {retval.element = supsuf.element;}
-    |   '.' 'new' in=innerCreator {retval.element = in.element;}
-    |   '[' expression ']'
-    ;
-    
+// NEEDS_TARGET
 superSuffix returns [Expression element]
     :   //arguments
         //|   
@@ -1335,7 +1373,8 @@ superSuffix returns [Expression element]
     ;
 
 arguments returns [List<ActualArgument> element]
-    :   '(' expressionList? ')'
+@init{retval.element = new ArrayList<ActualArgument>();}
+    :   '(' (list=expressionList { for(Expression ex: list.element) {retval.element.add(new ActualArgument(ex));}} )? ')'
     ;
 
 // LEXER

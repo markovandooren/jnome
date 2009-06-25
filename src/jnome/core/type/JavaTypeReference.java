@@ -33,7 +33,7 @@ public class JavaTypeReference extends TypeReference {
    * @param target
    */
   public JavaTypeReference(NamedTarget target) {
-  	super(new JavaTypeReference((NamedTarget)target.getTarget()),target.getName());
+  	super(target.getTarget() == null ? null : new JavaTypeReference((NamedTarget)target.getTarget()),target.getName());
   }
   
   public JavaTypeReference(String name, int arrayDimension) {

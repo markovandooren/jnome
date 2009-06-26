@@ -941,9 +941,10 @@ block returns [Block element]
     ;
     
 blockStatement returns [Statement element]
+@after{assert(retval.element != null);}
     :   local=localVariableDeclarationStatement {retval.element = local.element;}
     |   cd=classOrInterfaceDeclaration {retval.element = new LocalClassStatement(cd.element);}
-    |   stat=statement {retval.element = stat.element;}
+    |   stat=statement {check_null(stat.element); retval.element = stat.element;}
     ;
     
 localVariableDeclarationStatement returns [Statement element]
@@ -961,6 +962,7 @@ variableModifiers returns [List<Modifier> element]
     ;
 
 statement returns [Statement element]
+@after{check_null(retval.element);}
     : bl=block {retval.element = bl.element;}
     |   ASSERT asexpr=expression {retval.element=new AssertStatement(asexpr.element);}(':' asexprx=expression {((AssertStatement)retval.element).setMessageExpression(asexprx.element);})? ';'
     |   'if' ifexpr=parExpression ifif=statement (options {k=1;}:'else' ifelse=statement)? {retval.element=new IfThenElseStatement(ifexpr.element, ifif.element, (ifelse == null ? null : ifelse.element));}
@@ -984,19 +986,23 @@ statement returns [Statement element]
     ;
     
 catches returns [List<CatchClause> element]
+@after{assert(retval.element != null);}
     :   {retval.element = new ArrayList<CatchClause>();} (ct=catchClause {retval.element.add(ct.element);})+
     ;
     
 catchClause returns [CatchClause element]
+@after{assert(retval.element != null);}
     :   'catch' '(' par=formalParameter ')' bl=block {retval.element = new CatchClause(par.element, bl.element);}
     ;
 
 formalParameter returns [FormalParameter element]
+@after{assert(retval.element != null);}
     :   mods=variableModifiers tref=type name=variableDeclaratorId 
         {tref.element.setArrayDimension(name.element.dimension()); retval.element = new FormalParameter(new SimpleNameSignature(name.element.name()), tref.element);}
     ;
         
 switchBlockStatementGroups returns [List<SwitchCase> element]
+@after{assert(retval.element != null);}
     :   {retval.element = new ArrayList<SwitchCase>();}(cs=switchCase {retval.element.add(cs.element);})*
     ;
     
@@ -1005,10 +1011,12 @@ switchBlockStatementGroups returns [List<SwitchCase> element]
    appropriate AST, one in which each group, except possibly the last one, has
    labels and statements. */
 switchCase returns [SwitchCase element]
+@after{assert(retval.element != null);}
     :   label=switchLabel {retval.element = new SwitchCase(label.element);} blockStatement*
     ;
     
 switchLabel returns [SwitchLabel element]
+@after{assert(retval.element != null);}
     :   'case' csexpr=constantExpression ':' {retval.element = new CaseLabel(csexpr.element);}
     |   'case' enumname=enumConstantName ':' {retval.element = new EnumLabel(enumname.element);}
     |   'default' ':'{retval.element = new DefaultLabel();}
@@ -1016,16 +1024,19 @@ switchLabel returns [SwitchLabel element]
     
 forControl returns [ForControl element]
 options {k=3;} // be efficient for common case: for (ID ID : ID) ...
+@after{assert(retval.element != null);}
     :   enh=enhancedForControl {retval.element=enh.element;}
-    |   in=forInit? ';' e=expression? ';' u=forUpdate? {retval.element = new SimpleForControl(in.element,e.element,u.element);}
+    |   in=forInit? ';' e=expression? ';' u=forUpdate? {retval.element = new SimpleForControl($in.element,$e.element,$u.element);}
     ;
 
 forInit returns [ForInit element]
+@after{assert(retval.element != null);}
     :   local=localVariableDeclaration {retval.element=local.element;}
     |   el=expressionList {retval.element = new StatementExprList(); for(Expression expr: el.element){((StatementExprList)retval.element).addStatement(new StatementExpression(expr));};}
     ;
     
 enhancedForControl returns [ForControl element]
+@after{assert(retval.element != null);}
     :   local=localVariableDeclaration ':' ex=expression {retval.element = new EnhancedForControl(local.element, ex.element);}
     ;
 
@@ -1225,9 +1236,9 @@ scope TargetScope;
     |   '!' exx=unaryExpression {retval.element = new PrefixOperatorInvocation("!",exx.element);}
     |   castex=castExpression {check_null(castex.element); retval.element = castex.element;}
     |   prim=primary 
-           {check_null(prim.element); $TargetScope::target=prim.element; retval.element=prim.element;}
+           {check_null($prim.element);  $TargetScope::target=$prim.element; retval.element=$prim.element;}
         (sel=selector 
-           {$TargetScope::target=sel.element; retval.element = sel.element;}
+           {check_null(sel.element); $TargetScope::target=$sel.element; retval.element = $sel.element;}
         )*
         (
            '++' {retval.element = new PostfixOperatorInvocation("++", retval.element);}
@@ -1240,13 +1251,13 @@ scope TargetScope;
 // NEEDS_TARGET
 selector returns [Expression element]
 	:	
-	'.' name=Identifier (args=arguments 
+	'.' name=Identifier {retval.element = new VariableReference(new NamedTarget($name.text,$TargetScope::target));} (args=arguments 
 	        {retval.element = new RegularMethodInvocation($name.text, $TargetScope::target);
 	         ((RegularMethodInvocation)retval.element).addAllArguments(args.element);
 	        })?
     |   '.' 'this' {retval.element = new ThisLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));}
-    |   '.' 'super' supsuf=superSuffix {retval.element = supsuf.element;}
-    |   '.' 'new' in=innerCreator {retval.element = in.element;}
+    |   '.' 'super' supsuf=superSuffix {check_null(supsuf.element); retval.element = supsuf.element;}
+    |   '.' 'new' in=innerCreator {check_null(in.element); retval.element = in.element;}
     |   '[' arrex=expression ']' 
           {retval.element = new ArrayAccessExpression((Expression)$TargetScope::target);
            ((ArrayAccessExpression)retval.element).addIndex(new FilledArrayIndex(arrex.element));

@@ -105,7 +105,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         }
 
         addPrimitives(defaultPackage);
-        addInfixOperators(defaultPackage);
+      //  addInfixOperators(defaultPackage);
 
         return defaultPackage;
     }

@@ -1,4 +1,4 @@
-package org.jnome.test;
+package jnome.test;
 
 import java.io.File;
 

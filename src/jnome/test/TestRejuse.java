@@ -22,7 +22,7 @@
  * Jnome; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
  * Suite 330, Boston, MA 02111-1307 USA
  */
-package org.jnome.test;
+package jnome.test;
 
 import java.util.Set;
 
@@ -31,7 +31,7 @@ import junit.framework.TestSuite;
 import chameleon.core.MetamodelException;
 
 /**
- * @author marko
+ * @author Marko van Dooren
  */
 public class TestRejuse extends ExpressionTest {
 

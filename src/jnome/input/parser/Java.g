@@ -411,6 +411,7 @@ package jnome.input.parser;
   
   public void setLanguage(Java language) {
     lang = language;
+    root = lang.defaultNamespace();
   }
   
   RootNamespace root = lang.defaultNamespace();
@@ -424,12 +425,16 @@ package jnome.input.parser;
     if(imp instanceof TypeImport){cu.getDefaultNamespacePart().addImport((TypeImport)imp);}
     else if(imp instanceof DemandImport){cu.getDefaultNamespacePart().addImport((DemandImport)imp);}
   }
-  public void processType(CompilationUnit cu, Type type){
-    cu.getDefaultNamespacePart().addType(type);
+  public void processType(NamespacePart np, Type type){
+    if(np == null) {throw new IllegalArgumentException("namespace part given to processType is null.");}
+    if(type == null) {throw new IllegalArgumentException("type given to processType is null.");}
+    np.addType(type);
   }
   public void processPackageDeclaration(CompilationUnit cu, NamespacePart np){
     if(np!=null){
       cu.getDefaultNamespacePart().addNamespacePart(np);
+    } else {
+      throw new IllegalArgumentException("trying to add namespace part that is null.");
     }
   }
   
@@ -443,12 +448,15 @@ package jnome.input.parser;
 /* The annotations are separated out to make parsing faster, but must be associated with
    a packageDeclaration or a typeDeclaration (and not an empty one). */
 compilationUnit returns [CompilationUnit element] 
-@init{ retval.element = new CompilationUnit(new NamespacePart(language().defaultNamespace()));}
+@init{ 
+NamespacePart npp = new NamespacePart(language().defaultNamespace());
+retval.element = new CompilationUnit(npp);
+}
     :    annotations
-        (   np=packageDeclaration{processPackageDeclaration(retval.element,np.element);} (imp=importDeclaration{processImport(retval.element,imp.element);})* (typech=typeDeclaration{processType(retval.element,typech.element);})*
-        |   cd=classOrInterfaceDeclaration{processType(retval.element,cd.element);} (typech=typeDeclaration{processType(retval.element,typech.element);})*
+        (   np=packageDeclaration{processPackageDeclaration(retval.element,np.element); npp = np.element;} (imp=importDeclaration{processImport(retval.element,imp.element);})* (typech=typeDeclaration{processType(npp,typech.element);})*
+        |   cd=classOrInterfaceDeclaration{processType(npp,cd.element);} (typech=typeDeclaration{processType(npp,typech.element);})*
         )
-    |   (np=packageDeclaration{processPackageDeclaration(retval.element,np.element);})? (imp=importDeclaration{processImport(retval.element,imp.element);})* (typech=typeDeclaration{processType(retval.element,typech.element);})*
+    |   (np=packageDeclaration{processPackageDeclaration(retval.element,np.element); npp=np.element;})? (imp=importDeclaration{processImport(retval.element,imp.element);})* (typech=typeDeclaration{processType(npp,typech.element);})*
     ;
 
 packageDeclaration returns [NamespacePart element]
@@ -457,7 +465,7 @@ packageDeclaration returns [NamespacePart element]
            retval.element = new NamespacePart(root.getOrCreateNamespace($qn.text));
          }
          catch(MetamodelException exc) {
-           //this should not happen, something is wrong with the tree parser
+           //this should not happen, something is wrong with the parser
            throw new ChameleonProgrammerException(exc);
          }
         }

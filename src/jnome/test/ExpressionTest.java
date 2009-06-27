@@ -22,18 +22,15 @@
  * Jnome; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
  * Suite 330, Boston, MA 02111-1307 USA
  */
-package org.jnome.test;
+package jnome.test;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.jnome.output.JavaCodeWriter;
-
 import chameleon.core.MetamodelException;
 import chameleon.core.element.Element;
 import chameleon.core.expression.Expression;
-import chameleon.core.method.Method;
 import chameleon.core.type.Type;
 
 /**
@@ -55,7 +52,7 @@ public abstract Set getTestTypes() throws MetamodelException;
 
   
   public void myTestDescendants() {
-    List descendants = _mm.getDescendants();
+    List descendants = _mm.descendants();
     Iterator iter = descendants.iterator();
     while(iter.hasNext()) {
       Object o = iter.next();
@@ -90,12 +87,10 @@ public abstract Set getTestTypes() throws MetamodelException;
     Expression expr = null;
     Object o = null;
     try {
-      Set exprs = type.getAllTopExpressions();
+      List<Expression> exprs = type.descendants(Expression.class);
       //System.out.println(_count + " Testing: "+type.getFullyQualifiedName() +" : " + exprs.toString() + " expressions.");
-      Iterator inner = exprs.iterator();
-      while(inner.hasNext()) {
-        o = inner.next();
-        expr = (Expression)o;
+      for(Expression expression : exprs) {
+        expr = expression;
 //        System.out.println(_count + " Testing: "+type.getFullyQualifiedName() + " : " + new JavaCodeWriter().toCode(expr));
 //        System.out.println("Ancestor method: "+new JavaCodeWriter().toCode(expr.getNearestAncestor(Method.class)));
         assertTrue(expr.getType() != null);

@@ -28,7 +28,7 @@
  * Jnome; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
  * Suite 330, Boston, MA 02111-1307 USA
  */
-package org.jnome.test;
+package jnome.test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -37,8 +37,9 @@ import java.util.Set;
 
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
+
+import org.antlr.runtime.RecognitionException;
+
 import chameleon.core.MetamodelException;
 
 /**
@@ -59,13 +60,7 @@ public class TestJRegex extends ExpressionTest {
 	 * @throws Exception
 	 */
 	public TestJRegex(String arg)
-		throws
-			TokenStreamException,
-			RecognitionException,
-			MalformedURLException,
-			FileNotFoundException,
-			IOException,
-			Exception {
+		throws Exception {
 		super(arg);
 	}
 
@@ -79,6 +74,8 @@ public class TestJRegex extends ExpressionTest {
 	 */
 
 	public Set getTestTypes() throws MetamodelException {
+		assertNotNull(_mm);
+		assertNotNull(_mm.getSubNamespace("jregex"));
     return _mm.getSubNamespace("jregex").getAllTypes();
 	}
 

@@ -28,20 +28,19 @@
  * Jnome; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
  * Suite 330, Boston, MA 02111-1307 USA
  */
-package org.jnome.test;
+package jnome.test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.HashSet;
 import java.util.Set;
 
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
+
+import org.antlr.runtime.RecognitionException;
+
 import chameleon.core.MetamodelException;
-import chameleon.core.type.Type;
 
 /**
  * @author marko
@@ -61,13 +60,7 @@ public class TestJnome extends ExpressionTest {
 	 * @throws Exception
 	 */
 	public TestJnome(String arg)
-		throws
-			TokenStreamException,
-			RecognitionException,
-			MalformedURLException,
-			FileNotFoundException,
-			IOException,
-			Exception {
+		throws Exception {
 		super(arg);
 	}
 

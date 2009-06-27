@@ -1,10 +1,11 @@
-package org.jnome.test;
+package jnome.test;
 
-import org.jnome.output.JavaCodeWriter;
-
+import jnome.core.type.JavaTypeReference;
+import jnome.output.JavaCodeWriter;
 import chameleon.core.MetamodelException;
 import chameleon.core.element.Element;
 import chameleon.core.type.Type;
+import chameleon.core.type.TypeReference;
 
 /**
  * @author marko
@@ -30,8 +31,10 @@ public class TestOutput extends MetaModelTest {
   }
   
   public void testOut() throws MetamodelException {
-    Type type = _mm.findType("chameleon.core.type.Type");
-    System.out.println(new JavaCodeWriter(2).toCode((Element)type.getParent()));
+    TypeReference typeRef = new JavaTypeReference("chameleon.core.type.Type");
+    typeRef.setUniParent(_mm);
+    Type type = typeRef.getType();
+    System.out.println(new JavaCodeWriter(2).toCode(type.parent()));
   }
 
 }

@@ -105,7 +105,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         }
 
         addPrimitives(defaultPackage);
-      //  addInfixOperators(defaultPackage);
+        addInfixOperators(defaultPackage);
 
         return defaultPackage;
     }
@@ -199,7 +199,9 @@ public class JavaMetaModelFactory implements MetaModelFactory {
 
         }
         catch (MetamodelException e) {
-            throw new Error();
+        	// This should only happen if the Java system library was not parsed.
+        	e.printStackTrace();
+            throw new Error(e);
         }
     }
 
@@ -424,7 +426,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         // System.out.println("metamodel made of " + name);
     }
 
-    private JavaParser getParser(InputStream inputStream, String fileName, IParseErrorHandler handler) throws RecognitionException, IOException {
+    private JavaParser getParser(InputStream inputStream, String fileName, IParseErrorHandler handler, Java language) throws RecognitionException, IOException {
 //        JavaLexer lexer = getLexer(inputStream);
         
 //    		File file = new File(fileName);
@@ -435,7 +437,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         JavaLexer lexer = new JavaLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JavaParser parser = new JavaParser(tokens);
-     
+        parser.setLanguage(language);
         
         
         // Tell the lexer the name of the file he is lexing
@@ -464,7 +466,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
 
     private void lexAndParse(ILinkage linkage, InputStream inputStream, String fileName, Java language, IParseErrorHandler handler) throws IOException, MalformedURLException, RecognitionException, MetamodelException {
 
-        JavaParser parser = getParser(inputStream, fileName, handler);
+        JavaParser parser = getParser(inputStream, fileName, handler, language);
         parser.setLanguage(language);
 
         // Parse the compilationUnit

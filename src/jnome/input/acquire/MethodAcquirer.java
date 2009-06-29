@@ -43,7 +43,7 @@ import org.jnome.mm.modifier.Synchronized;
 import org.jnome.mm.type.JavaTypeReference;
 import org.rejuse.java.collections.Visitor;
 
-import chameleon.core.MetamodelException;
+import chameleon.core.LookupException;
 import chameleon.core.element.ElementImpl;
 import chameleon.core.method.Implementation;
 import chameleon.core.method.Method;

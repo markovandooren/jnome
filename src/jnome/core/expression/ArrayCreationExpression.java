@@ -33,7 +33,7 @@ import org.rejuse.association.OrderedReferenceSet;
 import org.rejuse.association.Reference;
 import org.rejuse.java.collections.Visitor;
 
-import chameleon.core.MetamodelException;
+import chameleon.core.context.LookupException;
 import chameleon.core.element.Element;
 import chameleon.core.expression.Expression;
 import chameleon.core.expression.ExpressionContainer;
@@ -114,11 +114,11 @@ public class ArrayCreationExpression extends Expression<ArrayCreationExpression>
     }
   }
 
-  public Type getType() throws MetamodelException {
+  public Type getType() throws LookupException {
     return getTypeReference().getType();
   }
 
-  public boolean superOf(InvocationTarget target) throws MetamodelException {
+  public boolean superOf(InvocationTarget target) throws LookupException {
     if(!(target instanceof ArrayCreationExpression)) {
       return false;
     }
@@ -168,13 +168,13 @@ public class ArrayCreationExpression extends Expression<ArrayCreationExpression>
     return result;
   }
 
-  public Set getDirectExceptions() throws MetamodelException {
+  public Set getDirectExceptions() throws LookupException {
   	TypeReference ref = new TypeReference("java.lang.NegativeArraySizeException");
   	ref.setUniParent(getNamespace().rootNamespace());
     return Util.createNonNullSet(ref.getType());
   }
 
-//  public AccessibilityDomain getAccessibilityDomain() throws MetamodelException {
+//  public AccessibilityDomain getAccessibilityDomain() throws LookupException {
 //    AccessibilityDomain result = getTypeReference().getType().getTypeAccessibilityDomain();
 //    Iterator iter = getDimensionInitializers().iterator();
 //    while(iter.hasNext()) {

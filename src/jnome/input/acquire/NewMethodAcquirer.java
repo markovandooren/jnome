@@ -4,7 +4,7 @@ package org.jnome.input.acquire;
 import org.jnome.input.parser.ExtendedAST;
 import org.jnome.input.parser.JavaTokenTypes;
 
-import chameleon.core.MetamodelException;
+import chameleon.core.LookupException;
 import chameleon.core.method.Method;
 import chameleon.core.type.Type;
 import chameleon.linkage.ILinkage;
@@ -18,7 +18,7 @@ public class NewMethodAcquirer extends Acquirer {
 	  super(factory, linkage);
 	}	
 	
-	public void acquireNewMethod(Type type, ExtendedAST current, Method oldMethod)throws  MetamodelException{ 
+	public void acquireNewMethod(Type type, ExtendedAST current, Method oldMethod)throws  LookupException{ 
 		try {
 			//System.out.println("Acquiring "+current.getText());
 			Method newMethod = null;

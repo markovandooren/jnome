@@ -28,7 +28,7 @@ import java.util.Set;
 
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
-import chameleon.core.MetamodelException;
+import chameleon.core.context.LookupException;
 
 /**
  * @author Marko van Dooren
@@ -51,7 +51,7 @@ public class TestRejuse extends ExpressionTest {
   	
   }
   
-  public Set getTestTypes() throws MetamodelException {
+  public Set getTestTypes() throws LookupException {
     return _mm.getSubNamespace("org").getSubNamespace("jutil").getAllTypes();
   }
   

@@ -26,9 +26,8 @@ import org.rejuse.java.collections.Visitor;
 import org.rejuse.predicate.PrimitivePredicate;
 import org.rejuse.predicate.PrimitiveTotalPredicate;
 
-import chameleon.core.MetamodelException;
 import chameleon.core.compilationunit.CompilationUnit;
-import chameleon.core.element.ChameleonProgrammerException;
+import chameleon.core.context.LookupException;
 import chameleon.core.element.Element;
 import chameleon.core.expression.ActualArgument;
 import chameleon.core.expression.Expression;
@@ -95,7 +94,6 @@ import chameleon.support.statement.ForStatement;
 import chameleon.support.statement.IfThenElseStatement;
 import chameleon.support.statement.LabeledStatement;
 import chameleon.support.statement.LocalClassStatement;
-import chameleon.support.statement.LocalVariableDeclarationStatement;
 import chameleon.support.statement.ReturnStatement;
 import chameleon.support.statement.SimpleForControl;
 import chameleon.support.statement.StatementExprList;
@@ -120,7 +118,7 @@ import com.sun.org.apache.bcel.internal.classfile.JavaClass;
  */
 public class JavaCodeWriter extends Syntax {
   
-  public String toCode(Element element) throws MetamodelException {
+  public String toCode(Element element) throws LookupException {
     String result = null;
     if(isAnonymousClass(element)) {
       result = toCodeAnonymousClass((Type) element);
@@ -248,7 +246,7 @@ public class JavaCodeWriter extends Syntax {
   	return element instanceof ActualArgument;
   }
   
-  public String toCodeActualParameter(ActualArgument parameter) throws MetamodelException {
+  public String toCodeActualParameter(ActualArgument parameter) throws LookupException {
   	return toCode(parameter.getExpression());
   }
   
@@ -256,7 +254,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof NamespaceOrTypeReference;
   }
   
-  public String toCodeNamespaceOrTypeReference(NamespaceOrTypeReference typeReference) throws MetamodelException {
+  public String toCodeNamespaceOrTypeReference(NamespaceOrTypeReference typeReference) throws LookupException {
     String result = toCode(typeReference.getTarget());
     if(result.length() > 0) {
       result = result + ".";
@@ -281,7 +279,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof StaticInitializer;
   }
   
-  public String toCodeStaticInitializer(StaticInitializer init) throws MetamodelException {
+  public String toCodeStaticInitializer(StaticInitializer init) throws LookupException {
     return "static " + toCode(init.getBlock());
   }
   
@@ -335,7 +333,7 @@ public class JavaCodeWriter extends Syntax {
   	return element instanceof NamespacePart;
   }
   
-  public String toCodeNamespacePart(NamespacePart part) throws MetamodelException {
+  public String toCodeNamespacePart(NamespacePart part) throws LookupException {
     StringBuffer result = new StringBuffer();
     result.append("package "+part.getDeclaredNamespace().getFullyQualifiedName() +";\n\n");
     
@@ -365,7 +363,7 @@ public class JavaCodeWriter extends Syntax {
     return result.toString();
   }
   
-  public String toCodeCompilationUnit(CompilationUnit cu) throws MetamodelException {
+  public String toCodeCompilationUnit(CompilationUnit cu) throws LookupException {
     StringBuffer result = new StringBuffer();
   	for(NamespacePart part: cu.getNamespaceParts()) {
   		result.append(toCodeNamespacePart(part));
@@ -425,7 +423,7 @@ public class JavaCodeWriter extends Syntax {
     	
   }
   
-  public String toCodeClassBlock(Type type) throws MetamodelException {
+  public String toCodeClassBlock(Type type) throws LookupException {
     try {
       
     final StringBuffer result = new StringBuffer();
@@ -435,7 +433,7 @@ public class JavaCodeWriter extends Syntax {
     Set members = type.directlyDeclaredElements();
     // Members
     new RobustVisitor() {
-      public Object visit(Object element) throws MetamodelException {
+      public Object visit(Object element) throws LookupException {
         result.append(toCode((Element)element));
         result.append("\n\n");
         return null;
@@ -452,7 +450,7 @@ public class JavaCodeWriter extends Syntax {
     
     return result.toString();
     }
-    catch (MetamodelException e) {
+    catch (LookupException e) {
       throw e;
     }
     catch (Exception e) {
@@ -465,11 +463,11 @@ public class JavaCodeWriter extends Syntax {
     return (element instanceof Type) && (element.parent() instanceof ConstructorInvocation);
   }
   
-  public String toCodeAnonymousClass(Type type) throws MetamodelException {
+  public String toCodeAnonymousClass(Type type) throws LookupException {
     return toCodeClassBlock(type);
   }
   
-  public String toCodeClass(Type type) throws MetamodelException {
+  public String toCodeClass(Type type) throws LookupException {
     try {
     final StringBuffer result = startLine();
     
@@ -516,7 +514,7 @@ public class JavaCodeWriter extends Syntax {
     
     return result.toString();
     }
-    catch (MetamodelException e) {
+    catch (LookupException e) {
       throw e;
     }
     catch (Exception e) {
@@ -526,7 +524,7 @@ public class JavaCodeWriter extends Syntax {
     
   }
 
-  public String toCodeInterface(Type type) throws MetamodelException {
+  public String toCodeInterface(Type type) throws LookupException {
     try {
     final StringBuffer result = startLine();
     
@@ -544,7 +542,7 @@ public class JavaCodeWriter extends Syntax {
     result.append(type.getName());
     List<InheritanceRelation> superTypes = type.inheritanceRelations();
     new PrimitivePredicate<InheritanceRelation>() {
-      public boolean eval(InheritanceRelation rel) throws MetamodelException {
+      public boolean eval(InheritanceRelation rel) throws LookupException {
         return ! toCode(rel.superClassReference()).equals("java.lang.Object");
       }
     }.filter(superTypes);
@@ -564,7 +562,7 @@ public class JavaCodeWriter extends Syntax {
     
     return result.toString();
     }
-    catch (MetamodelException e) {
+    catch (LookupException e) {
       throw e;
     }
     catch (Exception e) {
@@ -574,7 +572,7 @@ public class JavaCodeWriter extends Syntax {
     
   }
 
-  public String toCodeMethod(Method method) throws MetamodelException {
+  public String toCodeMethod(Method method) throws LookupException {
    //XXX modifiers
 	    final StringBuffer result = startLine();
 	    //Modifiers
@@ -647,7 +645,7 @@ public class JavaCodeWriter extends Syntax {
 //    return result.toString();
 //  }
   
-  public String toCodeImplementation(Implementation impl) throws MetamodelException {
+  public String toCodeImplementation(Implementation impl) throws LookupException {
     if((impl == null) || (impl instanceof NativeImplementation)) {
       return ";";
     }
@@ -660,7 +658,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof Method;
   }
   
-  public String toCodeExceptionClause(ExceptionClause ec) throws MetamodelException {
+  public String toCodeExceptionClause(ExceptionClause ec) throws LookupException {
     final StringBuffer result = new StringBuffer();
     List decls = ec.getDeclarations();
     if(! decls.isEmpty()) {
@@ -676,7 +674,7 @@ public class JavaCodeWriter extends Syntax {
     return result.toString();
   }
   
-  public String toCodeExceptionDeclaration(ExceptionDeclaration ed) throws MetamodelException {
+  public String toCodeExceptionDeclaration(ExceptionDeclaration ed) throws LookupException {
     if(ed instanceof TypeExceptionDeclaration) {
       return toCode(((TypeExceptionDeclaration)ed).getTypeReference());
     }
@@ -689,11 +687,11 @@ public class JavaCodeWriter extends Syntax {
    * MEMBER VARIABLES *
    ********************/
   
-  public String toCodeMemberVariable(RegularMemberVariable var) throws MetamodelException {
+  public String toCodeMemberVariable(RegularMemberVariable var) throws LookupException {
     return startLine() + toCodeVariable(var);
   }
   
-  public String toCodeVariable(Variable var) throws MetamodelException {
+  public String toCodeVariable(Variable var) throws LookupException {
     final StringBuffer result = new StringBuffer();
     new Visitor() {
       public void visit(Object element) {
@@ -720,7 +718,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof StatementExpression;
   }
   
-  public String toCodeStatementExpression(StatementExpression stat) throws MetamodelException {
+  public String toCodeStatementExpression(StatementExpression stat) throws LookupException {
     return toCode(stat.getExpression())+";";
   }
   
@@ -744,7 +742,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof Block;
   }
   
-  public String toCodeBlock(Block block) throws MetamodelException {
+  public String toCodeBlock(Block block) throws LookupException {
     StringBuffer result = new StringBuffer();
     result.append("{\n");
     indent();
@@ -764,7 +762,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof IfThenElseStatement;
   }
   
-  public String toCodeIf(IfThenElseStatement stat) throws MetamodelException {
+  public String toCodeIf(IfThenElseStatement stat) throws LookupException {
     StringBuffer result = new StringBuffer();
     result.append("if(");
     result.append(toCode(stat.getExpression()));
@@ -783,7 +781,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof WhileStatement;
   }
   
-  public String toCodeWhile(WhileStatement element) throws MetamodelException {
+  public String toCodeWhile(WhileStatement element) throws LookupException {
     StringBuffer result = new StringBuffer();
     result.append("while (");
     result.append(toCode(element.condition()));
@@ -796,7 +794,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof TryStatement;
   }
   
-  public String toCodeTry(TryStatement statement) throws MetamodelException {
+  public String toCodeTry(TryStatement statement) throws LookupException {
     StringBuffer result = new StringBuffer();
     result.append("try ");
     result.append(toCode(statement.getStatement()));
@@ -812,11 +810,11 @@ public class JavaCodeWriter extends Syntax {
     return result.toString();
   }
   
-  public String toCodeCatchClause(CatchClause cc) throws MetamodelException {
+  public String toCodeCatchClause(CatchClause cc) throws LookupException {
     return "catch ("+toCodeVariable(cc.getExceptionParameter()) + ") " + toCode(cc.getStatement());
   }
   
-  public String toCodeFinally(FinallyClause cc) throws MetamodelException {
+  public String toCodeFinally(FinallyClause cc) throws LookupException {
     return "finally " + toCode(cc.getStatement());
   }
   
@@ -824,7 +822,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ThrowStatement;
   }
   
-  public String toCodeThrow(ThrowStatement ts) throws MetamodelException {
+  public String toCodeThrow(ThrowStatement ts) throws LookupException {
     return "throw "+toCode(ts.getExpression())+";";
   }
   
@@ -832,7 +830,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof SynchronizedStatement;
   }
   
-  public String toCodeSynchronized(SynchronizedStatement ts) throws MetamodelException {
+  public String toCodeSynchronized(SynchronizedStatement ts) throws LookupException {
     return "synchronized("+toCode(ts.getExpression())+") "+toCode(ts.getStatement());
   }
   
@@ -840,13 +838,13 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof SwitchStatement;
   }
   
-  public String toCodeSwitch(SwitchStatement st) throws MetamodelException {
+  public String toCodeSwitch(SwitchStatement st) throws LookupException {
     final StringBuffer result = new StringBuffer();
     result.append("switch(" + toCode(st.getExpression()) + ") {\n");
     indent();
     try {
       new RobustVisitor() {
-        public Object visit(Object o) throws MetamodelException {
+        public Object visit(Object o) throws LookupException {
           result.append(startLine());
           result.append(toCodeSwitchCase((SwitchCase)o));
           result.append("\n");
@@ -858,7 +856,7 @@ public class JavaCodeWriter extends Syntax {
         }
       }.applyTo(st.getSwitchCases());
     }
-    catch (MetamodelException e) {
+    catch (LookupException e) {
       throw e;
     }
     catch (Exception e) {
@@ -870,7 +868,7 @@ public class JavaCodeWriter extends Syntax {
     return result.toString();
   }
   
-  public String toCodeSwitchCase(SwitchCase sc) throws MetamodelException {
+  public String toCodeSwitchCase(SwitchCase sc) throws LookupException {
     final StringBuffer result = new StringBuffer();
     result.append(startLine());
     result.append(toCodeSwitchLabel(sc.getLabel()));
@@ -878,7 +876,7 @@ public class JavaCodeWriter extends Syntax {
     indent();
     try {
       new RobustVisitor() {
-        public Object visit(Object o) throws MetamodelException {
+        public Object visit(Object o) throws LookupException {
           result.append(toCode((Element)o));
           return null;
         }
@@ -888,7 +886,7 @@ public class JavaCodeWriter extends Syntax {
         }
       }.applyTo(sc.getStatements());
     }
-    catch (MetamodelException e) {
+    catch (LookupException e) {
       throw e;
     }
     catch (Exception e) {
@@ -898,7 +896,7 @@ public class JavaCodeWriter extends Syntax {
     return result.toString();
   }
   
-  public String toCodeSwitchLabel(SwitchLabel sl) throws MetamodelException {
+  public String toCodeSwitchLabel(SwitchLabel sl) throws LookupException {
     if(sl instanceof DefaultLabel) {
       return "default:";
     }
@@ -911,7 +909,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof StatementExprList;
   }
   
-  public String toCodeStatementExprList(StatementExprList sel) throws MetamodelException {
+  public String toCodeStatementExprList(StatementExprList sel) throws LookupException {
     StringBuffer result = new StringBuffer();
     Iterator iter = sel.getStatements().iterator();
     while(iter.hasNext()) {
@@ -927,7 +925,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ReturnStatement;
   }
   
-  public String toCodeReturn(ReturnStatement ts) throws MetamodelException {
+  public String toCodeReturn(ReturnStatement ts) throws LookupException {
     return "return "+toCode(ts.getExpression())+";";
   }
   
@@ -935,11 +933,11 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof LocalVariableDeclarator;
   }
 
-  public String toCodeLocalVar(LocalVariableDeclarator local) throws MetamodelException {
+  public String toCodeLocalVar(LocalVariableDeclarator local) throws LookupException {
     return toCodeLocalVarForInit(local) + ";";
   }
   
-  public String toCodeLocalVarForInit(LocalVariableDeclarator local) throws MetamodelException {
+  public String toCodeLocalVarForInit(LocalVariableDeclarator local) throws LookupException {
 //    Variable var = (Variable)local.getVariables().get(0);
     final StringBuffer result = new StringBuffer();
     List modifiers = local.modifiers();
@@ -956,7 +954,7 @@ public class JavaCodeWriter extends Syntax {
       new RobustVisitor<VariableDeclaration<LocalVariable>>() {
         private boolean first = true;
 
-        public Object visit(VariableDeclaration<LocalVariable> element) throws MetamodelException {
+        public Object visit(VariableDeclaration<LocalVariable> element) throws LookupException {
 //          LocalVariable variable = (LocalVariable)element;
           if (!first) {
             result.append(", ");
@@ -978,7 +976,7 @@ public class JavaCodeWriter extends Syntax {
         }
       }.applyTo(local.variableDeclarations());
     }
-    catch (MetamodelException e) {
+    catch (LookupException e) {
       throw e;
     }
     catch (Exception e) {
@@ -992,7 +990,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof LocalClassStatement;
   }
   
-  public String toCodeLocalClass(LocalClassStatement local) throws MetamodelException {
+  public String toCodeLocalClass(LocalClassStatement local) throws LookupException {
     return toCode(local.getType());
   }
   
@@ -1000,7 +998,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof LabeledStatement;
   }
   
-  public String toCodeLabeledStatement(LabeledStatement local) throws MetamodelException {
+  public String toCodeLabeledStatement(LabeledStatement local) throws LookupException {
     return local.getLabel() +": "+toCode(local.getStatement());
   }
   
@@ -1008,7 +1006,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ForStatement;
   }
   
-  public String toCodeFor(ForStatement statement) throws MetamodelException {
+  public String toCodeFor(ForStatement statement) throws LookupException {
     return "for "+toCode(statement.forControl()) + toCode(statement.getStatement());
   }
   
@@ -1016,7 +1014,7 @@ public class JavaCodeWriter extends Syntax {
   	return element instanceof SimpleForControl;
   }
   
-  public String toCodeSimpleForControl(SimpleForControl control) throws MetamodelException {
+  public String toCodeSimpleForControl(SimpleForControl control) throws LookupException {
   	return "("+toCodeForInit((Element)control.getForInit())+"; "+toCode(control.condition())+"; "+toCode(control.getUpdate())+") ";
   }
   
@@ -1024,11 +1022,11 @@ public class JavaCodeWriter extends Syntax {
   	return element instanceof EnhancedForControl;
   }
 
-  public String toCodeEnhancedForControl(EnhancedForControl control) throws MetamodelException {
+  public String toCodeEnhancedForControl(EnhancedForControl control) throws LookupException {
   	return "("+toCodeForInit((Element)control.variableDeclarator())+": "+toCode(control.collection())+") ";
   }
 
-  public String toCodeForInit(Element element) throws MetamodelException {
+  public String toCodeForInit(Element element) throws LookupException {
     if(element instanceof LocalVariableDeclarator) {
       return toCodeLocalVarForInit((LocalVariableDeclarator)element);
     } else {
@@ -1048,7 +1046,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof DoStatement;
   }
   
-  public String toCodeDo(DoStatement statement) throws MetamodelException {
+  public String toCodeDo(DoStatement statement) throws LookupException {
     return "do "+toCode(statement.getStatement())+ "while("+toCode(statement.condition())+");";
   }
   
@@ -1061,7 +1059,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ConstructorInvocation;
   }
   
-  public String toCodeConstructorInvocation(ConstructorInvocation inv) throws MetamodelException {
+  public String toCodeConstructorInvocation(ConstructorInvocation inv) throws LookupException {
     StringBuffer result = new StringBuffer();
     if(inv.getTarget() != null) {
       result.append(toCode(inv.getTarget()));
@@ -1076,7 +1074,7 @@ public class JavaCodeWriter extends Syntax {
     return result.toString();
   }
   
-  public String getActualArgs(Invocation inv) throws MetamodelException {
+  public String getActualArgs(Invocation inv) throws LookupException {
     StringBuffer result = new StringBuffer();
     result.append("(");
     Iterator iter = inv.getActualParameters().iterator();
@@ -1095,7 +1093,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ConditionalAndExpression;
   }
   
-  public String toCodeCondAnd(ConditionalAndExpression cae) throws MetamodelException {
+  public String toCodeCondAnd(ConditionalAndExpression cae) throws LookupException {
     return "(" + toCode(cae.getFirst())+" && " + toCode(cae.getSecond()) +")";
   }
   
@@ -1103,7 +1101,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ConditionalOrExpression;
   }
   
-  public String toCodeCondOr(ConditionalOrExpression cae) throws MetamodelException {
+  public String toCodeCondOr(ConditionalOrExpression cae) throws LookupException {
     return "(" + toCode(cae.getFirst())+" || " + toCode(cae.getSecond()) +")";
   }
   
@@ -1111,7 +1109,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof InfixOperatorInvocation;
   }
   
-  public String toCodeInfixInvocation(InfixOperatorInvocation inv) throws MetamodelException {
+  public String toCodeInfixInvocation(InfixOperatorInvocation inv) throws LookupException {
     return "(" + toCode(inv.getTarget())+") " + inv.getName()+ " (" + toCode((Element)inv.getActualParameters().get(0)) +")";
   }
   
@@ -1119,7 +1117,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof PrefixOperatorInvocation;
   }
   
-  public String toCodePrefixInvocation(PrefixOperatorInvocation inv) throws MetamodelException {
+  public String toCodePrefixInvocation(PrefixOperatorInvocation inv) throws LookupException {
     return inv.getName()+"("+toCode(inv.getTarget())+")";
   }
   
@@ -1127,7 +1125,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof PostfixOperatorInvocation;
   }
   
-  public String toCodePostfixInvocation(PostfixOperatorInvocation inv) throws MetamodelException {
+  public String toCodePostfixInvocation(PostfixOperatorInvocation inv) throws LookupException {
     return toCode(inv.getTarget()) + inv.getName();
   }
   
@@ -1135,7 +1133,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ClassLiteral;
   }
   
-  public String toCodeClassLiteral(ClassLiteral literal) throws MetamodelException {
+  public String toCodeClassLiteral(ClassLiteral literal) throws LookupException {
     return toCode(literal.getTypeReference())+".class";
   }
   
@@ -1143,7 +1141,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ThisLiteral;
   }
   
-  public String toCodeThisLiteral(ThisLiteral literal) throws MetamodelException {
+  public String toCodeThisLiteral(ThisLiteral literal) throws LookupException {
     if(literal.getTypeReference() != null) {
       return toCode(literal.getTypeReference())+".this";
     } else {
@@ -1163,7 +1161,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof NamedTarget;
   }
   
-  public String toCodeNamedTarget(NamedTarget nt) throws MetamodelException {
+  public String toCodeNamedTarget(NamedTarget nt) throws LookupException {
     StringBuffer result = new StringBuffer();
     if(nt.getTarget() != null) {
       result.append(toCode(nt.getTarget()));
@@ -1177,7 +1175,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof RegularMethodInvocation;
   }
   
-  public String toCodeRegularMethodInvocation(RegularMethodInvocation inv) throws MetamodelException {
+  public String toCodeRegularMethodInvocation(RegularMethodInvocation inv) throws LookupException {
     StringBuffer result = new StringBuffer();
     if(inv.getTarget() != null) {
       result.append(toCode(inv.getTarget()));
@@ -1192,7 +1190,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof VariableReference;
   }
   
-  public String toCodeVarRef(VariableReference var) throws MetamodelException {
+  public String toCodeVarRef(VariableReference var) throws LookupException {
     return toCode(var.getTarget());
   }
   
@@ -1204,7 +1202,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ThisConstructorDelegation;
   }
   
-  public String toCodeThisConstructorDelegation(ThisConstructorDelegation deleg) throws MetamodelException {
+  public String toCodeThisConstructorDelegation(ThisConstructorDelegation deleg) throws LookupException {
     return "this" + getActualArgs(deleg);
   }
   
@@ -1212,7 +1210,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof SuperTarget;
   }
   
-  public String toCodeSuperTarget(SuperTarget nt) throws MetamodelException {
+  public String toCodeSuperTarget(SuperTarget nt) throws LookupException {
     StringBuffer result = new StringBuffer();
     if(nt.getTarget() != null) {
       result.append(toCode(nt.getTarget()));
@@ -1226,7 +1224,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof SuperConstructorDelegation;
   }
   
-  public String toCodeSuperConstructorDelegation(SuperConstructorDelegation deleg) throws MetamodelException {
+  public String toCodeSuperConstructorDelegation(SuperConstructorDelegation deleg) throws LookupException {
     return "super" + getActualArgs(deleg);
   }
   
@@ -1234,7 +1232,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof InstanceofExpression;
   }
   
-  public String toCodeInstanceOf(InstanceofExpression ioe) throws MetamodelException {
+  public String toCodeInstanceOf(InstanceofExpression ioe) throws LookupException {
     return "(" + toCode(ioe.getExpression()) + " instanceof " + toCode(ioe.getTypeReference())+")";
   }
   
@@ -1242,7 +1240,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof DimensionInitializer;
   }
   
-  public String toCodeDimInit(DimensionInitializer init) throws MetamodelException {
+  public String toCodeDimInit(DimensionInitializer init) throws LookupException {
     return "["+(init.getExpression() != null ? toCode(init.getExpression()) : "")+"]";
   }
   
@@ -1250,7 +1248,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ConditionalExpression;
   }
   
-  public String toCodeCondExpr(ConditionalExpression ce) throws MetamodelException {
+  public String toCodeCondExpr(ConditionalExpression ce) throws LookupException {
     return "(" +toCode(ce.getCondition())+" ? "+toCode(ce.getFirst()) + " : "+ toCode(ce.getSecond())+")";
   }
   
@@ -1258,7 +1256,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ClassCastExpression;
   }
   
-  public String toCodeCast(ClassCastExpression cc) throws MetamodelException {
+  public String toCodeCast(ClassCastExpression cc) throws LookupException {
     return "(("+toCode(cc.getTypeReference())+")" + toCode(cc.getExpression()) +")";
   }
   
@@ -1266,7 +1264,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ArrayInitializer;
   }
   
-  public String toCodeArrayInit(ArrayInitializer init) throws MetamodelException {
+  public String toCodeArrayInit(ArrayInitializer init) throws LookupException {
     StringBuffer result = new StringBuffer();
     result.append("{");
     Iterator iter = init.getVariableInitializers().iterator();
@@ -1284,7 +1282,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ArrayCreationExpression;
   }
   
-  public String toCodeArrayCreation(ArrayCreationExpression expr) throws MetamodelException {
+  public String toCodeArrayCreation(ArrayCreationExpression expr) throws LookupException {
     StringBuffer result = new StringBuffer();
     result.append("new ");
     result.append(toCode(expr.getTypeReference()).substring(0, toCode(expr.getTypeReference()).indexOf("[")));
@@ -1304,7 +1302,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ArrayAccessExpression;
   }
   
-  public String toCodeArrayAccess(ArrayAccessExpression expr) throws MetamodelException {
+  public String toCodeArrayAccess(ArrayAccessExpression expr) throws LookupException {
     StringBuffer result = new StringBuffer();
     result.append(toCode(expr.getTarget()));
     Iterator iter = expr.getIndices().iterator();
@@ -1320,7 +1318,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof AssignmentExpression;
   }
   
-  public String toCodeAssignment(AssignmentExpression expr) throws MetamodelException {
+  public String toCodeAssignment(AssignmentExpression expr) throws LookupException {
     return toCode((Element)expr.getVariable()) + " = " + toCode(expr.getValue());
   }
   
@@ -1345,7 +1343,7 @@ public class JavaCodeWriter extends Syntax {
 	}
 	
 	
-	public String toCodeFilledArrayIndex(FilledArrayIndex ai) throws MetamodelException{
+	public String toCodeFilledArrayIndex(FilledArrayIndex ai) throws LookupException{
 		StringBuffer result = new StringBuffer();
 		result.append("[");
 		List expressions = ai.getIndices();
@@ -1361,7 +1359,7 @@ public class JavaCodeWriter extends Syntax {
 	}
 
 
-  public static void writeCode(Arguments arguments) throws IOException, MetamodelException {
+  public static void writeCode(Arguments arguments) throws IOException, LookupException {
     JavaCodeWriter writer = new JavaCodeWriter(2);
     Set<Type> types = arguments.getTypes();
     new PrimitiveTotalPredicate<Type>() {

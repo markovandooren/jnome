@@ -33,7 +33,7 @@ import org.jnome.input.parser.ExtendedAST;
 import org.jnome.input.parser.JavaTokenTypes;
 import org.jnome.mm.type.JavaTypeReference;
 
-import chameleon.core.MetamodelException;
+import chameleon.core.LookupException;
 import chameleon.core.compilationunit.CompilationUnit;
 import chameleon.core.element.ElementImpl;
 import chameleon.core.namespace.Namespace;
@@ -69,7 +69,7 @@ public class CompilationUnitAcquirer extends Acquirer {
 	/*
 	 * @ @ public behavior @
 	 */
-	//public void acquire(Namespace defaultPackage, ExtendedAST rootAST) throws MetamodelException {
+	//public void acquire(Namespace defaultPackage, ExtendedAST rootAST) throws LookupException {
 		//System.out.println("Acquiring " + rootAST.getText());
 		//Namespace pack = acquireNamespaceDeclaration(defaultPackage, rootAST);
 		// the most inner-package is returned:
@@ -94,7 +94,7 @@ public class CompilationUnitAcquirer extends Acquirer {
 //		_linkage.addCompilationUnit(cu);
 //	}
 
-	public void acquire(Namespace defaultPackage, ExtendedAST rootAST) throws MetamodelException {
+	public void acquire(Namespace defaultPackage, ExtendedAST rootAST) throws LookupException {
 		//System.out.println("Acquiring " + rootAST.getText());
 	  	Namespace pack = acquireNamespaceDeclaration(defaultPackage, rootAST);
 	    //the most inner-package is returned: 
@@ -275,7 +275,7 @@ public class CompilationUnitAcquirer extends Acquirer {
 		}
 	}
 
-	public Namespace acquireNamespaceDeclaration(Namespace defaultPackage, ExtendedAST rootAST) throws MetamodelException {
+	public Namespace acquireNamespaceDeclaration(Namespace defaultPackage, ExtendedAST rootAST) throws LookupException {
 		return (Namespace) defaultPackage
 				.getOrCreateNamespace(getPackageName(rootAST));
 	}

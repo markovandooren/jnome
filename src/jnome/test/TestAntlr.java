@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.antlr.runtime.RecognitionException;
 
-import chameleon.core.MetamodelException;
+import chameleon.core.context.LookupException;
 
 /**
  * @author marko
@@ -42,7 +42,7 @@ public class TestAntlr extends ExpressionTest {
 	 *
 	 */
 
-	public Set getTestTypes() throws MetamodelException {
+	public Set getTestTypes() throws LookupException {
 		return _mm.getSubNamespace("antlr").getAllTypes();
 	}
 

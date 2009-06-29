@@ -1,7 +1,7 @@
 package jnome.core.type;
 
 
-import chameleon.core.MetamodelException;
+import chameleon.core.context.LookupException;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
@@ -89,7 +89,7 @@ public class ArrayType extends RegularType {
            ((ArrayType)o).getDimension() == getDimension();
   }
   
-  public boolean assignableTo(Type other) throws MetamodelException {
+  public boolean assignableTo(Type other) throws LookupException {
   	TypeReference ref = new TypeReference("java.lang.Object");
   	ref.setUniParent(getNamespace().rootNamespace());
   	Type objType = ref.getType();
@@ -111,7 +111,7 @@ public class ArrayType extends RegularType {
     return new ArrayType(getComponentType(),getDimension());
   }
   
-//  public AccessibilityDomain getTypeAccessibilityDomain() throws MetamodelException {
+//  public AccessibilityDomain getTypeAccessibilityDomain() throws LookupException {
 //    return getElementType().getTypeAccessibilityDomain();
 //  }
   

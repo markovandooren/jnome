@@ -20,17 +20,14 @@ import jnome.input.parser.JavaLexer;
 import jnome.input.parser.JavaParser;
 
 import org.antlr.runtime.ANTLRInputStream;
-import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
-import org.antlr.runtime.tree.CommonTree;
-import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.rejuse.io.fileset.FileNamePattern;
 import org.rejuse.io.fileset.FileSet;
 import org.rejuse.io.fileset.PatternPredicate;
 
-import chameleon.core.MetamodelException;
 import chameleon.core.compilationunit.CompilationUnit;
+import chameleon.core.context.LookupException;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.language.Language;
@@ -84,7 +81,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
      *             Something went wrong
      * @throws RecognitionException 
      */
-    public Namespace getMetaModel(ILinkageFactory fact, Set<File> files) throws MalformedURLException, FileNotFoundException, IOException, MetamodelException, ParseException {
+    public Namespace getMetaModel(ILinkageFactory fact, Set<File> files) throws MalformedURLException, FileNotFoundException, IOException, LookupException, ParseException {
 
 //		final Namespace defaultPackage = new RootNamespace(null, "",
 //				new Java(), new JavaNamespacePartLocalContext());
@@ -110,7 +107,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         return defaultPackage;
     }
 
-    public Namespace getMetaModel(ISourceSupplier supply) throws MalformedURLException, FileNotFoundException, IOException, MetamodelException, ParseException {
+    public Namespace getMetaModel(ISourceSupplier supply) throws MalformedURLException, FileNotFoundException, IOException, LookupException, ParseException {
 
 //		final Namespace defaultPackage = new RootNamespace(null, "",
 //				new Java(), new JavaNamespacePartLocalContext());
@@ -198,7 +195,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
             }
 
         }
-        catch (MetamodelException e) {
+        catch (LookupException e) {
         	// This should only happen if the Java system library was not parsed.
         	e.printStackTrace();
             throw new Error(e);
@@ -220,7 +217,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
 //    }
 //
     // Parse a method
-//    public void replaceMethod(ILinkage linkage, String methodCode, Method method) throws IOException, RecognitionException, TokenStreamException, MetamodelException {
+//    public void replaceMethod(ILinkage linkage, String methodCode, Method method) throws IOException, RecognitionException, TokenStreamException, LookupException {
 //
 //        // make an inputstream of the methodeCode
 //        InputStream inputStream = new StringBufferInputStream(methodCode);
@@ -241,7 +238,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
 //    }
 
     // Parse object block
-//    public void parseTypeMembers(ILinkage linkage, String code, int line, int column, Element typeMember) throws IOException, RecognitionException, TokenStreamException, MetamodelException {
+//    public void parseTypeMembers(ILinkage linkage, String code, int line, int column, Element typeMember) throws IOException, RecognitionException, TokenStreamException, LookupException {
 //
 //        // add brackets, necessary for parsing classblock with this parser
 //        code = "{\n" + code + "\n}";
@@ -290,7 +287,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
 //        inputStream.close();
 //    }
 //
-//    public void parseNameSpaceMembers(ILinkage linkage, String code, int line, int column, Element nameSpaceMember) throws IOException, RecognitionException, TokenStreamException, MetamodelException {
+//    public void parseNameSpaceMembers(ILinkage linkage, String code, int line, int column, Element nameSpaceMember) throws IOException, RecognitionException, TokenStreamException, LookupException {
 //
 //        // add brackets, necessary for parsing classblock with this parser
 //        // code = "{\n"+code+"\n}";
@@ -388,7 +385,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
       * return document; }
       */
 
-    private void addFileToGraph(ILinkage linkage, File file, Java language) throws FileNotFoundException, IOException, MalformedURLException, RecognitionException, MetamodelException {
+    private void addFileToGraph(ILinkage linkage, File file, Java language) throws FileNotFoundException, IOException, MalformedURLException, RecognitionException, LookupException {
         // The file name is used in the lexers and parser to
         // give more informative error messages
         String fileName = file.getName();
@@ -405,7 +402,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
                 .getParseErrorHandler());
     }
 
-    public void addSource(ILinkage linkage, String source, Java language) throws MalformedURLException, ParseException, IOException, MetamodelException {
+    public void addSource(ILinkage linkage, String source, Java language) throws MalformedURLException, ParseException, IOException, LookupException {
         try {
             addStringToGraph(linkage, source, language);
         }
@@ -417,7 +414,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         }
     }
 
-    private void addStringToGraph(ILinkage linkage, String string, Java language) throws IOException, MalformedURLException, RecognitionException, MetamodelException {
+    private void addStringToGraph(ILinkage linkage, String string, Java language) throws IOException, MalformedURLException, RecognitionException, LookupException {
         String name = "document";
         InputStream inputStream = new StringBufferInputStream(string);
         
@@ -464,7 +461,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         return parser;
     }
 
-    private void lexAndParse(ILinkage linkage, InputStream inputStream, String fileName, Java language, IParseErrorHandler handler) throws IOException, MalformedURLException, RecognitionException, MetamodelException {
+    private void lexAndParse(ILinkage linkage, InputStream inputStream, String fileName, Java language, IParseErrorHandler handler) throws IOException, MalformedURLException, RecognitionException, LookupException {
 
         JavaParser parser = getParser(inputStream, fileName, handler, language);
         parser.setLanguage(language);

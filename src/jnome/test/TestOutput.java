@@ -2,8 +2,7 @@ package jnome.test;
 
 import jnome.core.type.JavaTypeReference;
 import jnome.output.JavaCodeWriter;
-import chameleon.core.MetamodelException;
-import chameleon.core.element.Element;
+import chameleon.core.context.LookupException;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
 
@@ -30,7 +29,7 @@ public class TestOutput extends MetaModelTest {
   	include("C:\\Chameleon\\src");
   }
   
-  public void testOut() throws MetamodelException {
+  public void testOut() throws LookupException {
     TypeReference typeRef = new JavaTypeReference("chameleon.core.type.Type");
     typeRef.setUniParent(_mm);
     Type type = typeRef.getType();

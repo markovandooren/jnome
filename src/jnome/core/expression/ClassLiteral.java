@@ -1,10 +1,11 @@
 package jnome.core.expression;
 
 
+import jnome.core.type.JavaTypeReference;
+
 import org.rejuse.association.Reference;
 
-import jnome.core.type.JavaTypeReference;
-import chameleon.core.MetamodelException;
+import chameleon.core.context.LookupException;
 import chameleon.core.expression.InvocationTarget;
 import chameleon.core.type.TypeReference;
 import chameleon.support.expression.LiteralWithTypeReference;
@@ -20,7 +21,7 @@ public class ClassLiteral extends LiteralWithTypeReference {
     setTypeReference(new JavaTypeReference("java.lang.Class"));
   }
 
-  public boolean superOf(InvocationTarget target) throws MetamodelException {
+  public boolean superOf(InvocationTarget target) throws LookupException {
     return (target instanceof ClassLiteral) && 
            ((ClassLiteral)target).getType().equals(getType());
   }
@@ -45,7 +46,7 @@ public class ClassLiteral extends LiteralWithTypeReference {
     _typeReference.connectTo(type.parentLink());
   }
 
-//  public AccessibilityDomain getAccessibilityDomain() throws MetamodelException {
+//  public AccessibilityDomain getAccessibilityDomain() throws LookupException {
 //    return getTypeReference().getType().getTypeAccessibilityDomain();
 //  }
 }

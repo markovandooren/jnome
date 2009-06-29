@@ -28,7 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import chameleon.core.MetamodelException;
+import chameleon.core.context.LookupException;
 import chameleon.core.element.Element;
 import chameleon.core.expression.Expression;
 import chameleon.core.type.Type;
@@ -48,7 +48,7 @@ public abstract class ExpressionTest extends MetaModelTest {
 //    set.include(new PatternPredicate(_srcDir, new FileNamePattern(filename)));
 //  }
 
-public abstract Set getTestTypes() throws MetamodelException;
+public abstract Set getTestTypes() throws LookupException;
 
   
   public void myTestDescendants() {

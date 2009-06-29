@@ -29,10 +29,9 @@ import jnome.core.type.NullType;
 
 import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.property.Property;
-import org.rejuse.property.PropertyMutex;
 import org.rejuse.property.StaticProperty;
 
-import chameleon.core.MetamodelException;
+import chameleon.core.context.LookupException;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.language.Language;
@@ -90,7 +89,7 @@ public class Java extends Language {
    @
    @ post \result.equals(getDefaultPackage().findType("java.lang.NullPointerException")); 
    @*/
-  public Type getNullInvocationException() throws MetamodelException {
+  public Type getNullInvocationException() throws LookupException {
     return findType("java.lang.NullPointerException");
   }
 
@@ -99,21 +98,21 @@ public class Java extends Language {
    @
    @ post \result.equals(getDefaultPackage().findType("java.lang.RuntimeException")); 
    @*/
-  public Type getUncheckedException() throws MetamodelException {
+  public Type getUncheckedException() throws LookupException {
     return findType("java.lang.RuntimeException");
   }
   
-  public Type getTopCheckedException() throws MetamodelException {
+  public Type getTopCheckedException() throws LookupException {
     return findType("java.lang.Throwable");
   }
 
-  public boolean isCheckedException(Type type) throws MetamodelException{
+  public boolean isCheckedException(Type type) throws LookupException{
     Type error = findType("java.lang.Error");
     Type runtimeExc = findType("java.lang.RuntimeException");
     return isException(type) && (! type.assignableTo(error)) && (! type.assignableTo(runtimeExc));
   }
 
-  public boolean isException(Type type) throws MetamodelException {
+  public boolean isException(Type type) throws LookupException {
     return type.assignableTo(findType("java.lang.Throwable"));
   }
   
@@ -127,7 +126,7 @@ public class Java extends Language {
 
       @Override
       public boolean contains(Member first, Member second)
-          throws MetamodelException {
+          throws LookupException {
         boolean result;
         
         if((first instanceof Method) && (second instanceof Method)) {
@@ -142,7 +141,7 @@ public class Java extends Language {
           } else if (temp == Ternary.FALSE) {
             overridable = false;
           } else {
-            throw new MetamodelException("The overridability of the other method could not be determined.");
+            throw new LookupException("The overridability of the other method could not be determined.");
           }
           result = overridable && 
                    method1.signature().equals(method2.signature()) && 
@@ -161,26 +160,26 @@ public class Java extends Language {
 
       @Override
       public boolean equal(Member first, Member second)
-          throws MetamodelException {
+          throws LookupException {
         return first == second;
       }
        
      };
     }
 
-    public Type findType(String fqn) throws MetamodelException {
+    public Type findType(String fqn) throws LookupException {
     	TypeReference ref = new TypeReference(fqn);
     	ref.setUniParent(defaultNamespace());
     	return ref.getType();
     }
     
 		@Override
-		public Type booleanType() throws MetamodelException {
+		public Type booleanType() throws LookupException {
 			return findType("boolean");
 		}
 
 		@Override
-		public Type classCastException() throws MetamodelException {
+		public Type classCastException() throws LookupException {
 			return findType("java.lang.ClassCastException");
 		}
 
@@ -189,7 +188,7 @@ public class Java extends Language {
 			return new StrictPartialOrder<Member>() {
 
 				@Override
-				public boolean contains(Member first, Member second) throws MetamodelException {
+				public boolean contains(Member first, Member second) throws LookupException {
 					boolean result = false;
 					if((first instanceof NormalMethod) && (second instanceof NormalMethod)) {
 						result = first.getNearestType().subTypeOf(second.getNearestType()) &&
@@ -204,7 +203,7 @@ public class Java extends Language {
 				}
 
 				@Override
-				public boolean equal(Member first, Member second) throws MetamodelException {
+				public boolean equal(Member first, Member second) throws LookupException {
 					return first.equals(second);
 				}
 				
@@ -212,7 +211,7 @@ public class Java extends Language {
 		}
 
 		@Override
-		public Type voidType() throws MetamodelException {
+		public Type voidType() throws LookupException {
 			return findType("void");
 		}
 
@@ -221,7 +220,7 @@ public class Java extends Language {
 			return new EquivalenceRelation<Member>() {
 
 				@Override
-				public boolean contains(Member first, Member second) throws MetamodelException {
+				public boolean contains(Member first, Member second) throws LookupException {
 					return first.equals(second);
 				}
 				

@@ -31,7 +31,7 @@ import org.jnome.input.parser.JavaTokenTypes;
 import chameleon.support.expression.SuperConstructorDelegation;
 import org.jnome.mm.type.JavaTypeReference;
 
-import chameleon.core.MetamodelException;
+import chameleon.core.LookupException;
 import chameleon.core.element.ElementImpl;
 import chameleon.core.expression.Expression;
 import chameleon.core.statement.Block;

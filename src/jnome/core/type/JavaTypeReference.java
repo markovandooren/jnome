@@ -5,7 +5,7 @@ import java.util.List;
 import org.rejuse.association.ReferenceSet;
 
 import chameleon.core.Config;
-import chameleon.core.MetamodelException;
+import chameleon.core.context.LookupException;
 import chameleon.core.element.ChameleonProgrammerException;
 import chameleon.core.element.Element;
 import chameleon.core.expression.NamedTarget;
@@ -92,7 +92,7 @@ public class JavaTypeReference extends TypeReference {
   	_arrayDimension = arrayDimension;
   }
   
-  public Type getType() throws MetamodelException {
+  public Type getType() throws LookupException {
     Type result = null;
 
 //    result = getCache();
@@ -121,12 +121,12 @@ public class JavaTypeReference extends TypeReference {
 //      setCache(result);
       return result;
     } else {
-      throw new MetamodelException();
+      throw new LookupException("Result of type reference lookup is null",this);
     }
   }
 
   
-//  public Type getType() throws MetamodelException {
+//  public Type getType() throws LookupException {
 //  	Type result = null;
 //  	
 //    result = getCache();

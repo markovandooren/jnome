@@ -9,7 +9,7 @@ import org.rejuse.association.OrderedReferenceSet;
 import org.rejuse.association.Reference;
 import org.rejuse.java.collections.Visitor;
 
-import chameleon.core.MetamodelException;
+import chameleon.core.context.LookupException;
 import chameleon.core.expression.Assignable;
 import chameleon.core.expression.Expression;
 import chameleon.core.expression.ExpressionContainer;
@@ -59,7 +59,7 @@ public class ArrayAccessExpression extends Expression implements ExpressionConta
     return _indicesLink.getOtherEnds();
   }
 
-  public Type getType() throws MetamodelException {
+  public Type getType() throws LookupException {
     ArrayType componentType = (ArrayType)getTarget().getType();
     int dim = componentType.getDimension() - getIndices().size();
     if (dim > 0) {
@@ -71,7 +71,7 @@ public class ArrayAccessExpression extends Expression implements ExpressionConta
     }
   }
 
-  public boolean superOf(InvocationTarget target) throws MetamodelException {
+  public boolean superOf(InvocationTarget target) throws LookupException {
     if(!(target instanceof ArrayAccessExpression)) {
       return false;
     }
@@ -117,11 +117,11 @@ public class ArrayAccessExpression extends Expression implements ExpressionConta
     return result;
   }
 
-  public Set getDirectExceptions() throws MetamodelException {
+  public Set getDirectExceptions() throws LookupException {
     return Util.createNonNullSet(language().getNullInvocationException());
   }
 
-//  public AccessibilityDomain getAccessibilityDomain() throws MetamodelException {
+//  public AccessibilityDomain getAccessibilityDomain() throws LookupException {
 //    AccessibilityDomain result = new All();
 //    if(getTarget() != null) {
 //      result = result.intersect(getTarget().getAccessibilityDomain());

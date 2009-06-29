@@ -32,7 +32,7 @@ import org.jnome.mm.modifier.Default;
 import org.jnome.mm.modifier.Protected;
 import org.jnome.mm.type.JavaTypeReference;
 
-import chameleon.core.MetamodelException;
+import chameleon.core.LookupException;
 import chameleon.core.element.ElementImpl;
 import chameleon.core.expression.Expression;
 import chameleon.core.modifier.AccessModifier;

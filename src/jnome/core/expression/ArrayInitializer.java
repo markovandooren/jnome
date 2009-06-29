@@ -33,7 +33,7 @@ import jnome.core.type.ArrayType;
 import org.rejuse.association.OrderedReferenceSet;
 import org.rejuse.java.collections.Visitor;
 
-import chameleon.core.MetamodelException;
+import chameleon.core.context.LookupException;
 import chameleon.core.expression.Expression;
 import chameleon.core.expression.ExpressionContainer;
 import chameleon.core.expression.InvocationTarget;
@@ -73,7 +73,7 @@ public class ArrayInitializer extends Expression implements ExpressionContainer 
     return _inits.getOtherEnds();
   }
 
-  public Type getType() throws MetamodelException {
+  public Type getType() throws LookupException {
     if (parent() instanceof ArrayCreationExpression) {
       return ((ArrayCreationExpression)parent()).getType();
     }
@@ -92,7 +92,7 @@ public class ArrayInitializer extends Expression implements ExpressionContainer 
     }
   }
 
-  public boolean superOf(InvocationTarget target) throws MetamodelException {
+  public boolean superOf(InvocationTarget target) throws LookupException {
     if(!(target instanceof ArrayInitializer)) {
       return false;
     }
@@ -121,11 +121,11 @@ public class ArrayInitializer extends Expression implements ExpressionContainer 
     return getVariableInitializers();
   }
 
-  public Set<Type> getDirectExceptions() throws MetamodelException {
+  public Set<Type> getDirectExceptions() throws LookupException {
     return new HashSet<Type>();
   }
 
-//  public AccessibilityDomain getAccessibilityDomain() throws MetamodelException {
+//  public AccessibilityDomain getAccessibilityDomain() throws LookupException {
 //    AccessibilityDomain result = new All();
 //    Iterator iter = getVariableInitializers().iterator();
 //    while(iter.hasNext()) {

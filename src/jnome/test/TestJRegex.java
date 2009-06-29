@@ -40,7 +40,7 @@ import junit.framework.TestSuite;
 
 import org.antlr.runtime.RecognitionException;
 
-import chameleon.core.MetamodelException;
+import chameleon.core.context.LookupException;
 
 /**
  * @author marko
@@ -73,7 +73,7 @@ public class TestJRegex extends ExpressionTest {
 	 *
 	 */
 
-	public Set getTestTypes() throws MetamodelException {
+	public Set getTestTypes() throws LookupException {
 		assertNotNull(_mm);
 		assertNotNull(_mm.getSubNamespace("jregex"));
     return _mm.getSubNamespace("jregex").getAllTypes();

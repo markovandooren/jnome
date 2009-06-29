@@ -40,7 +40,7 @@ import junit.framework.TestSuite;
 
 import org.antlr.runtime.RecognitionException;
 
-import chameleon.core.MetamodelException;
+import chameleon.core.context.LookupException;
 
 /**
  * @author marko
@@ -78,7 +78,7 @@ public class TestJnome extends ExpressionTest {
 	 *
 	 */
 
-	public Set getTestTypes() throws MetamodelException {
+	public Set getTestTypes() throws LookupException {
 		return _mm.getSubNamespace("org").getSubNamespace("jnome").getAllTypes();
 	}
 

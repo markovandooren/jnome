@@ -2,169 +2,142 @@
 
 package jnome.input.parser;
 
-import chameleon.core.MetamodelException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Stack;
 
-import chameleon.core.context.ContextFactory;
+import jnome.core.enumeration.EnumConstant;
+import jnome.core.expression.ArrayAccessExpression;
+import jnome.core.expression.ArrayCreationExpression;
+import jnome.core.expression.ArrayInitializer;
+import jnome.core.expression.ClassLiteral;
+import jnome.core.expression.ConstructorInvocation;
+import jnome.core.language.Java;
+import jnome.core.modifier.StrictFP;
+import jnome.core.modifier.Synchronized;
+import jnome.core.modifier.Transient;
+import jnome.core.modifier.Volatile;
+import jnome.core.type.JavaTypeReference;
+import jnome.core.variable.JavaVariableDeclaration;
+import jnome.core.variable.MultiFormalParameter;
+
+import org.antlr.runtime.BaseRecognizer;
+import org.antlr.runtime.BitSet;
+import org.antlr.runtime.DFA;
+import org.antlr.runtime.EarlyExitException;
+import org.antlr.runtime.FailedPredicateException;
+import org.antlr.runtime.IntStream;
+import org.antlr.runtime.MismatchedSetException;
+import org.antlr.runtime.NoViableAltException;
+import org.antlr.runtime.Parser;
+import org.antlr.runtime.ParserRuleReturnScope;
+import org.antlr.runtime.RecognitionException;
+import org.antlr.runtime.RecognizerSharedState;
+import org.antlr.runtime.Token;
+import org.antlr.runtime.TokenStream;
+import org.antlr.runtime.tree.CommonTreeAdaptor;
+import org.antlr.runtime.tree.TreeAdaptor;
 
 import chameleon.core.compilationunit.CompilationUnit;
-
+import chameleon.core.context.ContextFactory;
+import chameleon.core.context.LookupException;
 import chameleon.core.declaration.SimpleNameSignature;
-
 import chameleon.core.element.ChameleonProgrammerException;
-
 import chameleon.core.expression.ActualArgument;
+import chameleon.core.expression.Assignable;
 import chameleon.core.expression.Expression;
 import chameleon.core.expression.Invocation;
-import chameleon.core.expression.Literal;
-import chameleon.core.expression.Assignable;
-import chameleon.core.expression.NamedTarget;
 import chameleon.core.expression.InvocationTarget;
+import chameleon.core.expression.Literal;
+import chameleon.core.expression.NamedTarget;
 import chameleon.core.expression.VariableReference;
-
 import chameleon.core.language.Language;
-
 import chameleon.core.member.Member;
-
 import chameleon.core.method.Method;
-import chameleon.core.method.Implementation;
 import chameleon.core.method.RegularImplementation;
-
 import chameleon.core.method.exception.ExceptionClause;
 import chameleon.core.method.exception.TypeExceptionDeclaration;
-
 import chameleon.core.modifier.Modifier;
-
 import chameleon.core.namespace.Namespace;
 import chameleon.core.namespace.RootNamespace;
-
-import chameleon.core.namespacepart.NamespacePart;
-import chameleon.core.namespacepart.Import;
-import chameleon.core.namespacepart.TypeImport;
 import chameleon.core.namespacepart.DemandImport;
-
+import chameleon.core.namespacepart.Import;
+import chameleon.core.namespacepart.NamespacePart;
+import chameleon.core.namespacepart.TypeImport;
 import chameleon.core.statement.Block;
 import chameleon.core.statement.Statement;
-
 import chameleon.core.type.ClassBody;
 import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
-import chameleon.core.type.TypeReference;
 import chameleon.core.type.TypeElement;
-
-import chameleon.core.type.generics.GenericParameter;
-import chameleon.core.type.generics.GenericArgument;
-import chameleon.core.type.generics.TypeConstraint;
+import chameleon.core.type.TypeReference;
 import chameleon.core.type.generics.ExtendsConstraint;
-
+import chameleon.core.type.generics.GenericArgument;
+import chameleon.core.type.generics.GenericParameter;
 import chameleon.core.type.inheritance.SubtypeRelation;
-
-import chameleon.core.variable.Variable;
 import chameleon.core.variable.FormalParameter;
-
-import chameleon.support.expression.RegularLiteral;
-import chameleon.support.expression.NullLiteral;
-import chameleon.support.expression.ThisConstructorDelegation;
-import chameleon.support.expression.SuperConstructorDelegation;
 import chameleon.support.expression.AssignmentExpression;
-import chameleon.support.expression.ConditionalExpression;
-import chameleon.support.expression.ConditionalAndExpression;
-import chameleon.support.expression.ConditionalOrExpression;
-import chameleon.support.expression.InstanceofExpression;
-import chameleon.support.expression.ThisLiteral;
-import chameleon.support.expression.FilledArrayIndex;
-import chameleon.support.expression.EmptyArrayIndex;
-import chameleon.support.expression.ArrayIndex;
 import chameleon.support.expression.ClassCastExpression;
-
-import chameleon.support.member.simplename.method.NormalMethod;
+import chameleon.support.expression.ConditionalAndExpression;
+import chameleon.support.expression.ConditionalExpression;
+import chameleon.support.expression.ConditionalOrExpression;
+import chameleon.support.expression.EmptyArrayIndex;
+import chameleon.support.expression.FilledArrayIndex;
+import chameleon.support.expression.InstanceofExpression;
+import chameleon.support.expression.NullLiteral;
+import chameleon.support.expression.RegularLiteral;
+import chameleon.support.expression.SuperConstructorDelegation;
+import chameleon.support.expression.ThisConstructorDelegation;
+import chameleon.support.expression.ThisLiteral;
 import chameleon.support.member.simplename.SimpleNameMethodHeader;
-import chameleon.support.member.simplename.variable.MemberVariableDeclarator;
-import chameleon.support.member.simplename.operator.infix.InfixOperatorInvocation;
-import chameleon.support.member.simplename.operator.prefix.PrefixOperatorInvocation;
-import chameleon.support.member.simplename.operator.postfix.PostfixOperatorInvocation;
+import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.member.simplename.method.RegularMethodInvocation;
-
-
+import chameleon.support.member.simplename.operator.infix.InfixOperatorInvocation;
+import chameleon.support.member.simplename.operator.postfix.PostfixOperatorInvocation;
+import chameleon.support.member.simplename.operator.prefix.PrefixOperatorInvocation;
+import chameleon.support.member.simplename.variable.MemberVariableDeclarator;
 import chameleon.support.modifier.Abstract;
+import chameleon.support.modifier.Enum;
 import chameleon.support.modifier.Final;
+import chameleon.support.modifier.Interface;
+import chameleon.support.modifier.Native;
 import chameleon.support.modifier.Private;
 import chameleon.support.modifier.Protected;
 import chameleon.support.modifier.Public;
 import chameleon.support.modifier.Static;
-import chameleon.support.modifier.Native;
-import chameleon.support.modifier.Enum;
-import chameleon.support.modifier.Interface;
-
-import chameleon.support.statement.StatementExpression;
-import chameleon.support.statement.LocalClassStatement;
 import chameleon.support.statement.AssertStatement;
-import chameleon.support.statement.IfThenElseStatement;
-import chameleon.support.statement.ForStatement;
+import chameleon.support.statement.BreakStatement;
+import chameleon.support.statement.CaseLabel;
+import chameleon.support.statement.CatchClause;
+import chameleon.support.statement.ContinueStatement;
+import chameleon.support.statement.DefaultLabel;
+import chameleon.support.statement.DoStatement;
+import chameleon.support.statement.EmptyStatement;
+import chameleon.support.statement.EnhancedForControl;
+import chameleon.support.statement.EnumLabel;
+import chameleon.support.statement.FinallyClause;
 import chameleon.support.statement.ForControl;
 import chameleon.support.statement.ForInit;
+import chameleon.support.statement.ForStatement;
+import chameleon.support.statement.IfThenElseStatement;
+import chameleon.support.statement.LabeledStatement;
+import chameleon.support.statement.LocalClassStatement;
+import chameleon.support.statement.ReturnStatement;
 import chameleon.support.statement.SimpleForControl;
-import chameleon.support.statement.EnhancedForControl;
 import chameleon.support.statement.StatementExprList;
-import chameleon.support.statement.TryStatement;
-import chameleon.support.statement.CatchClause;
-import chameleon.support.statement.FinallyClause;
-import chameleon.support.statement.DoStatement;
-import chameleon.support.statement.WhileStatement;
-import chameleon.support.statement.SwitchStatement;
+import chameleon.support.statement.StatementExpression;
 import chameleon.support.statement.SwitchCase;
 import chameleon.support.statement.SwitchLabel;
-import chameleon.support.statement.CaseLabel;
-import chameleon.support.statement.DefaultLabel;
-import chameleon.support.statement.EnumLabel;
-import chameleon.support.statement.ReturnStatement;
-import chameleon.support.statement.ThrowStatement;
-import chameleon.support.statement.BreakStatement;
-import chameleon.support.statement.ContinueStatement;
+import chameleon.support.statement.SwitchStatement;
 import chameleon.support.statement.SynchronizedStatement;
-import chameleon.support.statement.EmptyStatement;
-import chameleon.support.statement.LabeledStatement;
-
+import chameleon.support.statement.ThrowStatement;
+import chameleon.support.statement.TryStatement;
+import chameleon.support.statement.WhileStatement;
 import chameleon.support.type.EmptyTypeElement;
 import chameleon.support.type.StaticInitializer;
-
-import chameleon.support.variable.VariableDeclaration;
 import chameleon.support.variable.LocalVariableDeclarator;
-import chameleon.support.variable.VariableDeclarator;
-
-import jnome.core.expression.ArrayInitializer;
-import jnome.core.expression.ClassLiteral;
-import jnome.core.expression.ArrayAccessExpression;
-import jnome.core.expression.ArrayCreationExpression;
-import jnome.core.expression.ConstructorInvocation;
-
-import jnome.core.language.Java;
-
-import jnome.core.modifier.StrictFP;
-import jnome.core.modifier.Transient;
-import jnome.core.modifier.Volatile;
-import jnome.core.modifier.Synchronized;
-
-import jnome.core.type.JavaTypeReference;
-
-import jnome.core.enumeration.EnumConstant;
-
-import jnome.core.variable.JavaVariableDeclaration;
-import jnome.core.variable.MultiFormalParameter;
-
-import java.util.List;
-import java.util.ArrayList;
-
-
-
-
-import org.antlr.runtime.*;
-import java.util.Stack;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-
-import org.antlr.runtime.tree.*;
+import chameleon.support.variable.VariableDeclaration;
 
 /** A Java 1.5 grammar for ANTLR v3 derived from the spec
  *
@@ -921,7 +894,7 @@ public class JavaParser extends Parser {
               try{
                          retval.element = new NamespacePart(root.getOrCreateNamespace((qn!=null?input.toString(qn.start,qn.stop):null)));
                        }
-                       catch(MetamodelException exc) {
+                       catch(LookupException exc) {
                          //this should not happen, something is wrong with the parser
                          throw new ChameleonProgrammerException(exc);
                        }

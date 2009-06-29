@@ -2,38 +2,31 @@
 
 package jnome.input.parser;
 
-import chameleon.core.MetamodelException;
-
-import chameleon.core.element.ChameleonProgrammerException;
-
-import chameleon.core.compilationunit.CompilationUnit;
-
-import chameleon.core.namespace.Namespace;
-import chameleon.core.namespace.RootNamespace;
-
-import chameleon.core.context.ContextFactory;
-
-import chameleon.core.namespacepart.NamespacePart;
-import chameleon.core.namespacepart.Import;
-import chameleon.core.namespacepart.TypeImport;
-import chameleon.core.namespacepart.DemandImport;
-
-import chameleon.core.language.Language;
-
-import chameleon.core.type.Type;
-import chameleon.core.type.TypeReference;
-
 import jnome.core.language.Java;
-
 import jnome.core.type.JavaTypeReference;
 
+import org.antlr.runtime.BitSet;
+import org.antlr.runtime.EarlyExitException;
+import org.antlr.runtime.NoViableAltException;
+import org.antlr.runtime.RecognitionException;
+import org.antlr.runtime.RecognizerSharedState;
+import org.antlr.runtime.tree.CommonTree;
+import org.antlr.runtime.tree.TreeNodeStream;
+import org.antlr.runtime.tree.TreeParser;
 
-import org.antlr.runtime.*;
-import org.antlr.runtime.tree.*;import java.util.Stack;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
+import chameleon.core.compilationunit.CompilationUnit;
+import chameleon.core.context.ContextFactory;
+import chameleon.core.context.LookupException;
+import chameleon.core.element.ChameleonProgrammerException;
+import chameleon.core.language.Language;
+import chameleon.core.namespace.Namespace;
+import chameleon.core.namespace.RootNamespace;
+import chameleon.core.namespacepart.DemandImport;
+import chameleon.core.namespacepart.Import;
+import chameleon.core.namespacepart.NamespacePart;
+import chameleon.core.namespacepart.TypeImport;
+import chameleon.core.type.Type;
+import chameleon.core.type.TypeReference;
 public class JavaWalker extends TreeParser {
     public static final String[] tokenNames = new String[] {
         "<invalid>", "<EOR>", "<DOWN>", "<UP>", "Identifier", "ENUM", "FloatingPointLiteral", "CharacterLiteral", "StringLiteral", "HexLiteral", "OctalLiteral", "DecimalLiteral", "ASSERT", "HexDigit", "IntegerTypeSuffix", "Exponent", "FloatTypeSuffix", "EscapeSequence", "UnicodeEscape", "OctalEscape", "Letter", "JavaIDDigit", "WS", "COMMENT", "LINE_COMMENT", "'package'", "';'", "'import'", "'static'", "'.'", "'*'", "'public'", "'protected'", "'private'", "'abstract'", "'final'", "'strictfp'", "'class'", "'extends'", "'implements'", "'<'", "','", "'>'", "'&'", "'{'", "'}'", "'interface'", "'void'", "'['", "']'", "'throws'", "'='", "'native'", "'synchronized'", "'transient'", "'volatile'", "'boolean'", "'char'", "'byte'", "'short'", "'int'", "'long'", "'float'", "'double'", "'?'", "'super'", "'('", "')'", "'...'", "'this'", "'null'", "'true'", "'false'", "'@'", "'default'", "':'", "'if'", "'else'", "'for'", "'while'", "'do'", "'try'", "'finally'", "'switch'", "'return'", "'throw'", "'break'", "'continue'", "'catch'", "'case'", "'+='", "'-='", "'*='", "'/='", "'&='", "'|='", "'^='", "'%='", "'||'", "'&&'", "'|'", "'^'", "'=='", "'!='", "'instanceof'", "'+'", "'-'", "'/'", "'%'", "'++'", "'--'", "'~'", "'!'", "'new'", "'qqqq'", "'error'"
@@ -170,7 +163,7 @@ public class JavaWalker extends TreeParser {
 
 
       /* Sandbox the model until parsing is done. This way,
-       * we are certain that the model will not throw MetamodelExceptions 
+       * we are certain that the model will not throw LookupExceptions 
        * because the model contains multiple elements with the same name. This
        * can only happen if the model is corrupted by the parser or by methods of the
        * metamodel invoked by the parser. We convert these exceptions to ChameleonProgrammerExceptions
@@ -528,7 +521,7 @@ public class JavaWalker extends TreeParser {
               try{
                          np = new NamespacePart(root.getOrCreateNamespace(qn));
                        }
-                       catch(MetamodelException exc) {
+                       catch(LookupException exc) {
                          //this should not happen, something is wrong with the tree parser
                          throw new ChameleonProgrammerException(exc);
                        }

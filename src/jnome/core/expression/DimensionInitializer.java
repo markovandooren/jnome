@@ -4,9 +4,6 @@ import java.util.List;
 
 import org.rejuse.association.Reference;
 
-import chameleon.core.MetamodelException;
-import chameleon.core.context.LexicalContext;
-import chameleon.core.element.Element;
 import chameleon.core.expression.Expression;
 import chameleon.core.expression.ExpressionContainer;
 import chameleon.core.namespace.Namespace;

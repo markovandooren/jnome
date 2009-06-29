@@ -10,10 +10,10 @@ import org.rejuse.association.Reference;
 import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.predicate.PrimitiveTotalPredicate;
 
-import chameleon.core.MetamodelException;
 import chameleon.core.context.Context;
+import chameleon.core.context.DeclarationSelector;
+import chameleon.core.context.LookupException;
 import chameleon.core.declaration.Declaration;
-import chameleon.core.declaration.DeclarationSelector;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.expression.Expression;
@@ -22,7 +22,6 @@ import chameleon.core.expression.Invocation;
 import chameleon.core.expression.InvocationTarget;
 import chameleon.core.member.Member;
 import chameleon.core.relation.WeakPartialOrder;
-import chameleon.core.scope.Scope;
 import chameleon.core.type.ClassBody;
 import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
@@ -30,7 +29,6 @@ import chameleon.core.type.TypeContainer;
 import chameleon.core.type.TypeReference;
 import chameleon.support.member.MoreSpecificTypesOrder;
 import chameleon.support.member.simplename.method.NormalMethod;
-import chameleon.support.property.accessibility.EmptyScope;
 import chameleon.util.Util;
 
 /**
@@ -103,7 +101,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
   	final Type anon = new RegularType(new SimpleNameSignature("TODO")) {
   		
   		@Override
-  		public Set<Member> members() throws MetamodelException {
+  		public Set<Member> members() throws LookupException {
   			Set<Member> result = super.members();
   			Type writtenType = ConstructorInvocation.this.getTypeReference().getType();
   			Set<NormalMethod> superMembers = writtenType.members(NormalMethod.class);
@@ -139,7 +137,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 //	  return ((TypeContainer)this.getParent()).getNamespacePart();
 //  }
 
-  public Type getType() throws MetamodelException {
+  public Type getType() throws LookupException {
     if (body() == null) {
       // Switching to target or not happens in getContext(Element) invoked by the type reference.
       return getTypeReference().getType();
@@ -156,16 +154,16 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
   	return _anonymousType.getOtherEnd();
   }
 
-//  public RegularMethod getConstructor() throws MetamodelException {
+//  public RegularMethod getConstructor() throws LookupException {
 //    Type type = (Type)getTypeReference().getType(); // Not the actual type
 //    return type.getConstructor(getActualParameterTypes());
 //  }
 
-//  public RegularMethod getMethod() throws MetamodelException {
+//  public RegularMethod getMethod() throws LookupException {
 //    return getConstructor();
 //  }
 
-  public boolean superOf(InvocationTarget target) throws MetamodelException {
+  public boolean superOf(InvocationTarget target) throws LookupException {
     if(!(target instanceof ConstructorInvocation)) {
       return false;
     }
@@ -200,14 +198,10 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
     return result;
   }
 
-  public void prefix(InvocationTarget target) throws MetamodelException {
+  public void prefix(InvocationTarget target) throws LookupException {
     if(getTarget() != null) {
       getTarget().prefixRecursive(target);
     }
-  }
-
-  public Scope getTypeAccessibilityDomain() throws MetamodelException {
-    return new EmptyScope();
   }
 
  /*@
@@ -221,7 +215,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
     return result;
   }
   
-  public NormalMethod getMethod() throws MetamodelException {
+  public NormalMethod getMethod() throws LookupException {
   	InvocationTarget target = getTarget();
   	NormalMethod result;
   	if(getAnonymousInnerType() != null) {
@@ -235,14 +229,14 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
   		result = getTarget().targetContext().lookUp(selector());
   	}
 		if (result == null) {
-			throw new MetamodelException();
+			throw new LookupException("Lookup in constructor invocation returned null",this);
 		}
     return result;
   }
 
   public class ConstructorSelector extends DeclarationSelector<NormalMethod> {
     
-    public NormalMethod filter(Declaration declaration) throws MetamodelException {
+    public NormalMethod filter(Declaration declaration) throws LookupException {
     	NormalMethod result = null;
 			if (selectedClass().isInstance(declaration)) {
 				NormalMethod decl = (NormalMethod) declaration;
@@ -260,7 +254,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
       return new WeakPartialOrder<NormalMethod>() {
         @Override
         public boolean contains(NormalMethod first, NormalMethod second)
-            throws MetamodelException {
+            throws LookupException {
           return new MoreSpecificTypesOrder().contains(first.header().getParameterTypes(), second.header().getParameterTypes());
         }
       };
@@ -277,23 +271,18 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 		return new ConstructorSelector();
 	}
 
-	public Set<Declaration> declarations() throws MetamodelException {
+	public Set<Declaration> declarations() throws LookupException {
 		Set<Declaration> result = new HashSet<Declaration>();
-//		result.add(getAnonymousInnerType());
 		return result;
 	}
 
-	// COPIED FROM chameleon.core.type.Type
-	public <T extends Declaration> Set<T> declarations(DeclarationSelector<T> selector) throws MetamodelException {
-    Set<Declaration> tmp = declarations();
-    Set<T> result = selector.selection(tmp);
-    return result;
-	}
+//	// COPIED FROM chameleon.core.type.Type
+//	@SuppressWarnings("unchecked")
+//	public <T extends Declaration> Set<T> declarations(DeclarationSelector<T> selector) throws LookupException {
+//    Set<Declaration> tmp = declarations();
+//    Set<T> result = selector.selection(tmp);
+//    return result;
+//	}
 
-//  //@STUDENTCREWUP ?
-//public Type getTopLevelType() {
-//	return null;
-//}
-//
 
 }

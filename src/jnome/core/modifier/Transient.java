@@ -1,10 +1,7 @@
 package jnome.core.modifier;
 
-import java.util.Set;
-
 import jnome.core.language.Java;
 
-import org.rejuse.property.Property;
 import org.rejuse.property.PropertySet;
 
 import chameleon.core.element.Element;

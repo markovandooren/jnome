@@ -41,7 +41,7 @@ import org.jnome.mm.type.JavaTypeReference;
 import org.rejuse.java.collections.Visitor;
 
 import chameleon.core.Config;
-import chameleon.core.MetamodelException;
+import chameleon.core.LookupException;
 import chameleon.core.element.ChameleonProgrammerException;
 import chameleon.core.element.ElementImpl;
 import chameleon.core.expression.Assignable;
@@ -87,7 +87,7 @@ public class ExpressionAcquirer extends Acquirer {
   /**
    * @param extendedAST
    * @return
- * @throws MetamodelException 
+ * @throws LookupException 
    */
   public Expression acquire(ExtendedAST extendedAST) {
   	ElementImpl context=null;

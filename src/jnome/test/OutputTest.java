@@ -27,8 +27,9 @@ import chameleon.support.tool.Arguments;
  */
 public abstract class OutputTest {
 
-	public OutputTest(String extension) {
+	public OutputTest(String extension, String output) {
 		_extension = extension;
+		setOutput(output);
 	}
 
 	

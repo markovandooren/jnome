@@ -1,14 +1,16 @@
 package jnome.test;
 
+import java.io.File;
+
 public class TestJnomeOutput extends OutputTest {
 
 	public TestJnomeOutput() {
-		super(".java");
+		super(".java","output"+File.separator);
 	}
 
 	@Override
 	public void addTestFiles() {
-		include("testsource"+getSeparator()+"gen");
+		include("testsource"+getSeparator()+"gen"+getSeparator());
 		include("testsource"+getSeparator()+"jnome"+getSeparator()+"src"+getSeparator());
 	}
 

@@ -96,7 +96,7 @@ public abstract Set getTestTypes() throws LookupException;
         assertTrue(expr.getType() != null);
       }
     } catch (ClassCastException e) {
-    	e.printStackTrace();
+//    	e.printStackTrace();
 //      try {
 //        System.out.println("Cast error: "+o.getClass().getName());
 //      } catch (RuntimeException e1) {
@@ -106,8 +106,8 @@ public abstract Set getTestTypes() throws LookupException;
       throw e;
     }
     catch (Exception e) {
-      e.printStackTrace();
-      expr.getType();
+//      e.printStackTrace();
+//      expr.getType();
       throw e; 
     }
     

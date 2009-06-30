@@ -121,7 +121,7 @@ public class JavaTypeReference extends TypeReference {
 //      setCache(result);
       return result;
     } else {
-      throw new LookupException("Result of type reference lookup is null",this);
+      throw new LookupException("Result of type reference lookup is null: "+fqn(),this);
     }
   }
 

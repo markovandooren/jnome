@@ -50,6 +50,7 @@ import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.modifier.PrivateProperty;
 import chameleon.support.modifier.ProtectedProperty;
 import chameleon.support.modifier.PublicProperty;
+import chameleon.support.rule.member.MemberInheritableByDefault;
 
 /**
  * @author Marko van Dooren
@@ -58,6 +59,7 @@ public class Java extends Language {
 
 	
 	protected NullType _nullType;
+	// Adding properties. Note that 'this' is a PropertyUniverse.
 	public final Property<Element> STRICTFP = new StaticProperty<Element>("strictfp", this);
 	public final Property<Element> SYNCHRONIZED = new StaticProperty<Element>("synchronized", this);
 	public final Property<Element> TRANSIENT = new StaticProperty<Element>("transient", this);
@@ -91,6 +93,10 @@ public class Java extends Language {
    @*/
   public Type getNullInvocationException() throws LookupException {
     return findType("java.lang.NullPointerException");
+  }
+  
+  protected void initializePropertyRules() {
+  	addPropertyRule(new MemberInheritableByDefault());
   }
 
  /*@

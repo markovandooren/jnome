@@ -221,6 +221,7 @@ import chameleon.core.modifier.Modifier;
 
 import chameleon.core.namespace.Namespace;
 import chameleon.core.namespace.RootNamespace;
+import chameleon.core.namespace.NamespaceOrTypeReference;
 
 import chameleon.core.namespacepart.NamespacePart;
 import chameleon.core.namespacepart.Import;
@@ -328,6 +329,7 @@ import jnome.core.modifier.StrictFP;
 import jnome.core.modifier.Transient;
 import jnome.core.modifier.Volatile;
 import jnome.core.modifier.Synchronized;
+import jnome.core.modifier.JavaConstructor;
 
 import jnome.core.type.JavaTypeReference;
 
@@ -422,8 +424,7 @@ package jnome.input.parser;
   }
 
   public void processImport(CompilationUnit cu, Import imp){
-    if(imp instanceof TypeImport){cu.getDefaultNamespacePart().addImport((TypeImport)imp);}
-    else if(imp instanceof DemandImport){cu.getDefaultNamespacePart().addImport((DemandImport)imp);}
+    cu.getDefaultNamespacePart().addImport(imp);
   }
   public void processType(NamespacePart np, Type type){
     if(np == null) {throw new IllegalArgumentException("namespace part given to processType is null.");}
@@ -472,16 +473,8 @@ packageDeclaration returns [NamespacePart element]
     ;
     
 importDeclaration returns [Import element]
-    :   'import' st='static'? qn=qualifiedName star=('.' '*')? ';'
-    {
-         if(star==null) {
-           retval.element = new TypeImport(typeRef($qn.text));
-           // type import
-         } else {
-           // demand import
-           retval.element = new DemandImport(typeRef($qn.text));
-         }
-    }
+    :   'import' st='static'? qn=qualifiedName {retval.element = new TypeImport(new JavaTypeReference($qn.text));} 
+         ('.' '*' {retval.element = new DemandImport(new NamespaceOrTypeReference($qn.text));})? ';'
     ;
 
     
@@ -614,7 +607,13 @@ scope MethodScope;
     	
 constructorDeclaration returns [Method element]
 scope MethodScope;
-        : consname=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($consname.text), new JavaTypeReference($consname.text)); $MethodScope::method = retval.element;} constructorDeclaratorRest
+        : consname=Identifier 
+            {
+             retval.element = new NormalMethod(new SimpleNameMethodHeader($consname.text), new JavaTypeReference($consname.text)); 
+             retval.element.addModifier(new JavaConstructor());
+             $MethodScope::method = retval.element;
+            } 
+             constructorDeclaratorRest
 	;
     
 memberDeclaration returns [TypeElement element]

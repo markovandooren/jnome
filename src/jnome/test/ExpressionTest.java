@@ -28,9 +28,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import chameleon.core.context.LookupException;
 import chameleon.core.element.Element;
 import chameleon.core.expression.Expression;
+import chameleon.core.lookup.LookupException;
 import chameleon.core.type.Type;
 
 /**
@@ -48,7 +48,7 @@ public abstract class ExpressionTest extends MetaModelTest {
 //    set.include(new PatternPredicate(_srcDir, new FileNamePattern(filename)));
 //  }
 
-public abstract Set getTestTypes() throws LookupException;
+public abstract Set<Type> getTestTypes() throws LookupException;
 
   
   public void myTestDescendants() {
@@ -65,13 +65,13 @@ public abstract Set getTestTypes() throws LookupException;
   
   public void testExpressionTypes() throws Exception {
     //myTestDescendants(); // Stupid Junit creates a new test object for every test (which includes parsing).
-    Set types = getTestTypes();
+    Set <Type> types = getTestTypes();
     System.out.println("Starting to test "+types.size() + " types.");
-    Iterator iter = types.iterator();
+    Iterator<Type> iter = types.iterator();
     long startTime = System.currentTimeMillis();
     int count = 0;
     while (iter.hasNext()) {
-      Type type = (Type) iter.next();
+      Type type = iter.next();
       System.out.println(count+" Testing "+type.getFullyQualifiedName());
       processType(type);
       count++;
@@ -88,7 +88,7 @@ public abstract Set getTestTypes() throws LookupException;
     Object o = null;
     try {
       List<Expression> exprs = type.descendants(Expression.class);
-      //System.out.println(_count + " Testing: "+type.getFullyQualifiedName() +" : " + exprs.toString() + " expressions.");
+      System.out.println(_count + " Testing: "+type.getFullyQualifiedName() +" : " + exprs.toString() + " expressions.");
       for(Expression expression : exprs) {
         expr = expression;
 //        System.out.println(_count + " Testing: "+type.getFullyQualifiedName() + " : " + new JavaCodeWriter().toCode(expr));

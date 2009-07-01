@@ -15,10 +15,10 @@ import org.antlr.runtime.tree.TreeNodeStream;
 import org.antlr.runtime.tree.TreeParser;
 
 import chameleon.core.compilationunit.CompilationUnit;
-import chameleon.core.context.ContextFactory;
-import chameleon.core.context.LookupException;
 import chameleon.core.element.ChameleonProgrammerException;
 import chameleon.core.language.Language;
+import chameleon.core.lookup.LookupException;
+import chameleon.core.lookup.LookupStrategyFactory;
 import chameleon.core.namespace.Namespace;
 import chameleon.core.namespace.RootNamespace;
 import chameleon.core.namespacepart.DemandImport;
@@ -179,7 +179,7 @@ public class JavaWalker extends TreeParser {
       }
       
       RootNamespace root = lang.defaultNamespace();
-      ContextFactory contextFactory = root.language().contextFactory();
+      LookupStrategyFactory contextFactory = root.language().contextFactory();
 
       public Namespace getDefaultNamespace() {
         return root;

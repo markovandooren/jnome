@@ -31,10 +31,10 @@ import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.property.Property;
 import org.rejuse.property.StaticProperty;
 
-import chameleon.core.context.LookupException;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.language.Language;
+import chameleon.core.lookup.LookupException;
 import chameleon.core.member.Member;
 import chameleon.core.method.Method;
 import chameleon.core.method.MethodHeader;
@@ -50,7 +50,7 @@ import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.modifier.PrivateProperty;
 import chameleon.support.modifier.ProtectedProperty;
 import chameleon.support.modifier.PublicProperty;
-import chameleon.support.rule.member.MemberInheritableByDefault;
+import chameleon.support.rule.member.MemberOverridableByDefault;
 
 /**
  * @author Marko van Dooren
@@ -96,7 +96,7 @@ public class Java extends Language {
   }
   
   protected void initializePropertyRules() {
-  	addPropertyRule(new MemberInheritableByDefault());
+  	addPropertyRule(new MemberOverridableByDefault());
   }
 
  /*@
@@ -157,7 +157,7 @@ public class Java extends Language {
           MemberVariable<? extends MemberVariable> var1 = (MemberVariable)first;
           MemberVariable<? extends MemberVariable> var2 = (MemberVariable)second;
           
-          result = var1.parent().subTypeOf(var2.parent());  
+          result = var1.getNearestType().subTypeOf(var2.getNearestType());  
         } else {
           result = false;
         }

@@ -4,6 +4,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Set;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import jnome.input.JavaMetaModelFactory;
 import junit.framework.TestCase;
 import chameleon.core.namespace.Namespace;
@@ -31,6 +35,8 @@ public abstract class MetaModelTest extends TestCase {
   
 
     public void setUp() throws Exception {
+    	BasicConfigurator.configure();
+    	Logger.getRootLogger().setLevel(Level.FATAL);
       if(_mm == null) {
         //_mm = getMetaModelFactory().getMetaModel(_files.getFiles());
       	Set s = JavaMetaModelFactory.loadFiles(_files, ".java", true);

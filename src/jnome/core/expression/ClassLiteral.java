@@ -5,8 +5,8 @@ import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.association.Reference;
 
-import chameleon.core.context.LookupException;
 import chameleon.core.expression.InvocationTarget;
+import chameleon.core.lookup.LookupException;
 import chameleon.core.type.TypeReference;
 import chameleon.support.expression.LiteralWithTypeReference;
 

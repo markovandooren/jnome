@@ -28,7 +28,7 @@ import java.util.Set;
 
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
-import chameleon.core.context.LookupException;
+import chameleon.core.lookup.LookupException;
 
 /**
  * @author Marko van Dooren

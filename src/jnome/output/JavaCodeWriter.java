@@ -27,7 +27,6 @@ import org.rejuse.predicate.PrimitivePredicate;
 import org.rejuse.predicate.PrimitiveTotalPredicate;
 
 import chameleon.core.compilationunit.CompilationUnit;
-import chameleon.core.context.LookupException;
 import chameleon.core.element.Element;
 import chameleon.core.expression.ActualArgument;
 import chameleon.core.expression.Expression;
@@ -35,6 +34,7 @@ import chameleon.core.expression.Invocation;
 import chameleon.core.expression.Literal;
 import chameleon.core.expression.NamedTarget;
 import chameleon.core.expression.VariableReference;
+import chameleon.core.lookup.LookupException;
 import chameleon.core.method.Implementation;
 import chameleon.core.method.Method;
 import chameleon.core.method.NativeImplementation;

@@ -33,14 +33,17 @@ package jnome.test;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.HashSet;
 import java.util.Set;
 
+import jnome.core.type.JavaTypeReference;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
 import org.antlr.runtime.RecognitionException;
 
-import chameleon.core.context.LookupException;
+import chameleon.core.lookup.LookupException;
+import chameleon.core.type.Type;
 
 /**
  * @author marko
@@ -79,7 +82,12 @@ public class TestJnome extends ExpressionTest {
 	 */
 
 	public Set getTestTypes() throws LookupException {
-		return _mm.getSubNamespace("org").getSubNamespace("jnome").getAllTypes();
+		Set<Type> result = new HashSet<Type>();
+		JavaTypeReference ref = new JavaTypeReference("org.jnome.input.antlr.javadoc.DocumentationBlockMethodAcquirer");
+		ref.setUniParent(_mm);
+		result.add(ref.getType());
+//		result = _mm.getSubNamespace("org").getSubNamespace("jnome").getAllTypes();
+		return result;
 	}
 
   public static void main(String[] args) throws Exception, Throwable {

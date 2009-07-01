@@ -189,7 +189,7 @@ package jnome.input.parser;
 
 import chameleon.core.MetamodelException;
 
-import chameleon.core.context.ContextFactory;
+import chameleon.core.lookup.LookupStrategyFactory;
 
 import chameleon.core.compilationunit.CompilationUnit;
 
@@ -417,15 +417,11 @@ package jnome.input.parser;
   }
   
   RootNamespace root = lang.defaultNamespace();
-  ContextFactory contextFactory = root.language().contextFactory();
 
   public Namespace getDefaultNamespace() {
     return root;
   }
 
-  public void processImport(CompilationUnit cu, Import imp){
-    cu.getDefaultNamespacePart().addImport(imp);
-  }
   public void processType(NamespacePart np, Type type){
     if(np == null) {throw new IllegalArgumentException("namespace part given to processType is null.");}
     if(type == null) {throw new IllegalArgumentException("type given to processType is null.");}
@@ -451,13 +447,15 @@ package jnome.input.parser;
 compilationUnit returns [CompilationUnit element] 
 @init{ 
 NamespacePart npp = new NamespacePart(language().defaultNamespace());
+npp.addImport(new DemandImport(new NamespaceOrTypeReference("java.lang")));
 retval.element = new CompilationUnit(npp);
 }
     :    annotations
-        (   np=packageDeclaration{processPackageDeclaration(retval.element,np.element); npp = np.element;} (imp=importDeclaration{processImport(retval.element,imp.element);})* (typech=typeDeclaration{processType(npp,typech.element);})*
+        (   np=packageDeclaration{processPackageDeclaration(retval.element,np.element); npp = np.element;npp.addImport(new DemandImport(new NamespaceOrTypeReference("java.lang")));} 
+            (imp=importDeclaration{npp.addImport(imp.element);})* (typech=typeDeclaration{processType(npp,typech.element);})*
         |   cd=classOrInterfaceDeclaration{processType(npp,cd.element);} (typech=typeDeclaration{processType(npp,typech.element);})*
         )
-    |   (np=packageDeclaration{processPackageDeclaration(retval.element,np.element); npp=np.element;})? (imp=importDeclaration{processImport(retval.element,imp.element);})* (typech=typeDeclaration{processType(npp,typech.element);})*
+    |   (np=packageDeclaration{processPackageDeclaration(retval.element,np.element); npp=np.element; npp.addImport(new DemandImport(new NamespaceOrTypeReference("java.lang")));})? (imp=importDeclaration{npp.addImport(imp.element);})* (typech=typeDeclaration{processType(npp,typech.element);})*
     ;
 
 packageDeclaration returns [NamespacePart element]

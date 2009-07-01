@@ -2,7 +2,7 @@ package jnome.test;
 
 import jnome.core.type.JavaTypeReference;
 import jnome.output.JavaCodeWriter;
-import chameleon.core.context.LookupException;
+import chameleon.core.lookup.LookupException;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
 

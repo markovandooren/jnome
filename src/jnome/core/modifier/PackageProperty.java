@@ -3,8 +3,8 @@ package jnome.core.modifier;
 import org.rejuse.property.PropertyMutex;
 import org.rejuse.property.PropertyUniverse;
 
-import chameleon.core.context.LookupException;
 import chameleon.core.element.Element;
+import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.NamespaceScope;
 import chameleon.core.scope.Scope;
 import chameleon.core.scope.ScopeProperty;

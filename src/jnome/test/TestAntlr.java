@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.antlr.runtime.RecognitionException;
 
-import chameleon.core.context.LookupException;
+import chameleon.core.lookup.LookupException;
 
 /**
  * @author marko

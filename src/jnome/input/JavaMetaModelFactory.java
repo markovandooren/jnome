@@ -27,10 +27,10 @@ import org.rejuse.io.fileset.FileSet;
 import org.rejuse.io.fileset.PatternPredicate;
 
 import chameleon.core.compilationunit.CompilationUnit;
-import chameleon.core.context.LookupException;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.language.Language;
+import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.Namespace;
 import chameleon.core.namespace.NamespaceReference;
 import chameleon.core.namespacepart.DemandImport;

@@ -5,10 +5,10 @@ import java.util.List;
 import org.rejuse.association.ReferenceSet;
 
 import chameleon.core.Config;
-import chameleon.core.context.LookupException;
 import chameleon.core.element.ChameleonProgrammerException;
 import chameleon.core.element.Element;
 import chameleon.core.expression.NamedTarget;
+import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.NamespaceOrType;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
@@ -121,7 +121,8 @@ public class JavaTypeReference extends TypeReference {
 //      setCache(result);
       return result;
     } else {
-      throw new LookupException("Result of type reference lookup is null: "+fqn(),this);
+    	parent().lexicalContext(this).lookUp(selector());
+      throw new LookupException("Result of type reference lookup is null: "+getFullyQualifiedName(),this);
     }
   }
 

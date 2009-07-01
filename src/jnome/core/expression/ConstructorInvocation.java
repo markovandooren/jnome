@@ -10,9 +10,6 @@ import org.rejuse.association.Reference;
 import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.predicate.PrimitiveTotalPredicate;
 
-import chameleon.core.context.Context;
-import chameleon.core.context.DeclarationSelector;
-import chameleon.core.context.LookupException;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
@@ -20,6 +17,9 @@ import chameleon.core.expression.Expression;
 import chameleon.core.expression.ExpressionContainer;
 import chameleon.core.expression.Invocation;
 import chameleon.core.expression.InvocationTarget;
+import chameleon.core.lookup.DeclarationSelector;
+import chameleon.core.lookup.LookupException;
+import chameleon.core.lookup.LookupStrategy;
 import chameleon.core.member.Member;
 import chameleon.core.relation.WeakPartialOrder;
 import chameleon.core.type.ClassBody;
@@ -221,7 +221,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
   	if(getAnonymousInnerType() != null) {
   		// @STRANGE!!! Inline this, and it no longer compiles.
   		Type anon = getAnonymousInnerType();
-  		Context tctx = anon.targetContext();
+  		LookupStrategy tctx = anon.targetContext();
   		result = tctx.lookUp(selector());
   	} else if(target == null) {
       result = lexicalContext().lookUp(selector());

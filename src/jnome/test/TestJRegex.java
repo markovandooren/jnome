@@ -40,7 +40,7 @@ import junit.framework.TestSuite;
 
 import org.antlr.runtime.RecognitionException;
 
-import chameleon.core.context.LookupException;
+import chameleon.core.lookup.LookupException;
 
 /**
  * @author marko

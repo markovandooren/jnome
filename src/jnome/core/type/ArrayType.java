@@ -1,8 +1,8 @@
 package jnome.core.type;
 
 
-import chameleon.core.context.LookupException;
 import chameleon.core.declaration.SimpleNameSignature;
+import chameleon.core.lookup.LookupException;
 import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;

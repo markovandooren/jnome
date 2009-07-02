@@ -2,7 +2,7 @@ package jnome.core.type;
 
 import java.util.List;
 
-import org.rejuse.association.ReferenceSet;
+import org.rejuse.association.OrderedReferenceSet;
 
 import chameleon.core.Config;
 import chameleon.core.element.ChameleonProgrammerException;
@@ -10,6 +10,7 @@ import chameleon.core.element.Element;
 import chameleon.core.expression.NamedTarget;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.NamespaceOrType;
+import chameleon.core.namespace.NamespaceOrTypeReference;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
 import chameleon.core.type.generics.GenericArgument;
@@ -25,7 +26,7 @@ public class JavaTypeReference extends TypeReference {
     this(name,0);
   }
   
-  public JavaTypeReference(JavaTypeReference target, String name) {
+  public JavaTypeReference(NamespaceOrTypeReference target, String name) {
   	super(target,name);
   }
   /**
@@ -38,6 +39,7 @@ public class JavaTypeReference extends TypeReference {
   
   public JavaTypeReference(String name, int arrayDimension) {
   	super(name);
+
   	if(Config.DEBUG) {
   		if((name != null) && (name.contains("["))) {
   			throw new ChameleonProgrammerException("Initializing a type reference with a [ in the name.");
@@ -68,7 +70,7 @@ public class JavaTypeReference extends TypeReference {
   	}
   }
   
-  private ReferenceSet<JavaTypeReference,GenericArgument> _genericParameters = new ReferenceSet<JavaTypeReference, GenericArgument>(this);
+  private OrderedReferenceSet<JavaTypeReference,GenericArgument> _genericParameters = new OrderedReferenceSet<JavaTypeReference, GenericArgument>(this);
   
   public List<Element> children() {
   	List<Element> result = super.children();
@@ -121,7 +123,6 @@ public class JavaTypeReference extends TypeReference {
 //      setCache(result);
       return result;
     } else {
-    	parent().lexicalContext(this).lookUp(selector());
       throw new LookupException("Result of type reference lookup is null: "+getFullyQualifiedName(),this);
     }
   }
@@ -198,7 +199,10 @@ public class JavaTypeReference extends TypeReference {
 //  }
   
   public JavaTypeReference clone() {
-    return new JavaTypeReference(getName());
+  	NamespaceOrTypeReference target = getTarget();
+  	NamespaceOrTypeReference clone = (target == null ? null : target.clone());
+  	JavaTypeReference result =  new JavaTypeReference(clone,getName());
+  	return result;
   }
   
 }

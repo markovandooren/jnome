@@ -519,7 +519,13 @@ classDeclaration returns [Type element]
     
 normalClassDeclaration returns [RegularType element]
     :   'class' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text));} (params=typeParameters{for(GenericParameter par: params.element){retval.element.add(par);}})?
-        ('extends' sc=type{retval.element.addInheritanceRelation(new SubtypeRelation(sc.element));})?
+        ('extends' sc=type {retval.element.addInheritanceRelation(new SubtypeRelation(sc.element));})? 
+        {// Move to caller, here we do not know the FQN. Same for interfaces
+         // inherit from java.lang.Object if there is no explicit extends relation
+         if(retval.element.inheritanceRelations().isEmpty() && (! retval.element.getFullyQualifiedName().equals("java.lang.Object"))){
+           retval.element.addInheritanceRelation(new SubtypeRelation(new JavaTypeReference(new NamespaceOrTypeReference("java.lang"),"Object")));
+         }
+        }
         ('implements' trefs=typeList {for(TypeReference ref: trefs.element){retval.element.addInheritanceRelation(new SubtypeRelation(ref));} } )?
         body=classBody {retval.element.setBody(body.element);}
     ;
@@ -568,7 +574,25 @@ interfaceDeclaration returns [Type element]
     ;
     
 normalInterfaceDeclaration returns [RegularType element]
-    :   'interface' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text)); retval.element.addModifier(new Interface());} (params=typeParameters{for(GenericParameter par: params.element){retval.element.add(par);}})? ('extends' trefs=typeList {for(TypeReference ref: trefs.element){retval.element.addInheritanceRelation(new SubtypeRelation(ref));} } )? body=classBody {retval.element.setBody(body.element);}
+@init{boolean inheritsFromObject = false;}
+    :   'interface' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text)); retval.element.addModifier(new Interface());} 
+         (params=typeParameters{for(GenericParameter par: params.element){retval.element.add(par);}})? 
+         ('extends' trefs=typeList 
+           {
+             for(TypeReference ref: trefs.element){
+              if(ref.getFullyQualifiedName().equals("java.lang.Object")) {
+                inheritsFromObject = true;
+              }
+              retval.element.addInheritanceRelation(new SubtypeRelation(ref));
+             } 
+           }
+         )? 
+         {
+          if(! inheritsFromObject) {
+            retval.element.addInheritanceRelation(new SubtypeRelation(new JavaTypeReference(new NamespaceOrTypeReference("java.lang"),"Object")));
+          }
+         }
+         body=classBody {retval.element.setBody(body.element);}
     ;
     
 typeList returns [List<TypeReference> element]
@@ -764,12 +788,50 @@ typeName returns [String element]
 
 type returns [JavaTypeReference element]
 @init{int dimension=0;}
-	:	cd=classOrInterfaceType ('[' ']' {dimension++;})* {retval.element = cd.element.toArray(dimension);}
+	:	cd=classOrInterfaceType ('[' ']' {dimension++;})* 
+	        {
+	         retval.element = cd.element.toArray(dimension);
+	        }
 	|	pt=primitiveType ('[' ']'{dimension++;})* {retval.element = pt.element.toArray(dimension);}
 	;
 
 classOrInterfaceType returns [JavaTypeReference element]
-	:	name=Identifier {retval.element = new JavaTypeReference($name.text);} (args=typeArguments {retval.element.addAllArguments(args.element);})?  ('.' namex=Identifier {retval.element = new JavaTypeReference(retval.element,$namex.text);} (argsx=typeArguments {retval.element.addAllArguments(argsx.element);})? )*
+@init{NamespaceOrTypeReference target = null;}
+// We will process the different parts. The current type reference (return value) is kept in retval. Alongside that
+// we keep a version of the latest namespace or type reference. If at any point after processing the first identifier
+// target is null, we know that we have encountered a real type reference before, so anything after that becomes a type reference.
+	:	name=Identifier 
+	          {
+	           retval.element = new JavaTypeReference($name.text); 
+	           target =  new NamespaceOrTypeReference($name.text); 
+	          } 
+	        (args=typeArguments 
+	          {
+	           // Add the type arguments
+	           retval.element.addAllArguments(args.element);
+	           // In this case, we know that the current element must be a type reference,
+	           // so we se the target to the current type reference.
+	           target = null;
+	          })?  
+	        ('.' namex=Identifier 
+	          {
+	           if(target != null) {
+	             retval.element = new JavaTypeReference(target,$namex.text);
+	             // We must clone the target here, or else it will be removed from the
+	             // type reference we just created.
+	             target = new NamespaceOrTypeReference(target.clone(),$namex.text);
+	           } else {
+	             retval.element = new JavaTypeReference(retval.element,$namex.text);
+	           }
+	          } 
+	        (argsx=typeArguments 
+	          {
+	           // Add the type arguments
+                   retval.element.addAllArguments(argsx.element);
+	           // In this case, we know that the current element must be a type reference,
+	           // so we se the target to the current type reference.
+	           target = null;
+	          })? )*
 	;
 
 primitiveType returns [JavaTypeReference element]
@@ -1289,7 +1351,7 @@ scope TargetScope;
 moreIdentifierSuffixRubbish returns [Expression element]
 scope TargetScope;
 	:	id=Identifier {$TargetScope::target = new NamedTarget($id.text);} ('.' idx=Identifier {$TargetScope::target = new NamedTarget($idx.text,$TargetScope::target);})* 
-	{retval.element = new VariableReference(new NamedTarget($id.text,$TargetScope::target));}
+	{retval.element = new VariableReference((NamedTarget)$TargetScope::target);}
 (   //    ('[' ']')+ '.' 'class'
     //|   
         arr=arrayAccessSuffixRubbish {retval.element = arr.element;}

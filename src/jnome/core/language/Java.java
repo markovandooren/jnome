@@ -69,7 +69,13 @@ public class Java extends Language {
 	public final Property<Element> PUBLIC = new PublicProperty(this, SCOPE_MUTEX);
 	public final Property<Element> PACKAGE_ACCESSIBLE = new PackageProperty(this, SCOPE_MUTEX);
 	
-	
+	public void initProperties() {
+		super.initProperties();
+		// In Java, a constructor is a class method
+		CONSTRUCTOR.addImplication(CLASS);
+		// In Java, constructors are not inheritable
+		CONSTRUCTOR.addImplication(INHERITABLE.inverse());
+	}
 	
 	public Java(){
 		super("Java");

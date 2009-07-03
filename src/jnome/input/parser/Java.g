@@ -426,12 +426,23 @@ package jnome.input.parser;
     if(np == null) {throw new IllegalArgumentException("namespace part given to processType is null.");}
     if(type == null) {throw new IllegalArgumentException("type given to processType is null.");}
     np.addType(type);
+    // inherit from java.lang.Object if there is no explicit extends relation
+    if(type.inheritanceRelations().isEmpty() && (! type.getFullyQualifiedName().equals("java.lang.Object"))){
+      type.addInheritanceRelation(new SubtypeRelation(new JavaTypeReference(new NamespaceOrTypeReference("java.lang"),"Object")));
+    }
+
   }
   public void processPackageDeclaration(CompilationUnit cu, NamespacePart np){
     if(np!=null){
       cu.getDefaultNamespacePart().addNamespacePart(np);
     } else {
       throw new IllegalArgumentException("trying to add namespace part that is null.");
+    }
+  }
+  
+  public void addNonTopLevelObjectInheritance(Type type) {
+    if(type.inheritanceRelations().isEmpty()){
+      type.addInheritanceRelation(new SubtypeRelation(new JavaTypeReference(new NamespaceOrTypeReference("java.lang"),"Object")));
     }
   }
   
@@ -452,10 +463,27 @@ retval.element = new CompilationUnit(npp);
 }
     :    annotations
         (   np=packageDeclaration{processPackageDeclaration(retval.element,np.element); npp = np.element;npp.addImport(new DemandImport(new NamespaceOrTypeReference("java.lang")));} 
-            (imp=importDeclaration{npp.addImport(imp.element);})* (typech=typeDeclaration{processType(npp,typech.element);})*
+            (imp=importDeclaration{npp.addImport(imp.element);})* 
+            (typech=typeDeclaration
+              {processType(npp,typech.element);
+              }
+            )*
         |   cd=classOrInterfaceDeclaration{processType(npp,cd.element);} (typech=typeDeclaration{processType(npp,typech.element);})*
         )
-    |   (np=packageDeclaration{processPackageDeclaration(retval.element,np.element); npp=np.element; npp.addImport(new DemandImport(new NamespaceOrTypeReference("java.lang")));})? (imp=importDeclaration{npp.addImport(imp.element);})* (typech=typeDeclaration{processType(npp,typech.element);})*
+    |   (np=packageDeclaration
+            {
+              processPackageDeclaration(retval.element,np.element); 
+              npp=np.element; 
+              npp.addImport(new DemandImport(new NamespaceOrTypeReference("java.lang")));}
+         )? 
+        (imp=importDeclaration
+          {npp.addImport(imp.element);}
+        )* 
+        (typech=typeDeclaration
+          {
+           processType(npp,typech.element);
+          }
+        )*
     ;
 
 packageDeclaration returns [NamespacePart element]
@@ -520,12 +548,6 @@ classDeclaration returns [Type element]
 normalClassDeclaration returns [RegularType element]
     :   'class' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text));} (params=typeParameters{for(GenericParameter par: params.element){retval.element.add(par);}})?
         ('extends' sc=type {retval.element.addInheritanceRelation(new SubtypeRelation(sc.element));})? 
-        {// Move to caller, here we do not know the FQN. Same for interfaces
-         // inherit from java.lang.Object if there is no explicit extends relation
-         if(retval.element.inheritanceRelations().isEmpty() && (! retval.element.getFullyQualifiedName().equals("java.lang.Object"))){
-           retval.element.addInheritanceRelation(new SubtypeRelation(new JavaTypeReference(new NamespaceOrTypeReference("java.lang"),"Object")));
-         }
-        }
         ('implements' trefs=typeList {for(TypeReference ref: trefs.element){retval.element.addInheritanceRelation(new SubtypeRelation(ref));} } )?
         body=classBody {retval.element.setBody(body.element);}
     ;
@@ -574,24 +596,15 @@ interfaceDeclaration returns [Type element]
     ;
     
 normalInterfaceDeclaration returns [RegularType element]
-@init{boolean inheritsFromObject = false;}
     :   'interface' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text)); retval.element.addModifier(new Interface());} 
          (params=typeParameters{for(GenericParameter par: params.element){retval.element.add(par);}})? 
          ('extends' trefs=typeList 
            {
              for(TypeReference ref: trefs.element){
-              if(ref.getFullyQualifiedName().equals("java.lang.Object")) {
-                inheritsFromObject = true;
-              }
               retval.element.addInheritanceRelation(new SubtypeRelation(ref));
              } 
            }
          )? 
-         {
-          if(! inheritsFromObject) {
-            retval.element.addInheritanceRelation(new SubtypeRelation(new JavaTypeReference(new NamespaceOrTypeReference("java.lang"),"Object")));
-          }
-         }
          body=classBody {retval.element.setBody(body.element);}
     ;
     
@@ -618,8 +631,8 @@ memberDecl returns [TypeElement element]
     |   mem=memberDeclaration {retval.element = mem.element;}
     |   vmd=voidMethodDeclaration {retval.element = vmd.element;}
     |   cs=constructorDeclaration {retval.element = cs.element;}
-    |   id=interfaceDeclaration {retval.element=id.element;}
-    |   cd=classDeclaration {retval.element=cd.element;}
+    |   id=interfaceDeclaration {retval.element=id.element; addNonTopLevelObjectInheritance(id.element);}
+    |   cd=classDeclaration {retval.element=cd.element; addNonTopLevelObjectInheritance(cd.element);}
     ;
     
 voidMethodDeclaration returns [Method element]
@@ -673,8 +686,8 @@ interfaceMemberDecl returns [TypeElement element]
     :   decl=interfaceMethodOrFieldDecl {retval.element = decl.element;}
     |   decl2=interfaceGenericMethodDecl {retval.element = decl2.element;}
     |   decl5=voidInterfaceMethodDeclaration {retval.element = decl5.element;}
-    |   decl3=interfaceDeclaration {retval.element = decl3.element;}
-    |   decl4=classDeclaration {retval.element = decl4.element;}
+    |   decl3=interfaceDeclaration {retval.element = decl3.element; addNonTopLevelObjectInheritance(decl3.element);}
+    |   decl4=classDeclaration {retval.element = decl4.element;  addNonTopLevelObjectInheritance(decl4.element);}
     ;
     
 voidInterfaceMethodDeclaration  returns [Method element]
@@ -978,8 +991,8 @@ annotationTypeElementDeclaration
     
 annotationTypeElementRest
     :   type annotationMethodOrConstantRest ';'
-    |   normalClassDeclaration ';'?
-    |   normalInterfaceDeclaration ';'?
+    |   cd=normalClassDeclaration {              addNonTopLevelObjectInheritance(cd.element);}';'?
+    |   id=normalInterfaceDeclaration {                addNonTopLevelObjectInheritance(id.element);}';'?
     |   enumDeclaration ';'?
     |   annotationTypeDeclaration ';'?
     ;
@@ -1139,7 +1152,7 @@ expression returns [Expression element]
            retval.element = new AssignmentExpression((Assignable)ex.element,exx.element);
          } else {
            retval.element = new InfixOperatorInvocation($op.text,ex.element);
-           ((InfixOperatorInvocation)retval.element).setTarget(exx.element);
+           ((InfixOperatorInvocation)retval.element).addArgument(new ActualArgument(exx.element));
          }
         }
         )?
@@ -1192,47 +1205,48 @@ conditionalAndExpression returns [Expression element]
 
 inclusiveOrExpression returns [Expression element]
     :   ex=exclusiveOrExpression {retval.element = ex.element;} ( '|' exx=exclusiveOrExpression 
-        {InfixOperatorInvocation tmp = new InfixOperatorInvocation("|", exx.element);
-         tmp.setTarget(retval.element);
-         retval.element = tmp;
-          } )*
+       {
+         retval.element = new InfixOperatorInvocation("|", retval.element);
+         ((InfixOperatorInvocation)retval.element).addArgument(new ActualArgument(exx.element));
+        } )*
     ;
 
 exclusiveOrExpression returns [Expression element]
     :   ex=andExpression {retval.element = ex.element;} ( '^' exx=andExpression
-    {InfixOperatorInvocation tmp = new InfixOperatorInvocation("^", exx.element);
-         tmp.setTarget(retval.element);
-         retval.element = tmp;
-          } )*
+    {
+         retval.element = new InfixOperatorInvocation("^", retval.element);
+         ((InfixOperatorInvocation)retval.element).addArgument(new ActualArgument(exx.element));
+        } )*
     ;
 
 andExpression returns [Expression element]
     :   ex=equalityExpression {retval.element = ex.element;} ( '&' exx=equalityExpression
-    {InfixOperatorInvocation tmp = new InfixOperatorInvocation("&", exx.element);
-         tmp.setTarget(retval.element);
-         retval.element = tmp;
-          } )*
+    {
+         retval.element = new InfixOperatorInvocation("&", retval.element);
+         ((InfixOperatorInvocation)retval.element).addArgument(new ActualArgument(exx.element));
+        } )*
     ;
 
 equalityExpression returns [Expression element]
 @init{String op=null;}
     :   ex=instanceOfExpression  {retval.element = ex.element;} ( ('==' {op="==";} | '!=' {op="!=";}) exx=instanceOfExpression 
-        {InfixOperatorInvocation tmp = new InfixOperatorInvocation(op, exx.element);
-         tmp.setTarget(retval.element);
-         retval.element = tmp;
-          } )*
+        {
+         retval.element = new InfixOperatorInvocation(op, retval.element);
+         ((InfixOperatorInvocation)retval.element).addArgument(new ActualArgument(exx.element));
+        } )*
     ;
 
 instanceOfExpression returns [Expression element]
+@after{check_null(retval.element);}
     :   ex=relationalExpression {if(ex.element == null) {throw new Error("retval is null");} retval.element = ex.element;} ('instanceof' tref=type {retval.element = new InstanceofExpression(ex.element, tref.element);})?
     ;
 
 relationalExpression returns [Expression element]
     :   ex=shiftExpression {if(ex.element == null) {throw new Error("retval is null");}retval.element = ex.element;} ( op=relationalOp exx=shiftExpression 
-    {InfixOperatorInvocation tmp = new InfixOperatorInvocation($op.text, exx.element);
-     tmp.setTarget(retval.element);
-     retval.element = tmp;
-    }
+        {
+         retval.element = new InfixOperatorInvocation($op.text, retval.element);
+         ((InfixOperatorInvocation)retval.element).addArgument(new ActualArgument(exx.element));
+        }
     )*
     ;
     
@@ -1249,10 +1263,10 @@ relationalOp
 
 shiftExpression returns [Expression element]
     :   ex=additiveExpression {check_null(ex.element); retval.element = ex.element;} ( op=shiftOp exx=additiveExpression 
-    {InfixOperatorInvocation tmp = new InfixOperatorInvocation($op.text, exx.element);
-     tmp.setTarget(retval.element);
-     retval.element = tmp;
-    }
+    {
+         retval.element = new InfixOperatorInvocation($op.text, retval.element);
+         ((InfixOperatorInvocation)retval.element).addArgument(new ActualArgument(exx.element));
+        }
     )*
     ;
 
@@ -1274,19 +1288,19 @@ shiftOp
 additiveExpression returns [Expression element]
 @init{String op = null;}
     :   ex=multiplicativeExpression {check_null(ex.element); retval.element = ex.element;} ( ('+' {op="+";} | '-' {op="-";}) exx=multiplicativeExpression 
-    {InfixOperatorInvocation tmp = new InfixOperatorInvocation(op, exx.element);
-     tmp.setTarget(retval.element);
-     retval.element = tmp;
-    })*
+    {
+         retval.element = new InfixOperatorInvocation(op, retval.element);
+         ((InfixOperatorInvocation)retval.element).addArgument(new ActualArgument(exx.element));
+        })*
     ;
 
 multiplicativeExpression returns [Expression element]
 @init{String op = null;}
     :   ex=unaryExpression {check_null(ex.element); retval.element = ex.element;} ( ( '*' {op="*";} | '/' {op="/";} | '%' {op="\%";}) exx=unaryExpression 
-    {InfixOperatorInvocation tmp = new InfixOperatorInvocation(op, exx.element);
-     tmp.setTarget(retval.element);
-     retval.element = tmp;
-    })*
+    {
+         retval.element = new InfixOperatorInvocation(op, retval.element);
+         ((InfixOperatorInvocation)retval.element).addArgument(new ActualArgument(exx.element));
+        })*
     ;
     
 unaryExpression returns [Expression element]

@@ -28,6 +28,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.rejuse.predicate.PrimitiveTotalPredicate;
+
 import chameleon.core.element.Element;
 import chameleon.core.expression.Expression;
 import chameleon.core.lookup.LookupException;
@@ -88,6 +90,13 @@ public abstract Set<Type> getTestTypes() throws LookupException;
     Object o = null;
     try {
       List<Expression> exprs = type.descendants(Expression.class);
+      new PrimitiveTotalPredicate<Expression>() {
+
+				@Override
+				public boolean eval(Expression expr) {
+					return ! (expr.parent() instanceof Expression);
+				}
+			}.filter(exprs);
       System.out.println(_count + " Testing: "+type.getFullyQualifiedName() +" : " + exprs.toString() + " expressions.");
       for(Expression expression : exprs) {
         expr = expression;

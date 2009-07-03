@@ -91,7 +91,7 @@ public class ArrayType extends RegularType {
   
   public boolean assignableTo(Type other) throws LookupException {
   	TypeReference ref = new TypeReference("java.lang.Object");
-  	ref.setUniParent(getNamespace().rootNamespace());
+  	ref.setUniParent(getNamespace().defaultNamespace());
   	Type objType = ref.getType();
     return super.assignableTo(other) ||
            ( // Reference type

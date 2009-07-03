@@ -179,7 +179,7 @@ public class JavaWalker extends TreeParser {
       }
       
       RootNamespace root = lang.defaultNamespace();
-      LookupStrategyFactory contextFactory = root.language().contextFactory();
+      LookupStrategyFactory contextFactory = root.language().lookupFactory();
 
       public Namespace getDefaultNamespace() {
         return root;

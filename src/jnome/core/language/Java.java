@@ -1,27 +1,3 @@
-/*
- * Copyright 2000-2004 the Jnome development team.
- *
- * @author Marko van Dooren
- * @author Nele Smeets
- * @author Kristof Mertens
- * @author Jan Dockx
- *
- * This file is part of Jnome.
- *
- * Jnome is free software; you can redistribute it and/or modify it under the
- * terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later
- * version.
- *
- * Jnome is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * Jnome; if not, write to the Free Software Foundation, Inc., 59 Temple Place,
- * Suite 330, Boston, MA 02111-1307 USA
- */
 package jnome.core.language;
 
 import jnome.core.modifier.PackageProperty;
@@ -50,6 +26,7 @@ import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.modifier.PrivateProperty;
 import chameleon.support.modifier.ProtectedProperty;
 import chameleon.support.modifier.PublicProperty;
+import chameleon.support.rule.member.MemberInheritableByDefault;
 import chameleon.support.rule.member.MemberOverridableByDefault;
 
 /**
@@ -57,7 +34,18 @@ import chameleon.support.rule.member.MemberOverridableByDefault;
  */
 public class Java extends Language {
 
-	
+	public Java(){
+		super("Java", new JavaLookupFactory());
+		_nullType = new NullType(this);
+		new RootNamespace(new SimpleNameSignature(""), this);
+		//NamespacePart np = new NamespacePart(getDefaultNamespace(), getContextFactory().getNamespacePartLocalContext());
+		//np.addType(_nullType);
+		//new CompilationUnit(np);
+		
+		this.defaultNamespace().setNullType();
+		
+	}
+
 	protected NullType _nullType;
 	// Adding properties. Note that 'this' is a PropertyUniverse.
 	public final Property<Element> STRICTFP = new StaticProperty<Element>("strictfp", this);
@@ -77,17 +65,6 @@ public class Java extends Language {
 		CONSTRUCTOR.addImplication(INHERITABLE.inverse());
 	}
 	
-	public Java(){
-		super("Java");
-		_nullType = new NullType(this);
-		new RootNamespace(new SimpleNameSignature(""), this);
-		//NamespacePart np = new NamespacePart(getDefaultNamespace(), getContextFactory().getNamespacePartLocalContext());
-		//np.addType(_nullType);
-		//new CompilationUnit(np);
-		
-		this.defaultNamespace().setNullType();
-		
-	}
 	
 	public Type getNullType(){
 		return _nullType;
@@ -103,6 +80,7 @@ public class Java extends Language {
   
   protected void initializePropertyRules() {
   	addPropertyRule(new MemberOverridableByDefault());
+  	addPropertyRule(new MemberInheritableByDefault());
   }
 
  /*@

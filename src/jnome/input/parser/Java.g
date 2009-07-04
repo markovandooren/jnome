@@ -888,7 +888,7 @@ formalParameterDecls returns [List<FormalParameter> element]
         {if(retval.element == null) {retval.element=new ArrayList<FormalParameter>();}
          FormalParameter param = new FormalParameter(new SimpleNameSignature(id.element.name()),t.element.toArray(id.element.dimension()));
          param.addAllModifiers(mods.element);
-         retval.element.add(param);}
+         retval.element.add(0,param);}
     |   modss=variableModifiers tt=type '...' idd=variableDeclaratorId 
         {retval.element = new ArrayList<FormalParameter>(); 
          FormalParameter param = new MultiFormalParameter(new SimpleNameSignature(idd.element.name()),tt.element.toArray(idd.element.dimension()));

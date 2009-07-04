@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/marko/git/jnome/src/jnome/input/parser/Java.g 2009-07-03 16:31:45
+// $ANTLR 3.1.2 /Users/marko/git/jnome/src/jnome/input/parser/Java.g 2009-07-04 22:55:41
 
 package jnome.input.parser;
 
@@ -8176,7 +8176,7 @@ public class JavaParser extends Parser {
                       if(retval.element == null) {retval.element=new ArrayList<FormalParameter>();}
                                FormalParameter param = new FormalParameter(new SimpleNameSignature(id.element.name()),t.element.toArray(id.element.dimension()));
                                param.addAllModifiers(mods.element);
-                               retval.element.add(param);
+                               retval.element.add(0,param);
                     }
 
                     }
@@ -11424,7 +11424,7 @@ public class JavaParser extends Parser {
                     int LA113_0 = input.LA(1);
 
                     if ( (LA113_0==77) ) {
-                        int LA113_2 = input.LA(2);
+                        int LA113_1 = input.LA(2);
 
                         if ( (synpred151_Java()) ) {
                             alt113=1;

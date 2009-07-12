@@ -28,6 +28,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import jnome.output.JavaCodeWriter;
+
 import org.rejuse.predicate.PrimitiveTotalPredicate;
 
 import chameleon.core.element.Element;
@@ -68,18 +70,18 @@ public abstract Set<Type> getTestTypes() throws LookupException;
   public void testExpressionTypes() throws Exception {
     //myTestDescendants(); // Stupid Junit creates a new test object for every test (which includes parsing).
     Set <Type> types = getTestTypes();
-    System.out.println("Starting to test "+types.size() + " types.");
+    getLogger().info("Starting to test "+types.size() + " types.");
     Iterator<Type> iter = types.iterator();
     long startTime = System.currentTimeMillis();
     int count = 0;
     while (iter.hasNext()) {
       Type type = iter.next();
-      System.out.println(count+" Testing "+type.getFullyQualifiedName());
+      getLogger().info(count+" Testing "+type.getFullyQualifiedName());
       processType(type);
       count++;
     }
     long endTime = System.currentTimeMillis();
-    System.out.println("Testing took "+(endTime-startTime)+" milliseconds.");
+    getLogger().info("Testing took "+(endTime-startTime)+" milliseconds.");
   }
 
   private int _count = 0;
@@ -97,29 +99,24 @@ public abstract Set<Type> getTestTypes() throws LookupException;
 					return ! (expr.parent() instanceof Expression);
 				}
 			}.filter(exprs);
-      System.out.println(_count + " Testing: "+type.getFullyQualifiedName() +" : " + exprs.toString() + " expressions.");
       for(Expression expression : exprs) {
-        expr = expression;
-//        System.out.println(_count + " Testing: "+type.getFullyQualifiedName() + " : " + new JavaCodeWriter().toCode(expr));
-//        System.out.println("Ancestor method: "+new JavaCodeWriter().toCode(expr.getNearestAncestor(Method.class)));
-        assertTrue(expr.getType() != null);
+        getLogger().info(_count + " Testing: "+toCode(expression));
+        assertTrue(expression.getType() != null);
       }
-    } catch (ClassCastException e) {
-//    	e.printStackTrace();
-//      try {
-//        System.out.println("Cast error: "+o.getClass().getName());
-//      } catch (RuntimeException e1) {
-//        //e1.printStackTrace();
-//      }
-      Type ttt = expr.getType();
-      throw e;
     }
     catch (Exception e) {
-//      e.printStackTrace();
-//      expr.getType();
       throw e; 
     }
     
   }
   
+// Pull up this test, and make the toCode abstract. 
+//  public abstract String toCode(Expression expr) throws LookupException;
+
+	public String toCode(Expression expr) throws LookupException {
+		return _writer.toCode(expr);
+	}
+	
+	private JavaCodeWriter _writer = new JavaCodeWriter();
+
 }

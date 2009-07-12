@@ -35,6 +35,7 @@ import chameleon.core.expression.Literal;
 import chameleon.core.expression.NamedTarget;
 import chameleon.core.expression.VariableReference;
 import chameleon.core.lookup.LookupException;
+import chameleon.core.member.Member;
 import chameleon.core.method.Implementation;
 import chameleon.core.method.Method;
 import chameleon.core.method.NativeImplementation;
@@ -430,7 +431,7 @@ public class JavaCodeWriter extends Syntax {
     result.append("{\n");
     indent();
     
-    Set members = type.directlyDeclaredElements();
+    List<Member> members = type.directlyDeclaredElements();
     // Members
     new RobustVisitor() {
       public Object visit(Object element) throws LookupException {
@@ -589,7 +590,7 @@ public class JavaCodeWriter extends Syntax {
 	        result.append(" ");
 	      }
 	    
-	    result.append(((SimpleNameMethodSignature)method.signature()).getName());
+	    result.append(((SimpleNameMethodSignature)method.signature()).name());
 	    result.append("(");
 	    Iterator iter = method.getParameters().iterator();
 	    while(iter.hasNext()) {
@@ -1110,7 +1111,7 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public String toCodeInfixInvocation(InfixOperatorInvocation inv) throws LookupException {
-    return "(" + toCode(inv.getTarget())+") " + inv.getName()+ " (" + toCode((Element)inv.getActualParameters().get(0)) +")";
+    return "(" + toCode(inv.getTarget())+") " + inv.name()+ " (" + toCode((Element)inv.getActualParameters().get(0)) +")";
   }
   
   public boolean isPrefixInvocation(Element element) {
@@ -1118,7 +1119,7 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public String toCodePrefixInvocation(PrefixOperatorInvocation inv) throws LookupException {
-    return inv.getName()+"("+toCode(inv.getTarget())+")";
+    return inv.name()+"("+toCode(inv.getTarget())+")";
   }
   
   public boolean isPostfixInvocation(Element element) {
@@ -1126,7 +1127,7 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public String toCodePostfixInvocation(PostfixOperatorInvocation inv) throws LookupException {
-    return toCode(inv.getTarget()) + inv.getName();
+    return toCode(inv.getTarget()) + inv.name();
   }
   
   public boolean isClassLiteral(Element element) {
@@ -1181,7 +1182,7 @@ public class JavaCodeWriter extends Syntax {
       result.append(toCode(inv.getTarget()));
       result.append(".");
     }
-    result.append(inv.getName());
+    result.append(inv.name());
     result.append(getActualArgs(inv));
     return result.toString();
   }

@@ -28,8 +28,8 @@ public class EnumConstant extends FixedSignatureMember<EnumConstant,Type,SimpleN
 		return result;
 	}
 
-	public Set<Member> getIntroducedMembers() {
-		Set result = new HashSet();
+	public List<Member> getIntroducedMembers() {
+		List<Member> result = new ArrayList<Member>();
 		result.add(this);
 		return result;
 	}

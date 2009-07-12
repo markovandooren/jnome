@@ -1,6 +1,6 @@
 package jnome.core.expression;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -101,10 +101,10 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
   	final Type anon = new RegularType(new SimpleNameSignature("TODO")) {
   		
   		@Override
-  		public Set<Member> members() throws LookupException {
-  			Set<Member> result = super.members();
+  		public List<Member> members() throws LookupException {
+  			List<Member> result = super.members();
   			Type writtenType = ConstructorInvocation.this.getTypeReference().getType();
-  			Set<NormalMethod> superMembers = writtenType.members(NormalMethod.class);
+  			List<NormalMethod> superMembers = writtenType.members(NormalMethod.class);
   			new PrimitiveTotalPredicate<NormalMethod>() {
 
 					@Override
@@ -238,13 +238,11 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
     
     public NormalMethod filter(Declaration declaration) throws LookupException {
     	NormalMethod result = null;
-			if (selectedClass().isInstance(declaration)) {
-				NormalMethod decl = (NormalMethod) declaration;
-				List<Type> actuals = getActualParameterTypes();
-				List<Type> formals = decl.header().getParameterTypes();
-				if (new MoreSpecificTypesOrder().contains(actuals, formals) && (decl.is(language().CONSTRUCTOR)==Ternary.TRUE)) {
+			NormalMethod decl = (NormalMethod) declaration;
+			List<Type> actuals = getActualParameterTypes();
+			List<Type> formals = decl.header().getParameterTypes();
+			if (new MoreSpecificTypesOrder().contains(actuals, formals) && (decl.is(language().CONSTRUCTOR)==Ternary.TRUE)) {
 					result = decl;
-				}
 			}
       return result;
     }
@@ -271,9 +269,16 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 		return new ConstructorSelector();
 	}
 
-	public Set<Declaration> declarations() throws LookupException {
-		Set<Declaration> result = new HashSet<Declaration>();
+	public List<? extends Type> declarations() throws LookupException {
+		List<Type> result = new ArrayList<Type>();
+		if(getAnonymousInnerType() != null) {
+			result.add(getAnonymousInnerType());
+		}
 		return result;
+	}
+
+	public <D extends Declaration> List<D> declarations(DeclarationSelector<D> selector) throws LookupException {
+		return selector.selection(declarations());
 	}
 
 //	// COPIED FROM chameleon.core.type.Type

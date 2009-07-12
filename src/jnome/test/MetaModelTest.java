@@ -16,6 +16,12 @@ import chameleon.core.namespace.Namespace;
  * @author marko
  */
 public abstract class MetaModelTest extends TestCase {
+	
+	private static Logger _logger = Logger.getLogger("chameleon.test");
+	
+	public static Logger getLogger() {
+		return _logger;
+	}
 
 	public MetaModelTest(String arg0) {
 		super(arg0);
@@ -32,11 +38,21 @@ public abstract class MetaModelTest extends TestCase {
     }
     
     public abstract void addTestFiles();
-  
+
+    /**
+     * This method is invoked during setup to set the levels of the loggers.
+     * It allows subclasses to easily changes those levels if tests fail, without
+     * having to change this class.
+     * 
+     * The default behavior is to leave log levels untouched. They are DEBUG by default.
+     */
+    public void setLogLevels() {
+    	// do nothing by default
+    }
 
     public void setUp() throws Exception {
     	BasicConfigurator.configure();
-    	Logger.getRootLogger().setLevel(Level.FATAL);
+    	setLogLevels();
       if(_mm == null) {
         //_mm = getMetaModelFactory().getMetaModel(_files.getFiles());
       	Set s = JavaMetaModelFactory.loadFiles(_files, ".java", true);

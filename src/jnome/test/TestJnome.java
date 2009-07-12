@@ -37,11 +37,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 import jnome.core.type.JavaTypeReference;
+import jnome.output.JavaCodeWriter;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
 import org.antlr.runtime.RecognitionException;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
+import chameleon.core.expression.Expression;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.type.Type;
 
@@ -83,7 +87,8 @@ public class TestJnome extends ExpressionTest {
 
 	public Set getTestTypes() throws LookupException {
 		Set<Type> result = new HashSet<Type>();
-		JavaTypeReference ref = new JavaTypeReference("org.jnome.input.antlr.javadoc.DocumentationBlockMethodAcquirer");
+//		JavaTypeReference ref = new JavaTypeReference("org.jnome.input.antlr.javadoc.DocumentationBlockMethodAcquirer");
+			  JavaTypeReference ref = new JavaTypeReference("org.jnome.mm.java.types.ResolvedReturnTypeImpl");
 		ref.setUniParent(_mm);
 		result.add(ref.getType());
 //		result = _mm.getSubNamespace("org").getSubNamespace("jnome").getAllTypes();
@@ -93,4 +98,10 @@ public class TestJnome extends ExpressionTest {
   public static void main(String[] args) throws Exception, Throwable {
     new TestSuite(TestJnome.class).run(new TestResult());
   }
+
+
+//	@Override
+//	public void setLogLevels() {
+////		Logger.getRootLogger().setLevel(Level.FATAL);
+//	}
 }

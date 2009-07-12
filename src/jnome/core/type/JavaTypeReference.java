@@ -97,10 +97,10 @@ public class JavaTypeReference extends TypeReference {
   public Type getType() throws LookupException {
     Type result = null;
 
-//    result = getCache();
-//    if (result != null) {
-//      return result;
-//    }
+    result = getCache();
+    if (result != null) {
+      return result;
+    }
 
     if (getTarget() != null) {
       NamespaceOrType target = getTarget().getNamespaceOrType();
@@ -120,7 +120,7 @@ public class JavaTypeReference extends TypeReference {
     }
 
     if (result != null) {
-//      setCache(result);
+      setCache(result);
       return result;
     } else {
       throw new LookupException("Result of type reference lookup is null: "+getFullyQualifiedName(),this);

@@ -432,6 +432,14 @@ package jnome.input.parser;
     }
 
   }
+  
+  public JavaTypeReference myToArray(JavaTypeReference ref, StupidVariableDeclaratorId id) {
+    if(ref.arrayDimension() == 0) {
+      ref.setArrayDimension(id.dimension());
+    }
+    return ref;
+  }
+  
   public void processPackageDeclaration(CompilationUnit cu, NamespacePart np){
     if(np!=null){
       cu.getDefaultNamespacePart().addNamespacePart(np);
@@ -885,13 +893,14 @@ formalParameters returns [List<FormalParameter> element]
 formalParameterDecls returns [List<FormalParameter> element]
     :   mods=variableModifiers t=type id=variableDeclaratorId 
         (',' decls=formalParameterDecls {retval.element=decls.element; })?
-        {if(retval.element == null) {retval.element=new ArrayList<FormalParameter>();}
-         FormalParameter param = new FormalParameter(new SimpleNameSignature(id.element.name()),t.element.toArray(id.element.dimension()));
+        {if(retval.element == null) {
+         retval.element=new ArrayList<FormalParameter>();}
+         FormalParameter param = new FormalParameter(new SimpleNameSignature(id.element.name()),myToArray(t.element, id.element));
          param.addAllModifiers(mods.element);
          retval.element.add(0,param);}
     |   modss=variableModifiers tt=type '...' idd=variableDeclaratorId 
         {retval.element = new ArrayList<FormalParameter>(); 
-         FormalParameter param = new MultiFormalParameter(new SimpleNameSignature(idd.element.name()),tt.element.toArray(idd.element.dimension()));
+         FormalParameter param = new MultiFormalParameter(new SimpleNameSignature(idd.element.name()),myToArray(tt.element,idd.element));
          param.addAllModifiers(modss.element);
          retval.element.add(param);}
     ;
@@ -1078,7 +1087,7 @@ catchClause returns [CatchClause element]
 formalParameter returns [FormalParameter element]
 @after{assert(retval.element != null);}
     :   mods=variableModifiers tref=type name=variableDeclaratorId 
-        {tref.element.setArrayDimension(name.element.dimension()); retval.element = new FormalParameter(new SimpleNameSignature(name.element.name()), tref.element);}
+        {retval.element = new FormalParameter(new SimpleNameSignature(name.element.name()), myToArray(tref.element, name.element));}
     ;
         
 switchBlockStatementGroups returns [List<SwitchCase> element]
@@ -1410,6 +1419,7 @@ arrayAccessSuffixRubbish returns [Expression element]
 
 // NEEDS_TARGET
 creator returns [Expression element]
+//BUG must count array brackets
     :   nonWildcardTypeArguments {throw new ChameleonProgrammerException("Generic constructors are not yet supported");} createdName classCreatorRest
     |    tt=createdName  ('[' ']')+ init=arrayInitializer {retval.element = new ArrayCreationExpression(tt.element);
          ((ArrayCreationExpression)retval.element).setInitializer(init.element);}

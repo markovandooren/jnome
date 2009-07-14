@@ -33,7 +33,7 @@ package jnome.test;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Set;
+import java.util.List;
 
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
@@ -41,6 +41,7 @@ import junit.framework.TestSuite;
 import org.antlr.runtime.RecognitionException;
 
 import chameleon.core.lookup.LookupException;
+import chameleon.core.type.Type;
 
 /**
  * @author marko
@@ -73,7 +74,7 @@ public class TestJRegex extends ExpressionTest {
 	 *
 	 */
 
-	public Set getTestTypes() throws LookupException {
+	public List<Type> getTestTypes() throws LookupException {
 		assertNotNull(_mm);
 		assertNotNull(_mm.getSubNamespace("jregex"));
     return _mm.getSubNamespace("jregex").getAllTypes();

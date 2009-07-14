@@ -24,11 +24,12 @@
  */
 package jnome.test;
 
-import java.util.Set;
+import java.util.List;
 
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 import chameleon.core.lookup.LookupException;
+import chameleon.core.type.Type;
 
 /**
  * @author Marko van Dooren
@@ -51,7 +52,7 @@ public class TestRejuse extends ExpressionTest {
   	
   }
   
-  public Set getTestTypes() throws LookupException {
+  public List<Type> getTestTypes() throws LookupException {
     return _mm.getSubNamespace("org").getSubNamespace("jutil").getAllTypes();
   }
   

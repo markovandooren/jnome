@@ -53,8 +53,12 @@ public class JavaVariableDeclaration<V extends Variable> extends VariableDeclara
  
  private int _arrayDimension = 0;
 
+ /**
+  * This method adds the array dimension. 
+  */
  protected void transform(V variable) {
-	 ((JavaTypeReference)variable.getTypeReference()).setArrayDimension(arrayDimension());
+	 JavaTypeReference ref = (JavaTypeReference)variable.getTypeReference();
+	 ref.addArrayDimension(arrayDimension());
  }
 
 

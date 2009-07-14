@@ -39,7 +39,6 @@ public class JavaTypeReference extends TypeReference {
   
   public JavaTypeReference(String name, int arrayDimension) {
   	super(name);
-
   	if(Config.DEBUG) {
   		if((name != null) && (name.contains("["))) {
   			throw new ChameleonProgrammerException("Initializing a type reference with a [ in the name.");
@@ -202,7 +201,12 @@ public class JavaTypeReference extends TypeReference {
   	NamespaceOrTypeReference target = getTarget();
   	NamespaceOrTypeReference clone = (target == null ? null : target.clone());
   	JavaTypeReference result =  new JavaTypeReference(clone,getName());
+  	result.setArrayDimension(arrayDimension());
   	return result;
   }
+
+	public void addArrayDimension(int arrayDimension) {
+		_arrayDimension += arrayDimension;
+	}
   
 }

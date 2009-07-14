@@ -2,7 +2,6 @@ package jnome.core.expression;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import jnome.core.type.JavaTypeReference;
 
@@ -20,13 +19,14 @@ import chameleon.core.expression.InvocationTarget;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.lookup.LookupStrategy;
-import chameleon.core.member.Member;
 import chameleon.core.relation.WeakPartialOrder;
 import chameleon.core.type.ClassBody;
 import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeContainer;
+import chameleon.core.type.TypeElement;
 import chameleon.core.type.TypeReference;
+import chameleon.core.type.inheritance.SubtypeRelation;
 import chameleon.support.member.MoreSpecificTypesOrder;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.util.Util;
@@ -90,52 +90,33 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 	public void setBody(ClassBody body) {
 		if(body == null) {
 			_body.connectTo(null);
-			_anonymousType.connectTo(null);
 		} else {
 			_body.connectTo(body.parentLink());
-			createAnonymousType();
 		}
 	}
 
-  private void createAnonymousType() {
-  	final Type anon = new RegularType(new SimpleNameSignature("TODO")) {
-  		
-  		@Override
-  		public List<Member> members() throws LookupException {
-  			List<Member> result = super.members();
-  			Type writtenType = ConstructorInvocation.this.getTypeReference().getType();
-  			List<NormalMethod> superMembers = writtenType.members(NormalMethod.class);
-  			new PrimitiveTotalPredicate<NormalMethod>() {
-
-					@Override
-					public boolean eval(NormalMethod object) {
-						return object.is(language().CONSTRUCTOR) == Ternary.TRUE;
-					}
-  				
-  			}.filter(superMembers);
-  			for(NormalMethod method: superMembers) {
-  				method.setUniParent(this);
-  			}
-  			result.addAll(superMembers);
-  			return result;
-  		}
-  		
-  		public ClassBody body() {
-  			return ConstructorInvocation.this.body();
-  		}
-  	};
-		_anonymousType.connectTo(
-				anon.parentLink()
-		);
+  private Type createAnonymousType() throws LookupException {
+  	final Type anon = new RegularType(new SimpleNameSignature("TODO"));
+  	TypeReference tref = getTypeReference();
+ 	  Type writtenType = tref.getType();
+	  List<NormalMethod> superMembers = writtenType.directlyDeclaredElements(NormalMethod.class);
+	  new PrimitiveTotalPredicate<NormalMethod>() {
+		  @Override
+		  public boolean eval(NormalMethod object) {
+			  return object.is(language().CONSTRUCTOR) == Ternary.TRUE;
+		  }
+	  }.filter(superMembers);
+	  for(NormalMethod method: superMembers) {
+	  	anon.add(method.clone());
+	  }
+	  for(TypeElement element : body().elements()) {
+	  	anon.add(element.clone());
+	  }
+	  anon.addInheritanceRelation(new SubtypeRelation(tref.clone()));
+	  // Attach the created type to this element.
+		anon.setUniParent(this);
+		return anon;
 	}
-
-//  public Relation getTypesLink() {
-//    return _anon;
-//  }
-
-//  public NamespacePart getNamespacePart() {
-//	  return ((TypeContainer)this.getParent()).getNamespacePart();
-//  }
 
   public Type getType() throws LookupException {
     if (body() == null) {
@@ -147,11 +128,15 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
     }
   }
   
-	private Reference<ConstructorInvocation,Type> _anonymousType= new Reference<ConstructorInvocation,Type>(this);
+//	private Reference<ConstructorInvocation,Type> _anonymousType= new Reference<ConstructorInvocation,Type>(this);
 
   
-  public Type getAnonymousInnerType() {
-  	return _anonymousType.getOtherEnd();
+  public Type getAnonymousInnerType() throws LookupException {
+  	if(body() == null) {
+  		return null;
+  	} else {
+  	  return createAnonymousType();
+  	}
   }
 
 //  public RegularMethod getConstructor() throws LookupException {

@@ -3,11 +3,12 @@ package jnome.test;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Set;
+import java.util.List;
 
 import org.antlr.runtime.RecognitionException;
 
 import chameleon.core.lookup.LookupException;
+import chameleon.core.type.Type;
 
 /**
  * @author marko
@@ -42,7 +43,7 @@ public class TestAntlr extends ExpressionTest {
 	 *
 	 */
 
-	public Set getTestTypes() throws LookupException {
+	public List<Type> getTestTypes() throws LookupException {
 		return _mm.getSubNamespace("antlr").getAllTypes();
 	}
 

@@ -34,6 +34,128 @@ import chameleon.support.rule.member.MemberOverridableByDefault;
  */
 public class Java extends Language {
 
+	private final class JavaHidesRelation extends StrictPartialOrder<Member> {
+		@Override
+		public boolean contains(Member first, Member second) throws LookupException {
+			boolean result = false;
+			if((first instanceof NormalMethod) && (second instanceof NormalMethod)) {
+				result = first.getNearestType().subTypeOf(second.getNearestType()) &&
+				         (first.is(CLASS) == Ternary.TRUE) && 
+				          first.signature().sameAs(second.signature());
+			} else if(((first instanceof RegularMemberVariable) && (second instanceof RegularMemberVariable)) ||
+					((first instanceof RegularMemberVariable) && (second instanceof RegularMemberVariable))) {
+				 result = first.getNearestType().subTypeOf(second.getNearestType()) &&
+				          first.signature().sameAs(second.signature());
+			}
+			return result;
+		}
+
+		@Override
+		public boolean equal(Member first, Member second) throws LookupException {
+			return first.equals(second);
+		}
+	}
+	
+	private final class JavaImplementsRelation extends StrictPartialOrder<Member> {
+
+		@Override
+		public boolean contains(Member first, Member second) throws LookupException {
+		  boolean result;
+		  
+		  if((first != second) && (first instanceof Method) && (second instanceof Method)) {
+		    assert first != null;
+		    assert second != null;
+		    Method<? extends Method,? extends MethodHeader, ? extends MethodSignature> method1 = (Method<? extends Method,? extends MethodHeader, ? extends MethodSignature>) first;
+		    Method<? extends Method,? extends MethodHeader, ? extends MethodSignature> method2 = (Method<? extends Method,? extends MethodHeader, ? extends MethodSignature>) second;
+		    Ternary temp1 = method1.is(DEFINED);
+		    boolean defined1;
+		    if(temp1 == Ternary.TRUE) {
+		      defined1 = true;
+		    } else if (temp1 == Ternary.FALSE) {
+		      defined1 = false;
+		    } else {
+		    	temp1 = method1.is(DEFINED);
+		      throw new LookupException("The definedness of the first method could not be determined.");
+		    }
+		    if(defined1) {
+		    Ternary temp2 = method2.is(DEFINED);
+		    boolean defined2;
+		    if(temp2 == Ternary.TRUE) {
+		      defined2 = true;
+		    } else if (temp2 == Ternary.FALSE) {
+		      defined2 = false;
+		    } else {
+		      throw new LookupException("The definedness of the second method could not be determined.");
+		    }
+		    result = (!defined2) && 
+		             method1.signature().sameAs(method2.signature()) && 
+		             method1.sameKind(method2);
+		    } else {
+		    	result = false;
+		    }
+		  }
+//		  else if ((first instanceof MemberVariable) && (second instanceof MemberVariable)) {
+//		    MemberVariable<? extends MemberVariable> var1 = (MemberVariable)first;
+//		    MemberVariable<? extends MemberVariable> var2 = (MemberVariable)second;
+//		    
+//		    result = var1.getNearestType().subTypeOf(var2.getNearestType());  
+//		  }
+		  else {
+		    result = false;
+		  }
+		  return result; 
+		}
+
+		@Override
+		public boolean equal(Member first, Member second) {
+			return first == second;
+		}
+		
+	}
+
+	private class JavaOverridesRelation extends StrictPartialOrder<Member> {
+		@Override
+		public boolean contains(Member first, Member second)
+		    throws LookupException {
+		  boolean result;
+		  
+		  if((first instanceof Method) && (second instanceof Method)) {
+		    assert first != null;
+		    assert second != null;
+		    Method<? extends Method,? extends MethodHeader, ? extends MethodSignature> method1 = (Method<? extends Method,? extends MethodHeader, ? extends MethodSignature>) first;
+		    Method<? extends Method,? extends MethodHeader, ? extends MethodSignature> method2 = (Method<? extends Method,? extends MethodHeader, ? extends MethodSignature>) second;
+		    Ternary temp = method2.is(OVERRIDABLE);
+		    boolean overridable;
+		    if(temp == Ternary.TRUE) {
+		      overridable = true;
+		    } else if (temp == Ternary.FALSE) {
+		      overridable = false;
+		    } else {
+		      throw new LookupException("The overridability of the other method could not be determined.");
+		    }
+		    result = overridable && 
+		             method1.signature().sameAs(method2.signature()) && 
+		             method1.getNearestType().subTypeOf(method2.getNearestType()) && 
+		             method1.sameKind(method2);
+		  } 
+//		  else if ((first instanceof MemberVariable) && (second instanceof MemberVariable)) {
+//		    MemberVariable<? extends MemberVariable> var1 = (MemberVariable)first;
+//		    MemberVariable<? extends MemberVariable> var2 = (MemberVariable)second;
+//		    
+//		    result = var1.getNearestType().subTypeOf(var2.getNearestType());  
+//		  } 
+		  else {
+		    result = false;
+		  }
+		  return result; 
+		}
+
+		@Override
+		public boolean equal(Member first, Member second) {
+		  return first == second;
+		}
+	}
+
 	public Java(){
 		super("Java", new JavaLookupFactory());
 		_nullType = new NullType(this);
@@ -112,49 +234,7 @@ public class Java extends Language {
 	  
     @Override
     public StrictPartialOrder<Member> overridesRelation() {
-     return new StrictPartialOrder<Member>() {
-
-      @Override
-      public boolean contains(Member first, Member second)
-          throws LookupException {
-        boolean result;
-        
-        if((first instanceof Method) && (second instanceof Method)) {
-          assert first != null;
-          assert second != null;
-          Method<? extends Method,? extends MethodHeader, ? extends MethodSignature> method1 = (Method<? extends Method,? extends MethodHeader, ? extends MethodSignature>) first;
-          Method<? extends Method,? extends MethodHeader, ? extends MethodSignature> method2 = (Method<? extends Method,? extends MethodHeader, ? extends MethodSignature>) second;
-          Ternary temp = method2.is(OVERRIDABLE);
-          boolean overridable;
-          if(temp == Ternary.TRUE) {
-            overridable = true;
-          } else if (temp == Ternary.FALSE) {
-            overridable = false;
-          } else {
-            throw new LookupException("The overridability of the other method could not be determined.");
-          }
-          result = overridable && 
-                   method1.signature().sameAs(method2.signature()) && 
-                   method1.getNearestType().subTypeOf(method2.getNearestType()) && 
-                   method1.sameKind(method2);
-        } else if ((first instanceof MemberVariable) && (second instanceof MemberVariable)) {
-          MemberVariable<? extends MemberVariable> var1 = (MemberVariable)first;
-          MemberVariable<? extends MemberVariable> var2 = (MemberVariable)second;
-          
-          result = var1.getNearestType().subTypeOf(var2.getNearestType());  
-        } else {
-          result = false;
-        }
-        return result; 
-      }
-
-      @Override
-      public boolean equal(Member first, Member second)
-          throws LookupException {
-        return first == second;
-      }
-       
-     };
+     return new JavaOverridesRelation();
     }
 
     public Type findType(String fqn) throws LookupException {
@@ -175,29 +255,11 @@ public class Java extends Language {
 
 		@Override
 		public StrictPartialOrder<Member> hidesRelation() {
-			return new StrictPartialOrder<Member>() {
-
-				@Override
-				public boolean contains(Member first, Member second) throws LookupException {
-					boolean result = false;
-					if((first instanceof NormalMethod) && (second instanceof NormalMethod)) {
-						result = first.getNearestType().subTypeOf(second.getNearestType()) &&
-						         (first.is(CLASS) == Ternary.TRUE) && 
-						          first.signature().sameAs(second.signature());
-					} else if(((first instanceof RegularMemberVariable) && (second instanceof RegularMemberVariable)) ||
-							((first instanceof RegularMemberVariable) && (second instanceof RegularMemberVariable))) {
-						 result = first.getNearestType().subTypeOf(second.getNearestType()) &&
-						          first.signature().sameAs(second.signature());
-					}
-					return result;
-				}
-
-				@Override
-				public boolean equal(Member first, Member second) throws LookupException {
-					return first.equals(second);
-				}
-				
-			};
+			return new JavaHidesRelation();
+		}
+		
+		public StrictPartialOrder<Member> implementsRelation() {
+			return new JavaImplementsRelation();
 		}
 
 		@Override

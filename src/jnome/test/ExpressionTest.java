@@ -78,10 +78,10 @@ public abstract List<Type> getTestTypes() throws LookupException;
     getLogger().info("Starting to test "+types.size() + " types.");
     Iterator<Type> iter = types.iterator();
     long startTime = System.currentTimeMillis();
-    int count = 0;
+    int count = 1;
     while (iter.hasNext()) {
       Type type = iter.next();
-      getExpressionLogger().info(count+" Testing "+type.getFullyQualifiedName());
+      getLogger().info(count+" Testing "+type.getFullyQualifiedName());
       processType(type);
       count++;
     }
@@ -105,7 +105,7 @@ public abstract List<Type> getTestTypes() throws LookupException;
 //				}
 //			}.filter(exprs);
       for(Expression expression : exprs) {
-        getLogger().info(_count + " Testing: "+toCode(expression));
+        getExpressionLogger().info(_count + " Testing: "+toCode(expression));
         assertTrue(expression.getType() != null);
       }
     }

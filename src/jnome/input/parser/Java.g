@@ -721,7 +721,7 @@ scope MethodScope;
     
 methodDeclaratorRest
 @init{int count = 0;}
-    :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}} ('[' ']' {count++;})* {((JavaTypeReference)$MethodScope::method.getReturnTypeReference()).setArrayDimension(count);}
+    :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}} ('[' ']' {count++;})* {((JavaTypeReference)$MethodScope::method.getReturnTypeReference()).addArrayDimension(count);}
         ('throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));}})?
         (   body=methodBody {$MethodScope::method.setImplementation(new RegularImplementation(body.element));}
         |   ';' {$MethodScope::method.setImplementation(null);}

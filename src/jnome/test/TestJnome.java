@@ -58,8 +58,12 @@ public class TestJnome extends ExpressionTest {
 //		JavaTypeReference ref = new JavaTypeReference("org.jnome.input.antlr.javadoc.DocumentationBlockMethodAcquirer");
 //			  JavaTypeReference ref = new JavaTypeReference("org.jnome.mm.java.types.ResolvedReturnTypeImpl");
 //		JavaTypeReference ref = new JavaTypeReference("org.jnome.mm.Resolver");
-		
+//		JavaTypeReference ref = new JavaTypeReference("org.jnome.mm.java.methods.MethodWithReturnType");
 //		JavaTypeReference ref = new JavaTypeReference("org.jnome.input.antlr.javadoc.parser.JavaDocParser");
+//		JavaTypeReference ref = new JavaTypeReference("org.jnome.output.xml.java.packages.ResolvedPackageWriter");
+//		JavaTypeReference ref = new JavaTypeReference("org.jnome.input.antlr.javadoc.DocumentationBlockAcquirer");
+//		JavaTypeReference ref = new JavaTypeReference("org.jnome.input.antlr.javadoc.parser.JavaDocLexer");
+//		JavaTypeReference ref = new JavaTypeReference("org.jnome.input.antlr.java.methods.RegularConstructorAcquirer");
 //		ref.setUniParent(_mm);
 //		result.add(ref.getType());
 //		ref = new JavaTypeReference("org.jnome.input.antlr.java.parser.JnomeJavaParser");
@@ -77,6 +81,7 @@ public class TestJnome extends ExpressionTest {
 	@Override
 	public void setLogLevels() {
 		Logger.getLogger("chameleon.test").setLevel(Level.INFO);
+//		Logger.getLogger("chameleon.test.expression").setLevel(Level.FATAL);
 		Logger.getRootLogger().setLevel(Level.FATAL);
 	}
 }

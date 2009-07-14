@@ -1286,7 +1286,7 @@ public class JavaCodeWriter extends Syntax {
   public String toCodeArrayCreation(ArrayCreationExpression expr) throws LookupException {
     StringBuffer result = new StringBuffer();
     result.append("new ");
-    result.append(toCode(expr.getTypeReference()).substring(0, toCode(expr.getTypeReference()).indexOf("[")));
+    result.append(toCode(expr.getTypeReference()));
     Collection inits = expr.getDimensionInitializers();
     Iterator iter = inits.iterator();
     while(iter.hasNext()) {

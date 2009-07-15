@@ -88,7 +88,8 @@ public class Java extends Language {
 		      throw new LookupException("The definedness of the second method could not be determined.");
 		    }
 		    result = (!defined2) && 
-		             method1.signature().sameAs(method2.signature()) && 
+		             method1.signature().sameAs(method2.signature()) &&
+		             (! method2.getNearestType().subTypeOf(method1.getNearestType())) &&
 		             method1.sameKind(method2);
 		    } else {
 		    	result = false;

@@ -33,12 +33,14 @@ import jnome.core.type.ArrayType;
 import org.rejuse.association.OrderedReferenceSet;
 import org.rejuse.java.collections.Visitor;
 
+import chameleon.core.element.ChameleonProgrammerException;
 import chameleon.core.expression.Expression;
 import chameleon.core.expression.ExpressionContainer;
 import chameleon.core.expression.InvocationTarget;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.type.Type;
 import chameleon.core.variable.Variable;
+import chameleon.support.variable.VariableDeclaration;
 
 /**
  * @author Marko van Dooren
@@ -87,8 +89,12 @@ public class ArrayInitializer extends Expression implements ExpressionContainer 
     else if (parent() instanceof Variable) {
       return ((Variable)parent()).getType();
     }
+    else if (parent() instanceof VariableDeclaration<?>) {
+      return ((VariableDeclaration<?>)parent()).parent().typeReference().getType();
+    }
     else {
-      throw new RuntimeException();
+    	System.out.println(parent().getClass().getName());
+      throw new ChameleonProgrammerException("Cannot determine type of array initializer based on the parent.");
     }
   }
 

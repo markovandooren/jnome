@@ -10,6 +10,7 @@ import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.predicate.PrimitiveTotalPredicate;
 
 import chameleon.core.declaration.Declaration;
+import chameleon.core.declaration.DeclarationContainer;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.expression.Expression;
@@ -23,7 +24,6 @@ import chameleon.core.relation.WeakPartialOrder;
 import chameleon.core.type.ClassBody;
 import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
-import chameleon.core.type.TypeContainer;
 import chameleon.core.type.TypeElement;
 import chameleon.core.type.TypeReference;
 import chameleon.core.type.inheritance.SubtypeRelation;
@@ -35,7 +35,7 @@ import chameleon.util.Util;
  * @author Marko van Dooren
  *
  */
-public class ConstructorInvocation extends Invocation<ConstructorInvocation, NormalMethod> implements TypeContainer<ConstructorInvocation, ExpressionContainer> {
+public class ConstructorInvocation extends Invocation<ConstructorInvocation, NormalMethod> implements DeclarationContainer<ConstructorInvocation, ExpressionContainer> {
 
   /**
    * @param target

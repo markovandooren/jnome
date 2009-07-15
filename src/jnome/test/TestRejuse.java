@@ -24,10 +24,14 @@
  */
 package jnome.test;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import jnome.core.type.JavaTypeReference;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import chameleon.core.lookup.LookupException;
 import chameleon.core.type.Type;
 
@@ -53,10 +57,22 @@ public class TestRejuse extends ExpressionTest {
   }
   
   public List<Type> getTestTypes() throws LookupException {
-    return _mm.getSubNamespace("org").getSubNamespace("jutil").getAllTypes();
+		List<Type> result = new ArrayList<Type>();
+//    JavaTypeReference ref = new JavaTypeReference("org.jutil.math.matrix.Matrix");
+//    ref.setUniParent(_mm);
+//    result.add(ref.getType());
+	
+    result = _mm.getSubNamespace("org").getSubNamespace("jutil").getAllTypes();
+    return result;
   }
-  
-  public static void main(String[] args) throws Exception, Throwable {
-    new TestSuite(TestRejuse.class).run(new TestResult());
-  }
+
+	@Override
+	public void setLogLevels() {
+		Logger.getLogger("chameleon.test").setLevel(Level.INFO);
+		Logger.getRootLogger().setLevel(Level.FATAL);
+	}
+	
+//  public static void main(String[] args) throws Exception, Throwable {
+//    new TestSuite(TestRejuse.class).run(new TestResult());
+//  }
 }

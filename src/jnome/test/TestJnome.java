@@ -81,7 +81,6 @@ public class TestJnome extends ExpressionTest {
 	@Override
 	public void setLogLevels() {
 		Logger.getLogger("chameleon.test").setLevel(Level.INFO);
-//		Logger.getLogger("chameleon.test.expression").setLevel(Level.FATAL);
 		Logger.getRootLogger().setLevel(Level.FATAL);
 	}
 }

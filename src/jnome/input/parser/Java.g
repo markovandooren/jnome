@@ -1420,8 +1420,9 @@ arrayAccessSuffixRubbish returns [Expression element]
 // NEEDS_TARGET
 creator returns [Expression element]
 //BUG must count array brackets
+@init{int count = 0;}
     :   nonWildcardTypeArguments {throw new ChameleonProgrammerException("Generic constructors are not yet supported");} createdName classCreatorRest
-    |    tt=createdName  ('[' ']')+ init=arrayInitializer {retval.element = new ArrayCreationExpression(tt.element);
+    |    tt=createdName  ('[' ']' {count++;})+ init=arrayInitializer {tt.element.addArrayDimension(count); retval.element = new ArrayCreationExpression(tt.element);
          ((ArrayCreationExpression)retval.element).setInitializer(init.element);}
     |    ttt=createdName  {retval.element = new ArrayCreationExpression(ttt.element);} 
           ('[' exx=expression ']' {((ArrayCreationExpression)retval.element).addDimensionInitializer(new FilledArrayIndex(exx.element));})+ 

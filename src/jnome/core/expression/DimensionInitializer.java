@@ -5,16 +5,14 @@ import java.util.List;
 import org.rejuse.association.Reference;
 
 import chameleon.core.expression.Expression;
-import chameleon.core.expression.ExpressionContainer;
 import chameleon.core.namespace.Namespace;
-import chameleon.core.namespacepart.NamespacePartElementImpl;
-import chameleon.core.type.Type;
+import chameleon.core.namespacepart.NamespaceElementImpl;
 import chameleon.util.Util;
 
 /**
  * @author Marko van Dooren
  */
-public class DimensionInitializer extends NamespacePartElementImpl<DimensionInitializer,ArrayCreationExpression> implements ExpressionContainer<DimensionInitializer,ArrayCreationExpression> {
+public class DimensionInitializer extends NamespaceElementImpl<DimensionInitializer,ArrayCreationExpression> {
 
   public DimensionInitializer() {
     this(null);
@@ -47,9 +45,6 @@ public class DimensionInitializer extends NamespacePartElementImpl<DimensionInit
     }
   }
 
-  public Type getNearestType() {
-    return parent().getNearestType();
-  }
 
   /**
    * @return

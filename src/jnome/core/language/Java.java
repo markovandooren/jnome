@@ -39,12 +39,12 @@ public class Java extends Language {
 		public boolean contains(Member first, Member second) throws LookupException {
 			boolean result = false;
 			if((first instanceof NormalMethod) && (second instanceof NormalMethod)) {
-				result = first.getNearestType().subTypeOf(second.getNearestType()) &&
+				result = ((NormalMethod<?,?,?>)first).nearestAncestor(Type.class).subTypeOf(((NormalMethod<?,?,?>)second).nearestAncestor(Type.class)) &&
 				         (first.is(CLASS) == Ternary.TRUE) && 
 				          first.signature().sameAs(second.signature());
 			} else if(((first instanceof RegularMemberVariable) && (second instanceof RegularMemberVariable)) ||
 					((first instanceof RegularMemberVariable) && (second instanceof RegularMemberVariable))) {
-				 result = first.getNearestType().subTypeOf(second.getNearestType()) &&
+				 result = ((RegularMemberVariable)first).nearestAncestor(Type.class).subTypeOf(((RegularMemberVariable)second).nearestAncestor(Type.class)) &&
 				          first.signature().sameAs(second.signature());
 			}
 			return result;

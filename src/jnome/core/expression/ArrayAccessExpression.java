@@ -9,9 +9,9 @@ import org.rejuse.association.OrderedReferenceSet;
 import org.rejuse.association.Reference;
 import org.rejuse.java.collections.Visitor;
 
+import chameleon.core.element.Element;
 import chameleon.core.expression.Assignable;
 import chameleon.core.expression.Expression;
-import chameleon.core.expression.ExpressionContainer;
 import chameleon.core.expression.InvocationTarget;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.type.Type;
@@ -21,7 +21,7 @@ import chameleon.util.Util;
 /**
  * @author Marko van Dooren
  */
-public class ArrayAccessExpression extends Expression implements ExpressionContainer, Assignable {
+public class ArrayAccessExpression extends Expression<ArrayAccessExpression> implements Assignable<ArrayAccessExpression,Element> {
 
   public ArrayAccessExpression(Expression target) {
     setTarget(target);

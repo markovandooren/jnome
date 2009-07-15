@@ -1362,7 +1362,7 @@ public class JavaCodeWriter extends Syntax {
 
   public static void writeCode(Arguments arguments) throws IOException, LookupException {
     JavaCodeWriter writer = new JavaCodeWriter(2);
-    Set<Type> types = arguments.getTypes();
+    List<Type> types = arguments.getTypes();
     new PrimitiveTotalPredicate<Type>() {
     	public boolean eval(Type t) {
     		return t.hasModifier(new Public());

@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/marko/git/jnome/src/jnome/input/parser/Java.g 2009-07-15 13:40:37
+// $ANTLR 3.1.2 /Users/marko/git/jnome/src/jnome/input/parser/Java.g 2009-07-16 15:34:43
 
 package jnome.input.parser;
 
@@ -1975,7 +1975,7 @@ public class JavaParser extends Parser {
             if (state.failed) return retval;
             if ( state.backtracking==0 ) adaptor.addChild(root_0, body.getTree());
             if ( state.backtracking==0 ) {
-              retval.element.setBody(body.element);
+              retval.element.body().addAll(body.element.elements());
             }
 
             }
@@ -11433,7 +11433,7 @@ public class JavaParser extends Parser {
                     int LA113_0 = input.LA(1);
 
                     if ( (LA113_0==77) ) {
-                        int LA113_1 = input.LA(2);
+                        int LA113_2 = input.LA(2);
 
                         if ( (synpred151_Java()) ) {
                             alt113=1;

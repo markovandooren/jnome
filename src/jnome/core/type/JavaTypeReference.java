@@ -1,8 +1,10 @@
 package jnome.core.type;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.rejuse.association.OrderedReferenceSet;
+import org.rejuse.association.Reference;
 
 import chameleon.core.Config;
 import chameleon.core.element.ChameleonProgrammerException;
@@ -14,6 +16,8 @@ import chameleon.core.namespace.NamespaceOrTypeReference;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
 import chameleon.core.type.generics.GenericArgument;
+import chameleon.core.type.generics.GenericParameter;
+import chameleon.core.type.generics.InstantiatedGenericParameter;
 
 /**
  * A class for Java type references. They add support for array types and generic parameters.
@@ -111,6 +115,7 @@ public class JavaTypeReference extends TypeReference {
     }
     
     // FILL IN GENERIC PARAMETERS
+    result = fillInTypeArguments(result);
     
     
     // ARRAY TYPE
@@ -122,11 +127,41 @@ public class JavaTypeReference extends TypeReference {
       setCache(result);
       return result;
     } else {
+    	// REPEAT FOR DEBUGGING
+      if (getTarget() != null) {
+        NamespaceOrType target = getTarget().getNamespaceOrType();
+        if (target != null) {
+          result = target.targetContext().lookUp(selector());// findType(getName());
+        }
+      } else {
+        result = parent().lexicalContext(this).lookUp(selector()); // (getName());
+      }
       throw new LookupException("Result of type reference lookup is null: "+getFullyQualifiedName(),this);
     }
   }
 
   
+  private Type fillInTypeArguments(Type type) throws LookupException {
+  	Type result = type;
+  	List<GenericArgument> typeArguments = typeArguments();
+  	if(typeArguments.size() > 0) {
+  	result = type.clone();
+  	// This is going to give trouble if there is a special lexical context selection for 'type' in its parent.
+  	// set to the type itself? seems dangerous as well.
+  	result.setUniParent(type.parent());
+		List<GenericParameter> parameters = result.directlyDeclaredElements(GenericParameter.class);
+		Iterator<GenericParameter> parametersIterator = parameters.iterator();
+		Iterator<GenericArgument> argumentsIterator = typeArguments.iterator();
+		while(parametersIterator.hasNext()) {
+			GenericParameter parameter = parametersIterator.next();
+			GenericArgument argument = argumentsIterator.next();
+			InstantiatedGenericParameter instantiated = new InstantiatedGenericParameter(parameter.signature().clone(),argument.type());
+			result.replace(parameter,instantiated);
+		}
+  	}
+		return result;
+	}
+
 //  public Type getType() throws LookupException {
 //  	Type result = null;
 //  	
@@ -161,47 +196,15 @@ public class JavaTypeReference extends TypeReference {
 //    return result;
 //  }
 
-//  public Type getSuperType() throws NotResolvedException {
-//    if (getArrayDimension() == 0) {
-//      return getParent().getContext().getParentContext().findType(getName());
-//    }
-//    else {
-//      return new ArrayType((Type)getParent().getContext().getParentContext().findType(getComponentName()), getArrayDimension());
-//    }
-//  }
 
-//  private int getArrayDimension() {
-//    int result = 0;
-//    String name = getName();
-//    int index = name.indexOf("[", 0);
-//    while (index >= 0) {
-//      result++;
-//      index = name.indexOf("[", index + 1);
-//    }
-//    return result;
-//  }
-
-//  private String getComponentName() {
-//    if (arrayDimension() == 0) {
-//      return getName();
-//    }
-//    else {
-//      try {
-//        return getName().substring(0, getName().indexOf("["));
-//      }
-//      catch (RuntimeException e) {
-//        e.printStackTrace();
-//        arrayDimension();
-//        throw e;
-//      }
-//    }
-//  }
-  
   public JavaTypeReference clone() {
   	NamespaceOrTypeReference target = getTarget();
   	NamespaceOrTypeReference clone = (target == null ? null : target.clone());
   	JavaTypeReference result =  new JavaTypeReference(clone,getName());
   	result.setArrayDimension(arrayDimension());
+  	for(GenericArgument typeArgument: typeArguments()) {
+  		result.addArgument(typeArgument.clone());
+  	}
   	return result;
   }
 

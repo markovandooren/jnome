@@ -557,7 +557,7 @@ normalClassDeclaration returns [RegularType element]
     :   'class' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text));} (params=typeParameters{for(GenericParameter par: params.element){retval.element.add(par);}})?
         ('extends' sc=type {retval.element.addInheritanceRelation(new SubtypeRelation(sc.element));})? 
         ('implements' trefs=typeList {for(TypeReference ref: trefs.element){retval.element.addInheritanceRelation(new SubtypeRelation(ref));} } )?
-        body=classBody {retval.element.setBody(body.element);}
+        body=classBody {retval.element.body().addAll(body.element.elements());}
     ;
     
 typeParameters returns [List<GenericParameter> element]

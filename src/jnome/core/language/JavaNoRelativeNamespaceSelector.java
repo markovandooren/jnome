@@ -40,7 +40,7 @@ public class JavaNoRelativeNamespaceSelector<D extends Declaration> extends Decl
 	 * null is returned.
 	 */
 	@Override
-	public D filter(Declaration declaration) throws LookupException {
+	public Declaration<?,?,?,D> filter(Declaration declaration) throws LookupException {
 		if((declaration instanceof Namespace) && (((Namespace)declaration).parent() != defaultNamespace())) {
 			return null;
 		} else {

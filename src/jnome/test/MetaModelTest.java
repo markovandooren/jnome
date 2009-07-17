@@ -7,6 +7,8 @@ import java.util.Set;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.junit.After;
+import org.junit.Before;
 
 import jnome.input.JavaMetaModelFactory;
 import junit.framework.TestCase;
@@ -15,7 +17,7 @@ import chameleon.core.namespace.Namespace;
 /**
  * @author marko
  */
-public abstract class MetaModelTest extends TestCase {
+public abstract class MetaModelTest {
 	
 	private static Logger _logger = Logger.getLogger("chameleon.test");
 	
@@ -23,8 +25,12 @@ public abstract class MetaModelTest extends TestCase {
 		return _logger;
 	}
 
+	public MetaModelTest() {
+		this(null);
+	}
+	
 	public MetaModelTest(String arg0) {
-		super(arg0);
+//		super(arg0);
 		_files = new ArrayList<String>();
      addTestFiles();
 	}
@@ -50,6 +56,7 @@ public abstract class MetaModelTest extends TestCase {
     	// do nothing by default
     }
 
+    @Before
     public void setUp() throws Exception {
     	BasicConfigurator.configure();
     	setLogLevels();
@@ -61,6 +68,7 @@ public abstract class MetaModelTest extends TestCase {
       }
     }
     
+    @After
     public void tearDown() {
     	_mm = null;
     	_files = null;
@@ -82,6 +90,6 @@ public abstract class MetaModelTest extends TestCase {
 
     protected ArrayList<String> _files;
 
-	protected Namespace _mm;
+	  protected Namespace _mm;
 
 }

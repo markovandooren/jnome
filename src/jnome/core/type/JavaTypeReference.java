@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.rejuse.association.OrderedReferenceSet;
-import org.rejuse.association.Reference;
 
 import chameleon.core.Config;
 import chameleon.core.element.ChameleonProgrammerException;
@@ -13,10 +12,11 @@ import chameleon.core.expression.NamedTarget;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.NamespaceOrType;
 import chameleon.core.namespace.NamespaceOrTypeReference;
+import chameleon.core.type.DerivedType;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
-import chameleon.core.type.generics.GenericArgument;
 import chameleon.core.type.generics.FormalGenericParameter;
+import chameleon.core.type.generics.GenericArgument;
 import chameleon.core.type.generics.InstantiatedGenericParameter;
 
 /**
@@ -146,7 +146,7 @@ public class JavaTypeReference extends TypeReference {
   	Type result = type;
   	List<GenericArgument> typeArguments = typeArguments();
   	if(typeArguments.size() > 0) {
-  	result = type.clone();
+  	result = new DerivedType(type);
   	// This is going to give trouble if there is a special lexical context selection for 'type' in its parent.
   	// set to the type itself? seems dangerous as well.
   	result.setUniParent(type.parent());

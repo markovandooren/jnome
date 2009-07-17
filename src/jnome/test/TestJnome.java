@@ -25,20 +25,10 @@ import chameleon.core.type.Type;
  */
 public class TestJnome extends ExpressionTest {
 
-	/**
-	 * @param arg
-	 * @throws TokenStreamException
-	 * @throws RecognitionException
-	 * @throws MalformedURLException
-	 * @throws FileNotFoundException
-	 * @throws IOException
-	 * @throws Exception
-	 */
-	public TestJnome(String arg)
-		throws Exception {
-		super(arg);
+	public TestJnome() {
+		
 	}
-
+	
 	public void addTestFiles() {
 			include("testsource"+getSeparator()+"gen"+getSeparator());
 			include("testsource"+getSeparator()+"jregex"+getSeparator());

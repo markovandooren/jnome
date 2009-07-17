@@ -6,12 +6,14 @@ import java.util.Set;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.junit.Test;
 
 import jnome.output.JavaCodeWriter;
 import chameleon.core.element.Element;
 import chameleon.core.expression.Expression;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.type.Type;
+import static org.junit.Assert.*; 
 
 /**
  * @author marko
@@ -19,6 +21,10 @@ import chameleon.core.type.Type;
 
 public abstract class ExpressionTest extends MetaModelTest {
   
+	public ExpressionTest() {
+		
+	}
+	
   public ExpressionTest(String arg) {
     super(arg); 
   }
@@ -53,6 +59,7 @@ public abstract List<Type> getTestTypes() throws LookupException;
     }
   }
   
+  @Test
   public void testExpressionTypes() throws Exception {
     //myTestDescendants(); // Stupid Junit creates a new test object for every test (which includes parsing).
     List<Type> types = getTestTypes();

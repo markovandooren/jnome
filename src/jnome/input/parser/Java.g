@@ -238,6 +238,7 @@ import chameleon.core.type.TypeReference;
 import chameleon.core.type.TypeElement;
 
 import chameleon.core.type.generics.GenericParameter;
+import chameleon.core.type.generics.FormalGenericParameter;
 import chameleon.core.type.generics.GenericArgument;
 import chameleon.core.type.generics.TypeConstraint;
 import chameleon.core.type.generics.ExtendsConstraint;
@@ -554,19 +555,19 @@ classDeclaration returns [Type element]
     ;
     
 normalClassDeclaration returns [RegularType element]
-    :   'class' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text));} (params=typeParameters{for(GenericParameter par: params.element){retval.element.add(par);}})?
+    :   'class' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text));} (params=typeParameters{for(FormalGenericParameter par: params.element){retval.element.add(par);}})?
         ('extends' sc=type {retval.element.addInheritanceRelation(new SubtypeRelation(sc.element));})? 
         ('implements' trefs=typeList {for(TypeReference ref: trefs.element){retval.element.addInheritanceRelation(new SubtypeRelation(ref));} } )?
         body=classBody {retval.element.body().addAll(body.element.elements());}
     ;
     
-typeParameters returns [List<GenericParameter> element]
-@init{retval.element = new ArrayList<GenericParameter>();}
+typeParameters returns [List<FormalGenericParameter> element]
+@init{retval.element = new ArrayList<FormalGenericParameter>();}
     :   '<' par=typeParameter{retval.element.add(par.element);} (',' par=typeParameter{retval.element.add(par.element);})* '>'
     ;
 
-typeParameter returns [GenericParameter element]
-    :   name=Identifier{retval.element = new GenericParameter(new SimpleNameSignature($name.text));} ('extends' bound=typeBound{retval.element.addConstraint(bound.element);})?
+typeParameter returns [FormalGenericParameter element]
+    :   name=Identifier{retval.element = new FormalGenericParameter(new SimpleNameSignature($name.text));} ('extends' bound=typeBound{retval.element.addConstraint(bound.element);})?
     ;
         
 typeBound returns [ExtendsConstraint element]

@@ -16,7 +16,7 @@ import chameleon.core.namespace.NamespaceOrTypeReference;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
 import chameleon.core.type.generics.GenericArgument;
-import chameleon.core.type.generics.GenericParameter;
+import chameleon.core.type.generics.FormalGenericParameter;
 import chameleon.core.type.generics.InstantiatedGenericParameter;
 
 /**
@@ -33,6 +33,7 @@ public class JavaTypeReference extends TypeReference {
   public JavaTypeReference(NamespaceOrTypeReference target, String name) {
   	super(target,name);
   }
+  
   /**
    * THIS ONLY WORKS WHEN THE NAMED TARGET CONSISTS ENTIRELY OF NAMEDTARGETS.
    * @param target
@@ -149,11 +150,11 @@ public class JavaTypeReference extends TypeReference {
   	// This is going to give trouble if there is a special lexical context selection for 'type' in its parent.
   	// set to the type itself? seems dangerous as well.
   	result.setUniParent(type.parent());
-		List<GenericParameter> parameters = result.directlyDeclaredElements(GenericParameter.class);
-		Iterator<GenericParameter> parametersIterator = parameters.iterator();
+		List<FormalGenericParameter> parameters = result.directlyDeclaredElements(FormalGenericParameter.class);
+		Iterator<FormalGenericParameter> parametersIterator = parameters.iterator();
 		Iterator<GenericArgument> argumentsIterator = typeArguments.iterator();
 		while(parametersIterator.hasNext()) {
-			GenericParameter parameter = parametersIterator.next();
+			FormalGenericParameter parameter = parametersIterator.next();
 			GenericArgument argument = argumentsIterator.next();
 			InstantiatedGenericParameter instantiated = new InstantiatedGenericParameter(parameter.signature().clone(),argument.type());
 			result.replace(parameter,instantiated);

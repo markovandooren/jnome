@@ -41,11 +41,16 @@ public class JavaNoRelativeNamespaceSelector<D extends Declaration> extends Decl
 	 */
 	@Override
 	public Declaration<?,?,?,D> filter(Declaration declaration) throws LookupException {
-		if((declaration instanceof Namespace) && (((Namespace)declaration).parent() != defaultNamespace())) {
-			return null;
-		} else {
-			return selector().filter(declaration);
+		Declaration<?,?,?,D> result = selector().filter(declaration);
+		if((result != null) && (declaration instanceof Namespace) && (((Namespace)declaration).parent() != defaultNamespace())) {
+			result = null;
 		}
+//		if((declaration instanceof Namespace) && (((Namespace)declaration).parent() != defaultNamespace())) {
+//			return null;
+//		} else {
+//			return selector().filter(declaration);
+//		}
+		return result;
 	}
 
 	@Override

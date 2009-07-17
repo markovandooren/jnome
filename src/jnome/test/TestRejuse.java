@@ -68,6 +68,7 @@ public class TestRejuse extends ExpressionTest {
 
 	@Override
 	public void setLogLevels() {
+		super.setLogLevels();
 		Logger.getLogger("chameleon.test").setLevel(Level.INFO);
 		Logger.getRootLogger().setLevel(Level.FATAL);
 	}

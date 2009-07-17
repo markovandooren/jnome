@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import jnome.output.JavaCodeWriter;
@@ -34,6 +35,10 @@ public abstract List<Type> getTestTypes() throws LookupException;
   
   public static Logger getExpressionLogger() {
   	return _expressionLogger;
+  }
+
+  public void setLogLevels() {
+		Logger.getLogger("chameleon.test.expression").setLevel(Level.FATAL);
   }
 
   public void myTestDescendants() {

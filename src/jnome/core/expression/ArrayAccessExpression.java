@@ -59,7 +59,7 @@ public class ArrayAccessExpression extends Expression<ArrayAccessExpression> imp
     return _indicesLink.getOtherEnds();
   }
 
-  public Type getType() throws LookupException {
+  protected Type actualType() throws LookupException {
     ArrayType componentType = (ArrayType)getTarget().getType();
     int dim = componentType.getDimension() - getIndices().size();
     if (dim > 0) {

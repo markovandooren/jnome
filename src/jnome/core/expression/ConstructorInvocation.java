@@ -117,7 +117,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 		return anon;
 	}
 
-  public Type getType() throws LookupException {
+  protected Type actualType() throws LookupException {
     if (body() == null) {
       // Switching to target or not happens in getContext(Element) invoked by the type reference.
       return getTypeReference().getType();

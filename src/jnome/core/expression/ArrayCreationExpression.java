@@ -89,8 +89,13 @@ public class ArrayCreationExpression extends Expression<ArrayCreationExpression>
     }
   }
 
-  public Type getType() throws LookupException {
-    return getTypeReference().getType();
+  protected Type actualType() throws LookupException {
+    JavaTypeReference tref = getTypeReference();
+    if(tref != null) {
+		  return tref.getType();
+    } else {
+    	throw new LookupException("Type reference of array creation expression is null.");
+    }
   }
 
   public boolean superOf(InvocationTarget target) throws LookupException {

@@ -50,7 +50,7 @@ public class ArrayInitializer extends Expression<ArrayInitializer> {
     return _inits.getOtherEnds();
   }
 
-  public Type getType() throws LookupException {
+  protected Type actualType() throws LookupException {
     if (parent() instanceof ArrayCreationExpression) {
       return ((ArrayCreationExpression)parent()).getType();
     }

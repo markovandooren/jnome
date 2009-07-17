@@ -61,6 +61,11 @@ public abstract class MetaModelTest extends TestCase {
       }
     }
     
+    public void tearDown() {
+    	_mm = null;
+    	_files = null;
+    }
+    
     public JavaMetaModelFactory getMetaModelFactory() {
       return new JavaMetaModelFactory();
     }

@@ -45,11 +45,6 @@ public class JavaNoRelativeNamespaceSelector<D extends Declaration> extends Decl
 		if((result != null) && (declaration instanceof Namespace) && (((Namespace)declaration).parent() != defaultNamespace())) {
 			result = null;
 		}
-//		if((declaration instanceof Namespace) && (((Namespace)declaration).parent() != defaultNamespace())) {
-//			return null;
-//		} else {
-//			return selector().filter(declaration);
-//		}
 		return result;
 	}
 

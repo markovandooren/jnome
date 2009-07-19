@@ -25,15 +25,6 @@ public abstract class ExpressionTest extends MetaModelTest {
 		
 	}
 	
-  public ExpressionTest(String arg) {
-    super(arg); 
-  }
-
-//  public void add(FileSet set, String name) {
-//    String filename =  "**" + File.separator + name.replace('.', File.separatorChar)+".java";
-//    set.include(new PatternPredicate(_srcDir, new FileNamePattern(filename)));
-//  }
-
 public abstract List<Type> getTestTypes() throws LookupException;
 
   

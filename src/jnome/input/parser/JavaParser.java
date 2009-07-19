@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/marko/git/jnome/src/jnome/input/parser/Java.g 2009-07-17 15:07:30
+// $ANTLR 3.1.2 /Users/marko/git/jnome/src/jnome/input/parser/Java.g 2009-07-19 12:25:15
 
 package jnome.input.parser;
 
@@ -1899,7 +1899,7 @@ public class JavaParser extends Parser {
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, params.getTree());
                     if ( state.backtracking==0 ) {
-                      for(FormalGenericParameter par: params.element){retval.element.add(par);}
+                      for(FormalGenericParameter par: params.element){retval.element.addParameter(par);}
                     }
 
                     }
@@ -3065,7 +3065,7 @@ public class JavaParser extends Parser {
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, params.getTree());
                     if ( state.backtracking==0 ) {
-                      for(GenericParameter par: params.element){retval.element.add(par);}
+                      for(GenericParameter par: params.element){retval.element.addParameter(par);}
                     }
 
                     }

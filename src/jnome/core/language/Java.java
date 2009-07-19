@@ -26,6 +26,7 @@ import chameleon.core.relation.WeakPartialOrder;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
 import chameleon.core.type.generics.FormalGenericParameter;
+import chameleon.core.type.generics.GenericParameter;
 import chameleon.core.type.generics.InstantiatedGenericParameter;
 import chameleon.core.variable.RegularMemberVariable;
 import chameleon.support.member.simplename.method.NormalMethod;
@@ -39,6 +40,46 @@ import chameleon.support.rule.member.MemberOverridableByDefault;
  * @author Marko van Dooren
  */
 public class Java extends Language {
+
+	private final class JavaSubtypingRelation extends WeakPartialOrder<Type> {
+		@Override
+		public boolean contains(Type first, Type second) throws LookupException {
+			// OPTIMIZE
+			boolean result = false;
+			Set<Type> supers = first.getAllSuperTypes();
+			supers.add(first);
+			Iterator<Type> typeIterator = supers.iterator();
+			while((!result) && typeIterator.hasNext()) {
+				Type current = typeIterator.next();
+				result = sameBaseTypeWithCompatibleParameters(current, second);
+			}
+			return result;
+		}
+
+		public boolean sameBaseTypeWithCompatibleParameters(Type first, Type second) throws LookupException {
+			boolean result = false;
+			if(first.baseType().equals(second.baseType())) {
+				List<GenericParameter> firstFormal= first.parameters();
+				List<GenericParameter> secondFormal= second.parameters();
+				result = true;
+				Iterator<GenericParameter> firstIter = firstFormal.iterator();
+				Iterator<GenericParameter> secondIter = secondFormal.iterator();
+				while(result && firstIter.hasNext()) {
+					GenericParameter firstParam = firstIter.next();
+					GenericParameter secondParam = secondIter.next();
+					result = firstParam.compatibleWith(secondParam);
+				}
+			}
+			return result;
+		}
+	}
+
+	private final class JavaEquivalenceRelation extends EquivalenceRelation<Member> {
+		@Override
+		public boolean contains(Member first, Member second) throws LookupException {
+			return first.equals(second);
+		}
+	}
 
 	private final class JavaHidesRelation extends StrictPartialOrder<Member> {
 		@Override
@@ -262,12 +303,16 @@ public class Java extends Language {
 
 		@Override
 		public StrictPartialOrder<Member> hidesRelation() {
-			return new JavaHidesRelation();
+			return _hidesRelation;
 		}
 		
+		private JavaHidesRelation _hidesRelation = new JavaHidesRelation();
+		
 		public StrictPartialOrder<Member> implementsRelation() {
-			return new JavaImplementsRelation();
+			return _implementsRelation;
 		}
+
+		private JavaImplementsRelation _implementsRelation = new JavaImplementsRelation();
 
 		@Override
 		public Type voidType() throws LookupException {
@@ -276,57 +321,16 @@ public class Java extends Language {
 
 		@Override
 		public EquivalenceRelation<Member> equivalenceRelation() {
-			return new EquivalenceRelation<Member>() {
-
-				@Override
-				public boolean contains(Member first, Member second) throws LookupException {
-					return first.equals(second);
-				}
-				
-			};
+			return _equivalenceRelation;
 		}
 
+		private JavaEquivalenceRelation _equivalenceRelation = new JavaEquivalenceRelation();
 
 		@Override
 		public WeakPartialOrder<Type> subtypeRelation() {
-			return new WeakPartialOrder<Type>() {
-
-				@Override
-				public boolean contains(Type first, Type second) throws LookupException {
-					// OPTIMIZE
-					boolean result = false;
-					Set<Type> supers = first.getAllSuperTypes();
-					supers.add(first);
-					Iterator<Type> typeIterator = supers.iterator();
-					while((!result) && typeIterator.hasNext()) {
-						Type current = typeIterator.next();
-						result = sameBaseTypeWithCompatibleParameters(current, second);
-					}
-					return result;
-				}
-				
-				public boolean sameBaseTypeWithCompatibleParameters(Type first, Type second) throws LookupException {
-					boolean result = false;
-					if(first.baseType().equals(second.baseType())) {
-						List<FormalGenericParameter> firstFormal= first.directlyDeclaredElements(FormalGenericParameter.class);
-						List<FormalGenericParameter> secondFormal= second.directlyDeclaredElements(FormalGenericParameter.class);
-						if(firstFormal.isEmpty() && secondFormal.isEmpty()) {
-						  result = true;
-						  Iterator<InstantiatedGenericParameter> firstIter = first.directlyDeclaredElements(InstantiatedGenericParameter.class).iterator();
-						  Iterator<InstantiatedGenericParameter> secondIter = second.directlyDeclaredElements(InstantiatedGenericParameter.class).iterator();
-						  while(result && firstIter.hasNext()) {
-							  InstantiatedGenericParameter firstParam = firstIter.next();
-							  InstantiatedGenericParameter secondParam = secondIter.next();
-							  result = firstParam.compatibleWith(secondParam);
-						  }
-						}
-					}
-					return result;
-				}
-
-			};
+			return _subtypingRelation;
 		}
 		
-		
-  
+		private JavaSubtypingRelation _subtypingRelation = new JavaSubtypingRelation();
+		  
 }

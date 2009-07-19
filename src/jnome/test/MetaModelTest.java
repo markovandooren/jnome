@@ -20,6 +20,9 @@ import chameleon.core.namespace.Namespace;
 public abstract class MetaModelTest {
 	
 	private static Logger _logger = Logger.getLogger("chameleon.test");
+	static {
+  	BasicConfigurator.configure();
+	}
 	
 	public static Logger getLogger() {
 		return _logger;
@@ -58,7 +61,6 @@ public abstract class MetaModelTest {
 
     @Before
     public void setUp() throws Exception {
-    	BasicConfigurator.configure();
     	setLogLevels();
       if(_mm == null) {
         //_mm = getMetaModelFactory().getMetaModel(_files.getFiles());

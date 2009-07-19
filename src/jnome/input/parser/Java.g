@@ -555,7 +555,7 @@ classDeclaration returns [Type element]
     ;
     
 normalClassDeclaration returns [RegularType element]
-    :   'class' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text));} (params=typeParameters{for(FormalGenericParameter par: params.element){retval.element.add(par);}})?
+    :   'class' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text));} (params=typeParameters{for(FormalGenericParameter par: params.element){retval.element.addParameter(par);}})?
         ('extends' sc=type {retval.element.addInheritanceRelation(new SubtypeRelation(sc.element));})? 
         ('implements' trefs=typeList {for(TypeReference ref: trefs.element){retval.element.addInheritanceRelation(new SubtypeRelation(ref));} } )?
         body=classBody {retval.element.body().addAll(body.element.elements());}
@@ -606,7 +606,7 @@ interfaceDeclaration returns [Type element]
     
 normalInterfaceDeclaration returns [RegularType element]
     :   'interface' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text)); retval.element.addModifier(new Interface());} 
-         (params=typeParameters{for(GenericParameter par: params.element){retval.element.add(par);}})? 
+         (params=typeParameters{for(GenericParameter par: params.element){retval.element.addParameter(par);}})? 
          ('extends' trefs=typeList 
            {
              for(TypeReference ref: trefs.element){

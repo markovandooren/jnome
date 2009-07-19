@@ -1,27 +1,21 @@
 package jnome.core.language;
 
+import chameleon.core.declaration.DeclarationContainer;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupStrategy;
 import chameleon.core.lookup.LookupStrategyFactory;
+import chameleon.core.namespace.Namespace;
 import chameleon.core.namespacepart.NamespacePart;
-import chameleon.core.type.inheritance.InheritanceRelation;
 
 public class JavaLookupFactory extends LookupStrategyFactory {
 
-//	//TODO: I think this method can be removed now that we have the wrapping.
-//	public LookupStrategy createLexicalContext(Element element, LookupStrategy local) {
-//		if(element instanceof InheritanceRelation) {
-//			return new JavaInheritanceLookupStrategy((InheritanceRelation)element);
-//		} else {
-//		  return super.createLexicalContext(element, local);
-//		}
-//	}
- 
-	public LookupStrategy wrapLocalStrategy(LookupStrategy targetContext, Element element) {
-		if(element instanceof NamespacePart) {
-			return new JavaNoRelativeNamespaceLookupStrategy(targetContext, element.language().defaultNamespace());
+  public  LookupStrategy createLocalLookupStrategy(DeclarationContainer element) {
+		if(element instanceof Namespace) {
+//			return new JavaNoRelativeNamespaceLookupStrategy(super.createLocalLookupStrategy(element), element.language().defaultNamespace());
+			return new JavaNoRelativeNamespaceLookupStrategy((Namespace)element);
 		} else {
-			return targetContext;
+			return super.createLocalLookupStrategy(element);
 		}
-	}
+  }
+
 }

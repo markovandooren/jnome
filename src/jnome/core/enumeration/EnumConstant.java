@@ -85,4 +85,8 @@ public class EnumConstant extends FixedSignatureMember<EnumConstant,Type,SimpleN
   
   private Reference<EnumConstant,ClassBody> _body = new Reference<EnumConstant, ClassBody>(this);
 
+	public Class<EnumConstant> introducedDeclarationType() {
+		return EnumConstant.class;
+	}
+
 }

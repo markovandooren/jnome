@@ -112,8 +112,8 @@ public class Java extends Language {
 		  if((first != second) && (first instanceof Method) && (second instanceof Method)) {
 		    assert first != null;
 		    assert second != null;
-		    Method<? extends Method,? extends MethodHeader, ? extends MethodSignature> method1 = (Method<? extends Method,? extends MethodHeader, ? extends MethodSignature>) first;
-		    Method<? extends Method,? extends MethodHeader, ? extends MethodSignature> method2 = (Method<? extends Method,? extends MethodHeader, ? extends MethodSignature>) second;
+		    Method<?,?,?,?> method1 = (Method<?,?,?,?>) first;
+		    Method<?,?,?,?> method2 = (Method<?,?,?,?>) second;
 		    Ternary temp1 = method1.is(DEFINED);
 		    boolean defined1;
 		    if(temp1 == Ternary.TRUE) {
@@ -170,8 +170,8 @@ public class Java extends Language {
 		  if((first instanceof Method) && (second instanceof Method)) {
 		    assert first != null;
 		    assert second != null;
-		    Method<? extends Method,? extends MethodHeader, ? extends MethodSignature> method1 = (Method<? extends Method,? extends MethodHeader, ? extends MethodSignature>) first;
-		    Method<? extends Method,? extends MethodHeader, ? extends MethodSignature> method2 = (Method<? extends Method,? extends MethodHeader, ? extends MethodSignature>) second;
+		    Method<?,?,?,?> method1 = (Method<?,?,?,?>) first;
+		    Method<?,?,?,?> method2 = (Method<?,?,?,?>) second;
 		    Ternary temp = method2.is(OVERRIDABLE);
 		    boolean overridable;
 		    if(temp == Ternary.TRUE) {

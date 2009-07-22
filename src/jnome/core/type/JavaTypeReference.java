@@ -129,15 +129,15 @@ public class JavaTypeReference extends TypeReference {
       setCache(result);
       return result;
     } else {
-//    	// REPEAT FOR DEBUGGING
-//      if (getTarget() != null) {
-//        NamespaceOrType target = getTarget().getNamespaceOrType();
-//        if (target != null) {
-//          result = target.targetContext().lookUp(selector());// findType(getName());
-//        }
-//      } else {
-//        result = parent().lexicalContext(this).lookUp(selector()); // (getName());
-//      }
+    	// REPEAT FOR DEBUGGING
+      if (getTarget() != null) {
+        NamespaceOrType target = getTarget().getNamespaceOrType();
+        if (target != null) {
+          result = target.targetContext().lookUp(selector());// findType(getName());
+        }
+      } else {
+        result = parent().lexicalContext(this).lookUp(selector()); // (getName());
+      }
       throw new LookupException("Result of type reference lookup is null: "+getFullyQualifiedName(),this);
     }
   }

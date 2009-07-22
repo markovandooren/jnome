@@ -98,7 +98,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
   	final Type anon = new RegularType(new SimpleNameSignature("TODO"));
   	TypeReference tref = getTypeReference();
  	  Type writtenType = tref.getType();
-	  List<NormalMethod> superMembers = writtenType.directlyDeclaredElements(NormalMethod.class);
+	  List<NormalMethod> superMembers = writtenType.directlyDeclaredMembers(NormalMethod.class);
 	  new PrimitiveTotalPredicate<NormalMethod>() {
 		  @Override
 		  public boolean eval(NormalMethod object) {

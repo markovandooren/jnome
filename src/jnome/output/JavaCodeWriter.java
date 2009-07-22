@@ -431,7 +431,7 @@ public class JavaCodeWriter extends Syntax {
     result.append("{\n");
     indent();
     
-    List<Member> members = type.directlyDeclaredElements();
+    List<Member> members = type.directlyDeclaredMembers();
     // Members
     new RobustVisitor() {
       public Object visit(Object element) throws LookupException {

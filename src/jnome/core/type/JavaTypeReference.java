@@ -113,7 +113,7 @@ public class JavaTypeReference extends TypeReference {
         result = target.targetContext().lookUp(selector());// findType(getName());
       }
     } else {
-      result = parent().lexicalContext(this).lookUp(selector()); // (getName());
+      result = parent().lexicalLookupStrategy(this).lookUp(selector()); // (getName());
     }
     
     // FILL IN GENERIC PARAMETERS
@@ -136,7 +136,7 @@ public class JavaTypeReference extends TypeReference {
           result = target.targetContext().lookUp(selector());// findType(getName());
         }
       } else {
-        result = parent().lexicalContext(this).lookUp(selector()); // (getName());
+        result = parent().lexicalLookupStrategy(this).lookUp(selector()); // (getName());
       }
       throw new LookupException("Result of type reference lookup is null: "+getFullyQualifiedName(),this);
     }

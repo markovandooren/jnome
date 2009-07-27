@@ -208,7 +208,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
   		LookupStrategy tctx = anon.targetContext();
   		result = tctx.lookUp(selector());
   	} else if(target == null) {
-      result = lexicalContext().lookUp(selector());
+      result = lexicalLookupStrategy().lookUp(selector());
   	} else {
   		result = getTarget().targetContext().lookUp(selector());
   	}

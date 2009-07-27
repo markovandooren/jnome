@@ -27,6 +27,7 @@ public abstract class TestClone extends MetaModelTest {
 
 	public void test(Element element) {
 		String msg = "element type:"+element.getClass().getName();
+		assertFalse(element.isDerived());
 		List<Element> children = element.children();
 		assertNotNull(msg,children);
 		assertFalse(msg,children.contains(null));

@@ -1,8 +1,5 @@
 package jnome.core.language;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 import jnome.core.modifier.PackageProperty;
 import jnome.core.type.NullType;
@@ -25,9 +22,8 @@ import chameleon.core.relation.StrictPartialOrder;
 import chameleon.core.relation.WeakPartialOrder;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
-import chameleon.core.type.generics.FormalGenericParameter;
-import chameleon.core.type.generics.GenericParameter;
-import chameleon.core.type.generics.InstantiatedGenericParameter;
+import chameleon.core.type.generics.FormalTypeParameter;
+import chameleon.core.type.generics.InstantiatedTypeParameter;
 import chameleon.core.variable.RegularMemberVariable;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.modifier.PrivateProperty;
@@ -40,39 +36,6 @@ import chameleon.support.rule.member.MemberOverridableByDefault;
  * @author Marko van Dooren
  */
 public class Java extends Language {
-
-	private final class JavaSubtypingRelation extends WeakPartialOrder<Type> {
-		@Override
-		public boolean contains(Type first, Type second) throws LookupException {
-			// OPTIMIZE
-			boolean result = false;
-			Set<Type> supers = first.getAllSuperTypes();
-			supers.add(first);
-			Iterator<Type> typeIterator = supers.iterator();
-			while((!result) && typeIterator.hasNext()) {
-				Type current = typeIterator.next();
-				result = sameBaseTypeWithCompatibleParameters(current, second);
-			}
-			return result;
-		}
-
-		public boolean sameBaseTypeWithCompatibleParameters(Type first, Type second) throws LookupException {
-			boolean result = false;
-			if(first.baseType().equals(second.baseType())) {
-				List<GenericParameter> firstFormal= first.parameters();
-				List<GenericParameter> secondFormal= second.parameters();
-				result = true;
-				Iterator<GenericParameter> firstIter = firstFormal.iterator();
-				Iterator<GenericParameter> secondIter = secondFormal.iterator();
-				while(result && firstIter.hasNext()) {
-					GenericParameter firstParam = firstIter.next();
-					GenericParameter secondParam = secondIter.next();
-					result = firstParam.compatibleWith(secondParam);
-				}
-			}
-			return result;
-		}
-	}
 
 	private final class JavaEquivalenceRelation extends EquivalenceRelation<Member> {
 		@Override

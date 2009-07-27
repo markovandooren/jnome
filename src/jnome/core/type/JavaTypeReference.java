@@ -15,10 +15,10 @@ import chameleon.core.namespace.NamespaceOrTypeReference;
 import chameleon.core.type.DerivedType;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
-import chameleon.core.type.generics.FormalGenericParameter;
-import chameleon.core.type.generics.GenericArgument;
-import chameleon.core.type.generics.GenericParameter;
-import chameleon.core.type.generics.InstantiatedGenericParameter;
+import chameleon.core.type.generics.FormalTypeParameter;
+import chameleon.core.type.generics.ActualTypeArgument;
+import chameleon.core.type.generics.TypeParameter;
+import chameleon.core.type.generics.InstantiatedTypeParameter;
 
 /**
  * A class for Java type references. They add support for array types and generic parameters.
@@ -53,29 +53,29 @@ public class JavaTypeReference extends TypeReference {
   	setArrayDimension(arrayDimension);
   }
   
-  public List<GenericArgument> typeArguments() {
+  public List<ActualTypeArgument> typeArguments() {
   	return _genericParameters.getOtherEnds();
   }
   
-  public void addArgument(GenericArgument arg) {
+  public void addArgument(ActualTypeArgument arg) {
   	if(arg != null) {
   		_genericParameters.add(arg.parentLink());
   	}
   }
   
-  public void addAllArguments(List<GenericArgument> args) {
-  	for(GenericArgument argument : args) {
+  public void addAllArguments(List<ActualTypeArgument> args) {
+  	for(ActualTypeArgument argument : args) {
   		addArgument(argument);
   	}
   }
   
-  public void removeArgument(GenericArgument arg) {
+  public void removeArgument(ActualTypeArgument arg) {
   	if(arg != null) {
   		_genericParameters.remove(arg.parentLink());
   	}
   }
   
-  private OrderedReferenceSet<JavaTypeReference,GenericArgument> _genericParameters = new OrderedReferenceSet<JavaTypeReference, GenericArgument>(this);
+  private OrderedReferenceSet<JavaTypeReference,ActualTypeArgument> _genericParameters = new OrderedReferenceSet<JavaTypeReference, ActualTypeArgument>(this);
   
   public List<Element> children() {
   	List<Element> result = super.children();
@@ -145,19 +145,19 @@ public class JavaTypeReference extends TypeReference {
   
   private Type fillInTypeArguments(Type type) throws LookupException {
   	Type result = type;
-  	List<GenericArgument> typeArguments = typeArguments();
+  	List<ActualTypeArgument> typeArguments = typeArguments();
   	if(typeArguments.size() > 0) {
   	result = new DerivedType(type);
   	// This is going to give trouble if there is a special lexical context selection for 'type' in its parent.
   	// set to the type itself? seems dangerous as well.
   	result.setUniParent(type.parent());
-		List<GenericParameter> parameters = result.parameters();
-		Iterator<GenericParameter> parametersIterator = parameters.iterator();
-		Iterator<GenericArgument> argumentsIterator = typeArguments.iterator();
+		List<TypeParameter> parameters = result.parameters();
+		Iterator<TypeParameter> parametersIterator = parameters.iterator();
+		Iterator<ActualTypeArgument> argumentsIterator = typeArguments.iterator();
 		while(parametersIterator.hasNext()) {
-			GenericParameter parameter = parametersIterator.next();
-			GenericArgument argument = argumentsIterator.next();
-			InstantiatedGenericParameter instantiated = new InstantiatedGenericParameter(parameter.signature().clone(),argument.type());
+			TypeParameter parameter = parametersIterator.next();
+			ActualTypeArgument argument = argumentsIterator.next();
+			InstantiatedTypeParameter instantiated = new InstantiatedTypeParameter(parameter.signature().clone(),argument);
 			result.replaceParameter(parameter,instantiated);
 		}
   	}
@@ -204,7 +204,7 @@ public class JavaTypeReference extends TypeReference {
   	NamespaceOrTypeReference clone = (target == null ? null : target.clone());
   	JavaTypeReference result =  new JavaTypeReference(clone,getName());
   	result.setArrayDimension(arrayDimension());
-  	for(GenericArgument typeArgument: typeArguments()) {
+  	for(ActualTypeArgument typeArgument: typeArguments()) {
   		result.addArgument(typeArgument.clone());
   	}
   	return result;

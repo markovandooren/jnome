@@ -237,9 +237,10 @@ import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
 import chameleon.core.type.TypeElement;
 
-import chameleon.core.type.generics.GenericParameter;
-import chameleon.core.type.generics.FormalGenericParameter;
-import chameleon.core.type.generics.GenericArgument;
+import chameleon.core.type.generics.TypeParameter;
+import chameleon.core.type.generics.FormalTypeParameter;
+import chameleon.core.type.generics.ActualTypeArgument;
+import chameleon.core.type.generics.BasicTypeArgument;
 import chameleon.core.type.generics.TypeConstraint;
 import chameleon.core.type.generics.ExtendsConstraint;
 
@@ -555,19 +556,19 @@ classDeclaration returns [Type element]
     ;
     
 normalClassDeclaration returns [RegularType element]
-    :   'class' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text));} (params=typeParameters{for(FormalGenericParameter par: params.element){retval.element.addParameter(par);}})?
+    :   'class' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text));} (params=typeParameters{for(FormalTypeParameter par: params.element){retval.element.addParameter(par);}})?
         ('extends' sc=type {retval.element.addInheritanceRelation(new SubtypeRelation(sc.element));})? 
         ('implements' trefs=typeList {for(TypeReference ref: trefs.element){retval.element.addInheritanceRelation(new SubtypeRelation(ref));} } )?
         body=classBody {retval.element.body().addAll(body.element.elements());}
     ;
     
-typeParameters returns [List<FormalGenericParameter> element]
-@init{retval.element = new ArrayList<FormalGenericParameter>();}
+typeParameters returns [List<FormalTypeParameter> element]
+@init{retval.element = new ArrayList<FormalTypeParameter>();}
     :   '<' par=typeParameter{retval.element.add(par.element);} (',' par=typeParameter{retval.element.add(par.element);})* '>'
     ;
 
-typeParameter returns [FormalGenericParameter element]
-    :   name=Identifier{retval.element = new FormalGenericParameter(new SimpleNameSignature($name.text));} ('extends' bound=typeBound{retval.element.addConstraint(bound.element);})?
+typeParameter returns [FormalTypeParameter element]
+    :   name=Identifier{retval.element = new FormalTypeParameter(new SimpleNameSignature($name.text));} ('extends' bound=typeBound{retval.element.addConstraint(bound.element);})?
     ;
         
 typeBound returns [ExtendsConstraint element]
@@ -606,7 +607,7 @@ interfaceDeclaration returns [Type element]
     
 normalInterfaceDeclaration returns [RegularType element]
     :   'interface' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text)); retval.element.addModifier(new Interface());} 
-         (params=typeParameters{for(GenericParameter par: params.element){retval.element.addParameter(par);}})? 
+         (params=typeParameters{for(TypeParameter par: params.element){retval.element.addParameter(par);}})? 
          ('extends' trefs=typeList 
            {
              for(TypeReference ref: trefs.element){
@@ -872,12 +873,12 @@ variableModifier returns [Modifier element]
     |   annotation
     ;
 
-typeArguments returns [List<GenericArgument> element]
-    :   '<' {retval.element = new ArrayList<GenericArgument>();} arg=typeArgument {retval.element.add(arg.element);}(',' argx=typeArgument {retval.element.add(argx.element);})* '>'
+typeArguments returns [List<ActualTypeArgument> element]
+    :   '<' {retval.element = new ArrayList<ActualTypeArgument>();} arg=typeArgument {retval.element.add(arg.element);}(',' argx=typeArgument {retval.element.add(argx.element);})* '>'
     ;
     
-typeArgument returns [GenericArgument element]
-    :   t=type {retval.element = new GenericArgument(t.element);}
+typeArgument returns [ActualTypeArgument element]
+    :   t=type {retval.element = new BasicTypeArgument(t.element);}
     |   '?' {throw new Error("We do not currently support wildcards.");} (('extends' | 'super') type)?
     ;
     

@@ -35,6 +35,26 @@ import chameleon.support.rule.member.MemberOverridableByDefault;
  */
 public class Java extends ObjectOrientedLanguage {
 
+	public Java() {
+		super("Java", new JavaLookupFactory());
+		_nullType = new NullType(this);
+		new RootNamespace(new SimpleNameSignature(""), this);
+		this.defaultNamespace().setNullType();
+		STRICTFP = new StaticProperty<Element>("strictfp", this);
+		SYNCHRONIZED = new StaticProperty<Element>("synchronized", this);
+		TRANSIENT = new StaticProperty<Element>("transient", this);
+		VOLATILE = new StaticProperty<Element>("volatile", this);
+		PROTECTED = new ProtectedProperty(this, SCOPE_MUTEX);
+		PRIVATE = new PrivateProperty(this, SCOPE_MUTEX);
+		PUBLIC = new PublicProperty(this, SCOPE_MUTEX);
+		PACKAGE_ACCESSIBLE = new PackageProperty(this, SCOPE_MUTEX);
+
+		// In Java, a constructor is a class method
+		CONSTRUCTOR.addImplication(CLASS);
+		// In Java, constructors are not inheritable
+		CONSTRUCTOR.addImplication(INHERITABLE.inverse());
+	}
+	
 	private final class JavaEquivalenceRelation extends EquivalenceRelation<Member> {
 		@Override
 		public boolean contains(Member first, Member second) throws LookupException {
@@ -165,37 +185,16 @@ public class Java extends ObjectOrientedLanguage {
 		}
 	}
 
-	public Java(){
-		super("Java", new JavaLookupFactory());
-		_nullType = new NullType(this);
-		new RootNamespace(new SimpleNameSignature(""), this);
-		//NamespacePart np = new NamespacePart(getDefaultNamespace(), getContextFactory().getNamespacePartLocalContext());
-		//np.addType(_nullType);
-		//new CompilationUnit(np);
-		
-		this.defaultNamespace().setNullType();
-		
-	}
-
 	protected NullType _nullType;
 	// Adding properties. Note that 'this' is a PropertyUniverse.
-	public final Property<Element> STRICTFP = new StaticProperty<Element>("strictfp", this);
-	public final Property<Element> SYNCHRONIZED = new StaticProperty<Element>("synchronized", this);
-	public final Property<Element> TRANSIENT = new StaticProperty<Element>("transient", this);
-	public final Property<Element> VOLATILE = new StaticProperty<Element>("volatile", this);
-	public final Property<Element> PROTECTED = new ProtectedProperty(this, SCOPE_MUTEX);
-	public final Property<Element> PRIVATE = new PrivateProperty(this, SCOPE_MUTEX);
-	public final Property<Element> PUBLIC = new PublicProperty(this, SCOPE_MUTEX);
-	public final Property<Element> PACKAGE_ACCESSIBLE = new PackageProperty(this, SCOPE_MUTEX);
-	
-	public void initProperties() {
-		super.initProperties();
-		// In Java, a constructor is a class method
-		CONSTRUCTOR.addImplication(CLASS);
-		// In Java, constructors are not inheritable
-		CONSTRUCTOR.addImplication(INHERITABLE.inverse());
-	}
-	
+	public final Property<Element> STRICTFP;
+	public final Property<Element> SYNCHRONIZED;
+	public final Property<Element> TRANSIENT;
+	public final Property<Element> VOLATILE;
+	public final Property<Element> PROTECTED;
+	public final Property<Element> PRIVATE;
+	public final Property<Element> PUBLIC;
+	public final Property<Element> PACKAGE_ACCESSIBLE;
 	
 	public Type getNullType(){
 		return _nullType;

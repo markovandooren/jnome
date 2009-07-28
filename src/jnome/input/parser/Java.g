@@ -427,7 +427,7 @@ package jnome.input.parser;
   public void processType(NamespacePart np, Type type){
     if(np == null) {throw new IllegalArgumentException("namespace part given to processType is null.");}
     if(type == null) {throw new IllegalArgumentException("type given to processType is null.");}
-    np.addType(type);
+    np.add(type);
     // inherit from java.lang.Object if there is no explicit extends relation
     if(type.inheritanceRelations().isEmpty() && (! type.getFullyQualifiedName().equals("java.lang.Object"))){
       type.addInheritanceRelation(new SubtypeRelation(new JavaTypeReference(new NamespaceOrTypeReference("java.lang"),"Object")));

@@ -16,6 +16,7 @@ import chameleon.core.element.Element;
 import chameleon.core.expression.Expression;
 import chameleon.core.expression.Invocation;
 import chameleon.core.expression.InvocationTarget;
+import chameleon.core.language.ObjectOrientedLanguage;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.lookup.LookupStrategy;
@@ -102,7 +103,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 	  new PrimitiveTotalPredicate<NormalMethod>() {
 		  @Override
 		  public boolean eval(NormalMethod object) {
-			  return object.is(language().CONSTRUCTOR) == Ternary.TRUE;
+			  return object.is(language(ObjectOrientedLanguage.class).CONSTRUCTOR) == Ternary.TRUE;
 		  }
 	  }.filter(superMembers);
 	  for(NormalMethod method: superMembers) {
@@ -225,7 +226,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 			NormalMethod decl = (NormalMethod) declaration;
 			List<Type> actuals = getActualParameterTypes();
 			List<Type> formals = decl.header().getParameterTypes();
-			if (new MoreSpecificTypesOrder().contains(actuals, formals) && (decl.is(language().CONSTRUCTOR)==Ternary.TRUE)) {
+			if (new MoreSpecificTypesOrder().contains(actuals, formals) && (decl.is(language(ObjectOrientedLanguage.class).CONSTRUCTOR)==Ternary.TRUE)) {
 					result = decl;
 			}
       return result;

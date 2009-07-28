@@ -13,6 +13,7 @@ import chameleon.core.element.Element;
 import chameleon.core.expression.Assignable;
 import chameleon.core.expression.Expression;
 import chameleon.core.expression.InvocationTarget;
+import chameleon.core.language.ObjectOrientedLanguage;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.type.Type;
 import chameleon.support.expression.ArrayIndex;
@@ -118,7 +119,7 @@ public class ArrayAccessExpression extends Expression<ArrayAccessExpression> imp
   }
 
   public Set getDirectExceptions() throws LookupException {
-    return Util.createNonNullSet(language().getNullInvocationException());
+    return Util.createNonNullSet(language(ObjectOrientedLanguage.class).getNullInvocationException());
   }
 
 //  public AccessibilityDomain getAccessibilityDomain() throws LookupException {

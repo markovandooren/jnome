@@ -6,24 +6,22 @@ import jnome.core.type.NullType;
 
 import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.property.Property;
+import org.rejuse.property.PropertyMutex;
 import org.rejuse.property.StaticProperty;
 
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
-import chameleon.core.language.Language;
+import chameleon.core.language.ObjectOrientedLanguage;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.member.Member;
 import chameleon.core.method.Method;
-import chameleon.core.method.MethodHeader;
-import chameleon.core.method.MethodSignature;
 import chameleon.core.namespace.RootNamespace;
+import chameleon.core.property.Defined;
 import chameleon.core.relation.EquivalenceRelation;
 import chameleon.core.relation.StrictPartialOrder;
 import chameleon.core.relation.WeakPartialOrder;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
-import chameleon.core.type.generics.FormalTypeParameter;
-import chameleon.core.type.generics.InstantiatedTypeParameter;
 import chameleon.core.variable.RegularMemberVariable;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.modifier.PrivateProperty;
@@ -35,7 +33,7 @@ import chameleon.support.rule.member.MemberOverridableByDefault;
 /**
  * @author Marko van Dooren
  */
-public class Java extends Language {
+public class Java extends ObjectOrientedLanguage {
 
 	private final class JavaEquivalenceRelation extends EquivalenceRelation<Member> {
 		@Override
@@ -294,6 +292,15 @@ public class Java extends Language {
 			return _subtypingRelation;
 		}
 		
+		public Type getDefaultSuperClass() throws LookupException {
+			  TypeReference typeRef = new DummyTypeReference(getDefaultSuperClassFQN());
+		    Type result = typeRef.getType();
+		    if (result==null) {
+		        throw new LookupException("Default super class "+getDefaultSuperClassFQN()+" not found.");
+		    }
+		    return result;
+		}
+
 		private JavaSubtypingRelation _subtypingRelation = new JavaSubtypingRelation();
 		  
 }

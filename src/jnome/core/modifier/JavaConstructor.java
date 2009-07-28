@@ -3,6 +3,7 @@ package jnome.core.modifier;
 import org.rejuse.property.PropertySet;
 
 import chameleon.core.element.Element;
+import chameleon.core.language.ObjectOrientedLanguage;
 import chameleon.support.modifier.Constructor;
 /**
  * A class for Java constructor modifiers.
@@ -24,7 +25,7 @@ public class JavaConstructor extends Constructor {
    @*/
   public PropertySet<Element> impliedProperties() {
   	PropertySet<Element> result = super.impliedProperties();
-    result.add(language().INHERITABLE.inverse());
+    result.add(language(ObjectOrientedLanguage.class).INHERITABLE.inverse());
     return result;
   }
 

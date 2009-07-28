@@ -42,7 +42,7 @@ public class TestGenerics extends ExpressionTest {
 
 	public List<Type> getTestTypes() throws LookupException {
 		List<Type> result = new ArrayList<Type>();
-		result = _mm.getSubNamespace("test").getAllTypes();
+		result = _mm.getSubNamespace("test").allDeclarations(Type.class);
 		return result;
 	}
 	

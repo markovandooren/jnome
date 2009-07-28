@@ -348,7 +348,7 @@ public class JavaCodeWriter extends Syntax {
     	}
     }
     result.append("\n");
-    Collection types = part.types();
+    Collection<Type> types = part.declarations(Type.class);
     new PrimitiveTotalPredicate() {
       public boolean eval(Object o) {
         return !(o instanceof ArrayType);

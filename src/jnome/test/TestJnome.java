@@ -59,7 +59,7 @@ public class TestJnome extends ExpressionTest {
 //		ref = new JavaTypeReference("org.jnome.input.antlr.java.parser.JnomeJavaParser");
 //		ref.setUniParent(_mm);
 //		result.add(ref.getType());
-		result = _mm.getSubNamespace("org").getSubNamespace("jnome").getAllTypes();
+		result = _mm.getSubNamespace("org").getSubNamespace("jnome").allDeclarations(Type.class);
 		return result;
 	}
 

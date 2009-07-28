@@ -636,7 +636,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         }; // toevoeging gebeurt door de constructor
         clas.addModifier(pub);
 
-        cu.addType(clas);
+        cu.add(clas);
         clas.addModifier(new ValueType());
     }
 
@@ -656,7 +656,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         };
         byteT.addModifier(pub);
 
-        cu.addType(byteT);
+        cu.add(byteT);
         byteT.addModifier(new ValueType());
 
         addUniPromIntegral(byteT);
@@ -679,7 +679,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
             }
         };
         shortT.addModifier(pub);
-        cu.addType(shortT);
+        cu.add(shortT);
         shortT.addModifier(new ValueType());
 
 
@@ -702,7 +702,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
             }
         };
         charT.addModifier(pub);
-        cu.addType(charT);
+        cu.add(charT);
         charT.addModifier(new ValueType());
 
         addUniPromIntegral(charT);
@@ -723,7 +723,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
             }
         };
         intT.addModifier(pub);
-        cu.addType(intT);
+        cu.add(intT);
         intT.addModifier(new ValueType());
 
         addUniPromIntegral(intT);
@@ -743,7 +743,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
             }
         };
         longT.addModifier(pub);
-        cu.addType(longT);
+        cu.add(longT);
         longT.addModifier(new ValueType());
 
         addUniPromIntegral(longT);
@@ -762,7 +762,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
             }
         };
         floatT.addModifier(pub);
-        cu.addType(floatT);
+        cu.add(floatT);
         floatT.addModifier(new ValueType());
 
         addUniProm(floatT);
@@ -776,7 +776,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
 
         Type doubleT = new RegularType(new SimpleNameSignature("double"));
         doubleT.addModifier(pub);
-        cu.addType(doubleT);
+        cu.add(doubleT);
         doubleT.addModifier(new ValueType());
 
         addUniProm(doubleT);
@@ -887,7 +887,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         Public pub = new Public();
         Type booleanT = new RegularType(new SimpleNameSignature("boolean"));
         booleanT.addModifier(pub);
-        getNamespacePart(mm).addType(booleanT);
+        getNamespacePart(mm).add(booleanT);
         addPrefixOperator(booleanT, "boolean", "!");
         addInfixOperator(booleanT, "boolean", "==", "boolean");
         addInfixOperator(booleanT, "boolean", "!=", "boolean");

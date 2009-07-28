@@ -38,7 +38,7 @@ public class TestAntlr extends ExpressionTest {
 //	  result.add(ref.getType());
 		
 		
-		result = _mm.getSubNamespace("antlr").getAllTypes();
+		result = _mm.getSubNamespace("antlr").allDeclarations(Type.class);
 		return result;
 	}
 	@Override

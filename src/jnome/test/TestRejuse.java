@@ -31,7 +31,7 @@ public class TestRejuse extends ExpressionTest {
 //    ref.setUniParent(_mm);
 //    result.add(ref.getType());
 	
-    result = _mm.getSubNamespace("org").getSubNamespace("jutil").getAllTypes();
+    result = _mm.getSubNamespace("org").getSubNamespace("jutil").allDeclarations(Type.class);
     return result;
   }
 

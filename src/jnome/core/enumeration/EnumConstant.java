@@ -1,16 +1,14 @@
 package jnome.core.enumeration;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.rejuse.association.Reference;
 
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
-import chameleon.core.expression.ActualArgumentList;
 import chameleon.core.expression.ActualArgument;
+import chameleon.core.expression.ActualArgumentList;
 import chameleon.core.member.FixedSignatureMember;
 import chameleon.core.member.Member;
 import chameleon.core.type.ClassBody;

@@ -6,7 +6,6 @@ import jnome.core.type.NullType;
 
 import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.property.Property;
-import org.rejuse.property.PropertyMutex;
 import org.rejuse.property.StaticProperty;
 
 import chameleon.core.declaration.SimpleNameSignature;
@@ -16,7 +15,6 @@ import chameleon.core.lookup.LookupException;
 import chameleon.core.member.Member;
 import chameleon.core.method.Method;
 import chameleon.core.namespace.RootNamespace;
-import chameleon.core.property.Defined;
 import chameleon.core.relation.EquivalenceRelation;
 import chameleon.core.relation.StrictPartialOrder;
 import chameleon.core.relation.WeakPartialOrder;

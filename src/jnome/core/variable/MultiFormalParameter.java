@@ -2,7 +2,6 @@ package jnome.core.variable;
 
 import jnome.core.type.JavaTypeReference;
 import chameleon.core.declaration.SimpleNameSignature;
-import chameleon.core.type.TypeReference;
 import chameleon.core.variable.FormalParameter;
 
 public class MultiFormalParameter extends FormalParameter {

@@ -1,16 +1,11 @@
 package jnome.test;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import jnome.core.type.JavaTypeReference;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
-import org.antlr.runtime.RecognitionException;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 

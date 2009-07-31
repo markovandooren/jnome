@@ -4,14 +4,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Set;
 
+import jnome.input.JavaMetaModelFactory;
+
 import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 
-import jnome.input.JavaMetaModelFactory;
-import junit.framework.TestCase;
 import chameleon.core.namespace.Namespace;
 
 /**

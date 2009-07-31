@@ -5,12 +5,9 @@ import java.util.List;
 import org.rejuse.java.collections.TypeFilter;
 
 import chameleon.core.declaration.Declaration;
-import chameleon.core.declaration.DeclarationContainer;
-import chameleon.core.element.Element;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LocalLookupStrategy;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.lookup.LookupStrategy;
 import chameleon.core.namespace.Namespace;
 
 public class JavaNoRelativeNamespaceLookupStrategy extends LocalLookupStrategy<Namespace> {

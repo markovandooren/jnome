@@ -7,13 +7,12 @@ import jnome.core.language.Java;
 import org.rejuse.property.PropertySet;
 
 import chameleon.core.element.Element;
-import chameleon.core.modifier.ModifierContainer;
 import chameleon.core.modifier.ModifierImpl;
 
 /**
  * @author Marko van Dooren
  */
-public class Volatile extends ModifierImpl<Volatile,ModifierContainer> {
+public class Volatile extends ModifierImpl<Volatile,Element> {
 
   public Volatile() {
   }

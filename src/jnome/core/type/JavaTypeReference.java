@@ -6,19 +6,18 @@ import java.util.List;
 import org.rejuse.association.OrderedReferenceSet;
 
 import chameleon.core.Config;
+import chameleon.core.declaration.TargetDeclaration;
 import chameleon.core.element.ChameleonProgrammerException;
 import chameleon.core.element.Element;
 import chameleon.core.expression.NamedTarget;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.namespace.NamespaceOrType;
-import chameleon.core.namespace.NamespaceOrTypeReference;
+import chameleon.core.reference.ElementReference;
 import chameleon.core.type.DerivedType;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
-import chameleon.core.type.generics.FormalTypeParameter;
 import chameleon.core.type.generics.ActualTypeArgument;
-import chameleon.core.type.generics.TypeParameter;
 import chameleon.core.type.generics.InstantiatedTypeParameter;
+import chameleon.core.type.generics.TypeParameter;
 
 /**
  * A class for Java type references. They add support for array types and generic parameters.
@@ -31,7 +30,7 @@ public class JavaTypeReference extends TypeReference {
     this(name,0);
   }
   
-  public JavaTypeReference(NamespaceOrTypeReference target, String name) {
+  public JavaTypeReference(ElementReference<?,? extends TargetDeclaration> target, String name) {
   	super(target,name);
   }
   
@@ -107,14 +106,16 @@ public class JavaTypeReference extends TypeReference {
       return result;
     }
 
-    if (getTarget() != null) {
-      NamespaceOrType target = getTarget().getNamespaceOrType();
-      if (target != null) {
-        result = target.targetContext().lookUp(selector());// findType(getName());
-      }
-    } else {
-      result = parent().lexicalLookupStrategy(this).lookUp(selector()); // (getName());
-    }
+    result = super.getType();
+    
+//    if (getTarget() != null) {
+//      NamespaceOrType target = getTarget().getNamespaceOrType();
+//      if (target != null) {
+//        result = target.targetContext().lookUp(selector());// findType(getName());
+//      }
+//    } else {
+//      result = parent().lexicalLookupStrategy(this).lookUp(selector()); // (getName());
+//    }
     
     // FILL IN GENERIC PARAMETERS
     result = fillInTypeArguments(result);
@@ -129,38 +130,32 @@ public class JavaTypeReference extends TypeReference {
       setCache(result);
       return result;
     } else {
-    	// REPEAT FOR DEBUGGING
-      if (getTarget() != null) {
-        NamespaceOrType target = getTarget().getNamespaceOrType();
-        if (target != null) {
-          result = target.targetContext().lookUp(selector());// findType(getName());
-        }
-      } else {
-        result = parent().lexicalLookupStrategy(this).lookUp(selector()); // (getName());
-      }
-      throw new LookupException("Result of type reference lookup is null: "+getFullyQualifiedName(),this);
+      throw new LookupException("Result of type reference lookup is null: "+getName(),this);
     }
   }
 
   
   private Type fillInTypeArguments(Type type) throws LookupException {
   	Type result = type;
-  	List<ActualTypeArgument> typeArguments = typeArguments();
-  	if(typeArguments.size() > 0) {
-  	result = new DerivedType(type);
-  	// This is going to give trouble if there is a special lexical context selection for 'type' in its parent.
-  	// set to the type itself? seems dangerous as well.
-  	result.setUniParent(type.parent());
-		List<TypeParameter> parameters = result.parameters();
-		Iterator<TypeParameter> parametersIterator = parameters.iterator();
-		Iterator<ActualTypeArgument> argumentsIterator = typeArguments.iterator();
-		while(parametersIterator.hasNext()) {
-			TypeParameter parameter = parametersIterator.next();
-			ActualTypeArgument argument = argumentsIterator.next();
-			InstantiatedTypeParameter instantiated = new InstantiatedTypeParameter(parameter.signature().clone(),argument);
-			result.replaceParameter(parameter,instantiated);
+		if (type != null) {
+			List<ActualTypeArgument> typeArguments = typeArguments();
+			if (typeArguments.size() > 0) {
+				result = new DerivedType(type);
+				// This is going to give trouble if there is a special lexical context
+				// selection for 'type' in its parent.
+				// set to the type itself? seems dangerous as well.
+				result.setUniParent(type.parent());
+				List<TypeParameter> parameters = result.parameters();
+				Iterator<TypeParameter> parametersIterator = parameters.iterator();
+				Iterator<ActualTypeArgument> argumentsIterator = typeArguments.iterator();
+				while (parametersIterator.hasNext()) {
+					TypeParameter parameter = parametersIterator.next();
+					ActualTypeArgument argument = argumentsIterator.next();
+					InstantiatedTypeParameter instantiated = new InstantiatedTypeParameter(parameter.signature().clone(), argument);
+					result.replaceParameter(parameter, instantiated);
+				}
+			}
 		}
-  	}
 		return result;
 	}
 
@@ -200,9 +195,7 @@ public class JavaTypeReference extends TypeReference {
 
 
   public JavaTypeReference clone() {
-  	NamespaceOrTypeReference target = getTarget();
-  	NamespaceOrTypeReference clone = (target == null ? null : target.clone());
-  	JavaTypeReference result =  new JavaTypeReference(clone,getName());
+  	JavaTypeReference result =  new JavaTypeReference((getTarget() == null ? null : getTarget().clone()),getName());
   	result.setArrayDimension(arrayDimension());
   	for(ActualTypeArgument typeArgument: typeArguments()) {
   		result.addArgument(typeArgument.clone());

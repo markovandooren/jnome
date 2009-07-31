@@ -222,6 +222,7 @@ import chameleon.core.modifier.Modifier;
 import chameleon.core.namespace.Namespace;
 import chameleon.core.namespace.RootNamespace;
 import chameleon.core.namespace.NamespaceOrTypeReference;
+import chameleon.core.namespace.NamespaceReference;
 
 import chameleon.core.namespacepart.NamespacePart;
 import chameleon.core.namespacepart.Import;
@@ -468,11 +469,11 @@ package jnome.input.parser;
 compilationUnit returns [CompilationUnit element] 
 @init{ 
 NamespacePart npp = new NamespacePart(language().defaultNamespace());
-npp.addImport(new DemandImport(new NamespaceOrTypeReference("java.lang")));
+npp.addImport(new DemandImport(new NamespaceReference("java.lang")));
 retval.element = new CompilationUnit(npp);
 }
     :    annotations
-        (   np=packageDeclaration{processPackageDeclaration(retval.element,np.element); npp = np.element;npp.addImport(new DemandImport(new NamespaceOrTypeReference("java.lang")));} 
+        (   np=packageDeclaration{processPackageDeclaration(retval.element,np.element); npp = np.element;npp.addImport(new DemandImport(new NamespaceReference("java.lang")));} 
             (imp=importDeclaration{npp.addImport(imp.element);})* 
             (typech=typeDeclaration
               {processType(npp,typech.element);
@@ -484,7 +485,7 @@ retval.element = new CompilationUnit(npp);
             {
               processPackageDeclaration(retval.element,np.element); 
               npp=np.element; 
-              npp.addImport(new DemandImport(new NamespaceOrTypeReference("java.lang")));}
+              npp.addImport(new DemandImport(new NamespaceReference("java.lang")));}
          )? 
         (imp=importDeclaration
           {npp.addImport(imp.element);}
@@ -510,7 +511,7 @@ packageDeclaration returns [NamespacePart element]
     
 importDeclaration returns [Import element]
     :   'import' st='static'? qn=qualifiedName {retval.element = new TypeImport(new JavaTypeReference($qn.text));} 
-         ('.' '*' {retval.element = new DemandImport(new NamespaceOrTypeReference($qn.text));})? ';'
+         ('.' '*' {retval.element = new DemandImport(new NamespaceReference($qn.text));})? ';'
     ;
 
     

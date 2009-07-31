@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import jnome.core.expression.ArrayAccessExpression;
 import jnome.core.expression.ArrayCreationExpression;
@@ -45,9 +44,11 @@ import chameleon.core.method.exception.ExceptionDeclaration;
 import chameleon.core.method.exception.TypeExceptionDeclaration;
 import chameleon.core.modifier.Modifier;
 import chameleon.core.namespace.NamespaceOrTypeReference;
+import chameleon.core.namespace.NamespaceReference;
 import chameleon.core.namespacepart.DemandImport;
 import chameleon.core.namespacepart.NamespacePart;
 import chameleon.core.namespacepart.TypeImport;
+import chameleon.core.reference.SpecificReference;
 import chameleon.core.statement.Block;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
@@ -223,8 +224,16 @@ public class JavaCodeWriter extends Syntax {
       result = toCodeStaticInitializer((StaticInitializer)element);
     } else if(isCompilationUnit(element)) {
       result = toCodeCompilationUnit((CompilationUnit)element);
+    } else if(isNamespaceReference(element)) {
+      result = toCodeNamespaceReference((NamespaceReference)element);
     } else if(isNamespaceOrTypeReference(element)) {
       result = toCodeNamespaceOrTypeReference((NamespaceOrTypeReference)element);
+    } else if(isTypeReference(element)) {
+      result = toCodeTypeReference((TypeReference)element);
+    } 
+      // Specific reference MUST come after the other references.
+      else if(isSpecificReference(element)) {
+      result = toCodeSpecificReference((SpecificReference)element);
     } else if(isNamespacePart(element)) {
     	result = toCodeNamespacePart((NamespacePart) element);
     } else if(isActualParameter(element)) {
@@ -261,6 +270,45 @@ public class JavaCodeWriter extends Syntax {
       result = result + ".";
     }
     result = result + typeReference.getName();
+    return result;
+  }
+
+  public boolean isSpecificReference(Element element) {
+    return element instanceof SpecificReference;
+  }
+  
+  public String toCodeSpecificReference(SpecificReference typeReference) throws LookupException {
+    String result = toCode(typeReference.getTarget());
+    if(result.length() > 0) {
+      result = result + ".";
+    }
+    result = result + typeReference.getName();
+    return result;
+  }
+
+  public boolean isNamespaceReference(Element element) {
+    return element instanceof NamespaceReference;
+  }
+  
+  public String toCodeNamespaceReference(NamespaceReference typeReference) throws LookupException {
+    String result = toCode(typeReference.getTarget());
+    if(result.length() > 0) {
+      result = result + ".";
+    }
+    result = result + typeReference.getName();
+    return result;
+  }
+
+  public boolean isTypeReference(Element element) {
+    return element instanceof TypeReference;
+  }
+  
+  public String toCodeTypeReference(TypeReference typeReference) throws LookupException {
+    String result = toCode(typeReference.getTarget());
+    if(result.length() > 0) {
+      result = result + ".";
+    }
+    result = result + typeReference.getName();
     if(typeReference instanceof JavaTypeReference) {
     	JavaTypeReference tref = (JavaTypeReference)typeReference;
     	int dimension = tref.arrayDimension();
@@ -271,7 +319,7 @@ public class JavaCodeWriter extends Syntax {
     }
     return result;
   }
-  
+
   public boolean isMemberVariable(Element element) {
     return element instanceof RegularMemberVariable;
   }

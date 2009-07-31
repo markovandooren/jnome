@@ -30,7 +30,7 @@ public class JavaTypeReference extends TypeReference {
     this(name,0);
   }
   
-  public JavaTypeReference(ElementReference<?,? extends TargetDeclaration> target, String name) {
+  public JavaTypeReference(ElementReference<?,?,? extends TargetDeclaration> target, String name) {
   	super(target,name);
   }
   

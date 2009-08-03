@@ -244,6 +244,9 @@ import chameleon.core.type.generics.ActualTypeArgument;
 import chameleon.core.type.generics.BasicTypeArgument;
 import chameleon.core.type.generics.TypeConstraint;
 import chameleon.core.type.generics.ExtendsConstraint;
+import chameleon.core.type.generics.PureWildCard;
+import chameleon.core.type.generics.ExtendsWildCard;
+import chameleon.core.type.generics.SuperWildCard;
 
 import chameleon.core.type.inheritance.SubtypeRelation;
 
@@ -881,8 +884,27 @@ typeArguments returns [List<ActualTypeArgument> element]
     ;
     
 typeArgument returns [ActualTypeArgument element]
+@init{
+boolean pure=true;
+boolean ext=true;
+}
     :   t=type {retval.element = new BasicTypeArgument(t.element);}
-    |   '?' {throw new Error("We do not currently support wildcards.");} (('extends' | 'super') type)?
+    |   '?'  
+        (
+          {pure=false;}
+          ('extends' | 'super'{ext=false;}) 
+          t=type
+          {if(ext) {
+            retval.element = new ExtendsWildCard(t.element);
+           } else {
+            retval.element = new SuperWildCard(t.element);
+           }
+          }
+        )?
+        {if(pure) {
+           retval.element = new PureWildCard();
+         }
+        }
     ;
     
 qualifiedNameList returns[List<String> element]

@@ -6,7 +6,7 @@ import org.rejuse.association.Reference;
 
 import chameleon.core.expression.Expression;
 import chameleon.core.namespace.Namespace;
-import chameleon.core.namespacepart.NamespaceElementImpl;
+import chameleon.core.namespace.NamespaceElementImpl;
 import chameleon.util.Util;
 
 /**

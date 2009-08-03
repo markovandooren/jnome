@@ -443,14 +443,6 @@ package jnome.input.parser;
     return ref;
   }
   
-  public void processPackageDeclaration(CompilationUnit cu, NamespacePart np){
-    if(np!=null){
-      cu.getDefaultNamespacePart().addNamespacePart(np);
-    } else {
-      throw new IllegalArgumentException("trying to add namespace part that is null.");
-    }
-  }
-  
   public void addNonTopLevelObjectInheritance(Type type) {
     if(type.inheritanceRelations().isEmpty()){
       type.addInheritanceRelation(new SubtypeRelation(new JavaTypeReference(new NamespaceOrTypeReference("java.lang"),"Object")));
@@ -469,24 +461,34 @@ package jnome.input.parser;
 compilationUnit returns [CompilationUnit element] 
 @init{ 
 NamespacePart npp = new NamespacePart(language().defaultNamespace());
-npp.addImport(new DemandImport(new NamespaceReference("java.lang")));
-retval.element = new CompilationUnit(npp);
+retval.element = new CompilationUnit();
 }
     :    annotations
-        (   np=packageDeclaration{processPackageDeclaration(retval.element,np.element); npp = np.element;npp.addImport(new DemandImport(new NamespaceReference("java.lang")));} 
+        (   np=packageDeclaration
+                {npp=np.element;
+                 retval.element.add(npp);
+                 npp.addImport(new DemandImport(new NamespaceReference("java.lang")));
+                } 
             (imp=importDeclaration{npp.addImport(imp.element);})* 
             (typech=typeDeclaration
-              {processType(npp,typech.element);
-              }
+                {processType(npp,typech.element);
+                }
             )*
-        |   cd=classOrInterfaceDeclaration{processType(npp,cd.element);} (typech=typeDeclaration{processType(npp,typech.element);})*
+        |   cd=classOrInterfaceDeclaration
+               {retval.element.add(npp);
+                npp.addImport(new DemandImport(new NamespaceReference("java.lang")));
+                processType(npp,cd.element);
+               } 
+            (typech=typeDeclaration
+               {processType(npp,typech.element);
+               }
+            )*
         )
     |   (np=packageDeclaration
-            {
-              processPackageDeclaration(retval.element,np.element); 
-              npp=np.element; 
-              npp.addImport(new DemandImport(new NamespaceReference("java.lang")));}
-         )? 
+            {npp=np.element;
+             npp.addImport(new DemandImport(new NamespaceReference("java.lang")));}
+         )?
+        {retval.element.add(npp);}
         (imp=importDeclaration
           {npp.addImport(imp.element);}
         )* 

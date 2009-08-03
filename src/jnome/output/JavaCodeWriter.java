@@ -392,7 +392,7 @@ public class JavaCodeWriter extends Syntax {
         result.append("import "+toCode(((TypeImport)iter.next()).getTypeReference()) +";\n");
     	}
     	else if(iter instanceof DemandImport) {
-        result.append("import "+toCode(((DemandImport)iter.next()).getNamespaceOrTypeReference()) +".*;\n");
+        result.append("import "+toCode(((DemandImport)iter.next()).namespaceReference()) +".*;\n");
     	}
     }
     result.append("\n");
@@ -414,7 +414,7 @@ public class JavaCodeWriter extends Syntax {
   
   public String toCodeCompilationUnit(CompilationUnit cu) throws LookupException {
     StringBuffer result = new StringBuffer();
-  	for(NamespacePart part: cu.getNamespaceParts()) {
+  	for(NamespacePart part: cu.namespaceParts()) {
   		result.append(toCodeNamespacePart(part));
   	}
   	return result.toString();

@@ -22,8 +22,8 @@ import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.java.collections.RobustVisitor;
 import org.rejuse.java.collections.Visitor;
-import org.rejuse.predicate.PrimitivePredicate;
-import org.rejuse.predicate.PrimitiveTotalPredicate;
+import org.rejuse.predicate.AbstractPredicate;
+import org.rejuse.predicate.SafePredicate;
 
 import chameleon.core.compilationunit.CompilationUnit;
 import chameleon.core.element.Element;
@@ -384,7 +384,7 @@ public class JavaCodeWriter extends Syntax {
   
   public String toCodeNamespacePart(NamespacePart part) throws LookupException {
     StringBuffer result = new StringBuffer();
-    result.append("package "+part.getDeclaredNamespace().getFullyQualifiedName() +";\n\n");
+    result.append("package "+part.namespace().getFullyQualifiedName() +";\n\n");
     
     Iterator iter = part.imports().iterator();
     while(iter.hasNext()) {
@@ -397,7 +397,7 @@ public class JavaCodeWriter extends Syntax {
     }
     result.append("\n");
     Collection<Type> types = part.declarations(Type.class);
-    new PrimitiveTotalPredicate() {
+    new SafePredicate() {
       public boolean eval(Object o) {
         return !(o instanceof ArrayType);
       }
@@ -590,7 +590,7 @@ public class JavaCodeWriter extends Syntax {
     result.append("interface ");
     result.append(type.getName());
     List<InheritanceRelation> superTypes = type.inheritanceRelations();
-    new PrimitivePredicate<InheritanceRelation>() {
+    new AbstractPredicate<InheritanceRelation>() {
       public boolean eval(InheritanceRelation rel) throws LookupException {
         return ! toCode(rel.superClassReference()).equals("java.lang.Object");
       }
@@ -1011,7 +1011,7 @@ public class JavaCodeWriter extends Syntax {
           else {
             first = false;
           }
-          result.append(element.signature().getName());
+          result.append(element.signature().name());
           Expression initCode = element.expression();
           if (initCode != null) {
             result.append(" = ");
@@ -1411,7 +1411,7 @@ public class JavaCodeWriter extends Syntax {
   public static void writeCode(Arguments arguments) throws IOException, LookupException {
     JavaCodeWriter writer = new JavaCodeWriter(2);
     List<Type> types = arguments.getTypes();
-    new PrimitiveTotalPredicate<Type>() {
+    new SafePredicate<Type>() {
     	public boolean eval(Type t) {
     		return t.hasModifier(new Public());
     	}

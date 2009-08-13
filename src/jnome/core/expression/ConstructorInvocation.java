@@ -7,7 +7,7 @@ import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.association.Reference;
 import org.rejuse.logic.ternary.Ternary;
-import org.rejuse.predicate.PrimitiveTotalPredicate;
+import org.rejuse.predicate.SafePredicate;
 
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.DeclarationContainer;
@@ -100,7 +100,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
   	TypeReference tref = getTypeReference();
  	  Type writtenType = tref.getType();
 	  List<NormalMethod> superMembers = writtenType.directlyDeclaredMembers(NormalMethod.class);
-	  new PrimitiveTotalPredicate<NormalMethod>() {
+	  new SafePredicate<NormalMethod>() {
 		  @Override
 		  public boolean eval(NormalMethod object) {
 			  return object.is(language(ObjectOrientedLanguage.class).CONSTRUCTOR) == Ternary.TRUE;

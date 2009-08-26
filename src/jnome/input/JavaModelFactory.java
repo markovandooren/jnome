@@ -8,11 +8,9 @@ import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.net.MalformedURLException;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import jnome.core.language.Java;
@@ -29,7 +27,6 @@ import org.rejuse.io.fileset.PatternPredicate;
 import chameleon.core.compilationunit.CompilationUnit;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
-import chameleon.core.language.Language;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.Namespace;
 import chameleon.core.namespace.NamespaceReference;
@@ -41,7 +38,6 @@ import chameleon.core.type.TypeReference;
 import chameleon.core.variable.FormalParameter;
 import chameleon.input.ModelFactory;
 import chameleon.input.ParseException;
-import chameleon.linkage.ISourceSupplier;
 import chameleon.support.member.simplename.SimpleNameMethodHeader;
 import chameleon.support.member.simplename.operator.infix.InfixOperator;
 import chameleon.support.member.simplename.operator.postfix.PostfixOperator;
@@ -50,13 +46,22 @@ import chameleon.support.modifier.Native;
 import chameleon.support.modifier.Public;
 import chameleon.support.modifier.ValueType;
 import chameleon.tool.Connector;
+import chameleon.tool.ConnectorImpl;
 
 /**
  * @author Marko van Dooren
  */
 
-public class JavaModelFactory implements ModelFactory {
+public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
 
+	public JavaModelFactory() {
+		setLanguage(new Java(), ModelFactory.class);
+	}
+	
+	public JavaModelFactory(Java language) {
+		setLanguage(language, ModelFactory.class);
+	}
+	
     /**
      * Return the top of the metamodel when parsing the given set of files.
      *
@@ -79,8 +84,8 @@ public class JavaModelFactory implements ModelFactory {
      * @throws RecognitionException 
      */
     public Namespace getMetaModel(Set<File> files) throws MalformedURLException, FileNotFoundException, IOException, LookupException, ParseException {
-        Java lang = new Java();
-        setToolExtensions(lang);
+        Java lang = (Java) language();
+//        setToolExtensions(lang);
         final Namespace defaultPackage = lang.defaultNamespace();
         int count = 0;
         for (File file : files) {
@@ -98,45 +103,42 @@ public class JavaModelFactory implements ModelFactory {
         return defaultPackage;
     }
 
-    public Namespace getMetaModel(ISourceSupplier supply) throws MalformedURLException, FileNotFoundException, IOException, LookupException, ParseException {
+//    public Namespace getMetaModel(ISourceSupplier supply) throws MalformedURLException, FileNotFoundException, IOException, LookupException, ParseException {
+//
+//        Java lang = new Java();
+//        final Namespace defaultPackage = lang.defaultNamespace();
+//        try {
+//            for (supply.reset(); supply.hasNext(); supply.next()) {
+//                addStringToGraph(supply.getSource(),lang);
+//
+//            }
+//            addPrimitives(defaultPackage);
+//            addInfixOperators(defaultPackage);
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//
+//        }
+//        return defaultPackage;
+//    }
 
-//		final Namespace defaultPackage = new RootNamespace(null, "",
-//				new Java(), new JavaNamespacePartLocalContext());
-        Java lang = new Java();
-        setToolExtensions(lang);
-        final Namespace defaultPackage = lang.defaultNamespace();
-        try {
-            for (supply.reset(); supply.hasNext(); supply.next()) {
-                addStringToGraph(supply.getSource(),lang);
-
-            }
-            addPrimitives(defaultPackage);
-            addInfixOperators(defaultPackage);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return null;
-
-        }
-        return defaultPackage;
-    }
-
-    private Map<Class<? extends Connector>,Connector> toolExtensions = new HashMap<Class<? extends Connector>,Connector>();
-
-    protected void setToolExtensions(Language lang) {
-        for (Class<? extends Connector> t : toolExtensions.keySet()) {
-            Connector ext = toolExtensions.get(t);
-            lang.setConnector(t,ext.clone());
-        }
-    }
-
-    public void addToolExtension(Class<? extends Connector> extClass, Connector ext) {
-        toolExtensions.put(extClass,ext);
-    }
-
-    public void removeToolExtension(Class<? extends Connector> extClass) {
-        toolExtensions.remove(extClass);
-    }
+//    private Map<Class<? extends Connector>,Connector> toolExtensions = new HashMap<Class<? extends Connector>,Connector>();
+//
+//    protected void setToolExtensions(Language lang) {
+//        for (Class<? extends Connector> t : toolExtensions.keySet()) {
+//            Connector ext = toolExtensions.get(t);
+//            lang.setConnector(t,ext.clone());
+//        }
+//    }
+//
+//    public void addToolExtension(Class<? extends Connector> extClass, Connector ext) {
+//        toolExtensions.put(extClass,ext);
+//    }
+//
+//    public void removeToolExtension(Class<? extends Connector> extClass) {
+//        toolExtensions.remove(extClass);
+//    }
 
     private void addPrimitives(Namespace defaultPackage) {
         addVoid(defaultPackage);
@@ -964,4 +966,9 @@ public class JavaModelFactory implements ModelFactory {
         }
         return result;
     }
+
+		@Override
+		public Connector clone() {
+			return new JavaModelFactory();
+		}
 }

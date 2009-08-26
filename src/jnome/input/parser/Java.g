@@ -196,6 +196,7 @@ import chameleon.core.compilationunit.CompilationUnit;
 import chameleon.core.declaration.SimpleNameSignature;
 
 import chameleon.core.element.ChameleonProgrammerException;
+import chameleon.core.element.Element;
 
 import chameleon.core.expression.ActualArgument;
 import chameleon.core.expression.Expression;
@@ -252,6 +253,9 @@ import chameleon.core.type.inheritance.SubtypeRelation;
 
 import chameleon.core.variable.Variable;
 import chameleon.core.variable.FormalParameter;
+
+import chameleon.input.InputProcessor;
+import chameleon.input.Position2D;
 
 import chameleon.support.expression.RegularLiteral;
 import chameleon.support.expression.NullLiteral;
@@ -392,6 +396,12 @@ package jnome.input.parser;
     }
     
     private ClassBody _body;
+  }
+  
+  public void setLocation(Element element, Token begin, Token end) {
+    for(InputProcessor processor: language().processors(InputProcessor.class)) {
+      processor.setLocation(element, new Position2D(begin.getLine(), begin.getCharPositionInLine()), new Position2D(end.getLine(), end.getCharPositionInLine()));
+    }
   }
 
   public static class StupidVariableDeclaratorId {

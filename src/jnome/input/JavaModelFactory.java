@@ -39,11 +39,8 @@ import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
 import chameleon.core.variable.FormalParameter;
-import chameleon.input.MetaModelFactory;
+import chameleon.input.ModelFactory;
 import chameleon.input.ParseException;
-import chameleon.linkage.ILinkage;
-import chameleon.linkage.ILinkageFactory;
-import chameleon.linkage.IParseErrorHandler;
 import chameleon.linkage.ISourceSupplier;
 import chameleon.support.member.simplename.SimpleNameMethodHeader;
 import chameleon.support.member.simplename.operator.infix.InfixOperator;
@@ -52,13 +49,13 @@ import chameleon.support.member.simplename.operator.prefix.PrefixOperator;
 import chameleon.support.modifier.Native;
 import chameleon.support.modifier.Public;
 import chameleon.support.modifier.ValueType;
-import chameleon.tool.ToolExtension;
+import chameleon.tool.Connector;
 
 /**
  * @author Marko van Dooren
  */
 
-public class JavaMetaModelFactory implements MetaModelFactory {
+public class JavaModelFactory implements ModelFactory {
 
     /**
      * Return the top of the metamodel when parsing the given set of files.
@@ -81,13 +78,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
      *             Something went wrong
      * @throws RecognitionException 
      */
-    public Namespace getMetaModel(ILinkageFactory fact, Set<File> files) throws MalformedURLException, FileNotFoundException, IOException, LookupException, ParseException {
-
-//		final Namespace defaultPackage = new RootNamespace(null, "",
-//				new Java(), new JavaNamespacePartLocalContext());
-    	 if(fact ==null) {
-    		 throw new IllegalArgumentException("Linkage factory is null");
-    	 }
+    public Namespace getMetaModel(Set<File> files) throws MalformedURLException, FileNotFoundException, IOException, LookupException, ParseException {
         Java lang = new Java();
         setToolExtensions(lang);
         final Namespace defaultPackage = lang.defaultNamespace();
@@ -95,7 +86,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         for (File file : files) {
             System.out.println(++count + " Parsing "+ file.getAbsolutePath());
             try {
-              addFileToGraph(fact.createLinkage(file), file, lang);
+              addFileToGraph(file, lang);
             } catch (RecognitionException e) {
               throw new ParseException(e);
             }
@@ -116,8 +107,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         final Namespace defaultPackage = lang.defaultNamespace();
         try {
             for (supply.reset(); supply.hasNext(); supply.next()) {
-                addStringToGraph(supply.getLinkage(), supply.getSource(),
-                        lang);
+                addStringToGraph(supply.getSource(),lang);
 
             }
             addPrimitives(defaultPackage);
@@ -131,20 +121,20 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         return defaultPackage;
     }
 
-    private Map<Class<? extends ToolExtension>,ToolExtension> toolExtensions = new HashMap<Class<? extends ToolExtension>,ToolExtension>();
+    private Map<Class<? extends Connector>,Connector> toolExtensions = new HashMap<Class<? extends Connector>,Connector>();
 
     protected void setToolExtensions(Language lang) {
-        for (Class<? extends ToolExtension> t : toolExtensions.keySet()) {
-            ToolExtension ext = toolExtensions.get(t);
-            lang.setToolExtension(t,ext.clone());
+        for (Class<? extends Connector> t : toolExtensions.keySet()) {
+            Connector ext = toolExtensions.get(t);
+            lang.setConnector(t,ext.clone());
         }
     }
 
-    public void addToolExtension(Class<? extends ToolExtension> extClass, ToolExtension ext) {
+    public void addToolExtension(Class<? extends Connector> extClass, Connector ext) {
         toolExtensions.put(extClass,ext);
     }
 
-    public void removeToolExtension(Class<? extends ToolExtension> extClass) {
+    public void removeToolExtension(Class<? extends Connector> extClass) {
         toolExtensions.remove(extClass);
     }
 
@@ -385,7 +375,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
       * return document; }
       */
 
-    private void addFileToGraph(ILinkage linkage, File file, Java language) throws FileNotFoundException, IOException, MalformedURLException, RecognitionException, LookupException {
+    private void addFileToGraph(File file, Java language) throws FileNotFoundException, IOException, MalformedURLException, RecognitionException, LookupException {
         // The file name is used in the lexers and parser to
         // give more informative error messages
         String fileName = file.getName();
@@ -398,13 +388,12 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         // message will be printed if the file doesn't exist
         // LOGGER.debug("Adding " + absolutePath + "...");
 
-        lexAndParse(linkage, fileInputStream, fileName, language, linkage
-                .getParseErrorHandler());
+        lexAndParse(fileInputStream, fileName, language);
     }
 
-    public void addSource(ILinkage linkage, String source, Java language) throws MalformedURLException, ParseException, IOException, LookupException {
+    public void addSource(String source, Java language) throws MalformedURLException, ParseException, IOException, LookupException {
         try {
-            addStringToGraph(linkage, source, language);
+            addStringToGraph(source, language);
         }
         catch (ClassCastException e) {
             throw new IllegalArgumentException(
@@ -414,16 +403,15 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         }
     }
 
-    private void addStringToGraph(ILinkage linkage, String string, Java language) throws IOException, MalformedURLException, RecognitionException, LookupException {
+    private void addStringToGraph(String string, Java language) throws IOException, MalformedURLException, RecognitionException, LookupException {
         String name = "document";
         InputStream inputStream = new StringBufferInputStream(string);
         
-        lexAndParse(linkage, inputStream, name, language, linkage
-                .getParseErrorHandler());
+        lexAndParse(inputStream, name, language);
         // System.out.println("metamodel made of " + name);
     }
 
-    private JavaParser getParser(InputStream inputStream, String fileName, IParseErrorHandler handler, Java language) throws RecognitionException, IOException {
+    private JavaParser getParser(InputStream inputStream, String fileName, Java language) throws RecognitionException, IOException {
 //        JavaLexer lexer = getLexer(inputStream);
         
 //    		File file = new File(fileName);
@@ -461,9 +449,9 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         return parser;
     }
 
-    private void lexAndParse(ILinkage linkage, InputStream inputStream, String fileName, Java language, IParseErrorHandler handler) throws IOException, MalformedURLException, RecognitionException, LookupException {
+    private void lexAndParse(InputStream inputStream, String fileName, Java language) throws IOException, MalformedURLException, RecognitionException, LookupException {
 
-        JavaParser parser = getParser(inputStream, fileName, handler, language);
+        JavaParser parser = getParser(inputStream, fileName, language);
         parser.setLanguage(language);
 
         // Parse the compilationUnit
@@ -539,30 +527,30 @@ public class JavaMetaModelFactory implements MetaModelFactory {
         parser.compilationUnit();
     }
     
-    static class DummyLinkageFactory implements ILinkageFactory{
-
-    	public ILinkage createLinkage(File file) {
-    		return new ILinkage(){
-
-    			public IParseErrorHandler getParseErrorHandler() {
-    				return null;
-    			}
-
-    			public String getSource() {
-    				return null;
-    			}
-
-    			public void decoratePosition(int offset, int length, String dectype, Element el) {
-    			}
-
-    			public int getLineOffset(int i) {
-    				return 0;
-    			}
-
-    			public void addCompilationUnit(CompilationUnit cu) {
-    				
-    			}};
-    	}}
+//    static class DummyLinkageFactory implements ILinkageFactory{
+//
+//    	public ILinkage createLinkage(File file) {
+//    		return new ILinkage(){
+//
+//    			public IParseErrorHandler getParseErrorHandler() {
+//    				return null;
+//    			}
+//
+//    			public String getSource() {
+//    				return null;
+//    			}
+//
+//    			public void decoratePosition(int offset, int length, String dectype, Element el) {
+//    			}
+//
+//    			public int getLineOffset(int i) {
+//    				return 0;
+//    			}
+//
+//    			public void addCompilationUnit(CompilationUnit cu) {
+//    				
+//    			}};
+//    	}}
 
 
     public static void main(String[] args) {
@@ -572,7 +560,7 @@ public class JavaMetaModelFactory implements MetaModelFactory {
             fileSet.include(new PatternPredicate(new File(args[0]),
                     new FileNamePattern(args[1])));
             Set files = fileSet.getFiles();
-            new JavaMetaModelFactory().getMetaModel(new DummyLinkageFactory(), files);
+            new JavaModelFactory().getMetaModel(files);
             long stop = Calendar.getInstance().getTimeInMillis();
             System.out.println("DONE !!!");
             System.out.println("Acquiring took " + (stop - start) + "ms.");

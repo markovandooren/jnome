@@ -115,7 +115,7 @@ public class Java extends ObjectOrientedLanguage {
 		    }
 		    result = (!defined2) && 
 		             method1.signature().sameAs(method2.signature()) &&
-		             (! method2.getNearestType().subTypeOf(method1.getNearestType())) &&
+		             (! method2.nearestAncestor(Type.class).subTypeOf(method1.nearestAncestor(Type.class))) &&
 		             method1.sameKind(method2);
 		    } else {
 		    	result = false;
@@ -162,7 +162,7 @@ public class Java extends ObjectOrientedLanguage {
 		    }
 		    result = overridable && 
 		             method1.signature().sameAs(method2.signature()) && 
-		             method1.getNearestType().subTypeOf(method2.getNearestType()) && 
+		             method1.nearestAncestor(Type.class).subTypeOf(method2.nearestAncestor(Type.class)) && 
 		             method1.sameKind(method2);
 		  } 
 //		  else if ((first instanceof MemberVariable) && (second instanceof MemberVariable)) {

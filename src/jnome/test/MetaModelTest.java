@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Set;
 
-import jnome.input.JavaMetaModelFactory;
+import jnome.input.JavaModelFactory;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
@@ -63,9 +63,9 @@ public abstract class MetaModelTest {
     	setLogLevels();
       if(_mm == null) {
         //_mm = getMetaModelFactory().getMetaModel(_files.getFiles());
-      	Set s = JavaMetaModelFactory.loadFiles(_files, ".java", true);
+      	Set s = JavaModelFactory.loadFiles(_files, ".java", true);
       	System.out.println("Found "+s.size()+" files.");
-      	_mm = getMetaModelFactory().getMetaModel(new DummyLinkage(),s);
+      	_mm = getMetaModelFactory().getMetaModel(s);
       }
     }
     
@@ -75,8 +75,8 @@ public abstract class MetaModelTest {
     	_files = null;
     }
     
-    public JavaMetaModelFactory getMetaModelFactory() {
-      return new JavaMetaModelFactory();
+    public JavaModelFactory getMetaModelFactory() {
+      return new JavaModelFactory();
     }
   
     /**

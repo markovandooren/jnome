@@ -640,7 +640,7 @@ public class JavaCodeWriter extends Syntax {
 	    
 	    result.append(((SimpleNameMethodSignature)method.signature()).name());
 	    result.append("(");
-	    Iterator iter = method.getParameters().iterator();
+	    Iterator iter = method.formalParameters().iterator();
 	    while(iter.hasNext()) {
 	      FormalParameter param = (FormalParameter)iter.next();
 	      result.append(toCodeVariable(param));
@@ -650,10 +650,10 @@ public class JavaCodeWriter extends Syntax {
 	    }
 	    result.append(") ");
 	    result.append(toCodeExceptionClause(method.getExceptionClause()));
-	    if(! method.getExceptionClause().getDeclarations().isEmpty()) {
+	    if(! method.getExceptionClause().exceptionDeclarations().isEmpty()) {
 	      result.append(" ");
 	    }
-	    result.append(toCodeImplementation(method.getImplementation()));
+	    result.append(toCodeImplementation(method.implementation()));
 	    indent();
 	    undent();
 	    return result.toString();
@@ -709,7 +709,7 @@ public class JavaCodeWriter extends Syntax {
   
   public String toCodeExceptionClause(ExceptionClause ec) throws LookupException {
     final StringBuffer result = new StringBuffer();
-    List decls = ec.getDeclarations();
+    List decls = ec.exceptionDeclarations();
     if(! decls.isEmpty()) {
       result.append("throws ");
     }

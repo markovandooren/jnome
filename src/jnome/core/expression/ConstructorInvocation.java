@@ -139,15 +139,6 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
   	}
   }
 
-//  public RegularMethod getConstructor() throws LookupException {
-//    Type type = (Type)getTypeReference().getType(); // Not the actual type
-//    return type.getConstructor(getActualParameterTypes());
-//  }
-
-//  public RegularMethod getMethod() throws LookupException {
-//    return getConstructor();
-//  }
-
   public boolean superOf(InvocationTarget target) throws LookupException {
     if(!(target instanceof ConstructorInvocation)) {
       return false;
@@ -265,14 +256,5 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 	public <D extends Declaration> List<D> declarations(DeclarationSelector<D> selector) throws LookupException {
 		return selector.selection(declarations());
 	}
-
-//	// COPIED FROM chameleon.core.type.Type
-//	@SuppressWarnings("unchecked")
-//	public <T extends Declaration> Set<T> declarations(DeclarationSelector<T> selector) throws LookupException {
-//    Set<Declaration> tmp = declarations();
-//    Set<T> result = selector.selection(tmp);
-//    return result;
-//	}
-
 
 }

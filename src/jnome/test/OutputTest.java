@@ -7,7 +7,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import jnome.input.JavaMetaModelFactory;
+import jnome.input.JavaModelFactory;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -80,7 +80,7 @@ public abstract class OutputTest {
 	@Before
 	public void setUp() throws MalformedURLException, FileNotFoundException, ParseException, IOException, Exception {
 		addTestFiles();
-		_args = new ArgumentParser(new JavaMetaModelFactory(),true).parse(arguments(), _extension);
+		_args = new ArgumentParser(new JavaModelFactory(),true).parse(arguments(), _extension);
 	}
 
 	@Test

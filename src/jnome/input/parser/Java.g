@@ -673,8 +673,8 @@ memberDeclaration returns [TypeElement element]
     ;
 
 //TODO parse generics parameters for methods and constructors
-genericMethodOrConstructorDecl returns [Member element]
-    :   params=typeParameters rest=genericMethodOrConstructorRest {retval.element = rest.element;}
+genericMethodOrConstructorDecl returns [Method element]
+    :   params=typeParameters rest=genericMethodOrConstructorRest {retval.element = rest.element; retval.element.header().addAllTypeParameters(params.element);}
     ;
     
 genericMethodOrConstructorRest returns [Method element]
@@ -988,7 +988,7 @@ annotations
     ;
 
 annotation
-    :   {throw new Error("annotations are not yet supported");} '@' annotationName ( '(' ( elementValuePairs | elementValue )? ')' )?
+    :   '@' annotationName ( '(' ( elementValuePairs | elementValue )? ')' )?
     ;
     
 annotationName
@@ -1446,9 +1446,14 @@ arrayAccessSuffixRubbish returns [Expression element]
 
 // NEEDS_TARGET
 creator returns [Expression element]
-//BUG must count array brackets
+//GEN_METH
 @init{int count = 0;}
-    :   nonWildcardTypeArguments {throw new ChameleonProgrammerException("Generic constructors are not yet supported");} createdName classCreatorRest
+    :   targs=nonWildcardTypeArguments tx=createdName restx=classCreatorRest
+         {retval.element = new ConstructorInvocation(tx.element,$TargetScope::target);
+          ((ConstructorInvocation)retval.element).setBody(restx.element.body());
+          ((ConstructorInvocation)retval.element).addAllArguments(restx.element.arguments());
+          ((ConstructorInvocation)retval.element).addAllTypeArguments(targs.element);
+         }
     |    tt=createdName  ('[' ']' {count++;})+ init=arrayInitializer {tt.element.addArrayDimension(count); retval.element = new ArrayCreationExpression(tt.element);
          ((ArrayCreationExpression)retval.element).setInitializer(init.element);}
     |    ttt=createdName  {retval.element = new ArrayCreationExpression(ttt.element);} 
@@ -1468,12 +1473,16 @@ createdName returns [JavaTypeReference element]
     ;
 
 // NEEDS_TARGET
+//GEN_METH
 innerCreator returns [ConstructorInvocation element]
-    :   (nonWildcardTypeArguments {throw new ChameleonProgrammerException("Generic constructors are not yet supported");})? 
+    :   (targs=nonWildcardTypeArguments)? 
         name=Identifier rest=classCreatorRest 
         {retval.element = new ConstructorInvocation(new JavaTypeReference($name.text),$TargetScope::target);
          retval.element.setBody(rest.element.body());
          retval.element.addAllArguments(rest.element.arguments());
+         if(targs != null) {
+           retval.element.addAllTypeArguments(targs.element);
+         }
         }
     ;
 
@@ -1482,12 +1491,17 @@ classCreatorRest returns [ClassCreatorRest element]
     :   args=arguments {retval.element = new ClassCreatorRest(args.element);}(body=classBody {retval.element.setBody(body.element);})?
     ;
     
+// NEEDS_TARGET
 explicitGenericInvocation returns [Expression element]
-    :   {throw new ChameleonProgrammerException("Generic method are currently not supported.");}nonWildcardTypeArguments Identifier arguments
+    :   targs=nonWildcardTypeArguments name=Identifier args=arguments
+          {retval.element = new RegularMethodInvocation($name.text,$TargetScope::target);
+           ((RegularMethodInvocation)retval.element).addAllArguments(args.element);
+           ((RegularMethodInvocation)retval.element).addAllTypeArguments(targs.element);
+          }
     ;
     
-nonWildcardTypeArguments returns [List<TypeReference> element]
-    :   '<' list=typeList {retval.element = list.element;}'>'
+nonWildcardTypeArguments returns [List<ActualTypeArgument> element]
+    :   '<' list=typeList {retval.element = new ArrayList<ActualTypeArgument>();for(TypeReference tref:list.element){retval.element.add(new BasicTypeArgument(tref));}}'>'
     ;
     
 // NEEDS_TARGET

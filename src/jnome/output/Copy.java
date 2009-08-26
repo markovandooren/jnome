@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-import jnome.input.JavaMetaModelFactory;
+import jnome.input.JavaModelFactory;
 import chameleon.input.ParseException;
 import chameleon.support.tool.ArgumentParser;
 import chameleon.support.tool.Arguments;
@@ -31,7 +31,7 @@ public class Copy {
       System.out.println("Usage: java .... Copy outputDir inputDir* @recursivePackageFQN* #packageFQN*");
     }
     
-    Arguments arguments = new ArgumentParser(new JavaMetaModelFactory()).parse(args,".java");
+    Arguments arguments = new ArgumentParser(new JavaModelFactory()).parse(args,".java");
     
     JavaCodeWriter.writeCode(arguments);
   }

@@ -65,7 +65,7 @@ public abstract class MetaModelTest {
         //_mm = getMetaModelFactory().getMetaModel(_files.getFiles());
       	Set s = JavaModelFactory.loadFiles(_files, ".java", true);
       	System.out.println("Found "+s.size()+" files.");
-      	_mm = getMetaModelFactory().getMetaModel(s);
+      	_mm = getMetaModelFactory().createModel(s);
       }
     }
     

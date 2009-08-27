@@ -20,6 +20,7 @@ import jnome.input.parser.JavaParser;
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
+import org.rejuse.io.DirectoryScanner;
 import org.rejuse.io.fileset.FileNamePattern;
 import org.rejuse.io.fileset.FileSet;
 import org.rejuse.io.fileset.PatternPredicate;
@@ -83,18 +84,14 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
      *             Something went wrong
      * @throws RecognitionException 
      */
-    public Namespace getMetaModel(Set<File> files) throws MalformedURLException, FileNotFoundException, IOException, LookupException, ParseException {
+    public Namespace createModel(Set<File> files) throws MalformedURLException, FileNotFoundException, IOException, LookupException, ParseException {
         Java lang = (Java) language();
 //        setToolExtensions(lang);
         final Namespace defaultPackage = lang.defaultNamespace();
         int count = 0;
         for (File file : files) {
             System.out.println(++count + " Parsing "+ file.getAbsolutePath());
-            try {
-              addFileToGraph(file, lang);
-            } catch (RecognitionException e) {
-              throw new ParseException(e);
-            }
+            addFileToGraph(file, lang);
         }
 
         addPrimitives(defaultPackage);
@@ -377,7 +374,7 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
       * return document; }
       */
 
-    private void addFileToGraph(File file, Java language) throws FileNotFoundException, IOException, MalformedURLException, RecognitionException, LookupException {
+    private void addFileToGraph(File file, Java language) throws FileNotFoundException, IOException, MalformedURLException, ParseException, LookupException {
         // The file name is used in the lexers and parser to
         // give more informative error messages
         String fileName = file.getName();
@@ -390,136 +387,33 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
         // message will be printed if the file doesn't exist
         // LOGGER.debug("Adding " + absolutePath + "...");
 
-        lexAndParse(fileInputStream, fileName, language);
+				lexAndParse(fileInputStream, fileName, language);
     }
 
-    public void addSource(String source, Java language) throws MalformedURLException, ParseException, IOException, LookupException {
-        try {
-            addStringToGraph(source, language);
-        }
-        catch (ClassCastException e) {
-            throw new IllegalArgumentException(
-                    "Parent element for compilation unit must be package");
-        } catch (RecognitionException e) {
-          throw new ParseException(e);
-        }
-    }
-
-    private void addStringToGraph(String string, Java language) throws IOException, MalformedURLException, RecognitionException, LookupException {
+    public void addToModel(String source, CompilationUnit cu) throws ParseException, IOException {
         String name = "document";
-        InputStream inputStream = new StringBufferInputStream(string);
-        
-        lexAndParse(inputStream, name, language);
-        // System.out.println("metamodel made of " + name);
+        InputStream inputStream = new StringBufferInputStream(source);
+        lexAndParse(inputStream, name, cu);
     }
 
-    private JavaParser getParser(InputStream inputStream, String fileName, Java language) throws RecognitionException, IOException {
-//        JavaLexer lexer = getLexer(inputStream);
-        
-//    		File file = new File(fileName);
-//    		System.out.println("getParser receives:" + file.getAbsolutePath());
-    	
-//        InputStream fileInputStream = new FileInputStream(file);
+    private JavaParser getParser(InputStream inputStream, String fileName) throws IOException {
         ANTLRInputStream input = new ANTLRInputStream(inputStream);
         JavaLexer lexer = new JavaLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JavaParser parser = new JavaParser(tokens);
-        parser.setLanguage(language);
-        
-        
-        // Tell the lexer the name of the file he is lexing
-        // this name is used to generate more informative error messages
-
-        //lexer.setFilename(fileName);
-
-        // For ChameleonEditor
-        //@FIXME restore tab size.
-        //lexer.setTabSize(1);
-
-        // Create a parser
-        // The parser reads from the selector
-        //@FIXME restore use of error handler
-//        JavaWalker parser = getParser(lexer);//, handler);
-
-        // Tell the parser the filename for more informative error messages
-        //parser.setFilename(fileName);
-
-        // Tell the parser to make instances of the ExtendedAST class
-        // to build de AST.
-        //parser.getASTFactory().setASTNodeClass(ExtendedAST.class);
-
+        parser.setLanguage((Java) language());
         return parser;
     }
 
-    private void lexAndParse(InputStream inputStream, String fileName, Java language) throws IOException, MalformedURLException, RecognitionException, LookupException {
-
-        JavaParser parser = getParser(inputStream, fileName, language);
-        parser.setLanguage(language);
-
-        // Parse the compilationUnit
-        // A compilation unit in java is a file, so we parse the complete
-        // file here.
-        // While parsing the compilation unit, the parser builds an AST
-        // containing a structured representation of all the java
-        // elements in the current file.
-        // Throw a RecognitionException if the file can't be
-        // recognized, this shouldn't happen if the file is compileable
-        // Throws a TokenStreamException if there goes something wrong
-        // with generating tokens. This shouldn't happen.
-        parse(parser);
-
-        
-        // Get the AST the parser produced
-//        ExtendedASDeT pAST = (ExtendedAST) parser.getAST();
-        // showtree(fileName, parser.getAST(), parser.getTokenNames());
-        // close the inputstream
-//        inputStream.close();
-        // Are there java elements found?
-//        if (pAST != null) {
-//            // Give a root to pAST
-//            // pAST can have siblings: packagedefinition,
-//            // all importstatements and ObjectTypes are all siblings
-//            // at the toplevel
-//            // Create a new ExtendedAST
-//            ExtendedAST rootAST = new ExtendedAST();
-//            // Set the text of the root
-//            rootAST.setText("<ROOTAST>");
-//            // Put everything under root so that it really becomes root
-//            rootAST.setFirstChild(pAST);
-//            // System.out.println("lengte AST : "+rootAST.getLengthChildren());
-//            // System.out.println(rootAST.toStringTree());
-//
-//            // Let the graphRoot acquire the AST, hereby extending
-//            // the structure of java elements already build
-//            // try {
-//            CompilationUnitAcquirer acquirer = getFactory()
-//                    .getCompilationUnitAcquirer(linkage);
-//            acquirer.acquire(defaultPackage, rootAST);
-//            // project.add(cu);
-//            // }
-//            // catch (InvalidURL e) {
-//            // // shouldn't happen
-//            // throw new ShouldntHappenException(e);
-//            // }
-//        }
-//        else {
-//            // LOGGER.warn(
-//            // "No java elements found in file " +
-//            // absolutePath + ". Empty file?"
-//            // );
-//        }
+    private void lexAndParse(InputStream inputStream, String fileName, CompilationUnit cu) throws IOException, ParseException {
+      try {
+        JavaParser parser = getParser(inputStream, fileName);
+        parser.setCompilationUnit(cu);
+					parse(parser);
+				} catch (RecognitionException e) {
+          throw new ParseException(e,cu);
+				}
     }
-
-    // private final static Logger LOGGER =
-    // Logger.getLogger("seaster.metamodelfactory");
-
-    // static {
-    // PropertyConfigurator.configure("logging.properties");
-    // }
-
-//    public Factory getFactory() {
-//        return new Factory();
-//    }
 
     /**
      * @param parser
@@ -529,32 +423,6 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
         parser.compilationUnit();
     }
     
-//    static class DummyLinkageFactory implements ILinkageFactory{
-//
-//    	public ILinkage createLinkage(File file) {
-//    		return new ILinkage(){
-//
-//    			public IParseErrorHandler getParseErrorHandler() {
-//    				return null;
-//    			}
-//
-//    			public String getSource() {
-//    				return null;
-//    			}
-//
-//    			public void decoratePosition(int offset, int length, String dectype, Element el) {
-//    			}
-//
-//    			public int getLineOffset(int i) {
-//    				return 0;
-//    			}
-//
-//    			public void addCompilationUnit(CompilationUnit cu) {
-//    				
-//    			}};
-//    	}}
-
-
     public static void main(String[] args) {
         try {
             long start = Calendar.getInstance().getTimeInMillis();
@@ -562,7 +430,7 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
             fileSet.include(new PatternPredicate(new File(args[0]),
                     new FileNamePattern(args[1])));
             Set files = fileSet.getFiles();
-            new JavaModelFactory().getMetaModel(files);
+            new JavaModelFactory().createModel(files);
             long stop = Calendar.getInstance().getTimeInMillis();
             System.out.println("DONE !!!");
             System.out.println("Acquiring took " + (stop - start) + "ms.");
@@ -913,41 +781,11 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
         }
     }
 
-    public Set loadFiles(String path, String extension, boolean recursive){
-        return load(path,extension,recursive);
-    }
+//    public Set loadFiles(String path, String extension, boolean recursive){
+//        return load(path,extension,recursive);
+//    }
 
 //	LOAD FILES
-    /**
-     * Load all the files in the last directory of the given path with the given extention
-     * @param path			The directory to from where to load the cs-files
-     * @param extension     Only files with this extension will be loaded
-     * @param recursive	    Wether or not to also load cs-files from all sub directories
-     * @return A set with all the cs-files in the given path
-     */
-    public static Set load(String path, String extension, boolean recursive){
-        Set result = new HashSet();
-        File f = new File(path);
-        //System.out.println("Scanning source file in "+f.getAbsolutePath());
-        if(f.isDirectory()){
-            File [] files = f.listFiles();
-
-            for(int i=0; i < files.length; i++){
-                if(recursive){
-                    result.addAll(load(files[i].getPath(), extension, recursive));
-                }else{
-                    if(files[i].getName().endsWith(extension)){
-                        result.add(files[i]);
-                    }
-                }
-            }
-        }else{
-            if(f.getName().endsWith(extension)){
-                result.add(f);
-            }
-        }
-        return result;
-    }
 
     /**
      * Load all the cs-files in the last directory of each path in the list
@@ -962,7 +800,7 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
         Iterator it = pathList.iterator();
         while(it.hasNext()){
             String path = it.next().toString();
-            result.addAll(load(path, extension, recursive));
+            result.addAll(new DirectoryScanner().scan(path, extension, recursive));
         }
         return result;
     }

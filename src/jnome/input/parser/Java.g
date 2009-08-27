@@ -421,22 +421,36 @@ package jnome.input.parser;
        }
   }
   
-  Language lang = new Java();
+  Language _lang = new Java();
   
   public Language language() {
-    return lang;
+    return _lang;
   }
   
   public void setLanguage(Java language) {
-    lang = language;
-    root = lang.defaultNamespace();
+    _lang = language;
+    _root = _lang.defaultNamespace();
   }
   
-  RootNamespace root = lang.defaultNamespace();
+  RootNamespace _root = _lang.defaultNamespace();
 
   public Namespace getDefaultNamespace() {
-    return root;
+    return _root;
   }
+
+  CompilationUnit _cu = new CompilationUnit();
+  
+  public CompilationUnit getCompilationUnit() {
+    return _cu;
+  }
+  
+  public void setCompilationUnit(CompilationUnit compilationUnit) {
+   if(compilationUnit == null) {
+     throw new IllegalArgumentException("The compilation unit cannot be null.");
+   }
+    _cu = compilationUnit;
+  }
+  
 
   public void processType(NamespacePart np, Type type){
     if(np == null) {throw new IllegalArgumentException("namespace part given to processType is null.");}
@@ -474,7 +488,7 @@ package jnome.input.parser;
 compilationUnit returns [CompilationUnit element] 
 @init{ 
 NamespacePart npp = new NamespacePart(language().defaultNamespace());
-retval.element = new CompilationUnit();
+retval.element = getCompilationUnit();
 }
     :    annotations
         (   np=packageDeclaration
@@ -515,7 +529,7 @@ retval.element = new CompilationUnit();
 packageDeclaration returns [NamespacePart element]
     :   'package' qn=qualifiedName ';'
          {try{
-           retval.element = new NamespacePart(root.getOrCreateNamespace($qn.text));
+           retval.element = new NamespacePart(getDefaultNamespace().getOrCreateNamespace($qn.text));
          }
          catch(MetamodelException exc) {
            //this should not happen, something is wrong with the parser

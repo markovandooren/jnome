@@ -11,7 +11,9 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 
+import chameleon.core.language.Language;
 import chameleon.core.namespace.Namespace;
+import chameleon.input.ModelFactory;
 
 /**
  * @author marko
@@ -65,7 +67,8 @@ public abstract class MetaModelTest {
         //_mm = getMetaModelFactory().getMetaModel(_files.getFiles());
       	Set s = JavaModelFactory.loadFiles(_files, ".java", true);
       	System.out.println("Found "+s.size()+" files.");
-      	_mm = getMetaModelFactory().createModel(s);
+      	modelFactory().addToModel(s);
+      	_mm = modelFactory().language().defaultNamespace();
       }
     }
     
@@ -75,8 +78,12 @@ public abstract class MetaModelTest {
     	_files = null;
     }
     
-    public JavaModelFactory getMetaModelFactory() {
-      return new JavaModelFactory();
+    public ModelFactory modelFactory() {
+      return language().connector(ModelFactory.class);
+    }
+    
+    public Language language() {
+    	return _mm.language();
     }
   
     /**

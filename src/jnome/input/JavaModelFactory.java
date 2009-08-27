@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -27,6 +29,7 @@ import org.rejuse.io.fileset.PatternPredicate;
 
 import chameleon.core.compilationunit.CompilationUnit;
 import chameleon.core.declaration.SimpleNameSignature;
+import chameleon.core.element.ChameleonProgrammerException;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.Namespace;
@@ -55,16 +58,52 @@ import chameleon.tool.ConnectorImpl;
 
 public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
 
-	public JavaModelFactory() {
-		setLanguage(new Java(), ModelFactory.class);
+	/**
+	 * BE SURE TO CALL INIT() IF YOU USE THIS CONSTRUCTOR.
+	 * 
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	public JavaModelFactory() throws IOException, ParseException {
+		this(new Java(), new ArrayList<File>());
 	}
 	
-	public JavaModelFactory(Java language) {
-		setLanguage(language, ModelFactory.class);
+	
+	
+	public JavaModelFactory(Collection<File> base) throws IOException, ParseException {
+		this(new Java(), base);
 	}
+	
+	//FIXME: Object and String must be parsed.
+	public JavaModelFactory(Java language, Collection<File> base) throws IOException, ParseException {
+		setLanguage(language, ModelFactory.class);
+		init(language, base);
+	}
+
+
+
+	public void init(Java language, Collection<File> base) throws IOException, ParseException {
+		addToModel(base);
+		_baseFiles = base;
+    addPrimitives(language.defaultNamespace());
+    addInfixOperators(language.defaultNamespace());
+	}
+	
+	/**
+	 * Return the base files of this model factory. The base files
+	 * contain definitions that are required to add method (operators) to
+	 * during the initialization of the model. For example, in Java, the '+' method
+	 * must be added to class Object, but that can only be done when Object is 
+	 * present in the model.
+	 */
+	public Collection<File> baseFiles() {
+		return new ArrayList<File>(_baseFiles);
+	}
+	
+	private Collection<File> _baseFiles;
 	
     /**
-     * Return the top of the metamodel when parsing the given set of files.
+     * Return the top of the metamodel when parsing the given file.
      *
      * @param files
      *            A set containing all .java files that should be parsed.
@@ -84,20 +123,21 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
      *             Something went wrong
      * @throws RecognitionException 
      */
-    public Namespace createModel(Set<File> files) throws MalformedURLException, FileNotFoundException, IOException, LookupException, ParseException {
+    public void addToModel(File file) throws IOException, ParseException {
         Java lang = (Java) language();
 //        setToolExtensions(lang);
         final Namespace defaultPackage = lang.defaultNamespace();
         int count = 0;
-        for (File file : files) {
-            System.out.println(++count + " Parsing "+ file.getAbsolutePath());
-            addFileToGraph(file, lang);
-        }
+        System.out.println(++count + " Parsing "+ file.getAbsolutePath());
+        addFileToGraph(file, lang);
 
-        addPrimitives(defaultPackage);
-        addInfixOperators(defaultPackage);
+    }
+    
+    public void addToModel(Collection<File> files) throws IOException, ParseException {
+      for (File file : files) {
+      	addToModel(file);
+      }
 
-        return defaultPackage;
     }
 
 //    public Namespace getMetaModel(ISourceSupplier supply) throws MalformedURLException, FileNotFoundException, IOException, LookupException, ParseException {
@@ -374,7 +414,7 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
       * return document; }
       */
 
-    private void addFileToGraph(File file, Java language) throws FileNotFoundException, IOException, MalformedURLException, ParseException, LookupException {
+    private void addFileToGraph(File file, Java language) throws IOException, ParseException {
         // The file name is used in the lexers and parser to
         // give more informative error messages
         String fileName = file.getName();
@@ -387,13 +427,18 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
         // message will be printed if the file doesn't exist
         // LOGGER.debug("Adding " + absolutePath + "...");
 
-				lexAndParse(fileInputStream, fileName, language);
+				lexAndParse(fileInputStream, fileName, new CompilationUnit());
     }
 
-    public void addToModel(String source, CompilationUnit cu) throws ParseException, IOException {
+    public void addToModel(String source, CompilationUnit cu) throws ParseException {
         String name = "document";
         InputStream inputStream = new StringBufferInputStream(source);
-        lexAndParse(inputStream, name, cu);
+        try {
+					lexAndParse(inputStream, name, cu);
+				} catch (IOException e) {
+					// cannot happen if we work with a String
+					throw new ChameleonProgrammerException("IOException while parsing a String.", e);
+				}
     }
 
     private JavaParser getParser(InputStream inputStream, String fileName) throws IOException {
@@ -430,7 +475,7 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
             fileSet.include(new PatternPredicate(new File(args[0]),
                     new FileNamePattern(args[1])));
             Set files = fileSet.getFiles();
-            new JavaModelFactory().createModel(files);
+            JavaModelFactory factory = new JavaModelFactory(files);
             long stop = Calendar.getInstance().getTimeInMillis();
             System.out.println("DONE !!!");
             System.out.println("Acquiring took " + (stop - start) + "ms.");
@@ -807,6 +852,18 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
 
 		@Override
 		public Connector clone() {
-			return new JavaModelFactory();
+			try {
+				return new JavaModelFactory(baseFiles());
+			} catch (Exception e) {
+				throw new RuntimeException("Exception while cloning a JavaModelFactory", e);
+			}
+		}
+
+		public void addToModel(String compilationUnit) throws ParseException {
+			addToModel(compilationUnit, new CompilationUnit());
+		}
+
+		public void reParse(Element element) {
+			InputProcessor processor = language().c
 		}
 }

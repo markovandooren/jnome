@@ -22,6 +22,7 @@ import jnome.input.parser.JavaParser;
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
+import org.rejuse.association.Relation;
 import org.rejuse.io.DirectoryScanner;
 import org.rejuse.io.fileset.FileNamePattern;
 import org.rejuse.io.fileset.FileSet;
@@ -32,6 +33,7 @@ import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.ChameleonProgrammerException;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
+import chameleon.core.member.Member;
 import chameleon.core.namespace.Namespace;
 import chameleon.core.namespace.NamespaceReference;
 import chameleon.core.namespacepart.DemandImport;
@@ -42,6 +44,7 @@ import chameleon.core.type.TypeReference;
 import chameleon.core.variable.FormalParameter;
 import chameleon.input.ModelFactory;
 import chameleon.input.ParseException;
+import chameleon.input.SourceManager;
 import chameleon.support.member.simplename.SimpleNameMethodHeader;
 import chameleon.support.member.simplename.operator.infix.InfixOperator;
 import chameleon.support.member.simplename.operator.postfix.PostfixOperator;
@@ -863,7 +866,39 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
 			addToModel(compilationUnit, new CompilationUnit());
 		}
 
-		public void reParse(Element element) {
-			InputProcessor processor = language().c
+		public <P extends Element> void reParse(Element<?,P> element) throws ParseException {
+			CompilationUnit compilationUnit = element.nearestAncestor(CompilationUnit.class);
+			boolean done = false;
+			while((element != null) && (! done)){
+				try {
+			    SourceManager manager = language().connector(SourceManager.class);
+			    String text = manager.text(element);
+			    Element newElement = parse(element, text);
+			    // Use raw type here, we can't really type check this.
+			    Relation childLink = element.parentLink().getOtherRelation();
+			    childLink.replace(element.parentLink(), newElement.parentLink());
+			    done = true;
+				} catch(ParseException exc) {
+					element = element.parent();
+					if(element == null) {
+						throw exc;
+					}
+				}
+			}
+		}
+		
+		private <P extends Element> Element parse(Element<?,P> element, String text) throws ParseException {
+			try {
+			  InputStream inputStream = new StringBufferInputStream(text);
+			  Element result = null;
+			  if(element instanceof Member) {
+		  		result = getParser(inputStream, "document").memberDecl().element;
+	  		}
+  			return result;
+			} catch(RecognitionException exc) {
+				throw new ParseException(element.nearestAncestor(CompilationUnit.class));
+			} catch(IOException exc) {
+				throw new ChameleonProgrammerException("Parsing of a string caused an IOException",exc);
+			}
 		}
 }

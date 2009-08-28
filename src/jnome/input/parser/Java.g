@@ -403,9 +403,13 @@ package jnome.input.parser;
   }
   
   public void setLocation(Element element, CommonToken begin, CommonToken end) {
-    for(InputProcessor processor: language().processors(InputProcessor.class)) {
+    List<InputProcessor> processors = language().processors(InputProcessor.class);
+    System.out.println("Setting location in "+processors.size()+" input processors.");
+    int offset = begin.getStartIndex();
+    int length = end.getStopIndex() - offset;
+    for(InputProcessor processor: processors) {
       //processor.setLocation(element, new Position2D(begin.getLine(), begin.getCharPositionInLine()), new Position2D(end.getLine(), end.getCharPositionInLine()));
-      processor.setLocation(element,begin.getStartIndex(), end.getStopIndex(), getCompilationUnit());
+      processor.setLocation(element, offset, length, getCompilationUnit());
     }
   }
 

@@ -174,7 +174,11 @@ TODO
  *      Character.isJavaIdentifierPart(int) returns true."
  */
 grammar Java;
-options {backtrack=true; memoize=true;output=AST;}
+options {
+  backtrack=true; 
+  memoize=true;
+  output=AST;
+}
 
 scope MethodScope {
   Method method;
@@ -398,9 +402,10 @@ package jnome.input.parser;
     private ClassBody _body;
   }
   
-  public void setLocation(Element element, Token begin, Token end) {
+  public void setLocation(Element element, CommonToken begin, CommonToken end) {
     for(InputProcessor processor: language().processors(InputProcessor.class)) {
-      processor.setLocation(element, new Position2D(begin.getLine(), begin.getCharPositionInLine()), new Position2D(end.getLine(), end.getCharPositionInLine()));
+      //processor.setLocation(element, new Position2D(begin.getLine(), begin.getCharPositionInLine()), new Position2D(end.getLine(), end.getCharPositionInLine()));
+      processor.setLocation(element,begin.getStartIndex(), end.getStopIndex(), getCompilationUnit());
     }
   }
 
@@ -841,6 +846,7 @@ typeName returns [String element]
 
 type returns [JavaTypeReference element]
 @init{int dimension=0;}
+@after{setLocation(retval.element, (CommonToken)retval.start, (CommonToken)retval.stop);}
 	:	cd=classOrInterfaceType ('[' ']' {dimension++;})* 
 	        {
 	         retval.element = cd.element.toArray(dimension);

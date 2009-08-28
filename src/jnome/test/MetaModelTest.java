@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Set;
 
+import jnome.core.language.Java;
 import jnome.input.JavaModelFactory;
 
 import org.apache.log4j.BasicConfigurator;
@@ -63,13 +64,13 @@ public abstract class MetaModelTest {
     @Before
     public void setUp() throws Exception {
     	setLogLevels();
-      if(_mm == null) {
-        //_mm = getMetaModelFactory().getMetaModel(_files.getFiles());
-      	Set s = JavaModelFactory.loadFiles(_files, ".java", true);
-      	System.out.println("Found "+s.size()+" files.");
-      	modelFactory().addToModel(s);
-      	_mm = modelFactory().language().defaultNamespace();
-      }
+      _language = new Java();
+      _mm = _language.defaultNamespace();
+      new JavaModelFactory(_language);
+      //_mm = getMetaModelFactory().getMetaModel(_files.getFiles());
+      Set s = JavaModelFactory.loadFiles(_files, ".java", true);
+      System.out.println("Found "+s.size()+" files.");
+      modelFactory().init(s);
     }
     
     @After
@@ -78,8 +79,8 @@ public abstract class MetaModelTest {
     	_files = null;
     }
     
-    public ModelFactory modelFactory() {
-      return language().connector(ModelFactory.class);
+    public JavaModelFactory modelFactory() {
+      return (JavaModelFactory) language().connector(ModelFactory.class);
     }
     
     public Language language() {
@@ -98,6 +99,8 @@ public abstract class MetaModelTest {
 
     protected ArrayList<String> _files;
 
+    protected Java _language;
+    
 	  protected Namespace _mm;
 
 }

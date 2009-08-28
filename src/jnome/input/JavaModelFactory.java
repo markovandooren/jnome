@@ -68,7 +68,17 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
 	 * @throws ParseException
 	 */
 	public JavaModelFactory() throws IOException, ParseException {
-		this(new Java(), new ArrayList<File>());
+		setLanguage(new Java(), ModelFactory.class);
+	}
+	
+	/**
+	 * BE SURE TO CALL INIT() IF YOU USE THIS CONSTRUCTOR.
+	 * 
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	public JavaModelFactory(Java language) throws IOException, ParseException {
+		setLanguage(language, ModelFactory.class);
 	}
 	
 	
@@ -80,16 +90,16 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
 	//FIXME: Object and String must be parsed.
 	public JavaModelFactory(Java language, Collection<File> base) throws IOException, ParseException {
 		setLanguage(language, ModelFactory.class);
-		init(language, base);
+		init(base);
 	}
 
 
 
-	public void init(Java language, Collection<File> base) throws IOException, ParseException {
+	public void init(Collection<File> base) throws IOException, ParseException {
 		addToModel(base);
 		_baseFiles = base;
-    addPrimitives(language.defaultNamespace());
-    addInfixOperators(language.defaultNamespace());
+    addPrimitives(language().defaultNamespace());
+    addInfixOperators(language().defaultNamespace());
 	}
 	
 	/**
@@ -130,14 +140,14 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
         Java lang = (Java) language();
 //        setToolExtensions(lang);
         final Namespace defaultPackage = lang.defaultNamespace();
-        int count = 0;
-        System.out.println(++count + " Parsing "+ file.getAbsolutePath());
         addFileToGraph(file, lang);
 
     }
     
     public void addToModel(Collection<File> files) throws IOException, ParseException {
+      int count = 0;
       for (File file : files) {
+        System.out.println(++count + " Parsing "+ file.getAbsolutePath());
       	addToModel(file);
       }
 

@@ -466,6 +466,7 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
     private void lexAndParse(InputStream inputStream, String fileName, CompilationUnit cu) throws IOException, ParseException {
       try {
         JavaParser parser = getParser(inputStream, fileName);
+        cu.disconnectChildren();
         parser.setCompilationUnit(cu);
 					parse(parser);
 				} catch (RecognitionException e) {
@@ -872,9 +873,9 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
 			}
 		}
 
-		public void addToModel(String compilationUnit) throws ParseException {
-			addToModel(compilationUnit, new CompilationUnit());
-		}
+//		public void addToModel(String compilationUnit) throws ParseException {
+//			addToModel(compilationUnit, new CompilationUnit());
+//		}
 
 		public <P extends Element> void reParse(Element<?,P> element) throws ParseException {
 			CompilationUnit compilationUnit = element.nearestAncestor(CompilationUnit.class);

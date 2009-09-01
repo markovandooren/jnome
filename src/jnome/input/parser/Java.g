@@ -430,7 +430,7 @@ package jnome.input.parser;
        }
   }
   
-  Language _lang = new Java();
+  Language _lang;
   
   public Language language() {
     return _lang;
@@ -441,7 +441,7 @@ package jnome.input.parser;
     _root = _lang.defaultNamespace();
   }
   
-  RootNamespace _root = _lang.defaultNamespace();
+  RootNamespace _root;
 
   public Namespace getDefaultNamespace() {
     return _root;
@@ -496,7 +496,7 @@ package jnome.input.parser;
    a packageDeclaration or a typeDeclaration (and not an empty one). */
 compilationUnit returns [CompilationUnit element] 
 @init{ 
-NamespacePart npp = new NamespacePart(language().defaultNamespace());
+NamespacePart npp = null;
 retval.element = getCompilationUnit();
 }
     :    annotations
@@ -511,7 +511,8 @@ retval.element = getCompilationUnit();
                 }
             )*
         |   cd=classOrInterfaceDeclaration
-               {retval.element.add(npp);
+               {npp = new NamespacePart(language().defaultNamespace());
+                retval.element.add(npp);
                 npp.addImport(new DemandImport(new NamespaceReference("java.lang")));
                 processType(npp,cd.element);
                } 

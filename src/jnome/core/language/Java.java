@@ -35,6 +35,7 @@ public class Java extends ObjectOrientedLanguage {
 
 	public Java() {
 		super("Java", new JavaLookupFactory());
+		System.out.println("LANGUAGE INIT: "+this);
 		_nullType = new NullType(this);
 		new RootNamespace(new SimpleNameSignature(""), this);
 		this.defaultNamespace().setNullType();
@@ -197,6 +198,7 @@ public class Java extends ObjectOrientedLanguage {
 	public Type getNullType(){
 		return _nullType;
 	}
+	
  /*@
    @ also public behavior
    @

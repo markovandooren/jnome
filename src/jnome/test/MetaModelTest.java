@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 
+import chameleon.core.Config;
 import chameleon.core.language.Language;
 import chameleon.core.namespace.Namespace;
 import chameleon.input.ModelFactory;
@@ -38,6 +39,7 @@ public abstract class MetaModelTest {
 //		super(arg0);
 		_files = new ArrayList<String>();
      addTestFiles();
+     Config.setCaching(true);
 	}
     
 //    public void include(String dirName, String pattern) {

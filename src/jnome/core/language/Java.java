@@ -302,4 +302,13 @@ public class Java extends ObjectOrientedLanguage {
 
 		private JavaSubtypingRelation _subtypingRelation = new JavaSubtypingRelation();
 		  
+		/**
+		 * Returns true if the given character is a valid character
+		 * for an identifier.
+		 */
+		@Override
+		public boolean isValidIdentifierCharacter(char character){
+			return Character.isJavaIdentifierPart(character);
+		}
+
 }

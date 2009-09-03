@@ -404,7 +404,6 @@ package jnome.input.parser;
   
   public void setLocation(Element element, CommonToken begin, CommonToken end) {
     List<InputProcessor> processors = language().processors(InputProcessor.class);
-    System.out.println("Setting location in "+processors.size()+" input processors.");
     int offset = begin.getStartIndex();
     int length = end.getStopIndex() - offset;
     for(InputProcessor processor: processors) {
@@ -415,7 +414,6 @@ package jnome.input.parser;
 
   public void setLocation(Element element, CommonToken begin, CommonToken end, String tagType) {
     List<InputProcessor> processors = language().processors(InputProcessor.class);
-    System.out.println("Setting location in "+processors.size()+" input processors.");
     int offset = begin.getStartIndex();
     int length = end.getStopIndex() - offset;
     for(InputProcessor processor: processors) {
@@ -539,10 +537,17 @@ retval.element = getCompilationUnit();
             )*
         )
     |   (np=packageDeclaration
-            {npp=np.element;
-             npp.addImport(new DemandImport(new NamespaceReference("java.lang")));}
+            {
+              npp=np.element;
+            }
          )?
-        {retval.element.add(npp);}
+        {
+         if(npp == null) {
+           npp = new NamespacePart(language().defaultNamespace());
+         }
+         npp.addImport(new DemandImport(new NamespaceReference("java.lang")));
+         retval.element.add(npp);
+        }
         (imp=importDeclaration
           {npp.addImport(imp.element);}
         )* 

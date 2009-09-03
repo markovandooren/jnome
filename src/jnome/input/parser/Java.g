@@ -413,6 +413,23 @@ package jnome.input.parser;
     }
   }
 
+  public void setLocation(Element element, CommonToken begin, CommonToken end, String tagType) {
+    List<InputProcessor> processors = language().processors(InputProcessor.class);
+    System.out.println("Setting location in "+processors.size()+" input processors.");
+    int offset = begin.getStartIndex();
+    int length = end.getStopIndex() - offset;
+    for(InputProcessor processor: processors) {
+      //processor.setLocation(element, new Position2D(begin.getLine(), begin.getCharPositionInLine()), new Position2D(end.getLine(), end.getCharPositionInLine()));
+      processor.setLocation(element, offset, length, getCompilationUnit(), tagType);
+    }
+  }
+  
+  public void setKeyword(Element element, Token token) {
+    if(token != null) {
+      setLocation(element, (CommonToken)token, (CommonToken)token, "__KEYWORD");
+    }
+  }
+
   public static class StupidVariableDeclaratorId {
        public StupidVariableDeclaratorId(String name, int dimension) {
          _name = name;
@@ -575,6 +592,7 @@ classOrInterfaceModifiers returns [List<Modifier> element]
     ;
 
 classOrInterfaceModifier returns [Modifier element]
+@after{setLocation(retval.element, (CommonToken)retval.start, (CommonToken)retval.stop);}
     :   annotation   // class or interface
     |   'public' {retval.element = new Public();}    // class or interface
     |   'protected' {retval.element = new Protected();} // class or interface
@@ -596,10 +614,15 @@ classDeclaration returns [Type element]
     ;
     
 normalClassDeclaration returns [RegularType element]
-    :   'class' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text));} (params=typeParameters{for(FormalTypeParameter par: params.element){retval.element.addParameter(par);}})?
-        ('extends' sc=type {retval.element.addInheritanceRelation(new SubtypeRelation(sc.element));})? 
-        ('implements' trefs=typeList {for(TypeReference ref: trefs.element){retval.element.addInheritanceRelation(new SubtypeRelation(ref));} } )?
+    :   clkw='class' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text));} (params=typeParameters{for(FormalTypeParameter par: params.element){retval.element.addParameter(par);}})?
+        (extkw='extends' sc=type {retval.element.addInheritanceRelation(new SubtypeRelation(sc.element));})? 
+        (impkw='implements' trefs=typeList {for(TypeReference ref: trefs.element){retval.element.addInheritanceRelation(new SubtypeRelation(ref));} } )?
         body=classBody {retval.element.body().addAll(body.element.elements());}
+        {
+         setKeyword(retval.element,clkw);
+         setKeyword(retval.element,impkw);
+         setKeyword(retval.element,extkw);
+        }
     ;
     
 typeParameters returns [List<FormalTypeParameter> element]
@@ -608,7 +631,8 @@ typeParameters returns [List<FormalTypeParameter> element]
     ;
 
 typeParameter returns [FormalTypeParameter element]
-    :   name=Identifier{retval.element = new FormalTypeParameter(new SimpleNameSignature($name.text));} ('extends' bound=typeBound{retval.element.addConstraint(bound.element);})?
+    :   name=Identifier{retval.element = new FormalTypeParameter(new SimpleNameSignature($name.text));} (extkw='extends' bound=typeBound{retval.element.addConstraint(bound.element);})?
+        {setKeyword(retval.element,extkw);}
     ;
         
 typeBound returns [ExtendsConstraint element]
@@ -646,9 +670,9 @@ interfaceDeclaration returns [Type element]
     ;
     
 normalInterfaceDeclaration returns [RegularType element]
-    :   'interface' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text)); retval.element.addModifier(new Interface());} 
+    :   ifkw='interface' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text)); retval.element.addModifier(new Interface());} 
          (params=typeParameters{for(TypeParameter par: params.element){retval.element.addParameter(par);}})? 
-         ('extends' trefs=typeList 
+         (extkw='extends' trefs=typeList 
            {
              for(TypeReference ref: trefs.element){
               retval.element.addInheritanceRelation(new SubtypeRelation(ref));
@@ -656,6 +680,10 @@ normalInterfaceDeclaration returns [RegularType element]
            }
          )? 
          body=classBody {retval.element.setBody(body.element);}
+         {
+          setKeyword(retval.element,extkw);
+          setKeyword(retval.element,ifkw);
+         }
     ;
     
 typeList returns [List<TypeReference> element]
@@ -687,8 +715,13 @@ memberDecl returns [TypeElement element]
     
 voidMethodDeclaration returns [Method element]
 scope MethodScope;
-    	: 'void' methodname=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($methodname.text), new JavaTypeReference("void")); $MethodScope::method = retval.element;} voidMethodDeclaratorRest	
+    	: vt=voidType methodname=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($methodname.text), vt.element); $MethodScope::method = retval.element;} voidMethodDeclaratorRest	
     	;
+
+voidType returns [JavaTypeReference element]
+@after{setLocation(retval.element, (CommonToken)retval.start, (CommonToken)retval.stop, "__PRIMITIVE");}
+     	:	 'void' {retval.element=new JavaTypeReference("void");}
+     	;
     	
 constructorDeclaration returns [Method element]
 scope MethodScope;
@@ -742,7 +775,7 @@ interfaceMemberDecl returns [TypeElement element]
     
 voidInterfaceMethodDeclaration  returns [Method element]
 scope MethodScope;
-    	: 'void' methodname=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($methodname.text), new JavaTypeReference("void")); $MethodScope::method = retval.element;} voidInterfaceMethodDeclaratorRest
+    	: vt=voidType methodname=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($methodname.text), vt.element); $MethodScope::method = retval.element;} voidInterfaceMethodDeclaratorRest
     	;    
     
 interfaceMethodOrFieldDecl returns [TypeElement element]
@@ -764,25 +797,28 @@ scope MethodScope;
 methodDeclaratorRest
 @init{int count = 0;}
     :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}} ('[' ']' {count++;})* {((JavaTypeReference)$MethodScope::method.getReturnTypeReference()).addArrayDimension(count);}
-        ('throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));}})?
+        (thrkw='throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));}})?
         (   body=methodBody {$MethodScope::method.setImplementation(new RegularImplementation(body.element));}
         |   ';' {$MethodScope::method.setImplementation(null);}
         )
+        {setKeyword($MethodScope::method,thrkw);}
     ;
     
 voidMethodDeclaratorRest
     :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}}
-         ('throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));}})?
+         (thrkw='throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));}})?
         (   body=methodBody {$MethodScope::method.setImplementation(new RegularImplementation(body.element));}
         |   ';' {$MethodScope::method.setImplementation(null);}
         )
+        {setKeyword($MethodScope::method,thrkw);}
     ;
     
 interfaceMethodDeclaratorRest
 @init{int count = 0;}
     :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}}
        ('[' ']' {count++;})* {((JavaTypeReference)$MethodScope::method.getReturnTypeReference()).setArrayDimension(count);}
-       ('throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));}})? ';'
+       (thrkw='throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));}})? ';'
+       {setKeyword($MethodScope::method,thrkw);}
     ;
     
 interfaceGenericMethodDecl returns [TypeElement element]
@@ -832,9 +868,13 @@ arrayInitializer returns [ArrayInitializer element]
     :   '{' {retval.element = new ArrayInitializer();} (init=variableInitializer {retval.element.addInitializer(init.element);}(',' initt=variableInitializer{retval.element.addInitializer(initt.element);})* (',')? )? '}'
     ;
 
+/**
+   annotation            (not required I think)
+    |
+ */
 modifier returns [Modifier element]
-    :   annotation
-    |   mod=classOrInterfaceModifier {retval.element = mod.element;}
+@after{setLocation(retval.element, (CommonToken)retval.start, (CommonToken)retval.stop);}
+    :   mod=classOrInterfaceModifier {retval.element = mod.element;}
     |   'native' {retval.element = new Native();}
     |   'synchronized' {retval.element = new Synchronized();}
     |   'transient' {retval.element = new Transient();}

@@ -284,7 +284,6 @@ import chameleon.support.member.simplename.operator.prefix.PrefixOperatorInvocat
 import chameleon.support.member.simplename.operator.postfix.PostfixOperatorInvocation;
 import chameleon.support.member.simplename.method.RegularMethodInvocation;
 
-
 import chameleon.support.modifier.Abstract;
 import chameleon.support.modifier.Final;
 import chameleon.support.modifier.Private;
@@ -419,6 +418,12 @@ package jnome.input.parser;
     for(InputProcessor processor: processors) {
       //processor.setLocation(element, new Position2D(begin.getLine(), begin.getCharPositionInLine()), new Position2D(end.getLine(), end.getCharPositionInLine()));
       processor.setLocation(element, offset, length, getCompilationUnit(), tagType);
+    }
+  }
+  
+  public void setLocation(Element element, Token token, String tagType) {
+    if(token != null) {
+      setLocation(element, (CommonToken)token, (CommonToken)token, tagType);
     }
   }
   
@@ -704,9 +709,14 @@ interfaceBody returns [ClassBody element]
     ;
 
 classBodyDeclaration returns [TypeElement element]
-    :   ';' {retval.element = new EmptyTypeElement();}
-    |   'static'? bl=block {retval.element = new StaticInitializer(bl.element);}
-    |   mods=modifiers decl=memberDecl {retval.element = decl.element; retval.element.addModifiers(mods.element);}
+@init{
+  Token start=null;
+  Token stop=null;
+}
+@after{setLocation(retval.element, (CommonToken)start, (CommonToken)stop);}
+    :   sckw=';' {retval.element = new EmptyTypeElement(); start=sckw; stop=sckw;}
+    |   stkw='static'? bl=block {retval.element = new StaticInitializer(bl.element); start=stkw;stop=bl.stop;}
+    |   mods=modifiers decl=memberDecl {retval.element = decl.element; retval.element.addModifiers(mods.element); start=mods.start; stop=decl.stop;}
     ;
     
 memberDecl returns [TypeElement element]
@@ -720,6 +730,7 @@ memberDecl returns [TypeElement element]
     
 voidMethodDeclaration returns [Method element]
 scope MethodScope;
+@after{setLocation(retval.element, methodname, "__NAME");}
     	: vt=voidType methodname=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($methodname.text), vt.element); $MethodScope::method = retval.element;} voidMethodDeclaratorRest	
     	;
 

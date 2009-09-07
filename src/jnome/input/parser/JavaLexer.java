@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 /Users/marko/git/jnome/src/jnome/input/parser/Java.g 2009-09-05 00:23:12
+// $ANTLR 3.1.2 /Users/marko/git/jnome/src/jnome/input/parser/Java.g 2009-09-07 13:05:10
 
 package jnome.input.parser;
 
@@ -1987,8 +1987,8 @@ public class JavaLexer extends Lexer {
         try {
             int _type = HexLiteral;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1617:12: ( '0' ( 'x' | 'X' ) ( HexDigit )+ ( IntegerTypeSuffix )? )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1617:14: '0' ( 'x' | 'X' ) ( HexDigit )+ ( IntegerTypeSuffix )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1625:12: ( '0' ( 'x' | 'X' ) ( HexDigit )+ ( IntegerTypeSuffix )? )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1625:14: '0' ( 'x' | 'X' ) ( HexDigit )+ ( IntegerTypeSuffix )?
             {
             match('0'); 
             if ( input.LA(1)=='X'||input.LA(1)=='x' ) {
@@ -2000,7 +2000,7 @@ public class JavaLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1617:28: ( HexDigit )+
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1625:28: ( HexDigit )+
             int cnt1=0;
             loop1:
             do {
@@ -2014,7 +2014,7 @@ public class JavaLexer extends Lexer {
 
                 switch (alt1) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1617:28: HexDigit
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1625:28: HexDigit
             	    {
             	    mHexDigit(); 
 
@@ -2030,7 +2030,7 @@ public class JavaLexer extends Lexer {
                 cnt1++;
             } while (true);
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1617:38: ( IntegerTypeSuffix )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1625:38: ( IntegerTypeSuffix )?
             int alt2=2;
             int LA2_0 = input.LA(1);
 
@@ -2039,7 +2039,7 @@ public class JavaLexer extends Lexer {
             }
             switch (alt2) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1617:38: IntegerTypeSuffix
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1625:38: IntegerTypeSuffix
                     {
                     mIntegerTypeSuffix(); 
 
@@ -2064,10 +2064,10 @@ public class JavaLexer extends Lexer {
         try {
             int _type = DecimalLiteral;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1619:16: ( ( '0' | '1' .. '9' ( '0' .. '9' )* ) ( IntegerTypeSuffix )? )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1619:18: ( '0' | '1' .. '9' ( '0' .. '9' )* ) ( IntegerTypeSuffix )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1627:16: ( ( '0' | '1' .. '9' ( '0' .. '9' )* ) ( IntegerTypeSuffix )? )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1627:18: ( '0' | '1' .. '9' ( '0' .. '9' )* ) ( IntegerTypeSuffix )?
             {
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1619:18: ( '0' | '1' .. '9' ( '0' .. '9' )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1627:18: ( '0' | '1' .. '9' ( '0' .. '9' )* )
             int alt4=2;
             int LA4_0 = input.LA(1);
 
@@ -2085,17 +2085,17 @@ public class JavaLexer extends Lexer {
             }
             switch (alt4) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1619:19: '0'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1627:19: '0'
                     {
                     match('0'); 
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1619:25: '1' .. '9' ( '0' .. '9' )*
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1627:25: '1' .. '9' ( '0' .. '9' )*
                     {
                     matchRange('1','9'); 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1619:34: ( '0' .. '9' )*
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1627:34: ( '0' .. '9' )*
                     loop3:
                     do {
                         int alt3=2;
@@ -2108,7 +2108,7 @@ public class JavaLexer extends Lexer {
 
                         switch (alt3) {
                     	case 1 :
-                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1619:34: '0' .. '9'
+                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1627:34: '0' .. '9'
                     	    {
                     	    matchRange('0','9'); 
 
@@ -2126,7 +2126,7 @@ public class JavaLexer extends Lexer {
 
             }
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1619:45: ( IntegerTypeSuffix )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1627:45: ( IntegerTypeSuffix )?
             int alt5=2;
             int LA5_0 = input.LA(1);
 
@@ -2135,7 +2135,7 @@ public class JavaLexer extends Lexer {
             }
             switch (alt5) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1619:45: IntegerTypeSuffix
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1627:45: IntegerTypeSuffix
                     {
                     mIntegerTypeSuffix(); 
 
@@ -2160,11 +2160,11 @@ public class JavaLexer extends Lexer {
         try {
             int _type = OctalLiteral;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1621:14: ( '0' ( '0' .. '7' )+ ( IntegerTypeSuffix )? )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1621:16: '0' ( '0' .. '7' )+ ( IntegerTypeSuffix )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1629:14: ( '0' ( '0' .. '7' )+ ( IntegerTypeSuffix )? )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1629:16: '0' ( '0' .. '7' )+ ( IntegerTypeSuffix )?
             {
             match('0'); 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1621:20: ( '0' .. '7' )+
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1629:20: ( '0' .. '7' )+
             int cnt6=0;
             loop6:
             do {
@@ -2178,7 +2178,7 @@ public class JavaLexer extends Lexer {
 
                 switch (alt6) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1621:21: '0' .. '7'
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1629:21: '0' .. '7'
             	    {
             	    matchRange('0','7'); 
 
@@ -2194,7 +2194,7 @@ public class JavaLexer extends Lexer {
                 cnt6++;
             } while (true);
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1621:32: ( IntegerTypeSuffix )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1629:32: ( IntegerTypeSuffix )?
             int alt7=2;
             int LA7_0 = input.LA(1);
 
@@ -2203,7 +2203,7 @@ public class JavaLexer extends Lexer {
             }
             switch (alt7) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1621:32: IntegerTypeSuffix
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1629:32: IntegerTypeSuffix
                     {
                     mIntegerTypeSuffix(); 
 
@@ -2226,8 +2226,8 @@ public class JavaLexer extends Lexer {
     // $ANTLR start "HexDigit"
     public final void mHexDigit() throws RecognitionException {
         try {
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1624:10: ( ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' ) )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1624:12: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1632:10: ( ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' ) )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1632:12: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )
             {
             if ( (input.LA(1)>='0' && input.LA(1)<='9')||(input.LA(1)>='A' && input.LA(1)<='F')||(input.LA(1)>='a' && input.LA(1)<='f') ) {
                 input.consume();
@@ -2250,8 +2250,8 @@ public class JavaLexer extends Lexer {
     // $ANTLR start "IntegerTypeSuffix"
     public final void mIntegerTypeSuffix() throws RecognitionException {
         try {
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1627:19: ( ( 'l' | 'L' ) )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1627:21: ( 'l' | 'L' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1635:19: ( ( 'l' | 'L' ) )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1635:21: ( 'l' | 'L' )
             {
             if ( input.LA(1)=='L'||input.LA(1)=='l' ) {
                 input.consume();
@@ -2276,14 +2276,14 @@ public class JavaLexer extends Lexer {
         try {
             int _type = FloatingPointLiteral;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1630:5: ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( Exponent )? ( FloatTypeSuffix )? | '.' ( '0' .. '9' )+ ( Exponent )? ( FloatTypeSuffix )? | ( '0' .. '9' )+ Exponent ( FloatTypeSuffix )? | ( '0' .. '9' )+ FloatTypeSuffix )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1638:5: ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( Exponent )? ( FloatTypeSuffix )? | '.' ( '0' .. '9' )+ ( Exponent )? ( FloatTypeSuffix )? | ( '0' .. '9' )+ Exponent ( FloatTypeSuffix )? | ( '0' .. '9' )+ FloatTypeSuffix )
             int alt18=4;
             alt18 = dfa18.predict(input);
             switch (alt18) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1630:9: ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( Exponent )? ( FloatTypeSuffix )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1638:9: ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( Exponent )? ( FloatTypeSuffix )?
                     {
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1630:9: ( '0' .. '9' )+
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1638:9: ( '0' .. '9' )+
                     int cnt8=0;
                     loop8:
                     do {
@@ -2297,7 +2297,7 @@ public class JavaLexer extends Lexer {
 
                         switch (alt8) {
                     	case 1 :
-                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1630:10: '0' .. '9'
+                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1638:10: '0' .. '9'
                     	    {
                     	    matchRange('0','9'); 
 
@@ -2314,7 +2314,7 @@ public class JavaLexer extends Lexer {
                     } while (true);
 
                     match('.'); 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1630:25: ( '0' .. '9' )*
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1638:25: ( '0' .. '9' )*
                     loop9:
                     do {
                         int alt9=2;
@@ -2327,7 +2327,7 @@ public class JavaLexer extends Lexer {
 
                         switch (alt9) {
                     	case 1 :
-                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1630:26: '0' .. '9'
+                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1638:26: '0' .. '9'
                     	    {
                     	    matchRange('0','9'); 
 
@@ -2339,7 +2339,7 @@ public class JavaLexer extends Lexer {
                         }
                     } while (true);
 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1630:37: ( Exponent )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1638:37: ( Exponent )?
                     int alt10=2;
                     int LA10_0 = input.LA(1);
 
@@ -2348,7 +2348,7 @@ public class JavaLexer extends Lexer {
                     }
                     switch (alt10) {
                         case 1 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1630:37: Exponent
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1638:37: Exponent
                             {
                             mExponent(); 
 
@@ -2357,7 +2357,7 @@ public class JavaLexer extends Lexer {
 
                     }
 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1630:47: ( FloatTypeSuffix )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1638:47: ( FloatTypeSuffix )?
                     int alt11=2;
                     int LA11_0 = input.LA(1);
 
@@ -2366,7 +2366,7 @@ public class JavaLexer extends Lexer {
                     }
                     switch (alt11) {
                         case 1 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1630:47: FloatTypeSuffix
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1638:47: FloatTypeSuffix
                             {
                             mFloatTypeSuffix(); 
 
@@ -2379,10 +2379,10 @@ public class JavaLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1631:9: '.' ( '0' .. '9' )+ ( Exponent )? ( FloatTypeSuffix )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1639:9: '.' ( '0' .. '9' )+ ( Exponent )? ( FloatTypeSuffix )?
                     {
                     match('.'); 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1631:13: ( '0' .. '9' )+
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1639:13: ( '0' .. '9' )+
                     int cnt12=0;
                     loop12:
                     do {
@@ -2396,7 +2396,7 @@ public class JavaLexer extends Lexer {
 
                         switch (alt12) {
                     	case 1 :
-                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1631:14: '0' .. '9'
+                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1639:14: '0' .. '9'
                     	    {
                     	    matchRange('0','9'); 
 
@@ -2412,7 +2412,7 @@ public class JavaLexer extends Lexer {
                         cnt12++;
                     } while (true);
 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1631:25: ( Exponent )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1639:25: ( Exponent )?
                     int alt13=2;
                     int LA13_0 = input.LA(1);
 
@@ -2421,7 +2421,7 @@ public class JavaLexer extends Lexer {
                     }
                     switch (alt13) {
                         case 1 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1631:25: Exponent
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1639:25: Exponent
                             {
                             mExponent(); 
 
@@ -2430,7 +2430,7 @@ public class JavaLexer extends Lexer {
 
                     }
 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1631:35: ( FloatTypeSuffix )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1639:35: ( FloatTypeSuffix )?
                     int alt14=2;
                     int LA14_0 = input.LA(1);
 
@@ -2439,7 +2439,7 @@ public class JavaLexer extends Lexer {
                     }
                     switch (alt14) {
                         case 1 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1631:35: FloatTypeSuffix
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1639:35: FloatTypeSuffix
                             {
                             mFloatTypeSuffix(); 
 
@@ -2452,9 +2452,9 @@ public class JavaLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1632:9: ( '0' .. '9' )+ Exponent ( FloatTypeSuffix )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1640:9: ( '0' .. '9' )+ Exponent ( FloatTypeSuffix )?
                     {
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1632:9: ( '0' .. '9' )+
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1640:9: ( '0' .. '9' )+
                     int cnt15=0;
                     loop15:
                     do {
@@ -2468,7 +2468,7 @@ public class JavaLexer extends Lexer {
 
                         switch (alt15) {
                     	case 1 :
-                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1632:10: '0' .. '9'
+                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1640:10: '0' .. '9'
                     	    {
                     	    matchRange('0','9'); 
 
@@ -2485,7 +2485,7 @@ public class JavaLexer extends Lexer {
                     } while (true);
 
                     mExponent(); 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1632:30: ( FloatTypeSuffix )?
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1640:30: ( FloatTypeSuffix )?
                     int alt16=2;
                     int LA16_0 = input.LA(1);
 
@@ -2494,7 +2494,7 @@ public class JavaLexer extends Lexer {
                     }
                     switch (alt16) {
                         case 1 :
-                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1632:30: FloatTypeSuffix
+                            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1640:30: FloatTypeSuffix
                             {
                             mFloatTypeSuffix(); 
 
@@ -2507,9 +2507,9 @@ public class JavaLexer extends Lexer {
                     }
                     break;
                 case 4 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1633:9: ( '0' .. '9' )+ FloatTypeSuffix
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1641:9: ( '0' .. '9' )+ FloatTypeSuffix
                     {
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1633:9: ( '0' .. '9' )+
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1641:9: ( '0' .. '9' )+
                     int cnt17=0;
                     loop17:
                     do {
@@ -2523,7 +2523,7 @@ public class JavaLexer extends Lexer {
 
                         switch (alt17) {
                     	case 1 :
-                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1633:10: '0' .. '9'
+                    	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1641:10: '0' .. '9'
                     	    {
                     	    matchRange('0','9'); 
 
@@ -2556,8 +2556,8 @@ public class JavaLexer extends Lexer {
     // $ANTLR start "Exponent"
     public final void mExponent() throws RecognitionException {
         try {
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1637:10: ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1637:12: ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1645:10: ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1645:12: ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
             {
             if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
                 input.consume();
@@ -2568,7 +2568,7 @@ public class JavaLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1637:22: ( '+' | '-' )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1645:22: ( '+' | '-' )?
             int alt19=2;
             int LA19_0 = input.LA(1);
 
@@ -2594,7 +2594,7 @@ public class JavaLexer extends Lexer {
 
             }
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1637:33: ( '0' .. '9' )+
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1645:33: ( '0' .. '9' )+
             int cnt20=0;
             loop20:
             do {
@@ -2608,7 +2608,7 @@ public class JavaLexer extends Lexer {
 
                 switch (alt20) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1637:34: '0' .. '9'
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1645:34: '0' .. '9'
             	    {
             	    matchRange('0','9'); 
 
@@ -2636,8 +2636,8 @@ public class JavaLexer extends Lexer {
     // $ANTLR start "FloatTypeSuffix"
     public final void mFloatTypeSuffix() throws RecognitionException {
         try {
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1640:17: ( ( 'f' | 'F' | 'd' | 'D' ) )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1640:19: ( 'f' | 'F' | 'd' | 'D' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1648:17: ( ( 'f' | 'F' | 'd' | 'D' ) )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1648:19: ( 'f' | 'F' | 'd' | 'D' )
             {
             if ( input.LA(1)=='D'||input.LA(1)=='F'||input.LA(1)=='d'||input.LA(1)=='f' ) {
                 input.consume();
@@ -2662,11 +2662,11 @@ public class JavaLexer extends Lexer {
         try {
             int _type = CharacterLiteral;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1643:5: ( '\\'' ( EscapeSequence | ~ ( '\\'' | '\\\\' ) ) '\\'' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1643:9: '\\'' ( EscapeSequence | ~ ( '\\'' | '\\\\' ) ) '\\''
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1651:5: ( '\\'' ( EscapeSequence | ~ ( '\\'' | '\\\\' ) ) '\\'' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1651:9: '\\'' ( EscapeSequence | ~ ( '\\'' | '\\\\' ) ) '\\''
             {
             match('\''); 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1643:14: ( EscapeSequence | ~ ( '\\'' | '\\\\' ) )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1651:14: ( EscapeSequence | ~ ( '\\'' | '\\\\' ) )
             int alt21=2;
             int LA21_0 = input.LA(1);
 
@@ -2684,14 +2684,14 @@ public class JavaLexer extends Lexer {
             }
             switch (alt21) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1643:16: EscapeSequence
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1651:16: EscapeSequence
                     {
                     mEscapeSequence(); 
 
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1643:33: ~ ( '\\'' | '\\\\' )
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1651:33: ~ ( '\\'' | '\\\\' )
                     {
                     if ( (input.LA(1)>='\u0000' && input.LA(1)<='&')||(input.LA(1)>='(' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                         input.consume();
@@ -2725,11 +2725,11 @@ public class JavaLexer extends Lexer {
         try {
             int _type = StringLiteral;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1647:5: ( '\"' ( EscapeSequence | ~ ( '\\\\' | '\"' ) )* '\"' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1647:8: '\"' ( EscapeSequence | ~ ( '\\\\' | '\"' ) )* '\"'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1655:5: ( '\"' ( EscapeSequence | ~ ( '\\\\' | '\"' ) )* '\"' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1655:8: '\"' ( EscapeSequence | ~ ( '\\\\' | '\"' ) )* '\"'
             {
             match('\"'); 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1647:12: ( EscapeSequence | ~ ( '\\\\' | '\"' ) )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1655:12: ( EscapeSequence | ~ ( '\\\\' | '\"' ) )*
             loop22:
             do {
                 int alt22=3;
@@ -2745,14 +2745,14 @@ public class JavaLexer extends Lexer {
 
                 switch (alt22) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1647:14: EscapeSequence
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1655:14: EscapeSequence
             	    {
             	    mEscapeSequence(); 
 
             	    }
             	    break;
             	case 2 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1647:31: ~ ( '\\\\' | '\"' )
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1655:31: ~ ( '\\\\' | '\"' )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -2787,7 +2787,7 @@ public class JavaLexer extends Lexer {
     // $ANTLR start "EscapeSequence"
     public final void mEscapeSequence() throws RecognitionException {
         try {
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1652:5: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) | UnicodeEscape | OctalEscape )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1660:5: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) | UnicodeEscape | OctalEscape )
             int alt23=3;
             int LA23_0 = input.LA(1);
 
@@ -2838,7 +2838,7 @@ public class JavaLexer extends Lexer {
             }
             switch (alt23) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1652:9: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1660:9: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
                     {
                     match('\\'); 
                     if ( input.LA(1)=='\"'||input.LA(1)=='\''||input.LA(1)=='\\'||input.LA(1)=='b'||input.LA(1)=='f'||input.LA(1)=='n'||input.LA(1)=='r'||input.LA(1)=='t' ) {
@@ -2854,14 +2854,14 @@ public class JavaLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1653:9: UnicodeEscape
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1661:9: UnicodeEscape
                     {
                     mUnicodeEscape(); 
 
                     }
                     break;
                 case 3 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1654:9: OctalEscape
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1662:9: OctalEscape
                     {
                     mOctalEscape(); 
 
@@ -2878,7 +2878,7 @@ public class JavaLexer extends Lexer {
     // $ANTLR start "OctalEscape"
     public final void mOctalEscape() throws RecognitionException {
         try {
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1659:5: ( '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' ) | '\\\\' ( '0' .. '7' ) ( '0' .. '7' ) | '\\\\' ( '0' .. '7' ) )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1667:5: ( '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' ) | '\\\\' ( '0' .. '7' ) ( '0' .. '7' ) | '\\\\' ( '0' .. '7' ) )
             int alt24=3;
             int LA24_0 = input.LA(1);
 
@@ -2924,25 +2924,25 @@ public class JavaLexer extends Lexer {
             }
             switch (alt24) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1659:9: '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' )
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1667:9: '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' )
                     {
                     match('\\'); 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1659:14: ( '0' .. '3' )
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1659:15: '0' .. '3'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1667:14: ( '0' .. '3' )
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1667:15: '0' .. '3'
                     {
                     matchRange('0','3'); 
 
                     }
 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1659:25: ( '0' .. '7' )
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1659:26: '0' .. '7'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1667:25: ( '0' .. '7' )
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1667:26: '0' .. '7'
                     {
                     matchRange('0','7'); 
 
                     }
 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1659:36: ( '0' .. '7' )
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1659:37: '0' .. '7'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1667:36: ( '0' .. '7' )
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1667:37: '0' .. '7'
                     {
                     matchRange('0','7'); 
 
@@ -2952,18 +2952,18 @@ public class JavaLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1660:9: '\\\\' ( '0' .. '7' ) ( '0' .. '7' )
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1668:9: '\\\\' ( '0' .. '7' ) ( '0' .. '7' )
                     {
                     match('\\'); 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1660:14: ( '0' .. '7' )
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1660:15: '0' .. '7'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1668:14: ( '0' .. '7' )
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1668:15: '0' .. '7'
                     {
                     matchRange('0','7'); 
 
                     }
 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1660:25: ( '0' .. '7' )
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1660:26: '0' .. '7'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1668:25: ( '0' .. '7' )
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1668:26: '0' .. '7'
                     {
                     matchRange('0','7'); 
 
@@ -2973,11 +2973,11 @@ public class JavaLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1661:9: '\\\\' ( '0' .. '7' )
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1669:9: '\\\\' ( '0' .. '7' )
                     {
                     match('\\'); 
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1661:14: ( '0' .. '7' )
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1661:15: '0' .. '7'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1669:14: ( '0' .. '7' )
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1669:15: '0' .. '7'
                     {
                     matchRange('0','7'); 
 
@@ -2997,8 +2997,8 @@ public class JavaLexer extends Lexer {
     // $ANTLR start "UnicodeEscape"
     public final void mUnicodeEscape() throws RecognitionException {
         try {
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1666:5: ( '\\\\' 'u' HexDigit HexDigit HexDigit HexDigit )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1666:9: '\\\\' 'u' HexDigit HexDigit HexDigit HexDigit
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1674:5: ( '\\\\' 'u' HexDigit HexDigit HexDigit HexDigit )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1674:9: '\\\\' 'u' HexDigit HexDigit HexDigit HexDigit
             {
             match('\\'); 
             match('u'); 
@@ -3020,8 +3020,8 @@ public class JavaLexer extends Lexer {
         try {
             int _type = ENUM;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1669:5: ( 'enum' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1669:9: 'enum'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1677:5: ( 'enum' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1677:9: 'enum'
             {
             match("enum"); 
 
@@ -3042,8 +3042,8 @@ public class JavaLexer extends Lexer {
         try {
             int _type = ASSERT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1673:5: ( 'assert' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1673:9: 'assert'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1681:5: ( 'assert' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1681:9: 'assert'
             {
             match("assert"); 
 
@@ -3064,11 +3064,11 @@ public class JavaLexer extends Lexer {
         try {
             int _type = Identifier;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1677:5: ( Letter ( Letter | JavaIDDigit )* )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1677:9: Letter ( Letter | JavaIDDigit )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1685:5: ( Letter ( Letter | JavaIDDigit )* )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1685:9: Letter ( Letter | JavaIDDigit )*
             {
             mLetter(); 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1677:16: ( Letter | JavaIDDigit )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1685:16: ( Letter | JavaIDDigit )*
             loop25:
             do {
                 int alt25=2;
@@ -3115,7 +3115,7 @@ public class JavaLexer extends Lexer {
     // $ANTLR start "Letter"
     public final void mLetter() throws RecognitionException {
         try {
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1685:5: ( '\\u0024' | '\\u0041' .. '\\u005a' | '\\u005f' | '\\u0061' .. '\\u007a' | '\\u00c0' .. '\\u00d6' | '\\u00d8' .. '\\u00f6' | '\\u00f8' .. '\\u00ff' | '\\u0100' .. '\\u1fff' | '\\u3040' .. '\\u318f' | '\\u3300' .. '\\u337f' | '\\u3400' .. '\\u3d2d' | '\\u4e00' .. '\\u9fff' | '\\uf900' .. '\\ufaff' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1693:5: ( '\\u0024' | '\\u0041' .. '\\u005a' | '\\u005f' | '\\u0061' .. '\\u007a' | '\\u00c0' .. '\\u00d6' | '\\u00d8' .. '\\u00f6' | '\\u00f8' .. '\\u00ff' | '\\u0100' .. '\\u1fff' | '\\u3040' .. '\\u318f' | '\\u3300' .. '\\u337f' | '\\u3400' .. '\\u3d2d' | '\\u4e00' .. '\\u9fff' | '\\uf900' .. '\\ufaff' )
             // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:
             {
             if ( input.LA(1)=='$'||(input.LA(1)>='A' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z')||(input.LA(1)>='\u00C0' && input.LA(1)<='\u00D6')||(input.LA(1)>='\u00D8' && input.LA(1)<='\u00F6')||(input.LA(1)>='\u00F8' && input.LA(1)<='\u1FFF')||(input.LA(1)>='\u3040' && input.LA(1)<='\u318F')||(input.LA(1)>='\u3300' && input.LA(1)<='\u337F')||(input.LA(1)>='\u3400' && input.LA(1)<='\u3D2D')||(input.LA(1)>='\u4E00' && input.LA(1)<='\u9FFF')||(input.LA(1)>='\uF900' && input.LA(1)<='\uFAFF') ) {
@@ -3139,7 +3139,7 @@ public class JavaLexer extends Lexer {
     // $ANTLR start "JavaIDDigit"
     public final void mJavaIDDigit() throws RecognitionException {
         try {
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1702:5: ( '\\u0030' .. '\\u0039' | '\\u0660' .. '\\u0669' | '\\u06f0' .. '\\u06f9' | '\\u0966' .. '\\u096f' | '\\u09e6' .. '\\u09ef' | '\\u0a66' .. '\\u0a6f' | '\\u0ae6' .. '\\u0aef' | '\\u0b66' .. '\\u0b6f' | '\\u0be7' .. '\\u0bef' | '\\u0c66' .. '\\u0c6f' | '\\u0ce6' .. '\\u0cef' | '\\u0d66' .. '\\u0d6f' | '\\u0e50' .. '\\u0e59' | '\\u0ed0' .. '\\u0ed9' | '\\u1040' .. '\\u1049' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1710:5: ( '\\u0030' .. '\\u0039' | '\\u0660' .. '\\u0669' | '\\u06f0' .. '\\u06f9' | '\\u0966' .. '\\u096f' | '\\u09e6' .. '\\u09ef' | '\\u0a66' .. '\\u0a6f' | '\\u0ae6' .. '\\u0aef' | '\\u0b66' .. '\\u0b6f' | '\\u0be7' .. '\\u0bef' | '\\u0c66' .. '\\u0c6f' | '\\u0ce6' .. '\\u0cef' | '\\u0d66' .. '\\u0d6f' | '\\u0e50' .. '\\u0e59' | '\\u0ed0' .. '\\u0ed9' | '\\u1040' .. '\\u1049' )
             // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:
             {
             if ( (input.LA(1)>='0' && input.LA(1)<='9')||(input.LA(1)>='\u0660' && input.LA(1)<='\u0669')||(input.LA(1)>='\u06F0' && input.LA(1)<='\u06F9')||(input.LA(1)>='\u0966' && input.LA(1)<='\u096F')||(input.LA(1)>='\u09E6' && input.LA(1)<='\u09EF')||(input.LA(1)>='\u0A66' && input.LA(1)<='\u0A6F')||(input.LA(1)>='\u0AE6' && input.LA(1)<='\u0AEF')||(input.LA(1)>='\u0B66' && input.LA(1)<='\u0B6F')||(input.LA(1)>='\u0BE7' && input.LA(1)<='\u0BEF')||(input.LA(1)>='\u0C66' && input.LA(1)<='\u0C6F')||(input.LA(1)>='\u0CE6' && input.LA(1)<='\u0CEF')||(input.LA(1)>='\u0D66' && input.LA(1)<='\u0D6F')||(input.LA(1)>='\u0E50' && input.LA(1)<='\u0E59')||(input.LA(1)>='\u0ED0' && input.LA(1)<='\u0ED9')||(input.LA(1)>='\u1040' && input.LA(1)<='\u1049') ) {
@@ -3165,8 +3165,8 @@ public class JavaLexer extends Lexer {
         try {
             int _type = WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1719:5: ( ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' ) )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1719:8: ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1727:5: ( ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' ) )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1727:8: ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' )
             {
             if ( (input.LA(1)>='\t' && input.LA(1)<='\n')||(input.LA(1)>='\f' && input.LA(1)<='\r')||input.LA(1)==' ' ) {
                 input.consume();
@@ -3194,12 +3194,12 @@ public class JavaLexer extends Lexer {
         try {
             int _type = COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1723:5: ( '/*' ( options {greedy=false; } : . )* '*/' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1723:9: '/*' ( options {greedy=false; } : . )* '*/'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1731:5: ( '/*' ( options {greedy=false; } : . )* '*/' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1731:9: '/*' ( options {greedy=false; } : . )* '*/'
             {
             match("/*"); 
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1723:14: ( options {greedy=false; } : . )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1731:14: ( options {greedy=false; } : . )*
             loop26:
             do {
                 int alt26=2;
@@ -3224,7 +3224,7 @@ public class JavaLexer extends Lexer {
 
                 switch (alt26) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1723:42: .
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1731:42: .
             	    {
             	    matchAny(); 
 
@@ -3255,12 +3255,12 @@ public class JavaLexer extends Lexer {
         try {
             int _type = LINE_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1727:5: ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n' )
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1727:7: '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n'
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1735:5: ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n' )
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1735:7: '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n'
             {
             match("//"); 
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1727:12: (~ ( '\\n' | '\\r' ) )*
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1735:12: (~ ( '\\n' | '\\r' ) )*
             loop27:
             do {
                 int alt27=2;
@@ -3273,7 +3273,7 @@ public class JavaLexer extends Lexer {
 
                 switch (alt27) {
             	case 1 :
-            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1727:12: ~ ( '\\n' | '\\r' )
+            	    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1735:12: ~ ( '\\n' | '\\r' )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -3293,7 +3293,7 @@ public class JavaLexer extends Lexer {
                 }
             } while (true);
 
-            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1727:26: ( '\\r' )?
+            // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1735:26: ( '\\r' )?
             int alt28=2;
             int LA28_0 = input.LA(1);
 
@@ -3302,7 +3302,7 @@ public class JavaLexer extends Lexer {
             }
             switch (alt28) {
                 case 1 :
-                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1727:26: '\\r'
+                    // /Users/marko/git/jnome/src/jnome/input/parser/Java.g:1735:26: '\\r'
                     {
                     match('\r'); 
 
@@ -4095,7 +4095,7 @@ public class JavaLexer extends Lexer {
             this.transition = DFA18_transition;
         }
         public String getDescription() {
-            return "1629:1: FloatingPointLiteral : ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( Exponent )? ( FloatTypeSuffix )? | '.' ( '0' .. '9' )+ ( Exponent )? ( FloatTypeSuffix )? | ( '0' .. '9' )+ Exponent ( FloatTypeSuffix )? | ( '0' .. '9' )+ FloatTypeSuffix );";
+            return "1637:1: FloatingPointLiteral : ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( Exponent )? ( FloatTypeSuffix )? | '.' ( '0' .. '9' )+ ( Exponent )? ( FloatTypeSuffix )? | ( '0' .. '9' )+ Exponent ( FloatTypeSuffix )? | ( '0' .. '9' )+ FloatTypeSuffix );";
         }
     }
     static final String DFA29_eotS =

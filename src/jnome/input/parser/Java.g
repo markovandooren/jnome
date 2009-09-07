@@ -625,13 +625,21 @@ classDeclaration returns [Type element]
     
 normalClassDeclaration returns [RegularType element]
     :   clkw='class' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text));} (params=typeParameters{for(FormalTypeParameter par: params.element){retval.element.addParameter(par);}})?
-        (extkw='extends' sc=type {retval.element.addInheritanceRelation(new SubtypeRelation(sc.element));})? 
-        (impkw='implements' trefs=typeList {for(TypeReference ref: trefs.element){retval.element.addInheritanceRelation(new SubtypeRelation(ref));} } )?
+        (extkw='extends' sc=type 
+            {SubtypeRelation extRelation = new SubtypeRelation(sc.element); 
+             retval.element.addInheritanceRelation(extRelation);
+             setKeyword(extRelation,extkw);
+            })? 
+        (impkw='implements' trefs=typeList 
+            {for(TypeReference ref: trefs.element) {
+                retval.element.addInheritanceRelation(new SubtypeRelation(ref));
+             }
+            } )?
         body=classBody {retval.element.body().addAll(body.element.elements());}
         {
          setKeyword(retval.element,clkw);
+         // FIXME: the implements keyword should not be attached to the class, but there is only one. Stupid Java
          setKeyword(retval.element,impkw);
-         setKeyword(retval.element,extkw);
         }
     ;
     

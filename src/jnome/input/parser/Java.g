@@ -401,24 +401,32 @@ package jnome.input.parser;
     private ClassBody _body;
   }
   
-  public void setLocation(Element element, CommonToken begin, CommonToken end) {
+  public void setLocation(Element element, Token start, Token stop) {
     List<InputProcessor> processors = language().processors(InputProcessor.class);
-    int offset = begin.getStartIndex();
-    int length = end.getStopIndex() - offset;
-    for(InputProcessor processor: processors) {
-      //processor.setLocation(element, new Position2D(begin.getLine(), begin.getCharPositionInLine()), new Position2D(end.getLine(), end.getCharPositionInLine()));
-      processor.setLocation(element, offset, length, getCompilationUnit());
-    }
+    CommonToken begin = (CommonToken)start;
+    CommonToken end = (CommonToken)stop;
+        if(begin != null && end != null) {
+        	int offset = begin.getStartIndex();
+        	int length = end.getStopIndex() - offset;
+        	for(InputProcessor processor: processors) {
+        		//processor.setLocation(element, new Position2D(begin.getLine(), begin.getCharPositionInLine()), new Position2D(end.getLine(), end.getCharPositionInLine()));
+        		processor.setLocation(element, offset, length, getCompilationUnit());
+        	}
+        }
   }
 
-  public void setLocation(Element element, CommonToken begin, CommonToken end, String tagType) {
+  public void setLocation(Element element, Token start, Token stop, String tagType) {
     List<InputProcessor> processors = language().processors(InputProcessor.class);
-    int offset = begin.getStartIndex();
-    int length = end.getStopIndex() - offset;
-    for(InputProcessor processor: processors) {
-      //processor.setLocation(element, new Position2D(begin.getLine(), begin.getCharPositionInLine()), new Position2D(end.getLine(), end.getCharPositionInLine()));
-      processor.setLocation(element, offset, length, getCompilationUnit(), tagType);
-    }
+    CommonToken begin = (CommonToken)start;
+    CommonToken end = (CommonToken)stop;
+        if(begin != null && end != null) {
+        	int offset = begin.getStartIndex();
+        	int length = end.getStopIndex() - offset;
+        	for(InputProcessor processor: processors) {
+        		//processor.setLocation(element, new Position2D(begin.getLine(), begin.getCharPositionInLine()), new Position2D(end.getLine(), end.getCharPositionInLine()));
+        		processor.setLocation(element, offset, length, getCompilationUnit(), tagType);
+        	}
+        }
   }
   
   public void setLocation(Element element, Token token, String tagType) {
@@ -564,9 +572,10 @@ retval.element = getCompilationUnit();
     ;
 
 packageDeclaration returns [NamespacePart element]
-    :   'package' qn=qualifiedName ';'
+    :   pkgkw='package' qn=qualifiedName ';'
          {try{
            retval.element = new NamespacePart(getDefaultNamespace().getOrCreateNamespace($qn.text));
+           setKeyword(retval.element,pkgkw);
          }
          catch(MetamodelException exc) {
            //this should not happen, something is wrong with the parser
@@ -590,7 +599,15 @@ typeDeclaration returns [Type element]
 
     
 classOrInterfaceDeclaration returns [Type element]
-    :   mods=classOrInterfaceModifiers (cd=classDeclaration {retval.element=cd.element;} | id=interfaceDeclaration {retval.element=id.element;}) 
+@init{Token start = null; 
+      Token end = null;}
+@after{setLocation(retval.element, start, end);}
+    :   mods=classOrInterfaceModifiers 
+                {if(mods != null) {start=mods.start;}}
+         (cd=classDeclaration 
+                {retval.element=cd.element; end = cd.stop; if(mods == null) {start=cd.start;}} 
+          | id=interfaceDeclaration 
+                {retval.element=id.element; end=id.stop; if(mods == null) {start=id.start;}}) 
         {for(Modifier mod:mods.element) {
           retval.element.addModifier(mod);
         }}
@@ -624,7 +641,7 @@ classDeclaration returns [Type element]
     ;
     
 normalClassDeclaration returns [RegularType element]
-    :   clkw='class' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text));} (params=typeParameters{for(FormalTypeParameter par: params.element){retval.element.addParameter(par);}})?
+    :   clkw='class' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text)); setLocation(retval.element,name,"__NAME");} (params=typeParameters{for(FormalTypeParameter par: params.element){retval.element.addParameter(par);}})?
         (extkw='extends' sc=type 
             {SubtypeRelation extRelation = new SubtypeRelation(sc.element); 
              retval.element.addInheritanceRelation(extRelation);
@@ -662,7 +679,16 @@ enumDeclaration returns [RegularType element]
 scope{
   Type enumType;
 }
-    :   ENUM name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text)); retval.element.addModifier(new Enum()); $enumDeclaration::enumType=retval.element;}('implements' trefs=typeList {for(TypeReference ref: trefs.element){retval.element.addInheritanceRelation(new SubtypeRelation(ref));} } )? body=enumBody {retval.element.setBody(body.element);}
+    :   ENUM name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text)); 
+                              retval.element.addModifier(new Enum()); 
+                              $enumDeclaration::enumType=retval.element;
+                              setLocation(retval.element,name,"__NAME");}
+                  ('implements' trefs=typeList 
+                         {for(TypeReference ref: trefs.element)
+                               {retval.element.addInheritanceRelation(new SubtypeRelation(ref));} 
+                          } 
+                   )? 
+                   body=enumBody {retval.element.setBody(body.element);}
     ;
 
 // Nothing must be done here
@@ -688,7 +714,9 @@ interfaceDeclaration returns [Type element]
     ;
     
 normalInterfaceDeclaration returns [RegularType element]
-    :   ifkw='interface' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text)); retval.element.addModifier(new Interface());} 
+    :   ifkw='interface' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text)); 
+                                          retval.element.addModifier(new Interface());
+                                          setLocation(retval.element,name,"__NAME");} 
          (params=typeParameters{for(TypeParameter par: params.element){retval.element.addParameter(par);}})? 
          (extkw='extends' trefs=typeList 
            {
@@ -1113,7 +1141,7 @@ elementValueArrayInitializer
     ;
     
 annotationTypeDeclaration returns [Type element]
-    :   '@' 'interface' Identifier annotationTypeBody
+    :   '@' 'interface' name=Identifier annotationTypeBody
     ;
     
 annotationTypeBody

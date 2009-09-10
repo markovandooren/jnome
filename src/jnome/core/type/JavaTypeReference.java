@@ -11,7 +11,7 @@ import chameleon.core.element.ChameleonProgrammerException;
 import chameleon.core.element.Element;
 import chameleon.core.expression.NamedTarget;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.reference.ElementReference;
+import chameleon.core.reference.CrossReference;
 import chameleon.core.type.DerivedType;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
@@ -30,7 +30,7 @@ public class JavaTypeReference extends TypeReference {
     this(name,0);
   }
   
-  public JavaTypeReference(ElementReference<?,?,? extends TargetDeclaration> target, String name) {
+  public JavaTypeReference(CrossReference<?,?,? extends TargetDeclaration> target, String name) {
   	super(target,name);
   }
   

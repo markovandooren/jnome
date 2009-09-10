@@ -82,7 +82,10 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
 	}
 	
 	
-	
+	/**
+	 * Initialize a new Java model factory with the given collection of base classes.
+	 * All predefined elements of the language will be initialized. 
+	 */
 	public JavaModelFactory(Collection<File> base) throws IOException, ParseException {
 		this(new Java(), base);
 	}
@@ -90,30 +93,17 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
 	//FIXME: Object and String must be parsed.
 	public JavaModelFactory(Java language, Collection<File> base) throws IOException, ParseException {
 		setLanguage(language, ModelFactory.class);
-		init(base);
+		initializeBase(base);
 	}
 
 
 
-	public void init(Collection<File> base) throws IOException, ParseException {
+	public void initializeBase(Collection<File> base) throws IOException, ParseException {
 		addToModel(base);
-		_baseFiles = base;
     addPrimitives(language().defaultNamespace());
     addInfixOperators(language().defaultNamespace());
 	}
 	
-	/**
-	 * Return the base files of this model factory. The base files
-	 * contain definitions that are required to add method (operators) to
-	 * during the initialization of the model. For example, in Java, the '+' method
-	 * must be added to class Object, but that can only be done when Object is 
-	 * present in the model.
-	 */
-	public Collection<File> baseFiles() {
-		return new ArrayList<File>(_baseFiles);
-	}
-	
-	private Collection<File> _baseFiles;
 	
     /**
      * Return the top of the metamodel when parsing the given file.
@@ -138,7 +128,6 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
      */
     public void addToModel(File file) throws IOException, ParseException {
         Java lang = (Java) language();
-//        setToolExtensions(lang);
         final Namespace defaultPackage = lang.defaultNamespace();
         addFileToGraph(file, lang);
 
@@ -152,43 +141,6 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
       }
 
     }
-
-//    public Namespace getMetaModel(ISourceSupplier supply) throws MalformedURLException, FileNotFoundException, IOException, LookupException, ParseException {
-//
-//        Java lang = new Java();
-//        final Namespace defaultPackage = lang.defaultNamespace();
-//        try {
-//            for (supply.reset(); supply.hasNext(); supply.next()) {
-//                addStringToGraph(supply.getSource(),lang);
-//
-//            }
-//            addPrimitives(defaultPackage);
-//            addInfixOperators(defaultPackage);
-//        }
-//        catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//
-//        }
-//        return defaultPackage;
-//    }
-
-//    private Map<Class<? extends Connector>,Connector> toolExtensions = new HashMap<Class<? extends Connector>,Connector>();
-//
-//    protected void setToolExtensions(Language lang) {
-//        for (Class<? extends Connector> t : toolExtensions.keySet()) {
-//            Connector ext = toolExtensions.get(t);
-//            lang.setConnector(t,ext.clone());
-//        }
-//    }
-//
-//    public void addToolExtension(Class<? extends Connector> extClass, Connector ext) {
-//        toolExtensions.put(extClass,ext);
-//    }
-//
-//    public void removeToolExtension(Class<? extends Connector> extClass) {
-//        toolExtensions.remove(extClass);
-//    }
 
     private void addPrimitives(Namespace defaultPackage) {
         addVoid(defaultPackage);
@@ -847,35 +799,27 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
 //	LOAD FILES
 
     /**
-     * Load all the cs-files in the last directory of each path in the list
      * @param pathList		The directories to from where to load the cs-files
      * @param extension     Only files with this extension will be loaded
      * @param recursive	    Wether or not to also load cs-files from all sub directories
      * @return A set with all the cs-files in the given path
      */
-    public static Set loadFiles(List pathList, String extension, boolean recursive){
-        Set result = new HashSet();
-
-        Iterator it = pathList.iterator();
-        while(it.hasNext()){
-            String path = it.next().toString();
-            result.addAll(new DirectoryScanner().scan(path, extension, recursive));
+    public static Set<File> sourceFiles(List<String> pathList, String extension, boolean recursive){
+        Set<File> result = new HashSet();
+        for(String path: pathList) {
+          result.addAll(new DirectoryScanner().scan(path, extension, recursive));
         }
         return result;
     }
 
 		@Override
-		public Connector clone() {
+		public JavaModelFactory clone() {
 			try {
-				return new JavaModelFactory(baseFiles());
+				return new JavaModelFactory();
 			} catch (Exception e) {
 				throw new RuntimeException("Exception while cloning a JavaModelFactory", e);
 			}
 		}
-
-//		public void addToModel(String compilationUnit) throws ParseException {
-//			addToModel(compilationUnit, new CompilationUnit());
-//		}
 
 		public <P extends Element> void reParse(Element<?,P> element) throws ParseException {
 			CompilationUnit compilationUnit = element.nearestAncestor(CompilationUnit.class);

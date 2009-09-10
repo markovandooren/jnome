@@ -16,6 +16,7 @@ import chameleon.core.Config;
 import chameleon.core.language.Language;
 import chameleon.core.namespace.Namespace;
 import chameleon.input.ModelFactory;
+import chameleon.test.ModelProvider;
 
 /**
  * @author marko
@@ -31,78 +32,83 @@ public abstract class MetaModelTest {
 		return _logger;
 	}
 
-	public MetaModelTest() {
-		this(null);
-	}
-	
-	public MetaModelTest(String arg0) {
-//		super(arg0);
-		_files = new ArrayList<String>();
-     addTestFiles();
+	 /**
+	  * Create a new test that uses the given provider to create models
+	  * for testing.
+	  */
+	/*@
+	  @ public behavior
+	  @
+	  @ post provider() == provider;
+    @ post baseRecursive();
+    @ post customRecursive();
+	  @*/
+	 public MetaModelTest(ModelProvider provider) {
      Config.setCaching(true);
-	}
-    
-//    public void include(String dirName, String pattern) {
-//      _files.include(new PatternPredicate(new File(dirName), new FileNamePattern(pattern)));
-//    }
+     _provider = provider;
+	 }
+	 
+	 /**
+	  * Return the model provider for this test.
+	  */
+	/*@
+	  @ public behavior
+	  @
+	  @ post \result != null;
+	  @*/
+	 public ModelProvider provider() {
+		 return _provider;
+	 }
+	 
+	 private ModelProvider _provider;
 	
-    public void include(String dirName) {
-    	_files.add(dirName);
-    }
-    
-    public abstract void addTestFiles();
-
-    /**
-     * This method is invoked during setup to set the levels of the loggers.
-     * It allows subclasses to easily changes those levels if tests fail, without
-     * having to change this class.
-     * 
-     * The default behavior is to leave log levels untouched. They are DEBUG by default.
-     */
-    public void setLogLevels() {
+   /**
+    * This method is invoked during setup to set the levels of the loggers.
+    * It allows subclasses to easily changes those levels if tests fail, without
+    * having to change this class.
+    * 
+    * The default behavior is to leave log levels untouched. They are DEBUG by default.
+    */
+   public void setLogLevels() {
     	// do nothing by default
-    }
+   }
 
-    @Before
-    public void setUp() throws Exception {
+   /**
+    * Use the model provider to create a model, and store its language object
+    * in this test.
+    * 
+    * This method also invokes setLogLevels() to set the log levels.
+    * @throws Exception
+    */
+  /*@
+    @ public behavior
+    @
+    @ // not quite correct
+    @ post language() == provider().model();
+    @*/
+   @Before
+   public void setUp() throws Exception {
     	setLogLevels();
-      _language = new Java();
-      _mm = _language.defaultNamespace();
-      new JavaModelFactory(_language);
-      //_mm = getMetaModelFactory().getMetaModel(_files.getFiles());
-      Set s = JavaModelFactory.loadFiles(_files, ".java", true);
-      System.out.println("Found "+s.size()+" files.");
-      modelFactory().init(s);
+      _language = provider().model();
     }
     
-    @After
-    public void tearDown() {
-    	_mm = null;
-    	_files = null;
-    }
-    
-    public JavaModelFactory modelFactory() {
-      return (JavaModelFactory) language().connector(ModelFactory.class);
-    }
-    
-    public Language language() {
-    	return _mm.language();
-    }
+   @After
+   public void tearDown() {
+   	 _language = null;
+   }
+   
+   /**
+    * Return the language object of the model being tested.
+    */
+  /*@
+    @ public behavior
+    @
+    @ post \result != null;
+    @*/
+   public Language language() {
+   	 return _language;
+   }
   
-    /**
-		 *
-		 */
-		public String getSeparator() {
-		  return File.separator;
-		}
-
-		private String _srcDirName = "testsource/gen"; // <-- Change to directory of generated skeleton files.
-
-
-    protected ArrayList<String> _files;
-
-    protected Java _language;
+   private Language _language;
     
-	  protected Namespace _mm;
-
 }

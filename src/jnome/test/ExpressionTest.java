@@ -11,19 +11,29 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
-import chameleon.core.element.Element;
 import chameleon.core.expression.Expression;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.type.Type;
+import chameleon.test.ModelProvider;
 
 /**
- * @author marko
+ * @author Marko van Dooren
  */
-
 public abstract class ExpressionTest extends MetaModelTest {
   
-	public ExpressionTest() {
-		
+	/**
+	 * Create a new expression tester
+	 * @param provider
+	 */
+ /*@
+   @ public behavior
+   @
+   @ post provider() == provider;
+   @ post baseRecursive();
+   @ post customRecursive();
+   @*/
+	public ExpressionTest(ModelProvider provider) {
+		super(provider);
 	}
 	
 public abstract List<Type> getTestTypes() throws LookupException;
@@ -39,21 +49,8 @@ public abstract List<Type> getTestTypes() throws LookupException;
 		Logger.getLogger("chameleon.test.expression").setLevel(Level.FATAL);
   }
 
-  public void myTestDescendants() {
-    List descendants = _mm.descendants();
-    Iterator iter = descendants.iterator();
-    while(iter.hasNext()) {
-      Object o = iter.next();
-      if(! (o instanceof Element)) {
-        System.out.println("Bug in getDescendants");
-      }
-      assertTrue(o instanceof Element);
-    }
-  }
-  
   @Test
   public void testExpressionTypes() throws Exception {
-    //myTestDescendants(); // Stupid Junit creates a new test object for every test (which includes parsing).
     List<Type> types = getTestTypes();
     getLogger().info("Starting to test "+types.size() + " types.");
     Iterator<Type> iter = types.iterator();
@@ -77,13 +74,6 @@ public abstract List<Type> getTestTypes() throws LookupException;
     Object o = null;
     try {
       List<Expression> exprs = type.descendants(Expression.class);
-//      new PrimitiveTotalPredicate<Expression>() {
-//
-//				@Override
-//				public boolean eval(Expression expr) {
-//					return ! (expr.parent() instanceof Expression);
-//				}
-//			}.filter(exprs);
       for(Expression expression : exprs) {
         getExpressionLogger().info(_count + " Testing: "+toCode(expression));
         Type expressionType = expression.getType();

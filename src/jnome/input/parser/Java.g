@@ -370,6 +370,24 @@ package jnome.input.parser;
 
 @parser::members {
 
+  public InvocationTarget cloneTargetOfTarget(NamedTarget target) {
+    InvocationTarget result = null;
+    if(target != null) {
+      InvocationTarget targetOfTarget = target.getTarget();
+      if(targetOfTarget != null) {
+        result = targetOfTarget.clone();
+      }
+    }
+    return result;
+  }
+
+  public InvocationTarget cloneTarget(InvocationTarget target) {
+    InvocationTarget result = null;
+    if(target != null) {
+        result = target.clone();
+    }
+    return result;
+  }
   public void check_null(Object o) {
     if(o == null) {
       throw new RuntimeException("Object returned by parsing rule is null.");
@@ -1577,7 +1595,8 @@ Token start=$TargetScope::start;
 @after{setLocation(retval.element,start,retval.stop);}
 	:	
 	'.' name=Identifier 
-	        {retval.element = new VariableReference(new NamedTarget($name.text,$TargetScope::target));
+	        {
+	         retval.element = new VariableReference($name.text,cloneTarget($TargetScope::target));
 	        } 
 	    (args=arguments 
 	        {retval.element = new RegularMethodInvocation($name.text, $TargetScope::target);
@@ -1615,21 +1634,38 @@ Token stop=null;
     |   lit=literal {retval.element = lit.element;}
     |   nkw='new' {start=nkw;} cr=creator {retval.element = cr.element; start=cr.start;stop=cr.stop;}
     |   morerubex=moreIdentifierSuffixRubbish {retval.element = morerubex.element;start=morerubex.start;stop=morerubex.stop;}
-    |   vt=voidType '.' clkw='class' {retval.element = new ClassLiteral(vt.element); start=vt.start;stop=clkw; setLocation();}
-    |   tref=type '.' clkww='class' {retval.element = new ClassLiteral(tref.element);start=tref.start;stop=clkww;}
+    |   vt=voidType '.' clkw='class' {retval.element = new ClassLiteral(vt.element); start=vt.start;stop=clkw; setLocation(retval.element,start,stop);}
+    |   tref=type '.' clkww='class' {retval.element = new ClassLiteral(tref.element);start=tref.start;stop=clkww; setLocation(retval.element,start,stop);}
     ;
 
 moreIdentifierSuffixRubbish returns [Expression element]
 scope TargetScope;
-	:	id=Identifier {$TargetScope::target = new NamedTarget($id.text);} ('.' idx=Identifier {$TargetScope::target = new NamedTarget($idx.text,$TargetScope::target);})* 
-	{retval.element = new VariableReference((NamedTarget)$TargetScope::target);}
+@init{
+Token stop = null;
+}
+	:	id=Identifier {$TargetScope::target = new NamedTarget($id.text); $TargetScope::start=id; stop=id;} 
+	  ('.' idx=Identifier 
+	       {$TargetScope::target = new NamedTarget($idx.text,$TargetScope::target);
+	        stop=idx;
+	        setLocation($TargetScope::target, $TargetScope::start, idx);
+	       }
+	  )* 
+	{retval.element = new VariableReference(((NamedTarget)$TargetScope::target).getName(),cloneTargetOfTarget(((NamedTarget)$TargetScope::target)));
+	 setLocation(retval.element, $TargetScope::start, stop);
+	}
 (   //    ('[' ']')+ '.' 'class'
     //|   
         arr=arrayAccessSuffixRubbish {retval.element = arr.element;}
-    |   arg=argumentsSuffixRubbish {retval.element = arg.element;}
-    |   '.' 'class' {retval.element = new ClassLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));}
-    |   '.' gen=explicitGenericInvocation {retval.element = gen.element;}
-    |   '.' 'this' {retval.element = new ThisLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));}
+    |   arg=argumentsSuffixRubbish {retval.element = arg.element;} // REMOVE VARIABLE REFERENCE POSITION!
+    |   '.' clkw='class' 
+         {retval.element = new ClassLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));
+          setLocation(retval.element, $TargetScope::start, clkw);
+         }
+    |   '.' gen=explicitGenericInvocation {retval.element = gen.element;} // REMOVE VARIABLE REFERENCE POSITION!
+    |   '.' thiskw='this' 
+        {retval.element = new ThisLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));
+          setLocation(retval.element, $TargetScope::start, thiskw);
+        }
     |   '.' 'super' supsuf=superSuffix {retval.element = supsuf.element;}
     |   '.' 'new' in=innerCreator {retval.element = in.element;})?
 	;
@@ -1637,13 +1673,21 @@ scope TargetScope;
 identifierSuffixRubbush returns [Expression element]
 scope TargetScope;
 	:	'this' {$TargetScope::target = new ThisLiteral();}('.' id=Identifier {$TargetScope::target = new NamedTarget($id.text,$TargetScope::target);})* 
-	{if($TargetScope::target instanceof ThisLiteral) {retval.element = (ThisLiteral)$TargetScope::target;} else {retval.element = new VariableReference((NamedTarget)$TargetScope::target);}}
+	{if($TargetScope::target instanceof ThisLiteral) {
+	  retval.element = (ThisLiteral)$TargetScope::target;
+	 } else {
+	  retval.element = new VariableReference(((NamedTarget)$TargetScope::target).getName(),cloneTargetOfTarget((NamedTarget)$TargetScope::target));
+	 }}
    (
         arr=arrayAccessSuffixRubbish {retval.element = arr.element;}
     |   arg=argumentsSuffixRubbish {retval.element = arg.element;}
     |   '.' 'class' {retval.element = new ClassLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));}
     |   '.' gen=explicitGenericInvocation {retval.element = gen.element;}
-    |   '.' 'super' supsuf=superSuffix {retval.element = supsuf.element;}
+    |   '.' supkw='super' 
+             {$TargetScope::target = new SuperTarget($TargetScope::target);
+              setLocation($TargetScope::target, $TargetScope::start,supkw);
+             }
+             supsuf=superSuffix {retval.element = supsuf.element;}
     |   '.' 'new' in=innerCreator {retval.element = in.element;}
    )?
 	;
@@ -1656,12 +1700,20 @@ argumentsSuffixRubbish returns [RegularMethodInvocation element]
 	         $TargetScope::target = ((NamedTarget)$TargetScope::target).getTarget(); //chop off head
 	         retval.element = new RegularMethodInvocation(name, $TargetScope::target);
 	         retval.element.addAllArguments(args.element);
+	         setLocation(retval.element, $TargetScope::start, args.stop);
 	        }
 	;
 
 // NEEDS_TARGET
 arrayAccessSuffixRubbish returns [Expression element]
-	:	{retval.element = new ArrayAccessExpression(new VariableReference((NamedTarget)$TargetScope::target));} ('[' arrex=expression ']' {((ArrayAccessExpression)retval.element).addIndex(new FilledArrayIndex(arrex.element));} )+ // can also be matched by selector, but do here
+@after{setLocation(retval.element, $TargetScope::start, retval.stop);}
+	:	{retval.element = new ArrayAccessExpression(new VariableReference(((NamedTarget)$TargetScope::target).getName(),cloneTargetOfTarget((NamedTarget)$TargetScope::target)));} 
+	        (open='[' arrex=expression close=']' 
+	          { FilledArrayIndex index = new FilledArrayIndex(arrex.element);
+	           ((ArrayAccessExpression)retval.element).addIndex(index);
+	           setLocation(index, open, close);
+	          } 
+	        )+ // can also be matched by selector, but do here
 
 	;
 
@@ -1729,7 +1781,7 @@ nonWildcardTypeArguments returns [List<ActualTypeArgument> element]
 superSuffix returns [Expression element]
     :   //arguments
         //|   
-    '.' name=Identifier {retval.element = new VariableReference(new NamedTarget($name.text,$TargetScope::target));} 
+    '.' name=Identifier {retval.element = new VariableReference($name.text,cloneTarget($TargetScope::target));} 
         (args=arguments
           {retval.element = new RegularMethodInvocation($name.text,$TargetScope::target);
           ((RegularMethodInvocation)retval.element).addAllArguments(args.element);

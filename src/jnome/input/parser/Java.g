@@ -696,8 +696,14 @@ typeParameters returns [List<FormalTypeParameter> element]
     ;
 
 typeParameter returns [FormalTypeParameter element]
-    :   name=Identifier{retval.element = new FormalTypeParameter(new SimpleNameSignature($name.text));} (extkw='extends' bound=typeBound{retval.element.addConstraint(bound.element);})?
-        {setKeyword(retval.element,extkw);}
+@init{
+Token stop = null;
+}
+    :   name=Identifier{retval.element = new FormalTypeParameter(new SimpleNameSignature($name.text)); stop=name;} (extkw='extends' bound=typeBound{retval.element.addConstraint(bound.element); stop=bound.stop;})?
+        {setKeyword(retval.element,extkw);
+         setLocation(retval.element, name, stop);
+         setLocation(retval.element,name,"__NAME");
+        }
     ;
         
 typeBound returns [ExtendsConstraint element]
@@ -1081,12 +1087,16 @@ formalParameterDecls returns [List<FormalParameter> element]
          retval.element=new ArrayList<FormalParameter>();}
          FormalParameter param = new FormalParameter(new SimpleNameSignature(id.element.name()),myToArray(t.element, id.element));
          param.addAllModifiers(mods.element);
-         retval.element.add(0,param);}
+         retval.element.add(0,param);
+         setLocation(param, mods.start,id.stop);
+         }
     |   modss=variableModifiers tt=type '...' idd=variableDeclaratorId 
         {retval.element = new ArrayList<FormalParameter>(); 
          FormalParameter param = new MultiFormalParameter(new SimpleNameSignature(idd.element.name()),myToArray(tt.element,idd.element));
          param.addAllModifiers(modss.element);
-         retval.element.add(param);}
+         retval.element.add(param);
+         setLocation(param, modss.start, idd.stop);
+         }
     ;
     
     
@@ -1271,7 +1281,9 @@ catchClause returns [CatchClause element]
 formalParameter returns [FormalParameter element]
 @after{assert(retval.element != null);}
     :   mods=variableModifiers tref=type name=variableDeclaratorId 
-        {retval.element = new FormalParameter(new SimpleNameSignature(name.element.name()), myToArray(tref.element, name.element));}
+        {retval.element = new FormalParameter(new SimpleNameSignature(name.element.name()), myToArray(tref.element, name.element));
+         setLocation(retval.element, mods.start, name.stop);
+        }
     ;
         
 switchBlockStatementGroups returns [List<SwitchCase> element]

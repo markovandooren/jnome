@@ -67,7 +67,7 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public JavaModelFactory() throws IOException, ParseException {
+	public JavaModelFactory() {
 		setLanguage(new Java(), ModelFactory.class);
 	}
 	

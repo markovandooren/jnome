@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 
 import chameleon.core.lookup.LookupException;
 import chameleon.core.type.Type;
+import chameleon.support.test.ExpressionTest;
 
 /**
  * @author Marko van Dooren

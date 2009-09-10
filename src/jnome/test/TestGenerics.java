@@ -19,6 +19,7 @@ import chameleon.core.type.Type;
 import chameleon.core.type.generics.BasicTypeArgument;
 import chameleon.core.type.generics.ExtendsWildCard;
 import chameleon.core.type.generics.SuperWildCard;
+import chameleon.support.test.ExpressionTest;
 
 /**
  * @author marko

@@ -5,11 +5,12 @@ import jnome.output.JavaCodeWriter;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
+import chameleon.test.ModelTest;
 
 /**
  * @author marko
  */
-public class TestOutput extends MetaModelTest {
+public class TestOutput extends ModelTest {
 
   /**
    * @param arg0

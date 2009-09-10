@@ -6,8 +6,9 @@ import java.util.List;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.Namespace;
 import chameleon.core.namespace.NamespaceOrTypeReference;
+import chameleon.test.CloneAndChildTester;
 
-public class TestJnomeClone extends TestClone {
+public class TestJnomeClone extends CloneAndChildTester {
 
 	@Override
 	public List<Namespace> getTestNamespaces() throws LookupException {

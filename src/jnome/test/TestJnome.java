@@ -1,71 +1,60 @@
 package jnome.test;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
+import jnome.input.JavaModelFactory;
+import junit.textui.TestRunner;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.junit.Test;
 
+import chameleon.core.language.Language;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.type.Type;
+import chameleon.support.test.ExpressionTest;
+import chameleon.test.provider.BasicModelProvider;
+import chameleon.test.provider.ElementProvider;
+import chameleon.test.provider.ModelProvider;
 
 /**
- * @author marko
- *
- * To change the template for this generated type comment go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
+ * @author Marko van Dooren
  */
-public class TestJnome extends ExpressionTest {
+public class TestJnome {
 
-	public TestJnome() {
-		
+	@Test
+	public void test() throws Exception {
+		new ExpressionTest(modelProvider(), typeProvider()).testExpressionTypes();
 	}
 	
-	public void addTestFiles() {
-			include("testsource"+getSeparator()+"gen"+getSeparator());
-			include("testsource"+getSeparator()+"jregex"+getSeparator());
-			include("testsource"+getSeparator()+"antlr-2.7.2"+getSeparator()+"antlr"+getSeparator());
-			include("testsource"+getSeparator()+"jnome"+getSeparator()+"src"+getSeparator());
-			include("testsource"+getSeparator()+"jutil"+getSeparator()+"src"+getSeparator());
-		  include("testsource"+getSeparator()+"junit3.8.1"+getSeparator()+"src"+getSeparator());
-			include("testsource"+getSeparator()+"jakarta-log4j-1.2.8"+getSeparator()+"src"+getSeparator()+"java"+getSeparator());
+	public ElementProvider<Type> typeProvider() {
+		return new ElementProvider<Type>() {
+			public Collection<Type> elements(Language language) {
+				Collection<Type> result = new ArrayList<Type>();
+				try {
+					result = language.defaultNamespace().getSubNamespace("org").getSubNamespace("jnome").allDeclarations(Type.class);
+				} catch (LookupException e) {
+					e.printStackTrace();
+				}
+				return result;
+			}
+		};
+	}
+	
+	public ModelProvider modelProvider() {
+		BasicModelProvider provider = new BasicModelProvider(new JavaModelFactory(), ".java");
+		provider.includeBase("testsource"+provider.separator()+"gen"+provider.separator());
+		provider.includeCustom("testsource"+provider.separator()+"jregex"+provider.separator());
+		provider.includeCustom("testsource"+provider.separator()+"antlr-2.7.2"+provider.separator()+"antlr"+provider.separator());
+		provider.includeCustom("testsource"+provider.separator()+"jnome"+provider.separator()+"src"+provider.separator());
+		provider.includeCustom("testsource"+provider.separator()+"jutil"+provider.separator()+"src"+provider.separator());
+		provider.includeCustom("testsource"+provider.separator()+"junit3.8.1"+provider.separator()+"src"+provider.separator());
+		provider.includeCustom("testsource"+provider.separator()+"jakarta-log4j-1.2.8"+provider.separator()+"src"+provider.separator()+"java"+provider.separator());
+		return provider;
 	}
 
-	/**
-	 *
-	 */
-
-	public List<Type> getTestTypes() throws LookupException {
-		List<Type> result = new ArrayList<Type>();
-//		JavaTypeReference ref = new JavaTypeReference("org.jnome.input.antlr.javadoc.DocumentationBlockMethodAcquirer");
-//			  JavaTypeReference ref = new JavaTypeReference("org.jnome.mm.java.types.ResolvedReturnTypeImpl");
-//		JavaTypeReference ref = new JavaTypeReference("org.jnome.mm.Resolver");
-//		JavaTypeReference ref = new JavaTypeReference("org.jnome.mm.java.methods.MethodWithReturnType");
-//		JavaTypeReference ref = new JavaTypeReference("org.jnome.input.antlr.javadoc.parser.JavaDocParser");
-//		JavaTypeReference ref = new JavaTypeReference("org.jnome.output.xml.java.packages.ResolvedPackageWriter");
-//		JavaTypeReference ref = new JavaTypeReference("org.jnome.input.antlr.javadoc.DocumentationBlockAcquirer");
-//		JavaTypeReference ref = new JavaTypeReference("org.jnome.input.antlr.javadoc.parser.JavaDocLexer");
-//		JavaTypeReference ref = new JavaTypeReference("org.jnome.input.antlr.java.methods.RegularConstructorAcquirer");
-//		ref.setUniParent(_mm);
-//		result.add(ref.getType());
-//		ref = new JavaTypeReference("org.jnome.input.antlr.java.parser.JnomeJavaParser");
-//		ref.setUniParent(_mm);
-//		result.add(ref.getType());
-		result = _mm.getSubNamespace("org").getSubNamespace("jnome").allDeclarations(Type.class);
-		return result;
-	}
-
-  public static void main(String[] args) throws Exception, Throwable {
-    new TestSuite(TestJnome.class).run(new TestResult());
-  }
-
-
-	@Override
 	public void setLogLevels() {
-		super.setLogLevels();
 		Logger.getLogger("chameleon.test").setLevel(Level.INFO);
 		Logger.getRootLogger().setLevel(Level.FATAL);
 	}

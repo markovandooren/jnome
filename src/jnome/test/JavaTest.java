@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import chameleon.core.type.Type;
 import chameleon.support.test.ExpressionTest;
-import chameleon.test.CloneAndChildTester;
+import chameleon.test.CloneAndChildTest;
 import chameleon.test.provider.BasicDescendantProvider;
 import chameleon.test.provider.BasicNamespaceProvider;
 import chameleon.test.provider.ElementProvider;
@@ -19,7 +19,7 @@ public abstract class JavaTest {
 
 	@Test
 	public void testCloneAndChildren() throws Exception {
-		new CloneAndChildTester(modelProvider(), namespaceProvider()).testClone();
+		new CloneAndChildTest(modelProvider(), namespaceProvider()).testClone();
 	}
 
 	public abstract ModelProvider modelProvider();

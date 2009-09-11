@@ -3,15 +3,13 @@ package jnome.test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 
 import jnome.core.type.JavaTypeReference;
+import jnome.input.JavaModelFactory;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import chameleon.core.lookup.LookupException;
@@ -19,60 +17,49 @@ import chameleon.core.type.Type;
 import chameleon.core.type.generics.BasicTypeArgument;
 import chameleon.core.type.generics.ExtendsWildCard;
 import chameleon.core.type.generics.SuperWildCard;
-import chameleon.support.test.ExpressionTest;
+import chameleon.input.ParseException;
+import chameleon.test.ModelTest;
+import chameleon.test.provider.BasicModelProvider;
+import chameleon.test.provider.BasicNamespaceProvider;
+import chameleon.test.provider.ModelProvider;
 
 /**
- * @author marko
- *
- * To change the template for this generated type comment go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
+ * @author Marko van Dooren
  */
-public class TestGenerics extends ExpressionTest {
+public class TestGenerics extends JavaTest {
 
-	public TestGenerics() throws Exception {
+	public static class CustomGenericsTest extends ModelTest {
+		
+	public CustomGenericsTest(ModelProvider provider) throws ParseException, IOException {
+		super(provider);
 	}
 
-	public void addTestFiles() {
-			include("testsource"+getSeparator()+"gen"+getSeparator());
-			include("testsource"+getSeparator()+"generics"+getSeparator());
-	}
-
-	/**
-	 *
-	 */
-
-	public List<Type> getTestTypes() throws LookupException {
-		List<Type> result = new ArrayList<Type>();
-		result = _mm.getSubNamespace("test").allDeclarations(Type.class);
-		return result;
-	}
-	
 	@Test
 	public void testSubtyping() throws LookupException {
 		JavaTypeReference tref1 = new JavaTypeReference("test.List");
-		tref1.setUniParent(_mm);
+		tref1.setUniParent(language().defaultNamespace());
 		tref1.addArgument(new BasicTypeArgument(new JavaTypeReference("java.lang.String")));
 		JavaTypeReference tref2 = new JavaTypeReference("test.List");
 		tref2.addArgument(new BasicTypeArgument(new JavaTypeReference("java.lang.String")));
-		tref2.setUniParent(_mm);
+		tref2.setUniParent(language().defaultNamespace());
 		JavaTypeReference tref3 = new JavaTypeReference("test.SubList");
 		tref3.addArgument(new BasicTypeArgument(new JavaTypeReference("java.lang.String")));
-		tref3.setUniParent(_mm);
+		tref3.setUniParent(language().defaultNamespace());
 		JavaTypeReference tref4 = new JavaTypeReference("test.List");
 		tref4.addArgument(new BasicTypeArgument(new JavaTypeReference("java.lang.Object")));
-		tref4.setUniParent(_mm);
+		tref4.setUniParent(language().defaultNamespace());
 		JavaTypeReference tref5 = new JavaTypeReference("test.List");
 		tref5.addArgument(new ExtendsWildCard(new JavaTypeReference("java.lang.CharSequence")));
-		tref5.setUniParent(_mm);
+		tref5.setUniParent(language().defaultNamespace());
 		JavaTypeReference tref6 = new JavaTypeReference("test.List");
 		tref6.addArgument(new ExtendsWildCard(new JavaTypeReference("java.lang.String")));
-		tref6.setUniParent(_mm);
+		tref6.setUniParent(language().defaultNamespace());
 		JavaTypeReference tref7 = new JavaTypeReference("test.List");
 		tref7.addArgument(new SuperWildCard(new JavaTypeReference("java.lang.String")));
-		tref7.setUniParent(_mm);
+		tref7.setUniParent(language().defaultNamespace());
 		JavaTypeReference tref8 = new JavaTypeReference("test.List");
 		tref8.addArgument(new SuperWildCard(new JavaTypeReference("java.lang.CharSequence")));
-		tref8.setUniParent(_mm);
+		tref8.setUniParent(language().defaultNamespace());
 
 		Type type1 = tref1.getType();
 		Type type2 = tref2.getType();
@@ -100,16 +87,31 @@ public class TestGenerics extends ExpressionTest {
 		assertFalse(type6.subTypeOf(type8));
 		assertFalse(type6.subTypeOf(type7));
 	}
+	}
 
-  public static void main(String[] args) throws Exception, Throwable {
-    new TestSuite(TestJnome.class).run(new TestResult());
+	@Test
+  public void testGenerics() throws LookupException, ParseException, IOException {
+  	new CustomGenericsTest(modelProvider()).testSubtyping();
   }
 
 
+//	@Override
+//	public void setLogLevels() {
+//		Logger.getLogger("chameleon.test").setLevel(Level.INFO);
+//		Logger.getLogger("lookup.subtyping").setLevel(Level.DEBUG);
+//		Logger.getRootLogger().setLevel(Level.FATAL);
+//	}
+
 	@Override
-	public void setLogLevels() {
-		Logger.getLogger("chameleon.test").setLevel(Level.INFO);
-		Logger.getLogger("lookup.subtyping").setLevel(Level.DEBUG);
-		Logger.getRootLogger().setLevel(Level.FATAL);
+	public ModelProvider modelProvider() {
+		BasicModelProvider provider = new BasicModelProvider(new JavaModelFactory(), ".java");
+		provider.includeBase("testsource"+provider.separator()+"gen"+provider.separator());
+		provider.includeCustom("testsource"+provider.separator()+"generics"+provider.separator());
+		return provider;
+	}
+
+	@Override
+	public BasicNamespaceProvider namespaceProvider() {
+		return new BasicNamespaceProvider("test");
 	}
 }

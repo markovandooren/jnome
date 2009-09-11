@@ -1,45 +1,21 @@
 package jnome.test;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import jnome.input.JavaModelFactory;
-import junit.textui.TestRunner;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.junit.Test;
 
-import chameleon.core.language.Language;
-import chameleon.core.lookup.LookupException;
-import chameleon.core.type.Type;
-import chameleon.support.test.ExpressionTest;
 import chameleon.test.provider.BasicModelProvider;
-import chameleon.test.provider.ElementProvider;
+import chameleon.test.provider.BasicNamespaceProvider;
 import chameleon.test.provider.ModelProvider;
 
 /**
  * @author Marko van Dooren
  */
-public class TestJnome {
+public class TestJnome extends JavaTest {
 
-	@Test
-	public void test() throws Exception {
-		new ExpressionTest(modelProvider(), typeProvider()).testExpressionTypes();
-	}
-	
-	public ElementProvider<Type> typeProvider() {
-		return new ElementProvider<Type>() {
-			public Collection<Type> elements(Language language) {
-				Collection<Type> result = new ArrayList<Type>();
-				try {
-					result = language.defaultNamespace().getSubNamespace("org").getSubNamespace("jnome").allDeclarations(Type.class);
-				} catch (LookupException e) {
-					e.printStackTrace();
-				}
-				return result;
-			}
-		};
+	public BasicNamespaceProvider namespaceProvider() {
+		return new BasicNamespaceProvider("org.jnome");
 	}
 	
 	public ModelProvider modelProvider() {

@@ -3,47 +3,41 @@ package jnome.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import jnome.input.JavaModelFactory;
+
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import chameleon.core.lookup.LookupException;
 import chameleon.core.type.Type;
 import chameleon.support.test.ExpressionTest;
+import chameleon.test.provider.BasicModelProvider;
+import chameleon.test.provider.BasicNamespaceProvider;
+import chameleon.test.provider.ModelProvider;
 
 /**
  * @author Marko van Dooren
  */
-public class TestRejuse extends ExpressionTest {
+public class TestRejuse extends JavaTest {
 
-  public TestRejuse() throws Exception {
-  }
-  
-  public void addTestFiles() {
-		include("testsource"+getSeparator()+"gen"+getSeparator());
-		include("testsource"+getSeparator()+"jregex"+getSeparator());
-		include("testsource"+getSeparator()+"jutil"+getSeparator()+"src"+getSeparator());
-	  include("testsource"+getSeparator()+"junit3.8.1"+getSeparator()+"src"+getSeparator());
-  	
-  }
-  
-  public List<Type> getTestTypes() throws LookupException {
-		List<Type> result = new ArrayList<Type>();
-//    JavaTypeReference ref = new JavaTypeReference("org.jutil.math.matrix.Matrix");
-//    ref.setUniParent(_mm);
-//    result.add(ref.getType());
-	
-    result = _mm.getSubNamespace("org").getSubNamespace("jutil").allDeclarations(Type.class);
-    return result;
-  }
+//	@Override
+//	public void setLogLevels() {
+//		Logger.getLogger("chameleon.test").setLevel(Level.INFO);
+//		Logger.getRootLogger().setLevel(Level.FATAL);
+//	}
 
 	@Override
-	public void setLogLevels() {
-		super.setLogLevels();
-		Logger.getLogger("chameleon.test").setLevel(Level.INFO);
-		Logger.getRootLogger().setLevel(Level.FATAL);
+	public ModelProvider modelProvider() {
+		BasicModelProvider provider = new BasicModelProvider(new JavaModelFactory(), ".java");
+		provider.includeBase("testsource"+provider.separator()+"gen"+provider.separator());
+		provider.includeCustom("testsource"+provider.separator()+"jregex"+provider.separator());
+		provider.includeCustom("testsource"+provider.separator()+"jutil"+provider.separator()+"src"+provider.separator());
+		provider.includeCustom("testsource"+provider.separator()+"junit3.8.1"+provider.separator()+"src"+provider.separator());
+		return provider;
 	}
-	
-//  public static void main(String[] args) throws Exception, Throwable {
-//    new TestSuite(TestRejuse.class).run(new TestResult());
-//  }
+
+	@Override
+	public BasicNamespaceProvider namespaceProvider() {
+		return new BasicNamespaceProvider("org.jutil");
+	}
 }

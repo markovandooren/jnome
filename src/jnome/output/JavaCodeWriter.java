@@ -112,11 +112,12 @@ import chameleon.support.type.StaticInitializer;
 import chameleon.support.variable.LocalVariable;
 import chameleon.support.variable.LocalVariableDeclarator;
 import chameleon.support.variable.VariableDeclaration;
+import chameleon.tool.Connector;
 
 import com.sun.org.apache.bcel.internal.classfile.JavaClass;
 
 /**
- * @author marko
+ * @author Marko van Dooren
  */
 public class JavaCodeWriter extends Syntax {
   
@@ -1436,4 +1437,9 @@ public class JavaCodeWriter extends Syntax {
       i++;
     }
   }
+
+	@Override
+	public Connector clone() {
+		return new JavaCodeWriter(_tabSize);
+	}
 }

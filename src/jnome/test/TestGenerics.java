@@ -90,10 +90,10 @@ public class TestGenerics extends JavaTest {
 	}
 	}
 	
-	@Override
-	public void setCaching() {
-    Config.setCaching(false);
-	}
+//	@Override
+//	public void setCaching() {
+//    Config.setCaching(true);
+//	}
 	
 	@Test
   public void testGenerics() throws LookupException, ParseException, IOException {

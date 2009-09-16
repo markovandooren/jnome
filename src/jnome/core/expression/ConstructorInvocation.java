@@ -128,6 +128,28 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
     }
   }
   
+  public <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
+  	return actualType().targetContext().lookUp(selector);
+//  	InvocationTarget target = getTarget();
+//  	X result;
+//  	if(target == null) {
+//      result = lexicalLookupStrategy().lookUp(selector);
+//  	} else {
+//  		result = getTarget().targetContext().lookUp(selector);
+//  	}
+//		if (result == null) {
+//			//repeat lookup for debugging purposes.
+//	  	if(target == null) {
+//	      result = lexicalLookupStrategy().lookUp(selector);
+//	  	} else {
+//	  		result = getTarget().targetContext().lookUp(selector);
+//	  	}
+//			throw new LookupException("Method returned by invocation is null", this);
+//		}
+//    return result;
+  }
+
+  
 //	private Reference<ConstructorInvocation,Type> _anonymousType= new Reference<ConstructorInvocation,Type>(this);
 
   
@@ -195,9 +217,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
   	InvocationTarget target = getTarget();
   	NormalMethod result;
   	if(getAnonymousInnerType() != null) {
-  		// @STRANGE!!! Inline this, and it no longer compiles.
-  		Type anon = getAnonymousInnerType();
-  		LookupStrategy tctx = anon.targetContext();
+  		LookupStrategy tctx = getAnonymousInnerType().targetContext();
   		result = tctx.lookUp(selector());
   	} else if(target == null) {
       result = lexicalLookupStrategy().lookUp(selector());
@@ -214,11 +234,15 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
     
     public NormalMethod filter(Declaration declaration) throws LookupException {
     	NormalMethod result = null;
-			NormalMethod decl = (NormalMethod) declaration;
-			List<Type> actuals = getActualParameterTypes();
-			List<Type> formals = decl.header().getParameterTypes();
-			if (new MoreSpecificTypesOrder().contains(actuals, formals) && (decl.is(language(ObjectOrientedLanguage.class).CONSTRUCTOR)==Ternary.TRUE)) {
-					result = decl;
+			NormalMethod<?,?,?> decl = (NormalMethod) declaration;
+			if(decl.nearestAncestor(Type.class).signature().sameAs(getTypeReference().signature())) {
+			if(decl.is(language(ObjectOrientedLanguage.class).CONSTRUCTOR)==Ternary.TRUE) {
+				List<Type> actuals = getActualParameterTypes();
+				List<Type> formals = decl.header().getParameterTypes();
+				if (new MoreSpecificTypesOrder().contains(actuals, formals)) {
+						result = decl;
+				}
+			}
 			}
       return result;
     }

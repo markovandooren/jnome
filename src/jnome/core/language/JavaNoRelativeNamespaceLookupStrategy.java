@@ -25,8 +25,8 @@ public class JavaNoRelativeNamespaceLookupStrategy extends LocalLookupStrategy<N
 //		return _local.lookUp(new JavaNoRelativeNamespaceSelector<D>(selector, _root));
 //	}
   protected <D extends Declaration> List<D> declarations(DeclarationSelector<D> selector) throws LookupException {
-  	List<D> result = element().declarations(selector);
-  	if(element() != element().defaultNamespace()) {
+  	List<D> result = declarationContainer().declarations(selector);
+  	if(declarationContainer() != declarationContainer().defaultNamespace()) {
   		new TypeFilter(Namespace.class).discard(result);
   	}
   	return result;

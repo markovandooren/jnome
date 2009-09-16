@@ -63,16 +63,20 @@ public class Java extends ObjectOrientedLanguage {
 
 	private final class JavaHidesRelation extends StrictPartialOrder<Member> {
 		@Override
-		public boolean contains(Member first, Member second) throws LookupException {
+		public boolean contains(Member fst, Member snd) throws LookupException {
+			Member<?,?,?,?> first = fst;
+			Member<?,?,?,?> second = snd;
 			boolean result = false;
 			if((first instanceof NormalMethod) && (second instanceof NormalMethod)) {
-				result = ((NormalMethod<?,?,?>)first).nearestAncestor(Type.class).subTypeOf(((NormalMethod<?,?,?>)second).nearestAncestor(Type.class)) &&
+				result = first.nearestAncestor(Type.class).subTypeOf(second.nearestAncestor(Type.class)) &&
 				         (first.is(CLASS) == Ternary.TRUE) && 
 				          first.signature().sameAs(second.signature());
-			} else if(((first instanceof RegularMemberVariable) && (second instanceof RegularMemberVariable)) ||
-					((first instanceof RegularMemberVariable) && (second instanceof RegularMemberVariable))) {
-				 result = ((RegularMemberVariable)first).nearestAncestor(Type.class).subTypeOf(((RegularMemberVariable)second).nearestAncestor(Type.class)) &&
+			} else if(first instanceof RegularMemberVariable && second instanceof RegularMemberVariable) {
+				 result = first.nearestAncestor(Type.class).subTypeOf(second.nearestAncestor(Type.class)) &&
 				          first.signature().sameAs(second.signature());
+			} else if(first instanceof Type && second instanceof Type) {
+				result = first.nearestAncestor(Type.class).subTypeOf(second.nearestAncestor(Type.class)) &&
+        first.signature().sameAs(second.signature());
 			}
 			return result;
 		}

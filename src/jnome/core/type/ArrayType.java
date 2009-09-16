@@ -14,7 +14,7 @@ import chameleon.support.modifier.Final;
  * @author Marko van Dooren
  */
 public class ArrayType extends RegularType {
-//	TODO: this class should *NOT* be a member. This is just a quickfix
+//	TODO: this class should not be a member. This is just a quickfix
   public ArrayType(Type type, int dimension) {
     super(new SimpleNameSignature(getArrayName(type.getName(), dimension)));
     //FIXME: copy the modifiers?

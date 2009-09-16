@@ -12,6 +12,7 @@ import junit.framework.TestSuite;
 
 import org.junit.Test;
 
+import chameleon.core.Config;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.type.Type;
 import chameleon.core.type.generics.BasicTypeArgument;
@@ -29,7 +30,7 @@ import chameleon.test.provider.ModelProvider;
 public class TestGenerics extends JavaTest {
 
 	public static class CustomGenericsTest extends ModelTest {
-		
+
 	public CustomGenericsTest(ModelProvider provider) throws ParseException, IOException {
 		super(provider);
 	}
@@ -88,7 +89,12 @@ public class TestGenerics extends JavaTest {
 		assertFalse(type6.subTypeOf(type7));
 	}
 	}
-
+	
+	@Override
+	public void setCaching() {
+    Config.setCaching(false);
+	}
+	
 	@Test
   public void testGenerics() throws LookupException, ParseException, IOException {
   	new CustomGenericsTest(modelProvider()).testSubtyping();

@@ -20,11 +20,11 @@ import chameleon.test.provider.ModelProvider;
  */
 public class TestRejuse extends JavaTest {
 
-//	@Override
-//	public void setLogLevels() {
-//		Logger.getLogger("chameleon.test").setLevel(Level.INFO);
-//		Logger.getRootLogger().setLevel(Level.FATAL);
-//	}
+	@Override
+	public void setLogLevels() {
+		Logger.getLogger("chameleon.test").setLevel(Level.INFO);
+		Logger.getRootLogger().setLevel(Level.FATAL);
+	}
 
 	@Override
 	public ModelProvider modelProvider() {

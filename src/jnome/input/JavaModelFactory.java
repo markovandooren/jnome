@@ -22,7 +22,7 @@ import jnome.input.parser.JavaParser;
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
-import org.rejuse.association.Relation;
+import org.rejuse.association.Association;
 import org.rejuse.io.DirectoryScanner;
 import org.rejuse.io.fileset.FileNamePattern;
 import org.rejuse.io.fileset.FileSet;
@@ -830,7 +830,7 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
 			    String text = manager.text(element);
 			    Element newElement = parse(element, text);
 			    // Use raw type here, we can't really type check this.
-			    Relation childLink = element.parentLink().getOtherRelation();
+			    Association childLink = element.parentLink().getOtherRelation();
 			    childLink.replace(element.parentLink(), newElement.parentLink());
 			    done = true;
 				} catch(ParseException exc) {

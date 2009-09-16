@@ -1,7 +1,9 @@
 package jnome.test;
 
+import org.junit.Before;
 import org.junit.Test;
 
+import chameleon.core.Config;
 import chameleon.core.reference.CrossReference;
 import chameleon.core.type.Type;
 import chameleon.support.test.ExpressionTest;
@@ -13,7 +15,20 @@ import chameleon.test.provider.ElementProvider;
 import chameleon.test.provider.ModelProvider;
 
 public abstract class JavaTest {
+	
+	@Before
+	public void setCaching() {
+    Config.setCaching(true);
+	}
 
+	/**
+	 * Set the log levels of Log4j. By default, nothing is changed.
+	 */
+	@Before
+	public void setLogLevels() {
+		
+	}
+	
 	/**
 	 * Test getType expressions in the namespaces provided
 	 * by the namespace provider.
@@ -38,7 +53,7 @@ public abstract class JavaTest {
 	 */
 	@Test
 	public void testCrossReferences() throws Exception {
-		new CrossReferenceTest(modelProvider(), new BasicDescendantProvider<CrossReference>(namespaceProvider(), CrossReference.class));
+		new CrossReferenceTest(modelProvider(), new BasicDescendantProvider<CrossReference>(namespaceProvider(), CrossReference.class)).testCrossReferences();
 	}
 
 	/**

@@ -3,7 +3,7 @@ package jnome.core.type;
 import java.util.Iterator;
 import java.util.List;
 
-import org.rejuse.association.OrderedReferenceSet;
+import org.rejuse.association.OrderedMultiAssociation;
 
 import chameleon.core.Config;
 import chameleon.core.declaration.TargetDeclaration;
@@ -74,7 +74,7 @@ public class JavaTypeReference extends TypeReference {
   	}
   }
   
-  private OrderedReferenceSet<JavaTypeReference,ActualTypeArgument> _genericParameters = new OrderedReferenceSet<JavaTypeReference, ActualTypeArgument>(this);
+  private OrderedMultiAssociation<JavaTypeReference,ActualTypeArgument> _genericParameters = new OrderedMultiAssociation<JavaTypeReference, ActualTypeArgument>(this);
   
   public List<Element> children() {
   	List<Element> result = super.children();

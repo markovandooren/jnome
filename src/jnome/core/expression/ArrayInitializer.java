@@ -6,7 +6,7 @@ import java.util.Set;
 
 import jnome.core.type.ArrayType;
 
-import org.rejuse.association.OrderedReferenceSet;
+import org.rejuse.association.OrderedMultiAssociation;
 import org.rejuse.java.collections.Visitor;
 
 import chameleon.core.element.ChameleonProgrammerException;
@@ -32,9 +32,9 @@ public class ArrayInitializer extends Expression<ArrayInitializer> {
 	 * @uml.associationEnd 
 	 * @uml.property name="_inits" multiplicity="(1 1)"
 	 */
-	private OrderedReferenceSet<ArrayInitializer,Expression> _inits = new OrderedReferenceSet<ArrayInitializer,Expression>(this);
+	private OrderedMultiAssociation<ArrayInitializer,Expression> _inits = new OrderedMultiAssociation<ArrayInitializer,Expression>(this);
 
-  public OrderedReferenceSet getInitializersLink() {
+  public OrderedMultiAssociation getInitializersLink() {
     return _inits;
   }
 

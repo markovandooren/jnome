@@ -5,8 +5,8 @@ import java.util.Set;
 
 import jnome.core.type.JavaTypeReference;
 
-import org.rejuse.association.OrderedReferenceSet;
-import org.rejuse.association.Reference;
+import org.rejuse.association.OrderedMultiAssociation;
+import org.rejuse.association.SingleAssociation;
 import org.rejuse.java.collections.Visitor;
 
 import chameleon.core.element.Element;
@@ -31,7 +31,7 @@ public class ArrayCreationExpression extends Expression<ArrayCreationExpression>
 	 * TYPE
 	 *
 	 */
-	private Reference<ArrayCreationExpression,JavaTypeReference> _typeReference = new Reference<ArrayCreationExpression,JavaTypeReference>(this);
+	private SingleAssociation<ArrayCreationExpression,JavaTypeReference> _typeReference = new SingleAssociation<ArrayCreationExpression,JavaTypeReference>(this);
 
 
   public JavaTypeReference getTypeReference() {
@@ -39,19 +39,19 @@ public class ArrayCreationExpression extends Expression<ArrayCreationExpression>
   }
 
     public void setTypeReference(JavaTypeReference type) {
-        Reference<? extends TypeReference, ? super ArrayCreationExpression> tref = type.parentLink();
-        Reference<? extends JavaTypeReference, ? super ArrayCreationExpression> ref = (Reference<? extends JavaTypeReference, ? super ArrayCreationExpression>)tref;
+        SingleAssociation<? extends TypeReference, ? super ArrayCreationExpression> tref = type.parentLink();
+        SingleAssociation<? extends JavaTypeReference, ? super ArrayCreationExpression> ref = (SingleAssociation<? extends JavaTypeReference, ? super ArrayCreationExpression>)tref;
         _typeReference.connectTo(ref);
     }
 
 	/**
 	 * DIMENSION INITIALIZERS
 	 */
-	private OrderedReferenceSet<ArrayCreationExpression,ArrayIndex> _dimensionInitializers = new OrderedReferenceSet<ArrayCreationExpression,ArrayIndex>(
+	private OrderedMultiAssociation<ArrayCreationExpression,ArrayIndex> _dimensionInitializers = new OrderedMultiAssociation<ArrayCreationExpression,ArrayIndex>(
 		this);
 
 
-  public OrderedReferenceSet getDimensionInitializersLink() {
+  public OrderedMultiAssociation getDimensionInitializersLink() {
     return _dimensionInitializers;
   }
 
@@ -74,7 +74,7 @@ public class ArrayCreationExpression extends Expression<ArrayCreationExpression>
 	 * @uml.associationEnd
 	 * @uml.property name="_init" multiplicity="(0 -1)" elementType="org.jnome.mm.expression.ArrayInitializer"
 	 */
-	private Reference<ArrayCreationExpression,ArrayInitializer> _init = new Reference<ArrayCreationExpression,ArrayInitializer>(this);
+	private SingleAssociation<ArrayCreationExpression,ArrayInitializer> _init = new SingleAssociation<ArrayCreationExpression,ArrayInitializer>(this);
 
   public ArrayInitializer getInitializer() {
     return _init.getOtherEnd();

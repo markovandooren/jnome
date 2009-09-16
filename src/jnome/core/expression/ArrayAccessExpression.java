@@ -5,8 +5,8 @@ import java.util.Set;
 
 import jnome.core.type.ArrayType;
 
-import org.rejuse.association.OrderedReferenceSet;
-import org.rejuse.association.Reference;
+import org.rejuse.association.OrderedMultiAssociation;
+import org.rejuse.association.SingleAssociation;
 import org.rejuse.java.collections.Visitor;
 
 import chameleon.core.element.Element;
@@ -28,7 +28,7 @@ public class ArrayAccessExpression extends Expression<ArrayAccessExpression> imp
     setTarget(target);
   }
 
-	private Reference<ArrayAccessExpression,Expression> _target = new Reference<ArrayAccessExpression,Expression>(this);
+	private SingleAssociation<ArrayAccessExpression,Expression> _target = new SingleAssociation<ArrayAccessExpression,Expression>(this);
 
 
   public Expression getTarget() {
@@ -42,9 +42,9 @@ public class ArrayAccessExpression extends Expression<ArrayAccessExpression> imp
 	/**
 	 * INDICES
 	 */
-	private OrderedReferenceSet<ArrayAccessExpression,ArrayIndex> _indicesLink = new OrderedReferenceSet<ArrayAccessExpression,ArrayIndex>(this);
+	private OrderedMultiAssociation<ArrayAccessExpression,ArrayIndex> _indicesLink = new OrderedMultiAssociation<ArrayAccessExpression,ArrayIndex>(this);
 
-  public OrderedReferenceSet getIndicesLink() {
+  public OrderedMultiAssociation getIndicesLink() {
     return _indicesLink;
   }
 

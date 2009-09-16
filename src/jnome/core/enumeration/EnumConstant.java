@@ -3,7 +3,7 @@ package jnome.core.enumeration;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.rejuse.association.Reference;
+import org.rejuse.association.SingleAssociation;
 
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
@@ -45,7 +45,7 @@ public class EnumConstant extends FixedSignatureMember<EnumConstant,Type,SimpleN
 	/**
 	 * ACTUAL PARAMETERS
 	 */
- private Reference<EnumConstant,ActualArgumentList> _parameters = new Reference<EnumConstant,ActualArgumentList>(this);
+ private SingleAssociation<EnumConstant,ActualArgumentList> _parameters = new SingleAssociation<EnumConstant,ActualArgumentList>(this);
  
  public ActualArgumentList actualArgumentList() {
 	 return _parameters.getOtherEnd();
@@ -81,6 +81,6 @@ public class EnumConstant extends FixedSignatureMember<EnumConstant,Type,SimpleN
   	}
   }
   
-  private Reference<EnumConstant,ClassBody> _body = new Reference<EnumConstant, ClassBody>(this);
+  private SingleAssociation<EnumConstant,ClassBody> _body = new SingleAssociation<EnumConstant, ClassBody>(this);
 
 }

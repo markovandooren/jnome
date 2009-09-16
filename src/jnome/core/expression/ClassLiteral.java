@@ -3,7 +3,7 @@ package jnome.core.expression;
 
 import jnome.core.type.JavaTypeReference;
 
-import org.rejuse.association.Reference;
+import org.rejuse.association.SingleAssociation;
 
 import chameleon.core.expression.InvocationTarget;
 import chameleon.core.lookup.LookupException;
@@ -35,7 +35,7 @@ public class ClassLiteral extends LiteralWithTypeReference {
 	/**
 	 * TARGET
 	 */
-	private Reference<LiteralWithTypeReference,TypeReference> _typeReference = new Reference<LiteralWithTypeReference,TypeReference>(this);
+	private SingleAssociation<LiteralWithTypeReference,TypeReference> _typeReference = new SingleAssociation<LiteralWithTypeReference,TypeReference>(this);
 
   
   public TypeReference target() {

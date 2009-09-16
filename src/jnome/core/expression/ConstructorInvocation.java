@@ -5,7 +5,7 @@ import java.util.List;
 
 import jnome.core.type.JavaTypeReference;
 
-import org.rejuse.association.Reference;
+import org.rejuse.association.SingleAssociation;
 import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.predicate.SafePredicate;
 
@@ -52,7 +52,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 	/**
 	 * TYPE REFERENCE
 	 */
-	private Reference<ConstructorInvocation,JavaTypeReference> _typeReference = new Reference<ConstructorInvocation,JavaTypeReference>(this);
+	private SingleAssociation<ConstructorInvocation,JavaTypeReference> _typeReference = new SingleAssociation<ConstructorInvocation,JavaTypeReference>(this);
 
 
   public JavaTypeReference getTypeReference() {
@@ -60,8 +60,8 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
   }
 
     public void setTypeReference(JavaTypeReference type) {
-        Reference<? extends TypeReference, ? super ConstructorInvocation> tref = type.parentLink();
-        Reference<? extends JavaTypeReference, ? super ConstructorInvocation> ref = (Reference<? extends JavaTypeReference, ? super ConstructorInvocation>)tref;
+        SingleAssociation<? extends TypeReference, ? super ConstructorInvocation> tref = type.parentLink();
+        SingleAssociation<? extends JavaTypeReference, ? super ConstructorInvocation> ref = (SingleAssociation<? extends JavaTypeReference, ? super ConstructorInvocation>)tref;
         _typeReference.connectTo(ref);
     }
 
@@ -81,7 +81,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 //    return _anon.getOtherEnd();
 //  }
 
-	private Reference<ConstructorInvocation,ClassBody> _body = new Reference<ConstructorInvocation,ClassBody>(this);
+	private SingleAssociation<ConstructorInvocation,ClassBody> _body = new SingleAssociation<ConstructorInvocation,ClassBody>(this);
 	
 	public ClassBody body() {
 		return _body.getOtherEnd();

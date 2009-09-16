@@ -2,7 +2,7 @@ package jnome.core.expression;
 
 import java.util.List;
 
-import org.rejuse.association.Reference;
+import org.rejuse.association.SingleAssociation;
 
 import chameleon.core.expression.Expression;
 import chameleon.core.namespace.Namespace;
@@ -30,7 +30,7 @@ public class DimensionInitializer extends NamespaceElementImpl<DimensionInitiali
 	 * @uml.associationEnd 
 	 * @uml.property name="_expression" multiplicity="(0 -1)" elementType="chameleon.core.expression.Expression"
 	 */
-	private Reference<DimensionInitializer,Expression> _expression = new Reference<DimensionInitializer,Expression>(this);
+	private SingleAssociation<DimensionInitializer,Expression> _expression = new SingleAssociation<DimensionInitializer,Expression>(this);
 
   public Expression getExpression() {
     return _expression.getOtherEnd();

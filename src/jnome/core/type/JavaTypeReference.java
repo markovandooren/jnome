@@ -6,10 +6,12 @@ import java.util.List;
 import org.rejuse.association.OrderedMultiAssociation;
 
 import chameleon.core.Config;
+import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.TargetDeclaration;
 import chameleon.core.element.ChameleonProgrammerException;
 import chameleon.core.element.Element;
 import chameleon.core.expression.NamedTarget;
+import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.reference.CrossReference;
 import chameleon.core.type.DerivedType;
@@ -98,36 +100,36 @@ public class JavaTypeReference extends TypeReference {
   	_arrayDimension = arrayDimension;
   }
   
-  public Type getType() throws LookupException {
-    Type result = null;
+  protected <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
+    X result = null;
 
-    result = getCache();
-    if (result != null) {
-      return result;
+	  boolean realSelector = selector.equals(selector());
+	  if(realSelector) {
+	    result = (X) getCache();
+	  }
+	  if(result != null) {
+	   	return result;
+	  }
+
+    result = super.getElement(selector);
+    
+    if(realSelector) {
+    	//First cast result to Type, then back to X.
+    	//Because the selector is the connected selector of this Java type reference,
+    	//we know that result is a Type.
+      // FILL IN GENERIC PARAMETERS
+      result = (X) fillInTypeArguments((Type)result);
+      // ARRAY TYPE
+      if ((arrayDimension() != 0) && (result != null)) {
+        result = (X) new ArrayType(((Type)result),arrayDimension());
+      }
     }
-
-    result = super.getType();
     
-//    if (getTarget() != null) {
-//      NamespaceOrType target = getTarget().getNamespaceOrType();
-//      if (target != null) {
-//        result = target.targetContext().lookUp(selector());// findType(getName());
-//      }
-//    } else {
-//      result = parent().lexicalLookupStrategy(this).lookUp(selector()); // (getName());
-//    }
-    
-    // FILL IN GENERIC PARAMETERS
-    result = fillInTypeArguments(result);
-    
-    
-    // ARRAY TYPE
-    if ((arrayDimension() != 0) && (result != null)) {
-      result = new ArrayType(result,arrayDimension());
-    }
-
-    if (result != null) {
-      setCache(result);
+    if(result != null) {
+    	if(realSelector) {
+    		// This will flush the cache if the result is derived, for example, if it is an array type or generic instance
+        setCache((Type)result);
+    	}
       return result;
     } else {
       throw new LookupException("Result of type reference lookup is null: "+getName(),this);

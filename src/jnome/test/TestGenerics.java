@@ -7,9 +7,9 @@ import java.io.IOException;
 
 import jnome.core.type.JavaTypeReference;
 import jnome.input.JavaModelFactory;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import chameleon.core.Config;
@@ -101,12 +101,11 @@ public class TestGenerics extends JavaTest {
   }
 
 
-//	@Override
-//	public void setLogLevels() {
-//		Logger.getLogger("chameleon.test").setLevel(Level.INFO);
-//		Logger.getLogger("lookup.subtyping").setLevel(Level.DEBUG);
-//		Logger.getRootLogger().setLevel(Level.FATAL);
-//	}
+	@Override
+	public void setLogLevels() {
+		Logger.getLogger("chameleon.caching").setLevel(Level.DEBUG);
+		Logger.getRootLogger().setLevel(Level.FATAL);
+	}
 
 	@Override
 	public ModelProvider modelProvider() {

@@ -315,4 +315,9 @@ public class Java extends ObjectOrientedLanguage {
 			return Character.isJavaIdentifierPart(character);
 		}
 
+		@Override
+		protected void initializeValidityRules() {
+			
+		}
+
 }

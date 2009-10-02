@@ -28,8 +28,8 @@ import chameleon.core.type.generics.TypeParameter;
  */
 public class JavaTypeReference extends TypeReference {
 
-  public JavaTypeReference(String name) {
-    this(name,0);
+  public JavaTypeReference(String fqn) {
+    this(fqn,0);
   }
   
   public JavaTypeReference(CrossReference<?,?,? extends TargetDeclaration> target, String name) {
@@ -44,10 +44,10 @@ public class JavaTypeReference extends TypeReference {
   	super(target.getTarget() == null ? null : new JavaTypeReference((NamedTarget)target.getTarget()),target.getName());
   }
   
-  public JavaTypeReference(String name, int arrayDimension) {
-  	super(name);
+  public JavaTypeReference(String fqn, int arrayDimension) {
+  	super(fqn);
   	if(Config.DEBUG) {
-  		if((name != null) && (name.contains("["))) {
+  		if((fqn != null) && (fqn.contains("["))) {
   			throw new ChameleonProgrammerException("Initializing a type reference with a [ in the name.");
   		}
   	}

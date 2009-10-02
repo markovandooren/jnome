@@ -7,6 +7,8 @@ import org.rejuse.association.SingleAssociation;
 import chameleon.core.expression.Expression;
 import chameleon.core.namespace.Namespace;
 import chameleon.core.namespace.NamespaceElementImpl;
+import chameleon.core.validation.Valid;
+import chameleon.core.validation.VerificationResult;
 import chameleon.util.Util;
 
 /**
@@ -14,10 +16,7 @@ import chameleon.util.Util;
  */
 public class DimensionInitializer extends NamespaceElementImpl<DimensionInitializer,ArrayCreationExpression> {
 
-  public DimensionInitializer() {
-    this(null);
-  }
-
+	//FIXME: what is this class for anyway?
   public DimensionInitializer(Expression expr) {
 	  setExpression(expr);
   }
@@ -25,10 +24,6 @@ public class DimensionInitializer extends NamespaceElementImpl<DimensionInitiali
 
 	/**
 	 * EXPRESSION
-	 * 
-	 * @uml.property name="_expression"
-	 * @uml.associationEnd 
-	 * @uml.property name="_expression" multiplicity="(0 -1)" elementType="chameleon.core.expression.Expression"
 	 */
 	private SingleAssociation<DimensionInitializer,Expression> _expression = new SingleAssociation<DimensionInitializer,Expression>(this);
 
@@ -69,6 +64,11 @@ public class DimensionInitializer extends NamespaceElementImpl<DimensionInitiali
    @*/
   public List children() {
     return Util.createNonNullList(getExpression());
+  }
+
+  @Override
+  public VerificationResult verifySelf() {
+	  return Valid.create();
   }
   
 }

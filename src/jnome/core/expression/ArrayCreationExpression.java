@@ -15,6 +15,8 @@ import chameleon.core.expression.InvocationTarget;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
+import chameleon.core.validation.Valid;
+import chameleon.core.validation.VerificationResult;
 import chameleon.support.expression.ArrayIndex;
 import chameleon.util.Util;
 
@@ -153,6 +155,11 @@ public class ArrayCreationExpression extends Expression<ArrayCreationExpression>
   	ref.setUniParent(getNamespace().defaultNamespace());
     return Util.createNonNullSet(ref.getType());
   }
+
+	@Override
+	public VerificationResult verifySelf() {
+		return Valid.create();
+	}
 
 //  public AccessibilityDomain getAccessibilityDomain() throws LookupException {
 //    AccessibilityDomain result = getTypeReference().getType().getTypeAccessibilityDomain();

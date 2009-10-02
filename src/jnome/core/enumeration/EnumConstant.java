@@ -13,6 +13,8 @@ import chameleon.core.member.FixedSignatureMember;
 import chameleon.core.member.Member;
 import chameleon.core.type.ClassBody;
 import chameleon.core.type.Type;
+import chameleon.core.validation.Valid;
+import chameleon.core.validation.VerificationResult;
 
 public class EnumConstant extends FixedSignatureMember<EnumConstant,Type,SimpleNameSignature,EnumConstant> {
 
@@ -82,5 +84,10 @@ public class EnumConstant extends FixedSignatureMember<EnumConstant,Type,SimpleN
   }
   
   private SingleAssociation<EnumConstant,ClassBody> _body = new SingleAssociation<EnumConstant, ClassBody>(this);
+
+	@Override
+	public VerificationResult verifySelf() {
+		return Valid.create();
+	}
 
 }

@@ -14,6 +14,8 @@ import chameleon.core.expression.Expression;
 import chameleon.core.expression.InvocationTarget;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.type.Type;
+import chameleon.core.validation.Valid;
+import chameleon.core.validation.VerificationResult;
 import chameleon.core.variable.Variable;
 import chameleon.support.variable.VariableDeclaration;
 
@@ -27,10 +29,6 @@ public class ArrayInitializer extends Expression<ArrayInitializer> {
 
 	/**
 	 * VARIABLE INITIALIZER
-	 * 
-	 * @uml.property name="_inits"
-	 * @uml.associationEnd 
-	 * @uml.property name="_inits" multiplicity="(1 1)"
 	 */
 	private OrderedMultiAssociation<ArrayInitializer,Expression> _inits = new OrderedMultiAssociation<ArrayInitializer,Expression>(this);
 
@@ -105,6 +103,11 @@ public class ArrayInitializer extends Expression<ArrayInitializer> {
   public Set<Type> getDirectExceptions() throws LookupException {
     return new HashSet<Type>();
   }
+
+	@Override
+	public VerificationResult verifySelf() {
+		return Valid.create();
+	}
 
 //  public AccessibilityDomain getAccessibilityDomain() throws LookupException {
 //    AccessibilityDomain result = new All();

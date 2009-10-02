@@ -16,6 +16,9 @@ import chameleon.core.expression.InvocationTarget;
 import chameleon.core.language.ObjectOrientedLanguage;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.type.Type;
+import chameleon.core.validation.BasicProblem;
+import chameleon.core.validation.Valid;
+import chameleon.core.validation.VerificationResult;
 import chameleon.support.expression.ArrayIndex;
 import chameleon.util.Util;
 
@@ -121,6 +124,26 @@ public class ArrayAccessExpression extends Expression<ArrayAccessExpression> imp
   public Set getDirectExceptions() throws LookupException {
     return Util.createNonNullSet(language(ObjectOrientedLanguage.class).getNullInvocationException());
   }
+
+	@Override
+	public VerificationResult verifySelf() {
+		VerificationResult result = Valid.create();
+		try {
+			Type targetType = getTarget().getType();
+			if(targetType instanceof ArrayType) {
+				int targetDimension = ((ArrayType)targetType).getDimension();
+				int dimension = getIndices().size();
+				if(targetDimension < dimension) {
+					result = result.and(new BasicProblem(this, "The array dimension of the type expression of the expression is smaller than the number of indices: "+targetDimension+" < "+dimension));
+				}
+			} else {
+				result = result.and(new BasicProblem(this, "An array access can only be applied to an expression whose type is an array type. The found type is "+targetType.getFullyQualifiedName()));
+			}
+		} catch (LookupException e) {
+			result = result.and(new BasicProblem(this, "Cannot compute the type of the target expression of the array access.")); 
+		}
+		return result;
+	}
 
 //  public AccessibilityDomain getAccessibilityDomain() throws LookupException {
 //    AccessibilityDomain result = new All();

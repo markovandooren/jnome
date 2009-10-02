@@ -796,7 +796,7 @@ public class JavaCodeWriter extends Syntax {
     StringBuffer result = new StringBuffer();
     result.append("{\n");
     indent();
-    Iterator iter = block.getStatements().iterator();
+    Iterator iter = block.statements().iterator();
     while(iter.hasNext()) {
       result.append(startLine());
       result.append(toCode((Element)iter.next()));
@@ -861,11 +861,11 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public String toCodeCatchClause(CatchClause cc) throws LookupException {
-    return "catch ("+toCodeVariable(cc.getExceptionParameter()) + ") " + toCode(cc.getStatement());
+    return "catch ("+toCodeVariable(cc.getExceptionParameter()) + ") " + toCode(cc.statement());
   }
   
   public String toCodeFinally(FinallyClause cc) throws LookupException {
-    return "finally " + toCode(cc.getStatement());
+    return "finally " + toCode(cc.statement());
   }
   
   public boolean isThrow(Element element) {
@@ -881,7 +881,7 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public String toCodeSynchronized(SynchronizedStatement ts) throws LookupException {
-    return "synchronized("+toCode(ts.getExpression())+") "+toCode(ts.getStatement());
+    return "synchronized("+toCode(ts.expression())+") "+toCode(ts.getStatement());
   }
   
   public boolean isSwitch(Element element) {
@@ -934,7 +934,7 @@ public class JavaCodeWriter extends Syntax {
         public void unvisit(Object o, Object undo) {
           //NOP
         }
-      }.applyTo(sc.getStatements());
+      }.applyTo(sc.statements());
     }
     catch (LookupException e) {
       throw e;
@@ -961,7 +961,7 @@ public class JavaCodeWriter extends Syntax {
   
   public String toCodeStatementExprList(StatementExprList sel) throws LookupException {
     StringBuffer result = new StringBuffer();
-    Iterator iter = sel.getStatements().iterator();
+    Iterator iter = sel.statements().iterator();
     while(iter.hasNext()) {
       result.append(toCode(((StatementExpression)iter.next()).getExpression()));
       if(iter.hasNext() ) {

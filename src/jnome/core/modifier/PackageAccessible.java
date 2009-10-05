@@ -4,6 +4,7 @@ import org.rejuse.property.PropertySet;
 
 import chameleon.core.element.Element;
 import chameleon.core.modifier.ModifierImpl;
+import chameleon.core.property.ChameleonProperty;
 
 /**
  * @author Marko van Dooren
@@ -20,7 +21,7 @@ public class PackageAccessible extends ModifierImpl<PackageAccessible,Element> {
 		return new PackageAccessible();
 	}
 
-	public PropertySet<Element> impliedProperties() {
+	public PropertySet<Element,ChameleonProperty> impliedProperties() {
 		return createSet(language().property(PackageProperty.ID));
 	}  
 }

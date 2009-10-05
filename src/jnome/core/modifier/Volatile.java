@@ -8,6 +8,7 @@ import org.rejuse.property.PropertySet;
 
 import chameleon.core.element.Element;
 import chameleon.core.modifier.ModifierImpl;
+import chameleon.core.property.ChameleonProperty;
 
 /**
  * @author Marko van Dooren
@@ -22,7 +23,7 @@ public class Volatile extends ModifierImpl<Volatile,Element> {
 		return new Volatile();
 	}
 
-	public PropertySet<Element> impliedProperties() {
+	public PropertySet<Element,ChameleonProperty> impliedProperties() {
 		return createSet(((Java)language()).VOLATILE);
 	}
 }

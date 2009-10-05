@@ -4,6 +4,7 @@ import org.rejuse.property.PropertySet;
 
 import chameleon.core.element.Element;
 import chameleon.core.language.ObjectOrientedLanguage;
+import chameleon.core.property.ChameleonProperty;
 import chameleon.support.modifier.Constructor;
 /**
  * A class for Java constructor modifiers.
@@ -23,8 +24,8 @@ public class JavaConstructor extends Constructor {
    @
    @ post \result.contains(language().CONSTRUCTOR);
    @*/
-  public PropertySet<Element> impliedProperties() {
-  	PropertySet<Element> result = super.impliedProperties();
+  public PropertySet<Element,ChameleonProperty> impliedProperties() {
+  	PropertySet<Element,ChameleonProperty> result = super.impliedProperties();
     result.add(language(ObjectOrientedLanguage.class).INHERITABLE.inverse());
     return result;
   }

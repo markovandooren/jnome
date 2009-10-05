@@ -161,33 +161,6 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
   	}
   }
 
-  public boolean superOf(InvocationTarget target) throws LookupException {
-    if(!(target instanceof ConstructorInvocation)) {
-      return false;
-    }
-    ConstructorInvocation acc =(ConstructorInvocation)target;
-    if(! getMethod().equals(acc.getMethod())) {
-      return false;
-    }
-    if((body() != null) || (acc.body() != null)) {
-      return false;
-    }
-    List varInits = getActualParameters();
-    List otherVarInits = acc.getActualParameters();
-    for(int i=0; i< varInits.size(); i++) {
-      if(! ((InvocationTarget)varInits.get(i)).compatibleWith((InvocationTarget)otherVarInits.get(i))) {
-        return false;
-      }
-    }
-    if((getTargetExpression() == null) && (acc.getTargetExpression() == null)) {
-      return true;
-    } else if((getTargetExpression() != null) && (acc.getTargetExpression() != null)) {
-      return getTargetExpression().compatibleWith(acc.getTargetExpression());
-    } else {
-      return false;
-    }
-  }
-
   protected ConstructorInvocation cloneInvocation(InvocationTarget target) {
     ConstructorInvocation result = new ConstructorInvocation((JavaTypeReference)getTypeReference().clone(), (Expression)target);
     if(body() != null) {

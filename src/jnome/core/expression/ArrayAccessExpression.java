@@ -75,27 +75,6 @@ public class ArrayAccessExpression extends Expression<ArrayAccessExpression> imp
     }
   }
 
-  public boolean superOf(InvocationTarget target) throws LookupException {
-    if(!(target instanceof ArrayAccessExpression)) {
-      return false;
-    }
-    ArrayAccessExpression acc =(ArrayAccessExpression)target;
-    List varInits = getIndices();
-    List otherVarInits = acc.getIndices();
-    for(int i=0; i< varInits.size(); i++) {
-      if(! ((InvocationTarget)varInits.get(i)).compatibleWith((InvocationTarget)otherVarInits.get(i))) {
-        return false;
-      }
-    }
-    if((getTarget() == null) && (acc.getTarget() == null)) {
-      return true;
-    } else if((getTarget() != null) && (acc.getTarget() != null)) {
-      return getTarget().compatibleWith(acc.getTarget());
-    } else {
-      return false;
-    }
-  }
-
   public ArrayAccessExpression clone() {
     InvocationTarget target = null;
     if(getTarget() != null) {

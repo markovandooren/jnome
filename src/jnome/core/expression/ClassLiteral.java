@@ -21,11 +21,6 @@ public class ClassLiteral extends LiteralWithTypeReference {
     setTypeReference(new JavaTypeReference("java.lang.Class"));
   }
 
-  public boolean superOf(InvocationTarget target) throws LookupException {
-    return (target instanceof ClassLiteral) && 
-           ((ClassLiteral)target).getType().equals(getType());
-  }
-
   public ClassLiteral clone() {
     ClassLiteral result = new ClassLiteral(target().clone());
     result.setTypeReference((JavaTypeReference)getTypeReference().clone());

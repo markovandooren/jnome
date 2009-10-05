@@ -100,30 +100,6 @@ public class ArrayCreationExpression extends Expression<ArrayCreationExpression>
     }
   }
 
-  public boolean superOf(InvocationTarget target) throws LookupException {
-    if(!(target instanceof ArrayCreationExpression)) {
-      return false;
-    }
-    ArrayCreationExpression acc = (ArrayCreationExpression)target;
-    if(! getType().equals(acc.getType())) {
-      return false;
-    }
-    List dimInits = getDimensionInitializers();
-    List otherDimInits = acc.getDimensionInitializers();
-    for(int i=0; i< dimInits.size(); i++) {
-      if(! ((InvocationTarget)dimInits.get(i)).compatibleWith((InvocationTarget)otherDimInits.get(i))) {
-        return false;
-      }
-    }
-    if((getInitializer() == null) && (acc.getInitializer() == null)) {
-      return true;
-    } else if((getInitializer() != null) && (acc.getInitializer() != null)) {
-      return getInitializer().compatibleWith(acc.getInitializer());
-    } else {
-      return false;
-    }
-  }
-
   public ArrayCreationExpression clone() {
     final ArrayCreationExpression result = new ArrayCreationExpression((JavaTypeReference)getTypeReference().clone());
     if(getInitializer() != null) {

@@ -71,21 +71,6 @@ public class ArrayInitializer extends Expression<ArrayInitializer> {
     }
   }
 
-  public boolean superOf(InvocationTarget target) throws LookupException {
-    if(!(target instanceof ArrayInitializer)) {
-      return false;
-    }
-    ArrayInitializer acc =(ArrayInitializer)target;
-    List varInits = getVariableInitializers();
-    List otherVarInits = acc.getVariableInitializers();
-    for(int i=0; i< varInits.size(); i++) {
-      if(! ((InvocationTarget)varInits.get(i)).compatibleWith((InvocationTarget)otherVarInits.get(i))) {
-        return false;
-      }
-    }
-    return true;
-  }
-
   public ArrayInitializer clone() {
     final ArrayInitializer result = new ArrayInitializer();
     new Visitor() {

@@ -9,7 +9,6 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import chameleon.core.language.ObjectOrientedLanguage;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.relation.WeakPartialOrder;
 import chameleon.core.type.DerivedType;
@@ -17,6 +16,7 @@ import chameleon.core.type.Type;
 import chameleon.core.type.generics.FormalTypeParameter;
 import chameleon.core.type.generics.InstantiatedTypeParameter;
 import chameleon.core.type.generics.TypeParameter;
+import chameleon.oo.language.ObjectOrientedLanguage;
 
 public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	

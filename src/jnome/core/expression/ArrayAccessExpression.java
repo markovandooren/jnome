@@ -13,12 +13,12 @@ import chameleon.core.element.Element;
 import chameleon.core.expression.Assignable;
 import chameleon.core.expression.Expression;
 import chameleon.core.expression.InvocationTarget;
-import chameleon.core.language.ObjectOrientedLanguage;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.type.Type;
 import chameleon.core.validation.BasicProblem;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
+import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.support.expression.ArrayIndex;
 import chameleon.util.Util;
 

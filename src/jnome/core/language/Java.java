@@ -5,22 +5,25 @@ import jnome.core.modifier.PackageProperty;
 import jnome.core.type.NullType;
 
 import org.rejuse.logic.ternary.Ternary;
-import org.rejuse.property.Property;
 import org.rejuse.property.StaticProperty;
 
+import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
-import chameleon.core.language.ObjectOrientedLanguage;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.member.Member;
 import chameleon.core.method.Method;
 import chameleon.core.namespace.RootNamespace;
+import chameleon.core.property.ChameleonProperty;
+import chameleon.core.property.StaticChameleonProperty;
 import chameleon.core.relation.EquivalenceRelation;
 import chameleon.core.relation.StrictPartialOrder;
 import chameleon.core.relation.WeakPartialOrder;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
+import chameleon.core.variable.MemberVariable;
 import chameleon.core.variable.RegularMemberVariable;
+import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.modifier.PrivateProperty;
 import chameleon.support.modifier.ProtectedProperty;
@@ -39,10 +42,10 @@ public class Java extends ObjectOrientedLanguage {
 		_nullType = new NullType(this);
 		new RootNamespace(new SimpleNameSignature(""), this);
 		this.defaultNamespace().setNullType();
-		STRICTFP = new StaticProperty<Element>("strictfp", this);
-		SYNCHRONIZED = new StaticProperty<Element>("synchronized", this);
-		TRANSIENT = new StaticProperty<Element>("transient", this);
-		VOLATILE = new StaticProperty<Element>("volatile", this);
+		STRICTFP = new StaticChameleonProperty("strictfp", this, Declaration.class);
+		SYNCHRONIZED = new StaticChameleonProperty("synchronized", this, Method.class);
+		TRANSIENT = new StaticChameleonProperty("transient", this, MemberVariable.class);
+		VOLATILE = new StaticChameleonProperty("volatile", this, MemberVariable.class);
 		PROTECTED = new ProtectedProperty(this, SCOPE_MUTEX);
 		PRIVATE = new PrivateProperty(this, SCOPE_MUTEX);
 		PUBLIC = new PublicProperty(this, SCOPE_MUTEX);
@@ -190,14 +193,14 @@ public class Java extends ObjectOrientedLanguage {
 
 	protected NullType _nullType;
 	// Adding properties. Note that 'this' is a PropertyUniverse.
-	public final Property<Element> STRICTFP;
-	public final Property<Element> SYNCHRONIZED;
-	public final Property<Element> TRANSIENT;
-	public final Property<Element> VOLATILE;
-	public final Property<Element> PROTECTED;
-	public final Property<Element> PRIVATE;
-	public final Property<Element> PUBLIC;
-	public final Property<Element> PACKAGE_ACCESSIBLE;
+	public final ChameleonProperty STRICTFP;
+	public final ChameleonProperty SYNCHRONIZED;
+	public final ChameleonProperty TRANSIENT;
+	public final ChameleonProperty VOLATILE;
+	public final ChameleonProperty PROTECTED;
+	public final ChameleonProperty PRIVATE;
+	public final ChameleonProperty PUBLIC;
+	public final ChameleonProperty PACKAGE_ACCESSIBLE;
 	
 	public Type getNullType(){
 		return _nullType;

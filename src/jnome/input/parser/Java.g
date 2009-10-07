@@ -1245,7 +1245,8 @@ variableModifiers returns [List<Modifier> element]
     ;
 
 statement returns [Statement element]
-@after{check_null(retval.element);}
+@after{check_null(retval.element);
+setLocation(retval.element, (CommonToken)retval.start, (CommonToken)retval.stop);}
     : bl=block {retval.element = bl.element;}
     |   ASSERT asexpr=expression {retval.element=new AssertStatement(asexpr.element);}(':' asexprx=expression {((AssertStatement)retval.element).setMessageExpression(asexprx.element);})? ';'
     |   'if' ifexpr=parExpression ifif=statement (options {k=1;}:'else' ifelse=statement)? {retval.element=new IfThenElseStatement(ifexpr.element, ifif.element, (ifelse == null ? null : ifelse.element));}
@@ -1603,23 +1604,27 @@ Token stop=null;
 selector returns [Expression element]
 @init{
 Token start=$TargetScope::start;
+Token stop=null;
 }
-@after{setLocation(retval.element,start,retval.stop);}
 	:	
 	'.' name=Identifier 
 	        {
 	         retval.element = new VariableReference($name.text,cloneTarget($TargetScope::target));
+	         stop=name;
 	        } 
 	    (args=arguments 
 	        {retval.element = new RegularMethodInvocation($name.text, $TargetScope::target);
 	         ((RegularMethodInvocation)retval.element).addAllArguments(args.element);
+	         stop=args.stop;
 	        })?
-    |   '.' 'this' {retval.element = new ThisLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));}
-    |   '.' 'super' supsuf=superSuffix {check_null(supsuf.element); retval.element = supsuf.element;}
+	        {setLocation(retval.element,start,stop);}
+    |   '.' thiskw='this' {retval.element = new ThisLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));setLocation(retval.element,start,spkw);}
+    |   '.' spkw='super'{$TargetScope::target= new SuperTarget($TargetScope::target);setLocation($TargetScope::target,start,spkw);} supsuf=superSuffix {check_null(supsuf.element); retval.element = supsuf.element;}
     |   '.' 'new' in=innerCreator {check_null(in.element); retval.element = in.element;}
     |   '[' arrex=expression bracket=']' 
           {retval.element = new ArrayAccessExpression((Expression)$TargetScope::target);
            ((ArrayAccessExpression)retval.element).addIndex(new FilledArrayIndex(arrex.element));
+           setLocation(retval.element, start, bracket);
           }       
 	;
 
@@ -1637,15 +1642,14 @@ Token stop=null;
 }
     :   parex=parExpression {retval.element = parex.element;}
     |   rubex=identifierSuffixRubbush {retval.element = rubex.element;}
-    |   {$TargetScope::target= new SuperTarget();} skw='super' {start=skw; $TargetScope::start=skw;} 
+    |    skw='super' {$TargetScope::target= new SuperTarget(); start=skw; stop=skw; $TargetScope::start=skw;} 
         supsuf=superSuffix 
         {retval.element = supsuf.element; 
-        stop=supsuf.stop;
-        setLocation($TargetScope::target,start,skw); // put locations on the SuperTarget.
+        setLocation($TargetScope::target,start,stop); // put locations on the SuperTarget.
         }
     |   lit=literal {retval.element = lit.element;}
-    |   nkw='new' {start=nkw;} cr=creator {retval.element = cr.element; start=cr.start;stop=cr.stop;}
-    |   morerubex=moreIdentifierSuffixRubbish {retval.element = morerubex.element;start=morerubex.start;stop=morerubex.stop;}
+    |   nkw='new' {start=nkw;} cr=creator {retval.element = cr.element;}
+    |   morerubex=moreIdentifierSuffixRubbish {retval.element = morerubex.element;}
     |   vt=voidType '.' clkw='class' {retval.element = new ClassLiteral(vt.element); start=vt.start;stop=clkw; setLocation(retval.element,start,stop);}
     |   tref=type '.' clkww='class' {retval.element = new ClassLiteral(tref.element);start=tref.start;stop=clkww; setLocation(retval.element,start,stop);}
     ;
@@ -1655,7 +1659,12 @@ scope TargetScope;
 @init{
 Token stop = null;
 }
-	:	id=Identifier {$TargetScope::target = new NamedTarget($id.text); $TargetScope::start=id; stop=id;} 
+	:	id=Identifier 
+	           {$TargetScope::target = new NamedTarget($id.text); 
+	            $TargetScope::start=id; 
+	            stop=id;
+	            setLocation($TargetScope::target,$TargetScope::start,stop);
+	            }
 	  ('.' idx=Identifier 
 	       {$TargetScope::target = new NamedTarget($idx.text,$TargetScope::target);
 	        stop=idx;
@@ -1664,9 +1673,10 @@ Token stop = null;
 	  )* 
 	{retval.element = new VariableReference(((NamedTarget)$TargetScope::target).getName(),cloneTargetOfTarget(((NamedTarget)$TargetScope::target)));
 	 setLocation(retval.element, $TargetScope::start, stop);
+	 //The variable reference is only returned if none of the following subrules match.
 	}
-(   //    ('[' ']')+ '.' 'class'
-    //|   
+(       ('[' ']')+ '.' 'class'
+    |   
         arr=arrayAccessSuffixRubbish {retval.element = arr.element;}
     |   arg=argumentsSuffixRubbish {retval.element = arg.element;} // REMOVE VARIABLE REFERENCE POSITION!
     |   '.' clkw='class' 
@@ -1678,7 +1688,7 @@ Token stop = null;
         {retval.element = new ThisLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));
           setLocation(retval.element, $TargetScope::start, thiskw);
         }
-    |   '.' 'super' supsuf=superSuffix {retval.element = supsuf.element;}
+    |   '.' supkw='super' {$TargetScope::target= new SuperTarget(); setLocation($TargetScope::target,$TargetScope::start,supkw);} supsuf=superSuffix {retval.element = supsuf.element;}
     |   '.' 'new' in=innerCreator {retval.element = in.element;})?
 	;
 
@@ -1791,6 +1801,7 @@ nonWildcardTypeArguments returns [List<ActualTypeArgument> element]
     
 // NEEDS_TARGET
 superSuffix returns [Expression element]
+@init{Token stop=null;}
     :   //arguments
         //|   
     '.' name=Identifier {retval.element = new VariableReference($name.text,cloneTarget($TargetScope::target));} 
@@ -1799,6 +1810,7 @@ superSuffix returns [Expression element]
           ((RegularMethodInvocation)retval.element).addAllArguments(args.element);
           }
         )?
+        {setLocation(retval.element,$TargetScope::start,stop);}
     ;
 
 arguments returns [List<ActualArgument> element]

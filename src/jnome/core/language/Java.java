@@ -5,11 +5,9 @@ import jnome.core.modifier.PackageProperty;
 import jnome.core.type.NullType;
 
 import org.rejuse.logic.ternary.Ternary;
-import org.rejuse.property.StaticProperty;
 
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.SimpleNameSignature;
-import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.member.Member;
 import chameleon.core.method.Method;
@@ -30,6 +28,7 @@ import chameleon.support.modifier.ProtectedProperty;
 import chameleon.support.modifier.PublicProperty;
 import chameleon.support.rule.member.MemberInheritableByDefault;
 import chameleon.support.rule.member.MemberOverridableByDefault;
+import chameleon.support.rule.member.TypeExtensibleByDefault;
 
 /**
  * @author Marko van Dooren
@@ -218,6 +217,7 @@ public class Java extends ObjectOrientedLanguage {
   protected void initializePropertyRules() {
   	addPropertyRule(new MemberOverridableByDefault());
   	addPropertyRule(new MemberInheritableByDefault());
+  	addPropertyRule(new TypeExtensibleByDefault());
   }
 
  /*@

@@ -4,11 +4,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import chameleon.core.Config;
+import chameleon.core.namespacepart.NamespacePart;
 import chameleon.core.reference.CrossReference;
 import chameleon.core.type.Type;
 import chameleon.support.test.ExpressionTest;
 import chameleon.test.CloneAndChildTest;
 import chameleon.test.CrossReferenceTest;
+import chameleon.test.VerificationTest;
 import chameleon.test.provider.BasicDescendantProvider;
 import chameleon.test.provider.BasicNamespaceProvider;
 import chameleon.test.provider.ElementProvider;
@@ -54,6 +56,14 @@ public abstract class JavaTest {
 	@Test
 	public void testCrossReferences() throws Exception {
 		new CrossReferenceTest(modelProvider(), new BasicDescendantProvider<CrossReference>(namespaceProvider(), CrossReference.class)).testCrossReferences();
+	}
+	
+	/**
+	 * Test the verification by invoking verify() for all namespace parts, and checking if the result is valid.
+	 */
+	@Test
+	public void testVerification() throws Exception {
+		new VerificationTest(modelProvider(), new BasicDescendantProvider<NamespacePart>(namespaceProvider(), NamespacePart.class)).testVerification();
 	}
 
 	/**

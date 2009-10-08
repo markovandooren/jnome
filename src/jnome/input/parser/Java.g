@@ -638,9 +638,11 @@ classOrInterfaceDeclaration returns [Type element]
                 {retval.element=cd.element; end = cd.stop; if(mods == null) {start=cd.start;}} 
           | id=interfaceDeclaration 
                 {retval.element=id.element; end=id.stop; if(mods == null) {start=id.start;}}) 
-        {for(Modifier mod:mods.element) {
-          retval.element.addModifier(mod);
-        }}
+        {if(retval.element != null) {
+           for(Modifier mod:mods.element) {
+             retval.element.addModifier(mod);
+           }
+         }}
     ;
     
 classOrInterfaceModifiers returns [List<Modifier> element]
@@ -1265,7 +1267,7 @@ setLocation(retval.element, (CommonToken)retval.start, (CommonToken)retval.stop)
     |   'break' {retval.element = new BreakStatement();} (name=Identifier {((BreakStatement)retval.element).setLabel($name.text);})? ';'
     |   'continue' {retval.element = new ContinueStatement();} (name=Identifier {((ContinueStatement)retval.element).setLabel($name.text);})? ';'
     |   ';' {retval.element = new EmptyStatement();}
-    |   stattex=statementExpression {retval.element = new StatementExpression(stattex.element);}';'
+    |   stattex=statementExpression {retval.element = new StatementExpression(stattex.element);} (';')?
     |   name=Identifier ':' labstat=statement {retval.element = new LabeledStatement($name.text,labstat.element);}
     ;
     

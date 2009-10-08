@@ -1,18 +1,11 @@
 package jnome.input;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import jnome.core.language.Java;
@@ -22,8 +15,6 @@ import jnome.input.parser.JavaParser;
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
-import org.rejuse.association.Association;
-import org.rejuse.io.DirectoryScanner;
 import org.rejuse.io.fileset.FileNamePattern;
 import org.rejuse.io.fileset.FileSet;
 import org.rejuse.io.fileset.PatternPredicate;
@@ -44,7 +35,7 @@ import chameleon.core.type.TypeReference;
 import chameleon.core.variable.FormalParameter;
 import chameleon.input.ModelFactory;
 import chameleon.input.ParseException;
-import chameleon.input.SourceManager;
+import chameleon.support.input.ModelFactoryUsingANTLR;
 import chameleon.support.member.simplename.SimpleNameMethodHeader;
 import chameleon.support.member.simplename.operator.infix.InfixOperator;
 import chameleon.support.member.simplename.operator.postfix.PostfixOperator;
@@ -52,14 +43,12 @@ import chameleon.support.member.simplename.operator.prefix.PrefixOperator;
 import chameleon.support.modifier.Native;
 import chameleon.support.modifier.Public;
 import chameleon.support.modifier.ValueType;
-import chameleon.tool.Connector;
-import chameleon.tool.ConnectorImpl;
 
 /**
  * @author Marko van Dooren
  */
 
-public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
+public class JavaModelFactory extends ModelFactoryUsingANTLR {
 
 	/**
 	 * BE SURE TO CALL INIT() IF YOU USE THIS CONSTRUCTOR.
@@ -95,54 +84,15 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
 		setLanguage(language, ModelFactory.class);
 		initializeBase(base);
 	}
-
-
-
-	public void initializeBase(Collection<File> base) throws IOException, ParseException {
-		addToModel(base);
-    addPrimitives(language().defaultNamespace());
-    addInfixOperators(language().defaultNamespace());
+  
+	@Override
+	public void initializePredefinedElements() {
+	  addPrimitives(language().defaultNamespace());
+	  addInfixOperators(language().defaultNamespace());
 	}
-	
-	
-    /**
-     * Return the top of the metamodel when parsing the given file.
-     *
-     * @param files
-     *            A set containing all .java files that should be parsed.
-     * @pre The given set may not be null | files != null
-     * @pre The given set may only contain effective files | for all o in files: |
-     *      o instanceof File && | ! ((File)o).isDirectory()
-     * @return The result will not be null | result != null
-     * @return All given files will be parsed and inserted into the metamodel
-     *
-     * @throws TokenStreamException
-     *             Something went wrong
-     * @throws RecognitionException
-     *             Something went wrong
-     * @throws MalformedURLException
-     *             Something went wrong
-     * @throws FileNotFoundException
-     *             Something went wrong
-     * @throws RecognitionException 
-     */
-    public void addToModel(File file) throws IOException, ParseException {
-        Java lang = (Java) language();
-        final Namespace defaultPackage = lang.defaultNamespace();
-        addFileToGraph(file, lang);
 
-    }
-    
-    public void addToModel(Collection<File> files) throws IOException, ParseException {
-      int count = 0;
-      for (File file : files) {
-        System.out.println(++count + " Parsing "+ file.getAbsolutePath());
-      	addToModel(file);
-      }
 
-    }
-
-    private void addPrimitives(Namespace defaultPackage) {
+	public void addPrimitives(Namespace defaultPackage) {
         addVoid(defaultPackage);
         addByte(defaultPackage);
         addChar(defaultPackage);
@@ -154,7 +104,7 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
         addBoolean(defaultPackage);
     }
 
-    private void addInfixOperators(Namespace defaultPackage) {
+    public void addInfixOperators(Namespace defaultPackage) {
         try {
         	  TypeReference ref = new TypeReference("java.lang.Object");
         	  ref.setUniParent(defaultPackage);
@@ -379,34 +329,7 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
       * return document; }
       */
 
-    private void addFileToGraph(File file, Java language) throws IOException, ParseException {
-        // The file name is used in the lexers and parser to
-        // give more informative error messages
-        String fileName = file.getName();
-
-        // The constructor throws an FileNotFoundException if for some
-        // reason the file can't be read.
-        InputStream fileInputStream = new FileInputStream(file);
-        
-        // This message is printed here because we don't want that this
-        // message will be printed if the file doesn't exist
-        // LOGGER.debug("Adding " + absolutePath + "...");
-
-				lexAndParse(fileInputStream, fileName, new CompilationUnit());
-    }
-
-    public void addToModel(String source, CompilationUnit cu) throws ParseException {
-        String name = "document";
-        InputStream inputStream = new StringBufferInputStream(source);
-        try {
-					lexAndParse(inputStream, name, cu);
-				} catch (IOException e) {
-					// cannot happen if we work with a String
-					throw new ChameleonProgrammerException("IOException while parsing a String.", e);
-				}
-    }
-
-    private JavaParser getParser(InputStream inputStream, String fileName) throws IOException {
+    public JavaParser getParser(InputStream inputStream, String fileName) throws IOException {
         ANTLRInputStream input = new ANTLRInputStream(inputStream);
         JavaLexer lexer = new JavaLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -415,25 +338,29 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
         return parser;
     }
 
-    private void lexAndParse(InputStream inputStream, String fileName, CompilationUnit cu) throws IOException, ParseException {
-      try {
-        JavaParser parser = getParser(inputStream, fileName);
-        cu.disconnectChildren();
-        parser.setCompilationUnit(cu);
-					parse(parser);
-				} catch (RecognitionException e) {
-          throw new ParseException(e,cu);
-				}
-    }
-
     /**
      * @param parser
      * @throws RecognitionException 
      */
-    protected void parse(JavaParser parser) throws RecognitionException  {
+    public void parse(JavaParser parser) throws RecognitionException  {
         parser.compilationUnit();
     }
     
+  	protected <P extends Element> Element parse(Element<?,P> element, String text) throws ParseException {
+  		try {
+  		  InputStream inputStream = new StringBufferInputStream(text);
+  		  Element result = null;
+  		  if(element instanceof Member) {
+  	  		result = getParser(inputStream, "document").memberDecl().element;
+  			}
+  			return result;
+  		} catch(RecognitionException exc) {
+  			throw new ParseException(element.nearestAncestor(CompilationUnit.class));
+  		} catch(IOException exc) {
+  			throw new ChameleonProgrammerException("Parsing of a string caused an IOException",exc);
+  		}
+  	}
+
     public static void main(String[] args) {
         try {
             long start = Calendar.getInstance().getTimeInMillis();
@@ -441,7 +368,7 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
             fileSet.include(new PatternPredicate(new File(args[0]),
                     new FileNamePattern(args[1])));
             Set files = fileSet.getFiles();
-            JavaModelFactory factory = new JavaModelFactory(files);
+            ModelFactoryUsingANTLR factory = new JavaModelFactory(files);
             long stop = Calendar.getInstance().getTimeInMillis();
             System.out.println("DONE !!!");
             System.out.println("Acquiring took " + (stop - start) + "ms.");
@@ -798,62 +725,12 @@ public class JavaModelFactory extends ConnectorImpl implements ModelFactory {
 
 //	LOAD FILES
 
-    /**
-     * @param pathList		The directories to from where to load the cs-files
-     * @param extension     Only files with this extension will be loaded
-     * @param recursive	    Wether or not to also load cs-files from all sub directories
-     * @return A set with all the cs-files in the given path
-     */
-    public static Set<File> sourceFiles(List<String> pathList, String extension, boolean recursive){
-        Set<File> result = new HashSet();
-        for(String path: pathList) {
-          result.addAll(new DirectoryScanner().scan(path, extension, recursive));
-        }
-        return result;
-    }
-
-		@Override
-		public JavaModelFactory clone() {
+    @Override
+		public ModelFactoryUsingANTLR clone() {
 			try {
 				return new JavaModelFactory();
 			} catch (Exception e) {
 				throw new RuntimeException("Exception while cloning a JavaModelFactory", e);
-			}
-		}
-
-		public <P extends Element> void reParse(Element<?,P> element) throws ParseException {
-			CompilationUnit compilationUnit = element.nearestAncestor(CompilationUnit.class);
-			boolean done = false;
-			while((element != null) && (! done)){
-				try {
-			    SourceManager manager = language().connector(SourceManager.class);
-			    String text = manager.text(element);
-			    Element newElement = parse(element, text);
-			    // Use raw type here, we can't really type check this.
-			    Association childLink = element.parentLink().getOtherRelation();
-			    childLink.replace(element.parentLink(), newElement.parentLink());
-			    done = true;
-				} catch(ParseException exc) {
-					element = element.parent();
-					if(element == null) {
-						throw exc;
-					}
-				}
-			}
-		}
-		
-		private <P extends Element> Element parse(Element<?,P> element, String text) throws ParseException {
-			try {
-			  InputStream inputStream = new StringBufferInputStream(text);
-			  Element result = null;
-			  if(element instanceof Member) {
-		  		result = getParser(inputStream, "document").memberDecl().element;
-	  		}
-  			return result;
-			} catch(RecognitionException exc) {
-				throw new ParseException(element.nearestAncestor(CompilationUnit.class));
-			} catch(IOException exc) {
-				throw new ChameleonProgrammerException("Parsing of a string caused an IOException",exc);
 			}
 		}
 }

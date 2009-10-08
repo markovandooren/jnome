@@ -178,6 +178,7 @@ options {
   backtrack=true; 
   memoize=true;
   output=AST;
+  superClass = ChameleonParser;
 }
 
 scope MethodScope {
@@ -333,6 +334,8 @@ import chameleon.support.variable.VariableDeclaration;
 import chameleon.support.variable.LocalVariableDeclarator;
 import chameleon.support.variable.VariableDeclarator;
 
+import chameleon.support.input.ChameleonParser;
+
 import jnome.core.expression.ArrayInitializer;
 import jnome.core.expression.ClassLiteral;
 import jnome.core.expression.ArrayAccessExpression;
@@ -388,17 +391,6 @@ package jnome.input.parser;
     }
     return result;
   }
-  public void check_null(Object o) {
-    if(o == null) {
-      throw new RuntimeException("Object returned by parsing rule is null.");
-    }
-  }
-  
-  public void check_stack(Object s) {
-   if(s == null) {
-     throw new RuntimeException("The stack element is null.");
-   }
-  }
 
   public static class ClassCreatorRest {
     public ClassCreatorRest(List<ActualArgument> args) {
@@ -422,54 +414,6 @@ package jnome.input.parser;
     private ClassBody _body;
   }
   
-  public void setLocation(Element element, Token start, Token stop) {
-    List<InputProcessor> processors = language().processors(InputProcessor.class);
-    CommonToken begin = (CommonToken)start;
-    CommonToken end = (CommonToken)stop;
-        if(begin != null && end != null) {
-        	int offset = begin.getStartIndex();
-        	int length = end.getStopIndex() - offset;
-        	for(InputProcessor processor: processors) {
-        		//processor.setLocation(element, new Position2D(begin.getLine(), begin.getCharPositionInLine()), new Position2D(end.getLine(), end.getCharPositionInLine()));
-        		processor.setLocation(element, offset, length, getCompilationUnit());
-        	}
-        }
-  }
-
-  public void setLocation(Element element, Token start, Token stop, String tagType) {
-    List<InputProcessor> processors = language().processors(InputProcessor.class);
-    CommonToken begin = (CommonToken)start;
-    CommonToken end = (CommonToken)stop;
-        if(begin != null && end != null) {
-        	int offset = begin.getStartIndex();
-        	int length = end.getStopIndex() - offset;
-        	for(InputProcessor processor: processors) {
-        		//processor.setLocation(element, new Position2D(begin.getLine(), begin.getCharPositionInLine()), new Position2D(end.getLine(), end.getCharPositionInLine()));
-        		processor.setLocation(element, offset, length, getCompilationUnit(), tagType);
-        	}
-        }
-  }
-  
-  public void setLocation(Element element, ParserRuleReturnScope first, ParserRuleReturnScope second) {
-    Token end = first.stop;
-    if(second != null) {
-      end = second.stop;
-    }
-    setLocation(element, first.start, end);
-  }
-  
-  
-  public void setLocation(Element element, Token token, String tagType) {
-    if(token != null) {
-      setLocation(element, (CommonToken)token, (CommonToken)token, tagType);
-    }
-  }
-  
-  public void setKeyword(Element element, Token token) {
-    if(token != null) {
-      setLocation(element, (CommonToken)token, (CommonToken)token, "__KEYWORD");
-    }
-  }
 
   public static class StupidVariableDeclaratorId {
        public StupidVariableDeclaratorId(String name, int dimension) {
@@ -486,36 +430,6 @@ package jnome.input.parser;
        public int dimension() {
          return _dimension;
        }
-  }
-  
-  Language _lang;
-  
-  public Language language() {
-    return _lang;
-  }
-  
-  public void setLanguage(Java language) {
-    _lang = language;
-    _root = _lang.defaultNamespace();
-  }
-  
-  RootNamespace _root;
-
-  public Namespace getDefaultNamespace() {
-    return _root;
-  }
-
-  CompilationUnit _cu = new CompilationUnit();
-  
-  public CompilationUnit getCompilationUnit() {
-    return _cu;
-  }
-  
-  public void setCompilationUnit(CompilationUnit compilationUnit) {
-   if(compilationUnit == null) {
-     throw new IllegalArgumentException("The compilation unit cannot be null.");
-   }
-    _cu = compilationUnit;
   }
   
 
@@ -1267,7 +1181,7 @@ setLocation(retval.element, (CommonToken)retval.start, (CommonToken)retval.stop)
     |   'break' {retval.element = new BreakStatement();} (name=Identifier {((BreakStatement)retval.element).setLabel($name.text);})? ';'
     |   'continue' {retval.element = new ContinueStatement();} (name=Identifier {((ContinueStatement)retval.element).setLabel($name.text);})? ';'
     |   ';' {retval.element = new EmptyStatement();}
-    |   stattex=statementExpression {retval.element = new StatementExpression(stattex.element);} (';')?
+    |   stattex=statementExpression {retval.element = new StatementExpression(stattex.element);} ';'
     |   name=Identifier ':' labstat=statement {retval.element = new LabeledStatement($name.text,labstat.element);}
     ;
     

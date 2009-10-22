@@ -9,6 +9,7 @@ import org.rejuse.association.SingleAssociation;
 import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.predicate.SafePredicate;
 
+import chameleon.core.MetamodelException;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.DeclarationContainer;
 import chameleon.core.declaration.SimpleNameSignature;
@@ -186,22 +187,31 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
     return result;
   }
   
-  public NormalMethod getMethod() throws LookupException {
-  	InvocationTarget target = getTarget();
-  	NormalMethod result;
-  	if(getAnonymousInnerType() != null) {
-  		LookupStrategy tctx = getAnonymousInnerType().targetContext();
-  		result = tctx.lookUp(selector());
-  	} else if(target == null) {
-      result = lexicalLookupStrategy().lookUp(selector());
-  	} else {
-  		result = getTarget().targetContext().lookUp(selector());
-  	}
-		if (result == null) {
-			throw new LookupException("Lookup in constructor invocation returned null",this);
-		}
-    return result;
+  @Override
+  public LookupStrategy lexicalLookupStrategy(Element element) throws LookupException {
+    if ((element == getTypeReference()) && (getTargetExpression() != null)) {
+      return getTargetExpression().targetContext();
+    } else {
+      return super.lexicalLookupStrategy(element);
+    }
   }
+
+//  public NormalMethod getMethod() throws LookupException {
+//  	InvocationTarget target = getTarget();
+//  	NormalMethod result;
+//  	if(getAnonymousInnerType() != null) {
+//  		LookupStrategy tctx = getAnonymousInnerType().targetContext();
+//  		result = tctx.lookUp(selector());
+//  	} else if(target == null) {
+//      result = lexicalLookupStrategy().lookUp(selector());
+//  	} else {
+//  		result = getTarget().targetContext().lookUp(selector());
+//  	}
+//		if (result == null) {
+//			throw new LookupException("Lookup in constructor invocation returned null",this);
+//		}
+//    return result;
+//  }
 
   public class ConstructorSelector extends DeclarationSelector<NormalMethod> {
     

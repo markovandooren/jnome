@@ -37,7 +37,6 @@ public class Java extends ObjectOrientedLanguage {
 
 	public Java() {
 		super("Java", new JavaLookupFactory());
-		System.out.println("LANGUAGE INIT: "+this);
 		_nullType = new NullType(this);
 		new RootNamespace(new SimpleNameSignature(""), this);
 		this.defaultNamespace().setNullType();
@@ -252,13 +251,7 @@ public class Java extends ObjectOrientedLanguage {
      return new JavaOverridesRelation();
     }
 
-    public Type findType(String fqn) throws LookupException {
-    	TypeReference ref = new TypeReference(fqn);
-    	ref.setUniParent(defaultNamespace());
-    	return ref.getType();
-    }
-    
-		@Override
+    @Override
 		public Type booleanType() throws LookupException {
 			return findType("boolean");
 		}

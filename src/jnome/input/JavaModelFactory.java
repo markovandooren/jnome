@@ -35,6 +35,7 @@ import chameleon.core.type.TypeReference;
 import chameleon.core.variable.FormalParameter;
 import chameleon.input.ModelFactory;
 import chameleon.input.ParseException;
+import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.support.input.ModelFactoryUsingANTLR;
 import chameleon.support.member.simplename.SimpleNameMethodHeader;
 import chameleon.support.member.simplename.operator.infix.InfixOperator;
@@ -66,7 +67,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public JavaModelFactory(Java language) throws IOException, ParseException {
+	public JavaModelFactory(ObjectOrientedLanguage language) throws IOException, ParseException {
 		setLanguage(language, ModelFactory.class);
 	}
 	
@@ -80,7 +81,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 	}
 	
 	//FIXME: Object and String must be parsed.
-	public JavaModelFactory(Java language, Collection<File> base) throws IOException, ParseException {
+	public JavaModelFactory(ObjectOrientedLanguage language, Collection<File> base) throws IOException, ParseException {
 		setLanguage(language, ModelFactory.class);
 		initializeBase(base);
 	}
@@ -334,7 +335,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         JavaLexer lexer = new JavaLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         JavaParser parser = new JavaParser(tokens);
-        parser.setLanguage((Java) language());
+        parser.setLanguage((ObjectOrientedLanguage) language());
         return parser;
     }
 

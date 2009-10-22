@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 import jnome.input.JavaModelFactory;
+import chameleon.core.lookup.LookupException;
 import chameleon.input.ParseException;
 import chameleon.support.tool.ArgumentParser;
 import chameleon.support.tool.Arguments;
@@ -25,8 +26,9 @@ public class Copy {
    *
    * Example 
    * java Copy c:\output\ c:\input1\ c:\input2\ @javax.swing @java.lang #java #java.security 
+   * @throws LookupException 
    */
-  public static void main(String[] args) throws ParseException, MalformedURLException, FileNotFoundException, IOException, Exception {
+  public static void main(String[] args) throws ParseException, MalformedURLException, FileNotFoundException, IOException, LookupException {
     if(args.length < 2) {
       System.out.println("Usage: java .... Copy outputDir inputDir* @recursivePackageFQN* #packageFQN*");
     }

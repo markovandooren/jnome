@@ -37,12 +37,6 @@ public class NullType extends RegularType {
     return true; 
   }
 
-	public NullType clone() {
-		NullType result = cloneThis();
-		result.copyContents(this);
-		return result;
-	}
-
   protected NullType cloneThis() {
     return new NullType(language());
   }

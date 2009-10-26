@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 /Users/marko/git/jnome/src/jnome/input/parser/Java.g 2009-10-08 18:13:00
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 /Users/marko/git/jnome/src/jnome/input/parser/Java.g 2009-10-26 18:41:15
 
 package jnome.input.parser;
 

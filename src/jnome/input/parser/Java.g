@@ -845,7 +845,7 @@ constructorDeclaratorRest
 constantDeclarator returns [JavaVariableDeclaration element]
 @init{int count = 0;}
     :   name=Identifier (('[' ']' {count++;})* '=' init=variableInitializer) 
-       {retval.element = new JavaVariableDeclaration($name.text); retval.element.setArrayDimension(count); retval.element.setExpression(init.element);}
+       {retval.element = new JavaVariableDeclaration($name.text); retval.element.setArrayDimension(count); retval.element.setInitialization(init.element);}
     ;
     
 variableDeclarators returns [List<VariableDeclaration> element]
@@ -853,7 +853,7 @@ variableDeclarators returns [List<VariableDeclaration> element]
     ;
 
 variableDeclarator returns [JavaVariableDeclaration element]
-    :   id=variableDeclaratorId {retval.element = new JavaVariableDeclaration(id.element.name()); retval.element.setArrayDimension(id.element.dimension());} ('=' init=variableInitializer {retval.element.setExpression(init.element);})?
+    :   id=variableDeclaratorId {retval.element = new JavaVariableDeclaration(id.element.name()); retval.element.setArrayDimension(id.element.dimension());} ('=' init=variableInitializer {retval.element.setInitialization(init.element);})?
     ;
     
 

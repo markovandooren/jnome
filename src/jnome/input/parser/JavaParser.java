@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 /Users/marko/git/jnome/src/jnome/input/parser/Java.g 2009-10-08 18:12:59
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 /Users/marko/git/jnome/src/jnome/input/parser/Java.g 2009-10-26 18:41:14
 
 package jnome.input.parser;
 
@@ -11590,7 +11590,7 @@ public class JavaParser extends ChameleonParser {
                     int LA114_0 = input.LA(1);
 
                     if ( (LA114_0==77) ) {
-                        int LA114_1 = input.LA(2);
+                        int LA114_2 = input.LA(2);
 
                         if ( (synpred150_Java()) ) {
                             alt114=1;

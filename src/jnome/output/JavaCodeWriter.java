@@ -988,7 +988,6 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public String toCodeLocalVarForInit(LocalVariableDeclarator local) throws LookupException {
-//    Variable var = (Variable)local.getVariables().get(0);
     final StringBuffer result = new StringBuffer();
     List modifiers = local.modifiers();
     if (modifiers.size() != 0) {
@@ -1013,7 +1012,7 @@ public class JavaCodeWriter extends Syntax {
             first = false;
           }
           result.append(element.signature().name());
-          Expression initCode = element.expression();
+          Expression initCode = element.initialization();
           if (initCode != null) {
             result.append(" = ");
 							result.append(toCode(initCode));
@@ -1065,7 +1064,7 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public String toCodeSimpleForControl(SimpleForControl control) throws LookupException {
-  	return "("+toCodeForInit((Element)control.getForInit())+"; "+toCode(control.condition())+"; "+toCode(control.getUpdate())+") ";
+  	return "("+toCodeForInit((Element)control.getForInit())+"; "+toCode(control.condition())+"; "+toCode(control.update())+") ";
   }
   
   public boolean isEnhancedForControl(Element element) {

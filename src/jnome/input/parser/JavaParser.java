@@ -6166,7 +6166,7 @@ public class JavaParser extends ChameleonParser {
             }
 
             if ( state.backtracking==0 ) {
-              retval.element = new JavaVariableDeclaration((name!=null?name.getText():null)); retval.element.setArrayDimension(count); retval.element.setExpression(init.element);
+              retval.element = new JavaVariableDeclaration((name!=null?name.getText():null)); retval.element.setArrayDimension(count); retval.element.setInitialization(init.element);
             }
 
             }
@@ -6353,7 +6353,7 @@ public class JavaParser extends ChameleonParser {
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, init.getTree());
                     if ( state.backtracking==0 ) {
-                      retval.element.setExpression(init.element);
+                      retval.element.setInitialization(init.element);
                     }
 
                     }

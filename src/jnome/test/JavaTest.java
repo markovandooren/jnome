@@ -1,5 +1,7 @@
 package jnome.test;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +20,7 @@ public abstract class JavaTest extends CompositeTest {
 	 */
 	@Before
 	public void setLogLevels() {
-		
+		Logger.getRootLogger().setLevel(Level.FATAL);
 	}
 	
 	/**

@@ -13,6 +13,7 @@ import chameleon.core.element.Element;
 import chameleon.core.expression.NamedTarget;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
+import chameleon.core.namespace.NamespaceOrTypeReference;
 import chameleon.core.reference.CrossReference;
 import chameleon.core.type.DerivedType;
 import chameleon.core.type.Type;
@@ -41,7 +42,7 @@ public class JavaTypeReference extends TypeReference {
    * @param target
    */
   public JavaTypeReference(NamedTarget target) {
-  	super(target.getTarget() == null ? null : new JavaTypeReference((NamedTarget)target.getTarget()),target.getName());
+  	super(target.getTarget() == null ? null : new NamespaceOrTypeReference((NamedTarget)target.getTarget()),target.getName());
   }
   
   public JavaTypeReference(String fqn, int arrayDimension) {

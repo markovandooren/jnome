@@ -184,6 +184,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
   public List<Element> children() {
     List<Element> result = super.children();
     Util.addNonNull(body(), result);
+    Util.addNonNull(getTypeReference(), result);
     return result;
   }
   

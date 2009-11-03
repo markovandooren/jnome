@@ -123,6 +123,7 @@ public class ArrayCreationExpression extends Expression<ArrayCreationExpression>
   public List<? extends Element> children() {
     final List<? extends Element> result = getDimensionInitializers();
     Util.addNonNull(getInitializer(), result);
+    Util.addNonNull(getTypeReference(), result);
     return result;
   }
 

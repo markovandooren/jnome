@@ -216,7 +216,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 
   public class ConstructorSelector extends DeclarationSelector<NormalMethod> {
     
-    public NormalMethod filter(Declaration declaration) throws LookupException {
+    public NormalMethod filter(NormalMethod declaration) throws LookupException {
     	NormalMethod result = null;
 			NormalMethod<?,?,?> decl = (NormalMethod) declaration;
 			if(decl.nearestAncestor(Type.class).signature().sameAs(getTypeReference().signature())) {

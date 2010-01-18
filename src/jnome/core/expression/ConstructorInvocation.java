@@ -9,9 +9,9 @@ import org.rejuse.association.SingleAssociation;
 import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.predicate.SafePredicate;
 
-import chameleon.core.MetamodelException;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.DeclarationContainer;
+import chameleon.core.declaration.Signature;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.expression.Expression;
@@ -20,6 +20,7 @@ import chameleon.core.expression.InvocationTarget;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.lookup.LookupStrategy;
+import chameleon.core.method.MethodSignature;
 import chameleon.core.relation.WeakPartialOrder;
 import chameleon.core.type.ClassBody;
 import chameleon.core.type.RegularType;
@@ -216,20 +217,25 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 
   public class ConstructorSelector extends DeclarationSelector<NormalMethod> {
     
-    public NormalMethod filter(NormalMethod declaration) throws LookupException {
-    	NormalMethod result = null;
-			NormalMethod<?,?,?> decl = (NormalMethod) declaration;
-			if(decl.nearestAncestor(Type.class).signature().sameAs(getTypeReference().signature())) {
-			if(decl.is(language(ObjectOrientedLanguage.class).CONSTRUCTOR)==Ternary.TRUE) {
+    public boolean selectedRegardlessOfSignature(NormalMethod declaration) throws LookupException {
+    	return declaration.is(language(ObjectOrientedLanguage.class).CONSTRUCTOR)==Ternary.TRUE;
+    }
+    
+		@Override
+		public boolean selected(Signature signature) throws LookupException {
+    	boolean result = false;
+			if(signature instanceof MethodSignature) {
+				MethodSignature<?,?> sig = (MethodSignature<?,?>)signature;
+			  if(sig.nearestAncestor(Type.class).signature().sameAs(getTypeReference().signature())) {
 				List<Type> actuals = getActualParameterTypes();
-				List<Type> formals = decl.header().getParameterTypes();
+				List<Type> formals = ((MethodSignature)signature).parameterTypes();
 				if (new MoreSpecificTypesOrder().contains(actuals, formals)) {
-						result = decl;
+						result = true;
 				}
 			}
 			}
       return result;
-    }
+		}
 
     @Override
     public WeakPartialOrder<NormalMethod> order() {
@@ -246,6 +252,9 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 		public Class<NormalMethod> selectedClass() {
 			return NormalMethod.class;
 		}
+
+
+
   }
   
 	@Override

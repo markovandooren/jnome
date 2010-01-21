@@ -2,6 +2,7 @@ package jnome.core.type;
 
 
 import chameleon.core.declaration.SimpleNameSignature;
+import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
@@ -83,7 +84,8 @@ public class ArrayType extends RegularType {
   
   private int _arrayDimension;
   
-  public boolean equals(Object o) {
+  @Override
+  public boolean uniSameAs(Element o) {
     return (o instanceof ArrayType) &&
            ((ArrayType)o).getComponentType().equals(getComponentType()) &&
            ((ArrayType)o).getDimension() == getDimension();

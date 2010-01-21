@@ -22,6 +22,7 @@ public class TestRejuse extends JavaTest {
 
 	@Override
 	public void setLogLevels() {
+		super.setLogLevels();
 		Logger.getLogger("chameleon.test").setLevel(Level.INFO);
 		Logger.getRootLogger().setLevel(Level.FATAL);
 	}

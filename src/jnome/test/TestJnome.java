@@ -31,6 +31,7 @@ public class TestJnome extends JavaTest {
 	}
 
 	public void setLogLevels() {
+		super.setLogLevels();
 		Logger.getLogger("chameleon.test").setLevel(Level.INFO);
 		Logger.getRootLogger().setLevel(Level.FATAL);
 	}

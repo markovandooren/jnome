@@ -11,6 +11,7 @@ import java.util.Set;
 import jnome.core.language.Java;
 import jnome.input.parser.JavaLexer;
 import jnome.input.parser.JavaParser;
+import jnome.output.JavaCodeWriter;
 
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
@@ -21,7 +22,6 @@ import org.rejuse.io.fileset.PatternPredicate;
 
 import chameleon.core.compilationunit.CompilationUnit;
 import chameleon.core.declaration.SimpleNameSignature;
-import chameleon.core.element.ChameleonProgrammerException;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.member.Member;
@@ -33,9 +33,11 @@ import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
 import chameleon.core.variable.FormalParameter;
+import chameleon.exception.ChameleonProgrammerException;
 import chameleon.input.ModelFactory;
 import chameleon.input.ParseException;
 import chameleon.oo.language.ObjectOrientedLanguage;
+import chameleon.output.Syntax;
 import chameleon.support.input.ModelFactoryUsingANTLR;
 import chameleon.support.member.simplename.SimpleNameMethodHeader;
 import chameleon.support.member.simplename.operator.infix.InfixOperator;
@@ -58,7 +60,9 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 	 * @throws ParseException
 	 */
 	public JavaModelFactory() {
-		setLanguage(new Java(), ModelFactory.class);
+		Java lang = new Java();
+		lang.setConnector(Syntax.class, new JavaCodeWriter());
+		setLanguage(lang, ModelFactory.class);
 	}
 	
 	/**

@@ -148,10 +148,8 @@ public class Java extends ObjectOrientedLanguage {
 
 	private class JavaOverridesRelation extends StrictPartialOrder<Member> {
 		@Override
-		public boolean contains(Member first, Member second)
-		    throws LookupException {
+		public boolean contains(Member first, Member second) throws LookupException {
 		  boolean result;
-		  
 		  if((first instanceof Method) && (second instanceof Method)) {
 		    assert first != null;
 		    assert second != null;

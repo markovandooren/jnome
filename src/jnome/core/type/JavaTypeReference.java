@@ -8,7 +8,6 @@ import org.rejuse.association.OrderedMultiAssociation;
 import chameleon.core.Config;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.TargetDeclaration;
-import chameleon.core.element.ChameleonProgrammerException;
 import chameleon.core.element.Element;
 import chameleon.core.expression.NamedTarget;
 import chameleon.core.lookup.DeclarationSelector;
@@ -21,6 +20,7 @@ import chameleon.core.type.TypeReference;
 import chameleon.core.type.generics.ActualTypeArgument;
 import chameleon.core.type.generics.InstantiatedTypeParameter;
 import chameleon.core.type.generics.TypeParameter;
+import chameleon.exception.ChameleonProgrammerException;
 
 /**
  * A class for Java type references. They add support for array types and generic parameters.

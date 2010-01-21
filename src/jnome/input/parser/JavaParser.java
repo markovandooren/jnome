@@ -2,7 +2,6 @@
 
 package jnome.input.parser;
 
-import chameleon.core.MetamodelException;
 
 import chameleon.core.lookup.LookupStrategyFactory;
 
@@ -10,7 +9,6 @@ import chameleon.core.compilationunit.CompilationUnit;
 
 import chameleon.core.declaration.SimpleNameSignature;
 
-import chameleon.core.element.ChameleonProgrammerException;
 import chameleon.core.element.Element;
 
 import chameleon.core.expression.ActualArgument;
@@ -68,6 +66,8 @@ import chameleon.core.type.inheritance.SubtypeRelation;
 
 import chameleon.core.variable.Variable;
 import chameleon.core.variable.FormalParameter;
+import chameleon.exception.ChameleonProgrammerException;
+import chameleon.exception.ModelException;
 
 import chameleon.input.InputProcessor;
 import chameleon.input.Position2D;
@@ -958,7 +958,7 @@ public class JavaParser extends ChameleonParser {
                          retval.element = new NamespacePart(getDefaultNamespace().getOrCreateNamespace((qn!=null?input.toString(qn.start,qn.stop):null)));
                          setKeyword(retval.element,pkgkw);
                        }
-                       catch(MetamodelException exc) {
+                       catch(ModelException exc) {
                          //this should not happen, something is wrong with the parser
                          throw new ChameleonProgrammerException(exc);
                        }

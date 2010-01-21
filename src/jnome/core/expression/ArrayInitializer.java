@@ -9,7 +9,6 @@ import jnome.core.type.ArrayType;
 import org.rejuse.association.OrderedMultiAssociation;
 import org.rejuse.java.collections.Visitor;
 
-import chameleon.core.element.ChameleonProgrammerException;
 import chameleon.core.expression.Expression;
 import chameleon.core.expression.InvocationTarget;
 import chameleon.core.lookup.LookupException;
@@ -17,6 +16,7 @@ import chameleon.core.type.Type;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
 import chameleon.core.variable.Variable;
+import chameleon.exception.ChameleonProgrammerException;
 import chameleon.support.variable.VariableDeclaration;
 
 /**

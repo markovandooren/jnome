@@ -21,6 +21,7 @@ public abstract class JavaTest extends CompositeTest {
 	@Before
 	public void setLogLevels() {
 		Logger.getRootLogger().setLevel(Level.FATAL);
+		Logger.getLogger("chameleon.test.expression").setLevel(Level.FATAL);
 	}
 	
 	/**
@@ -43,4 +44,13 @@ public abstract class JavaTest extends CompositeTest {
 	public void testVerification() throws Exception {
 	}
 
+//	@Test @Override
+//	public void testClone() throws Exception {
+//	}
+//	@Test @Override
+//	public void testChildren() throws Exception {
+//	}
+//	@Test @Override
+//	public void testCrossReferences() throws Exception {
+//	}
 }

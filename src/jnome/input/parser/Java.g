@@ -5,10 +5,8 @@ options {
   output=AST;
   superClass = ChameleonParser;
 }
-
-import JavaP,JavaL;
-
-@parser::header {
+import JavaL,JavaP;
+@header {
 package jnome.input.parser;
 
 import chameleon.exception.ModelException;
@@ -177,11 +175,29 @@ import jnome.core.variable.MultiFormalParameter;
 import java.util.List;
 import java.util.ArrayList;
 }
-@parser::members{
+@members{
   @Override
   public void setLanguage(Language language) {
     gJavaP.setLanguage(language);
   }
+  
+  @Override
+  public Language language() {
+    return gJavaP.language();
+  }
+  
+  public CompilationUnit getCompilationUnit() {
+    return gJavaP.getCompilationUnit();
+  }
+	   
+  public void setCompilationUnit(CompilationUnit compilationUnit) {
+    gJavaP.setCompilationUnit(compilationUnit);
+  }
+  
+  public Namespace getDefaultNamespace() {
+    return gJavaP.getDefaultNamespace();
+  }
+
 }
 
 stuff	:	Identifier;

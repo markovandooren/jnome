@@ -1,9 +1,8 @@
 lexer grammar JavaL;
-@lexer::header {
-package jnome.input.parser;
+@header {
+  package jnome.input.parser;
 }
-
-@lexer::members {
+@members {
   protected boolean enumIsKeyword = true;
   protected boolean assertIsKeyword = true;
 }

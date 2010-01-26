@@ -38,6 +38,7 @@ import chameleon.input.ModelFactory;
 import chameleon.input.ParseException;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.output.Syntax;
+import chameleon.support.input.ChameleonParser;
 import chameleon.support.input.ModelFactoryUsingANTLR;
 import chameleon.support.member.simplename.SimpleNameMethodHeader;
 import chameleon.support.member.simplename.operator.infix.InfixOperator;
@@ -71,7 +72,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public JavaModelFactory(ObjectOrientedLanguage language) throws IOException, ParseException {
+	public JavaModelFactory(Java language) throws IOException, ParseException {
 		setLanguage(language, ModelFactory.class);
 	}
 	
@@ -85,7 +86,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 	}
 	
 	//FIXME: Object and String must be parsed.
-	public JavaModelFactory(ObjectOrientedLanguage language, Collection<File> base) throws IOException, ParseException {
+	public JavaModelFactory(Java language, Collection<File> base) throws IOException, ParseException {
 		setLanguage(language, ModelFactory.class);
 		initializeBase(base);
 	}
@@ -334,7 +335,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
       * return document; }
       */
 
-    public JavaParser getParser(InputStream inputStream, String fileName) throws IOException {
+    public ChameleonParser getParser(InputStream inputStream, String fileName) throws IOException {
         ANTLRInputStream input = new ANTLRInputStream(inputStream);
         JavaLexer lexer = new JavaLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -356,7 +357,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
   		  InputStream inputStream = new StringBufferInputStream(text);
   		  Element result = null;
   		  if(element instanceof Member) {
-  	  		result = getParser(inputStream, "document").memberDecl().element;
+  	  		result = ((JavaParser)getParser(inputStream, "document")).memberDecl().element;
   			}
   			return result;
   		} catch(RecognitionException exc) {

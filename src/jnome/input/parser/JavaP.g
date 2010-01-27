@@ -195,6 +195,16 @@ scope TargetScope {
 
 @parser::members {
 
+  private JavaFactory _javaFactory = new JavaFactory();
+  
+  public JavaFactory factory() {
+    return _javaFactory;
+  }
+  
+  public void setFactory(JavaFactory factory) {
+    _javaFactory = factory;
+  }
+
   public InvocationTarget cloneTargetOfTarget(NamedTarget target) {
     InvocationTarget result = null;
     if(target != null) {
@@ -204,6 +214,10 @@ scope TargetScope {
       }
     }
     return result;
+  }
+  
+  public RegularType createType(SimpleNameSignature signature) {
+     return factory().createRegularType(signature);
   }
 
   public InvocationTarget cloneTarget(InvocationTarget target) {
@@ -410,7 +424,7 @@ classDeclaration returns [Type element]
     ;
     
 normalClassDeclaration returns [RegularType element]
-    :   clkw='class' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text)); setLocation(retval.element,name,"__NAME");} (params=typeParameters{for(FormalTypeParameter par: params.element){retval.element.addParameter(par);}})?
+    :   clkw='class' name=Identifier {retval.element = createType(new SimpleNameSignature($name.text)); setLocation(retval.element,name,"__NAME");} (params=typeParameters{for(FormalTypeParameter par: params.element){retval.element.addParameter(par);}})?
         (extkw='extends' sc=type 
             {SubtypeRelation extRelation = new SubtypeRelation(sc.element); 
              retval.element.addInheritanceRelation(extRelation);
@@ -454,7 +468,7 @@ enumDeclaration returns [RegularType element]
 scope{
   Type enumType;
 }
-    :   ENUM name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text)); 
+    :   ENUM name=Identifier {retval.element = createType(new SimpleNameSignature($name.text)); 
                               retval.element.addModifier(new Enum()); 
                               $enumDeclaration::enumType=retval.element;
                               setLocation(retval.element,name,"__NAME");}
@@ -489,7 +503,7 @@ interfaceDeclaration returns [Type element]
     ;
     
 normalInterfaceDeclaration returns [RegularType element]
-    :   ifkw='interface' name=Identifier {retval.element = new RegularType(new SimpleNameSignature($name.text)); 
+    :   ifkw='interface' name=Identifier {retval.element = createType(new SimpleNameSignature($name.text)); 
                                           retval.element.addModifier(new Interface());
                                           setLocation(retval.element,name,"__NAME");} 
          (params=typeParameters{for(TypeParameter par: params.element){retval.element.addParameter(par);}})? 

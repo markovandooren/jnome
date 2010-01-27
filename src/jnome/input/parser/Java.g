@@ -172,10 +172,13 @@ import jnome.core.enumeration.EnumConstant;
 import jnome.core.variable.JavaVariableDeclaration;
 import jnome.core.variable.MultiFormalParameter;
 
+import jnome.input.JavaFactory;
+
 import java.util.List;
 import java.util.ArrayList;
 }
 @members{
+
   @Override
   public void setLanguage(Language language) {
     gJavaP.setLanguage(language);
@@ -196,6 +199,14 @@ import java.util.ArrayList;
   
   public Namespace getDefaultNamespace() {
     return gJavaP.getDefaultNamespace();
+  }
+
+  public void setFactory(JavaFactory factory) {
+    gJavaP.setFactory(factory);
+  }
+  
+  public JavaFactory factory() {
+    return gJavaP.factory();
   }
 
 }

@@ -86,4 +86,9 @@ public class EnumConstant extends FixedSignatureMember<EnumConstant,Type,SimpleN
 		return Valid.create();
 	}
 
+	@Override
+	public Class<SimpleNameSignature> signatureType() {
+		return SimpleNameSignature.class;
+	}
+
 }

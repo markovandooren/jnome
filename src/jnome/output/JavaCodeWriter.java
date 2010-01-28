@@ -32,6 +32,7 @@ import chameleon.core.expression.Expression;
 import chameleon.core.expression.Invocation;
 import chameleon.core.expression.Literal;
 import chameleon.core.expression.NamedTarget;
+import chameleon.core.expression.NamedTargetExpression;
 import chameleon.core.expression.VariableReference;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.member.Member;
@@ -159,6 +160,8 @@ public class JavaCodeWriter extends Syntax {
       result = toCodeNamedTarget((NamedTarget)element);
     } else if(isRegulaMethodInvocation(element)) {
       result = toCodeRegularMethodInvocation((RegularMethodInvocation)element);
+    } else if(isNamedTargetRef(element)) {
+      result = toCodeNamedTargetRef((NamedTargetExpression)element);
     } else if(isVarRef(element)) {
       result = toCodeVarRef((VariableReference)element);
     } else if(isThisConstructorDelegation(element)) {
@@ -1235,6 +1238,14 @@ public class JavaCodeWriter extends Syntax {
     return result.toString();
   }
   
+  public boolean isNamedTargetRef(Element element) {
+    return element instanceof NamedTargetExpression;
+  }
+  
+  public String toCodeNamedTargetRef(NamedTargetExpression var) throws LookupException {
+    return toCode(var.getTarget());
+  }
+
   public boolean isVarRef(Element element) {
     return element instanceof VariableReference;
   }

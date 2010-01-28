@@ -1119,7 +1119,7 @@ expression returns [Expression element]
     :   ex=conditionalExpression {retval.element=ex.element;} (op=assignmentOperator exx=expression 
         {String txt = $op.text; 
          if(txt.equals("=")) {
-           retval.element = new AssignmentExpression((Assignable)ex.element,exx.element);
+           retval.element = new AssignmentExpression(ex.element,exx.element);
          } else {
            retval.element = new InfixOperatorInvocation($op.text,ex.element);
            ((InfixOperatorInvocation)retval.element).addArgument(new ActualArgument(exx.element));
@@ -1362,7 +1362,7 @@ Token stop=null;
 	:	
 	'.' name=Identifier 
 	        {
-	         retval.element = new VariableReference($name.text,cloneTarget($TargetScope::target));
+	         retval.element = new NamedTargetExpression($name.text,cloneTarget($TargetScope::target));
 	         stop=name;
 	        } 
 	    (args=arguments 
@@ -1424,7 +1424,7 @@ Token stop = null;
 	        setLocation($TargetScope::target, $TargetScope::start, idx);
 	       }
 	  )* 
-	{((NamedTarget)$TargetScope::target).removeAllTags(); retval.element = new VariableReference(((NamedTarget)$TargetScope::target).getName(),cloneTargetOfTarget(((NamedTarget)$TargetScope::target)));
+	{((NamedTarget)$TargetScope::target).removeAllTags(); retval.element = new NamedTargetExpression(((NamedTarget)$TargetScope::target).getName(),cloneTargetOfTarget(((NamedTarget)$TargetScope::target)));
 	 setLocation(retval.element, $TargetScope::start, stop);
 	 //The variable reference is only returned if none of the following subrules match.
 	}
@@ -1451,7 +1451,7 @@ scope TargetScope;
 	{if($TargetScope::target instanceof ThisLiteral) {
 	  retval.element = (ThisLiteral)$TargetScope::target;
 	 } else {
-	  retval.element = new VariableReference(((NamedTarget)$TargetScope::target).getName(),cloneTargetOfTarget((NamedTarget)$TargetScope::target));
+	  retval.element = new NamedTargetExpression(((NamedTarget)$TargetScope::target).getName(),cloneTargetOfTarget((NamedTarget)$TargetScope::target));
 	 }}
    (
         arr=arrayAccessSuffixRubbish {retval.element = arr.element;}
@@ -1482,7 +1482,7 @@ argumentsSuffixRubbish returns [RegularMethodInvocation element]
 // NEEDS_TARGET
 arrayAccessSuffixRubbish returns [Expression element]
 @after{setLocation(retval.element, $TargetScope::start, retval.stop);}
-	:	{retval.element = new ArrayAccessExpression(new VariableReference(((NamedTarget)$TargetScope::target).getName(),cloneTargetOfTarget((NamedTarget)$TargetScope::target)));} 
+	:	{retval.element = new ArrayAccessExpression(new NamedTargetExpression(((NamedTarget)$TargetScope::target).getName(),cloneTargetOfTarget((NamedTarget)$TargetScope::target)));} 
 	        (open='[' arrex=expression close=']' 
 	          { FilledArrayIndex index = new FilledArrayIndex(arrex.element);
 	           ((ArrayAccessExpression)retval.element).addIndex(index);
@@ -1557,7 +1557,7 @@ superSuffix returns [Expression element]
 @init{Token stop=null;}
     :   //arguments
         //|   
-    '.' name=Identifier {retval.element = new VariableReference($name.text,cloneTarget($TargetScope::target));} 
+    '.' name=Identifier {retval.element = new NamedTargetExpression($name.text,cloneTarget($TargetScope::target));} 
         (args=arguments
           {retval.element = new RegularMethodInvocation($name.text,$TargetScope::target);
           ((RegularMethodInvocation)retval.element).addAllArguments(args.element);

@@ -34,10 +34,6 @@ public class EnumConstant extends FixedSignatureMember<EnumConstant,Type,SimpleN
 		return result;
 	}
 
-	public Type getNearestType() {
-		return parent().getNearestType();
-	}
-
 	public List<Element> children() {
     List<Element> result = new ArrayList<Element>();
     result.add(actualArgumentList());

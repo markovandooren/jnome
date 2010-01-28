@@ -1424,19 +1424,19 @@ Token stop = null;
 	        setLocation($TargetScope::target, $TargetScope::start, idx);
 	       }
 	  )* 
-	{retval.element = new VariableReference(((NamedTarget)$TargetScope::target).getName(),cloneTargetOfTarget(((NamedTarget)$TargetScope::target)));
+	{((NamedTarget)$TargetScope::target).removeAllTags(); retval.element = new VariableReference(((NamedTarget)$TargetScope::target).getName(),cloneTargetOfTarget(((NamedTarget)$TargetScope::target)));
 	 setLocation(retval.element, $TargetScope::start, stop);
 	 //The variable reference is only returned if none of the following subrules match.
 	}
 (       ('[' ']')+ '.' 'class'
     |   
         arr=arrayAccessSuffixRubbish {retval.element = arr.element;}
-    |   arg=argumentsSuffixRubbish {retval.element = arg.element;} // REMOVE VARIABLE REFERENCE POSITION!
+    |   arg=argumentsSuffixRubbish {retval.element.removeAllTags(); retval.element = arg.element;} // REMOVE VARIABLE REFERENCE POSITION!
     |   '.' clkw='class' 
          {retval.element = new ClassLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));
           setLocation(retval.element, $TargetScope::start, clkw);
          }
-    |   '.' gen=explicitGenericInvocation {retval.element = gen.element;} // REMOVE VARIABLE REFERENCE POSITION!
+    |   '.' gen=explicitGenericInvocation {retval.element.removeAllTags(); retval.element = gen.element;} // REMOVE VARIABLE REFERENCE POSITION!
     |   '.' thiskw='this' 
         {retval.element = new ThisLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));
           setLocation(retval.element, $TargetScope::start, thiskw);
@@ -1469,7 +1469,7 @@ scope TargetScope;
 
 // NEEDS_TARGET
 argumentsSuffixRubbish returns [RegularMethodInvocation element]
-// the last part of target is the method name (what a hopeless grammar)
+// the last part of target is the method name
 	:	args=arguments 
 	        {String name = ((NamedTarget)$TargetScope::target).getName();
 	         $TargetScope::target = ((NamedTarget)$TargetScope::target).getTarget(); //chop off head

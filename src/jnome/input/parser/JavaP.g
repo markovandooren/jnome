@@ -252,12 +252,19 @@ scope TargetScope {
   
 
   public static class StupidVariableDeclaratorId {
-       public StupidVariableDeclaratorId(String name, int dimension) {
+       public StupidVariableDeclaratorId(String name, int dimension, CommonToken nameToken) {
          _name = name;
          _dimension = dimension;
+         _token = nameToken;
        }
        private final String _name;
        private final int _dimension;
+       
+       public CommonToken nameToken() {
+         return _token;
+       }
+       
+       private CommonToken _token;
        
        public String name() {
          return _name;
@@ -681,8 +688,13 @@ constructorDeclaratorRest
 
 constantDeclarator returns [JavaVariableDeclaration element]
 @init{int count = 0;}
+@after{setLocation(retval.element, (CommonToken)retval.start, (CommonToken)retval.stop);}
     :   name=Identifier (('[' ']' {count++;})* '=' init=variableInitializer) 
-       {retval.element = new JavaVariableDeclaration($name.text); retval.element.setArrayDimension(count); retval.element.setInitialization(init.element);}
+       {retval.element = new JavaVariableDeclaration($name.text);
+        retval.element.setArrayDimension(count); 
+        retval.element.setInitialization(init.element);
+        setLocation(retval.element, name, "__NAME");
+        }
     ;
     
 variableDeclarators returns [List<VariableDeclaration> element]
@@ -690,14 +702,19 @@ variableDeclarators returns [List<VariableDeclaration> element]
     ;
 
 variableDeclarator returns [JavaVariableDeclaration element]
-    :   id=variableDeclaratorId {retval.element = new JavaVariableDeclaration(id.element.name()); retval.element.setArrayDimension(id.element.dimension());} ('=' init=variableInitializer {retval.element.setInitialization(init.element);})?
+@after{setLocation(retval.element, (CommonToken)retval.start, (CommonToken)retval.stop);}
+    :   id=variableDeclaratorId 
+             {retval.element = new JavaVariableDeclaration(id.element.name()); 
+              retval.element.setArrayDimension(id.element.dimension());
+              setLocation(retval.element, id.element.nameToken(), "__NAME");
+              } ('=' init=variableInitializer {retval.element.setInitialization(init.element);})?
     ;
     
 
     
 variableDeclaratorId returns [StupidVariableDeclaratorId element]
 @init{int count = 0;}
-    :   name=Identifier ('[' ']' {count++;})* { retval.element = new StupidVariableDeclaratorId($name.text, count);}
+    :   name=Identifier ('[' ']' {count++;})* { retval.element = new StupidVariableDeclaratorId($name.text, count,(CommonToken)name);}
     ;
 
 variableInitializer returns [Expression element]

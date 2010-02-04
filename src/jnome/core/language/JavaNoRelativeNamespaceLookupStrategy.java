@@ -31,5 +31,7 @@ public class JavaNoRelativeNamespaceLookupStrategy extends LocalLookupStrategy<N
   	}
   	return result;
   }
+  
+  //PAPER: customize lookup
 
 }

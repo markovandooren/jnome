@@ -148,7 +148,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         catch (LookupException e) {
         	// This should only happen if the Java system library was not parsed.
         	e.printStackTrace();
-            throw new Error(e);
+            throw new ChameleonProgrammerException(e);
         }
     }
 

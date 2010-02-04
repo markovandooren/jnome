@@ -29,6 +29,7 @@ import chameleon.support.modifier.PublicProperty;
 import chameleon.support.rule.member.MemberInheritableByDefault;
 import chameleon.support.rule.member.MemberOverridableByDefault;
 import chameleon.support.rule.member.TypeExtensibleByDefault;
+import chameleon.support.variable.VariableDeclarator;
 
 /**
  * @author Marko van Dooren
@@ -53,6 +54,11 @@ public class Java extends ObjectOrientedLanguage {
 		CONSTRUCTOR.addImplication(CLASS);
 		// In Java, constructors are not inheritable
 		CONSTRUCTOR.addImplication(INHERITABLE.inverse());
+		
+  	INHERITABLE.addValidElementType(VariableDeclarator.class);
+  	PRIVATE.addValidElementType(VariableDeclarator.class);
+  	PUBLIC.addValidElementType(VariableDeclarator.class);
+  	PROTECTED.addValidElementType(VariableDeclarator.class);
 	}
 	
 	private final class JavaEquivalenceRelation extends EquivalenceRelation<Member> {
@@ -193,9 +199,9 @@ public class Java extends ObjectOrientedLanguage {
 	public final ChameleonProperty SYNCHRONIZED;
 	public final ChameleonProperty TRANSIENT;
 	public final ChameleonProperty VOLATILE;
-	public final ChameleonProperty PROTECTED;
-	public final ChameleonProperty PRIVATE;
-	public final ChameleonProperty PUBLIC;
+	public final StaticChameleonProperty PROTECTED;
+	public final StaticChameleonProperty PRIVATE;
+	public final StaticChameleonProperty PUBLIC;
 	public final ChameleonProperty PACKAGE_ACCESSIBLE;
 	
 	public Type getNullType(){

@@ -35,7 +35,6 @@ import chameleon.core.expression.NamedTarget;
 import chameleon.core.expression.NamedTargetExpression;
 import chameleon.core.expression.VariableReference;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.member.Member;
 import chameleon.core.method.Implementation;
 import chameleon.core.method.Method;
 import chameleon.core.method.NativeImplementation;
@@ -47,16 +46,23 @@ import chameleon.core.modifier.Modifier;
 import chameleon.core.namespace.NamespaceOrTypeReference;
 import chameleon.core.namespace.NamespaceReference;
 import chameleon.core.namespacepart.DemandImport;
+import chameleon.core.namespacepart.Import;
 import chameleon.core.namespacepart.NamespacePart;
 import chameleon.core.namespacepart.TypeImport;
 import chameleon.core.reference.SpecificReference;
 import chameleon.core.statement.Block;
+import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
+import chameleon.core.type.TypeElement;
 import chameleon.core.type.TypeReference;
+import chameleon.core.type.generics.ActualTypeArgument;
+import chameleon.core.type.generics.BasicTypeArgument;
+import chameleon.core.type.generics.ExtendsConstraint;
+import chameleon.core.type.generics.FormalTypeParameter;
+import chameleon.core.type.generics.TypeConstraint;
+import chameleon.core.type.generics.TypeParameter;
 import chameleon.core.type.inheritance.InheritanceRelation;
 import chameleon.core.variable.FormalParameter;
-import chameleon.core.variable.RegularMemberVariable;
-import chameleon.core.variable.Variable;
 import chameleon.output.Syntax;
 import chameleon.support.expression.ArrayIndex;
 import chameleon.support.expression.AssignmentExpression;
@@ -76,6 +82,7 @@ import chameleon.support.member.simplename.method.RegularMethodInvocation;
 import chameleon.support.member.simplename.operator.infix.InfixOperatorInvocation;
 import chameleon.support.member.simplename.operator.postfix.PostfixOperatorInvocation;
 import chameleon.support.member.simplename.operator.prefix.PrefixOperatorInvocation;
+import chameleon.support.member.simplename.variable.MemberVariableDeclarator;
 import chameleon.support.modifier.Abstract;
 import chameleon.support.modifier.Constructor;
 import chameleon.support.modifier.Final;
@@ -113,9 +120,8 @@ import chameleon.support.type.StaticInitializer;
 import chameleon.support.variable.LocalVariable;
 import chameleon.support.variable.LocalVariableDeclarator;
 import chameleon.support.variable.VariableDeclaration;
+import chameleon.support.variable.VariableDeclarator;
 import chameleon.tool.Connector;
-
-import com.sun.org.apache.bcel.internal.classfile.JavaClass;
 
 /**
  * @author Marko van Dooren
@@ -202,8 +208,10 @@ public class JavaCodeWriter extends Syntax {
       result = toCodeStatementExprList((StatementExprList)element);
     } else if(isReturn(element)) {
       result = toCodeReturn((ReturnStatement)element);
-    } else if(isLocalVar(element)) {
-      result = toCodeLocalVar((LocalVariableDeclarator)element);
+    } else if(isMemberVariableDeclarator(element)) {
+      result = toCodeMemberVariableDeclarator((MemberVariableDeclarator)element);
+    } else if(isLocalVariableDeclarator(element)) {
+      result = toCodeLocalVariableDeclarator((LocalVariableDeclarator)element);
     } else if(isLocalClass(element)) {
       result = toCodeLocalClass((LocalClassStatement)element);
     } else if(isLabeledStatement(element)) {
@@ -222,8 +230,6 @@ public class JavaCodeWriter extends Syntax {
       result = toCodeAssignment((AssignmentExpression)element);
     } else if(isMethod(element)) {
       result = toCodeMethod((Method)element);
-    } else if(isMemberVariable(element)) {
-      result = toCodeMemberVariable((RegularMemberVariable)element);
     } else if(isStaticInitializer(element)) {
       result = toCodeStaticInitializer((StaticInitializer)element);
     } else if(isCompilationUnit(element)) {
@@ -233,7 +239,7 @@ public class JavaCodeWriter extends Syntax {
     } else if(isNamespaceOrTypeReference(element)) {
       result = toCodeNamespaceOrTypeReference((NamespaceOrTypeReference)element);
     } else if(isTypeReference(element)) {
-      result = toCodeTypeReference((TypeReference)element);
+      result = toCodeTypeReference((JavaTypeReference)element);
     } 
       // Specific reference MUST come after the other references.
       else if(isSpecificReference(element)) {
@@ -246,6 +252,12 @@ public class JavaCodeWriter extends Syntax {
     	result = toCodeSimpleForControl((SimpleForControl) element);
     } else if(isEnhancedForControl(element)) {
     	result = toCodeEnhancedForControl((EnhancedForControl) element);
+    } else if(isBasicTypeArgument(element)) {
+    	result = toCodeBasicTypeArgument((BasicTypeArgument) element);
+    } else if(isFormalTypeParameter(element)) {
+    	result = toCodeFormalTypeParameter((FormalTypeParameter) element);
+    } else if(isExtendsConstraint(element)) {
+    	result = toCodeExtendsConstraint((ExtendsConstraint) element);
     }
     else if(element == null) {
       result = "";
@@ -256,7 +268,15 @@ public class JavaCodeWriter extends Syntax {
     return result;
   }
   
-  public boolean isActualParameter(Element element) {
+  public String toCodeBasicTypeArgument(BasicTypeArgument element) throws LookupException {
+		return toCode(element.typeReference());
+	}
+
+	public boolean isBasicTypeArgument(Element element) {
+		return element instanceof BasicTypeArgument;
+	}
+
+	public boolean isActualParameter(Element element) {
   	return element instanceof ActualArgument;
   }
   
@@ -304,10 +324,10 @@ public class JavaCodeWriter extends Syntax {
   }
 
   public boolean isTypeReference(Element element) {
-    return element instanceof TypeReference;
+    return element instanceof JavaTypeReference;
   }
   
-  public String toCodeTypeReference(TypeReference typeReference) throws LookupException {
+  public String toCodeTypeReference(JavaTypeReference typeReference) throws LookupException {
     String result = toCode(typeReference.getTarget());
     if(result.length() > 0) {
       result = result + ".";
@@ -315,6 +335,18 @@ public class JavaCodeWriter extends Syntax {
     result = result + typeReference.getName();
     if(typeReference instanceof JavaTypeReference) {
     	JavaTypeReference tref = (JavaTypeReference)typeReference;
+    	List<ActualTypeArgument> typeArguments = tref.typeArguments();
+    	if(! typeArguments.isEmpty()) {
+    		result = result +"<";
+    		Iterator<ActualTypeArgument> iter = typeArguments.iterator();
+    		while(iter.hasNext()) {
+    			result = result + toCode(iter.next());
+    			if(iter.hasNext()) {
+    				result = result +",";
+    			}
+    		}
+    		result = result +">";
+    	}
     	int dimension = tref.arrayDimension();
     	while(dimension > 0) {
     		result = result + "[]";
@@ -324,9 +356,9 @@ public class JavaCodeWriter extends Syntax {
     return result;
   }
 
-  public boolean isMemberVariable(Element element) {
-    return element instanceof RegularMemberVariable;
-  }
+//  public boolean isMemberVariable(Element element) {
+//    return element instanceof RegularMemberVariable;
+//  }
   
   public boolean isStaticInitializer(Element element) {
     return element instanceof StaticInitializer;
@@ -390,13 +422,12 @@ public class JavaCodeWriter extends Syntax {
     StringBuffer result = new StringBuffer();
     result.append("package "+part.namespace().getFullyQualifiedName() +";\n\n");
     
-    Iterator iter = part.imports().iterator();
-    while(iter.hasNext()) {
-    	if(iter instanceof TypeImport) {
-        result.append("import "+toCode(((TypeImport)iter.next()).getTypeReference()) +";\n");
+    for(Import imp: part.imports()) {
+    	if(imp instanceof TypeImport) {
+        result.append("import "+toCode(((TypeImport)imp).getTypeReference()) +";\n");
     	}
-    	else if(iter instanceof DemandImport) {
-        result.append("import "+toCode(((DemandImport)iter.next()).namespaceReference()) +".*;\n");
+    	else if(imp instanceof DemandImport) {
+        result.append("import "+toCode(((DemandImport)imp).namespaceReference()) +".*;\n");
     	}
     }
     result.append("\n");
@@ -406,7 +437,7 @@ public class JavaCodeWriter extends Syntax {
         return !(o instanceof ArrayType);
       }
     }.filter(types);
-    iter = types.iterator();
+    Iterator iter = types.iterator();
     while(iter.hasNext()) {
       result.append(toCode((Element)iter.next()));
       if(iter.hasNext()) {
@@ -465,7 +496,7 @@ public class JavaCodeWriter extends Syntax {
   }
 
   public boolean isClass(Element element) {
-    return (element instanceof JavaClass);
+    return (element instanceof RegularType);
   }
   
   public boolean isInterface(Element element) {
@@ -483,7 +514,7 @@ public class JavaCodeWriter extends Syntax {
     result.append("{\n");
     indent();
     
-    List<Member> members = type.localMembers();
+    List<? extends TypeElement> members = type.directlyDeclaredElements();
     // Members
     new RobustVisitor() {
       public Object visit(Object element) throws LookupException {
@@ -536,6 +567,18 @@ public class JavaCodeWriter extends Syntax {
     //Name
     result.append("class ");
     result.append(type.getName());
+    List<TypeParameter> parameters = type.parameters();
+		if(! parameters.isEmpty()) {
+    	result.append("<");
+    	Iterator<TypeParameter> iter = parameters.iterator();
+    	while(iter.hasNext()) {
+    		result.append(toCode(iter.next()));
+    		if(iter.hasNext()) {
+    			result.append(",");
+    		}
+    	}
+    	result.append(">");
+    }
     List<InheritanceRelation> superTypes = type.inheritanceRelations();
     final List<TypeReference> classRefs = new ArrayList<TypeReference>();
     final List<TypeReference> interfaceRefs = new ArrayList<TypeReference>();
@@ -575,6 +618,44 @@ public class JavaCodeWriter extends Syntax {
       throw new Error();
     }
     
+  }
+  
+  public boolean isFormalTypeParameter(Element element) {
+  	return element instanceof FormalTypeParameter;
+  }
+  
+  public String toCodeFormalTypeParameter(FormalTypeParameter param) throws LookupException {
+  	StringBuffer result = new StringBuffer();
+  	result.append(param.signature().name());
+  	List<TypeConstraint> constraints = param.constraints();
+  	if(! constraints.isEmpty()) {
+    	result.append(" ");
+  	}
+  	Iterator<TypeConstraint> iter = constraints.iterator();
+  	while(iter.hasNext()) {
+  		result.append(toCode(iter.next()));
+  		if(iter.hasNext()) {
+  			result.append(",");
+  		}
+  	}
+  	return result.toString();
+  }
+  
+  public boolean isExtendsConstraint(Element element) {
+  	return element instanceof ExtendsConstraint;
+  }
+  
+  public String toCodeExtendsConstraint(ExtendsConstraint constraint) throws LookupException {
+  	StringBuffer result = new StringBuffer();
+  	result.append("extends ");
+  	Iterator<TypeReference> iter = constraint.typeReferences().iterator();
+  	while(iter.hasNext()) {
+  		result.append(toCode(iter.next()));
+  		if(iter.hasNext()) {
+  			result.append(" & ");
+  		}
+  	}
+  	return result.toString();
   }
 
   public String toCodeInterface(Type type) throws LookupException {
@@ -740,11 +821,11 @@ public class JavaCodeWriter extends Syntax {
    * MEMBER VARIABLES *
    ********************/
   
-  public String toCodeMemberVariable(RegularMemberVariable var) throws LookupException {
-    return startLine() + toCodeVariable(var);
-  }
+//  public String toCodeMemberVariable(RegularMemberVariable var) throws LookupException {
+//    return startLine() + toCodeVariable(var);
+//  }
   
-  public String toCodeVariable(Variable var) throws LookupException {
+  public String toCodeVariable(FormalParameter var) throws LookupException {
     final StringBuffer result = new StringBuffer();
     new Visitor() {
       public void visit(Object element) {
@@ -755,11 +836,11 @@ public class JavaCodeWriter extends Syntax {
     result.append(toCode(var.getTypeReference()));
     result.append(" ");
     result.append(var.getName());
-      if(var.getInitialization() != null) {
-      result.append(" = ");
-      result.append(toCode(var.getInitialization()));
-      }
-      result.append(";");
+//      if(var.getInitialization() != null) {
+//      result.append(" = ");
+//      result.append(toCode(var.getInitialization()));
+//      }
+//      result.append(";");
     return result.toString();
   }
   
@@ -982,15 +1063,23 @@ public class JavaCodeWriter extends Syntax {
     return "return "+toCode(ts.getExpression())+";";
   }
   
-  public boolean isLocalVar(Element element) {
+  public boolean isLocalVariableDeclarator(Element element) {
     return element instanceof LocalVariableDeclarator;
   }
 
-  public String toCodeLocalVar(LocalVariableDeclarator local) throws LookupException {
-    return toCodeLocalVarForInit(local) + ";";
+  public String toCodeLocalVariableDeclarator(LocalVariableDeclarator local) throws LookupException {
+    return toCodeVariableDeclarator(local) + ";";
   }
   
-  public String toCodeLocalVarForInit(LocalVariableDeclarator local) throws LookupException {
+  public boolean isMemberVariableDeclarator(Element element) {
+    return element instanceof MemberVariableDeclarator;
+  }
+
+  public String toCodeMemberVariableDeclarator(MemberVariableDeclarator local) throws LookupException {
+    return startLine()+toCodeVariableDeclarator(local) + ";";
+  }
+
+  public String toCodeVariableDeclarator(VariableDeclarator local) throws LookupException {
     final StringBuffer result = new StringBuffer();
     List modifiers = local.modifiers();
     if (modifiers.size() != 0) {
@@ -1080,7 +1169,7 @@ public class JavaCodeWriter extends Syntax {
 
   public String toCodeForInit(Element element) throws LookupException {
     if(element instanceof LocalVariableDeclarator) {
-      return toCodeLocalVarForInit((LocalVariableDeclarator)element);
+      return toCodeVariableDeclarator((LocalVariableDeclarator)element);
     } else {
       return toCode(element);
     }
@@ -1243,7 +1332,7 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public String toCodeNamedTargetRef(NamedTargetExpression var) throws LookupException {
-    return toCode(var.getTarget());
+    return var.getName()+toCode(var.getTarget());
   }
 
   public boolean isVarRef(Element element) {

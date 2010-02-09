@@ -11,6 +11,10 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +44,55 @@ public class Extractor {
     return result.toString(); 
   }
   
+  public String toString(TypeVariable var) {
+  	StringBuffer result = new StringBuffer();
+  	result.append(var.getName());
+  	Type[] bounds = var.getBounds();
+  	if(bounds.length > 0) {
+  		result.append(" extends ");
+  		for(int i = 0; i<bounds.length;i++) {
+  			result.append(toString(bounds[i]));
+  			if(i<bounds.length-1) {
+  				result.append(" & ");
+  			}
+  		}
+  	}
+  	return result.toString();
+  }
+  
+  public String toString(Type type) {
+  	if(type instanceof Class) {
+  		return ((Class)type).getName();
+  	} else if (type instanceof ParameterizedType) {
+  		StringBuffer result = new StringBuffer();
+  		ParameterizedType parameterizedType = (ParameterizedType)type;
+			result.append(toString(parameterizedType.getRawType()));
+  		result.append("<");
+  		Type[] args = parameterizedType.getActualTypeArguments();
+  		for(int i = 0; i<args.length; i++) {
+  			result.append(toString(args[i]));
+  			if(i < args.length - 1) {
+  				result.append(",");
+  			}
+  		}
+  		result.append(">");
+  		return result.toString();
+  	} else if (type instanceof TypeVariable) {
+  		return ((TypeVariable)type).getName();
+  	} else if (type instanceof WildcardType) {
+  		WildcardType wild = (WildcardType) type;
+  		Type[] lower = wild.getLowerBounds();
+  		if(lower.length > 0) {
+  			
+  		} else {
+  			
+  		}
+  	}
+		else {
+  		throw new RuntimeException("Type of given type not supported: "+type.getClass());
+  	}
+  }
+  
   public String getType(Class clazz, final String indent) {
      final StringBuffer result = new StringBuffer();
      
@@ -51,12 +104,20 @@ public class Extractor {
        result.append("class ");
      }
      result.append(Util.getLastPart(getClassName(clazz.getName())));
-     
+     // FORMAL TYPE PARAMETERS
+     TypeVariable[] var = clazz.getTypeParameters();
+     if(var.length > 0) {
+    	 result.append("<");
+    	 for(int i=0; i < var.length; i++) {
+    		 result.append(toString(var[i]));
+    	 }
+    	 result.append(">");
+     }
      if(clazz.getSuperclass() != null) {
-       result.append(" extends "+ getClassName(clazz.getSuperclass().getName()));
+       result.append(" extends "+ getClassName(toString(clazz.getGenericSuperclass())));
      }
      
-     Class[] interfaces = clazz.getInterfaces();
+     Type[] interfaces = clazz.getGenericInterfaces();
      if(interfaces.length > 0) {
        if(clazz.isInterface()) {
          result.append(" extends ");
@@ -69,7 +130,7 @@ public class Extractor {
        if(i > 0) {
          result.append(", ");
        }
-       result.append(getClassName(interfaces[i].getName()));
+       result.append(getClassName(toString(interfaces[i])));
      }
      result.append(" {\n");
      
@@ -78,6 +139,7 @@ public class Extractor {
      new Visitor() {
             public void visit(Object element) {
           Constructor constructor = (Constructor) element;
+          if(! Modifier.isPrivate(constructor.getModifiers())) {
           StringBuffer cons = new StringBuffer();
           cons.append(indent + "  ");
           cons.append(getModifiers(constructor));
@@ -101,7 +163,7 @@ public class Extractor {
           if(valid) {
               result.append(cons.toString());
           }
-          
+            }
             }
         }.applyTo(constructors);
      
@@ -110,6 +172,7 @@ public class Extractor {
      new Visitor() {
 		    public void visit(Object element) {
           Method method = (Method) element;
+          if(! Modifier.isPrivate(method.getModifiers()) && ! method.isSynthetic()) {
           result.append(indent + "  ");
           result.append(getModifiers(method));
           if((! Modifier.isAbstract(method.getModifiers())) && (! Modifier.isNative(method.getModifiers()))){
@@ -129,6 +192,8 @@ public class Extractor {
           }
           
           result.append(");\n");
+          
+		    }
 		    }
 		}.applyTo(methods);
      
@@ -137,12 +202,14 @@ public class Extractor {
     new Visitor() {
       public void visit(Object element) {
         Field field = (Field) element;
+        if(! Modifier.isPrivate(field.getModifiers())) {
         result.append(indent + "  ");
         result.append(getModifiers(field));
         result.append(getClassName(field.getType().getName()));
         result.append(" ");
         result.append(field.getName());
         result.append(";\n");
+        }
       }
     }.applyTo(vars);
     
@@ -244,7 +311,7 @@ public class Extractor {
   }
   
   /**
-   * Replaces $ with . and parses those ugle array names
+   * Replaces $ with . and parses those ugly array names
    */
   public String correctType(String name){
     // $ -> .

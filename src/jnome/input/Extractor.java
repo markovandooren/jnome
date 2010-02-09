@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
@@ -24,7 +25,7 @@ import org.rejuse.java.collections.Visitor;
 import chameleon.util.Util;
 
 /**
- * @author marko
+ * @author Marko van Dooren
  */
 public class Extractor {
 
@@ -50,14 +51,17 @@ public class Extractor {
   	Type[] bounds = var.getBounds();
   	if(bounds.length > 0) {
   		result.append(" extends ");
-  		for(int i = 0; i<bounds.length;i++) {
-  			result.append(toString(bounds[i]));
-  			if(i<bounds.length-1) {
-  				result.append(" & ");
-  			}
-  		}
+  		toStringBounds(result, bounds);
   	}
   	return result.toString();
+  }
+  
+  public String getClassName(Type type) {
+  	if(type instanceof Class) {
+  		return getClassName(((Class)type).getName());
+  	} else {
+  		return toString(type);
+  	}
   }
   
   public String toString(Type type) {
@@ -80,18 +84,38 @@ public class Extractor {
   	} else if (type instanceof TypeVariable) {
   		return ((TypeVariable)type).getName();
   	} else if (type instanceof WildcardType) {
+  		StringBuffer result = new StringBuffer();
+  		result.append("?");
   		WildcardType wild = (WildcardType) type;
   		Type[] lower = wild.getLowerBounds();
   		if(lower.length > 0) {
-  			
+  			result.append(" super ");
+  			toStringBounds(result, lower);
   		} else {
-  			
+  			Type[] upper = wild.getUpperBounds();
+    		if(upper.length > 0) {
+    			result.append(" extends ");
+    			toStringBounds(result, upper);
+    		}
   		}
+  		return result.toString();
+  	} else if (type instanceof GenericArrayType) {
+  		GenericArrayType arrayType = (GenericArrayType) type;
+  		return toString(arrayType.getGenericComponentType())+"[]";
   	}
 		else {
   		throw new RuntimeException("Type of given type not supported: "+type.getClass());
   	}
   }
+
+	private void toStringBounds(StringBuffer result, Type[] lower) {
+		for(int i = 0; i< lower.length; i++) {
+			result.append(toString(lower[i]));
+			if(i<lower.length-1) {
+				result.append(" & ");
+			}
+		}
+	}
   
   public String getType(Class clazz, final String indent) {
      final StringBuffer result = new StringBuffer();
@@ -134,7 +158,85 @@ public class Extractor {
      }
      result.append(" {\n");
      
-     Constructor[] constructors = clazz.getDeclaredConstructors();
+     toStringConstructors(clazz, indent, result);
+     
+     toCodeMethods(clazz, indent, result);
+     
+    Field[] vars = clazz.getDeclaredFields();
+    
+    toCodeFields(indent, result, vars);
+    
+    toCodeInnerClasses(clazz, indent, result);
+    
+    result.append(indent + "}");
+    
+    return result.toString();
+  }
+
+	private void toCodeInnerClasses(Class clazz, final String indent, final StringBuffer result) {
+		Class[] inners = clazz.getDeclaredClasses();
+    new Visitor() {
+		    public void visit(Object element) {
+          Class inner = (Class)element;
+          String innerName = Util.getLastPart(getClassName(inner.getName()));
+          if(Character.getType(innerName.charAt(0)) != Character.DECIMAL_DIGIT_NUMBER ) {
+            result.append(getType(inner, indent + "  "));
+            result.append("\n");
+          }
+		    }
+		}.applyTo(inners);
+	}
+
+	private void toCodeFields(final String indent, final StringBuffer result, Field[] vars) {
+		new Visitor() {
+      public void visit(Object element) {
+        Field field = (Field) element;
+        if(! Modifier.isPrivate(field.getModifiers())) {
+        result.append(indent + "  ");
+        result.append(getModifiers(field));
+        result.append(getClassName(field.getGenericType()));
+        result.append(" ");
+        result.append(field.getName());
+        result.append(";\n");
+        }
+      }
+    }.applyTo(vars);
+	}
+
+	private void toCodeMethods(Class clazz, final String indent, final StringBuffer result) {
+		Method[] methods = clazz.getDeclaredMethods();
+     
+     new Visitor() {
+		    public void visit(Object element) {
+          Method method = (Method) element;
+          if(! Modifier.isPrivate(method.getModifiers()) && ! method.isSynthetic()) {
+          result.append(indent + "  ");
+          result.append(getModifiers(method));
+          if((! Modifier.isAbstract(method.getModifiers())) && (! Modifier.isNative(method.getModifiers()))){
+            result.append("native ");
+          }
+          result.append(getClassName(method.getGenericReturnType()));
+          result.append(" ");
+          result.append(method.getName());
+          result.append("(");
+          Type[] args = method.getGenericParameterTypes();
+          for(int i = 0; i < args.length; i++) {
+             if(i > 0) {
+               result.append(", ");
+             }
+             result.append(getClassName(args[i]));
+             result.append(" a_r_g_u_m_e_n_t_"+i);
+          }
+          
+          result.append(");\n");
+          
+		    }
+		    }
+		}.applyTo(methods);
+	}
+
+	private void toStringConstructors(Class clazz, final String indent, final StringBuffer result) {
+		Constructor[] constructors = clazz.getDeclaredConstructors();
      
      new Visitor() {
             public void visit(Object element) {
@@ -145,13 +247,13 @@ public class Extractor {
           cons.append(getModifiers(constructor));
           cons.append(Util.getLastPart(getClassName(constructor.getName())));
           cons.append("(");
-          Class[] args = constructor.getParameterTypes();
+          Type[] args = constructor.getGenericParameterTypes();
           boolean valid = true;
           for(int i = 0; i < args.length; i++) {
              if(i > 0) {
                cons.append(", ");
              }
-             String temp = getClassName(args[i].getName());
+             String temp = getClassName(args[i]);
              cons.append(temp);
              if((Util.getLastPart(temp) != null) && (Character.getType(Util.getLastPart(temp).charAt(0)) == Character.DECIMAL_DIGIT_NUMBER)) {
                  valid = false;
@@ -166,69 +268,7 @@ public class Extractor {
             }
             }
         }.applyTo(constructors);
-     
-     Method[] methods = clazz.getDeclaredMethods();
-     
-     new Visitor() {
-		    public void visit(Object element) {
-          Method method = (Method) element;
-          if(! Modifier.isPrivate(method.getModifiers()) && ! method.isSynthetic()) {
-          result.append(indent + "  ");
-          result.append(getModifiers(method));
-          if((! Modifier.isAbstract(method.getModifiers())) && (! Modifier.isNative(method.getModifiers()))){
-            result.append("native ");
-          }
-          result.append(getClassName(method.getReturnType().getName()));
-          result.append(" ");
-          result.append(method.getName());
-          result.append("(");
-          Class[] args = method.getParameterTypes();
-          for(int i = 0; i < args.length; i++) {
-             if(i > 0) {
-               result.append(", ");
-             }
-             result.append(getClassName(args[i].getName()));
-             result.append(" a_r_g_u_m_e_n_t_"+i);
-          }
-          
-          result.append(");\n");
-          
-		    }
-		    }
-		}.applyTo(methods);
-     
-    Field[] vars = clazz.getDeclaredFields();
-    
-    new Visitor() {
-      public void visit(Object element) {
-        Field field = (Field) element;
-        if(! Modifier.isPrivate(field.getModifiers())) {
-        result.append(indent + "  ");
-        result.append(getModifiers(field));
-        result.append(getClassName(field.getType().getName()));
-        result.append(" ");
-        result.append(field.getName());
-        result.append(";\n");
-        }
-      }
-    }.applyTo(vars);
-    
-    Class[] inners = clazz.getDeclaredClasses();
-    new Visitor() {
-		    public void visit(Object element) {
-          Class inner = (Class)element;
-          String innerName = Util.getLastPart(getClassName(inner.getName()));
-          if(Character.getType(innerName.charAt(0)) != Character.DECIMAL_DIGIT_NUMBER ) {
-            result.append(getType(inner, indent + "  "));
-            result.append("\n");
-          }
-		    }
-		}.applyTo(inners);
-    
-    result.append(indent + "}");
-    
-    return result.toString();
-  }
+	}
   
   public String getClassName(String string) {
     return correctType(string.replace('$','.')); 

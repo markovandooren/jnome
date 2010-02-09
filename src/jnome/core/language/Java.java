@@ -4,7 +4,6 @@ package jnome.core.language;
 import jnome.core.modifier.PackageProperty;
 import jnome.core.type.NullType;
 
-import org.rejuse.logic.ternary.Ternary;
 
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.SimpleNameSignature;
@@ -65,64 +64,6 @@ public class Java extends ObjectOrientedLanguage {
 		public boolean contains(Member first, Member second) throws LookupException {
 			return first.equals(second);
 		}
-	}
-
-	private final class JavaImplementsRelation extends StrictPartialOrder<Member> {
-
-		@Override
-		public boolean contains(Member first, Member second) throws LookupException {
-		  boolean result;
-		  
-		  if((first != second) && (first instanceof Method) && (second instanceof Method)) {
-		    assert first != null;
-		    assert second != null;
-		    Method<?,?,?,?> method1 = (Method<?,?,?,?>) first;
-		    Method<?,?,?,?> method2 = (Method<?,?,?,?>) second;
-		    Ternary temp1 = method1.is(DEFINED);
-		    boolean defined1;
-		    if(temp1 == Ternary.TRUE) {
-		      defined1 = true;
-		    } else if (temp1 == Ternary.FALSE) {
-		      defined1 = false;
-		    } else {
-		    	temp1 = method1.is(DEFINED);
-		      throw new LookupException("The definedness of the first method could not be determined.");
-		    }
-		    if(defined1) {
-		    Ternary temp2 = method2.is(DEFINED);
-		    boolean defined2;
-		    if(temp2 == Ternary.TRUE) {
-		      defined2 = true;
-		    } else if (temp2 == Ternary.FALSE) {
-		      defined2 = false;
-		    } else {
-		      throw new LookupException("The definedness of the second method could not be determined.");
-		    }
-		    result = (!defined2) && 
-		             method1.signature().sameAs(method2.signature()) &&
-		             (! method2.nearestAncestor(Type.class).subTypeOf(method1.nearestAncestor(Type.class))) &&
-		             method1.sameKind(method2);
-		    } else {
-		    	result = false;
-		    }
-		  }
-//		  else if ((first instanceof MemberVariable) && (second instanceof MemberVariable)) {
-//		    MemberVariable<? extends MemberVariable> var1 = (MemberVariable)first;
-//		    MemberVariable<? extends MemberVariable> var2 = (MemberVariable)second;
-//		    
-//		    result = var1.getNearestType().subTypeOf(var2.getNearestType());  
-//		  }
-		  else {
-		    result = false;
-		  }
-		  return result; 
-		}
-
-		@Override
-		public boolean equal(Member first, Member second) {
-			return first == second;
-		}
-		
 	}
 
 	protected NullType _nullType;

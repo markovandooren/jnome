@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import chameleon.core.lookup.LookupException;
 import chameleon.core.relation.WeakPartialOrder;
+import chameleon.core.type.ConstructedType;
 import chameleon.core.type.DerivedType;
 import chameleon.core.type.Type;
 import chameleon.core.type.generics.FormalTypeParameter;
@@ -39,9 +40,11 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		Set<Type> supers = first.getAllSuperTypes();
 		supers.add(first);
 		Iterator<Type> typeIterator = supers.iterator();
-		while((!result) && typeIterator.hasNext()) {
-			Type current = typeIterator.next();
-			result = sameBaseTypeWithCompatibleParameters(current, second);
+		if(! (second instanceof ConstructedType)) {
+		  while((!result) && typeIterator.hasNext()) {
+			  Type current = typeIterator.next();
+			  result = sameBaseTypeWithCompatibleParameters(current, second);
+		   }
 		}
 		}
 		return result;

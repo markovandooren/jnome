@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import jnome.core.language.Java;
+import jnome.core.type.JavaTypeReference;
 import jnome.input.parser.JavaLexer;
 import jnome.input.parser.JavaParser;
 import jnome.output.JavaCodeWriter;
@@ -112,7 +113,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 
     public void addInfixOperators(Namespace defaultPackage) {
         try {
-        	  TypeReference ref = new TypeReference("java.lang.Object");
+        	  TypeReference ref = new JavaTypeReference("java.lang.Object");
         	  ref.setUniParent(defaultPackage);
             Type obj = ref.getType();
             if (obj != null) {
@@ -120,7 +121,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
                 addInfixOperator(obj, "boolean", "!=", "Object");
                 addInfixOperator(obj, "String", "+", "String");
             }
-            ref = new TypeReference("java.lang.String");
+            ref = new JavaTypeReference("java.lang.String");
         	  ref.setUniParent(defaultPackage);
             Type string = ref.getType();
             if (string != null) {
@@ -385,7 +386,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     }
 
     public void addPrefixOperator(Type type, String returnType, String symbol) {
-        TypeReference tr = new TypeReference(null, returnType);
+        TypeReference tr = new JavaTypeReference(null, returnType);
         Public pub = new Public();
         PrefixOperator op = new PrefixOperator(new SimpleNameMethodHeader(symbol), tr);
         op.addModifier(pub);
@@ -394,7 +395,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     }
 
     public void addPostfixOperator(Type type, String returnType, String symbol) {
-        TypeReference tr = new TypeReference(null, returnType);
+        TypeReference tr = new JavaTypeReference(null, returnType);
         Public pub = new Public();
         PostfixOperator op = new PostfixOperator(new SimpleNameMethodHeader(symbol), tr);
         op.addModifier(pub);
@@ -403,13 +404,13 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     }
 
     public void addInfixOperator(Type type, String returnType, String symbol, String argType) {
-        TypeReference tr = new TypeReference(null, returnType);
+        TypeReference tr = new JavaTypeReference(null, returnType);
         Public pub = new Public();
         SimpleNameMethodHeader sig =  new SimpleNameMethodHeader(symbol);
         InfixOperator op = new InfixOperator(sig, tr);
         op.addModifier(pub);
 
-        TypeReference tr2 = new TypeReference(argType);
+        TypeReference tr2 = new JavaTypeReference(argType);
         FormalParameter fp = new FormalParameter(new SimpleNameSignature("arg"), tr2);
         sig.addParameter(fp);
         op.addModifier(new Native());

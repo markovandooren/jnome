@@ -30,6 +30,7 @@ import chameleon.core.element.Element;
 import chameleon.core.expression.ActualArgument;
 import chameleon.core.expression.Expression;
 import chameleon.core.expression.Invocation;
+import chameleon.core.expression.InvocationTarget;
 import chameleon.core.expression.Literal;
 import chameleon.core.expression.NamedTarget;
 import chameleon.core.expression.NamedTargetExpression;
@@ -1361,8 +1362,9 @@ public class JavaCodeWriter extends Syntax {
   
   public String toCodeSuperTarget(SuperTarget nt) throws LookupException {
     StringBuffer result = new StringBuffer();
-    if(nt.getTarget() != null) {
-      result.append(toCode(nt.getTarget()));
+    InvocationTarget<?, ?> target = nt.getTarget();
+		if(target != null) {
+      result.append(toCode(target));
       result.append(".");
     }
     result.append("super");

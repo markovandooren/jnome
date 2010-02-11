@@ -209,5 +209,5 @@ public class JavaTypeReference extends TypeReference {
 	public void addArrayDimension(int arrayDimension) {
 		_arrayDimension += arrayDimension;
 	}
-  
+
 }

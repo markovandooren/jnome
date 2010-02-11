@@ -990,14 +990,14 @@ defaultValue
 // STATEMENTS / BLOCKS
 
 block returns [Block element]
-    :   '{' {retval.element = new Block();} (stat=blockStatement {retval.element.addStatement(stat.element);})* '}'
+    :   '{' {retval.element = new Block();} (stat=blockStatement {if(stat != null) {retval.element.addStatement(stat.element);}})* '}'
     ;
     
 blockStatement returns [Statement element]
 @after{assert(retval.element != null);}
     :   local=localVariableDeclarationStatement {retval.element = local.element;}
     |   cd=classOrInterfaceDeclaration {retval.element = new LocalClassStatement(cd.element);}
-    |   stat=statement {check_null(stat.element); retval.element = stat.element;}
+    |   stat=statement {retval.element = stat.element;}
     ;
     
 localVariableDeclarationStatement returns [Statement element]
@@ -1389,7 +1389,11 @@ Token stop=null;
 	        })?
 	        {setLocation(retval.element,start,stop);}
     |   '.' thiskw='this' {retval.element = new ThisLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));setLocation(retval.element,start,spkw);}
-    |   '.' spkw='super'{$TargetScope::target= new SuperTarget($TargetScope::target);setLocation($TargetScope::target,start,spkw);} supsuf=superSuffix {check_null(supsuf.element); retval.element = supsuf.element;}
+    |   '.' spkw='super'{$TargetScope::target= new SuperTarget($TargetScope::target);
+                         setLocation($TargetScope::target,start,spkw);
+                         setKeyword($TargetScope::target,spkw);
+                        } 
+            supsuf=superSuffix {check_null(supsuf.element); retval.element = supsuf.element;}
     |   '.' 'new' in=innerCreator {check_null(in.element); retval.element = in.element;}
     |   '[' arrex=expression bracket=']' 
           {retval.element = new ArrayAccessExpression((Expression)$TargetScope::target);
@@ -1412,7 +1416,11 @@ Token stop=null;
 }
     :   parex=parExpression {retval.element = parex.element;}
     |   rubex=identifierSuffixRubbush {retval.element = rubex.element;}
-    |    skw='super' {$TargetScope::target= new SuperTarget(); start=skw; stop=skw; $TargetScope::start=skw;} 
+    |    skw='super' {$TargetScope::target= new SuperTarget(); 
+                     start=skw; stop=skw; 
+                     $TargetScope::start=skw;
+                     setKeyword($TargetScope::target,skw);
+                     } 
         supsuf=superSuffix 
         {retval.element = supsuf.element; 
         setLocation($TargetScope::target,start,stop); // put locations on the SuperTarget.
@@ -1428,20 +1436,28 @@ moreIdentifierSuffixRubbish returns [Expression element]
 scope TargetScope;
 @init{
 Token stop = null;
+InvocationTarget scopeTarget = null;
+}
+@after {
+if(! retval.element.descendants().contains(scopeTarget)) {
+  scopeTarget.removeAllTags();
+}
 }
 	:	id=Identifier 
-	           {$TargetScope::target = new NamedTarget($id.text); 
+	           {$TargetScope::target = new NamedTarget($id.text);
+	            scopeTarget = $TargetScope::target;  
 	            $TargetScope::start=id; 
 	            stop=id;
 	            setLocation($TargetScope::target,$TargetScope::start,stop);
 	            }
 	  ('.' idx=Identifier 
 	       {$TargetScope::target = new NamedTarget($idx.text,$TargetScope::target);
+	        scopeTarget = $TargetScope::target;
 	        stop=idx;
 	        setLocation($TargetScope::target, $TargetScope::start, idx);
 	       }
 	  )* 
-	{((NamedTarget)$TargetScope::target).removeAllTags(); retval.element = new NamedTargetExpression(((NamedTarget)$TargetScope::target).getName(),cloneTargetOfTarget(((NamedTarget)$TargetScope::target)));
+	{retval.element = new NamedTargetExpression(((NamedTarget)$TargetScope::target).getName(),cloneTargetOfTarget(((NamedTarget)$TargetScope::target)));
 	 setLocation(retval.element, $TargetScope::start, stop);
 	 //The variable reference is only returned if none of the following subrules match.
 	}
@@ -1450,15 +1466,24 @@ Token stop = null;
         arr=arrayAccessSuffixRubbish {retval.element = arr.element;}
     |   arg=argumentsSuffixRubbish {retval.element.removeAllTags(); retval.element = arg.element;} // REMOVE VARIABLE REFERENCE POSITION!
     |   '.' clkw='class' 
-         {retval.element = new ClassLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));
+         {retval.element.removeAllTags();
+         retval.element = new ClassLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));
           setLocation(retval.element, $TargetScope::start, clkw);
          }
     |   '.' gen=explicitGenericInvocation {retval.element.removeAllTags(); retval.element = gen.element;} // REMOVE VARIABLE REFERENCE POSITION!
     |   '.' thiskw='this' 
-        {retval.element = new ThisLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));
+        {retval.element.removeAllTags();
+          retval.element = new ThisLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));
           setLocation(retval.element, $TargetScope::start, thiskw);
         }
-    |   '.' supkw='super' {$TargetScope::target= new SuperTarget(); setLocation($TargetScope::target,$TargetScope::start,supkw);} supsuf=superSuffix {retval.element = supsuf.element;}
+    |   '.' supkw='super' {retval.element.removeAllTags();
+                           $TargetScope::target= new SuperTarget($TargetScope::target);
+                           setKeyword($TargetScope::target,supkw); 
+                           setLocation($TargetScope::target,$TargetScope::start,supkw);
+                           } 
+            supsuf=superSuffix {
+               retval.element = supsuf.element;
+            }// REMOVE VARIABLE REFERENCE POSITION!
     |   '.' 'new' in=innerCreator {retval.element = in.element;})?
 	;
 
@@ -1477,6 +1502,7 @@ scope TargetScope;
     |   '.' gen=explicitGenericInvocation {retval.element = gen.element;}
     |   '.' supkw='super' 
              {$TargetScope::target = new SuperTarget($TargetScope::target);
+             setKeyword($TargetScope::target,supkw);
               setLocation($TargetScope::target, $TargetScope::start,supkw);
              }
              supsuf=superSuffix {retval.element = supsuf.element;}
@@ -1571,16 +1597,22 @@ nonWildcardTypeArguments returns [List<ActualTypeArgument> element]
     
 // NEEDS_TARGET
 superSuffix returns [Expression element]
-@init{Token stop=null;}
+@init{
+   Token start=null;
+   Token stop=null;
+}
     :   //arguments
         //|   
-    '.' name=Identifier {retval.element = new NamedTargetExpression($name.text,cloneTarget($TargetScope::target));} 
+    '.' name=Identifier {retval.element = new NamedTargetExpression($name.text,cloneTarget($TargetScope::target));
+                         start = name;
+                         stop = name;} 
         (args=arguments
           {retval.element = new RegularMethodInvocation($name.text,$TargetScope::target);
           ((RegularMethodInvocation)retval.element).addAllArguments(args.element);
+          stop = args.stop;
           }
         )?
-        {setLocation(retval.element,$TargetScope::start,stop);}
+        {setLocation(retval.element,start,stop);}
     ;
 
 arguments returns [List<ActualArgument> element]

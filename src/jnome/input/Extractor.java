@@ -57,11 +57,13 @@ public class Extractor {
   }
   
   public String getClassName(Type type) {
+  	String result;
   	if(type instanceof Class) {
-  		return getClassName(((Class)type).getName());
+  		result = getClassName(((Class)type).getName());
   	} else {
-  		return toString(type);
+  		result = toString(type);
   	}
+  	return result.replace('$','.');
   }
   
   public String toString(Type type) {
@@ -71,8 +73,9 @@ public class Extractor {
   		StringBuffer result = new StringBuffer();
   		ParameterizedType parameterizedType = (ParameterizedType)type;
 			result.append(toString(parameterizedType.getRawType()));
-  		result.append("<");
   		Type[] args = parameterizedType.getActualTypeArguments();
+  		if(args.length > 0) {
+  		result.append("<");
   		for(int i = 0; i<args.length; i++) {
   			result.append(toString(args[i]));
   			if(i < args.length - 1) {
@@ -80,6 +83,7 @@ public class Extractor {
   			}
   		}
   		result.append(">");
+  		}
   		return result.toString();
   	} else if (type instanceof TypeVariable) {
   		return ((TypeVariable)type).getName();
@@ -130,13 +134,7 @@ public class Extractor {
      result.append(Util.getLastPart(getClassName(clazz.getName())));
      // FORMAL TYPE PARAMETERS
      TypeVariable[] var = clazz.getTypeParameters();
-     if(var.length > 0) {
-    	 result.append("<");
-    	 for(int i=0; i < var.length; i++) {
-    		 result.append(toString(var[i]));
-    	 }
-    	 result.append(">");
-     }
+     toStringTypeParameters(result, var);
      if(clazz.getSuperclass() != null) {
        result.append(" extends "+ getClassName(toString(clazz.getGenericSuperclass())));
      }
@@ -203,7 +201,7 @@ public class Extractor {
     }.applyTo(vars);
 	}
 
-	private void toCodeMethods(Class clazz, final String indent, final StringBuffer result) {
+	public void toCodeMethods(Class clazz, final String indent, final StringBuffer result) {
 		Method[] methods = clazz.getDeclaredMethods();
      
      new Visitor() {
@@ -215,6 +213,8 @@ public class Extractor {
           if((! Modifier.isAbstract(method.getModifiers())) && (! Modifier.isNative(method.getModifiers()))){
             result.append("native ");
           }
+          TypeVariable[] var = method.getTypeParameters();
+          toStringTypeParameters(result, var);
           result.append(getClassName(method.getGenericReturnType()));
           result.append(" ");
           result.append(method.getName());
@@ -232,10 +232,25 @@ public class Extractor {
           
 		    }
 		    }
+
 		}.applyTo(methods);
 	}
 
-	private void toStringConstructors(Class clazz, final String indent, final StringBuffer result) {
+	
+	public void toStringTypeParameters(final StringBuffer result, TypeVariable[] var) {
+		if(var.length > 0) {
+   	 result.append("<");
+   	 for(int i=0; i < var.length; i++) {
+   		 result.append(Extractor.this.toString(var[i]));
+   		 if(i < var.length - 1) {
+   			 result.append(", ");
+   		 }
+   	 }
+   	 result.append(">");
+    }
+	}
+
+	public void toStringConstructors(Class clazz, final String indent, final StringBuffer result) {
 		Constructor[] constructors = clazz.getDeclaredConstructors();
      
      new Visitor() {
@@ -244,6 +259,9 @@ public class Extractor {
           if(! Modifier.isPrivate(constructor.getModifiers())) {
           StringBuffer cons = new StringBuffer();
           cons.append(indent + "  ");
+          TypeVariable[] var = constructor.getTypeParameters();
+          cons.append(" ");
+          toStringTypeParameters(result, var);
           cons.append(getModifiers(constructor));
           cons.append(Util.getLastPart(getClassName(constructor.getName())));
           cons.append("(");

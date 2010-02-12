@@ -34,8 +34,8 @@ import chameleon.support.variable.VariableDeclarator;
  */
 public class Java extends ObjectOrientedLanguage {
 
-	public Java() {
-		super("Java", new JavaLookupFactory());
+	protected Java(String name) {
+		super(name, new JavaLookupFactory());
 		_nullType = new NullType(this);
 		new RootNamespace(new SimpleNameSignature(""), this);
 		this.defaultNamespace().setNullType();
@@ -57,6 +57,10 @@ public class Java extends ObjectOrientedLanguage {
   	PRIVATE.addValidElementType(VariableDeclarator.class);
   	PUBLIC.addValidElementType(VariableDeclarator.class);
   	PROTECTED.addValidElementType(VariableDeclarator.class);
+	}
+	
+	public Java() {
+		this("Java");
 	}
 	
 	private final class JavaEquivalenceRelation extends EquivalenceRelation<Member> {

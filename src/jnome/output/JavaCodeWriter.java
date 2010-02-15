@@ -88,6 +88,7 @@ import chameleon.support.modifier.Abstract;
 import chameleon.support.modifier.Constructor;
 import chameleon.support.modifier.Final;
 import chameleon.support.modifier.Interface;
+import chameleon.support.modifier.Native;
 import chameleon.support.modifier.Private;
 import chameleon.support.modifier.Protected;
 import chameleon.support.modifier.Public;
@@ -486,6 +487,8 @@ public class JavaCodeWriter extends Syntax {
     }
     else if(element instanceof Constructor) {
     	return "";
+    } else if(element instanceof Native) {
+    	return "native";
     }
     else {
       throw new IllegalArgumentException("The given element is not know by the Java syntax: "+element.getClass().getName());

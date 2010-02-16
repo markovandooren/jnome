@@ -295,7 +295,7 @@ public class JavaCodeWriter extends Syntax {
     if(result.length() > 0) {
       result = result + ".";
     }
-    result = result + typeReference.getName();
+    result = result + typeReference.signature();
     return result;
   }
 
@@ -308,7 +308,7 @@ public class JavaCodeWriter extends Syntax {
     if(result.length() > 0) {
       result = result + ".";
     }
-    result = result + typeReference.getName();
+    result = result + typeReference.signature();
     return result;
   }
 
@@ -321,7 +321,7 @@ public class JavaCodeWriter extends Syntax {
     if(result.length() > 0) {
       result = result + ".";
     }
-    result = result + typeReference.getName();
+    result = result + typeReference.signature();
     return result;
   }
 
@@ -334,7 +334,7 @@ public class JavaCodeWriter extends Syntax {
     if(result.length() > 0) {
       result = result + ".";
     }
-    result = result + typeReference.getName();
+    result = result + typeReference.signature();
     if(typeReference instanceof JavaTypeReference) {
     	JavaTypeReference tref = (JavaTypeReference)typeReference;
     	List<ActualTypeArgument> typeArguments = tref.typeArguments();

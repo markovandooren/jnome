@@ -7,6 +7,7 @@ import org.rejuse.association.OrderedMultiAssociation;
 
 import chameleon.core.Config;
 import chameleon.core.declaration.Declaration;
+import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.declaration.TargetDeclaration;
 import chameleon.core.element.Element;
 import chameleon.core.expression.NamedTarget;
@@ -35,6 +36,10 @@ public class JavaTypeReference extends TypeReference {
   
   public JavaTypeReference(CrossReference<?,?,? extends TargetDeclaration> target, String name) {
   	super(target,name);
+  }
+  
+  public JavaTypeReference(CrossReference<?,?,? extends TargetDeclaration> target, SimpleNameSignature signature) {
+  	super(target,signature);
   }
   
   /**
@@ -133,7 +138,7 @@ public class JavaTypeReference extends TypeReference {
     	}
       return result;
     } else {
-      throw new LookupException("Result of type reference lookup is null: "+getName(),this);
+      throw new LookupException("Result of type reference lookup is null: "+signature(),this);
     }
   }
 
@@ -198,7 +203,7 @@ public class JavaTypeReference extends TypeReference {
 
 
   public JavaTypeReference clone() {
-  	JavaTypeReference result =  new JavaTypeReference((getTarget() == null ? null : getTarget().clone()),getName());
+  	JavaTypeReference result =  new JavaTypeReference((getTarget() == null ? null : getTarget().clone()),(SimpleNameSignature)signature().clone());
   	result.setArrayDimension(arrayDimension());
   	for(ActualTypeArgument typeArgument: typeArguments()) {
   		result.addArgument(typeArgument.clone());

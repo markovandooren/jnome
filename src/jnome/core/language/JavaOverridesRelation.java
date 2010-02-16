@@ -7,6 +7,7 @@ import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.logic.ternary.Ternary;
 
+import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.declaration.TargetDeclaration;
 import chameleon.core.expression.InvocationTarget;
 import chameleon.core.expression.NamedTarget;
@@ -64,7 +65,7 @@ public class JavaOverridesRelation extends StrictPartialOrder<Member> {
 		}
 		
 		public TypeReference erasure(JavaTypeReference jref) {
-			JavaTypeReference result = new JavaTypeReference(erasure(jref.getTarget()), jref.getName());
+			JavaTypeReference result = new JavaTypeReference(erasure(jref.getTarget()), (SimpleNameSignature)jref.signature().clone());
 			result.setArrayDimension(jref.arrayDimension());
 			return result;
 		}

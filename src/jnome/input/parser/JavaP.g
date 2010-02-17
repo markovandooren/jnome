@@ -645,7 +645,7 @@ scope MethodScope;
 methodDeclaratorRest
 @init{int count = 0;}
     :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}} ('[' ']' {count++;})* {((JavaTypeReference)$MethodScope::method.getReturnTypeReference()).addArrayDimension(count);}
-        (thrkw='throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));}})?
+        (thrkw='throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));$MethodScope::method.setExceptionClause(clause);}})?
         (   body=methodBody {$MethodScope::method.setImplementation(new RegularImplementation(body.element));}
         |   ';' {$MethodScope::method.setImplementation(null);}
         )
@@ -654,7 +654,7 @@ methodDeclaratorRest
     
 voidMethodDeclaratorRest
     :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}}
-         (thrkw='throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));}})?
+         (thrkw='throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));$MethodScope::method.setExceptionClause(clause);}})?
         (   body=methodBody {$MethodScope::method.setImplementation(new RegularImplementation(body.element));}
         |   ';' {$MethodScope::method.setImplementation(null);}
         )
@@ -665,7 +665,7 @@ interfaceMethodDeclaratorRest
 @init{int count = 0;}
     :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}}
        ('[' ']' {count++;})* {((JavaTypeReference)$MethodScope::method.getReturnTypeReference()).setArrayDimension(count);}
-       (thrkw='throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));}})? ';'
+       (thrkw='throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));$MethodScope::method.setExceptionClause(clause);}})? ';'
        {setKeyword($MethodScope::method,thrkw);}
     ;
     
@@ -676,13 +676,13 @@ interfaceGenericMethodDecl returns [TypeElement element]
     
 voidInterfaceMethodDeclaratorRest
     :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}}
-     ('throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));}})?
+     ('throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));$MethodScope::method.setExceptionClause(clause);}})?
       ';'
     ;
     
 constructorDeclaratorRest
     :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}} 
-    ('throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));}})?
+    ('throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));$MethodScope::method.setExceptionClause(clause);}})?
      body=constructorBody {$MethodScope::method.setImplementation(new RegularImplementation(body.element));}
     ;
 

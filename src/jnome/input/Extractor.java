@@ -112,6 +112,18 @@ public class Extractor {
   	}
   }
 
+	public void appendExceptionTypes(StringBuffer cons, Type[] exceptions) {
+		if(exceptions.length > 0) {
+			cons.append(" throws ");
+			for(int i=0; i<exceptions.length;i++) {
+				cons.append(toString(exceptions[i]));
+				if(i<exceptions.length - 1) {
+					cons.append(", ");
+				}
+			}
+		}
+	}
+
 	private void toStringBounds(StringBuffer result, Type[] lower) {
 		for(int i = 0; i< lower.length; i++) {
 			result.append(toString(lower[i]));
@@ -228,7 +240,10 @@ public class Extractor {
              result.append(" a_r_g_u_m_e_n_t_"+i);
           }
           
-          result.append(");\n");
+          result.append(") ");
+          Type[] exceptions = method.getGenericExceptionTypes();
+          appendExceptionTypes(result, exceptions);
+          result.append(";\n");
           
 		    }
 		    }
@@ -279,7 +294,10 @@ public class Extractor {
              cons.append(" a_r_g_u_m_e_n_t_"+i);
           }
           
-          cons.append(") {}\n");
+          cons.append(")");
+          Type[] exceptions = constructor.getGenericExceptionTypes();
+          appendExceptionTypes(cons, exceptions);
+          cons.append("{}\n");
           if(valid) {
               result.append(cons.toString());
           }

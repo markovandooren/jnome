@@ -373,7 +373,10 @@ packageDeclaration returns [NamespacePart element]
     ;
     
 importDeclaration returns [Import element]
-    :   'import' st='static'? qn=qualifiedName {retval.element = new TypeImport(new JavaTypeReference($qn.text));} 
+    :   im='import' st='static'? qn=qualifiedName 
+        {retval.element = new TypeImport(new JavaTypeReference($qn.text));
+         setKeyword(retval.element,im);
+        } 
          ('.' '*' {retval.element = new DemandImport(new NamespaceReference($qn.text));})? ';'
     ;
 
@@ -875,7 +878,9 @@ methodBody returns [Block element]
     ;
 
 constructorBody returns [Block element]
-    :   '{' {retval.element = new Block();} (inv=explicitConstructorInvocation {retval.element.addStatement(new StatementExpression(inv.element));})? blockStatement* '}'
+    :   '{' {retval.element = new Block();} 
+         (inv=explicitConstructorInvocation {retval.element.addStatement(new StatementExpression(inv.element));})? 
+         (bs=blockStatement {retval.element.addStatement(bs.element);})* '}'
     ;
 
 explicitConstructorInvocation returns [Invocation element]

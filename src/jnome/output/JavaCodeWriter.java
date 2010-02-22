@@ -14,6 +14,7 @@ import jnome.core.expression.ArrayInitializer;
 import jnome.core.expression.ClassLiteral;
 import jnome.core.expression.ConstructorInvocation;
 import jnome.core.expression.DimensionInitializer;
+import jnome.core.language.Java;
 import jnome.core.modifier.Default;
 import jnome.core.modifier.StrictFP;
 import jnome.core.modifier.Synchronized;
@@ -22,6 +23,7 @@ import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.java.collections.RobustVisitor;
 import org.rejuse.java.collections.Visitor;
+import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.predicate.AbstractPredicate;
 import org.rejuse.predicate.SafePredicate;
 
@@ -710,7 +712,7 @@ public class JavaCodeWriter extends Syntax {
     
   }
 
-  public String toCodeMethod(Method method) throws LookupException {
+  public String toCodeMethod(Method<?,?,?,?> method) throws LookupException {
    //XXX modifiers
 	    final StringBuffer result = startLine();
 	    //Modifiers
@@ -722,7 +724,7 @@ public class JavaCodeWriter extends Syntax {
 	      }
 	    }.applyTo(method.modifiers());
 	    
-	    if(! method.hasModifier(new Constructor())) {
+	    if(! (method.is(method.language(Java.class).CONSTRUCTOR) == Ternary.TRUE)) {
 	        result.append(toCode(method.getReturnTypeReference()));
 	        result.append(" ");
 	      }

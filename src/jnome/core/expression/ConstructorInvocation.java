@@ -171,11 +171,11 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
     return result;
   }
 
-  public void prefix(InvocationTarget target) throws LookupException {
-    if(getTarget() != null) {
-      getTarget().prefixRecursive(target);
-    }
-  }
+//  public void prefix(InvocationTarget target) throws LookupException {
+//    if(getTarget() != null) {
+//      getTarget().prefixRecursive(target);
+//    }
+//  }
 
  /*@
    @ also public behavior

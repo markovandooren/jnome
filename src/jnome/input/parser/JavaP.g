@@ -1024,21 +1024,59 @@ statement returns [Statement element]
 setLocation(retval.element, (CommonToken)retval.start, (CommonToken)retval.stop);}
     : bl=block {retval.element = bl.element;}
     |   ASSERT asexpr=expression {retval.element=new AssertStatement(asexpr.element);}(':' asexprx=expression {((AssertStatement)retval.element).setMessageExpression(asexprx.element);})? ';'
-    |   'if' ifexpr=parExpression ifif=statement (options {k=1;}:'else' ifelse=statement)? {retval.element=new IfThenElseStatement(ifexpr.element, ifif.element, (ifelse == null ? null : ifelse.element));}
-    |   'for' '(' forc=forControl ')' forstat=statement {retval.element = new ForStatement(forc.element,forstat.element);}
-    |   'while' wexs=parExpression wstat=statement {retval.element = new WhileStatement(wexs.element, wstat.element);}
-    |   'do' dostat=statement 'while' doex=parExpression ';' {retval.element= new DoStatement(doex.element, dostat.element);}
-    |   'try' traaibl=block {retval.element = new TryStatement(traaibl.element);}
-        ( cts=catches 'finally' trybl=block {((TryStatement)retval.element).addAllCatchClauses(cts.element); ((TryStatement)retval.element).setFinallyClause(new FinallyClause(trybl.element));}
+    |   ifkey='if' ifexpr=parExpression ifif=statement (options {k=1;}:elsekey='else' ifelse=statement)? 
+         {retval.element=new IfThenElseStatement(ifexpr.element, ifif.element, (ifelse == null ? null : ifelse.element));
+          setKeyword(retval.element,ifkey);
+          if(ifelse != null) {
+            setKeyword(retval.element,elsekey);
+          }
+         }
+    |   forkey='for' '(' forc=forControl ')' forstat=statement 
+        {retval.element = new ForStatement(forc.element,forstat.element);
+        setKeyword(retval.element,forkey);}
+    |   whilkey='while' wexs=parExpression wstat=statement 
+        {retval.element = new WhileStatement(wexs.element, wstat.element);
+        setKeyword(retval.element,whilkey);}
+    |   dokey='do' dostat=statement whilekey='while' doex=parExpression ';' 
+        {retval.element= new DoStatement(doex.element, dostat.element);
+        setKeyword(retval.element,dokey);
+        setKeyword(retval.element,whilekey);}
+    |   trykey='try' traaibl=block 
+        {retval.element = new TryStatement(traaibl.element);
+        setKeyword(retval.element,trykey);}
+        ( cts=catches finkey='finally' trybl=block 
+           {((TryStatement)retval.element).addAllCatchClauses(cts.element); 
+            ((TryStatement)retval.element).setFinallyClause(new FinallyClause(trybl.element));
+            setKeyword(retval.element,finkey);
+           }
         | ctss=catches {((TryStatement)retval.element).addAllCatchClauses(ctss.element);}
-        |   'finally' trybll=block {((TryStatement)retval.element).setFinallyClause(new FinallyClause(trybll.element));}
+        |   finnkey='finally' trybll=block 
+           {((TryStatement)retval.element).setFinallyClause(new FinallyClause(trybll.element));
+           setKeyword(retval.element,finnkey);}
         )
-    |   'switch' swexpr=parExpression {retval.element = new SwitchStatement(swexpr.element);}'{' cases=switchBlockStatementGroups {((SwitchStatement)retval.element).addAllCases(cases.element);}'}'
-    |   'synchronized' synexpr=parExpression synstat=block {retval.element = new SynchronizedStatement(synexpr.element,synstat.element);}
-    |   'return' {retval.element = new ReturnStatement();} (retex=expression {((ReturnStatement)retval.element).setExpression(retex.element);})? ';'
-    |   'throw' threx=expression {retval.element = new ThrowStatement(threx.element);}';'
-    |   'break' {retval.element = new BreakStatement();} (name=Identifier {((BreakStatement)retval.element).setLabel($name.text);})? ';'
-    |   'continue' {retval.element = new ContinueStatement();} (name=Identifier {((ContinueStatement)retval.element).setLabel($name.text);})? ';'
+    |   switchkey='switch' swexpr=parExpression 
+          {retval.element = new SwitchStatement(swexpr.element);
+          setKeyword(retval.element,switchkey);}
+          '{' cases=switchBlockStatementGroups {((SwitchStatement)retval.element).addAllCases(cases.element);}'}'
+    |   synkey='synchronized' synexpr=parExpression synstat=block 
+          {retval.element = new SynchronizedStatement(synexpr.element,synstat.element);
+          setKeyword(retval.element,synkey);}
+    |   retkey='return' 
+            {retval.element = new ReturnStatement();
+             setKeyword(retval.element,retkey);} 
+          (retex=expression {((ReturnStatement)retval.element).setExpression(retex.element);})? ';'
+    |   throwkey='throw' threx=expression 
+        {retval.element = new ThrowStatement(threx.element);
+        setKeyword(retval.element,throwkey);}
+        ';'
+    |   breakkey='break' 
+        {retval.element = new BreakStatement();
+        setKeyword(retval.element,breakkey);} 
+        (name=Identifier {((BreakStatement)retval.element).setLabel($name.text);})? ';'
+    |   continuekey='continue' 
+        {retval.element = new ContinueStatement();
+        setKeyword(retval.element,continuekey);} 
+        (name=Identifier {((ContinueStatement)retval.element).setLabel($name.text);})? ';'
     |   ';' {retval.element = new EmptyStatement();}
     |   stattex=statementExpression {retval.element = new StatementExpression(stattex.element);} ';'
     |   name=Identifier ':' labstat=statement {retval.element = new LabeledStatement($name.text,labstat.element);}
@@ -1051,7 +1089,9 @@ catches returns [List<CatchClause> element]
     
 catchClause returns [CatchClause element]
 @after{assert(retval.element != null);}
-    :   'catch' '(' par=formalParameter ')' bl=block {retval.element = new CatchClause(par.element, bl.element);}
+    :   catchkey='catch' '(' par=formalParameter ')' bl=block 
+        {retval.element = new CatchClause(par.element, bl.element);
+        setKeyword(retval.element,catchkey);}
     ;
 
 formalParameter returns [FormalParameter element]

@@ -1338,7 +1338,12 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public String toCodeNamedTargetRef(NamedTargetExpression var) throws LookupException {
-    return var.getName()+toCode(var.getTarget());
+    InvocationTarget target = var.getTarget();
+    if(target != null) {
+		  return toCode(target)+"."+var.getName();
+    } else {
+    	return var.getName();
+    }
   }
 
   public boolean isVarRef(Element element) {

@@ -588,12 +588,12 @@ public class JavaCodeWriter extends Syntax {
     List<InheritanceRelation> superTypes = type.inheritanceRelations();
     final List<TypeReference> classRefs = new ArrayList<TypeReference>();
     final List<TypeReference> interfaceRefs = new ArrayList<TypeReference>();
-    for(InheritanceRelation rel:superTypes) {
+    for(InheritanceRelation<?> rel:superTypes) {
     	TypeReference typeRef = rel.superClassReference();
-      if(isClass(typeRef.getType())) {
-        classRefs.add(typeRef);
-      } else {
+      if(rel.is(rel.language(Java.class).IMPLEMENTS_RELATION) == Ternary.TRUE) {
         interfaceRefs.add(typeRef);
+      } else {
+        classRefs.add(typeRef);
       }
     }
     if(classRefs.size() > 0) {

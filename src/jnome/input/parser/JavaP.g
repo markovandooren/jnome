@@ -442,7 +442,9 @@ normalClassDeclaration returns [RegularType element]
             })? 
         (impkw='implements' trefs=typeList 
             {for(TypeReference ref: trefs.element) {
-                retval.element.addInheritanceRelation(new SubtypeRelation(ref));
+                SubtypeRelation rel = new SubtypeRelation(ref);
+                retval.element.addInheritanceRelation(rel);
+                rel.addModifier(new Implements());
              }
             } )?
         body=classBody {retval.element.body().addAll(body.element.elements());}
@@ -484,7 +486,11 @@ scope{
                               setLocation(retval.element,name,"__NAME");}
                   ('implements' trefs=typeList 
                          {for(TypeReference ref: trefs.element)
-                               {retval.element.addInheritanceRelation(new SubtypeRelation(ref));} 
+                               {
+                                SubtypeRelation rel = new SubtypeRelation(ref);
+                                retval.element.addInheritanceRelation(rel);
+                                rel.addModifier(new Implements());
+                                } 
                           } 
                    )? 
                    body=enumBody {retval.element.setBody(body.element);}

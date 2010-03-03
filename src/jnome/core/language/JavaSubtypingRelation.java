@@ -30,7 +30,7 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	@Override
 	public boolean contains(Type first, Type second) throws LookupException {
 		// OPTIMIZE
-		getLogger().debug("Subtype check: "+first.getFullyQualifiedName()+" <: " + second.getFullyQualifiedName());
+		//getLogger().debug("Subtype check: "+first.getFullyQualifiedName()+" <: " + second.getFullyQualifiedName());
 		boolean result = false;
 		if(first.equals(second)) {
 			result = true;

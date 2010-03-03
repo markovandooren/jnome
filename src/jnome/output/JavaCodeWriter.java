@@ -95,6 +95,7 @@ import chameleon.support.modifier.Private;
 import chameleon.support.modifier.Protected;
 import chameleon.support.modifier.Public;
 import chameleon.support.modifier.Static;
+import chameleon.support.statement.AssertStatement;
 import chameleon.support.statement.BreakStatement;
 import chameleon.support.statement.CaseLabel;
 import chameleon.support.statement.CatchClause;
@@ -262,6 +263,8 @@ public class JavaCodeWriter extends Syntax {
     	result = toCodeFormalTypeParameter((FormalTypeParameter) element);
     } else if(isExtendsConstraint(element)) {
     	result = toCodeExtendsConstraint((ExtendsConstraint) element);
+    } else if(isAssert(element)) {
+    	result = toCodeAssert((AssertStatement) element);
     }
     else if(element == null) {
       result = "";
@@ -270,6 +273,14 @@ public class JavaCodeWriter extends Syntax {
       throw new IllegalArgumentException("The given element is not know by the Java syntax: "+element.getClass().getName());
     }
     return result;
+  }
+  
+  public boolean isAssert(Element element) {
+  	return element instanceof AssertStatement;
+  }
+  
+  public String toCodeAssert(AssertStatement element) {
+  	return "assert(" + element.getExpression() +");";
   }
   
   public String toCodeBasicTypeArgument(BasicTypeArgument element) throws LookupException {

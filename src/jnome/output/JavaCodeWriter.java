@@ -61,7 +61,10 @@ import chameleon.core.type.TypeReference;
 import chameleon.core.type.generics.ActualTypeArgument;
 import chameleon.core.type.generics.BasicTypeArgument;
 import chameleon.core.type.generics.ExtendsConstraint;
+import chameleon.core.type.generics.ExtendsWildCard;
 import chameleon.core.type.generics.FormalTypeParameter;
+import chameleon.core.type.generics.PureWildCard;
+import chameleon.core.type.generics.SuperWildCard;
 import chameleon.core.type.generics.TypeConstraint;
 import chameleon.core.type.generics.TypeParameter;
 import chameleon.core.type.inheritance.InheritanceRelation;
@@ -265,6 +268,12 @@ public class JavaCodeWriter extends Syntax {
     	result = toCodeExtendsConstraint((ExtendsConstraint) element);
     } else if(isAssert(element)) {
     	result = toCodeAssert((AssertStatement) element);
+    } else if(isExtendsWildCard(element)) {
+    	result = toCodeExtendsWildCard((ExtendsWildCard) element);
+    } else if(isSuperWildCard(element)) {
+    	result = toCodeSuperWildCard((SuperWildCard) element);
+    } else if(isPureWildCard(element)) {
+    	result = toCodePureWildCard((PureWildCard) element);
     }
     else if(element == null) {
       result = "";
@@ -273,6 +282,30 @@ public class JavaCodeWriter extends Syntax {
       throw new IllegalArgumentException("The given element is not know by the Java syntax: "+element.getClass().getName());
     }
     return result;
+  }
+  
+  public boolean isExtendsWildCard(Element element) {
+  	return element instanceof ExtendsWildCard;
+  }
+  
+  public String toCodeExtendsWildCard(ExtendsWildCard element) throws LookupException {
+  	return "? extends " + toCode(element.typeReference());
+  }
+  
+  public boolean isSuperWildCard(Element element) {
+  	return element instanceof SuperWildCard;
+  }
+  
+  public String toCodeSuperWildCard(SuperWildCard element) throws LookupException {
+  	return "? super " + toCode(element.typeReference());
+  }
+  
+  public boolean isPureWildCard(Element element) {
+  	return element instanceof PureWildCard;
+  }
+  
+  public String toCodePureWildCard(PureWildCard element) throws LookupException {
+  	return "?";
   }
   
   public boolean isAssert(Element element) {
@@ -473,35 +506,28 @@ public class JavaCodeWriter extends Syntax {
   private String toCodeModifier(Modifier element) {
     if(element instanceof Public) {
       return "public";
-    }
-    else if(element instanceof Protected) {
+    } else if(element instanceof Protected) {
       return "protected";
-    }
-    else if(element instanceof Private) {
+    } else if(element instanceof Private) {
       return "private";
-    }
-    else if(element instanceof Default) {
+    } else if(element instanceof Default) {
       return "";
-    }
-    else if(element instanceof Abstract) {
+    } else if(element instanceof Abstract) {
       return "abstract";
-    }
-    else if(element instanceof Static) {
+    } else if(element instanceof Static) {
       return "static";
-    }
-    else if(element instanceof Final) {
+    } else if(element instanceof Final) {
       return "final";
-    }
-    else if(element instanceof StrictFP) {
+    } else if(element instanceof StrictFP) {
       return "strictfp";
-    }
-    else if(element instanceof Synchronized) {
+    } else if(element instanceof Synchronized) {
       return "synchronized";
-    }
-    else if(element instanceof Constructor) {
+    } else if(element instanceof Constructor) {
     	return "";
     } else if(element instanceof Native) {
     	return "native";
+    } else if(element instanceof Interface) {
+    	return "";
     }
     else {
       throw new IllegalArgumentException("The given element is not know by the Java syntax: "+element.getClass().getName());

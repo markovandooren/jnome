@@ -59,6 +59,8 @@ public class Java extends ObjectOrientedLanguage {
   	PRIVATE.addValidElementType(VariableDeclarator.class);
   	PUBLIC.addValidElementType(VariableDeclarator.class);
   	PROTECTED.addValidElementType(VariableDeclarator.class);
+  	OVERRIDABLE.addValidElementType(VariableDeclarator.class);
+  	DEFINED.addValidElementType(VariableDeclarator.class);
 	}
 	
 	public Java() {

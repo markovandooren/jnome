@@ -279,8 +279,8 @@ public class JavaCodeWriter extends Syntax {
   	return element instanceof AssertStatement;
   }
   
-  public String toCodeAssert(AssertStatement element) {
-  	return "assert(" + element.getExpression() +");";
+  public String toCodeAssert(AssertStatement element) throws LookupException {
+  	return "assert(" + toCode(element.getExpression()) +");";
   }
   
   public String toCodeBasicTypeArgument(BasicTypeArgument element) throws LookupException {

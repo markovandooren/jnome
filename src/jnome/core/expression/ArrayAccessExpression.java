@@ -65,13 +65,13 @@ public class ArrayAccessExpression extends Expression<ArrayAccessExpression> imp
 
   protected Type actualType() throws LookupException {
     ArrayType componentType = (ArrayType)getTarget().getType();
-    int dim = componentType.getDimension() - getIndices().size();
+    int dim = componentType.dimension() - getIndices().size();
     if (dim > 0) {
-      Type result = new ArrayType(componentType.getComponentType(), dim);
+      Type result = new ArrayType(componentType.componentType(), dim);
       return result;
     }
     else {
-      return componentType.getComponentType();
+      return componentType.componentType();
     }
   }
 
@@ -110,7 +110,7 @@ public class ArrayAccessExpression extends Expression<ArrayAccessExpression> imp
 		try {
 			Type targetType = getTarget().getType();
 			if(targetType instanceof ArrayType) {
-				int targetDimension = ((ArrayType)targetType).getDimension();
+				int targetDimension = ((ArrayType)targetType).dimension();
 				int dimension = getIndices().size();
 				if(targetDimension < dimension) {
 					result = result.and(new BasicProblem(this, "The array dimension of the type expression of the expression is smaller than the number of indices: "+targetDimension+" < "+dimension));

@@ -3,6 +3,7 @@
  */
 package jnome.core.language;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -56,27 +57,23 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	
 	public Type captureConversion(Type type) throws LookupException {
 		// create a derived type
-		Type result = new DerivedType(type);
+		List<TypeParameter> typeParameters = new ArrayList<TypeParameter>();
 		Type base = type.baseType();
 		Iterator<TypeParameter> formals = base.parameters().iterator();
-		Iterator<TypeParameter> actuals = result.parameters().iterator();
+		Iterator<TypeParameter> actuals = type.parameters().iterator();
 		// substitute parameters by their capture bounds.
 		while(actuals.hasNext()) {
-			TypeParameter param = formals.next();
-			if(!(param instanceof FormalTypeParameter)) {
+			TypeParameter formalParam = formals.next();
+			if(!(formalParam instanceof FormalTypeParameter)) {
 				throw new LookupException("Type parameter of base type is not a formal parameter.");
 			}
-			assert(param instanceof FormalTypeParameter);
-			FormalTypeParameter formal = (FormalTypeParameter) param;
-			param = actuals.next();
-			if(!(param instanceof InstantiatedTypeParameter)) {
+			TypeParameter actualParam = actuals.next();
+			if(!(actualParam instanceof InstantiatedTypeParameter)) {
 				throw new LookupException("Type parameter of type instantiation is not an instantiated parameter.");
 			}
-			assert(param instanceof InstantiatedTypeParameter);
-			InstantiatedTypeParameter actual = (InstantiatedTypeParameter) param;
-			TypeParameter newParameter = actual.capture(formal);
-			result.replaceParameter(actual, newParameter);
+			typeParameters.add(((InstantiatedTypeParameter) actualParam).capture((FormalTypeParameter) formalParam));
 		}
+		Type result = new DerivedType(typeParameters, type);
 		return result;
 	}
 

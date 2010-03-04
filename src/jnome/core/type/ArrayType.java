@@ -61,7 +61,7 @@ public class ArrayType extends RegularType {
 	private Type _type;
 
   
-  public Type getComponentType() {
+  public Type componentType() {
     return _type; 
   }
   
@@ -70,15 +70,15 @@ public class ArrayType extends RegularType {
 //	}
   
   public Type getElementType() {
-    if(getDimension() == 1) {
-      return getComponentType(); 
+    if(dimension() == 1) {
+      return componentType(); 
     }
     else {
-      return new ArrayType(getComponentType(), getDimension() - 1);
+      return new ArrayType(componentType(), dimension() - 1);
     }
   }
   
-  public int getDimension() {
+  public int dimension() {
     return _arrayDimension; 
   }
   
@@ -87,8 +87,8 @@ public class ArrayType extends RegularType {
   @Override
   public boolean uniSameAs(Element o) {
     return (o instanceof ArrayType) &&
-           ((ArrayType)o).getComponentType().equals(getComponentType()) &&
-           ((ArrayType)o).getDimension() == getDimension();
+           ((ArrayType)o).componentType().equals(componentType()) &&
+           ((ArrayType)o).dimension() == dimension();
   }
   
   public boolean assignableTo(Type other) throws LookupException {
@@ -99,18 +99,18 @@ public class ArrayType extends RegularType {
            ( // Reference type
              getElementType().subTypeOf(objType) &&
              (other instanceof ArrayType) &&
-             getComponentType().assignableTo(((ArrayType)other).getComponentType())
+             componentType().assignableTo(((ArrayType)other).componentType())
            ) ||           
            ( // Primitive type
              (! getElementType().subTypeOf(objType)) &&
              (other instanceof ArrayType) &&
-             getComponentType().equals(((ArrayType)other).getComponentType()) &&
-             ((ArrayType)other).getDimension() == getDimension()
+             componentType().equals(((ArrayType)other).componentType()) &&
+             ((ArrayType)other).dimension() == dimension()
            );
   }
 
   protected ArrayType cloneThis() {
-    return new ArrayType(getComponentType(),getDimension());
+    return new ArrayType(componentType(),dimension());
   }
   
 //  public AccessibilityDomain getTypeAccessibilityDomain() throws LookupException {

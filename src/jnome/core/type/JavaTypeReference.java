@@ -1,5 +1,6 @@
 package jnome.core.type;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -14,14 +15,18 @@ import chameleon.core.expression.NamedTarget;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.NamespaceOrTypeReference;
+import chameleon.core.namespace.RootNamespace;
 import chameleon.core.reference.CrossReference;
 import chameleon.core.type.DerivedType;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
 import chameleon.core.type.generics.ActualTypeArgument;
+import chameleon.core.type.generics.BasicTypeArgument;
+import chameleon.core.type.generics.FormalTypeParameter;
 import chameleon.core.type.generics.InstantiatedTypeParameter;
 import chameleon.core.type.generics.TypeParameter;
 import chameleon.exception.ChameleonProgrammerException;
+import chameleon.oo.language.ObjectOrientedLanguage;
 
 /**
  * A class for Java type references. They add support for array types and generic parameters.
@@ -124,7 +129,7 @@ public class JavaTypeReference extends TypeReference {
     	//Because the selector is the connected selector of this Java type reference,
     	//we know that result is a Type.
       // FILL IN GENERIC PARAMETERS
-      result = (X) fillInTypeArguments((Type)result);
+      result = (X) convertGenerics((Type)result);
       // ARRAY TYPE
       if ((arrayDimension() != 0) && (result != null)) {
         result = (X) new ArrayType(((Type)result),arrayDimension());
@@ -143,65 +148,50 @@ public class JavaTypeReference extends TypeReference {
   }
 
   
-  private Type fillInTypeArguments(Type type) throws LookupException {
+  private Type convertGenerics(Type type) throws LookupException {
   	Type result = type;
 		if (type != null) {
 			List<ActualTypeArgument> typeArguments = typeArguments();
 			if (typeArguments.size() > 0) {
-				result = new DerivedType(type);
+				result = new DerivedType(type, typeArguments);
 				// This is going to give trouble if there is a special lexical context
 				// selection for 'type' in its parent.
 				// set to the type itself? seems dangerous as well.
 				result.setUniParent(type.parent());
-				List<TypeParameter> parameters = result.parameters();
-				Iterator<TypeParameter> parametersIterator = parameters.iterator();
-				Iterator<ActualTypeArgument> argumentsIterator = typeArguments.iterator();
-				while (parametersIterator.hasNext()) {
-					TypeParameter parameter = parametersIterator.next();
-					ActualTypeArgument argument = argumentsIterator.next();
-					InstantiatedTypeParameter instantiated = new InstantiatedTypeParameter(parameter.signature().clone(), argument);
-					result.replaceParameter(parameter, instantiated);
-				}
+			} else {
+				result = erasure(type);
 			}
 		}
 		return result;
 	}
 
-//  public Type getType() throws LookupException {
-//  	Type result = null;
-//  	
-//    result = getCache();
-//    if(result != null) {
-//    	return result;
-//    }
-//
-//    if (getArrayDimension() == 0) {
-//      if(getTarget() == null) {
-//        result = getParent().getContext(this).findType(getName());
-//      }
-//      else {
-//    	  NamespaceOrType target = getTarget().getNamespaceOrType();
-//        if(target != null) {
-//          result = target.getTargetContext().findType(getName());
-//        }
-//      }
-//    }
-//    else {
-//      if(getTarget() == null) {
-//        result = new ArrayType((Type)getParent().getContext(this).findType(getComponentName()), getArrayDimension());
-//      }
-//      else {
-//    	  NamespaceOrType target = getTarget().getNamespaceOrType();
-//        if(target != null) {
-//          result = new ArrayType((Type)target.getTargetContext().findType(getComponentName()), getArrayDimension());
-//        } 
-//      }
-//    }
-//    setCache(result);
-//    return result;
-//  }
-
-
+  private Type erasure(Type original) {
+  	Type result;
+  	if(original instanceof ArrayType) {
+  		ArrayType arrayType = (ArrayType) original;
+  		result = new ArrayType(erasure(arrayType.componentType()), arrayType.dimension());
+  	} else {
+  		// Regular TYPE
+			List<TypeParameter> parameters = original.parameters();
+			int size = parameters.size();
+			if(size > 0 && (parameters.get(0) instanceof FormalTypeParameter)) {
+				List<ActualTypeArgument> args = new ArrayList<ActualTypeArgument>(size);
+				String defaultSuperClassFQN = language(ObjectOrientedLanguage.class).getDefaultSuperClassFQN();
+				RootNamespace defaultNamespace = original.language().defaultNamespace();
+				for(int i=0; i<size;i++) {
+					BasicTypeArgument argument = new BasicTypeArgument(new JavaTypeReference(defaultSuperClassFQN));
+					argument.setUniParent(defaultNamespace);
+					args.add(argument);
+				}
+				result = new DerivedType(original, args);
+				result.setUniParent(original.parent());
+			} else {
+  			result = original;
+  		}
+  	}
+  	return result;
+  }
+  
   public JavaTypeReference clone() {
   	JavaTypeReference result =  new JavaTypeReference((getTarget() == null ? null : getTarget().clone()),(SimpleNameSignature)signature().clone());
   	result.setArrayDimension(arrayDimension());

@@ -54,7 +54,7 @@ public class ArrayInitializer extends Expression<ArrayInitializer> {
     }
     else if (parent() instanceof ArrayInitializer) {
       ArrayType temp = (ArrayType)((ArrayInitializer)parent()).getType();
-      return new ArrayType(temp.getComponentType(), temp.getDimension() - 1);
+      return new ArrayType(temp.componentType(), temp.dimension() - 1);
     }
     else if (parent() instanceof Expression) {
       return ((Expression)parent()).getType();

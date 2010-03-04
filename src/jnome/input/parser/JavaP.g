@@ -596,7 +596,6 @@ memberDeclaration returns [TypeElement element]
     |   field=fieldDeclaration {retval.element=field.element;}
     ;
 
-//TODO parse generics parameters for methods and constructors
 genericMethodOrConstructorDecl returns [Method element]
     :   params=typeParameters rest=genericMethodOrConstructorRest {retval.element = rest.element; retval.element.header().addAllTypeParameters(params.element);}
     ;

@@ -253,12 +253,17 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 			return NormalMethod.class;
 		}
 
+		@Override
+		public String selectionName() {
+			return getTypeReference().signature().name();
+		}
+
 
 
   }
   
 	@Override
-	public DeclarationSelector<NormalMethod> selector() {
+	public DeclarationSelector<NormalMethod> createSelector() {
 		return new ConstructorSelector();
 	}
 

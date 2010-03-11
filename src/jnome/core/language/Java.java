@@ -4,15 +4,18 @@ package jnome.core.language;
 import jnome.core.modifier.PackageProperty;
 import jnome.core.type.NullType;
 
+import org.rejuse.logic.ternary.Ternary;
 
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.SimpleNameSignature;
+import chameleon.core.element.Element;
 import chameleon.core.language.Language;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.member.Member;
 import chameleon.core.method.Method;
 import chameleon.core.namespace.RootNamespace;
 import chameleon.core.property.ChameleonProperty;
+import chameleon.core.property.DynamicChameleonProperty;
 import chameleon.core.property.StaticChameleonProperty;
 import chameleon.core.relation.EquivalenceRelation;
 import chameleon.core.relation.StrictPartialOrder;
@@ -49,6 +52,22 @@ public class Java extends ObjectOrientedLanguage {
 		PRIVATE = new PrivateProperty(this, SCOPE_MUTEX);
 		PUBLIC = new PublicProperty(this, SCOPE_MUTEX);
 		PACKAGE_ACCESSIBLE = new PackageProperty(this, SCOPE_MUTEX);
+		PRIMITIVE_TYPE = new DynamicChameleonProperty("primitive", this,Type.class){
+		
+			@Override
+			public Ternary appliesTo(Element element) {
+				Ternary result = Ternary.FALSE;
+				if(element instanceof Type) {
+					String fqn = ((Type)element).getFullyQualifiedName();
+					if(fqn.equals("void") || fqn.equals("int") || fqn.equals("long")|| fqn.equals("float")|| fqn.equals("double")
+							|| fqn.equals("boolean")|| fqn.equals("byte")|| fqn.equals("char") || fqn.equals("short")) {
+						result = Ternary.TRUE;
+					}
+				}
+				return result;
+			}
+		};
+		REFERENCE_TYPE = PRIMITIVE_TYPE.inverse();
 
 		// In Java, a constructor is a class method
 		CONSTRUCTOR.addImplication(CLASS);
@@ -85,6 +104,8 @@ public class Java extends ObjectOrientedLanguage {
 	public final StaticChameleonProperty PUBLIC;
 	public final ChameleonProperty PACKAGE_ACCESSIBLE;
 	public final ChameleonProperty IMPLEMENTS_RELATION;
+	public final DynamicChameleonProperty PRIMITIVE_TYPE;	
+	public final ChameleonProperty REFERENCE_TYPE;	
 	
 	public Type getNullType(){
 		return _nullType;
@@ -205,6 +226,31 @@ public class Java extends ObjectOrientedLanguage {
 		@Override
 		protected Language cloneThis() {
 			return new Java();
+		}
+
+		public Type box(Type type) throws LookupException {
+			String fqn = type.getFullyQualifiedName();
+			String newFqn;
+			if(fqn.equals("boolean")) {
+				newFqn = "java.lang.Boolean";
+			} else if (fqn.equals("byte")) {
+				newFqn = "java.lang.Byte";
+			} else if (fqn.equals("char")) {
+				newFqn = "java.lang.Character";
+			} else if (fqn.equals("short")) {
+				newFqn = "java.lang.Short";
+			} else if (fqn.equals("int")) {
+				newFqn = "java.lang.Integer";
+			} else if (fqn.equals("long")) {
+				newFqn = "java.lang.Long";
+			} else if (fqn.equals("float")) {
+				newFqn = "java.lang.Float";
+			} else if (fqn.equals("double")) {
+				newFqn = "java.lang.Double";
+			} else {
+				throw new LookupException("Type "+fqn+" cannot be converted through boxing.");
+			}
+			return findType(newFqn);
 		}
 
 }

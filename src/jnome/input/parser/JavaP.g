@@ -195,6 +195,10 @@ scope TargetScope {
 
 @parser::members {
 
+  public RegularMethodInvocation invocation(String name, InvocationTarget target) {
+    return new JavaMethodInvocation(name, target);
+  }
+
   private JavaFactory _javaFactory = new JavaFactory();
   
   public JavaFactory factory() {
@@ -1433,7 +1437,7 @@ Token stop=null;
 	         stop=name;
 	        } 
 	    (args=arguments 
-	        {retval.element = new RegularMethodInvocation($name.text, $TargetScope::target);
+	        {retval.element = invocation($name.text, $TargetScope::target);
 	         ((RegularMethodInvocation)retval.element).addAllArguments(args.element);
 	         stop=args.stop;
 	        })?
@@ -1566,7 +1570,7 @@ argumentsSuffixRubbish returns [RegularMethodInvocation element]
 	:	args=arguments 
 	        {String name = ((NamedTarget)$TargetScope::target).getName();
 	         $TargetScope::target = ((NamedTarget)$TargetScope::target).getTarget(); //chop off head
-	         retval.element = new RegularMethodInvocation(name, $TargetScope::target);
+	         retval.element = invocation(name, $TargetScope::target);
 	         retval.element.addAllArguments(args.element);
 	         setLocation(retval.element, $TargetScope::start, args.stop);
 	        }
@@ -1635,7 +1639,7 @@ classCreatorRest returns [ClassCreatorRest element]
 // NEEDS_TARGET
 explicitGenericInvocation returns [Expression element]
     :   targs=nonWildcardTypeArguments name=Identifier args=arguments
-          {retval.element = new RegularMethodInvocation($name.text,$TargetScope::target);
+          {retval.element = invocation($name.text,$TargetScope::target);
            ((RegularMethodInvocation)retval.element).addAllArguments(args.element);
            ((RegularMethodInvocation)retval.element).addAllTypeArguments(targs.element);
           }
@@ -1657,7 +1661,7 @@ superSuffix returns [Expression element]
                          start = name;
                          stop = name;} 
         (args=arguments
-          {retval.element = new RegularMethodInvocation($name.text,$TargetScope::target);
+          {retval.element = invocation($name.text,$TargetScope::target);
           ((RegularMethodInvocation)retval.element).addAllArguments(args.element);
           stop = args.stop;
           }

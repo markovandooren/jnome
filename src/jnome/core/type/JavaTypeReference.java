@@ -202,7 +202,23 @@ public class JavaTypeReference extends TypeReference {
   }
 
 	public void addArrayDimension(int arrayDimension) {
+		if(arrayDimension > Integer.MAX_VALUE - _arrayDimension) {
+			throw new ChameleonProgrammerException("Overflow of array dimension. Current value: "+_arrayDimension+" trying to add: "+arrayDimension);
+		}
+		if(_arrayDimension  < -arrayDimension) {
+			throw new ChameleonProgrammerException("Trying to give a negative array dimension to a type reference.  Current value: "+_arrayDimension+" trying to add: "+arrayDimension);
+		}
 		_arrayDimension += arrayDimension;
+	}
+
+	public void decreaseArrayDimension(int arrayDimension) {
+		if(- arrayDimension > Integer.MAX_VALUE - _arrayDimension) {
+			throw new ChameleonProgrammerException("Overflow of array dimension. Current value: "+_arrayDimension+" trying to subtract: "+arrayDimension);
+		}
+		if(_arrayDimension < arrayDimension) {
+			throw new ChameleonProgrammerException("Trying to give a negative array dimension to a type reference.  Current value: "+_arrayDimension+" trying to subtract: "+arrayDimension);
+		}
+		_arrayDimension -= arrayDimension;
 	}
 
 }

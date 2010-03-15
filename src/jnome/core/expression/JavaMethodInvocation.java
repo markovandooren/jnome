@@ -306,9 +306,9 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 						if(typeArgumentOfFormalParameter instanceof BasicTypeArgument) {
 							caseSSFormalBasic(result, (BasicTypeArgument)typeArgumentOfFormalParameter, ithTypeParameterOfG);
 						} else if(typeArgumentOfFormalParameter instanceof ExtendsWildCard) {
-							caseSSFormalExtends(result, typeArgumentOfFormalParameter, ithTypeParameterOfG);
+							caseSSFormalExtends(result, (ExtendsWildCard) typeArgumentOfFormalParameter, ithTypeParameterOfG);
 						} else if(typeArgumentOfFormalParameter instanceof SuperWildCard) {
-
+							caseSSFormalSuper(result, (SuperWildCard) typeArgumentOfFormalParameter, ithTypeParameterOfG);
 						}
 					}
 				}
@@ -317,20 +317,58 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 		}
 
 		/**
+		 * If F has the form G<...,Yk-1,? super U,Yk+1....>, where U involves Tj, then if A has a supertype that is one of
 		 * 
+		 *  1) G<...,Xk-1,V,Xk+1,...>, where V is a type expression. Then this algorithm is
+		 *     applied recursively to the constraint V>>U
+		 *  2) G<...,Xk-1,? super V,Xk+1,...>, where V is a type expression. Then this algorithm is
+		 *     applied recursively to the constraint V>>U
 		 */
-		private void caseSSFormalExtends(List<SecondPhaseConstraint> result, ActualTypeArgument typeArgumentOfFormalParameter,
+		private void caseSSFormalSuper(List<SecondPhaseConstraint> result, SuperWildCard typeArgumentOfFormalParameter,
 				TypeParameter ithTypeParameterOfG) throws LookupException {
-			ExtendsWildCard extend = (ExtendsWildCard)typeArgumentOfFormalParameter;
-			JavaTypeReference U = (JavaTypeReference) extend.typeReference();
+			JavaTypeReference U = (JavaTypeReference) typeArgumentOfFormalParameter.typeReference();
 			if(involvesTypeParameter(U)) {
 				if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
 					ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
+					// 1)
+					if(arg instanceof BasicTypeArgument) {
+						Type V = arg.type();
+						GGConstraint recursive = new GGConstraint(V, U);
+						result.addAll(recursive.process());
+					} 
+					// 2)
+					else if (arg instanceof ExtendsWildCard) {
+						Type V = ((ExtendsWildCard)arg).upperBound();
+						GGConstraint recursive = new GGConstraint(V, U);
+						result.addAll(recursive.process());
+					}
+					// Otherwise, no constraint is implied on Tj.
+				}
+			}
+		}
+		
+    /**
+		 * If F has the form G<...,Yk-1,? extends U,Yk+1....>, where U involves Tj, then if A has a supertype that is one of
+		 * 
+		 *  1) G<...,Xk-1,V,Xk+1,...>, where V is a type expression. Then this algorithm is
+		 *     applied recursively to the constraint V<<U
+		 *  2) G<...,Xk-1,? extends V,Xk+1,...>, where V is a type expression. Then this algorithm is
+		 *     applied recursively to the constraint V<<U
+		 */
+		private void caseSSFormalExtends(List<SecondPhaseConstraint> result, ExtendsWildCard typeArgumentOfFormalParameter,
+				TypeParameter ithTypeParameterOfG) throws LookupException {
+			JavaTypeReference U = (JavaTypeReference) typeArgumentOfFormalParameter.typeReference();
+			if(involvesTypeParameter(U)) {
+				if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
+					ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
+					// 1)
 					if(arg instanceof BasicTypeArgument) {
 						Type V = arg.type();
 						SSConstraint recursive = new SSConstraint(V, U);
 						result.addAll(recursive.process());
-					} else if (arg instanceof ExtendsWildCard) {
+					} 
+					// 2)
+					else if (arg instanceof ExtendsWildCard) {
 						Type V = ((ExtendsWildCard)arg).upperBound();
 						SSConstraint recursive = new SSConstraint(V, U);
 						result.addAll(recursive.process());

@@ -57,6 +57,9 @@ public class TestGenerics extends JavaTest {
 		JavaTypeReference tref7 = new JavaTypeReference("test.List");
 		tref7.addArgument(new SuperWildCard(new JavaTypeReference("java.lang.String")));
 		tref7.setUniParent(language().defaultNamespace());
+		JavaTypeReference tref7duo = new JavaTypeReference("test.List");
+		tref7duo.addArgument(new SuperWildCard(new JavaTypeReference("java.lang.String")));
+		tref7duo.setUniParent(language().defaultNamespace());
 		JavaTypeReference tref8 = new JavaTypeReference("test.List");
 		tref8.addArgument(new SuperWildCard(new JavaTypeReference("java.lang.CharSequence")));
 		tref8.setUniParent(language().defaultNamespace());
@@ -68,8 +71,11 @@ public class TestGenerics extends JavaTest {
 		Type type5 = tref5.getType();
 		Type type6 = tref6.getType();
 		Type type7 = tref7.getType();
+		Type type7duo = tref7duo.getType();
 		Type type8 = tref8.getType();
 		assertTrue(type2.subTypeOf(type1));
+		assertTrue(type1.sameAs(type2));
+		assertTrue(type1.equals(type2));
 		assertTrue(type3.subTypeOf(type1));
 		assertFalse(type4.subTypeOf(type1));
 		assertFalse(type1.subTypeOf(type4));

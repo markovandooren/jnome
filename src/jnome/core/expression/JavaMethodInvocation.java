@@ -1,6 +1,7 @@
 package jnome.core.expression;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -28,6 +29,7 @@ import chameleon.core.type.TypeReference;
 import chameleon.core.type.generics.ActualTypeArgument;
 import chameleon.core.type.generics.BasicTypeArgument;
 import chameleon.core.type.generics.ExtendsWildCard;
+import chameleon.core.type.generics.InstantiatedTypeParameter;
 import chameleon.core.type.generics.SuperWildCard;
 import chameleon.core.type.generics.TypeParameter;
 import chameleon.core.variable.FormalParameter;
@@ -172,8 +174,19 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
   	// resolve()
   }
   
+  /**
+   * A = type()
+   * F = typeReference()
+   * 
+   * @author Marko van Dooren
+   */
   private abstract static class FirstPhaseConstraint extends Constraint {
   	
+  	/**
+  	 * 
+  	 * @param type
+  	 * @param tref
+  	 */
   	public FirstPhaseConstraint(Type type, JavaTypeReference tref) {
   	  _type = type;
   	  _typeReference = tref;
@@ -223,6 +236,17 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
   	public Java language() {
   		return type().language(Java.class);
   	}
+  	
+    protected Type typeWithSameBaseTypeAs(Type example, Collection<Type> toBeSearched) {
+  		Type baseType = example.baseType();
+    	for(Type type:toBeSearched) {
+  			if(type.baseType().equals(baseType)) {
+    			return type;
+    		}
+    	}
+    	return null;
+    }
+
   }
   /**
    * A << F
@@ -270,23 +294,76 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 				}
 			} else {
 				List<ActualTypeArgument> actuals = typeReference().typeArguments();
-				for(ActualTypeArgument argument: actuals) {
-					if(argument instanceof BasicTypeArgument) {
-						BasicTypeArgument basic = (BasicTypeArgument)argument;
-						if(involvesTypeParameter(basic.typeReference())) {
-							Set<Type> supers = type().getAllSuperTypes();
+				Set<Type> supers = type().getAllSuperTypes();
+				Type G = typeWithSameBaseTypeAs(type(), supers);
+				if(G != null) {
+					// i is the index of the parameter we are processing.
+					// V= the type reference of the i-th type parameter of some supertype G of A.
+					int i = 0;
+					for(ActualTypeArgument typeArgumentOfFormalParameter: typeReference().typeArguments()) {
+						i++;
+						TypeParameter ithTypeParameterOfG = G.parameters().get(i);
+						if(typeArgumentOfFormalParameter instanceof BasicTypeArgument) {
+							caseSSFormalBasic(result, (BasicTypeArgument)typeArgumentOfFormalParameter, ithTypeParameterOfG);
+						} else if(typeArgumentOfFormalParameter instanceof ExtendsWildCard) {
+							caseSSFormalExtends(result, typeArgumentOfFormalParameter, ithTypeParameterOfG);
+						} else if(typeArgumentOfFormalParameter instanceof SuperWildCard) {
+
 						}
-					} else if(argument instanceof ExtendsWildCard) {
-						
-					} else if(argument instanceof SuperWildCard) {
-						
 					}
 				}
 			}
  			return result;
 		}
+
+		/**
+		 * 
+		 */
+		private void caseSSFormalExtends(List<SecondPhaseConstraint> result, ActualTypeArgument typeArgumentOfFormalParameter,
+				TypeParameter ithTypeParameterOfG) throws LookupException {
+			ExtendsWildCard extend = (ExtendsWildCard)typeArgumentOfFormalParameter;
+			JavaTypeReference U = (JavaTypeReference) extend.typeReference();
+			if(involvesTypeParameter(U)) {
+				if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
+					ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
+					if(arg instanceof BasicTypeArgument) {
+						Type V = arg.type();
+						SSConstraint recursive = new SSConstraint(V, U);
+						result.addAll(recursive.process());
+					} else if (arg instanceof ExtendsWildCard) {
+						Type V = ((ExtendsWildCard)arg).upperBound();
+						SSConstraint recursive = new SSConstraint(V, U);
+						result.addAll(recursive.process());
+					}
+					// Otherwise, no constraint is implied on Tj.
+				}
+			}
+		}
+
+		/**
+		 * If F has the form G<...,Yk-1,U,Yk+1....>, 1<=k<=n where U is a type expression that involves Tj,
+		 * the in A has a supertype of the form G<...,Xk-1,V,Xk+1,...> where V is a type expression, this algorithm 
+		 * is applied recursively to the constraint V = U. 
+		 */
+		private void caseSSFormalBasic(List<SecondPhaseConstraint> result, BasicTypeArgument typeArgumentOfFormalParameter,
+				TypeParameter ithTypeParameterOfG) throws LookupException {
+			// U = basic.typeReference()
+			JavaTypeReference U = (JavaTypeReference) typeArgumentOfFormalParameter.typeReference();
+			if(involvesTypeParameter(U)) {
+				// Get the i-th type parameter of zuppa: V.
+				if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
+					ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
+					if(arg instanceof BasicTypeArgument) {
+						Type V = arg.type();
+						EQConstraint recursive = new EQConstraint(V, U);
+						result.addAll(recursive.process());
+					}
+				}
+			}
+		}
   	
   }
+  
 
   private static class GGConstraint extends FirstPhaseConstraint {
 

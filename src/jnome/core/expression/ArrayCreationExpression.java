@@ -11,7 +11,6 @@ import org.rejuse.java.collections.Visitor;
 
 import chameleon.core.element.Element;
 import chameleon.core.expression.Expression;
-import chameleon.core.expression.InvocationTarget;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;

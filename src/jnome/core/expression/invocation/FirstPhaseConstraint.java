@@ -3,7 +3,6 @@ package jnome.core.expression.invocation;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import jnome.core.language.Java;
 import jnome.core.type.ArrayType;
@@ -15,11 +14,15 @@ import org.rejuse.predicate.UnsafePredicate;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.reference.CrossReference;
+import chameleon.core.type.ConstructedType;
+import chameleon.core.type.DerivedType;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
 import chameleon.core.type.generics.ActualTypeArgument;
+import chameleon.core.type.generics.ActualTypeArgumentWithTypeReference;
 import chameleon.core.type.generics.BasicTypeArgument;
 import chameleon.core.type.generics.ExtendsWildCard;
+import chameleon.core.type.generics.InstantiatedTypeParameter;
 import chameleon.core.type.generics.SuperWildCard;
 import chameleon.core.type.generics.TypeParameter;
 import chameleon.oo.language.ObjectOrientedLanguage;
@@ -37,26 +40,28 @@ public abstract class FirstPhaseConstraint extends Constraint {
 	 * @param type
 	 * @param tref
 	 */
-	public FirstPhaseConstraint(Type type, JavaTypeReference tref) {
-	  _type = type;
-	  _typeReference = tref;
+	public FirstPhaseConstraint(Type A, Type F) {
+	  _A = A;
+	  _F = F;
 	}
 	
-	private Type _type;
+	private Type _A;
 	
 	public Type A() {
-		return _type;
+		return _A;
 	}
 	
-	private JavaTypeReference _typeReference;
-	
-	public JavaTypeReference typeReference() {
-		return _typeReference;
-	}
-	
+//	private JavaTypeReference _typeReference;
+//	
+//	public JavaTypeReference typeReference() {
+//		return _typeReference;
+//	}
+//	
 	public Type F() throws LookupException {
-		return typeReference().getElement();
+		return _F;
 	}
+	
+	private Type _F;
 	
 	public List<SecondPhaseConstraint> process() throws LookupException {
 		List<SecondPhaseConstraint> result = new ArrayList<SecondPhaseConstraint>();
@@ -70,34 +75,35 @@ public abstract class FirstPhaseConstraint extends Constraint {
 	
 	public List<SecondPhaseConstraint> processFirstLevel() throws LookupException {
 		List<SecondPhaseConstraint> result = new ArrayList<SecondPhaseConstraint>();
-		Declaration declarator = typeReference().getDeclarator();
-		if(parent().typeParameters().contains(declarator)) {
+//		Declaration declarator = typeReference().getDeclarator();
+		if(F() instanceof ConstructedType && parent().typeParameters().contains(((ConstructedType)F()).parameter())) {
 			// Otherwise, if F=Tj, then the constraint Tj :> A is implied.
-				result.add(FequalsTj(declarator, A()));
+				result.add(FequalsTj(((ConstructedType)F()).parameter(), A()));
 		}
-		else if(typeReference().arrayDimension() > 0) {
+		else if(F() instanceof ArrayType) {
 			// If F=U[], where the type U involves Tj, then if A is an array type V[], or
 			// a type variable with an upper bound that is an array type V[], where V is a
 			// reference type, this algorithm is applied recursively to the constraint V<<U
 
-			// The "involves Tj" condition for U is the same as "involves Tj" for F.
-			if(A() instanceof ArrayType && involvesTypeParameter(typeReference())) {
+			if(A() instanceof ArrayType && involvesTypeParameter(F())) {
 				Type componentType = ((ArrayType)A()).componentType();
 				if(componentType.is(language().REFERENCE_TYPE) == Ternary.TRUE) {
-					JavaTypeReference componentTypeReference = typeReference().clone();
-					componentTypeReference.setUniParent(typeReference());
-					componentTypeReference.decreaseArrayDimension(1);
-					FirstPhaseConstraint recursive = Array(componentType, componentTypeReference);
+					FirstPhaseConstraint recursive = Array(((ArrayType)A()).componentType(), ((ArrayType)F()).componentType());
 					result.addAll(recursive.process());
 					// FIXME: can't we unwrap the entire array dimension at once? This seems rather inefficient.
 				}
 			}
 		} else if(A().is(language().PRIMITIVE_TYPE) != Ternary.TRUE){
-			List<ActualTypeArgument> actuals = typeReference().typeArguments();
 				// i is the index of the parameter we are processing.
 				// V= the type reference of the i-th type parameter of some supertype G of A.
+			List<ActualTypeArgument> actualsOfF = new ArrayList<ActualTypeArgument>();
+			for(TypeParameter par: F().parameters()) {
+				if(par instanceof InstantiatedTypeParameter) {
+				  actualsOfF.add(((InstantiatedTypeParameter)par).argument());
+				}
+			}
 				int i = 0;
-				for(ActualTypeArgument typeArgumentOfFormalParameter: typeReference().typeArguments()) {
+				for(ActualTypeArgument typeArgumentOfFormalParameter: actualsOfF) {
 					i++;
 					if(typeArgumentOfFormalParameter instanceof BasicTypeArgument) {
 						JavaTypeReference U = (JavaTypeReference) ((BasicTypeArgument)typeArgumentOfFormalParameter).typeReference();
@@ -132,14 +138,47 @@ public abstract class FirstPhaseConstraint extends Constraint {
 	public abstract void caseSSFormalSuper(List<SecondPhaseConstraint> result, JavaTypeReference U,
 			int index) throws LookupException;
 	
-	public abstract SecondPhaseConstraint FequalsTj(Declaration declarator, Type type);
+	public abstract SecondPhaseConstraint FequalsTj(TypeParameter declarator, Type type);
 	
-	public abstract FirstPhaseConstraint Array(Type componentType, JavaTypeReference componentTypeReference);
+	public abstract FirstPhaseConstraint Array(Type componentType, Type componentTypeReference);
 	
 	public abstract List<SecondPhaseConstraint> processSpecifics() throws LookupException;
 	
 	public boolean involvesTypeParameter(TypeReference tref) throws LookupException {
 		return ! involvedTypeParameters(tref).isEmpty();
+	}
+	
+	public boolean involvesTypeParameter(Type type) throws LookupException {
+		if((type instanceof ConstructedType) && (parent().typeParameters().contains(((ConstructedType)type).parameter()))) {
+			return true;
+		} 
+		if((type instanceof ArrayType) && (involvesTypeParameter(((ArrayType)type).componentType()))) {
+			return true;
+		}
+		if((type instanceof DerivedType) && (involvesTypeParameter(type.baseType()))) {
+			return true;
+		}
+		 
+    	return new UnsafePredicate<TypeParameter, LookupException>() {
+
+				@Override
+				public boolean eval(TypeParameter object) throws LookupException {
+					if(object instanceof InstantiatedTypeParameter) {
+						ActualTypeArgument arg = ((InstantiatedTypeParameter)object).argument();
+						return involvesTypeParameter(arg);
+					} else {
+						return false;
+					}
+				}
+			}.exists(type.parameters());
+	}
+	
+	public boolean involvesTypeParameter(ActualTypeArgument arg) throws LookupException {
+		if(arg instanceof ActualTypeArgumentWithTypeReference) {
+			return involvesTypeParameter(((ActualTypeArgumentWithTypeReference)arg).typeReference());
+		} else {
+			return false;
+		}
 	}
 	
 	public List<TypeParameter> involvedTypeParameters(TypeReference tref) throws LookupException {

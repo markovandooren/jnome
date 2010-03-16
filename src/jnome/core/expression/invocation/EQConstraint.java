@@ -18,7 +18,7 @@ import chameleon.core.type.generics.TypeParameter;
 
 public class EQConstraint extends FirstPhaseConstraint {
 
-	public EQConstraint(Type type, JavaTypeReference tref) {
+	public EQConstraint(Type type, Type tref) {
 		super(type,tref);
 	}
 
@@ -28,11 +28,11 @@ public class EQConstraint extends FirstPhaseConstraint {
 	}
 	
 	
-	public EqualTypeConstraint FequalsTj(Declaration declarator, Type type) {
-		return new EqualTypeConstraint((TypeParameter) declarator, type);
+	public EqualTypeConstraint FequalsTj(TypeParameter declarator, Type type) {
+		return new EqualTypeConstraint(declarator, type);
 	}
 	
-	public FirstPhaseConstraint Array(Type componentType, JavaTypeReference componentTypeReference) {
+	public FirstPhaseConstraint Array(Type componentType, Type componentTypeReference) {
 		return new EQConstraint(componentType, componentTypeReference);
 	}
 
@@ -62,7 +62,7 @@ public class EQConstraint extends FirstPhaseConstraint {
 				ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfA).argument();
 				if(t.isInstance(arg)) {
 					Type V = arg.type();
-					EQConstraint recursive = new EQConstraint(V, U);
+					EQConstraint recursive = new EQConstraint(V, U.getElement());
 					result.addAll(recursive.process());
 				}
 

@@ -28,32 +28,31 @@ import chameleon.core.type.generics.TypeParameter;
  */
 public class SSConstraint extends FirstPhaseConstraint {
 
-	public SSConstraint(Type type, JavaTypeReference tref) {
+	public SSConstraint(Type type, Type tref) {
 		super(type,tref);
 	}
 
 	@Override
 	public List<SecondPhaseConstraint> processSpecifics() throws LookupException {
 		List<SecondPhaseConstraint> result = new ArrayList<SecondPhaseConstraint>();
-		Declaration declarator = typeReference().getDeclarator();
 		Type type = A();
 		if(A().is(language().PRIMITIVE_TYPE) == Ternary.TRUE) {
 			// If A is a primitive type, then A is converted to a reference type U via
 			// boxing conversion and this algorithm is applied recursively to the constraint
 			// U << F
-			SSConstraint recursive = new SSConstraint(language().box(A()), typeReference());
+			SSConstraint recursive = new SSConstraint(language().box(A()), F());
 			result.addAll(recursive.process());
 		} 
 		return result;
 	}
 	
-	public FirstPhaseConstraint Array(Type componentType, JavaTypeReference componentTypeReference) {
+	public FirstPhaseConstraint Array(Type componentType, Type componentTypeReference) {
 		return new SSConstraint(componentType, componentTypeReference);
 	}
 
 
-	public SupertypeConstraint FequalsTj(Declaration declarator, Type type) {
-		return new SupertypeConstraint((TypeParameter) declarator, type);
+	public SupertypeConstraint FequalsTj(TypeParameter declarator, Type type) {
+		return new SupertypeConstraint(declarator, type);
 	}
 
 	/**
@@ -75,13 +74,13 @@ public class SSConstraint extends FirstPhaseConstraint {
 				// 1)
 				if(arg instanceof BasicTypeArgument) {
 					Type V = arg.type();
-					GGConstraint recursive = new GGConstraint(V, U);
+					GGConstraint recursive = new GGConstraint(V, U.getElement());
 					result.addAll(recursive.process());
 				} 
 				// 2)
 				else if (arg instanceof ExtendsWildCard) {
 					Type V = ((ExtendsWildCard)arg).upperBound();
-					GGConstraint recursive = new GGConstraint(V, U);
+					GGConstraint recursive = new GGConstraint(V, U.getElement());
 					result.addAll(recursive.process());
 				}
 				// Otherwise, no constraint is implied on Tj.
@@ -109,13 +108,13 @@ public class SSConstraint extends FirstPhaseConstraint {
 				// 1)
 				if(arg instanceof BasicTypeArgument) {
 					Type V = arg.type();
-					SSConstraint recursive = new SSConstraint(V, U);
+					SSConstraint recursive = new SSConstraint(V, U.getElement());
 					result.addAll(recursive.process());
 				} 
 				// 2)
 				else if (arg instanceof ExtendsWildCard) {
 					Type V = ((ExtendsWildCard)arg).upperBound();
-					SSConstraint recursive = new SSConstraint(V, U);
+					SSConstraint recursive = new SSConstraint(V, U.getElement());
 					result.addAll(recursive.process());
 				}
 				// Otherwise, no constraint is implied on Tj.
@@ -142,7 +141,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 						ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 						if(arg instanceof BasicTypeArgument) {
 							Type V = arg.type();
-							EQConstraint recursive = new EQConstraint(V, U);
+							EQConstraint recursive = new EQConstraint(V, U.getElement());
 							result.addAll(recursive.process());
 						}
 					}
@@ -156,6 +155,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 
 	private Type GsuperTypeOfA() throws LookupException {
 		Set<Type> supers = A().getAllSuperTypes();
+		supers.add(A());
 		Type G = typeWithSameBaseTypeAs(F(), supers);
 		return G;
 	}

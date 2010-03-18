@@ -33,7 +33,7 @@ import chameleon.oo.language.ObjectOrientedLanguage;
  * 
  * @author Marko van Dooren
  */
-public abstract class FirstPhaseConstraint extends Constraint {
+public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstraint> {
 	
 	/**
 	 * 

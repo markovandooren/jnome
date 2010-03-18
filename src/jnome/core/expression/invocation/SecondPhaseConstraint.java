@@ -6,7 +6,7 @@ package jnome.core.expression.invocation;
 import chameleon.core.type.Type;
 import chameleon.core.type.generics.TypeParameter;
 
-public abstract class SecondPhaseConstraint extends Constraint {
+public abstract class SecondPhaseConstraint extends Constraint<SecondPhaseConstraint> {
 	
 	public SecondPhaseConstraint(TypeParameter param, Type type) {
 	  _type = type;	
@@ -24,5 +24,7 @@ public abstract class SecondPhaseConstraint extends Constraint {
 	public TypeParameter typeParameter() {
 		return _typeParameter;
 	}
+	
+	//public abstract void process();
 	
 }

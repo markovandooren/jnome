@@ -6,11 +6,11 @@ package jnome.core.expression.invocation;
 
 import org.rejuse.association.SingleAssociation;
 
-public class Constraint {
+public class Constraint<C extends Constraint> {
 	
-	private SingleAssociation<Constraint, ConstraintSet> _parentLink = new SingleAssociation<Constraint, ConstraintSet>(this);
+	private SingleAssociation<C, ConstraintSet<C>> _parentLink = new SingleAssociation<C, ConstraintSet<C>>((C) this);
 	
-	public SingleAssociation<Constraint, ConstraintSet> parentLink() {
+	public SingleAssociation<C, ConstraintSet<C>> parentLink() {
 		return _parentLink;
 	}
 	

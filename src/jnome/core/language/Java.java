@@ -2,13 +2,17 @@ package jnome.core.language;
 
 
 import jnome.core.modifier.PackageProperty;
+import jnome.core.type.JavaTypeReference;
 import jnome.core.type.NullType;
 
 import org.rejuse.logic.ternary.Ternary;
 
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.SimpleNameSignature;
+import chameleon.core.declaration.TargetDeclaration;
 import chameleon.core.element.Element;
+import chameleon.core.expression.InvocationTarget;
+import chameleon.core.expression.NamedTarget;
 import chameleon.core.language.Language;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.member.Member;
@@ -17,6 +21,8 @@ import chameleon.core.namespace.RootNamespace;
 import chameleon.core.property.ChameleonProperty;
 import chameleon.core.property.DynamicChameleonProperty;
 import chameleon.core.property.StaticChameleonProperty;
+import chameleon.core.reference.CrossReference;
+import chameleon.core.reference.ElementReferenceWithTarget;
 import chameleon.core.relation.EquivalenceRelation;
 import chameleon.core.relation.StrictPartialOrder;
 import chameleon.core.relation.WeakPartialOrder;
@@ -25,6 +31,7 @@ import chameleon.core.type.TypeReference;
 import chameleon.core.type.inheritance.InheritanceRelation;
 import chameleon.core.variable.MemberVariable;
 import chameleon.oo.language.ObjectOrientedLanguage;
+import chameleon.support.member.simplename.SimpleNameMethodSignature;
 import chameleon.support.modifier.PrivateProperty;
 import chameleon.support.modifier.ProtectedProperty;
 import chameleon.support.modifier.PublicProperty;
@@ -85,6 +92,45 @@ public class Java extends ObjectOrientedLanguage {
 	public Java() {
 		this("Java");
 	}
+	
+	public SimpleNameMethodSignature erasure(SimpleNameMethodSignature signature) {
+		SimpleNameMethodSignature result = new SimpleNameMethodSignature(signature.name());
+		result.setUniParent(signature.parent());
+		for(TypeReference tref : signature.typeReferences()) {
+			JavaTypeReference jref = (JavaTypeReference) tref;
+			result.add(erasure(jref));
+		}
+		return result;
+	}
+	
+	public TypeReference erasure(JavaTypeReference jref) {
+		JavaTypeReference result = new JavaTypeReference(erasure(jref.getTarget()), (SimpleNameSignature)jref.signature().clone());
+		result.setArrayDimension(jref.arrayDimension());
+		return result;
+	}
+
+	public <T extends CrossReference<?,?,? extends TargetDeclaration>> CrossReference<?,?,? extends TargetDeclaration> erasure(T ref) {
+		if(ref instanceof JavaTypeReference) {
+			return erasure((JavaTypeReference)ref);
+		} else if( ref != null){
+			CrossReference<?,?,? extends TargetDeclaration> result = ref.clone();
+			// replace target with erasure.
+			if(ref instanceof NamedTarget) {
+				NamedTarget namedTarget = (NamedTarget)result;
+				InvocationTarget<?, ?> target = namedTarget.getTarget();
+				if(target instanceof CrossReference) {
+				  namedTarget.setTarget((InvocationTarget)erasure((T)target));
+				}
+			} else if(ref instanceof ElementReferenceWithTarget) {
+				ElementReferenceWithTarget eref = (ElementReferenceWithTarget) result;
+				eref.setTarget(erasure(eref.getTarget()));
+			}
+			return result;
+		} else {
+			return null;
+		}
+	}
+
 	
 	private final class JavaEquivalenceRelation extends EquivalenceRelation<Member> {
 		@Override

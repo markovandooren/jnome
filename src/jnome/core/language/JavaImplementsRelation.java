@@ -5,13 +5,14 @@ package jnome.core.language;
 
 import org.rejuse.logic.ternary.Ternary;
 
-import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.member.Member;
 import chameleon.core.method.Method;
+import chameleon.core.method.MethodSignature;
 import chameleon.core.relation.StrictPartialOrder;
 import chameleon.core.type.Type;
 import chameleon.oo.language.ObjectOrientedLanguage;
+import chameleon.support.member.simplename.SimpleNameMethodSignature;
 
 public class JavaImplementsRelation extends StrictPartialOrder<Member> {
 
@@ -25,8 +26,11 @@ public class JavaImplementsRelation extends StrictPartialOrder<Member> {
 	    boolean defined1 = checkDefined(method1);
 	    if(defined1) {
 	    boolean defined2 = checkDefined(method2);
-	    result = (!defined2) && 
-	             method1.signature().sameAs(method2.signature()) &&
+	    MethodSignature signature1 = method1.signature();
+	    MethodSignature<?,?> signature2 = method2.signature();
+	    MethodSignature erasure2 = signature2.language(Java.class).erasure((SimpleNameMethodSignature) signature2);
+			result = (!defined2) && 
+	             signature1.sameParameterBoundsAs(signature2) &&
 	             (! method2.nearestAncestor(Type.class).subTypeOf(method1.nearestAncestor(Type.class))) &&
 	             method1.sameKind(method2);
 	    } else {

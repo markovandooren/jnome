@@ -29,7 +29,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 		return null;
 	}
 	
-	public SubtypeConstraint FequalsTj(TypeParameter declarator, Type type) {
+	public SubtypeConstraint FequalsTj(TypeParameter declarator, JavaTypeReference type) {
 		return new SubtypeConstraint(declarator, type);
 	}
 

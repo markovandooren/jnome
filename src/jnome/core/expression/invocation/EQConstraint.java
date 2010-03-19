@@ -28,8 +28,8 @@ public class EQConstraint extends FirstPhaseConstraint {
 		return null;
 	}
 	
-	
-	public EqualTypeConstraint FequalsTj(TypeParameter declarator, Type type) {
+	@Override
+	public EqualTypeConstraint FequalsTj(TypeParameter declarator, JavaTypeReference type) {
 		return new EqualTypeConstraint(declarator, type);
 	}
 	

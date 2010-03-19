@@ -1,7 +1,8 @@
 package jnome.core.type;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import jnome.core.language.Java;
 
 import org.rejuse.association.OrderedMultiAssociation;
 
@@ -14,21 +15,13 @@ import chameleon.core.expression.NamedTarget;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.NamespaceOrTypeReference;
-import chameleon.core.namespace.RootNamespace;
 import chameleon.core.reference.CrossReference;
-import chameleon.core.type.ConstructedType;
 import chameleon.core.type.DerivedType;
 import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
 import chameleon.core.type.generics.ActualTypeArgument;
-import chameleon.core.type.generics.BasicTypeArgument;
-import chameleon.core.type.generics.FormalTypeParameter;
-import chameleon.core.type.generics.TypeConstraint;
-import chameleon.core.type.generics.TypeConstraintWithReferences;
-import chameleon.core.type.generics.TypeParameter;
 import chameleon.exception.ChameleonProgrammerException;
-import chameleon.oo.language.ObjectOrientedLanguage;
 
 /**
  * A class for Java type references. They add support for array types and generic parameters.
@@ -173,55 +166,13 @@ public class JavaTypeReference extends TypeReference {
 				// set to the type itself? seems dangerous as well.
 				result.setUniParent(type.parent());
 			} else if(type instanceof RegularType){
-				result = erasure(type);
+				result = language(Java.class).erasure(type);
 			}
 		}
 		return result;
 	}
 
-  private Type erasure(Type original) throws LookupException {
-  	String fullyQualifiedName = original.getFullyQualifiedName();
-  	Type result;
-  	if(original instanceof ArrayType) {
-  		ArrayType arrayType = (ArrayType) original;
-  		result = new ArrayType(erasure(arrayType.componentType()), arrayType.dimension());
-  	} else if(original instanceof ConstructedType){
-  		FormalTypeParameter formal = ((ConstructedType)original).parameter();
-  		List<TypeConstraint> constraints = formal.constraints();
-  		if(constraints.size() > 0) {
-  			TypeConstraint first = constraints.get(0);
-  			if(first instanceof TypeConstraintWithReferences<?>) {
-  			  result = ((JavaTypeReference)((TypeConstraintWithReferences<?>)first).typeReferences().get(0)).erasure();	
-  			} else {
-  				throw new ChameleonProgrammerException("The type constraint of type "+first.getClass().getName()+" is not a valid Java element");
-  			}
-  		} else {
-  			result = language(ObjectOrientedLanguage.class).getDefaultSuperClass();
-  		}
-  	} 
-  	else {
-  		// Regular TYPE
-			List<TypeParameter> parameters = original.parameters();
-			int size = parameters.size();
-			if(size > 0 && (parameters.get(0) instanceof FormalTypeParameter)) {
-				List<ActualTypeArgument> args = new ArrayList<ActualTypeArgument>(size);
-				String defaultSuperClassFQN = language(ObjectOrientedLanguage.class).getDefaultSuperClassFQN();
-				RootNamespace defaultNamespace = original.language().defaultNamespace();
-				for(int i=0; i<size;i++) {
-					// FIXME is this where they mean left-most bound ? and is |G| applying erasure to the body of G where
-					// references to type parameters are replaced by the left-most bound?
-					BasicTypeArgument argument = new BasicTypeArgument(new JavaTypeReference(defaultSuperClassFQN));
-					argument.setUniParent(defaultNamespace);
-					args.add(argument);
-				}
-				result = new DerivedType(original, args);
-				result.setUniParent(original.parent());
-			} else {
-  			result = original;
-  		}
-  	}
-  	return result;
-  }
+
   
   public JavaTypeReference clone() {
   	JavaTypeReference result =  new JavaTypeReference((getTarget() == null ? null : getTarget().clone()),(SimpleNameSignature)signature().clone());

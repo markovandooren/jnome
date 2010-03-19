@@ -4,6 +4,8 @@
 package jnome.core.expression.invocation;
 
 
+import jnome.core.language.Java;
+
 import org.rejuse.association.SingleAssociation;
 
 public class Constraint<C extends Constraint> {
@@ -14,8 +16,9 @@ public class Constraint<C extends Constraint> {
 		return _parentLink;
 	}
 	
-	public ConstraintSet parent() {
+	public ConstraintSet<C> parent() {
 		return _parentLink.getOtherEnd();
 	}
+	
 	// resolve()
 }

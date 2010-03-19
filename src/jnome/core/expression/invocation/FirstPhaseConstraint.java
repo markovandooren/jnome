@@ -82,7 +82,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 //		Declaration declarator = typeReference().getDeclarator();
 		if(F() instanceof ConstructedType && parent().typeParameters().contains(((ConstructedType)F()).parameter())) {
 			// Otherwise, if F=Tj, then the constraint Tj :> A is implied.
-				result.add(FequalsTj(((ConstructedType)F()).parameter(), A()));
+				result.add(FequalsTj(((ConstructedType)F()).parameter(), ARef()));
 		}
 		else if(F() instanceof ArrayType) {
 			// If F=U[], where the type U involves Tj, then if A is an array type V[], or
@@ -145,7 +145,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 	public abstract void caseSSFormalSuper(List<SecondPhaseConstraint> result, JavaTypeReference U,
 			int index) throws LookupException;
 	
-	public abstract SecondPhaseConstraint FequalsTj(TypeParameter declarator, Type type);
+	public abstract SecondPhaseConstraint FequalsTj(TypeParameter declarator, JavaTypeReference type);
 	
 	public abstract FirstPhaseConstraint Array(JavaTypeReference componentType, Type componentTypeReference);
 	

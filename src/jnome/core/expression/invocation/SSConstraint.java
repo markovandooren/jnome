@@ -52,7 +52,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 	}
 
 
-	public SupertypeConstraint FequalsTj(TypeParameter declarator, Type type) {
+	public SupertypeConstraint FequalsTj(TypeParameter declarator, JavaTypeReference type) {
 		return new SupertypeConstraint(declarator, type);
 	}
 

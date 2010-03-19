@@ -36,31 +36,31 @@ public class TestGenerics extends JavaTest {
 
 	@Test
 	public void testSubtyping() throws LookupException {
-		JavaTypeReference tref1 = new JavaTypeReference("test.List");
+		JavaTypeReference tref1 = new JavaTypeReference("generics.List");
 		tref1.setUniParent(language().defaultNamespace());
 		tref1.addArgument(new BasicTypeArgument(new JavaTypeReference("java.lang.String")));
-		JavaTypeReference tref2 = new JavaTypeReference("test.List");
+		JavaTypeReference tref2 = new JavaTypeReference("generics.List");
 		tref2.addArgument(new BasicTypeArgument(new JavaTypeReference("java.lang.String")));
 		tref2.setUniParent(language().defaultNamespace());
-		JavaTypeReference tref3 = new JavaTypeReference("test.SubList");
+		JavaTypeReference tref3 = new JavaTypeReference("generics.SubList");
 		tref3.addArgument(new BasicTypeArgument(new JavaTypeReference("java.lang.String")));
 		tref3.setUniParent(language().defaultNamespace());
-		JavaTypeReference tref4 = new JavaTypeReference("test.List");
+		JavaTypeReference tref4 = new JavaTypeReference("generics.List");
 		tref4.addArgument(new BasicTypeArgument(new JavaTypeReference("java.lang.Object")));
 		tref4.setUniParent(language().defaultNamespace());
-		JavaTypeReference tref5 = new JavaTypeReference("test.List");
+		JavaTypeReference tref5 = new JavaTypeReference("generics.List");
 		tref5.addArgument(new ExtendsWildCard(new JavaTypeReference("java.lang.CharSequence")));
 		tref5.setUniParent(language().defaultNamespace());
-		JavaTypeReference tref6 = new JavaTypeReference("test.List");
+		JavaTypeReference tref6 = new JavaTypeReference("generics.List");
 		tref6.addArgument(new ExtendsWildCard(new JavaTypeReference("java.lang.String")));
 		tref6.setUniParent(language().defaultNamespace());
-		JavaTypeReference tref7 = new JavaTypeReference("test.List");
+		JavaTypeReference tref7 = new JavaTypeReference("generics.List");
 		tref7.addArgument(new SuperWildCard(new JavaTypeReference("java.lang.String")));
 		tref7.setUniParent(language().defaultNamespace());
-		JavaTypeReference tref7duo = new JavaTypeReference("test.List");
+		JavaTypeReference tref7duo = new JavaTypeReference("generics.List");
 		tref7duo.addArgument(new SuperWildCard(new JavaTypeReference("java.lang.String")));
 		tref7duo.setUniParent(language().defaultNamespace());
-		JavaTypeReference tref8 = new JavaTypeReference("test.List");
+		JavaTypeReference tref8 = new JavaTypeReference("generics.List");
 		tref8.addArgument(new SuperWildCard(new JavaTypeReference("java.lang.CharSequence")));
 		tref8.setUniParent(language().defaultNamespace());
 
@@ -122,6 +122,6 @@ public class TestGenerics extends JavaTest {
 
 	@Override
 	public BasicNamespaceProvider namespaceProvider() {
-		return new BasicNamespaceProvider("test");
+		return new BasicNamespaceProvider("generics");
 	}
 }

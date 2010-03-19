@@ -85,10 +85,10 @@ public class ArrayType extends RegularType {
   private int _arrayDimension;
   
   @Override
-  public boolean uniSameAs(Element o) {
+  public boolean uniSameAs(Element o) throws LookupException {
     return (o instanceof ArrayType) &&
-           ((ArrayType)o).componentType().equals(componentType()) &&
-           ((ArrayType)o).dimension() == dimension();
+           ((ArrayType)o).dimension() == dimension() &&
+           ((ArrayType)o).componentType().sameAs(componentType());
   }
   
   public boolean assignableTo(Type other) throws LookupException {

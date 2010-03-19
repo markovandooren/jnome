@@ -10,6 +10,7 @@ import chameleon.core.declaration.Declaration;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.type.Type;
 import chameleon.core.type.generics.ActualTypeArgument;
+import chameleon.core.type.generics.ActualTypeArgumentWithTypeReference;
 import chameleon.core.type.generics.BasicTypeArgument;
 import chameleon.core.type.generics.ExtendsWildCard;
 import chameleon.core.type.generics.InstantiatedTypeParameter;
@@ -18,8 +19,8 @@ import chameleon.core.type.generics.TypeParameter;
 
 public class EQConstraint extends FirstPhaseConstraint {
 
-	public EQConstraint(Type type, Type tref) {
-		super(type,tref);
+	public EQConstraint(JavaTypeReference A, Type F) {
+		super(A,F);
 	}
 
 	@Override
@@ -32,7 +33,8 @@ public class EQConstraint extends FirstPhaseConstraint {
 		return new EqualTypeConstraint(declarator, type);
 	}
 	
-	public FirstPhaseConstraint Array(Type componentType, Type componentTypeReference) {
+	@Override
+	public FirstPhaseConstraint Array(JavaTypeReference componentType, Type componentTypeReference) {
 		return new EQConstraint(componentType, componentTypeReference);
 	}
 
@@ -53,7 +55,7 @@ public class EQConstraint extends FirstPhaseConstraint {
 		processCaseSSFormalExtends(result, U, index, SuperWildCard.class);
 	}
 
-	private void processCaseSSFormalExtends(List<SecondPhaseConstraint> result, JavaTypeReference U, int index, Class<? extends ActualTypeArgument> t)
+	private void processCaseSSFormalExtends(List<SecondPhaseConstraint> result, JavaTypeReference U, int index, Class<? extends ActualTypeArgumentWithTypeReference> t)
 	throws LookupException {
 		try {
 			TypeParameter ithTypeParameterOfA = A().parameters().get(index);
@@ -61,7 +63,7 @@ public class EQConstraint extends FirstPhaseConstraint {
 			if(ithTypeParameterOfA instanceof InstantiatedTypeParameter) {
 				ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfA).argument();
 				if(t.isInstance(arg)) {
-					Type V = arg.type();
+					JavaTypeReference V = (JavaTypeReference) ((ActualTypeArgumentWithTypeReference)arg).typeReference();
 					EQConstraint recursive = new EQConstraint(V, U.getElement());
 					result.addAll(recursive.process());
 				}

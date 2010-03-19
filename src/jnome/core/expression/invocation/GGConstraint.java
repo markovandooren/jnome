@@ -20,8 +20,8 @@ import chameleon.core.type.generics.TypeParameter;
 
 public class GGConstraint extends FirstPhaseConstraint {
 
-	public GGConstraint(Type type, Type tref) {
-		super(type,tref);
+	public GGConstraint(JavaTypeReference A, Type F) {
+		super(A,F);
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 	}
 
 	@Override
-	public FirstPhaseConstraint Array(Type componentType, Type componentTypeReference) {
+	public FirstPhaseConstraint Array(JavaTypeReference componentType, Type componentTypeReference) {
 		return new GGConstraint(componentType, componentTypeReference);
 	}
 
@@ -65,7 +65,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 					  GG.replaceParameter(oldParameter, newParameter);
 						Type V=typeWithSameBaseTypeAs(H, GG.getAllSuperTypes());
 						if(F().subTypeOf(V)) {
-						  GGConstraint recursive = new GGConstraint(A(), V);
+						  GGConstraint recursive = new GGConstraint(ARef(), V);
 						  result.addAll(recursive.process());
 						}
 					} else {
@@ -73,13 +73,13 @@ public class GGConstraint extends FirstPhaseConstraint {
 						if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
 							ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 							if(arg instanceof BasicTypeArgument) {
-								EQConstraint recursive = new EQConstraint(((BasicTypeArgument)arg).typeReference().getElement(), U.getElement());
+								EQConstraint recursive = new EQConstraint((JavaTypeReference) ((BasicTypeArgument)arg).typeReference(), U.getElement());
 								result.addAll(recursive.process());
 							} else if(arg instanceof ExtendsWildCard) {
-								GGConstraint recursive = new GGConstraint(((ExtendsWildCard)arg).typeReference().getElement(), U.getElement());
+								GGConstraint recursive = new GGConstraint((JavaTypeReference) ((ExtendsWildCard)arg).typeReference(), U.getElement());
 								result.addAll(recursive.process());
 							} else if(arg instanceof SuperWildCard) {
-								SSConstraint recursive = new SSConstraint(((SuperWildCard)arg).typeReference().getElement(), U.getElement());
+								SSConstraint recursive = new SSConstraint((JavaTypeReference) ((SuperWildCard)arg).typeReference(), U.getElement());
 								result.addAll(recursive.process());
 							}
 						}
@@ -129,7 +129,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 						V.replaceParameter(par, newP);
 					}
 					if(F().subTypeOf(V)) {
-					  GGConstraint recursive = new GGConstraint(A(), V);
+					  GGConstraint recursive = new GGConstraint(ARef(), V);
 					  result.addAll(recursive.process());
 					}
 				} else {
@@ -137,7 +137,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 					if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
 						ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 						if(arg instanceof ExtendsWildCard) {
-							GGConstraint recursive = new GGConstraint(((ExtendsWildCard)arg).typeReference().getElement(), U.getElement());
+							GGConstraint recursive = new GGConstraint((JavaTypeReference) ((ExtendsWildCard)arg).typeReference(), U.getElement());
 							result.addAll(recursive.process());
 						}
 					}
@@ -185,7 +185,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 						V.replaceParameter(par, newP);
 					}
 					if(F().subTypeOf(V)) {
-					  GGConstraint recursive = new GGConstraint(A(), V);
+					  GGConstraint recursive = new GGConstraint(ARef(), V);
 					  result.addAll(recursive.process());
 					}
 				} else {
@@ -193,7 +193,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 					if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
 						ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 						if(arg instanceof SuperWildCard) {
-							SSConstraint recursive = new SSConstraint(((SuperWildCard)arg).typeReference().getElement(), U.getElement());
+							SSConstraint recursive = new SSConstraint((JavaTypeReference) ((SuperWildCard)arg).typeReference(), U.getElement());
 							result.addAll(recursive.process());
 						}
 					}

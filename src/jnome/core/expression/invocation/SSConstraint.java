@@ -28,8 +28,8 @@ import chameleon.core.type.generics.TypeParameter;
  */
 public class SSConstraint extends FirstPhaseConstraint {
 
-	public SSConstraint(Type type, Type tref) {
-		super(type,tref);
+	public SSConstraint(JavaTypeReference A, Type F) {
+		super(A,F);
 	}
 
 	@Override
@@ -40,13 +40,14 @@ public class SSConstraint extends FirstPhaseConstraint {
 			// If A is a primitive type, then A is converted to a reference type U via
 			// boxing conversion and this algorithm is applied recursively to the constraint
 			// U << F
-			SSConstraint recursive = new SSConstraint(language().box(A()), F());
+			SSConstraint recursive = new SSConstraint(language().box(ARef()), F());
 			result.addAll(recursive.process());
 		} 
 		return result;
 	}
 	
-	public FirstPhaseConstraint Array(Type componentType, Type componentTypeReference) {
+	@Override
+	public FirstPhaseConstraint Array(JavaTypeReference componentType, Type componentTypeReference) {
 		return new SSConstraint(componentType, componentTypeReference);
 	}
 
@@ -73,13 +74,13 @@ public class SSConstraint extends FirstPhaseConstraint {
 				ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 				// 1)
 				if(arg instanceof BasicTypeArgument) {
-					Type V = arg.type();
+					JavaTypeReference V = (JavaTypeReference) ((BasicTypeArgument)arg).typeReference();
 					GGConstraint recursive = new GGConstraint(V, U.getElement());
 					result.addAll(recursive.process());
 				} 
 				// 2)
 				else if (arg instanceof ExtendsWildCard) {
-					Type V = ((ExtendsWildCard)arg).upperBound();
+					JavaTypeReference V = (JavaTypeReference) ((ExtendsWildCard)arg).typeReference();
 					GGConstraint recursive = new GGConstraint(V, U.getElement());
 					result.addAll(recursive.process());
 				}
@@ -107,13 +108,13 @@ public class SSConstraint extends FirstPhaseConstraint {
 				ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 				// 1)
 				if(arg instanceof BasicTypeArgument) {
-					Type V = arg.type();
+					JavaTypeReference V = (JavaTypeReference) ((BasicTypeArgument)arg).typeReference();
 					SSConstraint recursive = new SSConstraint(V, U.getElement());
 					result.addAll(recursive.process());
 				} 
 				// 2)
 				else if (arg instanceof ExtendsWildCard) {
-					Type V = ((ExtendsWildCard)arg).upperBound();
+					JavaTypeReference V = (JavaTypeReference) ((ExtendsWildCard)arg).typeReference();
 					SSConstraint recursive = new SSConstraint(V, U.getElement());
 					result.addAll(recursive.process());
 				}
@@ -140,7 +141,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 					if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
 						ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 						if(arg instanceof BasicTypeArgument) {
-							Type V = arg.type();
+							JavaTypeReference V = (JavaTypeReference) ((BasicTypeArgument)arg).typeReference();
 							EQConstraint recursive = new EQConstraint(V, U.getElement());
 							result.addAll(recursive.process());
 						}

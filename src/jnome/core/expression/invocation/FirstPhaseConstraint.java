@@ -40,14 +40,18 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 	 * @param type
 	 * @param tref
 	 */
-	public FirstPhaseConstraint(Type A, Type F) {
+	public FirstPhaseConstraint(JavaTypeReference A, Type F) {
 	  _A = A;
 	  _F = F;
 	}
 	
-	private Type _A;
+	private JavaTypeReference _A;
 	
-	public Type A() {
+	public Type A() throws LookupException {
+		return _A.getElement();
+	}
+	
+	public JavaTypeReference ARef() {
 		return _A;
 	}
 	
@@ -88,7 +92,10 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 			if(A() instanceof ArrayType && involvesTypeParameter(F())) {
 				Type componentType = ((ArrayType)A()).componentType();
 				if(componentType.is(language().REFERENCE_TYPE) == Ternary.TRUE) {
-					FirstPhaseConstraint recursive = Array(((ArrayType)A()).componentType(), ((ArrayType)F()).componentType());
+					JavaTypeReference componentTypeReference = ARef().clone();
+					componentTypeReference.setArrayDimension(0);
+					componentTypeReference.setUniParent(ARef().parent());
+					FirstPhaseConstraint recursive = Array(componentTypeReference, ((ArrayType)F()).componentType());
 					result.addAll(recursive.process());
 					// FIXME: can't we unwrap the entire array dimension at once? This seems rather inefficient.
 				}
@@ -140,7 +147,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 	
 	public abstract SecondPhaseConstraint FequalsTj(TypeParameter declarator, Type type);
 	
-	public abstract FirstPhaseConstraint Array(Type componentType, Type componentTypeReference);
+	public abstract FirstPhaseConstraint Array(JavaTypeReference componentType, Type componentTypeReference);
 	
 	public abstract List<SecondPhaseConstraint> processSpecifics() throws LookupException;
 	
@@ -196,7 +203,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 		return parameters;
 	}
 
-	public Java language() {
+	public Java language() throws LookupException {
 		return A().language(Java.class);
 	}
 	

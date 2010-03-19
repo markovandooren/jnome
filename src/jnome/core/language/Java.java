@@ -299,4 +299,31 @@ public class Java extends ObjectOrientedLanguage {
 			return findType(newFqn);
 		}
 
+		public JavaTypeReference box(JavaTypeReference aRef) throws LookupException {
+			String fqn = aRef.getElement().getFullyQualifiedName();
+			String newFqn;
+			if(fqn.equals("boolean")) {
+				newFqn = "java.lang.Boolean";
+			} else if (fqn.equals("byte")) {
+				newFqn = "java.lang.Byte";
+			} else if (fqn.equals("char")) {
+				newFqn = "java.lang.Character";
+			} else if (fqn.equals("short")) {
+				newFqn = "java.lang.Short";
+			} else if (fqn.equals("int")) {
+				newFqn = "java.lang.Integer";
+			} else if (fqn.equals("long")) {
+				newFqn = "java.lang.Long";
+			} else if (fqn.equals("float")) {
+				newFqn = "java.lang.Float";
+			} else if (fqn.equals("double")) {
+				newFqn = "java.lang.Double";
+			} else {
+				throw new LookupException("Type "+fqn+" cannot be converted through boxing.");
+			}
+			JavaTypeReference result = new JavaTypeReference(newFqn);
+			result.setUniParent(defaultNamespace());
+			return result;
+		}
+
 }

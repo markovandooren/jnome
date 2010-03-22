@@ -286,7 +286,7 @@ scope TargetScope {
     np.add(type);
     // inherit from java.lang.Object if there is no explicit extends relation
     if(type.inheritanceRelations().isEmpty() && (! type.getFullyQualifiedName().equals("java.lang.Object"))){
-      type.addInheritanceRelation(new SubtypeRelation(new JavaTypeReference(new NamespaceOrTypeReference("java.lang"),"Object")));
+      type.addInheritanceRelation(new SubtypeRelation(createTypeReference(new NamespaceOrTypeReference("java.lang"),"Object")));
     }
 
   }
@@ -300,14 +300,25 @@ scope TargetScope {
   
   public void addNonTopLevelObjectInheritance(Type type) {
     if(type.inheritanceRelations().isEmpty()){
-      type.addInheritanceRelation(new SubtypeRelation(new JavaTypeReference(new NamespaceOrTypeReference("java.lang"),"Object")));
+      type.addInheritanceRelation(new SubtypeRelation(createTypeReference(new NamespaceOrTypeReference("java.lang"),"Object")));
     }
   }
   
-  public TypeReference typeRef(String qn) {
-    return new JavaTypeReference(qn);
+  public JavaTypeReference typeRef(String qn) {
+    return ((Java)language()).createTypeReference(qn);
   }
 
+  public JavaTypeReference createTypeReference(CrossReference<?, ?, ? extends TargetDeclaration> target, String name) {
+    return ((Java)language()).createTypeReference(target,name);
+  }
+  
+  public JavaTypeReference createTypeReference(CrossReference<?, ?, ? extends TargetDeclaration> target, SimpleNameSignature signature) {
+    return ((Java)language()).createTypeReference(target,signature);
+  }
+
+  public JavaTypeReference createTypeReference(NamedTarget target) {
+    return ((Java)language()).createTypeReference(target);
+  }
 }
 
 
@@ -378,7 +389,7 @@ packageDeclaration returns [NamespacePart element]
     
 importDeclaration returns [Import element]
     :   im='import' st='static'? qn=qualifiedName 
-        {retval.element = new TypeImport(new JavaTypeReference($qn.text));
+        {retval.element = new TypeImport(typeRef($qn.text));
          setKeyword(retval.element,im);
         } 
          ('.' '*' {retval.element = new DemandImport(new NamespaceReference($qn.text));})? ';'
@@ -581,14 +592,14 @@ scope MethodScope;
 
 voidType returns [JavaTypeReference element]
 @after{setLocation(retval.element, (CommonToken)retval.start, (CommonToken)retval.stop, "__PRIMITIVE");}
-     	:	 'void' {retval.element=new JavaTypeReference("void");}
+     	:	 'void' {retval.element=typeRef("void");}
      	;
     	
 constructorDeclaration returns [Method element]
 scope MethodScope;
         : consname=Identifier 
             {
-             retval.element = new NormalMethod(new SimpleNameMethodHeader($consname.text), new JavaTypeReference($consname.text)); 
+             retval.element = new NormalMethod(new SimpleNameMethodHeader($consname.text), typeRef($consname.text)); 
              retval.element.addModifier(new JavaConstructor());
              $MethodScope::method = retval.element;
             } 
@@ -607,8 +618,8 @@ genericMethodOrConstructorDecl returns [Method element]
 genericMethodOrConstructorRest returns [Method element]
 scope MethodScope;
 @init{TypeReference tref = null;}
-    :   (t=type {tref=t.element;}| 'void' {tref = new JavaTypeReference("void");}) name=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($name.text),tref); $MethodScope::method = retval.element;} methodDeclaratorRest
-    |   name=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($name.text),new JavaTypeReference($name.text)); $MethodScope::method = retval.element;} constructorDeclaratorRest
+    :   (t=type {tref=t.element;}| 'void' {tref = typeRef("void");}) name=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($name.text),tref); $MethodScope::method = retval.element;} methodDeclaratorRest
+    |   name=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($name.text),typeRef($name.text)); $MethodScope::method = retval.element;} constructorDeclaratorRest
     ;
 
 methodDeclaration returns [Method element]
@@ -657,7 +668,7 @@ scope MethodScope;
 methodDeclaratorRest
 @init{int count = 0;}
     :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}} ('[' ']' {count++;})* {((JavaTypeReference)$MethodScope::method.getReturnTypeReference()).addArrayDimension(count);}
-        (thrkw='throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));$MethodScope::method.setExceptionClause(clause);}})?
+        (thrkw='throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(typeRef(name)));$MethodScope::method.setExceptionClause(clause);}})?
         (   body=methodBody {$MethodScope::method.setImplementation(new RegularImplementation(body.element));}
         |   ';' {$MethodScope::method.setImplementation(null);}
         )
@@ -666,7 +677,7 @@ methodDeclaratorRest
     
 voidMethodDeclaratorRest
     :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}}
-         (thrkw='throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));$MethodScope::method.setExceptionClause(clause);}})?
+         (thrkw='throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(typeRef(name)));$MethodScope::method.setExceptionClause(clause);}})?
         (   body=methodBody {$MethodScope::method.setImplementation(new RegularImplementation(body.element));}
         |   ';' {$MethodScope::method.setImplementation(null);}
         )
@@ -677,7 +688,7 @@ interfaceMethodDeclaratorRest
 @init{int count = 0;}
     :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}}
        ('[' ']' {count++;})* {((JavaTypeReference)$MethodScope::method.getReturnTypeReference()).setArrayDimension(count);}
-       (thrkw='throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));$MethodScope::method.setExceptionClause(clause);}})? ';'
+       (thrkw='throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(typeRef(name)));$MethodScope::method.setExceptionClause(clause);}})? ';'
        {setKeyword($MethodScope::method,thrkw);}
     ;
     
@@ -688,13 +699,13 @@ interfaceGenericMethodDecl returns [TypeElement element]
     
 voidInterfaceMethodDeclaratorRest
     :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}}
-     ('throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));$MethodScope::method.setExceptionClause(clause);}})?
+     ('throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(typeRef(name)));$MethodScope::method.setExceptionClause(clause);}})?
       ';'
     ;
     
 constructorDeclaratorRest
     :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}} 
-    ('throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(new JavaTypeReference(name)));$MethodScope::method.setExceptionClause(clause);}})?
+    ('throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(typeRef(name)));$MethodScope::method.setExceptionClause(clause);}})?
      body=constructorBody {$MethodScope::method.setImplementation(new RegularImplementation(body.element));}
     ;
 
@@ -776,7 +787,7 @@ classOrInterfaceType returns [JavaTypeReference element]
 // target is null, we know that we have encountered a real type reference before, so anything after that becomes a type reference.
 	:	name=Identifier 
 	          {
-	           retval.element = new JavaTypeReference($name.text); 
+	           retval.element = typeRef($name.text); 
 	           target =  new NamespaceOrTypeReference($name.text); 
 	          } 
 	        (args=typeArguments 
@@ -790,12 +801,12 @@ classOrInterfaceType returns [JavaTypeReference element]
 	        ('.' namex=Identifier 
 	          {
 	           if(target != null) {
-	             retval.element = new JavaTypeReference(target,$namex.text);
+	             retval.element = createTypeReference(target,$namex.text);
 	             // We must clone the target here, or else it will be removed from the
 	             // type reference we just created.
 	             target = new NamespaceOrTypeReference(target.clone(),$namex.text);
 	           } else {
-	             retval.element = new JavaTypeReference(retval.element,$namex.text);
+	             retval.element = createTypeReference(retval.element,$namex.text);
 	           }
 	          } 
 	        (argsx=typeArguments 
@@ -809,14 +820,14 @@ classOrInterfaceType returns [JavaTypeReference element]
 	;
 
 primitiveType returns [JavaTypeReference element]
-    :   'boolean' {retval.element = new JavaTypeReference("boolean");}
-    |   'char' {retval.element = new JavaTypeReference("char");}
-    |   'byte' {retval.element = new JavaTypeReference("byte");}
-    |   'short' {retval.element = new JavaTypeReference("short");}
-    |   'int' {retval.element = new JavaTypeReference("int");}
-    |   'long' {retval.element = new JavaTypeReference("long");}
-    |   'float' {retval.element = new JavaTypeReference("float");}
-    |   'double' {retval.element = new JavaTypeReference("double");}
+    :   'boolean' {retval.element = typeRef("boolean");}
+    |   'char' {retval.element = typeRef("char");}
+    |   'byte' {retval.element = typeRef("byte");}
+    |   'short' {retval.element = typeRef("short");}
+    |   'int' {retval.element = typeRef("int");}
+    |   'long' {retval.element = typeRef("long");}
+    |   'float' {retval.element = typeRef("float");}
+    |   'double' {retval.element = typeRef("double");}
     ;
 
 variableModifier returns [Modifier element]
@@ -914,22 +925,22 @@ qualifiedName returns [String element]
     
 literal returns [Literal element]
     :   intl=integerLiteral {retval.element=intl.element;}
-    |   fl=FloatingPointLiteral {retval.element=new RegularLiteral(new JavaTypeReference("float"),$fl.text);}
-    |   charl=CharacterLiteral {retval.element=new RegularLiteral(new JavaTypeReference("char"),$charl.text);}
-    |   strl=StringLiteral {retval.element=new RegularLiteral(new JavaTypeReference("java.lang.String"),$strl.text);}
+    |   fl=FloatingPointLiteral {retval.element=new RegularLiteral(typeRef("float"),$fl.text);}
+    |   charl=CharacterLiteral {retval.element=new RegularLiteral(typeRef("char"),$charl.text);}
+    |   strl=StringLiteral {retval.element=new RegularLiteral(typeRef("java.lang.String"),$strl.text);}
     |   booll=booleanLiteral {retval.element=booll.element;}
     |   'null' {retval.element = new NullLiteral();}
     ;
 
 integerLiteral returns [Literal element]
-    :   hexl=HexLiteral {retval.element=new RegularLiteral(new JavaTypeReference("int"),$hexl.text);}
-    |   octl=OctalLiteral {retval.element=new RegularLiteral(new JavaTypeReference("int"),$octl.text);}
-    |   decl=DecimalLiteral {retval.element=new RegularLiteral(new JavaTypeReference("int"),$decl.text);}
+    :   hexl=HexLiteral {retval.element=new RegularLiteral(typeRef("int"),$hexl.text);}
+    |   octl=OctalLiteral {retval.element=new RegularLiteral(typeRef("int"),$octl.text);}
+    |   decl=DecimalLiteral {retval.element=new RegularLiteral(typeRef("int"),$decl.text);}
     ;
 
 booleanLiteral returns [Literal element]
-    :   'true' {retval.element = new RegularLiteral(new JavaTypeReference("boolean"),"true");}
-    |   'false' {retval.element = new RegularLiteral(new JavaTypeReference("boolean"),"false");}
+    :   'true' {retval.element = new RegularLiteral(typeRef("boolean"),"true");}
+    |   'false' {retval.element = new RegularLiteral(typeRef("boolean"),"false");}
     ;
 
 // ANNOTATIONS
@@ -1442,7 +1453,7 @@ Token stop=null;
 	         stop=args.stop;
 	        })?
 	        {setLocation(retval.element,start,stop);}
-    |   '.' thiskw='this' {retval.element = new ThisLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));setLocation(retval.element,start,spkw);}
+    |   '.' thiskw='this' {retval.element = new ThisLiteral(createTypeReference((NamedTarget)$TargetScope::target));setLocation(retval.element,start,spkw);}
     |   '.' spkw='super'{$TargetScope::target= new SuperTarget($TargetScope::target);
                          setLocation($TargetScope::target,start,spkw);
                          setKeyword($TargetScope::target,spkw);
@@ -1521,13 +1532,13 @@ if(! retval.element.descendants().contains(scopeTarget)) {
     |   arg=argumentsSuffixRubbish {retval.element.removeAllTags(); retval.element = arg.element;} // REMOVE VARIABLE REFERENCE POSITION!
     |   '.' clkw='class' 
          {retval.element.removeAllTags();
-         retval.element = new ClassLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));
+         retval.element = new ClassLiteral(createTypeReference((NamedTarget)$TargetScope::target));
           setLocation(retval.element, $TargetScope::start, clkw);
          }
     |   '.' gen=explicitGenericInvocation {retval.element.removeAllTags(); retval.element = gen.element;} // REMOVE VARIABLE REFERENCE POSITION!
     |   '.' thiskw='this' 
         {retval.element.removeAllTags();
-          retval.element = new ThisLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));
+          retval.element = new ThisLiteral(createTypeReference((NamedTarget)$TargetScope::target));
           setLocation(retval.element, $TargetScope::start, thiskw);
         }
     |   '.' supkw='super' {retval.element.removeAllTags();
@@ -1552,7 +1563,7 @@ scope TargetScope;
    (
         arr=arrayAccessSuffixRubbish {retval.element = arr.element;}
     |   arg=argumentsSuffixRubbish {retval.element = arg.element;}
-    |   '.' 'class' {retval.element = new ClassLiteral(new JavaTypeReference((NamedTarget)$TargetScope::target));}
+    |   '.' 'class' {retval.element = new ClassLiteral(createTypeReference((NamedTarget)$TargetScope::target));}
     |   '.' gen=explicitGenericInvocation {retval.element = gen.element;}
     |   '.' supkw='super' 
              {$TargetScope::target = new SuperTarget($TargetScope::target);
@@ -1622,7 +1633,7 @@ createdName returns [JavaTypeReference element]
 innerCreator returns [ConstructorInvocation element]
     :   (targs=nonWildcardTypeArguments)? 
         name=Identifier rest=classCreatorRest 
-        {retval.element = new ConstructorInvocation(new JavaTypeReference($name.text),$TargetScope::target);
+        {retval.element = new ConstructorInvocation(typeRef($name.text),$TargetScope::target);
          retval.element.setBody(rest.element.body());
          retval.element.addAllArguments(rest.element.arguments());
          if(targs != null) {

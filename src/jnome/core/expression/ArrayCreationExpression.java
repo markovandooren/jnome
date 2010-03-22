@@ -3,6 +3,7 @@ package jnome.core.expression;
 import java.util.List;
 import java.util.Set;
 
+import jnome.core.language.Java;
 import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.association.OrderedMultiAssociation;
@@ -126,8 +127,8 @@ public class ArrayCreationExpression extends Expression<ArrayCreationExpression>
     return result;
   }
 
-  public Set getDirectExceptions() throws LookupException {
-  	TypeReference ref = new TypeReference("java.lang.NegativeArraySizeException");
+  public Set<Type> getDirectExceptions() throws LookupException {
+  	TypeReference ref = language(Java.class).createTypeReferenceInDefaultNamespace("java.lang.NegativeArraySizeException");
   	ref.setUniParent(getNamespace().defaultNamespace());
     return Util.createNonNullSet(ref.getType());
   }

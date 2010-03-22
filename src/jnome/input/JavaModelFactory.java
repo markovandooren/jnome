@@ -111,19 +111,20 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         addBoolean(defaultPackage);
     }
 
+	  private Type findType(Namespace defaultNamespace, String fqn) throws LookupException {
+	  	Java lang = (Java) defaultNamespace.language();
+	  	return lang.findType(fqn);
+	  }
+	
     public void addInfixOperators(Namespace defaultPackage) {
         try {
-        	  TypeReference ref = new JavaTypeReference("java.lang.Object");
-        	  ref.setUniParent(defaultPackage);
-            Type obj = ref.getType();
+            Type obj = findType(defaultPackage, "java.lang.Object");
             if (obj != null) {
                 addInfixOperator(obj, "boolean", "==", "Object");
                 addInfixOperator(obj, "boolean", "!=", "Object");
                 addInfixOperator(obj, "String", "+", "String");
             }
-            ref = new JavaTypeReference("java.lang.String");
-        	  ref.setUniParent(defaultPackage);
-            Type string = ref.getType();
+            Type string = findType(defaultPackage, "java.lang.String");
             if (string != null) {
                 addInfixOperator(string, "String", "+", "Object");
                 addInfixOperator(string, "String", "+=", "Object");
@@ -404,13 +405,13 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     }
 
     public void addInfixOperator(Type type, String returnType, String symbol, String argType) {
-        TypeReference tr = new JavaTypeReference(null, returnType);
+        TypeReference tr = ((Java)language()).createTypeReference(returnType);
         Public pub = new Public();
         SimpleNameMethodHeader sig =  new SimpleNameMethodHeader(symbol);
         InfixOperator op = new InfixOperator(sig, tr);
         op.addModifier(pub);
 
-        TypeReference tr2 = new JavaTypeReference(argType);
+        TypeReference tr2 = ((Java)language()).createTypeReference(argType);
         FormalParameter fp = new FormalParameter(new SimpleNameSignature("arg"), tr2);
         sig.addParameter(fp);
         op.addModifier(new Native());

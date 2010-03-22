@@ -1,5 +1,6 @@
 package jnome.core.type;
 
+import jnome.core.language.Java;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.language.Language;
 import chameleon.core.type.RegularType;
@@ -15,7 +16,7 @@ import chameleon.support.modifier.Public;
  */
 public class NullType extends RegularType {
 
-  public NullType(Language lang) {
+  public NullType(Java lang) {
     super(new SimpleNameSignature("null type"));
     addModifier(new Public());
     addInfixOperator("boolean", "==", "java.lang.Object",lang);
@@ -23,12 +24,12 @@ public class NullType extends RegularType {
     addInfixOperator("java.lang.String", "+", "java.lang.String",lang);
   }
   
-  private void addInfixOperator(String returnType, String symbol, String argType,Language lang) {
-	  JavaTypeReference jtr =new JavaTypeReference(returnType);
+  private void addInfixOperator(String returnType, String symbol, String argType,Java lang) {
+	  JavaTypeReference jtr = lang.createTypeReference(returnType);
 	  Public pub = new Public();
      InfixOperator op = new InfixOperator(new SimpleNameMethodHeader(symbol),jtr);
      op.addModifier(pub);
-     op.header().addParameter(new FormalParameter(new SimpleNameSignature("arg"), new JavaTypeReference(argType)));
+     op.header().addParameter(new FormalParameter(new SimpleNameSignature("arg"), lang.createTypeReference(argType)));
      op.addModifier(new Native());
      add(op);
    }
@@ -38,7 +39,7 @@ public class NullType extends RegularType {
   }
 
   protected NullType cloneThis() {
-    return new NullType(language());
+    return new NullType((Java) language());
   }
   
 }

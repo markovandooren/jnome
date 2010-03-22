@@ -16,10 +16,10 @@ import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.NamespaceOrTypeReference;
 import chameleon.core.reference.CrossReference;
+import chameleon.core.type.BasicTypeReference;
 import chameleon.core.type.DerivedType;
 import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
-import chameleon.core.type.TypeReference;
 import chameleon.core.type.generics.ActualTypeArgument;
 import chameleon.exception.ChameleonProgrammerException;
 
@@ -28,7 +28,7 @@ import chameleon.exception.ChameleonProgrammerException;
  * 
  * @author Marko van Dooren
  */
-public class JavaTypeReference extends TypeReference {
+public class JavaTypeReference extends BasicTypeReference {
 
   public JavaTypeReference(String fqn) {
     this(fqn,0);

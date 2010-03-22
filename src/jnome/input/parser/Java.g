@@ -17,6 +17,7 @@ import chameleon.core.lookup.LookupStrategyFactory;
 import chameleon.core.compilationunit.CompilationUnit;
 
 import chameleon.core.declaration.SimpleNameSignature;
+import chameleon.core.declaration.TargetDeclaration;
 
 import chameleon.core.element.Element;
 
@@ -52,6 +53,8 @@ import chameleon.core.namespacepart.NamespacePart;
 import chameleon.core.namespacepart.Import;
 import chameleon.core.namespacepart.TypeImport;
 import chameleon.core.namespacepart.DemandImport;
+
+import chameleon.core.reference.CrossReference;
 
 import chameleon.core.statement.Block;
 import chameleon.core.statement.Statement;

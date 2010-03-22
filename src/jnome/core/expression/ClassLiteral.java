@@ -20,6 +20,7 @@ public class ClassLiteral extends LiteralWithTypeReference {
   public ClassLiteral(TypeReference tref) {
     super("class");
     setTarget(tref);
+    //FIXME a class literal should not have a type reference to store its type, it is not present in the source code.
     setTypeReference(new JavaTypeReference("java.lang.Class"));
   }
 

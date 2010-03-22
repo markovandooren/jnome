@@ -1,14 +1,15 @@
 package jnome.core.type;
 
 
+import jnome.core.language.Java;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
-import chameleon.core.type.TypeReference;
 import chameleon.core.type.inheritance.SubtypeRelation;
 import chameleon.core.variable.RegularMemberVariable;
+import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.support.modifier.Final;
 
 /**
@@ -23,13 +24,14 @@ public class ArrayType extends RegularType {
     _arrayDimension = dimension;
     _type = type;
     setUniParent(type.parent());
-    JavaTypeReference jtr =new JavaTypeReference("int");
+    Java language = type.language(Java.class);
+		JavaTypeReference jtr = language.createTypeReference("int");
     RegularMemberVariable var = new RegularMemberVariable(new SimpleNameSignature("length"), jtr);
     var.addModifier(new Final());
     add(var);
-    addInheritanceRelation(new SubtypeRelation(new JavaTypeReference("java.lang.Object")));
-    addInheritanceRelation(new SubtypeRelation(new JavaTypeReference("java.lang.Cloneable")));
-    addInheritanceRelation(new SubtypeRelation(new JavaTypeReference("java.io.Serializable")));
+    addInheritanceRelation(new SubtypeRelation(language.createTypeReference("java.lang.Object")));
+    addInheritanceRelation(new SubtypeRelation(language.createTypeReference("java.lang.Cloneable")));
+    addInheritanceRelation(new SubtypeRelation(language.createTypeReference("java.io.Serializable")));
   }
   
 	@Override
@@ -92,9 +94,7 @@ public class ArrayType extends RegularType {
   }
   
   public boolean assignableTo(Type other) throws LookupException {
-  	TypeReference ref = new TypeReference("java.lang.Object");
-  	ref.setUniParent(getNamespace().defaultNamespace());
-  	Type objType = ref.getType();
+  	Type objType = language(ObjectOrientedLanguage.class).getDefaultSuperClass();
     return super.assignableTo(other) ||
            ( // Reference type
              getElementType().subTypeOf(objType) &&

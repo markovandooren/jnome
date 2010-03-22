@@ -138,7 +138,7 @@ public class Java extends ObjectOrientedLanguage {
 				for(int i=0; i<size;i++) {
 					// FIXME is this where they mean left-most bound ? and is |G| applying erasure to the body of G where
 					// references to type parameters are replaced by the left-most bound?
-					BasicTypeArgument argument = new BasicTypeArgument(new JavaTypeReference(defaultSuperClassFQN));
+					BasicTypeArgument argument = new BasicTypeArgument(createTypeReference(defaultSuperClassFQN));
 					argument.setUniParent(defaultNamespace);
 					args.add(argument);
 				}
@@ -303,7 +303,7 @@ public class Java extends ObjectOrientedLanguage {
 		}
 		
 		public Type getDefaultSuperClass() throws LookupException {
-			  TypeReference typeRef = new DummyTypeReference(getDefaultSuperClassFQN());
+			  TypeReference typeRef = createTypeReferenceInDefaultNamespace(getDefaultSuperClassFQN());
 		    Type result = typeRef.getType();
 		    if (result==null) {
 		        throw new LookupException("Default super class "+getDefaultSuperClassFQN()+" not found.");
@@ -379,9 +379,27 @@ public class Java extends ObjectOrientedLanguage {
 			} else {
 				throw new LookupException("Type "+fqn+" cannot be converted through boxing.");
 			}
-			JavaTypeReference result = new JavaTypeReference(newFqn);
+			JavaTypeReference result = createTypeReference(newFqn);
 			result.setUniParent(defaultNamespace());
 			return result;
 		}
 
+		@Override
+		public JavaTypeReference createTypeReference(String fqn) {
+			return new JavaTypeReference(fqn);
+		}
+
+		@Override
+		public JavaTypeReference createTypeReference(CrossReference<?, ?, ? extends TargetDeclaration> target, String name) {
+			return new JavaTypeReference(target, name);
+		}
+
+		@Override
+		public JavaTypeReference createTypeReference(CrossReference<?, ?, ? extends TargetDeclaration> target, SimpleNameSignature signature) {
+			return new JavaTypeReference(target, signature);
+		}
+
+		public JavaTypeReference createTypeReference(NamedTarget target) {
+			return new JavaTypeReference(target);
+		}
 }

@@ -12,7 +12,7 @@ import chameleon.core.type.generics.ActualTypeArgument;
  * 
  * @author Marko van Dooren
  */
-public interface JavaTypeReference extends TypeReference {
+public interface JavaTypeReference extends TypeReference<JavaTypeReference> {
 
 	public JavaTypeReference clone();
 	
@@ -31,4 +31,6 @@ public interface JavaTypeReference extends TypeReference {
 	public void addAllArguments(List<ActualTypeArgument> arguments);
 	
 	public void addArgument(ActualTypeArgument argument);
+
+	public JavaTypeReference erasedReference();
 }

@@ -1605,7 +1605,7 @@ creator returns [Expression element]
 //GEN_METH
 @init{int count = 0;}
     :   targs=nonWildcardTypeArguments tx=createdName restx=classCreatorRest
-         {retval.element = new ConstructorInvocation(tx.element,$TargetScope::target);
+         {retval.element = new ConstructorInvocation((BasicJavaTypeReference)tx.element,$TargetScope::target);
           ((ConstructorInvocation)retval.element).setBody(restx.element.body());
           ((ConstructorInvocation)retval.element).addAllArguments(restx.element.arguments());
           ((ConstructorInvocation)retval.element).addAllTypeArguments(targs.element);
@@ -1616,7 +1616,7 @@ creator returns [Expression element]
           ('[' exx=expression ']' {((ArrayCreationExpression)retval.element).addDimensionInitializer(new FilledArrayIndex(exx.element));})+ 
             ('[' ']' {((ArrayCreationExpression)retval.element).addDimensionInitializer(new EmptyArrayIndex(1));})*
     |   t=createdName rest=classCreatorRest 
-         {retval.element = new ConstructorInvocation(t.element,$TargetScope::target);
+         {retval.element = new ConstructorInvocation((BasicJavaTypeReference)t.element,$TargetScope::target);
           ((ConstructorInvocation)retval.element).setBody(rest.element.body());
           ((ConstructorInvocation)retval.element).addAllArguments(rest.element.arguments());
          }
@@ -1633,7 +1633,7 @@ createdName returns [JavaTypeReference element]
 innerCreator returns [ConstructorInvocation element]
     :   (targs=nonWildcardTypeArguments)? 
         name=Identifier rest=classCreatorRest 
-        {retval.element = new ConstructorInvocation(typeRef($name.text),$TargetScope::target);
+        {retval.element = new ConstructorInvocation((BasicJavaTypeReference)typeRef($name.text),$TargetScope::target);
          retval.element.setBody(rest.element.body());
          retval.element.addAllArguments(rest.element.arguments());
          if(targs != null) {

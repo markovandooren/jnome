@@ -172,6 +172,8 @@ import jnome.core.modifier.JavaConstructor;
 import jnome.core.modifier.Implements;
 
 import jnome.core.type.JavaTypeReference;
+import jnome.core.type.BasicJavaTypeReference;
+import jnome.core.type.IntersectionTypeReference;
 
 import jnome.core.enumeration.EnumConstant;
 

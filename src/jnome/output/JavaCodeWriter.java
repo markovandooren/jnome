@@ -19,6 +19,8 @@ import jnome.core.modifier.Default;
 import jnome.core.modifier.StrictFP;
 import jnome.core.modifier.Synchronized;
 import jnome.core.type.ArrayType;
+import jnome.core.type.BasicJavaTypeReference;
+import jnome.core.type.IntersectionTypeReference;
 import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.java.collections.RobustVisitor;
@@ -247,7 +249,9 @@ public class JavaCodeWriter extends Syntax {
     } else if(isNamespaceOrTypeReference(element)) {
       result = toCodeNamespaceOrTypeReference((NamespaceOrTypeReference)element);
     } else if(isTypeReference(element)) {
-      result = toCodeTypeReference((JavaTypeReference)element);
+      result = toCodeBasicTypeReference((BasicJavaTypeReference)element);
+    } else if(isIntersectionTypeReference(element)) {
+      result = toCodeIntersectionTypeReference((IntersectionTypeReference)element);
     } 
       // Specific reference MUST come after the other references.
       else if(isSpecificReference(element)) {
@@ -371,11 +375,19 @@ public class JavaCodeWriter extends Syntax {
     return result;
   }
 
-  public boolean isTypeReference(Element element) {
-    return element instanceof JavaTypeReference;
+  public boolean isIntersectionTypeReference(Element element) {
+    return element instanceof IntersectionTypeReference;
   }
   
-  public String toCodeTypeReference(JavaTypeReference typeReference) throws LookupException {
+  public String toCodeIntersectionTypeReference(IntersectionTypeReference typeReference) throws LookupException {
+  	return toCode(typeReference.leftHandSide())+" & "+toCode(typeReference.rightHandSide());
+  }
+  
+  public boolean isTypeReference(Element element) {
+    return element instanceof BasicJavaTypeReference;
+  }
+  
+  public String toCodeBasicTypeReference(BasicJavaTypeReference typeReference) throws LookupException {
     String result = toCode(typeReference.getTarget());
     if(result.length() > 0) {
       result = result + ".";

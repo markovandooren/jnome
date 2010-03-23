@@ -3,6 +3,7 @@ package jnome.core.expression.invocation;
 import java.util.ArrayList;
 import java.util.List;
 
+import jnome.core.type.BasicJavaTypeReference;
 import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.association.SingleAssociation;
@@ -42,7 +43,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
   /**
    * @param target
    */
-  public ConstructorInvocation(JavaTypeReference type, InvocationTarget target) {
+  public ConstructorInvocation(BasicJavaTypeReference type, InvocationTarget target) {
     super(target);
     setTypeReference(type);
   }
@@ -57,11 +58,11 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 	private SingleAssociation<ConstructorInvocation,JavaTypeReference> _typeReference = new SingleAssociation<ConstructorInvocation,JavaTypeReference>(this);
 
 
-  public JavaTypeReference getTypeReference() {
-    return (JavaTypeReference)_typeReference.getOtherEnd();
+  public BasicJavaTypeReference getTypeReference() {
+    return (BasicJavaTypeReference)_typeReference.getOtherEnd();
   }
 
-    public void setTypeReference(JavaTypeReference type) {
+    public void setTypeReference(BasicJavaTypeReference type) {
         SingleAssociation<? extends TypeReference, ? super ConstructorInvocation> tref = type.parentLink();
         SingleAssociation<? extends JavaTypeReference, ? super ConstructorInvocation> ref = (SingleAssociation<? extends JavaTypeReference, ? super ConstructorInvocation>)tref;
         _typeReference.connectTo(ref);
@@ -164,7 +165,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
   }
 
   protected ConstructorInvocation cloneInvocation(InvocationTarget target) {
-    ConstructorInvocation result = new ConstructorInvocation((JavaTypeReference)getTypeReference().clone(), (Expression)target);
+    ConstructorInvocation result = new ConstructorInvocation((BasicJavaTypeReference)getTypeReference().clone(), (Expression)target);
     if(body() != null) {
       result.setBody(body().clone());
     }

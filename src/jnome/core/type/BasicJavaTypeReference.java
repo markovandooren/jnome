@@ -23,7 +23,7 @@ import chameleon.core.type.Type;
 import chameleon.core.type.generics.ActualTypeArgument;
 import chameleon.exception.ChameleonProgrammerException;
 
-public class BasicJavaTypeReference extends BasicTypeReference implements JavaTypeReference {
+public class BasicJavaTypeReference extends BasicTypeReference<JavaTypeReference> implements JavaTypeReference {
 	
   public BasicJavaTypeReference(String fqn) {
     this(fqn,0);
@@ -196,6 +196,12 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 			throw new ChameleonProgrammerException("Trying to give a negative array dimension to a type reference.  Current value: "+_arrayDimension+" trying to subtract: "+arrayDimension);
 		}
 		_arrayDimension -= arrayDimension;
+	}
+
+	public JavaTypeReference erasedReference() {
+	  JavaTypeReference result = new BasicJavaTypeReference(language(Java.class).erasure(getTarget()), (SimpleNameSignature)signature().clone());
+	  result.setArrayDimension(arrayDimension());
+	  return result;
 	}
 
 }

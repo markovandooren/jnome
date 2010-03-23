@@ -157,20 +157,20 @@ public class Java extends ObjectOrientedLanguage {
 		result.setUniParent(signature.parent());
 		for(TypeReference tref : signature.typeReferences()) {
 			JavaTypeReference jref = (JavaTypeReference) tref;
-			result.add(erasure(jref));
+			result.add(jref.erasedReference());
 		}
 		return result;
 	}
 	
-	public TypeReference erasure(JavaTypeReference jref) {
-		JavaTypeReference result = createTypeReference(erasure(jref.getTarget()), (SimpleNameSignature)jref.signature().clone());
-		result.setArrayDimension(jref.arrayDimension());
-		return result;
-	}
+//	public TypeReference erasure(JavaTypeReference jref) {
+//		JavaTypeReference result = createTypeReference(erasure(jref.getTarget()), (SimpleNameSignature)jref.signature().clone());
+//		result.setArrayDimension(jref.arrayDimension());
+//		return result;
+//	}
 
 	public <T extends CrossReference<?,?,? extends TargetDeclaration>> CrossReference<?,?,? extends TargetDeclaration> erasure(T ref) {
 		if(ref instanceof JavaTypeReference) {
-			return erasure((JavaTypeReference)ref);
+			return ((JavaTypeReference) ref).erasedReference();
 		} else if( ref != null){
 			CrossReference<?,?,? extends TargetDeclaration> result = ref.clone();
 			// replace target with erasure.

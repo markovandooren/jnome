@@ -151,7 +151,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 	
 	public abstract List<SecondPhaseConstraint> processSpecifics() throws LookupException;
 	
-	public boolean involvesTypeParameter(TypeReference tref) throws LookupException {
+	public boolean involvesTypeParameter(JavaTypeReference tref) throws LookupException {
 		return ! involvedTypeParameters(tref).isEmpty();
 	}
 	
@@ -182,13 +182,13 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 	
 	public boolean involvesTypeParameter(ActualTypeArgument arg) throws LookupException {
 		if(arg instanceof ActualTypeArgumentWithTypeReference) {
-			return involvesTypeParameter(((ActualTypeArgumentWithTypeReference)arg).typeReference());
+			return involvesTypeParameter((JavaTypeReference) ((ActualTypeArgumentWithTypeReference)arg).typeReference());
 		} else {
 			return false;
 		}
 	}
 	
-	public List<TypeParameter> involvedTypeParameters(TypeReference tref) throws LookupException {
+	public List<TypeParameter> involvedTypeParameters(JavaTypeReference tref) throws LookupException {
 		List<CrossReference> list = tref.descendants(CrossReference.class, new UnsafePredicate<CrossReference, LookupException>() {
 
 			@Override

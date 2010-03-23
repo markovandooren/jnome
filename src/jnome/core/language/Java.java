@@ -6,6 +6,7 @@ import java.util.List;
 
 import jnome.core.modifier.PackageProperty;
 import jnome.core.type.ArrayType;
+import jnome.core.type.BasicJavaTypeReference;
 import jnome.core.type.JavaTypeReference;
 import jnome.core.type.NullType;
 
@@ -162,7 +163,7 @@ public class Java extends ObjectOrientedLanguage {
 	}
 	
 	public TypeReference erasure(JavaTypeReference jref) {
-		JavaTypeReference result = new JavaTypeReference(erasure(jref.getTarget()), (SimpleNameSignature)jref.signature().clone());
+		JavaTypeReference result = createTypeReference(erasure(jref.getTarget()), (SimpleNameSignature)jref.signature().clone());
 		result.setArrayDimension(jref.arrayDimension());
 		return result;
 	}
@@ -386,20 +387,20 @@ public class Java extends ObjectOrientedLanguage {
 
 		@Override
 		public JavaTypeReference createTypeReference(String fqn) {
-			return new JavaTypeReference(fqn);
+			return new BasicJavaTypeReference(fqn);
 		}
 
 		@Override
 		public JavaTypeReference createTypeReference(CrossReference<?, ?, ? extends TargetDeclaration> target, String name) {
-			return new JavaTypeReference(target, name);
+			return new BasicJavaTypeReference(target, name);
 		}
 
 		@Override
 		public JavaTypeReference createTypeReference(CrossReference<?, ?, ? extends TargetDeclaration> target, SimpleNameSignature signature) {
-			return new JavaTypeReference(target, signature);
+			return new BasicJavaTypeReference(target, signature);
 		}
 
 		public JavaTypeReference createTypeReference(NamedTarget target) {
-			return new JavaTypeReference(target);
+			return new BasicJavaTypeReference(target);
 		}
 }

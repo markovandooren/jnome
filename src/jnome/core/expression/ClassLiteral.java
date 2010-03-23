@@ -3,6 +3,7 @@ package jnome.core.expression;
 
 import java.util.List;
 
+import jnome.core.type.BasicJavaTypeReference;
 import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.association.SingleAssociation;
@@ -21,7 +22,7 @@ public class ClassLiteral extends LiteralWithTypeReference {
     super("class");
     setTarget(tref);
     //FIXME a class literal should not have a type reference to store its type, it is not present in the source code.
-    setTypeReference(new JavaTypeReference("java.lang.Class"));
+    setTypeReference(new BasicJavaTypeReference("java.lang.Class"));
   }
 
   public ClassLiteral clone() {

@@ -387,7 +387,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     }
 
     public void addPrefixOperator(Type type, String returnType, String symbol) {
-        TypeReference tr = new JavaTypeReference(null, returnType);
+        TypeReference tr = ((Java)language()).createTypeReference(null, returnType);
         Public pub = new Public();
         PrefixOperator op = new PrefixOperator(new SimpleNameMethodHeader(symbol), tr);
         op.addModifier(pub);
@@ -396,7 +396,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     }
 
     public void addPostfixOperator(Type type, String returnType, String symbol) {
-        TypeReference tr = new JavaTypeReference(null, returnType);
+        TypeReference tr = ((Java)language()).createTypeReference(null, returnType);
         Public pub = new Public();
         PostfixOperator op = new PostfixOperator(new SimpleNameMethodHeader(symbol), tr);
         op.addModifier(pub);

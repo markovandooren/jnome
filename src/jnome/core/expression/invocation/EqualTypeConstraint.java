@@ -5,9 +5,11 @@ package jnome.core.expression.invocation;
 
 import java.util.List;
 
+import jnome.core.language.Java;
+import jnome.core.type.JavaTypeReference;
+
 import org.rejuse.predicate.UnsafePredicate;
 
-import jnome.core.type.JavaTypeReference;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.reference.CrossReference;
 import chameleon.core.type.ConstructedType;
@@ -28,7 +30,7 @@ public class EqualTypeConstraint extends SecondPhaseConstraint {
 				// Otherwise, if U is Tj, then this constraint carries no information and may be discarded.
 				parent().remove(this);
 			} else {
-				JavaTypeReference tref = new JavaTypeReference(parameter.signature().name());
+				JavaTypeReference tref = typeParameter().language(Java.class).createTypeReference(parameter.signature().name());
 				tref.setUniParent(parameter);
 				substitute(tref);
 				substitute(U.parameter());

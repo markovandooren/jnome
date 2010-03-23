@@ -28,7 +28,7 @@ public abstract class SecondPhaseConstraint extends Constraint<SecondPhaseConstr
 	
 	private TypeParameter _typeParameter;
 	
-	public TypeParameter typeParameter() {
+	public TypeParameter<?> typeParameter() {
 		return _typeParameter;
 	}
 	

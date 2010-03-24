@@ -7,6 +7,7 @@ import java.util.List;
 import jnome.core.modifier.PackageProperty;
 import jnome.core.type.ArrayType;
 import jnome.core.type.BasicJavaTypeReference;
+import jnome.core.type.IntersectionTypeReference;
 import jnome.core.type.JavaTypeReference;
 import jnome.core.type.NullType;
 
@@ -402,5 +403,9 @@ public class Java extends ObjectOrientedLanguage {
 
 		public JavaTypeReference createTypeReference(NamedTarget target) {
 			return new BasicJavaTypeReference(target);
+		}
+
+		public TypeReference glb(List<? extends JavaTypeReference> typeReferenceList) {
+			return new IntersectionTypeReference(typeReferenceList);
 		}
 }

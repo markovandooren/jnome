@@ -11,12 +11,15 @@ import jnome.core.type.JavaTypeReference;
 import org.rejuse.predicate.UnsafePredicate;
 
 import chameleon.core.lookup.LookupException;
+import chameleon.core.type.IntersectionType;
 import chameleon.core.type.Type;
+import chameleon.core.type.TypeReference;
 import chameleon.core.type.generics.ActualTypeArgument;
 import chameleon.core.type.generics.ActualTypeArgumentWithTypeReference;
 import chameleon.core.type.generics.BasicTypeArgument;
 import chameleon.core.type.generics.ExtendsWildCard;
 import chameleon.core.type.generics.InstantiatedTypeParameter;
+import chameleon.core.type.generics.PureWildCard;
 import chameleon.core.type.generics.SuperWildCard;
 import chameleon.core.type.generics.TypeParameter;
 import chameleon.exception.ChameleonProgrammerException;
@@ -165,14 +168,14 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		return result;
 	}
 	
-	public List<Type> typeList(ActualTypeArgumentWithTypeReference first, ActualTypeArgumentWithTypeReference second) throws LookupException {
-		List<Type> list = new ArrayList<Type>();
-		list.add(first.typeReference().getElement());
-		list.add(second.typeReference().getElement());
+	public List<JavaTypeReference> typeReferenceList(ActualTypeArgumentWithTypeReference first, ActualTypeArgumentWithTypeReference second) throws LookupException {
+		List<JavaTypeReference> list = new ArrayList<JavaTypeReference>();
+		list.add((JavaTypeReference) first.typeReference());
+		list.add((JavaTypeReference) second.typeReference());
 		return list;
 	}
 	
-	public ActualTypeArgument lcta(ActualTypeArgument first, ActualTypeArgument second) throws LookupException {
+	public ActualTypeArgument lcta(ActualTypeArgument<?> first, ActualTypeArgument second) throws LookupException {
 		if(first instanceof BasicTypeArgument || second instanceof BasicTypeArgument) {
 			if(first instanceof BasicTypeArgument && second instanceof BasicTypeArgument) {
 				Type U = ((BasicTypeArgument)first).type();
@@ -180,31 +183,69 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 				if(U.sameAs(V)) {
 					return first.clone();
 				} else {
-					List<Type> list = new ArrayList<Type>();
-					list.add(U);
-					list.add(V);
+					List<JavaTypeReference> list = new ArrayList<JavaTypeReference>();
+					list.add((JavaTypeReference) ((BasicTypeArgument)first).typeReference());
+					list.add((JavaTypeReference) ((BasicTypeArgument)second).typeReference());
 					return new ExtendsWildCard(lub(list));
 				}
 			}
 			if(first instanceof ExtendsWildCard || second instanceof ExtendsWildCard) {
 				BasicTypeArgument basic = (BasicTypeArgument) (first instanceof BasicTypeArgument? first : second);
 				ExtendsWildCard ext = (ExtendsWildCard)(basic == first ? second : first);
-				return new ExtendsWildCard(lub(typeList(basic,ext)));
+				return new ExtendsWildCard(lub(typeReferenceList(basic,ext)));
 			}
 			if(first instanceof SuperWildCard || second instanceof SuperWildCard) {
 				BasicTypeArgument basic = (BasicTypeArgument) (first instanceof BasicTypeArgument? first : second);
 				SuperWildCard ext = (SuperWildCard)(basic == first ? second : first);
-//				return new SuperWildCard(first.language(Java.class).glb(typeList(basic,ext)));
+				return new SuperWildCard(first.language(Java.class).glb(typeReferenceList(basic,ext)));
 			}
-		} else if(first instanceof BasicTypeArgument || second instanceof BasicTypeArgument) {
-			
+		} else if(first instanceof ExtendsWildCard || second instanceof ExtendsWildCard) {
+			if(first instanceof ExtendsWildCard && second instanceof ExtendsWildCard) {
+				List<JavaTypeReference> list = new ArrayList<JavaTypeReference>();
+				list.add((JavaTypeReference) ((ExtendsWildCard)first).typeReference());
+				list.add((JavaTypeReference) ((ExtendsWildCard)second).typeReference());
+				return new ExtendsWildCard(lub(list));
+			}
+			if(first instanceof SuperWildCard || second instanceof SuperWildCard) {
+				ExtendsWildCard ext = (ExtendsWildCard) (first instanceof ExtendsWildCard? first : second);
+				SuperWildCard sup = (SuperWildCard)(ext == first ? second : first);
+				Type U = ((BasicTypeArgument)first).type();
+				Type V = ((BasicTypeArgument)second).type();
+				if(U.sameAs(V)) {
+					return new BasicTypeArgument(ext.typeReference().clone());
+				} else {
+					return new PureWildCard();
+				}
+			}
+		} else if (first instanceof SuperWildCard && second instanceof SuperWildCard) {
+			return new SuperWildCard(first.language(Java.class).glb(typeReferenceList((SuperWildCard)first,(SuperWildCard)second)));
 		}
-		return null;
+		throw new ChameleonProgrammerException("lcta is not defined for the given actual type arguments of types " + first.getClass().getName() + " and " + second.getClass().getName());
 	}
 	
-	public JavaTypeReference lub(List<Type> types) {
+	public JavaTypeReference lub(List<? extends JavaTypeReference> types) {
 		return null;
 		
 	}
 	
+	public Type CandidateInvocation(Type G, TypeParameter Tj) throws LookupException {
+		return lci(Inv(G,Tj));
+	}
+	
+	public Type Candidate(Type W, TypeParameter Tj) throws LookupException {
+		if(W.parameters().size() > 0) {
+			return CandidateInvocation(W, Tj);
+		} else {
+			return W;
+		}
+	}
+	
+	public Type inferredType(TypeParameter Tj) throws LookupException {
+		List<Type> MEC = new ArrayList<Type>(MEC(Tj));
+		List<Type> candidates = new ArrayList<Type>();
+		for(Type W:MEC) {
+			candidates.add(Candidate(W,Tj));
+		}
+		return new IntersectionType(candidates);
+	}
 }

@@ -24,7 +24,7 @@ public class IntersectionTypeReference extends NamespaceElementImpl<JavaTypeRefe
 		
 	}
 
-	public IntersectionTypeReference(List<JavaTypeReference> refs) {
+	public IntersectionTypeReference(List<? extends JavaTypeReference> refs) {
 		addAll(refs);
 	}
 	
@@ -96,7 +96,7 @@ public class IntersectionTypeReference extends NamespaceElementImpl<JavaTypeRefe
 		}
 	}
 	
-	public void addAll(List<JavaTypeReference> refs) {
+	public void addAll(List<? extends JavaTypeReference> refs) {
 		for(JavaTypeReference ref: refs) {
 			add(ref);
 		}

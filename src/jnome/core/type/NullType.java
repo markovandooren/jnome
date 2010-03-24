@@ -17,7 +17,7 @@ import chameleon.support.modifier.Public;
 public class NullType extends RegularType {
 
   public NullType(Java lang) {
-    super(new SimpleNameSignature("null type"));
+    super("null type");
     addModifier(new Public());
     addInfixOperator("boolean", "==", "java.lang.Object",lang);
     addInfixOperator("boolean", "!=", "java.lang.Object",lang);

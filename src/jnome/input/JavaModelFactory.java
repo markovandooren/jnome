@@ -431,7 +431,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     public void addVoid(Namespace mm) {
         NamespacePart cu = getNamespacePart(mm);
         Public pub = new Public();
-        Type clas = new RegularType(new SimpleNameSignature("void")) {
+        Type clas = new RegularType("void") {
 
             public boolean assignableTo(Type other) {
                 return false;
@@ -447,7 +447,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     public void addByte(Namespace mm) {
         NamespacePart cu = getNamespacePart(mm);
         Public pub = new Public();
-        Type byteT = new RegularType(new SimpleNameSignature("byte")) {
+        Type byteT = new RegularType("byte") {
             public boolean assignableTo(Type other) {
                 return other.equals(this)
                         || other.getFullyQualifiedName().equals("short")
@@ -472,7 +472,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     public void addShort(Namespace mm) {
         NamespacePart cu = getNamespacePart(mm);
         Public pub = new Public();
-        Type shortT = new RegularType(new SimpleNameSignature("short")) {
+        Type shortT = new RegularType("short") {
             public boolean assignableTo(Type other) {
                 return other.equals(this)
                         || other.getFullyQualifiedName().equals("char")
@@ -496,7 +496,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         NamespacePart cu = getNamespacePart(mm);
         Public pub = new Public();
 
-        Type charT = new RegularType(new SimpleNameSignature("char")) {
+        Type charT = new RegularType("char") {
             public boolean assignableTo(Type other) {
                 return other.equals(this)
                         || other.getFullyQualifiedName().equals("int")
@@ -518,7 +518,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         NamespacePart cu = getNamespacePart(mm);
         Public pub = new Public();
 
-        Type intT = new RegularType(new SimpleNameSignature("int")) {
+        Type intT = new RegularType("int") {
             public boolean assignableTo(Type other) {
                 return other.equals(this)
                         || other.getFullyQualifiedName().equals("long")
@@ -539,7 +539,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         NamespacePart cu = getNamespacePart(mm);
         Public pub = new Public();
 
-        Type longT = new RegularType(new SimpleNameSignature("long")) {
+        Type longT = new RegularType("long") {
             public boolean assignableTo(Type other) {
                 return other.equals(this)
                         || other.getFullyQualifiedName().equals("float")
@@ -559,7 +559,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         NamespacePart cu = getNamespacePart(mm);
         Public pub = new Public();
 
-        Type floatT = new RegularType(new SimpleNameSignature("float")) {
+        Type floatT = new RegularType("float") {
             public boolean assignableTo(Type other) {
                 return other.equals(this)
                         || other.getFullyQualifiedName().equals("double");
@@ -578,7 +578,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         NamespacePart cu = getNamespacePart(mm);
         Public pub = new Public();
 
-        Type doubleT = new RegularType(new SimpleNameSignature("double"));
+        Type doubleT = new RegularType("double");
         doubleT.addModifier(pub);
         cu.add(doubleT);
         doubleT.addModifier(new ValueType());
@@ -689,7 +689,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 
     public void addBoolean(Namespace mm) {
         Public pub = new Public();
-        Type booleanT = new RegularType(new SimpleNameSignature("boolean"));
+        Type booleanT = new RegularType("boolean");
         booleanT.addModifier(pub);
         getNamespacePart(mm).add(booleanT);
         addPrefixOperator(booleanT, "boolean", "!");

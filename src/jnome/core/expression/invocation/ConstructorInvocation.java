@@ -99,7 +99,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 	}
 
   private Type createAnonymousType() throws LookupException {
-  	final Type anon = new RegularType(new SimpleNameSignature("TODO"));
+  	final Type anon = new RegularType("TODO");
   	TypeReference tref = getTypeReference();
  	  Type writtenType = tref.getType();
 	  List<NormalMethod> superMembers = writtenType.localMembers(NormalMethod.class);

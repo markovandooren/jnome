@@ -120,7 +120,7 @@ public class Java extends ObjectOrientedLanguage {
   		if(constraints.size() > 0) {
   			TypeConstraint first = constraints.get(0);
   			if(first instanceof TypeConstraintWithReferences<?>) {
-  			  result = ((JavaTypeReference)((TypeConstraintWithReferences<?>)first).typeReferences().get(0)).erasure();	
+  			  result = ((JavaTypeReference)((TypeConstraintWithReferences<?>)first).typeReference()).erasure();	
   			} else {
   				throw new ChameleonProgrammerException("The type constraint of type "+first.getClass().getName()+" is not a valid Java element");
   			}

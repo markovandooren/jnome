@@ -487,8 +487,11 @@ Token stop = null;
     ;
         
 typeBound returns [ExtendsConstraint element]
-@init{retval.element = new ExtendsConstraint();}
-    :   tp=type {retval.element.add(tp.element);}('&' tpp=type {retval.element.add(tpp.element);})*
+@init{retval.element = new ExtendsConstraint();
+IntersectionTypeReference ref = new IntersectionTypeReference();
+retval.element.setTypeReference(ref); 
+}
+    :   tp=type {ref.add(tp.element);}('&' tpp=type {ref.add(tpp.element);})*
     ;
 
 enumDeclaration returns [RegularType element]

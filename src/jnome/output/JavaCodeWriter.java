@@ -380,7 +380,16 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public String toCodeIntersectionTypeReference(IntersectionTypeReference typeReference) throws LookupException {
-  	return toCode(typeReference.leftHandSide())+" & "+toCode(typeReference.rightHandSide());
+  	StringBuffer result = new StringBuffer();
+  	Iterator<JavaTypeReference> iter = typeReference.typeReferences().iterator();
+  	while(iter.hasNext()) {
+  		result.append(toCode(iter.next()));
+  		if(iter.hasNext()) {
+  			result.append(" & ");
+  		}
+  	}
+//  	return toCode(typeReference.leftHandSide())+" & "+toCode(typeReference.rightHandSide());
+  	return result.toString();
   }
   
   public boolean isTypeReference(Element element) {
@@ -703,13 +712,7 @@ public class JavaCodeWriter extends Syntax {
   public String toCodeExtendsConstraint(ExtendsConstraint constraint) throws LookupException {
   	StringBuffer result = new StringBuffer();
   	result.append("extends ");
-  	Iterator<TypeReference> iter = constraint.typeReferences().iterator();
-  	while(iter.hasNext()) {
-  		result.append(toCode(iter.next()));
-  		if(iter.hasNext()) {
-  			result.append(" & ");
-  		}
-  	}
+  	result.append(toCode(constraint.typeReference()));
   	return result.toString();
   }
 

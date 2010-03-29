@@ -16,6 +16,13 @@ public class SupertypeConstraint extends SecondPhaseConstraint {
 	public SupertypeConstraint(TypeParameter param, JavaTypeReference type) {
 		super(param,type);
 	}
+
+	/**
+	 * Do nothing for a supertype constraint
+	 */
+	@Override
+	public void process() {
+	}
 	
 	
 }

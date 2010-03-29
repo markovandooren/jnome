@@ -3,15 +3,14 @@
  */
 package jnome.core.expression.invocation;
 
-import java.util.List;
 
 import jnome.core.language.Java;
 import jnome.core.type.JavaTypeReference;
 
-import org.rejuse.predicate.UnsafePredicate;
 
+import chameleon.core.declaration.TargetDeclaration;
+import chameleon.core.expression.NamedTarget;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.reference.CrossReference;
 import chameleon.core.type.ConstructedType;
 import chameleon.core.type.generics.FormalTypeParameter;
 import chameleon.core.type.generics.TypeParameter;
@@ -32,35 +31,34 @@ public class EqualTypeConstraint extends SecondPhaseConstraint {
 			} else {
 				JavaTypeReference tref = typeParameter().language(Java.class).createTypeReference(parameter.signature().name());
 				tref.setUniParent(parameter);
-				substitute(tref);
+				substituteRHS(tref);
 				substitute(U.parameter());
+				parent().add(new IndirectTypeAssignment(typeParameter(), U.parameter()));
 			}
 		} else {
-			JavaTypeReference tref = URef().clone();
-			tref.setUniParent(URef().parent());
-			substitute(tref);
-			// perform substitution
+			substituteRHS(URef());
+			parent().add(new ActualTypeAssignment(typeParameter(), U()));
 		}
 	}
 	
-	private void substitute(JavaTypeReference tref) throws LookupException {
+	/**
+	 * Replace the typeParameter() of this constraint with a clone of the given type reference in the other constraints.
+	 * The clone will direct its lookup to the parent of the given type reference to avoid name capture.
+	 */
+	private void substituteRHS(JavaTypeReference tref) throws LookupException {
 		for(SecondPhaseConstraint constraint: parent().constraints()) {
 			if(constraint != this) {
 				if(constraint.typeParameter().sameAs(typeParameter())) {
 					parent().remove(constraint);
 				} else {
-				List<CrossReference> crefs = constraint.URef().descendants(CrossReference.class, 
-              new UnsafePredicate<CrossReference, LookupException>() {
-								@Override
-								public boolean eval(CrossReference object) throws LookupException {
-									return object.getElement().sameAs(EqualTypeConstraint.this.typeParameter());
-								}
-							});
+					final TypeParameter tp = typeParameter();
+					JavaTypeReference uRef = constraint.URef();
+					NonLocalJavaTypeReference.replace(tref, tp, uRef);
 				}
 			}
 		}
 	}
-	
+
 	private void substitute(TypeParameter param) throws LookupException {
 		for(SecondPhaseConstraint constraint: parent().constraints()) {
 			if(constraint != this) {

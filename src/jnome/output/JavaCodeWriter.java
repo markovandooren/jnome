@@ -777,7 +777,7 @@ public class JavaCodeWriter extends Syntax {
 	    }.applyTo(method.modifiers());
 	    
 	    if(! (method.is(method.language(Java.class).CONSTRUCTOR) == Ternary.TRUE)) {
-	        result.append(toCode(method.getReturnTypeReference()));
+	        result.append(toCode(method.returnTypeReference()));
 	        result.append(" ");
 	      }
 	    

@@ -8,15 +8,15 @@ import jnome.core.language.Java;
 
 import org.rejuse.association.SingleAssociation;
 
-public class Constraint<C extends Constraint> {
+public class Constraint<C extends Constraint, S extends ConstraintSet<C>> {
 	
-	private SingleAssociation<C, ConstraintSet<C>> _parentLink = new SingleAssociation<C, ConstraintSet<C>>((C) this);
+	private SingleAssociation<C, S> _parentLink = new SingleAssociation<C, S>((C) this);
 	
-	public SingleAssociation<C, ConstraintSet<C>> parentLink() {
+	public SingleAssociation<C, S> parentLink() {
 		return _parentLink;
 	}
 	
-	public ConstraintSet<C> parent() {
+	public S parent() {
 		return _parentLink.getOtherEnd();
 	}
 	

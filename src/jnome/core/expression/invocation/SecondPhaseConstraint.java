@@ -9,7 +9,7 @@ import chameleon.core.lookup.LookupException;
 import chameleon.core.type.Type;
 import chameleon.core.type.generics.TypeParameter;
 
-public abstract class SecondPhaseConstraint extends Constraint<SecondPhaseConstraint> {
+public abstract class SecondPhaseConstraint extends Constraint<SecondPhaseConstraint, SecondPhaseConstraintSet> {
 	
 	public SecondPhaseConstraint(TypeParameter param, JavaTypeReference type) {
 	  _type = type;	
@@ -39,6 +39,7 @@ public abstract class SecondPhaseConstraint extends Constraint<SecondPhaseConstr
 	public Java language() {
 		return URef().language(Java.class);
 	}
-	//public abstract void process();
+	
+	public abstract void process() throws LookupException;
 	
 }

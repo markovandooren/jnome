@@ -6,14 +6,17 @@ import java.util.List;
 import java.util.Set;
 
 import jnome.core.language.Java;
+import jnome.core.type.DirectJavaTypeReference;
 import jnome.core.type.JavaTypeReference;
 
+import org.rejuse.predicate.TypePredicate;
 import org.rejuse.predicate.UnsafePredicate;
 
+import chameleon.core.expression.Invocation;
 import chameleon.core.lookup.LookupException;
+import chameleon.core.method.Method;
 import chameleon.core.type.IntersectionType;
 import chameleon.core.type.Type;
-import chameleon.core.type.TypeReference;
 import chameleon.core.type.generics.ActualTypeArgument;
 import chameleon.core.type.generics.ActualTypeArgumentWithTypeReference;
 import chameleon.core.type.generics.BasicTypeArgument;
@@ -224,8 +227,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	}
 	
 	public JavaTypeReference lub(List<? extends JavaTypeReference> types) {
-		return null;
-		
+  	throw new Error();
 	}
 	
 	public Type CandidateInvocation(Type G, TypeParameter Tj) throws LookupException {
@@ -248,4 +250,91 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		}
 		return new IntersectionType(candidates);
 	}
+	
+	private void processSuperTypeConstraints() throws LookupException {
+		for(TypeParameter p: typeParameters()) {
+			boolean hasSuperConstraints = false;
+			for(SecondPhaseConstraint constraint: constraints()) {
+				if(constraint instanceof SupertypeConstraint && constraint.typeParameter().sameAs(p)) {
+					hasSuperConstraints = true;
+					break;
+				}
+			}
+			if(hasSuperConstraints) {
+				add(new ActualTypeAssignment(p, inferredType(p)));
+			}
+		}
+	}
+	
+	private void processEqualityConstraints() throws LookupException {
+		boolean searching = true;
+		int index = 0;
+		while(searching) {
+			List<? extends SecondPhaseConstraint> constraints = constraints();
+			new TypePredicate<SecondPhaseConstraint, EqualTypeConstraint>(EqualTypeConstraint.class).filter(constraints);
+			if(constraints.size() > 0) {
+				for(SecondPhaseConstraint constraint: constraints()) {
+					EqualTypeConstraint eq = (EqualTypeConstraint) constraint;
+					eq.process();
+				}
+			} else {
+				searching = false;
+			}
+		}
+	}
+	
+	
+	public TypeAssignmentSet assignments() {
+		return _assignments;
+	}
+	
+	public void add(TypeAssignment assignment) {
+		_assignments.add(assignment);
+	}
+	
+	private TypeAssignmentSet _assignments;
+
+  public void process() throws LookupException {
+  	processEqualityConstraints();
+  	processSuperTypeConstraints();
+  	processUnresolvedParameters();
+  }
+  
+  private void processUnresolvedParameters() throws LookupException {
+  	if(inContextOfAssignmentConversion()) {
+  		JavaTypeReference RRef = (JavaTypeReference) invokedGenericMethod().returnTypeReference();
+  		FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet();
+  		if(! RRef.getElement().sameAs(RRef.language(Java.class).voidType())) {
+  		  // The constraint S >> R', provided R is not void	
+  			JavaTypeReference RprimeRef = RRef.clone();
+  			RprimeRef.setUniParent(RRef.parent());
+  			// Let R' = R[T1=B(T1) ... Tn=B(Tn)] where B(Ti) is the type inferred for Ti in the previous section, or Ti if no type was inferred.
+  			for(TypeAssignment assignment: assignments().assignments()) {
+  				Type type = assignment.type();
+					JavaTypeReference replacement = new DirectJavaTypeReference(type);
+  				replacement.setUniParent(RRef.language().defaultNamespace());
+  				NonLocalJavaTypeReference.replace(replacement, assignment.parameter(), RprimeRef);
+  			}
+  			constraints.add(new GGConstraint(S(), RprimeRef.getType()));
+  		}
+  	} else {
+  		
+  	}
+  }
+  
+  public boolean inContextOfAssignmentConversion() {
+  	throw new Error();
+  }
+  
+  public Invocation invocation() {
+  	return _invocation;
+  }
+  
+  private Invocation _invocation;
+  
+  public Method invokedGenericMethod() {
+  	return _invokedGenericMethod;
+  }
+  
+  private Method _invokedGenericMethod;
 }

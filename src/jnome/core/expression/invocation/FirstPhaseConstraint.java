@@ -188,7 +188,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 		}
 	}
 	
-	public List<TypeParameter> involvedTypeParameters(JavaTypeReference tref) throws LookupException {
+	public List<TypeParameter> involvedTypeParameters(JavaTypeReference<?> tref) throws LookupException {
 		List<CrossReference> list = tref.descendants(CrossReference.class, new UnsafePredicate<CrossReference, LookupException>() {
 
 			@Override

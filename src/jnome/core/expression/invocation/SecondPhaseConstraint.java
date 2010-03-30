@@ -18,7 +18,7 @@ public abstract class SecondPhaseConstraint extends Constraint<SecondPhaseConstr
 	
 	private JavaTypeReference _type;
 	
-	public JavaTypeReference URef() {
+	public JavaTypeReference<?> URef() {
 		return _type;
 	}
 	

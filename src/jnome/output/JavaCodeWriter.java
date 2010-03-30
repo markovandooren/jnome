@@ -20,7 +20,7 @@ import jnome.core.modifier.StrictFP;
 import jnome.core.modifier.Synchronized;
 import jnome.core.type.ArrayType;
 import jnome.core.type.BasicJavaTypeReference;
-import jnome.core.type.IntersectionTypeReference;
+import jnome.core.type.JavaIntersectionTypeReference;
 import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.java.collections.RobustVisitor;
@@ -56,6 +56,7 @@ import chameleon.core.namespacepart.NamespacePart;
 import chameleon.core.namespacepart.TypeImport;
 import chameleon.core.reference.SpecificReference;
 import chameleon.core.statement.Block;
+import chameleon.core.type.IntersectionTypeReference;
 import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeElement;
@@ -251,7 +252,7 @@ public class JavaCodeWriter extends Syntax {
     } else if(isTypeReference(element)) {
       result = toCodeBasicTypeReference((BasicJavaTypeReference)element);
     } else if(isIntersectionTypeReference(element)) {
-      result = toCodeIntersectionTypeReference((IntersectionTypeReference)element);
+      result = toCodeIntersectionTypeReference((JavaIntersectionTypeReference)element);
     } 
       // Specific reference MUST come after the other references.
       else if(isSpecificReference(element)) {
@@ -376,12 +377,12 @@ public class JavaCodeWriter extends Syntax {
   }
 
   public boolean isIntersectionTypeReference(Element element) {
-    return element instanceof IntersectionTypeReference;
+    return element instanceof JavaIntersectionTypeReference;
   }
   
-  public String toCodeIntersectionTypeReference(IntersectionTypeReference typeReference) throws LookupException {
+  public String toCodeIntersectionTypeReference(JavaIntersectionTypeReference typeReference) throws LookupException {
   	StringBuffer result = new StringBuffer();
-  	Iterator<JavaTypeReference> iter = typeReference.typeReferences().iterator();
+  	Iterator<? extends TypeReference> iter = typeReference.typeReferences().iterator();
   	while(iter.hasNext()) {
   		result.append(toCode(iter.next()));
   		if(iter.hasNext()) {

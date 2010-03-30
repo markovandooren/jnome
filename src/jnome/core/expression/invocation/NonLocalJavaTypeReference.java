@@ -53,7 +53,7 @@ public class NonLocalJavaTypeReference extends BasicJavaTypeReference {
 		return new NonLocalJavaTypeReference(getTarget().clone(),(SimpleNameSignature) signature().clone(), arrayDimension(), lookupParent());
 	}
 	
-	public static void replace(JavaTypeReference replacement, final TypeParameter parameterToBeReplaced, JavaTypeReference in) throws LookupException {
+	public static void replace(JavaTypeReference replacement, final TypeParameter parameterToBeReplaced, JavaTypeReference<?> in) throws LookupException {
 		List<CrossReference> crefs = in.descendants(CrossReference.class, 
 				new UnsafePredicate<CrossReference, LookupException>() {
 			@Override

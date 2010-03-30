@@ -12,9 +12,9 @@ import chameleon.core.type.generics.ActualTypeArgument;
  * 
  * @author Marko van Dooren
  */
-public interface JavaTypeReference extends TypeReference<JavaTypeReference> {
+public interface JavaTypeReference<E extends JavaTypeReference> extends TypeReference<E> {
 
-	public JavaTypeReference clone();
+	public E clone();
 	
 	public void setArrayDimension(int i);
 	

@@ -21,11 +21,13 @@ import chameleon.core.type.generics.ActualTypeArgument;
 import chameleon.core.type.generics.ActualTypeArgumentWithTypeReference;
 import chameleon.core.type.generics.BasicTypeArgument;
 import chameleon.core.type.generics.ExtendsWildCard;
+import chameleon.core.type.generics.FormalTypeParameter;
 import chameleon.core.type.generics.InstantiatedTypeParameter;
 import chameleon.core.type.generics.PureWildCard;
 import chameleon.core.type.generics.SuperWildCard;
 import chameleon.core.type.generics.TypeParameter;
 import chameleon.exception.ChameleonProgrammerException;
+import chameleon.support.expression.AssignmentExpression;
 
 public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstraint> {
 
@@ -33,7 +35,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		return U.getElement().getAllSuperTypes();
 	}
 
-	public Set<Type> EST(JavaTypeReference U) throws LookupException {
+	public Set<Type> EST(JavaTypeReference<?> U) throws LookupException {
 		Set<Type> STU = ST(U);
 		Set<Type> result = new HashSet<Type>();
 		for(Type type:STU) {
@@ -302,28 +304,68 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
   
   private void processUnresolvedParameters() throws LookupException {
   	if(inContextOfAssignmentConversion()) {
-  		JavaTypeReference RRef = (JavaTypeReference) invokedGenericMethod().returnTypeReference();
-  		FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet();
-  		if(! RRef.getElement().sameAs(RRef.language(Java.class).voidType())) {
-  		  // The constraint S >> R', provided R is not void	
-  			JavaTypeReference RprimeRef = RRef.clone();
-  			RprimeRef.setUniParent(RRef.parent());
-  			// Let R' = R[T1=B(T1) ... Tn=B(Tn)] where B(Ti) is the type inferred for Ti in the previous section, or Ti if no type was inferred.
-  			for(TypeAssignment assignment: assignments().assignments()) {
-  				Type type = assignment.type();
-					JavaTypeReference replacement = new DirectJavaTypeReference(type);
-  				replacement.setUniParent(RRef.language().defaultNamespace());
-  				NonLocalJavaTypeReference.replace(replacement, assignment.parameter(), RprimeRef);
-  			}
-  			constraints.add(new GGConstraint(S(), RprimeRef.getType()));
-  		}
+  		processUnresolved(S());
   	} else {
-  		
+  		processUnresolved();
+  	}
+  }
+
+	private void processUnresolved(JavaTypeReference S) throws LookupException {
+		JavaTypeReference<?> RRef = (JavaTypeReference) invokedGenericMethod().returnTypeReference();
+		FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet();
+		if(! RRef.getElement().sameAs(RRef.language(Java.class).voidType())) {
+		  // the constraint S >> R', provided R is not void	
+			JavaTypeReference RprimeRef = substitutedReference(RRef);
+			constraints.add(new GGConstraint(S, RprimeRef.getType()));
+		}
+		// additional constraints Bi[T1=B(T1) ... Tn=B(Tn)] >> Ti where Bi is the declared bound of Ti
+		for(TypeParameter param: unresolvedParameters()) {
+			JavaTypeReference bound = (JavaTypeReference) ((FormalTypeParameter)param).upperBoundReference();
+			JavaTypeReference Bi= substitutedReference(bound);
+			xxx
+		}
+	}
+
+	
+	public List<TypeParameter> unresolvedParameters() {
+		List<TypeParameter> result = typeParameters();
+		result.removeAll(resolvedParameters());
+		return result;
+	}
+
+	public List<TypeParameter> resolvedParameters() {
+		List<TypeParameter> result = new ArrayList<TypeParameter>();
+		for(TypeAssignment assignment: assignments().assignments()) {
+			result.add(assignment.parameter());
+		}
+		return result;
+	}
+	
+
+
+	private JavaTypeReference substitutedReference(JavaTypeReference RRef) throws LookupException {
+		JavaTypeReference RprimeRef = RRef.clone();
+		RprimeRef.setUniParent(RRef.parent());
+		// Let R' = R[T1=B(T1) ... Tn=B(Tn)] where B(Ti) is the type inferred for Ti in the previous section, or Ti if no type was inferred.
+		for(TypeAssignment assignment: assignments().assignments()) {
+			Type type = assignment.type();
+			JavaTypeReference replacement = new DirectJavaTypeReference(type);
+			replacement.setUniParent(RRef.language().defaultNamespace());
+			NonLocalJavaTypeReference.replace(replacement, assignment.parameter(), RprimeRef);
+		}
+		return RprimeRef;
+	}
+  
+  public JavaTypeReference S() throws LookupException {
+  	if(! inContextOfAssignmentConversion()) {
+  		throw new ChameleonProgrammerException();
+  	} else {
+  		return new DirectJavaTypeReference(((AssignmentExpression)invocation().parent()).getVariable().getType());
   	}
   }
   
   public boolean inContextOfAssignmentConversion() {
-  	throw new Error();
+  	return invocation().parent() instanceof AssignmentExpression;
   }
   
   public Invocation invocation() {

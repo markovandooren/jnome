@@ -12,14 +12,14 @@ import chameleon.core.type.generics.TypeParameter;
 public abstract class SecondPhaseConstraint extends Constraint<SecondPhaseConstraint, SecondPhaseConstraintSet> {
 	
 	public SecondPhaseConstraint(TypeParameter param, JavaTypeReference type) {
-	  _type = type;	
+	  _UReference = type;	
 	  _typeParameter = param;
 	}
 	
-	private JavaTypeReference _type;
+	private JavaTypeReference _UReference;
 	
 	public JavaTypeReference<?> URef() {
-		return _type;
+		return _UReference;
 	}
 	
 	public Type U() throws LookupException {

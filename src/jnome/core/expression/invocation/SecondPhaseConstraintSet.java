@@ -327,6 +327,37 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 			JavaTypeReference Bi= substitutedReference(bound);
 			constraints.add(new GGConstraint(Bi, param.upperBound()));
 		}
+		SecondPhaseConstraintSet seconds = constraints.secondPhase();
+		seconds.processEqualityConstraints();
+		seconds.processSubtypeConstraints();
+		for(TypeParameter<?> param: unresolvedParameters()) {
+			add(new ActualTypeAssignment(param, param.language(ObjectOrientedLanguage.class).getDefaultSuperClass()));
+		}
+	}
+	
+	private void processSubtypeConstraints() throws LookupException {
+		for(TypeParameter p: typeParameters()) {
+			boolean hasSubConstraints = false;
+			for(SecondPhaseConstraint constraint: constraints()) {
+				if(constraint instanceof SubtypeConstraint && constraint.typeParameter().sameAs(p)) {
+					hasSubConstraints = true;
+					break;
+				}
+			}
+			if(hasSubConstraints) {
+				add(new ActualTypeAssignment(p, glb(p)));
+			}
+		}
+
+	}
+	
+	private Type glb(TypeParameter Tj) throws LookupException {
+		List<JavaTypeReference> URefs = Us(Tj);
+		List<Type> Us = new ArrayList<Type>();
+		for(JavaTypeReference URef: URefs) {
+			Us.add(URef.getElement());
+		}
+		return new IntersectionType(Us);
 	}
 
 	

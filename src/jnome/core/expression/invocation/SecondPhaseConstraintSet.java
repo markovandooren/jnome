@@ -13,6 +13,7 @@ import org.rejuse.predicate.TypePredicate;
 import org.rejuse.predicate.UnsafePredicate;
 
 import chameleon.core.expression.Invocation;
+import chameleon.core.language.Language;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.method.Method;
 import chameleon.core.type.IntersectionType;
@@ -27,6 +28,7 @@ import chameleon.core.type.generics.PureWildCard;
 import chameleon.core.type.generics.SuperWildCard;
 import chameleon.core.type.generics.TypeParameter;
 import chameleon.exception.ChameleonProgrammerException;
+import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.support.expression.AssignmentExpression;
 
 public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstraint> {
@@ -306,7 +308,8 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
   	if(inContextOfAssignmentConversion()) {
   		processUnresolved(S());
   	} else {
-  		processUnresolved();
+  		ObjectOrientedLanguage language = (ObjectOrientedLanguage) typeParameters().get(0).language(ObjectOrientedLanguage.class);
+			processUnresolved((JavaTypeReference) language.createTypeReference(language.getDefaultSuperClassFQN()));
   	}
   }
 
@@ -322,7 +325,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		for(TypeParameter param: unresolvedParameters()) {
 			JavaTypeReference bound = (JavaTypeReference) ((FormalTypeParameter)param).upperBoundReference();
 			JavaTypeReference Bi= substitutedReference(bound);
-			xxx
+			constraints.add(new GGConstraint(Bi, param.upperBound()));
 		}
 	}
 
@@ -356,7 +359,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		return RprimeRef;
 	}
   
-  public JavaTypeReference S() throws LookupException {
+  public JavaTypeReference<?> S() throws LookupException {
   	if(! inContextOfAssignmentConversion()) {
   		throw new ChameleonProgrammerException();
   	} else {

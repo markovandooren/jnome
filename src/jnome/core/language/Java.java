@@ -34,6 +34,7 @@ import chameleon.core.relation.StrictPartialOrder;
 import chameleon.core.relation.WeakPartialOrder;
 import chameleon.core.type.ConstructedType;
 import chameleon.core.type.DerivedType;
+import chameleon.core.type.IntersectionTypeReference;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
 import chameleon.core.type.generics.ActualTypeArgument;
@@ -410,7 +411,7 @@ public class Java extends ObjectOrientedLanguage {
 		}
 
 		@Override
-		public TypeReference createIntersectionReference(TypeReference first, TypeReference second) {
+		public IntersectionTypeReference createIntersectionReference(TypeReference first, TypeReference second) {
 			List<TypeReference> list = new ArrayList<TypeReference>();
 			list.add(first);
 			list.add(second);

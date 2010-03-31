@@ -4,6 +4,7 @@ package jnome.core.language;
 import java.util.ArrayList;
 import java.util.List;
 
+import jnome.core.expression.invocation.NonLocalJavaTypeReference;
 import jnome.core.modifier.PackageProperty;
 import jnome.core.type.ArrayType;
 import jnome.core.type.BasicJavaTypeReference;
@@ -34,12 +35,16 @@ import chameleon.core.relation.StrictPartialOrder;
 import chameleon.core.relation.WeakPartialOrder;
 import chameleon.core.type.ConstructedType;
 import chameleon.core.type.DerivedType;
+import chameleon.core.type.IntersectionType;
 import chameleon.core.type.IntersectionTypeReference;
+import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
 import chameleon.core.type.generics.ActualTypeArgument;
+import chameleon.core.type.generics.ActualTypeArgumentWithTypeReference;
 import chameleon.core.type.generics.BasicTypeArgument;
 import chameleon.core.type.generics.FormalTypeParameter;
+import chameleon.core.type.generics.InstantiatedTypeParameter;
 import chameleon.core.type.generics.TypeConstraint;
 import chameleon.core.type.generics.TypeConstraintWithReferences;
 import chameleon.core.type.generics.TypeParameter;
@@ -416,5 +421,34 @@ public class Java extends ObjectOrientedLanguage {
 			list.add(first);
 			list.add(second);
 			return new JavaIntersectionTypeReference(list);
+		}
+		
+		public JavaTypeReference reference(Type type) {
+			JavaTypeReference result;
+			if(type instanceof IntersectionType) {
+				result = new JavaIntersectionTypeReference();
+				for(Type t: ((IntersectionType)type).types()) {
+					((JavaIntersectionTypeReference)result).add(reference(t));
+				}
+			} else if (type instanceof ArrayType) {
+				result = reference(((ArrayType)type).componentType());
+				result.setArrayDimension(((ArrayType)type).dimension());
+			}	else if (type instanceof DerivedType){
+				result = new NonLocalJavaTypeReference(type.signature().name(),type.parent());
+				// next setup the generic parameters.
+				for(TypeParameter parameter: type.parameters()) {
+					ActualTypeArgument arg = ((InstantiatedTypeParameter)parameter).argument().clone();
+					if(arg instanceof ActualTypeArgumentWithTypeReference) {
+						ActualTypeArgumentWithTypeReference argWithRef = (ActualTypeArgumentWithTypeReference) arg;
+						argWithRef.setTypeReference(new NonLocalJavaTypeReference((BasicJavaTypeReference) argWithRef.typeReference()));
+					}
+				}
+			} else if (type instanceof ConstructedType) {
+				result = new NonLocalJavaTypeReference(type.signature().name(),type.parent());
+			}
+			else {
+				throw new ChameleonProgrammerException("Type of type is "+type.getClass().getName());
+			}
+			return result;
 		}
 }

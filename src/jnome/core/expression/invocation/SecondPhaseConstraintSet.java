@@ -377,13 +377,14 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	
 
 
-	private JavaTypeReference substitutedReference(JavaTypeReference RRef) throws LookupException {
+	private JavaTypeReference substitutedReference(JavaTypeReference<?> RRef) throws LookupException {
 		JavaTypeReference RprimeRef = RRef.clone();
 		RprimeRef.setUniParent(RRef.parent());
 		// Let R' = R[T1=B(T1) ... Tn=B(Tn)] where B(Ti) is the type inferred for Ti in the previous section, or Ti if no type was inferred.
 		for(TypeAssignment assignment: assignments().assignments()) {
 			Type type = assignment.type();
-			JavaTypeReference replacement = new DirectJavaTypeReference(type);
+//			JavaTypeReference replacement = new DirectJavaTypeReference(type);
+			JavaTypeReference replacement = RRef.language(Java.class).reference(type);
 			replacement.setUniParent(RRef.language().defaultNamespace());
 			NonLocalJavaTypeReference.replace(replacement, assignment.parameter(), RprimeRef);
 		}
@@ -394,7 +395,8 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
   	if(! inContextOfAssignmentConversion()) {
   		throw new ChameleonProgrammerException();
   	} else {
-  		return new DirectJavaTypeReference(((AssignmentExpression)invocation().parent()).getVariable().getType());
+//  		return new DirectJavaTypeReference(((AssignmentExpression)invocation().parent()).getVariable().getType());
+  		return ((TypeParameter<?>)typeParameters().get(0)).language(Java.class).reference(((AssignmentExpression)invocation().parent()).getVariable().getType());
   	}
   }
   

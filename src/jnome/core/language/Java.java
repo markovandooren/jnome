@@ -140,6 +140,7 @@ public class Java extends ObjectOrientedLanguage {
 			List<TypeParameter> parameters = original.parameters();
 			int size = parameters.size();
 			if(size > 0 && (parameters.get(0) instanceof FormalTypeParameter)) {
+				// create raw type
 				List<ActualTypeArgument> args = new ArrayList<ActualTypeArgument>(size);
 				String defaultSuperClassFQN = getDefaultSuperClassFQN();
 				RootNamespace defaultNamespace = original.language().defaultNamespace();

@@ -161,6 +161,7 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
 				// set to the type itself? seems dangerous as well.
 				result.setUniParent(type.parent());
 			} else if(type instanceof RegularType){
+				// create raw typeif necessary
 				result = language(Java.class).erasure(type);
 			}
 		}

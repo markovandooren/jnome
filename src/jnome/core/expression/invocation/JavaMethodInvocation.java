@@ -3,7 +3,8 @@ package jnome.core.expression.invocation;
 import java.util.ArrayList;
 import java.util.List;
 
-import jnome.core.method.JavaVarargsOrder;
+import jnome.core.language.Java;
+import jnome.core.type.JavaTypeReference;
 import jnome.core.variable.MultiFormalParameter;
 
 import org.rejuse.logic.ternary.Ternary;
@@ -16,6 +17,7 @@ import chameleon.core.lookup.LookupException;
 import chameleon.core.method.MethodHeader;
 import chameleon.core.relation.WeakPartialOrder;
 import chameleon.core.type.Type;
+import chameleon.core.type.TypeReference;
 import chameleon.core.type.generics.ActualTypeArgument;
 import chameleon.core.type.generics.TypeParameter;
 import chameleon.core.variable.FormalParameter;
@@ -83,37 +85,101 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 
 		private boolean phases1and2and3(NormalMethod method) throws LookupException {
 			//return MoreSpecificTypesOrder.create().contains(actuals,formalTypes);
-			return matchingApplicableBySubtyping(method) ||
-			       matchingApplicableByConversion(method) ||
+			TypeAssignmentSet actualTypeParameters = actualTypeParameters(method);
+			List<Type> formalParameterTypesInContext = formalParameterTypesInContext(method,actualTypeParameters);
+			return matchingApplicableBySubtyping(method,formalParameterTypesInContext,actualTypeParameters) ||
+			       matchingApplicableByConversion(method,formalParameterTypesInContext) ||
 			       variableApplicableBySubtyping(method);
 		}
 		
-		private List<Type> formalParameterTypesInContext(NormalMethod method) {
+		/**
+		 * Determine the types of the formal parameter of the given method in the context of the enclosing method invocation.
+		 * This involves substituting the formal type parameters in the type of the formal parameters
+		 * with the actual type arguments.
+		 * 
+		 * If explicit type arguments are present, then these are used as the actual type arguments. Otherwise, the actual
+		 * type arguments are inferred.
+		 * @throws LookupException 
+		 */
+		private List<Type> formalParameterTypesInContext(NormalMethod<?,?,?> method,TypeAssignmentSet actualTypeParameters) throws LookupException {
 			List<ActualTypeArgument> typeArguments = typeArguments();
+			List<TypeParameter> parameters = method.typeParameters();
 			List<Type> result;
-			if(typeArguments.size() > 0) {
+			if(parameters.size() > 0) {
+				Java language = method.language(Java.class);
+				// Substitute
+				List<FormalParameter> formalParameters = method.formalParameters();
+				List<TypeReference> references = new ArrayList<TypeReference>();
+				for(FormalParameter par: formalParameters) {
+					TypeReference tref = par.getTypeReference();
+					TypeReference clone = tref.clone();
+					clone.setUniParent(tref.parent());
+					references.add(clone);
+				}
 				result = new ArrayList<Type>();
-				for(ActualTypeArgument argument: typeArguments) {
-					result.add(argument.upperBound());
+				for(TypeReference tref: references) {
+					for(TypeParameter par: actualTypeParameters.assigned()) {
+						NonLocalJavaTypeReference.replace(language.reference(actualTypeParameters.type(par)), par, (JavaTypeReference<?>) tref);
+					}
+					result.add(tref.getElement());
+				}
+				
+			} else {
+				result = method.header().formalParameterTypes();
+			}
+			return result;
+		}
+
+		private TypeAssignmentSet actualTypeParameters(NormalMethod<?, ?, ?> method) throws LookupException {
+			List<ActualTypeArgument> typeArguments = typeArguments();
+			Java language = method.language(Java.class);
+			List<TypeParameter> parameters = method.typeParameters();
+			TypeAssignmentSet formals;
+			if(typeArguments.size() > 0) {
+				formals = new TypeAssignmentSet();
+				int size = typeArguments.size();
+				for(int i=0; i< size; i++) {
+					formals.add(new ActualTypeAssignment(parameters.get(i),typeArguments.get(i).upperBound()));
 				}
 			} else {
 				// perform type inference
 				FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet();
 				List<ActualArgument> actualParameters = actualArgumentList().getActualParameters();
-				List<FormalParameter> formalParameters = method.formalParameters();
+				List<Type> formalParameters = method.header().formalParameterTypes();
 				int size = actualParameters.size();
 				for(int i=0; i< size; i++) {
-					// if the formal parameter type is
-					constraints.add(constraint)
+					// if the formal parameter type is reference type, add a constraint
+					Type argType = actualParameters.get(i).getExpression().getType();
+					if(argType.is(language.REFERENCE_TYPE) == Ternary.TRUE) {
+						constraints.add(new SSConstraint(language.reference(argType), formalParameters.get(i)));
+					}
 				}
+				formals = constraints.resolve();
+			}
+			return formals;
+		}
+
+		private boolean matchingApplicableBySubtyping(NormalMethod method, List<Type> formalParameterTypesInContext,TypeAssignmentSet actualTypeParameters) throws LookupException {
+			boolean result = true;
+			int size = formalParameterTypesInContext.size();
+			List<ActualArgument> actualParameters = actualArgumentList().getActualParameters();
+			for(int i=0; result && i < size; i++) {
+				Type formalType = formalParameterTypesInContext.get(i);
+				Type actualType = actualParameters.get(i).getExpression().getType();
+				result = actualType.subTypeOf(formalType) || convertibleThroughUncheckedConversionAndSubtype(actualType, formalType);
+			}
+			List<TypeParameter> typeParameters = method.typeParameters();
+			if(result && typeParameters.size() > 0) {
+				result = actualTypeParameters.valid();
 			}
 			return result;
 		}
-
-		private boolean matchingApplicableBySubtyping(NormalMethod method) throws LookupException {
+		
+		private boolean convertibleThroughUncheckedConversionAndSubtype(Type first, Type second) {
+			
 		}
 		
-		private boolean matchingApplicableByConversion(NormalMethod method) throws LookupException {
+		private boolean matchingApplicableByConversion(NormalMethod method, List<Type> formalParameterTypesInContext) throws LookupException {
 		}
 		
 		private boolean variableApplicableBySubtyping(NormalMethod method) throws LookupException {
@@ -136,7 +202,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
         @Override
         public boolean contains(NormalMethod first, NormalMethod second)
             throws LookupException {
-          return MoreSpecificTypesOrder.create().contains(((MethodHeader) first.header()).getParameterTypes(), ((MethodHeader) second.header()).getParameterTypes());
+          return MoreSpecificTypesOrder.create().contains(((MethodHeader) first.header()).formalParameterTypes(), ((MethodHeader) second.header()).formalParameterTypes());
         }
       };
     }

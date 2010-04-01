@@ -4,10 +4,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import jnome.core.language.Java;
+import jnome.core.type.JavaTypeReference;
+
 import org.rejuse.association.OrderedMultiAssociation;
 
 import chameleon.core.lookup.LookupException;
 import chameleon.core.type.Type;
+import chameleon.core.type.TypeReference;
+import chameleon.core.type.generics.FormalTypeParameter;
 import chameleon.core.type.generics.TypeParameter;
 
 public class TypeAssignmentSet {
@@ -36,6 +41,26 @@ public class TypeAssignmentSet {
 		}
 	}
 	
+	public boolean valid() throws LookupException {
+		boolean result = unassigned().isEmpty();
+		if(result) {
+			for(TypeAssignment assignment: assignments()) {
+				TypeReference<?> upperBoundReference = ((FormalTypeParameter)assignment.parameter()).upperBoundReference();
+				Java language = upperBoundReference.language(Java.class);
+				JavaTypeReference bound = (JavaTypeReference) upperBoundReference.clone();
+				bound.setUniParent(upperBoundReference);
+				for(TypeAssignment nested: assignments()) {
+					NonLocalJavaTypeReference.replace(language.reference(nested.type()), nested.parameter(), bound);
+				}
+				if(! assignment.type().subTypeOf(bound.getElement())) {
+					result = false;
+					break;
+				}
+			}
+		}
+		return result;
+	}
+	
 	private List<TypeParameter> _completeList;
 	
 	public List<TypeParameter> typeParameters() {
@@ -49,6 +74,12 @@ public class TypeAssignmentSet {
 			}
 		}
 		return null;
+	}
+	
+	public List<TypeParameter> assigned() throws LookupException {
+		List<TypeParameter> result = typeParameters();
+		result.removeAll(unassigned());
+		return result;
 	}
 	
 	public List<TypeParameter> unassigned() throws LookupException {

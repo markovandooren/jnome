@@ -244,7 +244,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
         @Override
         public boolean contains(NormalMethod first, NormalMethod second)
             throws LookupException {
-          return MoreSpecificTypesOrder.create().contains(first.header().getParameterTypes(), second.header().getParameterTypes());
+          return MoreSpecificTypesOrder.create().contains(first.header().formalParameterTypes(), second.header().formalParameterTypes());
         }
       };
     }

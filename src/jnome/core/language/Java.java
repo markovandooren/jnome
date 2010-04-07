@@ -13,6 +13,7 @@ import jnome.core.type.JavaTypeReference;
 import jnome.core.type.NullType;
 
 import org.rejuse.logic.ternary.Ternary;
+import org.rejuse.property.PropertyUniverse;
 
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.SimpleNameSignature;
@@ -80,27 +81,16 @@ public class Java extends ObjectOrientedLanguage {
 		PRIVATE = new PrivateProperty(this, SCOPE_MUTEX);
 		PUBLIC = new PublicProperty(this, SCOPE_MUTEX);
 		PACKAGE_ACCESSIBLE = new PackageProperty(this, SCOPE_MUTEX);
-		PRIMITIVE_TYPE = new DynamicChameleonProperty("primitive", this,Type.class){
-		
-			@Override
-			public Ternary appliesTo(Element element) {
-				Ternary result = Ternary.FALSE;
-				if(element instanceof Type) {
-					String fqn = ((Type)element).getFullyQualifiedName();
-					if(fqn.equals("void") || fqn.equals("int") || fqn.equals("long")|| fqn.equals("float")|| fqn.equals("double")
-							|| fqn.equals("boolean")|| fqn.equals("byte")|| fqn.equals("char") || fqn.equals("short")) {
-						result = Ternary.TRUE;
-					}
-				}
-				return result;
-			}
-		};
+		PRIMITIVE_TYPE = new PrimitiveTypeProperty("primitive", this, Type.class);
+		NUMERIC_TYPE = new NumericTypeProperty("numeric", this, Type.class);
 		REFERENCE_TYPE = PRIMITIVE_TYPE.inverse();
 
 		// In Java, a constructor is a class method
 		CONSTRUCTOR.addImplication(CLASS);
 		// In Java, constructors are not inheritable
 		CONSTRUCTOR.addImplication(INHERITABLE.inverse());
+		// A numeric type is a primitive type
+		NUMERIC_TYPE.addImplication(PRIMITIVE_TYPE);
 		
   	INHERITABLE.addValidElementType(VariableDeclarator.class);
   	PRIVATE.addValidElementType(VariableDeclarator.class);
@@ -198,7 +188,45 @@ public class Java extends ObjectOrientedLanguage {
 		}
 	}
 
+	private static class NumericTypeProperty extends DynamicChameleonProperty {
+		private NumericTypeProperty(String name, PropertyUniverse<ChameleonProperty> universe, Class<? extends Element> validElementType) {
+			super(name, universe, validElementType);
+		}
+
+		@Override
+		public Ternary appliesTo(Element element) {
+			Ternary result = Ternary.FALSE;
+			Java language = (Java) element.language(Java.class);
+			if(element instanceof Type) {
+				String fqn = ((Type)element).getFullyQualifiedName();
+				if(fqn.equals("int") || fqn.equals("long")|| fqn.equals("float")|| fqn.equals("double")
+						|| fqn.equals("byte")|| fqn.equals("char") || fqn.equals("short")) {
+					result = Ternary.TRUE;
+				}
+			}
+			return result;
+		}
+	}
 	
+	private static class PrimitiveTypeProperty extends DynamicChameleonProperty {
+		private PrimitiveTypeProperty(String name, PropertyUniverse<ChameleonProperty> universe, Class<? extends Element> validElementType) {
+			super(name, universe, validElementType);
+		}
+
+		@Override
+		public Ternary appliesTo(Element element) {
+			Ternary result = Ternary.FALSE;
+			if(element instanceof Type) {
+				String fqn = ((Type)element).getFullyQualifiedName();
+				if(fqn.equals("void") || fqn.equals("int") || fqn.equals("long")|| fqn.equals("float")|| fqn.equals("double")
+						|| fqn.equals("boolean")|| fqn.equals("byte")|| fqn.equals("char") || fqn.equals("short")) {
+					result = Ternary.TRUE;
+				}
+			}
+			return result;
+		}
+	}
+
 	private final class JavaEquivalenceRelation extends EquivalenceRelation<Member> {
 		@Override
 		public boolean contains(Member first, Member second) throws LookupException {
@@ -218,6 +246,7 @@ public class Java extends ObjectOrientedLanguage {
 	public final ChameleonProperty PACKAGE_ACCESSIBLE;
 	public final ChameleonProperty IMPLEMENTS_RELATION;
 	public final DynamicChameleonProperty PRIMITIVE_TYPE;	
+	public final DynamicChameleonProperty NUMERIC_TYPE;	
 	public final ChameleonProperty REFERENCE_TYPE;	
 	
 	public Type getNullType(){
@@ -362,6 +391,31 @@ public class Java extends ObjectOrientedLanguage {
 				newFqn = "java.lang.Double";
 			} else {
 				throw new LookupException("Type "+fqn+" cannot be converted through boxing.");
+			}
+			return findType(newFqn);
+		}
+
+		public Type unbox(Type type) throws LookupException {
+			String fqn = type.getFullyQualifiedName();
+			String newFqn;
+			if(fqn.equals("java.lang.Boolean")) {
+				newFqn = "boolean";
+			} else if (fqn.equals("java.lang.Byte")) {
+				newFqn = "byte";
+			} else if (fqn.equals("java.lang.Character")) {
+				newFqn = "char";
+			} else if (fqn.equals("java.lang.Short")) {
+				newFqn = "short";
+			} else if (fqn.equals("java.lang.Integer")) {
+				newFqn = "int";
+			} else if (fqn.equals("java.lang.Long")) {
+				newFqn = "long";
+			} else if (fqn.equals("java.lang.Float")) {
+				newFqn = "float";
+			} else if (fqn.equals("java.lang.Double")) {
+				newFqn = "double";
+			} else {
+				throw new LookupException("Type "+fqn+" cannot be converted through unboxing.");
 			}
 			return findType(newFqn);
 		}

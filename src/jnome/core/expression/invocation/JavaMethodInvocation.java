@@ -1,10 +1,12 @@
 package jnome.core.expression.invocation;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import jnome.core.language.Java;
 import jnome.core.type.JavaTypeReference;
+import jnome.core.type.RawType;
 import jnome.core.variable.MultiFormalParameter;
 
 import org.rejuse.logic.ternary.Ternary;
@@ -46,7 +48,9 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
   				List<Type> actuals = getActualParameterTypes();
   				List<FormalParameter> formals = declaration.formalParameters();
   				List<Type> formalTypes = sig.parameterTypes();
-  				declaration.scope().contains(JavaMethodInvocation.this);
+  				
+  				//declaration.scope().contains(JavaMethodInvocation.this);
+  				
           int nbActuals = actuals.size();
           int nbFormals = formals.size();
           if(nbActuals == nbFormals){
@@ -85,10 +89,8 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 
 		private boolean phases1and2and3(NormalMethod method) throws LookupException {
 			//return MoreSpecificTypesOrder.create().contains(actuals,formalTypes);
-			TypeAssignmentSet actualTypeParameters = actualTypeParameters(method);
-			List<Type> formalParameterTypesInContext = formalParameterTypesInContext(method,actualTypeParameters);
-			return matchingApplicableBySubtyping(method,formalParameterTypesInContext,actualTypeParameters) ||
-			       matchingApplicableByConversion(method,formalParameterTypesInContext) ||
+			return matchingApplicableBySubtyping(method) ||
+			       matchingApplicableByConversion(method) ||
 			       variableApplicableBySubtyping(method);
 		}
 		
@@ -130,7 +132,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 			return result;
 		}
 
-		private TypeAssignmentSet actualTypeParameters(NormalMethod<?, ?, ?> method) throws LookupException {
+		private TypeAssignmentSet actualTypeParameters(NormalMethod<?, ?, ?> method, boolean includeNonreference) throws LookupException {
 			List<ActualTypeArgument> typeArguments = typeArguments();
 			Java language = method.language(Java.class);
 			List<TypeParameter> parameters = method.typeParameters();
@@ -150,7 +152,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 				for(int i=0; i< size; i++) {
 					// if the formal parameter type is reference type, add a constraint
 					Type argType = actualParameters.get(i).getExpression().getType();
-					if(argType.is(language.REFERENCE_TYPE) == Ternary.TRUE) {
+					if(includeNonreference || argType.is(language.REFERENCE_TYPE) == Ternary.TRUE) {
 						constraints.add(new SSConstraint(language.reference(argType), formalParameters.get(i)));
 					}
 				}
@@ -159,31 +161,176 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 			return formals;
 		}
 
-		private boolean matchingApplicableBySubtyping(NormalMethod method, List<Type> formalParameterTypesInContext,TypeAssignmentSet actualTypeParameters) throws LookupException {
+		private boolean matchingApplicableBySubtyping(NormalMethod method) throws LookupException {
+			TypeAssignmentSet actualTypeParameters = actualTypeParameters(method, false);
+			List<Type> formalParameterTypesInContext = formalParameterTypesInContext(method,actualTypeParameters);
 			boolean result = true;
 			int size = formalParameterTypesInContext.size();
 			List<ActualArgument> actualParameters = actualArgumentList().getActualParameters();
 			for(int i=0; result && i < size; i++) {
 				Type formalType = formalParameterTypesInContext.get(i);
 				Type actualType = actualParameters.get(i).getExpression().getType();
-				result = actualType.subTypeOf(formalType) || convertibleThroughUncheckedConversionAndSubtype(actualType, formalType);
+				result = actualType.subTypeOf(formalType) || convertibleThroughUncheckedConversionAndSubtyping(actualType, formalType);
 			}
-			List<TypeParameter> typeParameters = method.typeParameters();
-			if(result && typeParameters.size() > 0) {
+			if(result) {
 				result = actualTypeParameters.valid();
 			}
 			return result;
 		}
 		
-		private boolean convertibleThroughUncheckedConversionAndSubtype(Type first, Type second) {
-			
+		private boolean convertibleThroughUncheckedConversionAndSubtyping(Type first, Type second) throws LookupException {
+			boolean result = false;
+			if(first instanceof RawType) {
+				result = ((RawType)first).convertibleThroughUncheckedConversionAndSubtyping(second);
+			}
+			return result;
 		}
 		
-		private boolean matchingApplicableByConversion(NormalMethod method, List<Type> formalParameterTypesInContext) throws LookupException {
+		private boolean matchingApplicableByConversion(NormalMethod method) throws LookupException {
+			TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true);
+			List<Type> formalParameterTypesInContext = formalParameterTypesInContext(method,actualTypeParameters);
+			boolean result = true;
+			int size = formalParameterTypesInContext.size();
+			List<ActualArgument> actualParameters = actualArgumentList().getActualParameters();
+			for(int i=0; result && i < size; i++) {
+				Type formalType = formalParameterTypesInContext.get(i);
+				Type actualType = actualParameters.get(i).getExpression().getType();
+				result = convertibleThroughMethodInvocationConversion(actualType, formalType);
+			}
+			if(result) {
+				result = actualTypeParameters.valid();
+			}
+			return result;
+		}
+
+		private boolean convertibleThroughMethodInvocationConversion(Type first, Type second) throws LookupException {
+			boolean result = false;
+			Java language = first.language(Java.class);
+			// A) Identity conversion 
+			if(first.sameAs(second)) {
+				result = true;
+			}
+			// B) Widening conversion
+			else if(convertibleThroughWideningPrimitiveConversion(first, second)) {
+				// the result cannot be a raw type so no unchecked conversion is required.
+				result = true;
+			}
+			// C) unboxing and optional widening conversion.
+			else if(convertibleThroughUnboxingAndOptionalWidening(first,second)) {
+				result = true;
+			}
+			// D) boxing and widening reference conversion.
+			else if(convertibleThroughBoxingAndOptionalWidening(first,second)){
+				// can't be raw, so no unchecked conversion can apply
+				result = true;
+			} else {
+				// E) reference widening
+				Collection<Type> candidates = referenceWideningConversionCandidates(first);
+				if(candidates.contains(second)) {
+					result = true;
+				} else {
+					// F) unchecked conversion after reference widening 
+					for(Type type: candidates) {
+						if(convertibleThroughUncheckedConversionAndSubtyping(first, second)) {
+							result = true;
+							break;
+						}
+					}
+					if(! result) {
+						//G) unchecked conversion after identity
+						result = convertibleThroughUncheckedConversionAndSubtyping(first, second);
+					}
+				}
+			}
+			return result;
+		}
+
+		public boolean convertibleThroughBoxingAndOptionalWidening(Type first, Type second) throws LookupException {
+			boolean result = false;
+			Java language = first.language(Java.class);
+			if(first.is(language.NUMERIC_TYPE) == Ternary.TRUE) {
+				Type tmp = language.box(first);
+				if(tmp.sameAs(second)) {
+					result = true;
+				} else {
+					result = convertibleThroughWideningReferenceConversion(tmp, second);
+				}
+			}
+			return result;
+		}
+
+		public boolean convertibleThroughUnboxingAndOptionalWidening(Type first, Type second) throws LookupException {
+			boolean result = false;
+			Java language = first.language(Java.class);
+			if(first.is(language.NUMERIC_TYPE) == Ternary.TRUE) {
+				Type tmp = language.unbox(first);
+				if(tmp.sameAs(second)) {
+					result = true;
+				} else {
+					result = convertibleThroughWideningPrimitiveConversion(tmp, second);
+				}
+			}
+			return result;
 		}
 		
-		private boolean variableApplicableBySubtyping(NormalMethod method) throws LookupException {
-			//return JavaVarargsOrder.create().contains(actuals,formalTypes);
+		public boolean convertibleThroughWideningPrimitiveConversion(Type first, Type second) throws LookupException {
+			return primitiveWideningConversionCandidates(first).contains(second);
+		}
+		
+		public Collection<Type> primitiveWideningConversionCandidates(Type type) throws LookupException {
+			Collection<Type> result = new ArrayList<Type>();
+			Java language = type.language(Java.class);
+			String name = type.getFullyQualifiedName();
+			if(type.is(language.NUMERIC_TYPE) == Ternary.TRUE) {
+				result.add(language.findType("double"));
+				if(! name.equals("float")) {
+					result.add(language.findType("float"));
+					if(! name.equals("long")) {
+						result.add(language.findType("long"));
+						if(! name.equals("int")) {
+							result.add(language.findType("int"));
+							// char and short do not convert to short via widening.
+							if(name.equals("byte")) {
+								result.add(language.findType("short"));
+							}
+						}
+					}
+				}
+			}
+			return result;
+		}
+
+		public boolean convertibleThroughWideningReferenceConversion(Type first, Type second) throws LookupException {
+			return referenceWideningConversionCandidates(first).contains(second);
+		}
+
+		public Collection<Type> referenceWideningConversionCandidates(Type type) throws LookupException {
+			return type.getAllSuperTypes();
+		}
+		
+
+		public boolean variableApplicableBySubtyping(NormalMethod method) throws LookupException {
+			TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true);
+			List<Type> formalParameterTypesInContext = formalParameterTypesInContext(method,actualTypeParameters);
+			boolean result = true;
+			int size = formalParameterTypesInContext.size();
+			List<ActualArgument> actualParameters = actualArgumentList().getActualParameters();
+			int actualSize = actualParameters.size();
+			// For the non-varags arguments, use method invocation conversion
+			for(int i=0; result && i < size-1; i++) {
+				Type formalType = formalParameterTypesInContext.get(i);
+				Type actualType = actualParameters.get(i).getExpression().getType();
+				result = convertibleThroughMethodInvocationConversion(actualType, formalType);
+			}
+			Type formalType = formalParameterTypesInContext.get(size-1);
+			for(int i = size-1; result && i< actualSize-1;i++) {
+				Type actualType = actualParameters.get(i).getExpression().getType();
+				result = convertibleThroughMethodInvocationConversion(actualType, formalType);
+			}
+			if(result) {
+				result = actualTypeParameters.valid();
+			}
+			return result;
 		}
     
   	@Override

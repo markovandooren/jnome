@@ -6,14 +6,12 @@ import java.util.List;
 import java.util.Set;
 
 import jnome.core.language.Java;
-import jnome.core.type.DirectJavaTypeReference;
 import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.predicate.TypePredicate;
 import org.rejuse.predicate.UnsafePredicate;
 
 import chameleon.core.expression.Invocation;
-import chameleon.core.language.Language;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.method.Method;
 import chameleon.core.type.IntersectionType;

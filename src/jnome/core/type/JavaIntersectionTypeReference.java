@@ -24,7 +24,11 @@ public class JavaIntersectionTypeReference extends IntersectionTypeReference<Jav
 	
 	@Override
 	public JavaIntersectionTypeReference clone() {
-		return new JavaIntersectionTypeReference(typeReferences());
+		List<TypeReference> trefs = new ArrayList<TypeReference>();
+		for(TypeReference tref: typeReferences()) {
+			trefs.add(tref.clone());
+		}
+		return new JavaIntersectionTypeReference(trefs);
 	}
 
 	@Override

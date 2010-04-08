@@ -20,8 +20,8 @@ public abstract class JavaTest extends CompositeTest {
 	 */
 	@Before
 	public void setLogLevels() {
-		Logger.getRootLogger().setLevel(Level.FATAL);
-		Logger.getLogger("chameleon.test.expression").setLevel(Level.FATAL);
+//		Logger.getRootLogger().setLevel(Level.FATAL);
+//		Logger.getLogger("chameleon.test.expression").setLevel(Level.FATAL);
 	}
 	
 	/**

@@ -488,7 +488,7 @@ Token stop = null;
         
 typeBound returns [ExtendsConstraint element]
 @init{retval.element = new ExtendsConstraint();
-IntersectionTypeReference ref = new IntersectionTypeReference();
+JavaIntersectionTypeReference ref = new JavaIntersectionTypeReference();
 retval.element.setTypeReference(ref); 
 }
     :   tp=type {ref.add(tp.element);}('&' tpp=type {ref.add(tpp.element);})*
@@ -670,7 +670,7 @@ scope MethodScope;
     
 methodDeclaratorRest
 @init{int count = 0;}
-    :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}} ('[' ']' {count++;})* {((JavaTypeReference)$MethodScope::method.returnTypeReference()).addArrayDimension(count);}
+    :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addFormalParameter(par);}} ('[' ']' {count++;})* {((JavaTypeReference)$MethodScope::method.returnTypeReference()).addArrayDimension(count);}
         (thrkw='throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(typeRef(name)));$MethodScope::method.setExceptionClause(clause);}})?
         (   body=methodBody {$MethodScope::method.setImplementation(new RegularImplementation(body.element));}
         |   ';' {$MethodScope::method.setImplementation(null);}
@@ -679,7 +679,7 @@ methodDeclaratorRest
     ;
     
 voidMethodDeclaratorRest
-    :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}}
+    :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addFormalParameter(par);}}
          (thrkw='throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(typeRef(name)));$MethodScope::method.setExceptionClause(clause);}})?
         (   body=methodBody {$MethodScope::method.setImplementation(new RegularImplementation(body.element));}
         |   ';' {$MethodScope::method.setImplementation(null);}
@@ -689,7 +689,7 @@ voidMethodDeclaratorRest
     
 interfaceMethodDeclaratorRest
 @init{int count = 0;}
-    :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}}
+    :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addFormalParameter(par);}}
        ('[' ']' {count++;})* {((JavaTypeReference)$MethodScope::method.returnTypeReference()).setArrayDimension(count);}
        (thrkw='throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(typeRef(name)));$MethodScope::method.setExceptionClause(clause);}})? ';'
        {setKeyword($MethodScope::method,thrkw);}
@@ -701,13 +701,13 @@ interfaceGenericMethodDecl returns [TypeElement element]
     ;
     
 voidInterfaceMethodDeclaratorRest
-    :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}}
+    :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addFormalParameter(par);}}
      ('throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(typeRef(name)));$MethodScope::method.setExceptionClause(clause);}})?
       ';'
     ;
     
 constructorDeclaratorRest
-    :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addParameter(par);}} 
+    :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addFormalParameter(par);}} 
     ('throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(typeRef(name)));$MethodScope::method.setExceptionClause(clause);}})?
      body=constructorBody {$MethodScope::method.setImplementation(new RegularImplementation(body.element));}
     ;

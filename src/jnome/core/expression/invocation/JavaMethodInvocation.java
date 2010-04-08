@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import jnome.core.language.Java;
+import jnome.core.type.ArrayType;
 import jnome.core.type.JavaTypeReference;
 import jnome.core.type.RawType;
 import jnome.core.variable.MultiFormalParameter;
@@ -53,7 +54,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
   				
           int nbActuals = actuals.size();
           int nbFormals = formals.size();
-          if(nbActuals == nbFormals){
+          if(! (formals.get(nbFormals - 1) instanceof MultiFormalParameter)){
           	// Phases 1 and 2 and 3
 						result = phases1and2and3(declaration);
           } else if
@@ -94,43 +95,6 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 			       variableApplicableBySubtyping(method);
 		}
 		
-		/**
-		 * Determine the types of the formal parameter of the given method in the context of the enclosing method invocation.
-		 * This involves substituting the formal type parameters in the type of the formal parameters
-		 * with the actual type arguments.
-		 * 
-		 * If explicit type arguments are present, then these are used as the actual type arguments. Otherwise, the actual
-		 * type arguments are inferred.
-		 * @throws LookupException 
-		 */
-		private List<Type> formalParameterTypesInContext(NormalMethod<?,?,?> method,TypeAssignmentSet actualTypeParameters) throws LookupException {
-			List<ActualTypeArgument> typeArguments = typeArguments();
-			List<TypeParameter> parameters = method.typeParameters();
-			List<Type> result;
-			if(parameters.size() > 0) {
-				Java language = method.language(Java.class);
-				// Substitute
-				List<FormalParameter> formalParameters = method.formalParameters();
-				List<TypeReference> references = new ArrayList<TypeReference>();
-				for(FormalParameter par: formalParameters) {
-					TypeReference tref = par.getTypeReference();
-					TypeReference clone = tref.clone();
-					clone.setUniParent(tref.parent());
-					references.add(clone);
-				}
-				result = new ArrayList<Type>();
-				for(TypeReference tref: references) {
-					for(TypeParameter par: actualTypeParameters.assigned()) {
-						NonLocalJavaTypeReference.replace(language.reference(actualTypeParameters.type(par)), par, (JavaTypeReference<?>) tref);
-					}
-					result.add(tref.getElement());
-				}
-				
-			} else {
-				result = method.header().formalParameterTypes();
-			}
-			return result;
-		}
 
 		private TypeAssignmentSet actualTypeParameters(NormalMethod<?, ?, ?> method, boolean includeNonreference) throws LookupException {
 			List<ActualTypeArgument> typeArguments = typeArguments();
@@ -345,13 +309,14 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 
     @Override
     public WeakPartialOrder<NormalMethod> order() {
-      return new WeakPartialOrder<NormalMethod>() {
-        @Override
-        public boolean contains(NormalMethod first, NormalMethod second)
-            throws LookupException {
-          return MoreSpecificTypesOrder.create().contains(((MethodHeader) first.header()).formalParameterTypes(), ((MethodHeader) second.header()).formalParameterTypes());
-        }
-      };
+//      return new WeakPartialOrder<NormalMethod>() {
+//        @Override
+//        public boolean contains(NormalMethod first, NormalMethod second)
+//            throws LookupException {
+//          return MoreSpecificTypesOrder.create().contains(((MethodHeader) first.header()).formalParameterTypes(), ((MethodHeader) second.header()).formalParameterTypes());
+//        }
+//      };
+    	return new JavaMostSpecificMethodOrder();
     }
 		@Override
 		public Class<NormalMethod> selectedClass() {
@@ -363,4 +328,140 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 			return name();
 		}
   }
+  
+  public static class JavaMostSpecificMethodOrder extends WeakPartialOrder<NormalMethod> {
+
+		@Override
+		public boolean contains(NormalMethod first, NormalMethod second) throws LookupException {
+			if(!(first.lastFormalParameter() instanceof MultiFormalParameter) && ! (second.lastFormalParameter() instanceof MultiFormalParameter)) {
+				return containsFixedArity(first, second);
+			} else if((first.lastFormalParameter() instanceof MultiFormalParameter) && (second.lastFormalParameter() instanceof MultiFormalParameter)){
+				return containsVariableArity(first, second);
+			} else {
+				return false;
+			}
+		}
+
+		public boolean containsVariableArity(NormalMethod first, NormalMethod second) throws LookupException {
+			boolean result = true;
+			Java language = (Java) first.language(Java.class);
+			List<Type> firstTypes = first.header().formalParameterTypes();
+			List<Type> secondTypes = second.header().formalParameterTypes();
+			int firstSize = firstTypes.size();
+			firstTypes.set(firstSize-1, ((ArrayType)firstTypes.get(firstSize-1)).componentType());
+			int secondSize = secondTypes.size();
+			secondTypes.set(secondSize-1, ((ArrayType)secondTypes.get(secondSize-1)).componentType());
+			int n;
+			int k;
+			if(firstSize >= secondSize) {
+				n = firstSize;
+				k = secondSize;
+			} else {
+				n = secondSize;
+				k = firstSize;
+			}
+			List typeParameters = second.typeParameters();
+			List<Type> Ss;
+			if(typeParameters.size() > 0) {
+				FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet();
+				for(int i=0; i < k-1; i++) {
+					constraints.add(new SSConstraint(language.reference(firstTypes.get(i)), secondTypes.get(i)));
+				}
+				TypeAssignmentSet As = constraints.resolve();
+				result = As.valid();
+				if(result) {
+				  Ss = formalParameterTypesInContext(second, As);
+				} else {
+					// If the actual type parameters are invalid, don't bother
+					// substituting them
+					Ss = null;
+				}
+			} else {
+				Ss = new ArrayList<Type>(secondTypes);
+			}
+			for(int i=0; result && i<k-1;i++) {
+				result = firstTypes.get(i).subTypeOf(Ss.get(i));
+			}
+			if(result && firstSize >= secondSize) {
+				for(int i=k-1; result && i<n;i++) {
+					result = firstTypes.get(i).subTypeOf(Ss.get(k-1));
+				}
+			} else {
+				for(int i=k-1; result && i<n;i++) {
+					result = firstTypes.get(k-1).subTypeOf(Ss.get(i));
+				}
+			}
+			return result;
+		}
+		
+		public boolean containsFixedArity(NormalMethod first, NormalMethod second) throws LookupException {
+			boolean result = true;
+			Java language = (Java) first.language(Java.class);
+			List<Type> Ts = first.header().formalParameterTypes();
+			List<Type> Us = second.header().formalParameterTypes();
+			int size =Ts.size();
+			List typeParameters = second.typeParameters();
+			List<Type> Ss;
+			if(typeParameters.size() > 0) {
+				FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet();
+				for(int i=0; i < size; i++) {
+					constraints.add(new SSConstraint(language.reference(Ts.get(i)), Us.get(i)));
+				}
+				TypeAssignmentSet As = constraints.resolve();
+				result = As.valid();
+				if(result) {
+				  Ss = formalParameterTypesInContext(second, As);
+				} else {
+					// If the actual type parameters are invalid, don't bother
+					// substituting them
+					Ss = null;
+				}
+			} else {
+				Ss = new ArrayList<Type>(Us);
+			}
+			for(int i=0; result && i<size;i++) {
+				result = Ts.get(i).subTypeOf(Ss.get(i));
+			}
+			
+			return result;
+		}
+  }
+  
+	/**
+	 * Determine the types of the formal parameter of the given method in the context of the enclosing method invocation.
+	 * This involves substituting the formal type parameters in the type of the formal parameters
+	 * with the actual type arguments.
+	 * 
+	 * If explicit type arguments are present, then these are used as the actual type arguments. Otherwise, the actual
+	 * type arguments are inferred.
+	 * @throws LookupException 
+	 */
+	public static List<Type> formalParameterTypesInContext(NormalMethod<?,?,?> method,TypeAssignmentSet actualTypeParameters) throws LookupException {
+		List<TypeParameter> parameters = method.typeParameters();
+		List<Type> result;
+		if(parameters.size() > 0) {
+			Java language = method.language(Java.class);
+			// Substitute
+			List<FormalParameter> formalParameters = method.formalParameters();
+			List<TypeReference> references = new ArrayList<TypeReference>();
+			for(FormalParameter par: formalParameters) {
+				TypeReference tref = par.getTypeReference();
+				TypeReference clone = tref.clone();
+				clone.setUniParent(tref.parent());
+				references.add(clone);
+			}
+			result = new ArrayList<Type>();
+			for(TypeReference tref: references) {
+				for(TypeParameter par: actualTypeParameters.assigned()) {
+					NonLocalJavaTypeReference.replace(language.reference(actualTypeParameters.type(par)), par, (JavaTypeReference<?>) tref);
+				}
+				result.add(tref.getElement());
+			}
+			
+		} else {
+			result = method.header().formalParameterTypes();
+		}
+		return result;
+	}
+
 }

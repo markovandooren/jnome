@@ -11,6 +11,7 @@ import jnome.core.type.BasicJavaTypeReference;
 import jnome.core.type.JavaIntersectionTypeReference;
 import jnome.core.type.JavaTypeReference;
 import jnome.core.type.NullType;
+import jnome.core.type.RawType;
 
 import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.property.PropertyUniverse;
@@ -38,12 +39,10 @@ import chameleon.core.type.ConstructedType;
 import chameleon.core.type.DerivedType;
 import chameleon.core.type.IntersectionType;
 import chameleon.core.type.IntersectionTypeReference;
-import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
 import chameleon.core.type.generics.ActualTypeArgument;
 import chameleon.core.type.generics.ActualTypeArgumentWithTypeReference;
-import chameleon.core.type.generics.BasicTypeArgument;
 import chameleon.core.type.generics.FormalTypeParameter;
 import chameleon.core.type.generics.InstantiatedTypeParameter;
 import chameleon.core.type.generics.TypeConstraint;
@@ -58,6 +57,7 @@ import chameleon.support.modifier.PrivateProperty;
 import chameleon.support.modifier.ProtectedProperty;
 import chameleon.support.modifier.PublicProperty;
 import chameleon.support.rule.member.MemberInheritableByDefault;
+import chameleon.support.rule.member.MemberInstanceByDefault;
 import chameleon.support.rule.member.MemberOverridableByDefault;
 import chameleon.support.rule.member.TypeExtensibleByDefault;
 import chameleon.support.variable.VariableDeclarator;
@@ -130,19 +130,7 @@ public class Java extends ObjectOrientedLanguage {
 			List<TypeParameter> parameters = original.parameters();
 			int size = parameters.size();
 			if(size > 0 && (parameters.get(0) instanceof FormalTypeParameter)) {
-				// create raw type
-				List<ActualTypeArgument> args = new ArrayList<ActualTypeArgument>(size);
-				String defaultSuperClassFQN = getDefaultSuperClassFQN();
-				RootNamespace defaultNamespace = original.language().defaultNamespace();
-				for(int i=0; i<size;i++) {
-					// FIXME is this where they mean left-most bound ? and is |G| applying erasure to the body of G where
-					// references to type parameters are replaced by the left-most bound?
-					BasicTypeArgument argument = new BasicTypeArgument(createTypeReference(defaultSuperClassFQN));
-					argument.setUniParent(defaultNamespace);
-					args.add(argument);
-				}
-				result = new DerivedType(original, args);
-				result.setUniParent(original.parent());
+				result = RawType.create(original);
 			} else {
   			result = original;
   		}
@@ -266,6 +254,7 @@ public class Java extends ObjectOrientedLanguage {
   	addPropertyRule(new MemberOverridableByDefault());
   	addPropertyRule(new MemberInheritableByDefault());
   	addPropertyRule(new TypeExtensibleByDefault());
+  	addPropertyRule(new MemberInstanceByDefault());
   }
 
  /*@

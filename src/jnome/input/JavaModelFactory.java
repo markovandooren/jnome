@@ -413,7 +413,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 
         TypeReference tr2 = ((Java)language()).createTypeReference(argType);
         FormalParameter fp = new FormalParameter(new SimpleNameSignature("arg"), tr2);
-        sig.addParameter(fp);
+        sig.addFormalParameter(fp);
         op.addModifier(new Native());
         type.add(op);
     }

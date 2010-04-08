@@ -3,9 +3,15 @@ package jnome.core.type;
 import java.util.Collection;
 import java.util.List;
 
+import jnome.core.language.Java;
+
+import org.rejuse.association.SingleAssociation;
+import org.rejuse.logic.ternary.Ternary;
+
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.method.Method;
+import chameleon.core.reference.SimpleReference;
 import chameleon.core.type.AbstractType;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeElement;
@@ -15,9 +21,29 @@ import chameleon.core.type.generics.InstantiatedTypeParameter;
 import chameleon.core.type.generics.TypeParameter;
 import chameleon.core.type.inheritance.InheritanceRelation;
 import chameleon.core.variable.FormalParameter;
+import chameleon.exception.ChameleonProgrammerException;
 
 public class RawType extends AbstractType {
 
+	
+	public static RawType create(Type original) {
+		Type outmostType = original.furthestAncestor(Type.class);
+		RawType outer = new RawType(outmostType);
+		RawType current = outer;
+		List<Type> outerTypes = original.ancestors(Type.class);
+		
+		for(int i = outerTypes.size() - 1; i>=0;i--) {
+			SimpleReference<RawType> simpleRef = new SimpleReference<RawType>(outerTypes.get(i).signature().name(), RawType.class);
+			simpleRef.setUniParent(current);
+			try {
+				current = simpleRef.getElement();
+			} catch (LookupException e) {
+				e.printStackTrace();
+				throw new ChameleonProgrammerException("An inner type of a newly created outer raw type cannot be found",e);
+			}
+		}
+		return current;
+	}
 	
 	/**
 	 * Create a new raw type. The type parameters, super class and interface references, 
@@ -25,9 +51,10 @@ public class RawType extends AbstractType {
 	 */
 	private RawType(Type original) {
 		// first copy everything
-		super(original.sign ature().clone());
+		super(original.signature().clone());
 		copyContents(original, true);
 		_baseType = original;
+		setUniParent(original.parent());
 		setOrigin(original);
 		// then erase everything.
 		// 1) inheritance relations
@@ -37,6 +64,29 @@ public class RawType extends AbstractType {
 		// 3) members
 		eraseMethods();
 		// 4) member types
+		makeDescendantTypesRaw();
+	}
+	
+	private RawType(Type original, boolean useless) {
+		super(original.signature().clone());
+		copyContents(original, true);
+		_baseType = original;
+		setOrigin(original);
+		// no need to set the parent, it will be attacted to an outer type anyway.
+	}
+	
+	private void makeDescendantTypesRaw() {
+		List<Type> childTypes = directlyDeclaredElements(Type.class);
+		Java language = language(Java.class);
+		for(Type type:childTypes) {
+			if(type.is(language.INSTANCE) == Ternary.TRUE) {
+			  // create raw type that does not erase anything
+			  RawType raw = new RawType(type,false);
+			  SingleAssociation<Type, Element> parentLink = type.parentLink();
+			  parentLink.getOtherRelation().replace(parentLink, raw.parentLink());
+			  raw.makeDescendantTypesRaw();
+			}
+		}
 	}
 
 	private Type _baseType;

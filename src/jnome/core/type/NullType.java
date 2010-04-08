@@ -29,7 +29,7 @@ public class NullType extends RegularType {
 	  Public pub = new Public();
      InfixOperator op = new InfixOperator(new SimpleNameMethodHeader(symbol),jtr);
      op.addModifier(pub);
-     op.header().addParameter(new FormalParameter(new SimpleNameSignature("arg"), lang.createTypeReference(argType)));
+     op.header().addFormalParameter(new FormalParameter(new SimpleNameSignature("arg"), lang.createTypeReference(argType)));
      op.addModifier(new Native());
      add(op);
    }

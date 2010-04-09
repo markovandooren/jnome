@@ -28,6 +28,9 @@ public class RawType extends AbstractType {
 	
 	public static RawType create(Type original) {
 		Type outmostType = original.furthestAncestor(Type.class);
+		if(outmostType == null) {
+			outmostType = original;
+		}
 		RawType outer = new RawType(outmostType);
 		RawType current = outer;
 		List<Type> outerTypes = original.ancestors(Type.class);

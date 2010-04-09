@@ -11,6 +11,7 @@ import org.rejuse.logic.ternary.Ternary;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.method.Method;
+import chameleon.core.modifier.Modifier;
 import chameleon.core.reference.SimpleReference;
 import chameleon.core.type.AbstractType;
 import chameleon.core.type.Type;
@@ -124,7 +125,10 @@ public class RawType extends AbstractType {
 			FormalTypeParameter param = (FormalTypeParameter) typeParameter;
 			JavaTypeReference upperBoundReference = (JavaTypeReference) param.upperBoundReference();
 			JavaTypeReference erased = upperBoundReference.erasedReference();
-			replaceParameter(typeParameter, new InstantiatedTypeParameter(typeParameter.signature().clone(),new BasicTypeArgument(erased)));
+			BasicTypeArgument argument = new BasicTypeArgument(erased);
+			InstantiatedTypeParameter newParameter = new InstantiatedTypeParameter(typeParameter.signature().clone(),argument);
+			replaceParameter(typeParameter, newParameter);
+			argument.setUniParent(parent());
 		}
 	}
 

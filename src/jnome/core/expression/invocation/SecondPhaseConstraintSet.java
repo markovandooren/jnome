@@ -31,6 +31,10 @@ import chameleon.support.expression.AssignmentExpression;
 
 public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstraint> {
 
+	public SecondPhaseConstraintSet(Invocation invocation, Method invokedMethod) {
+		super(invocation,invokedMethod); 
+	}
+
 	public Set<Type> ST(JavaTypeReference U) throws LookupException {
 		return U.getElement().getAllSuperTypes();
 	}
@@ -313,7 +317,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 
 	private void processUnresolved(JavaTypeReference S) throws LookupException {
 		JavaTypeReference<?> RRef = (JavaTypeReference) invokedGenericMethod().returnTypeReference();
-		FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet();
+		FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(invocation(), invokedGenericMethod());
 		if(! RRef.getElement().sameAs(RRef.language(Java.class).voidType())) {
 		  // the constraint S >> R', provided R is not void	
 			JavaTypeReference RprimeRef = substitutedReference(RRef);
@@ -402,15 +406,4 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
   	return invocation().parent() instanceof AssignmentExpression;
   }
   
-  public Invocation invocation() {
-  	return _invocation;
-  }
-  
-  private Invocation _invocation;
-  
-  public Method invokedGenericMethod() {
-  	return _invokedGenericMethod;
-  }
-  
-  private Method _invokedGenericMethod;
 }

@@ -17,6 +17,10 @@ import chameleon.core.type.generics.TypeParameter;
 
 public class TypeAssignmentSet {
 
+	public TypeAssignmentSet(List<TypeParameter> typeParameters) {
+		_completeList = new ArrayList<TypeParameter>(typeParameters);
+	}
+	
 	private OrderedMultiAssociation<TypeAssignmentSet, TypeAssignment> _constraints = new OrderedMultiAssociation<TypeAssignmentSet, TypeAssignment>(this);
 	
 	public List<TypeAssignment> assignments() {

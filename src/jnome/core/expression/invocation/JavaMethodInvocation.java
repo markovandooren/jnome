@@ -14,10 +14,10 @@ import org.rejuse.logic.ternary.Ternary;
 
 import chameleon.core.declaration.Signature;
 import chameleon.core.expression.ActualArgument;
+import chameleon.core.expression.Invocation;
 import chameleon.core.expression.InvocationTarget;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.method.MethodHeader;
 import chameleon.core.relation.WeakPartialOrder;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
@@ -25,7 +25,6 @@ import chameleon.core.type.generics.ActualTypeArgument;
 import chameleon.core.type.generics.TypeParameter;
 import chameleon.core.variable.FormalParameter;
 import chameleon.oo.language.ObjectOrientedLanguage;
-import chameleon.support.member.MoreSpecificTypesOrder;
 import chameleon.support.member.simplename.SimpleNameMethodSignature;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.member.simplename.method.RegularMethodInvocation;
@@ -36,6 +35,16 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 		super(name, target);
 	}
 
+	@Override
+  protected JavaMethodInvocation cloneInvocation(InvocationTarget target) {
+  	// target is already cloned.
+		return new JavaMethodInvocation(name(), target);
+  }
+
+  @Override
+  protected DeclarationSelector<NormalMethod> createSelector() {
+  	return new JavaMethodSelector();
+  }
 
 	
   public class JavaMethodSelector extends DeclarationSelector<NormalMethod> {
@@ -54,7 +63,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
   				
           int nbActuals = actuals.size();
           int nbFormals = formals.size();
-          if(! (formals.get(nbFormals - 1) instanceof MultiFormalParameter)){
+          if(nbFormals == 0 || ! (formals.get(nbFormals - 1) instanceof MultiFormalParameter)){
           	// Phases 1 and 2 and 3
 						result = phases1and2and3(declaration);
           } else if
@@ -100,27 +109,29 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 			List<ActualTypeArgument> typeArguments = typeArguments();
 			Java language = method.language(Java.class);
 			List<TypeParameter> parameters = method.typeParameters();
-			TypeAssignmentSet formals;
-			if(typeArguments.size() > 0) {
-				formals = new TypeAssignmentSet();
-				int size = typeArguments.size();
-				for(int i=0; i< size; i++) {
-					formals.add(new ActualTypeAssignment(parameters.get(i),typeArguments.get(i).upperBound()));
-				}
-			} else {
-				// perform type inference
-				FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet();
-				List<ActualArgument> actualParameters = actualArgumentList().getActualParameters();
-				List<Type> formalParameters = method.header().formalParameterTypes();
-				int size = actualParameters.size();
-				for(int i=0; i< size; i++) {
-					// if the formal parameter type is reference type, add a constraint
-					Type argType = actualParameters.get(i).getExpression().getType();
-					if(includeNonreference || argType.is(language.REFERENCE_TYPE) == Ternary.TRUE) {
-						constraints.add(new SSConstraint(language.reference(argType), formalParameters.get(i)));
+			TypeAssignmentSet formals = new TypeAssignmentSet(parameters);
+			List<TypeParameter> methodTypeParameters = method.typeParameters();
+			if(methodTypeParameters.size() > 0) {
+				if(typeArguments.size() > 0) {
+					int size = typeArguments.size();
+					for(int i=0; i< size; i++) {
+						formals.add(new ActualTypeAssignment(parameters.get(i),typeArguments.get(i).upperBound()));
 					}
+				} else {
+					// perform type inference
+					FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(JavaMethodInvocation.this,method);
+					List<ActualArgument> actualParameters = actualArgumentList().getActualParameters();
+					List<Type> formalParameters = method.header().formalParameterTypes();
+					int size = actualParameters.size();
+					for(int i=0; i< size; i++) {
+						// if the formal parameter type is reference type, add a constraint
+						Type argType = actualParameters.get(i).getExpression().getType();
+						if(includeNonreference || argType.is(language.REFERENCE_TYPE) == Ternary.TRUE) {
+							constraints.add(new SSConstraint(language.reference(argType), formalParameters.get(i)));
+						}
+					}
+					formals = constraints.resolve();
 				}
-				formals = constraints.resolve();
 			}
 			return formals;
 		}
@@ -316,7 +327,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 //          return MoreSpecificTypesOrder.create().contains(((MethodHeader) first.header()).formalParameterTypes(), ((MethodHeader) second.header()).formalParameterTypes());
 //        }
 //      };
-    	return new JavaMostSpecificMethodOrder();
+    	return new JavaMostSpecificMethodOrder(JavaMethodInvocation.this);
     }
 		@Override
 		public Class<NormalMethod> selectedClass() {
@@ -330,6 +341,12 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
   }
   
   public static class JavaMostSpecificMethodOrder extends WeakPartialOrder<NormalMethod> {
+  	
+  	Invocation _invocation;
+  	
+  	public JavaMostSpecificMethodOrder(Invocation invocation) {
+  		_invocation = invocation;
+  	}
 
 		@Override
 		public boolean contains(NormalMethod first, NormalMethod second) throws LookupException {
@@ -363,7 +380,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 			List typeParameters = second.typeParameters();
 			List<Type> Ss;
 			if(typeParameters.size() > 0) {
-				FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet();
+				FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(_invocation,second);
 				for(int i=0; i < k-1; i++) {
 					constraints.add(new SSConstraint(language.reference(firstTypes.get(i)), secondTypes.get(i)));
 				}
@@ -403,7 +420,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 			List typeParameters = second.typeParameters();
 			List<Type> Ss;
 			if(typeParameters.size() > 0) {
-				FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet();
+				FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(_invocation, second);
 				for(int i=0; i < size; i++) {
 					constraints.add(new SSConstraint(language.reference(Ts.get(i)), Us.get(i)));
 				}

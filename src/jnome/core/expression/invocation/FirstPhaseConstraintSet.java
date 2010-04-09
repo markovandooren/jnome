@@ -1,14 +1,22 @@
 package jnome.core.expression.invocation;
 
+import java.util.List;
+
+import chameleon.core.expression.Invocation;
 import chameleon.core.lookup.LookupException;
+import chameleon.core.method.Method;
+import chameleon.core.type.generics.TypeParameter;
 
 
 public class FirstPhaseConstraintSet extends ConstraintSet<FirstPhaseConstraint> {
 
 
+	public FirstPhaseConstraintSet(Invocation invocation, Method invokedMethod) {
+		super(invocation,invokedMethod); 
+	}
 
 	public SecondPhaseConstraintSet secondPhase() throws LookupException {
-		SecondPhaseConstraintSet result = new SecondPhaseConstraintSet();
+		SecondPhaseConstraintSet result = new SecondPhaseConstraintSet(invocation(), invokedGenericMethod());
 		for(FirstPhaseConstraint constraint: constraints()) {
 			result.addAll(constraint.process());
 		}

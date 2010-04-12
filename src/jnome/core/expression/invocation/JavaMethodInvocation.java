@@ -12,6 +12,7 @@ import jnome.core.variable.MultiFormalParameter;
 
 import org.rejuse.logic.ternary.Ternary;
 
+import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.Signature;
 import chameleon.core.expression.ActualArgument;
 import chameleon.core.expression.Invocation;
@@ -24,7 +25,7 @@ import chameleon.core.type.TypeReference;
 import chameleon.core.type.generics.ActualTypeArgument;
 import chameleon.core.type.generics.TypeParameter;
 import chameleon.core.variable.FormalParameter;
-import chameleon.oo.language.ObjectOrientedLanguage;
+import chameleon.exception.ChameleonProgrammerException;
 import chameleon.support.member.simplename.SimpleNameMethodSignature;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.member.simplename.method.RegularMethodInvocation;
@@ -49,60 +50,117 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 	
   public class JavaMethodSelector extends DeclarationSelector<NormalMethod> {
 
-    public boolean selectedRegardlessOfName(NormalMethod declaration) throws LookupException {
-  		boolean result = declaration.is(language(ObjectOrientedLanguage.class).CONSTRUCTOR) != Ternary.TRUE;
-  		if(result) {
-  			Signature signature = declaration.signature();
-  			if(signature instanceof SimpleNameMethodSignature) {
-  				SimpleNameMethodSignature sig = (SimpleNameMethodSignature)signature;
-  				List<Type> actuals = getActualParameterTypes();
-  				List<FormalParameter> formals = declaration.formalParameters();
-  				List<Type> formalTypes = sig.parameterTypes();
-  				
-  				//declaration.scope().contains(JavaMethodInvocation.this);
-  				
-          int nbActuals = actuals.size();
-          int nbFormals = formals.size();
-          if(nbFormals == 0 || ! (formals.get(nbFormals - 1) instanceof MultiFormalParameter)){
-          	// Phases 1 and 2 and 3
-						result = phases1and2and3(declaration);
-          } else if
-          // varargs
-          	 (
-          			 (formals.get(nbFormals - 1) instanceof MultiFormalParameter)
-          			 && 
-          			 (nbActuals >= nbFormals - 1)
-          	 )
-          	 {
-          	// only Phase 3
-						result = variableApplicableBySubtyping(declaration);
-          } else {
-          	result = false;
-          }
-          if(result) {
-          	List<ActualTypeArgument> actualTypeArguments = typeArguments();
-          	int actualTypeArgumentsSize = actualTypeArguments.size();
-						if(actualTypeArgumentsSize > 0) {
-          		List<TypeParameter> formalTypeParameters = declaration.typeParameters();
-          		result = actualTypeArgumentsSize == formalTypeParameters.size();
-          		if(result) {
-          			for(int i=0; result && i < actualTypeArgumentsSize; i++) {
-          				result = formalTypeParameters.get(i).canBeAssigned(actualTypeArguments.get(i));
-          			}
-          		}
-          	}
-          }
-  			}
-  		}
-  		return result;
+  	protected NormalMethod selection(Declaration declarator) throws LookupException {
+  		throw new ChameleonProgrammerException();
+  	}
+  	
+    public List<NormalMethod> selection(List<? extends Declaration> selectionCandidates) throws LookupException {
+    	List<NormalMethod> tmp = new ArrayList<NormalMethod>();
+    	List<NormalMethod> candidates = new ArrayList<NormalMethod>();
+    	for(Declaration decl: selectionCandidates) {
+    		if(decl instanceof NormalMethod) {
+    			NormalMethod method = (NormalMethod) decl;
+    			int nbActuals = nbActualParameters();
+    			int nbFormals = method.nbFormalParameters();
+    			// If caching is enable, selected based on the name will already have been
+    			// done by the container, so we check for names after the arguments.
+    			if ((
+    					(nbFormals == nbActuals) ||
+    					(   (nbFormals > 1) 
+    							&&
+    							(method.lastFormalParameter() instanceof MultiFormalParameter)
+    							&& 
+    							(nbActuals >= nbFormals - 1)
+    					)
+    			) && selectedBasedOnName(method.signature())){
+    				candidates.add(method);
+    			}
+    		}
+    	}
+
+    	for(NormalMethod decl: candidates) {
+    		if(matchingApplicableBySubtyping(decl)) {
+    			tmp.add(decl);
+    		}
+    	}
+    	// conversion
+    	if(tmp.isEmpty()) {
+    		for(NormalMethod decl: candidates) {
+    			if(matchingApplicableByConversion(decl)) {
+    				tmp.add(decl);
+    			}
+    		}
+    		// variable arity
+    		if(tmp.isEmpty()) {
+    			for(NormalMethod decl: candidates) {
+    				if(variableApplicableBySubtyping(decl)) {
+    					tmp.add(decl);
+    				}
+    			}
+    		}
+    	}
+    	order().removeBiggerElements(tmp);
+    	return tmp;
     }
 
-		private boolean phases1and2and3(NormalMethod method) throws LookupException {
-			//return MoreSpecificTypesOrder.create().contains(actuals,formalTypes);
-			return matchingApplicableBySubtyping(method) ||
-			       matchingApplicableByConversion(method) ||
-			       variableApplicableBySubtyping(method);
-		}
+    public boolean selectedRegardlessOfName(NormalMethod declaration) throws LookupException {
+    	throw new ChameleonProgrammerException();
+//  		boolean result = declaration.is(language(ObjectOrientedLanguage.class).CONSTRUCTOR) != Ternary.TRUE;
+//  		if(result) {
+//  			Signature signature = declaration.signature();
+//  			if(signature instanceof SimpleNameMethodSignature) {
+//  				List<FormalParameter> formals = declaration.formalParameters();
+//  				
+//  				//declaration.scope().contains(JavaMethodInvocation.this);
+//  				
+//          int nbActuals = nbActualParameters();
+//          int nbFormals = formals.size();
+//          //List<Type> formalTypes = sig.parameterTypes();
+//          // We take a shortcut here, and skip the heavy calculations if the number of 
+//          // actual and formal parameters isn't equal
+//          if(nbActuals == nbFormals){
+//          	// Phases 1 and 2 and 3
+//						result = phases1and2and3(declaration);
+//          } else if
+//          // varargs
+//          	 (   (nbFormals > 1) 
+//          			   &&
+//          			 (formals.get(nbFormals - 1) instanceof MultiFormalParameter)
+//          			   && 
+//          			 (nbActuals >= nbFormals - 1)
+//          	 )
+//          	 {
+//          	// only Phase 3
+//						result = variableApplicableBySubtyping(declaration);
+//          } else {
+//          	result = false;
+//          }
+////          if(result) {
+////          	// Check the explicit parameters.
+////          	// FIXME isn't this done already?
+////          	List<ActualTypeArgument> actualTypeArguments = typeArguments();
+////          	int actualTypeArgumentsSize = actualTypeArguments.size();
+////						if(actualTypeArgumentsSize > 0) {
+////          		List<TypeParameter> formalTypeParameters = declaration.typeParameters();
+////          		result = actualTypeArgumentsSize == formalTypeParameters.size();
+////          		if(result) {
+////          			for(int i=0; result && i < actualTypeArgumentsSize; i++) {
+////          				result = formalTypeParameters.get(i).canBeAssigned(actualTypeArguments.get(i));
+////          			}
+////          		}
+////          	}
+////          }
+//  			}
+//  		}
+//  		return result;
+    }
+
+//		private boolean phases1and2and3(NormalMethod method) throws LookupException {
+//			//return MoreSpecificTypesOrder.create().contains(actuals,formalTypes);
+//			return matchingApplicableBySubtyping(method) ||
+//			       matchingApplicableByConversion(method) ||
+//			       variableApplicableBySubtyping(method);
+//		}
 		
 
 		private TypeAssignmentSet actualTypeParameters(NormalMethod<?, ?, ?> method, boolean includeNonreference) throws LookupException {
@@ -237,7 +295,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 		public boolean convertibleThroughUnboxingAndOptionalWidening(Type first, Type second) throws LookupException {
 			boolean result = false;
 			Java language = first.language(Java.class);
-			if(first.is(language.NUMERIC_TYPE) == Ternary.TRUE) {
+			if(first.is(language.UNBOXABLE_TYPE) == Ternary.TRUE) {
 				Type tmp = language.unbox(first);
 				if(tmp.sameAs(second)) {
 					result = true;
@@ -257,16 +315,18 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 			Java language = type.language(Java.class);
 			String name = type.getFullyQualifiedName();
 			if(type.is(language.NUMERIC_TYPE) == Ternary.TRUE) {
-				result.add(language.findType("double"));
-				if(! name.equals("float")) {
-					result.add(language.findType("float"));
-					if(! name.equals("long")) {
-						result.add(language.findType("long"));
-						if(! name.equals("int")) {
-							result.add(language.findType("int"));
-							// char and short do not convert to short via widening.
-							if(name.equals("byte")) {
-								result.add(language.findType("short"));
+				if(! name.equals("double")) {
+					result.add(language.findType("double"));
+					if(! name.equals("float")) {
+						result.add(language.findType("float"));
+						if(! name.equals("long")) {
+							result.add(language.findType("long"));
+							if(! name.equals("int")) {
+								result.add(language.findType("int"));
+								// char and short do not convert to short via widening.
+								if(name.equals("byte")) {
+									result.add(language.findType("short"));
+								}
 							}
 						}
 					}
@@ -285,25 +345,27 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 		
 
 		public boolean variableApplicableBySubtyping(NormalMethod method) throws LookupException {
-			TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true);
-			List<Type> formalParameterTypesInContext = formalParameterTypesInContext(method,actualTypeParameters);
-			boolean result = true;
-			int size = formalParameterTypesInContext.size();
-			List<ActualArgument> actualParameters = actualArgumentList().getActualParameters();
-			int actualSize = actualParameters.size();
-			// For the non-varags arguments, use method invocation conversion
-			for(int i=0; result && i < size-1; i++) {
-				Type formalType = formalParameterTypesInContext.get(i);
-				Type actualType = actualParameters.get(i).getExpression().getType();
-				result = convertibleThroughMethodInvocationConversion(actualType, formalType);
-			}
-			Type formalType = formalParameterTypesInContext.get(size-1);
-			for(int i = size-1; result && i< actualSize-1;i++) {
-				Type actualType = actualParameters.get(i).getExpression().getType();
-				result = convertibleThroughMethodInvocationConversion(actualType, formalType);
-			}
+			boolean result = method.lastFormalParameter() instanceof MultiFormalParameter;
 			if(result) {
-				result = actualTypeParameters.valid();
+				TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true);
+				List<Type> formalParameterTypesInContext = formalParameterTypesInContext(method,actualTypeParameters);
+				int size = formalParameterTypesInContext.size();
+				List<ActualArgument> actualParameters = actualArgumentList().getActualParameters();
+				int actualSize = actualParameters.size();
+				// For the non-varags arguments, use method invocation conversion
+				for(int i=0; result && i < size-1; i++) {
+					Type formalType = formalParameterTypesInContext.get(i);
+					Type actualType = actualParameters.get(i).getExpression().getType();
+					result = convertibleThroughMethodInvocationConversion(actualType, formalType);
+				}
+				Type formalType = formalParameterTypesInContext.get(size-1);
+				for(int i = size-1; result && i< actualSize-1;i++) {
+					Type actualType = actualParameters.get(i).getExpression().getType();
+					result = convertibleThroughMethodInvocationConversion(actualType, formalType);
+				}
+				if(result) {
+					result = actualTypeParameters.valid();
+				}
 			}
 			return result;
 		}
@@ -350,13 +412,13 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 
 		@Override
 		public boolean contains(NormalMethod first, NormalMethod second) throws LookupException {
+			boolean result = false;
 			if(!(first.lastFormalParameter() instanceof MultiFormalParameter) && ! (second.lastFormalParameter() instanceof MultiFormalParameter)) {
-				return containsFixedArity(first, second);
+				result = containsFixedArity(first, second);
 			} else if((first.lastFormalParameter() instanceof MultiFormalParameter) && (second.lastFormalParameter() instanceof MultiFormalParameter)){
-				return containsVariableArity(first, second);
-			} else {
-				return false;
+				result = containsVariableArity(first, second);
 			}
+			return result;
 		}
 
 		public boolean containsVariableArity(NormalMethod first, NormalMethod second) throws LookupException {

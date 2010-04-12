@@ -29,6 +29,7 @@ public class ArrayType extends RegularType {
     RegularMemberVariable var = new RegularMemberVariable(new SimpleNameSignature("length"), jtr);
     var.addModifier(new Final());
     add(var);
+    // JLS3 4.10.3 p.64
     addInheritanceRelation(new SubtypeRelation(language.createTypeReference("java.lang.Object")));
     addInheritanceRelation(new SubtypeRelation(language.createTypeReference("java.lang.Cloneable")));
     addInheritanceRelation(new SubtypeRelation(language.createTypeReference("java.io.Serializable")));

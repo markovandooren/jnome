@@ -33,6 +33,7 @@ import chameleon.core.namespacepart.NamespacePart;
 import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
+import chameleon.core.type.inheritance.SubtypeRelation;
 import chameleon.core.variable.FormalParameter;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.input.ModelFactory;
@@ -443,6 +444,10 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         cu.add(clas);
         clas.addModifier(new ValueType());
     }
+    
+    public Java java() {
+    	return (Java) language();
+    }
 
     public void addByte(Namespace mm) {
         NamespacePart cu = getNamespacePart(mm);
@@ -458,6 +463,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
                         || other.getFullyQualifiedName().equals("double");
             }
         };
+        byteT.addInheritanceRelation(new SubtypeRelation(java().createTypeReference("short")));
         byteT.addModifier(pub);
 
         cu.add(byteT);
@@ -482,6 +488,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
                         || other.getFullyQualifiedName().equals("double");
             }
         };
+        shortT.addInheritanceRelation(new SubtypeRelation(java().createTypeReference("int")));
         shortT.addModifier(pub);
         cu.add(shortT);
         shortT.addModifier(new ValueType());
@@ -505,6 +512,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
                         || other.getFullyQualifiedName().equals("double");
             }
         };
+        charT.addInheritanceRelation(new SubtypeRelation(java().createTypeReference("int")));
         charT.addModifier(pub);
         cu.add(charT);
         charT.addModifier(new ValueType());
@@ -526,6 +534,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
                         || other.getFullyQualifiedName().equals("double");
             }
         };
+        intT.addInheritanceRelation(new SubtypeRelation(java().createTypeReference("long")));
         intT.addModifier(pub);
         cu.add(intT);
         intT.addModifier(new ValueType());
@@ -546,6 +555,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
                         || other.getFullyQualifiedName().equals("double");
             }
         };
+        longT.addInheritanceRelation(new SubtypeRelation(java().createTypeReference("float")));
         longT.addModifier(pub);
         cu.add(longT);
         longT.addModifier(new ValueType());
@@ -565,6 +575,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
                         || other.getFullyQualifiedName().equals("double");
             }
         };
+        floatT.addInheritanceRelation(new SubtypeRelation(java().createTypeReference("double")));
         floatT.addModifier(pub);
         cu.add(floatT);
         floatT.addModifier(new ValueType());

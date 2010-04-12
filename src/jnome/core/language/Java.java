@@ -81,9 +81,10 @@ public class Java extends ObjectOrientedLanguage {
 		PRIVATE = new PrivateProperty(this, SCOPE_MUTEX);
 		PUBLIC = new PublicProperty(this, SCOPE_MUTEX);
 		PACKAGE_ACCESSIBLE = new PackageProperty(this, SCOPE_MUTEX);
-		PRIMITIVE_TYPE = new PrimitiveTypeProperty("primitive", this, Type.class);
-		NUMERIC_TYPE = new NumericTypeProperty("numeric", this, Type.class);
+		PRIMITIVE_TYPE = new PrimitiveTypeProperty("primitive", this);
+		NUMERIC_TYPE = new NumericTypeProperty("numeric", this);
 		REFERENCE_TYPE = PRIMITIVE_TYPE.inverse();
+		UNBOXABLE_TYPE = new UnboxableTypeProperty("unboxable", this);
 
 		// In Java, a constructor is a class method
 		CONSTRUCTOR.addImplication(CLASS);
@@ -177,8 +178,8 @@ public class Java extends ObjectOrientedLanguage {
 	}
 
 	private static class NumericTypeProperty extends DynamicChameleonProperty {
-		private NumericTypeProperty(String name, PropertyUniverse<ChameleonProperty> universe, Class<? extends Element> validElementType) {
-			super(name, universe, validElementType);
+		private NumericTypeProperty(String name, PropertyUniverse<ChameleonProperty> universe) {
+			super(name, universe, Type.class);
 		}
 
 		@Override
@@ -196,9 +197,28 @@ public class Java extends ObjectOrientedLanguage {
 		}
 	}
 	
+	private static class UnboxableTypeProperty extends DynamicChameleonProperty {
+		private UnboxableTypeProperty(String name, PropertyUniverse<ChameleonProperty> universe) {
+			super(name, universe, Type.class);
+		}
+
+		@Override
+		public Ternary appliesTo(Element element) {
+			Ternary result = Ternary.FALSE;
+			if(element instanceof Type) {
+				String fqn = ((Type)element).getFullyQualifiedName();
+				if(fqn.equals("java.lang.Integer") || fqn.equals("java.lang.Long")|| fqn.equals("java.lang.Float")|| fqn.equals("java.lang.Double")
+						|| fqn.equals("java.lang.Boolean")|| fqn.equals("java.lang.Byte")|| fqn.equals("java.lang.Character") || fqn.equals("java.lang.Short")) {
+					result = Ternary.TRUE;
+				}
+			}
+			return result;
+		}
+	}
+
 	private static class PrimitiveTypeProperty extends DynamicChameleonProperty {
-		private PrimitiveTypeProperty(String name, PropertyUniverse<ChameleonProperty> universe, Class<? extends Element> validElementType) {
-			super(name, universe, validElementType);
+		private PrimitiveTypeProperty(String name, PropertyUniverse<ChameleonProperty> universe) {
+			super(name, universe, Type.class);
 		}
 
 		@Override
@@ -236,6 +256,7 @@ public class Java extends ObjectOrientedLanguage {
 	public final DynamicChameleonProperty PRIMITIVE_TYPE;	
 	public final DynamicChameleonProperty NUMERIC_TYPE;	
 	public final ChameleonProperty REFERENCE_TYPE;	
+	public final ChameleonProperty UNBOXABLE_TYPE;	
 	
 	public Type getNullType(){
 		return _nullType;

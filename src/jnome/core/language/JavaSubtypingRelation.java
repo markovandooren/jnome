@@ -8,7 +8,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import jnome.core.type.ArrayType;
+
 import org.apache.log4j.Logger;
+import org.rejuse.logic.ternary.Ternary;
 
 import chameleon.core.lookup.LookupException;
 import chameleon.core.relation.WeakPartialOrder;
@@ -36,17 +39,26 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		if(first.equals(second)) {
 			result = true;
 		} else if (first.equals(first.language(ObjectOrientedLanguage.class).getNullType())) {
-			return true;
-		}	else {
-		Set<Type> supers = first.getAllSuperTypes();
-		supers.add(first);
-		Iterator<Type> typeIterator = supers.iterator();
-		if(! (second instanceof ConstructedType)) {
-		  while((!result) && typeIterator.hasNext()) {
-			  Type current = typeIterator.next();
-			  result = sameBaseTypeWithCompatibleParameters(current, second);
-		   }
+			result = true;
 		}
+		// The relations between arrays and object are covered by the subtyping relations
+		// that are added to ArrayType objects.
+		else if (first instanceof ArrayType && second instanceof ArrayType && first.is(first.language(Java.class).REFERENCE_TYPE) == Ternary.TRUE) {
+			ArrayType first2 = (ArrayType)first;
+			ArrayType second2 = (ArrayType)second;
+			result = first2.dimension() == second2.dimension() && contains(first2.componentType(), second2.componentType());
+		}
+		else {
+			//FIXME I do not believe that this treats raw types correctly.
+			Set<Type> supers = first.getAllSuperTypes();
+			supers.add(first);
+			Iterator<Type> typeIterator = supers.iterator();
+			if(! (second instanceof ConstructedType)) {
+				while((!result) && typeIterator.hasNext()) {
+					Type current = typeIterator.next();
+					result = sameBaseTypeWithCompatibleParameters(current, second);
+				}
+			}
 		}
 		return result;
 	}

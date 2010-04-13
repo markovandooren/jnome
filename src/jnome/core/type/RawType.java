@@ -32,7 +32,12 @@ public class RawType extends AbstractType {
 		if(outmostType == null) {
 			outmostType = original;
 		}
-		RawType outer = new RawType(outmostType);
+		RawType outer;
+		if(outmostType instanceof RawType) {
+			outer = (RawType) outmostType;
+		} else {
+			outer = new RawType(outmostType);;
+		}
 		RawType current = outer;
 		List<Type> outerTypes = original.ancestors(Type.class);
 		

@@ -103,23 +103,7 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
   	_arrayDimension = arrayDimension;
   }
   
-  private static int previous=0;
-  private static int previousDiff=0;
-  private static int previouspreviousDiff=0;
-  
   protected <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
-  	try {
-  		throw new Exception();
-  	}catch(Exception e) {
-  		int length = e.getStackTrace().length;
-			int diff = length - previous;
-			if(previouspreviousDiff == 19 && previousDiff == 19 && diff == 19) {
-				System.out.println("Gotcha "+length);
-			}
-			previouspreviousDiff = previousDiff;
-			previousDiff = diff;
-			previous = length;
-  	}
     X result = null;
 
 	  boolean realSelector = selector.equals(selector());

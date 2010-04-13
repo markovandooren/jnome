@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import jnome.core.type.ArrayType;
+import jnome.core.type.RawType;
 
 import org.apache.log4j.Logger;
 import org.rejuse.logic.ternary.Ternary;
@@ -49,14 +50,14 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 			result = first2.dimension() == second2.dimension() && contains(first2.componentType(), second2.componentType());
 		}
 		else {
-			//FIXME I do not believe that this treats raw types correctly.
+			//SPEED iterate over the supertype graph 
 			Set<Type> supers = first.getAllSuperTypes();
 			supers.add(first);
 			Iterator<Type> typeIterator = supers.iterator();
 			if(! (second instanceof ConstructedType)) {
 				while((!result) && typeIterator.hasNext()) {
 					Type current = typeIterator.next();
-					result = sameBaseTypeWithCompatibleParameters(current, second);
+					result = (second instanceof RawType && second.baseType().sameAs(current.baseType()))|| sameBaseTypeWithCompatibleParameters(current, second);
 				}
 			}
 		}

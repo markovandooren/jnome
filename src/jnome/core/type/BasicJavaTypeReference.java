@@ -26,11 +26,7 @@ import chameleon.util.CreationStackTraceWithSingleFrame;
 
 public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeReference> implements JavaTypeReference<BasicJavaTypeReference> {
 
-	public BasicJavaTypeReference(String fqn) {
-    this(fqn,0);
-  }
-  
-  public BasicJavaTypeReference(CrossReference<?,?,? extends TargetDeclaration> target, String name) {
+	public BasicJavaTypeReference(CrossReference<?,?,? extends TargetDeclaration> target, String name) {
   	super(target,name);
   }
   
@@ -46,14 +42,13 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
   	super(target.getTarget() == null ? null : new NamespaceOrTypeReference((NamedTarget)target.getTarget()),target.getName());
   }
   
-  public BasicJavaTypeReference(String fqn, int arrayDimension) {
+  public BasicJavaTypeReference(String fqn) {
   	super(fqn);
   	if(Config.DEBUG) {
   		if((fqn != null) && (fqn.contains("["))) {
   			throw new ChameleonProgrammerException("Initializing a type reference with a [ in the name.");
   		}
   	}
-  	setArrayDimension(arrayDimension);
   }
   
   public List<ActualTypeArgument> typeArguments() {
@@ -87,19 +82,17 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
   }
   
   public JavaTypeReference toArray(int arrayDimension) {
-  	JavaTypeReference result = clone();
-  	result.setArrayDimension(arrayDimension);
+  	JavaTypeReference result;
+  	if(arrayDimension > 0) {
+  	  result = new ArrayTypeReference(clone(), arrayDimension);
+  	} else {
+  		result = this;
+  	}
   	return result;
   }
 
-  private int _arrayDimension;
-  
   public int arrayDimension() {
-  	return _arrayDimension;
-  }
-  
-  public void setArrayDimension(int arrayDimension) {
-  	_arrayDimension = arrayDimension;
+  	return 0;
   }
   
   protected <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
@@ -122,9 +115,9 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
       // FILL IN GENERIC PARAMETERS
       result = (X) convertGenerics((Type)result);
       // ARRAY TYPE
-      if ((arrayDimension() != 0) && (result != null)) {
-        result = (X) new ArrayType(((Type)result),arrayDimension());
-      }
+//      if ((arrayDimension() != 0) && (result != null)) {
+//        result = (X) new ArrayType(((Type)result),arrayDimension());
+//      }
     }
     
     if(result != null) {
@@ -173,37 +166,40 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
   
   public BasicJavaTypeReference clone() {
   	BasicJavaTypeReference result =  new BasicJavaTypeReference((getTarget() == null ? null : getTarget().clone()),(SimpleNameSignature)signature().clone());
-  	result.setArrayDimension(arrayDimension());
   	for(ActualTypeArgument typeArgument: typeArguments()) {
   		result.addArgument(typeArgument.clone());
   	}
   	return result;
   }
 
-	public void addArrayDimension(int arrayDimension) {
-		if(arrayDimension > Integer.MAX_VALUE - _arrayDimension) {
-			throw new ChameleonProgrammerException("Overflow of array dimension. Current value: "+_arrayDimension+" trying to add: "+arrayDimension);
-		}
-		if(_arrayDimension  < -arrayDimension) {
-			throw new ChameleonProgrammerException("Trying to give a negative array dimension to a type reference.  Current value: "+_arrayDimension+" trying to add: "+arrayDimension);
-		}
-		_arrayDimension += arrayDimension;
-	}
+//	public void addArrayDimension(int arrayDimension) {
+//		if(arrayDimension > Integer.MAX_VALUE - _arrayDimension) {
+//			throw new ChameleonProgrammerException("Overflow of array dimension. Current value: "+_arrayDimension+" trying to add: "+arrayDimension);
+//		}
+//		if(_arrayDimension  < -arrayDimension) {
+//			throw new ChameleonProgrammerException("Trying to give a negative array dimension to a type reference.  Current value: "+_arrayDimension+" trying to add: "+arrayDimension);
+//		}
+//		_arrayDimension += arrayDimension;
+//	}
 
-	public void decreaseArrayDimension(int arrayDimension) {
-		if(- arrayDimension > Integer.MAX_VALUE - _arrayDimension) {
-			throw new ChameleonProgrammerException("Overflow of array dimension. Current value: "+_arrayDimension+" trying to subtract: "+arrayDimension);
-		}
-		if(_arrayDimension < arrayDimension) {
-			throw new ChameleonProgrammerException("Trying to give a negative array dimension to a type reference.  Current value: "+_arrayDimension+" trying to subtract: "+arrayDimension);
-		}
-		_arrayDimension -= arrayDimension;
-	}
+//	public void decreaseArrayDimension(int arrayDimension) {
+//		if(- arrayDimension > Integer.MAX_VALUE - _arrayDimension) {
+//			throw new ChameleonProgrammerException("Overflow of array dimension. Current value: "+_arrayDimension+" trying to subtract: "+arrayDimension);
+//		}
+//		if(_arrayDimension < arrayDimension) {
+//			throw new ChameleonProgrammerException("Trying to give a negative array dimension to a type reference.  Current value: "+_arrayDimension+" trying to subtract: "+arrayDimension);
+//		}
+//		_arrayDimension -= arrayDimension;
+//	}
 
 	public JavaTypeReference erasedReference() {
 	  JavaTypeReference result = new BasicJavaTypeReference(language(Java.class).erasure(getTarget()), (SimpleNameSignature)signature().clone());
-	  result.setArrayDimension(arrayDimension());
+//	  result.setArrayDimension(arrayDimension());
 	  return result;
+	}
+
+	public JavaTypeReference componentTypeReference() {
+		return this;
 	}
 
 }

@@ -19,6 +19,7 @@ import jnome.core.modifier.Default;
 import jnome.core.modifier.StrictFP;
 import jnome.core.modifier.Synchronized;
 import jnome.core.type.ArrayType;
+import jnome.core.type.ArrayTypeReference;
 import jnome.core.type.BasicJavaTypeReference;
 import jnome.core.type.JavaIntersectionTypeReference;
 import jnome.core.type.JavaTypeReference;
@@ -56,7 +57,6 @@ import chameleon.core.namespacepart.NamespacePart;
 import chameleon.core.namespacepart.TypeImport;
 import chameleon.core.reference.SpecificReference;
 import chameleon.core.statement.Block;
-import chameleon.core.type.IntersectionTypeReference;
 import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeElement;
@@ -249,10 +249,12 @@ public class JavaCodeWriter extends Syntax {
       result = toCodeNamespaceReference((NamespaceReference)element);
     } else if(isNamespaceOrTypeReference(element)) {
       result = toCodeNamespaceOrTypeReference((NamespaceOrTypeReference)element);
-    } else if(isTypeReference(element)) {
+    } else if(isBasicTypeReference(element)) {
       result = toCodeBasicTypeReference((BasicJavaTypeReference)element);
     } else if(isIntersectionTypeReference(element)) {
       result = toCodeIntersectionTypeReference((JavaIntersectionTypeReference)element);
+    } else if(isArrayTypeReference(element)) {
+      result = toCodeArrayTypeReference((ArrayTypeReference)element);
     } 
       // Specific reference MUST come after the other references.
       else if(isSpecificReference(element)) {
@@ -393,7 +395,15 @@ public class JavaCodeWriter extends Syntax {
   	return result.toString();
   }
   
-  public boolean isTypeReference(Element element) {
+  public boolean isArrayTypeReference(Element element) {
+    return element instanceof ArrayTypeReference;
+  }
+  
+  public String toCodeArrayTypeReference(ArrayTypeReference typeReference) throws LookupException {
+  	return toCode(typeReference.elementTypeReference()) + "[]";
+  }
+  
+  public boolean isBasicTypeReference(Element element) {
     return element instanceof BasicJavaTypeReference;
   }
   
@@ -403,9 +413,7 @@ public class JavaCodeWriter extends Syntax {
       result = result + ".";
     }
     result = result + typeReference.signature();
-    if(typeReference instanceof JavaTypeReference) {
-    	JavaTypeReference tref = (JavaTypeReference)typeReference;
-    	List<ActualTypeArgument> typeArguments = tref.typeArguments();
+    	List<ActualTypeArgument> typeArguments = typeReference.typeArguments();
     	if(! typeArguments.isEmpty()) {
     		result = result +"<";
     		Iterator<ActualTypeArgument> iter = typeArguments.iterator();
@@ -417,12 +425,6 @@ public class JavaCodeWriter extends Syntax {
     		}
     		result = result +">";
     	}
-    	int dimension = tref.arrayDimension();
-    	while(dimension > 0) {
-    		result = result + "[]";
-    		dimension--;
-    	}
-    }
     return result;
   }
 

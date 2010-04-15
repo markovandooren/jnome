@@ -71,6 +71,10 @@ public class JavaIntersectionTypeReference extends IntersectionTypeReference<Jav
 	public JavaTypeReference erasedReference() {
 		return ((JavaTypeReference)_types.getOtherEnds().get(0)).erasedReference();
 	}
+
+	public JavaTypeReference componentTypeReference() {
+		return this;
+	}
 	
 
 }

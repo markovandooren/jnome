@@ -427,9 +427,9 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 			List<Type> firstTypes = first.header().formalParameterTypes();
 			List<Type> secondTypes = second.header().formalParameterTypes();
 			int firstSize = firstTypes.size();
-			firstTypes.set(firstSize-1, ((ArrayType)firstTypes.get(firstSize-1)).componentType());
+			firstTypes.set(firstSize-1, ((ArrayType)firstTypes.get(firstSize-1)).elementType());
 			int secondSize = secondTypes.size();
-			secondTypes.set(secondSize-1, ((ArrayType)secondTypes.get(secondSize-1)).componentType());
+			secondTypes.set(secondSize-1, ((ArrayType)secondTypes.get(secondSize-1)).elementType());
 			int n;
 			int k;
 			if(firstSize >= secondSize) {

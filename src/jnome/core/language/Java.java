@@ -7,6 +7,7 @@ import java.util.List;
 import jnome.core.expression.invocation.NonLocalJavaTypeReference;
 import jnome.core.modifier.PackageProperty;
 import jnome.core.type.ArrayType;
+import jnome.core.type.ArrayTypeReference;
 import jnome.core.type.BasicJavaTypeReference;
 import jnome.core.type.JavaIntersectionTypeReference;
 import jnome.core.type.JavaTypeReference;
@@ -112,7 +113,7 @@ public class Java extends ObjectOrientedLanguage {
   	Type result;
   	if(original instanceof ArrayType) {
   		ArrayType arrayType = (ArrayType) original;
-  		result = new ArrayType(erasure(arrayType.componentType()), arrayType.dimension());
+  		result = new ArrayType(erasure(arrayType.elementType()));
   	} else if(original instanceof ConstructedType){
   		FormalTypeParameter formal = ((ConstructedType)original).parameter();
   		List<TypeConstraint> constraints = formal.constraints();
@@ -501,20 +502,23 @@ public class Java extends ObjectOrientedLanguage {
 					((JavaIntersectionTypeReference)result).add(reference);
 				}
 			} else if (type instanceof ArrayType) {
-				result = reference(((ArrayType)type).componentType());
-				result.setArrayDimension(((ArrayType)type).dimension());
+				JavaTypeReference reference = reference(((ArrayType)type).elementType());
+				Element oldParent = reference.parent();
+				reference.setUniParent(null);
+				result = new ArrayTypeReference(reference);
+				result.setUniParent(oldParent);
 			}	else if (type instanceof DerivedType){
-				result = new NonLocalJavaTypeReference(type.signature().name(),type.parent());
+				result = new NonLocalJavaTypeReference(new BasicJavaTypeReference(type.signature().name()),type.parent());
 				// next setup the generic parameters.
 				for(TypeParameter parameter: type.parameters()) {
 					ActualTypeArgument arg = ((InstantiatedTypeParameter)parameter).argument().clone();
 					if(arg instanceof ActualTypeArgumentWithTypeReference) {
 						ActualTypeArgumentWithTypeReference argWithRef = (ActualTypeArgumentWithTypeReference) arg;
-						argWithRef.setTypeReference(new NonLocalJavaTypeReference((BasicJavaTypeReference) argWithRef.typeReference()));
+						argWithRef.setTypeReference(new NonLocalJavaTypeReference((JavaTypeReference) argWithRef.typeReference()));
 					}
 				}
 			} else if (type instanceof ConstructedType) {
-				result = new NonLocalJavaTypeReference(type.signature().name(),type.parent());
+				result = new NonLocalJavaTypeReference(new BasicJavaTypeReference(type.signature().name()),type.parent());
 			} else if (type instanceof RegularType) {
 				// for now, if this code is invoked, there are no generic parameters.
 				if(type.parameters().size() > 0) {

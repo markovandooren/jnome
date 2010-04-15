@@ -292,10 +292,12 @@ scope TargetScope {
   }
   
   public JavaTypeReference myToArray(JavaTypeReference ref, StupidVariableDeclaratorId id) {
-    if(ref.arrayDimension() == 0) {
-      ref.setArrayDimension(id.dimension());
+    int dim = id.dimension(); 
+    if(dim > 0) {
+      return new ArrayTypeReference(ref,dim);
+    } else {
+      return ref;
     }
-    return ref;
   }
   
   public void addNonTopLevelObjectInheritance(Type type) {
@@ -671,7 +673,17 @@ scope MethodScope;
     
 methodDeclaratorRest
 @init{int count = 0;}
-    :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addFormalParameter(par);}} ('[' ']' {count++;})* {((JavaTypeReference)$MethodScope::method.returnTypeReference()).addArrayDimension(count);}
+    :   pars=formalParameters 
+           {for(FormalParameter par: pars.element){
+               $MethodScope::method.header().addFormalParameter(par);
+            }
+           } 
+        ('[' ']' {count++;})* 
+        {if(count > 0) {
+           JavaTypeReference original = (JavaTypeReference)$MethodScope::method.returnTypeReference();
+           $MethodScope::method.setReturnTypeReference(new ArrayTypeReference(original,count));
+         }
+        }
         (thrkw='throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(typeRef(name)));$MethodScope::method.setExceptionClause(clause);}})?
         (   body=methodBody {$MethodScope::method.setImplementation(new RegularImplementation(body.element));}
         |   ';' {$MethodScope::method.setImplementation(null);}
@@ -691,8 +703,13 @@ voidMethodDeclaratorRest
 interfaceMethodDeclaratorRest
 @init{int count = 0;}
     :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addFormalParameter(par);}}
-       ('[' ']' {count++;})* {((JavaTypeReference)$MethodScope::method.returnTypeReference()).setArrayDimension(count);}
-       (thrkw='throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(typeRef(name)));$MethodScope::method.setExceptionClause(clause);}})? ';'
+       ('[' ']' {count++;})* 
+       {if(count > 0) {
+          JavaTypeReference original = (JavaTypeReference)$MethodScope::method.returnTypeReference();
+          $MethodScope::method.setReturnTypeReference(new ArrayTypeReference(original,count));
+        }
+       }
+        (thrkw='throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(typeRef(name)));$MethodScope::method.setExceptionClause(clause);}})? ';'
        {setKeyword($MethodScope::method,thrkw);}
     ;
     
@@ -797,7 +814,7 @@ classOrInterfaceType returns [JavaTypeReference element]
 	        (args=typeArguments 
 	          {
 	           // Add the type arguments
-	           retval.element.addAllArguments(args.element);
+	           ((BasicJavaTypeReference)retval.element).addAllArguments(args.element);
 	           // In this case, we know that the current element must be a type reference,
 	           // so we se the target to the current type reference.
 	           target = null;
@@ -816,7 +833,7 @@ classOrInterfaceType returns [JavaTypeReference element]
 	        (argsx=typeArguments 
 	          {
 	           // Add the type arguments
-                   retval.element.addAllArguments(argsx.element);
+                   ((BasicJavaTypeReference)retval.element).addAllArguments(argsx.element);
 	           // In this case, we know that the current element must be a type reference,
 	           // so we se the target to the current type reference.
 	           target = null;
@@ -1614,7 +1631,9 @@ creator returns [Expression element]
           ((ConstructorInvocation)retval.element).addAllArguments(restx.element.arguments());
           ((ConstructorInvocation)retval.element).addAllTypeArguments(targs.element);
          }
-    |    tt=createdName  ('[' ']' {count++;})+ init=arrayInitializer {tt.element.addArrayDimension(count); retval.element = new ArrayCreationExpression(tt.element);
+    |    tt=createdName  ('[' ']' {count++;})+ init=arrayInitializer 
+        {if(count > 0) {tt.element = new ArrayTypeReference(tt.element,count);} 
+         retval.element = new ArrayCreationExpression(tt.element);
          ((ArrayCreationExpression)retval.element).setInitializer(init.element);}
     |    ttt=createdName  {retval.element = new ArrayCreationExpression(ttt.element);} 
           ('[' exx=expression ']' {((ArrayCreationExpression)retval.element).addDimensionInitializer(new FilledArrayIndex(exx.element));})+ 

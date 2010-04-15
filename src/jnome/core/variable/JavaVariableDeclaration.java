@@ -1,5 +1,6 @@
 package jnome.core.variable;
 
+import jnome.core.type.ArrayTypeReference;
 import jnome.core.type.JavaTypeReference;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.expression.Expression;
@@ -57,8 +58,11 @@ public class JavaVariableDeclaration<V extends Variable> extends VariableDeclara
   * This method adds the array dimension. 
   */
  protected void transform(V variable) {
-	 JavaTypeReference ref = (JavaTypeReference)variable.getTypeReference();
-	 ref.addArrayDimension(arrayDimension());
+	 int arrayDimension = arrayDimension();
+	 if(arrayDimension > 0) {
+	   JavaTypeReference ref = (JavaTypeReference)variable.getTypeReference();
+	   variable.setTypeReference(new ArrayTypeReference(ref,arrayDimension));
+	 }
  }
 
 

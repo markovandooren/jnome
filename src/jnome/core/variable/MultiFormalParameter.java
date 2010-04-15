@@ -6,8 +6,14 @@ import chameleon.core.variable.FormalParameter;
 
 public class MultiFormalParameter extends FormalParameter {
 
-	public MultiFormalParameter(SimpleNameSignature sig, JavaTypeReference type) {
-		super(sig,type.toArray(1));
+	/**
+	 * Create a new formal parameter representing T...
+	 * The given type will be wrapped in an array.
+	 * @param sig
+	 * @param T
+	 */
+	public MultiFormalParameter(SimpleNameSignature sig, JavaTypeReference T) {
+		super(sig,T.toArray(1));
 	}
 
 }

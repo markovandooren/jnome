@@ -16,21 +16,19 @@ public interface JavaTypeReference<E extends JavaTypeReference> extends TypeRefe
 
 	public E clone();
 	
-	public void setArrayDimension(int i);
+//	public void setArrayDimension(int i);
 	
-	public void addArrayDimension(int i);
+//	public JavaTypeReference addArrayDimension(int i);
 	
-	public int arrayDimension();
+//	public int arrayDimension();
 
 	public Type erasure() throws LookupException;
 	
-	public List<ActualTypeArgument> typeArguments();
+//	public List<ActualTypeArgument> typeArguments();
 	
 	public JavaTypeReference toArray(int dimension);
 	
-	public void addAllArguments(List<ActualTypeArgument> arguments);
-	
-	public void addArgument(ActualTypeArgument argument);
-
 	public JavaTypeReference erasedReference();
+	
+	public JavaTypeReference componentTypeReference();
 }

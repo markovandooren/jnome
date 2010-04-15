@@ -47,7 +47,7 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		else if (first instanceof ArrayType && second instanceof ArrayType && first.is(first.language(Java.class).REFERENCE_TYPE) == Ternary.TRUE) {
 			ArrayType first2 = (ArrayType)first;
 			ArrayType second2 = (ArrayType)second;
-			result = first2.dimension() == second2.dimension() && contains(first2.componentType(), second2.componentType());
+			result = first2.dimension() == second2.dimension() && contains(first2.elementType(), second2.elementType());
 		}
 		else {
 			//SPEED iterate over the supertype graph 

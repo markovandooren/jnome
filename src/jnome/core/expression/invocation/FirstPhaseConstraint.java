@@ -6,18 +6,17 @@ import java.util.List;
 
 import jnome.core.language.Java;
 import jnome.core.type.ArrayType;
+import jnome.core.type.BasicJavaTypeReference;
 import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.predicate.UnsafePredicate;
 
-import chameleon.core.declaration.Declaration;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.reference.CrossReference;
 import chameleon.core.type.ConstructedType;
 import chameleon.core.type.DerivedType;
 import chameleon.core.type.Type;
-import chameleon.core.type.TypeReference;
 import chameleon.core.type.generics.ActualTypeArgument;
 import chameleon.core.type.generics.ActualTypeArgumentWithTypeReference;
 import chameleon.core.type.generics.BasicTypeArgument;
@@ -90,12 +89,11 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 			// reference type, this algorithm is applied recursively to the constraint V<<U
 
 			if(A() instanceof ArrayType && involvesTypeParameter(F())) {
-				Type componentType = ((ArrayType)A()).componentType();
+				Type componentType = ((ArrayType)A()).elementType();
 				if(componentType.is(language().REFERENCE_TYPE) == Ternary.TRUE) {
-					JavaTypeReference componentTypeReference = ARef().clone();
-					componentTypeReference.setArrayDimension(0);
+					JavaTypeReference componentTypeReference = ARef().clone().componentTypeReference();
 					componentTypeReference.setUniParent(ARef().parent());
-					FirstPhaseConstraint recursive = Array(componentTypeReference, ((ArrayType)F()).componentType());
+					FirstPhaseConstraint recursive = Array(componentTypeReference, ((ArrayType)F()).elementType());
 					result.addAll(recursive.process());
 					// FIXME: can't we unwrap the entire array dimension at once? This seems rather inefficient.
 				}
@@ -159,7 +157,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 		if((type instanceof ConstructedType) && (parent().typeParameters().contains(((ConstructedType)type).parameter()))) {
 			return true;
 		} 
-		if((type instanceof ArrayType) && (involvesTypeParameter(((ArrayType)type).componentType()))) {
+		if((type instanceof ArrayType) && (involvesTypeParameter(((ArrayType)type).elementType()))) {
 			return true;
 		}
 		if((type instanceof DerivedType) && (involvesTypeParameter(type.baseType()))) {
@@ -189,16 +187,16 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 	}
 	
 	public List<TypeParameter> involvedTypeParameters(JavaTypeReference<?> tref) throws LookupException {
-		List<CrossReference> list = tref.descendants(CrossReference.class, new UnsafePredicate<CrossReference, LookupException>() {
+		List<BasicJavaTypeReference> list = tref.descendants(BasicJavaTypeReference.class, new UnsafePredicate<BasicJavaTypeReference, LookupException>() {
 
 			@Override
-			public boolean eval(CrossReference object) throws LookupException {
+			public boolean eval(BasicJavaTypeReference object) throws LookupException {
 				return parent().typeParameters().contains(object.getDeclarator());
 			}
 		});
 		List<TypeParameter> parameters = new ArrayList<TypeParameter>();
-		for(CrossReference cref: list) {
-			parameters.add((TypeParameter) cref.getElement());
+		for(BasicJavaTypeReference cref: list) {
+			parameters.add((TypeParameter) cref.getDeclarator());
 		}
 		return parameters;
 	}

@@ -172,6 +172,7 @@ import jnome.core.modifier.JavaConstructor;
 import jnome.core.modifier.Implements;
 
 import jnome.core.type.JavaTypeReference;
+import jnome.core.type.ArrayTypeReference;
 import jnome.core.type.BasicJavaTypeReference;
 import jnome.core.type.JavaIntersectionTypeReference;
 

@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 
 import jnome.core.language.Java;
+import jnome.core.type.BasicJavaTypeReference;
 import jnome.core.type.JavaTypeReference;
 import jnome.input.JavaModelFactory;
 
@@ -37,31 +38,31 @@ public class TestGenerics extends JavaTest {
 
 	@Test
 	public void testSubtyping() throws LookupException {
-		JavaTypeReference tref1 = ((Java)language()).createTypeReference("generics.List");
+		BasicJavaTypeReference tref1 = (BasicJavaTypeReference) ((Java)language()).createTypeReference("generics.List");
 		tref1.setUniParent(language().defaultNamespace());
 		tref1.addArgument(new BasicTypeArgument(((Java)language()).createTypeReference("java.lang.String")));
-		JavaTypeReference tref2 = ((Java)language()).createTypeReference("generics.List");
+		BasicJavaTypeReference tref2 = (BasicJavaTypeReference) ((Java)language()).createTypeReference("generics.List");
 		tref2.addArgument(new BasicTypeArgument(((Java)language()).createTypeReference("java.lang.String")));
 		tref2.setUniParent(language().defaultNamespace());
-		JavaTypeReference tref3 = ((Java)language()).createTypeReference("generics.SubList");
+		BasicJavaTypeReference tref3 = (BasicJavaTypeReference) ((Java)language()).createTypeReference("generics.SubList");
 		tref3.addArgument(new BasicTypeArgument(((Java)language()).createTypeReference("java.lang.String")));
 		tref3.setUniParent(language().defaultNamespace());
-		JavaTypeReference tref4 = ((Java)language()).createTypeReference("generics.List");
+		BasicJavaTypeReference tref4 = (BasicJavaTypeReference) ((Java)language()).createTypeReference("generics.List");
 		tref4.addArgument(new BasicTypeArgument(((Java)language()).createTypeReference("java.lang.Object")));
 		tref4.setUniParent(language().defaultNamespace());
-		JavaTypeReference tref5 = ((Java)language()).createTypeReference("generics.List");
+		BasicJavaTypeReference tref5 = (BasicJavaTypeReference) ((Java)language()).createTypeReference("generics.List");
 		tref5.addArgument(new ExtendsWildCard(((Java)language()).createTypeReference("java.lang.CharSequence")));
 		tref5.setUniParent(language().defaultNamespace());
-		JavaTypeReference tref6 = ((Java)language()).createTypeReference("generics.List");
+		BasicJavaTypeReference tref6 = (BasicJavaTypeReference) ((Java)language()).createTypeReference("generics.List");
 		tref6.addArgument(new ExtendsWildCard(((Java)language()).createTypeReference("java.lang.String")));
 		tref6.setUniParent(language().defaultNamespace());
-		JavaTypeReference tref7 = ((Java)language()).createTypeReference("generics.List");
+		BasicJavaTypeReference tref7 = (BasicJavaTypeReference) ((Java)language()).createTypeReference("generics.List");
 		tref7.addArgument(new SuperWildCard(((Java)language()).createTypeReference("java.lang.String")));
 		tref7.setUniParent(language().defaultNamespace());
-		JavaTypeReference tref7duo = ((Java)language()).createTypeReference("generics.List");
+		BasicJavaTypeReference tref7duo = (BasicJavaTypeReference) ((Java)language()).createTypeReference("generics.List");
 		tref7duo.addArgument(new SuperWildCard(((Java)language()).createTypeReference("java.lang.String")));
 		tref7duo.setUniParent(language().defaultNamespace());
-		JavaTypeReference tref8 = ((Java)language()).createTypeReference("generics.List");
+		BasicJavaTypeReference tref8 = (BasicJavaTypeReference) ((Java)language()).createTypeReference("generics.List");
 		tref8.addArgument(new SuperWildCard(((Java)language()).createTypeReference("java.lang.CharSequence")));
 		tref8.setUniParent(language().defaultNamespace());
 

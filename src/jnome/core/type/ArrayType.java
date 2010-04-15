@@ -17,11 +17,10 @@ import chameleon.support.modifier.Final;
  */
 public class ArrayType extends RegularType {
 //	TODO: this class should not be a member. This is just a quickfix
-  public ArrayType(Type type, int dimension) {
-    super(new SimpleNameSignature(getArrayName(type.getName(), dimension)));
+  public ArrayType(Type type) {
+    super(new SimpleNameSignature(getArrayName(type.getName())));
     //FIXME: copy the modifiers?
     //addModifier(type.getAccessModifier());
-    _arrayDimension = dimension;
     _type = type;
     setUniParent(type.parent());
     Java language = type.language(Java.class);
@@ -35,23 +34,21 @@ public class ArrayType extends RegularType {
     addInheritanceRelation(new SubtypeRelation(language.createTypeReference("java.io.Serializable")));
   }
   
-	@Override
-	public ArrayType clone() {
-		ArrayType result = cloneThis();
-		result.copyContents(this);
-		return result;
-	}
+//	@Override
+//	public ArrayType clone() {
+//		ArrayType result = cloneThis();
+//		result.copyContents(this);
+//		return result;
+//	}
 
   /**
 	 * @param string
 	 * @param dimension
 	 * @return
 	 */
-	private static String getArrayName(String string, int dimension) {
+	private static String getArrayName(String string) {
 		StringBuffer result = new StringBuffer(string);
-    for(int i = 1; i<= dimension; i++) {
-      result.append("[]"); 
-    }
+    result.append("[]"); 
     return result.toString();
 	}
 
@@ -64,7 +61,7 @@ public class ArrayType extends RegularType {
 	private Type _type;
 
   
-  public Type componentType() {
+  public Type elementType() {
     return _type; 
   }
   
@@ -72,14 +69,14 @@ public class ArrayType extends RegularType {
 //    return getComponentType().accessibleFrom(other);
 //	}
   
-  public Type getElementType() {
-    if(dimension() == 1) {
-      return componentType(); 
-    }
-    else {
-      return new ArrayType(componentType(), dimension() - 1);
-    }
-  }
+//  public Type getElementType() {
+//    if(dimension() == 1) {
+//      return elementType(); 
+//    }
+//    else {
+//      return new ArrayType(elementType(), dimension() - 1);
+//    }
+//  }
   
   public int dimension() {
     return _arrayDimension; 
@@ -91,27 +88,27 @@ public class ArrayType extends RegularType {
   public boolean uniSameAs(Element o) throws LookupException {
     return (o instanceof ArrayType) &&
            ((ArrayType)o).dimension() == dimension() &&
-           ((ArrayType)o).componentType().sameAs(componentType());
+           ((ArrayType)o).elementType().sameAs(elementType());
   }
   
   public boolean assignableTo(Type other) throws LookupException {
   	Type objType = language(ObjectOrientedLanguage.class).getDefaultSuperClass();
     return super.assignableTo(other) ||
            ( // Reference type
-             getElementType().subTypeOf(objType) &&
+             elementType().subTypeOf(objType) &&
              (other instanceof ArrayType) &&
-             componentType().assignableTo(((ArrayType)other).componentType())
+             elementType().assignableTo(((ArrayType)other).elementType())
            ) ||           
            ( // Primitive type
-             (! getElementType().subTypeOf(objType)) &&
+             (! elementType().subTypeOf(objType)) &&
              (other instanceof ArrayType) &&
-             componentType().equals(((ArrayType)other).componentType()) &&
+             elementType().equals(((ArrayType)other).elementType()) &&
              ((ArrayType)other).dimension() == dimension()
            );
   }
 
   protected ArrayType cloneThis() {
-    return new ArrayType(componentType(),dimension());
+    return new ArrayType(elementType());
   }
   
 //  public AccessibilityDomain getTypeAccessibilityDomain() throws LookupException {

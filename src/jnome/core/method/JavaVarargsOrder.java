@@ -34,7 +34,7 @@ public class JavaVarargsOrder extends WeakPartialOrder<List<Type>> {
     for(int i = 0; result && i < nbNormalArguments; i++) {
       result = result && first.get(i).assignableTo(second.get(i));
     }
-    Type other = ((ArrayType) second.get(nbNormalArguments)).componentType();
+    Type other = ((ArrayType) second.get(nbNormalArguments)).elementType();
     for(int i = nbNormalArguments; result && i < size; i++) {
 			result = result && first.get(i).assignableTo(other);
     }

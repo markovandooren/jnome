@@ -64,15 +64,13 @@ public class ArrayAccessExpression extends Expression<ArrayAccessExpression> imp
   }
 
   protected Type actualType() throws LookupException {
-    ArrayType componentType = (ArrayType)getTarget().getType();
-    int dim = componentType.dimension() - getIndices().size();
-    if (dim > 0) {
-      Type result = new ArrayType(componentType.componentType(), dim);
-      return result;
+    ArrayType tmp = (ArrayType)getTarget().getType();
+    int dim = getIndices().size();
+    while (dim > 1) {
+      tmp = (ArrayType) tmp.elementType();
+      dim--;
     }
-    else {
-      return componentType.componentType();
-    }
+    return tmp.elementType();
   }
 
   public ArrayAccessExpression clone() {

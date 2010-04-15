@@ -26,34 +26,44 @@ import chameleon.exception.ChameleonProgrammerException;
 
 public class RawType extends AbstractType {
 
-	
+
 	public static RawType create(Type original) {
-		Type outmostType = original.furthestAncestor(Type.class);
-		if(outmostType == null) {
-			outmostType = original;
+		if(original instanceof RawType) {
+			return (RawType) original;
 		}
-		RawType outer;
-		if(outmostType instanceof RawType) {
-			outer = (RawType) outmostType;
-		} else {
-			outer = new RawType(outmostType);;
-		}
-		RawType current = outer;
-		List<Type> outerTypes = original.ancestors(Type.class);
-		
-		for(int i = outerTypes.size() - 1; i>=0;i--) {
-			SimpleReference<RawType> simpleRef = new SimpleReference<RawType>(outerTypes.get(i).signature().name(), RawType.class);
-			simpleRef.setUniParent(current);
-			try {
-				current = simpleRef.getElement();
-			} catch (LookupException e) {
-				e.printStackTrace();
-				throw new ChameleonProgrammerException("An inner type of a newly created outer raw type cannot be found",e);
+		Java language = original.language(Java.class);
+		if(original.is(language.INSTANCE) == Ternary.TRUE) {
+			Type outmostType = original.furthestAncestor(Type.class);
+			if(outmostType == null) {
+				outmostType = original;
 			}
+			RawType outer;
+			if(outmostType instanceof RawType) {
+				outer = (RawType) outmostType;
+			} else {
+				outer = new RawType(outmostType);;
+			}
+			RawType current = outer;
+			List<Type> outerTypes = original.ancestors(Type.class);
+
+			int size = outerTypes.size();
+			for(int i = size - 1; i>=0;i--) {
+				SimpleReference<RawType> simpleRef = new SimpleReference<RawType>(outerTypes.get(i).signature().name(), RawType.class);
+				simpleRef.setUniParent(current);
+				try {
+					current = simpleRef.getElement();
+				} catch (LookupException e) {
+					e.printStackTrace();
+					throw new ChameleonProgrammerException("An inner type of a newly created outer raw type cannot be found",e);
+				}
+			}
+			return current;
+		} else {
+			// static
+			return new RawType(original);
 		}
-		return current;
 	}
-	
+
 	/**
 	 * Create a new raw type. The type parameters, super class and interface references, 
 	 * and all members will be erased according to the definitions in the JLS.

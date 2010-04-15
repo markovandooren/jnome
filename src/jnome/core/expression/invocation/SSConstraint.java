@@ -18,6 +18,7 @@ import chameleon.core.type.generics.ExtendsWildCard;
 import chameleon.core.type.generics.InstantiatedTypeParameter;
 import chameleon.core.type.generics.SuperWildCard;
 import chameleon.core.type.generics.TypeParameter;
+import chameleon.util.CreationStackTrace;
 
 /**
  * A << F
@@ -27,7 +28,7 @@ import chameleon.core.type.generics.TypeParameter;
  * @author Marko van Dooren
  */
 public class SSConstraint extends FirstPhaseConstraint {
-
+	
 	public SSConstraint(JavaTypeReference A, Type F) {
 		super(A,F);
 	}
@@ -41,6 +42,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 			// boxing conversion and this algorithm is applied recursively to the constraint
 			// U << F
 			SSConstraint recursive = new SSConstraint(language().box(ARef()), F());
+			recursive.setUniParent(parent());
 			result.addAll(recursive.process());
 		} 
 		return result;
@@ -48,7 +50,9 @@ public class SSConstraint extends FirstPhaseConstraint {
 	
 	@Override
 	public FirstPhaseConstraint Array(JavaTypeReference componentType, Type componentTypeReference) {
-		return new SSConstraint(componentType, componentTypeReference);
+		SSConstraint ssConstraint = new SSConstraint(componentType, componentTypeReference);
+		ssConstraint.setUniParent(parent());
+		return ssConstraint;
 	}
 
 
@@ -76,6 +80,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 				if(arg instanceof BasicTypeArgument) {
 					JavaTypeReference V = (JavaTypeReference) ((BasicTypeArgument)arg).typeReference();
 					GGConstraint recursive = new GGConstraint(V, U.getElement());
+					recursive.setUniParent(parent());
 					result.addAll(recursive.process());
 				} 
 				// 2)
@@ -110,6 +115,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 				if(arg instanceof BasicTypeArgument) {
 					JavaTypeReference V = (JavaTypeReference) ((BasicTypeArgument)arg).typeReference();
 					SSConstraint recursive = new SSConstraint(V, U.getElement());
+					recursive.setUniParent(parent());
 					result.addAll(recursive.process());
 				} 
 				// 2)
@@ -143,6 +149,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 						if(arg instanceof BasicTypeArgument) {
 							JavaTypeReference V = (JavaTypeReference) ((BasicTypeArgument)arg).typeReference();
 							EQConstraint recursive = new EQConstraint(V, U.getElement());
+							recursive.setUniParent(parent());
 							result.addAll(recursive.process());
 						}
 					}

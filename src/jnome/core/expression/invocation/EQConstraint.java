@@ -3,10 +3,10 @@
  */
 package jnome.core.expression.invocation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jnome.core.type.JavaTypeReference;
-import chameleon.core.declaration.Declaration;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.type.Type;
 import chameleon.core.type.generics.ActualTypeArgument;
@@ -25,7 +25,7 @@ public class EQConstraint extends FirstPhaseConstraint {
 
 	@Override
 	public List<SecondPhaseConstraint> processSpecifics() throws LookupException {
-		return null;
+		return new ArrayList<SecondPhaseConstraint>();
 	}
 	
 	@Override
@@ -35,7 +35,9 @@ public class EQConstraint extends FirstPhaseConstraint {
 	
 	@Override
 	public FirstPhaseConstraint Array(JavaTypeReference componentType, Type componentTypeReference) {
-		return new EQConstraint(componentType, componentTypeReference);
+		EQConstraint eqConstraint = new EQConstraint(componentType, componentTypeReference);
+		eqConstraint.setUniParent(parent());
+		return eqConstraint;
 	}
 
 	@Override
@@ -65,6 +67,7 @@ public class EQConstraint extends FirstPhaseConstraint {
 				if(t.isInstance(arg)) {
 					JavaTypeReference V = (JavaTypeReference) ((ActualTypeArgumentWithTypeReference)arg).typeReference();
 					EQConstraint recursive = new EQConstraint(V, U.getElement());
+					recursive.setUniParent(parent());
 					result.addAll(recursive.process());
 				}
 

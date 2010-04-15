@@ -3,7 +3,6 @@ package jnome.core.type;
 import java.util.List;
 
 import jnome.core.language.Java;
-import jnome.output.JavaCodeWriter;
 
 import org.rejuse.association.OrderedMultiAssociation;
 
@@ -23,10 +22,10 @@ import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
 import chameleon.core.type.generics.ActualTypeArgument;
 import chameleon.exception.ChameleonProgrammerException;
-import chameleon.util.CreationStackTrace;
+import chameleon.util.CreationStackTraceWithSingleFrame;
 
 public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeReference> implements JavaTypeReference<BasicJavaTypeReference> {
-	
+
 	public BasicJavaTypeReference(String fqn) {
     this(fqn,0);
   }

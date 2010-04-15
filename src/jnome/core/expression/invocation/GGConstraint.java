@@ -35,7 +35,9 @@ public class GGConstraint extends FirstPhaseConstraint {
 
 	@Override
 	public FirstPhaseConstraint Array(JavaTypeReference componentType, Type componentTypeReference) {
-		return new GGConstraint(componentType, componentTypeReference);
+		GGConstraint ggConstraint = new GGConstraint(componentType, componentTypeReference);
+		ggConstraint.setUniParent(parent());
+		return ggConstraint;
 	}
 
 	@Override
@@ -66,6 +68,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 						Type V=typeWithSameBaseTypeAs(H, GG.getAllSuperTypes());
 						if(F().subTypeOf(V)) {
 						  GGConstraint recursive = new GGConstraint(ARef(), V);
+							recursive.setUniParent(parent());
 						  result.addAll(recursive.process());
 						}
 					} else {
@@ -74,12 +77,15 @@ public class GGConstraint extends FirstPhaseConstraint {
 							ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 							if(arg instanceof BasicTypeArgument) {
 								EQConstraint recursive = new EQConstraint((JavaTypeReference) ((BasicTypeArgument)arg).typeReference(), U.getElement());
+								recursive.setUniParent(parent());
 								result.addAll(recursive.process());
 							} else if(arg instanceof ExtendsWildCard) {
 								GGConstraint recursive = new GGConstraint((JavaTypeReference) ((ExtendsWildCard)arg).typeReference(), U.getElement());
+								recursive.setUniParent(parent());
 								result.addAll(recursive.process());
 							} else if(arg instanceof SuperWildCard) {
 								SSConstraint recursive = new SSConstraint((JavaTypeReference) ((SuperWildCard)arg).typeReference(), U.getElement());
+								recursive.setUniParent(parent());
 								result.addAll(recursive.process());
 							}
 						}
@@ -130,6 +136,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 					}
 					if(F().subTypeOf(V)) {
 					  GGConstraint recursive = new GGConstraint(ARef(), V);
+						recursive.setUniParent(parent());
 					  result.addAll(recursive.process());
 					}
 				} else {
@@ -186,6 +193,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 					}
 					if(F().subTypeOf(V)) {
 					  GGConstraint recursive = new GGConstraint(ARef(), V);
+						recursive.setUniParent(parent());
 					  result.addAll(recursive.process());
 					}
 				} else {
@@ -194,6 +202,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 						ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 						if(arg instanceof SuperWildCard) {
 							SSConstraint recursive = new SSConstraint((JavaTypeReference) ((SuperWildCard)arg).typeReference(), U.getElement());
+							recursive.setUniParent(parent());
 							result.addAll(recursive.process());
 						}
 					}

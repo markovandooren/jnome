@@ -39,6 +39,7 @@ import chameleon.core.type.ConstructedType;
 import chameleon.core.type.DerivedType;
 import chameleon.core.type.IntersectionType;
 import chameleon.core.type.IntersectionTypeReference;
+import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
 import chameleon.core.type.generics.ActualTypeArgument;
@@ -492,8 +493,12 @@ public class Java extends ObjectOrientedLanguage {
 			JavaTypeReference result;
 			if(type instanceof IntersectionType) {
 				result = new JavaIntersectionTypeReference();
+				result.setUniParent(defaultNamespace());
 				for(Type t: ((IntersectionType)type).types()) {
-					((JavaIntersectionTypeReference)result).add(reference(t));
+					JavaTypeReference reference = reference(t);
+					// first clean up the uni link, we must add it to the intersection type.
+					reference.setUniParent(null);
+					((JavaIntersectionTypeReference)result).add(reference);
 				}
 			} else if (type instanceof ArrayType) {
 				result = reference(((ArrayType)type).componentType());
@@ -510,6 +515,12 @@ public class Java extends ObjectOrientedLanguage {
 				}
 			} else if (type instanceof ConstructedType) {
 				result = new NonLocalJavaTypeReference(type.signature().name(),type.parent());
+			} else if (type instanceof RegularType) {
+				// for now, if this code is invoked, there are no generic parameters.
+				if(type.parameters().size() > 0) {
+					throw new ChameleonProgrammerException("requesting reference of RegularType with type parameters");
+				}
+				result = (JavaTypeReference) createTypeReferenceInDefaultNamespace(type.getFullyQualifiedName());
 			}
 			else {
 				throw new ChameleonProgrammerException("Type of type is "+type.getClass().getName());

@@ -217,38 +217,45 @@ public class Extractor {
 		Method[] methods = clazz.getDeclaredMethods();
      
      new Visitor() {
-		    public void visit(Object element) {
-          Method method = (Method) element;
-          if(! Modifier.isPrivate(method.getModifiers()) && ! method.isSynthetic()) {
-          result.append(indent + "  ");
-          result.append(getModifiers(method));
-          if((! Modifier.isAbstract(method.getModifiers())) && (! Modifier.isNative(method.getModifiers()))){
-            result.append("native ");
-          }
-          TypeVariable[] var = method.getTypeParameters();
-          toStringTypeParameters(result, var);
-          result.append(getClassName(method.getGenericReturnType()));
-          result.append(" ");
-          result.append(method.getName());
-          result.append("(");
-          Type[] args = method.getGenericParameterTypes();
-          for(int i = 0; i < args.length; i++) {
-             if(i > 0) {
-               result.append(", ");
-             }
-             result.append(getClassName(args[i]));
-             result.append(" a_r_g_u_m_e_n_t_"+i);
-          }
-          
-          result.append(") ");
-          Type[] exceptions = method.getGenericExceptionTypes();
-          appendExceptionTypes(result, exceptions);
-          result.append(";\n");
-          
-		    }
-		    }
+    	 public void visit(Object element) {
+    		 Method method = (Method) element;
+    		 if(! Modifier.isPrivate(method.getModifiers()) && ! method.isSynthetic()) {
+    			 result.append(indent + "  ");
+    			 result.append(getModifiers(method));
+    			 if((! Modifier.isAbstract(method.getModifiers())) && (! Modifier.isNative(method.getModifiers()))){
+    				 result.append("native ");
+    			 }
+    			 TypeVariable[] var = method.getTypeParameters();
+    			 toStringTypeParameters(result, var);
+    			 result.append(getClassName(method.getGenericReturnType()));
+    			 result.append(" ");
+    			 result.append(method.getName());
+    			 result.append("(");
+    			 Type[] args = method.getGenericParameterTypes();
+    			 for(int i = 0; i < args.length; i++) {
+    				 if(i > 0) {
+    					 result.append(", ");
+    				 }
+    				 String className = getClassName(args[i]);
+    				 if((i < args.length -1) || ! method.isVarArgs()) {
+    					 result.append(className);
+    				 } else {
+    					 // method.isVarArgs()
+    					 result.append(className.substring(0, className.length()-2));
+    					 result.append("...");
+    				 }
+    				 result.append(" a_r_g_u_m_e_n_t_"+i);
+    			 }
 
-		}.applyTo(methods);
+    			 result.append(") ");
+    			 Type[] exceptions = method.getGenericExceptionTypes();
+    			 appendExceptionTypes(result, exceptions);
+    			 result.append(";\n");
+
+    		 }
+    	 }
+
+     }.applyTo(methods);
 	}
 
 	
@@ -265,19 +272,23 @@ public class Extractor {
     }
 	}
 
-	public void toStringConstructors(Class clazz, final String indent, final StringBuffer result) {
+	public void toStringConstructors(final Class clazz, final String indent, final StringBuffer result) {
 		Constructor[] constructors = clazz.getDeclaredConstructors();
      
      new Visitor() {
             public void visit(Object element) {
+            	if(clazz.getSimpleName().equals("StandardMBean")) {
+            		System.out.println("KOPS");
+            	}
           Constructor constructor = (Constructor) element;
           if(! Modifier.isPrivate(constructor.getModifiers())) {
           StringBuffer cons = new StringBuffer();
           cons.append(indent + "  ");
-          TypeVariable[] var = constructor.getTypeParameters();
           cons.append(" ");
-          toStringTypeParameters(result, var);
           cons.append(getModifiers(constructor));
+          TypeVariable[] var = constructor.getTypeParameters();
+          toStringTypeParameters(cons, var);
+          cons.append(" ");
           cons.append(Util.getLastPart(getClassName(constructor.getName())));
           cons.append("(");
           Type[] args = constructor.getGenericParameterTypes();

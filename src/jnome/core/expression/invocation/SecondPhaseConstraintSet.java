@@ -32,7 +32,8 @@ import chameleon.support.expression.AssignmentExpression;
 public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstraint> {
 
 	public SecondPhaseConstraintSet(Invocation invocation, Method invokedMethod) {
-		super(invocation,invokedMethod); 
+		super(invocation,invokedMethod);
+		_assignments = new TypeAssignmentSet(typeParameters());
 	}
 
 	public Set<Type> ST(JavaTypeReference U) throws LookupException {
@@ -254,7 +255,9 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		for(Type W:MEC) {
 			candidates.add(Candidate(W,Tj));
 		}
-		return new IntersectionType(candidates);
+		IntersectionType intersectionType = new IntersectionType(candidates);
+		intersectionType.setUniParent(Tj.language().defaultNamespace());
+		return intersectionType;
 	}
 	
 	private void processSuperTypeConstraints() throws LookupException {
@@ -311,7 +314,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
   		processUnresolved(S());
   	} else {
   		ObjectOrientedLanguage language = (ObjectOrientedLanguage) typeParameters().get(0).language(ObjectOrientedLanguage.class);
-			processUnresolved((JavaTypeReference) language.createTypeReference(language.getDefaultSuperClassFQN()));
+			processUnresolved((JavaTypeReference) language.createTypeReferenceInDefaultNamespace(language.getDefaultSuperClassFQN()));
   	}
   }
 

@@ -72,7 +72,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 		// If A is the type of null, no constraint is implied on Tj.
 		if(! A().equals(A().language(ObjectOrientedLanguage.class).getNullType())) {
 			
-			result.addAll(processSpecifics());
+			result.addAll(processFirstLevel());
 		}
 		return result;
 	}

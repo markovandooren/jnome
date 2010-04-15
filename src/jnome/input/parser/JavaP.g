@@ -621,6 +621,7 @@ genericMethodOrConstructorDecl returns [Method element]
 genericMethodOrConstructorRest returns [Method element]
 scope MethodScope;
 @init{TypeReference tref = null;}
+@after{check_null(retval.element);}
     :   (t=type {tref=t.element;}| 'void' {tref = typeRef("void");}) name=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($name.text),tref); $MethodScope::method = retval.element;} methodDeclaratorRest
     |   name=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($name.text),typeRef($name.text)); $MethodScope::method = retval.element;} constructorDeclaratorRest
     ;

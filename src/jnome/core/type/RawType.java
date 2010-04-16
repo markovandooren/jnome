@@ -131,7 +131,8 @@ public class RawType extends AbstractType {
 	private void eraseInheritanceRelations() {
 		for(InheritanceRelation relation: inheritanceRelations()) {
 			JavaTypeReference superClassReference = (JavaTypeReference) relation.superClassReference();
-			relation.setSuperClassReference(superClassReference.erasedReference());
+			JavaTypeReference erasedReference = superClassReference.erasedReference();
+			relation.setSuperClassReference(erasedReference);
 		}
 	}
 

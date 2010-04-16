@@ -52,9 +52,9 @@ public class JavaIntersectionTypeReference extends IntersectionTypeReference<Jav
 		return 0;
 	}
 
-	public Type erasure() throws LookupException {
-		return erasedReference().erasure();
-	}
+//	public Type erasure() throws LookupException {
+//		return erasedReference().erasure();
+//	}
 
 	public void setArrayDimension(int i) {
 		throw new ChameleonProgrammerException("Cannot change the dimension of an intersection type reference");

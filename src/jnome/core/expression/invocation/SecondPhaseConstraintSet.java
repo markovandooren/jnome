@@ -37,7 +37,9 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	}
 
 	public Set<Type> ST(JavaTypeReference U) throws LookupException {
-		return U.getElement().getAllSuperTypes();
+		Set<Type> result = U.getElement().getAllSuperTypes();
+		result.add(U.getElement());
+		return result;
 	}
 
 	public Set<Type> EST(JavaTypeReference<?> U) throws LookupException {
@@ -249,15 +251,21 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		}
 	}
 	
-	public Type inferredType(TypeParameter Tj) throws LookupException {
+	public Type inferredType(TypeParameter<?> Tj) throws LookupException {
 		List<Type> MEC = new ArrayList<Type>(MEC(Tj));
 		List<Type> candidates = new ArrayList<Type>();
 		for(Type W:MEC) {
 			candidates.add(Candidate(W,Tj));
 		}
-		IntersectionType intersectionType = new IntersectionType(candidates);
-		intersectionType.setUniParent(Tj.language().defaultNamespace());
-		return intersectionType;
+		if(candidates.isEmpty()) {
+			throw new LookupException("No candidates for the inferred type of parameter "+Tj.signature().name()+" of class "+Tj.nearestAncestor(Type.class).getFullyQualifiedName());
+		} else if(candidates.size() == 1) {
+			return candidates.get(0);
+		} else {
+		  IntersectionType intersectionType = new IntersectionType(candidates);
+		  intersectionType.setUniParent(Tj.language().defaultNamespace());
+		  return intersectionType;
+		}
 	}
 	
 	private void processSuperTypeConstraints() throws LookupException {

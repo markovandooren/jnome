@@ -359,7 +359,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 					result = convertibleThroughMethodInvocationConversion(actualType, formalType);
 				}
 				Type formalType = formalParameterTypesInContext.get(size-1);
-				for(int i = size-1; result && i< actualSize-1;i++) {
+				for(int i = size-1; result && i< actualSize;i++) {
 					Type actualType = actualParameters.get(i).getExpression().getType();
 					result = convertibleThroughMethodInvocationConversion(actualType, formalType);
 				}

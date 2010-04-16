@@ -22,9 +22,11 @@ import chameleon.core.type.RegularType;
 import chameleon.core.type.Type;
 import chameleon.core.type.generics.ActualTypeArgument;
 import chameleon.exception.ChameleonProgrammerException;
+import chameleon.util.CreationStackTrace;
 import chameleon.util.CreationStackTraceWithSingleFrame;
 
 public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeReference> implements JavaTypeReference<BasicJavaTypeReference> {
+
 
 	public BasicJavaTypeReference(CrossReference<?,?,? extends TargetDeclaration> target, String name) {
   	super(target,name);
@@ -193,8 +195,8 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
 //	}
 
 	public JavaTypeReference erasedReference() {
-	  JavaTypeReference result = new BasicJavaTypeReference(language(Java.class).erasure(getTarget()), (SimpleNameSignature)signature().clone());
-//	  result.setArrayDimension(arrayDimension());
+	  CrossReference<?, ?, ? extends TargetDeclaration> erasure = language(Java.class).erasure(getTarget());
+		JavaTypeReference result = new BasicJavaTypeReference(erasure, (SimpleNameSignature)signature().clone());
 	  return result;
 	}
 

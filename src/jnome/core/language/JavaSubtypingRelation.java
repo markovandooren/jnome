@@ -18,6 +18,7 @@ import chameleon.core.lookup.LookupException;
 import chameleon.core.relation.WeakPartialOrder;
 import chameleon.core.type.ConstructedType;
 import chameleon.core.type.DerivedType;
+import chameleon.core.type.IntersectionType;
 import chameleon.core.type.Type;
 import chameleon.core.type.generics.FormalTypeParameter;
 import chameleon.core.type.generics.InstantiatedTypeParameter;
@@ -48,6 +49,20 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 			ArrayType first2 = (ArrayType)first;
 			ArrayType second2 = (ArrayType)second;
 			result = first2.dimension() == second2.dimension() && contains(first2.elementType(), second2.elementType());
+		} else if(second instanceof IntersectionType) {
+			List<Type> types = ((IntersectionType)second).types();
+			int size = types.size();
+			result = size > 0;
+			for(int i=0; result && i<size;i++) {
+				result = contains(first,types.get(i));
+			}
+		} else if(first instanceof IntersectionType) {
+			List<Type> types = ((IntersectionType)first).types();
+			int size = types.size();
+			result = false;
+			for(int i=0; (!result) && i<size;i++) {
+				result = contains(first,types.get(i));
+			}
 		}
 		else {
 			//SPEED iterate over the supertype graph 

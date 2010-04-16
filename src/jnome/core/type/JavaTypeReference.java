@@ -22,7 +22,7 @@ public interface JavaTypeReference<E extends JavaTypeReference> extends TypeRefe
 	
 //	public int arrayDimension();
 
-	public Type erasure() throws LookupException;
+//	public Type erasure() throws LookupException;
 	
 //	public List<ActualTypeArgument> typeArguments();
 	

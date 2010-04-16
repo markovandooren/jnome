@@ -58,7 +58,7 @@ public class NonLocalJavaTypeReference extends NamespaceElementImpl<NonLocalJava
 
 	@Override
 	public LookupStrategy lexicalLookupStrategy() throws LookupException {
-		return lookupParent().lexicalLookupStrategy();
+		return lookupParent().lexicalLookupStrategy(this);
 	}
 	
 	public Element lookupParent() {
@@ -101,16 +101,19 @@ public class NonLocalJavaTypeReference extends NamespaceElementImpl<NonLocalJava
 	}
 
 	public JavaTypeReference componentTypeReference() {
-		throw new ChameleonProgrammerException();
+		return actualReference().componentTypeReference();
 	}
 
 	public JavaTypeReference erasedReference() {
-		return new NonLocalJavaTypeReference(actualReference().erasedReference(), lookupParent());
+		JavaTypeReference erasedReference = actualReference().erasedReference();
+		NonLocalJavaTypeReference result = new NonLocalJavaTypeReference(erasedReference, lookupParent());
+		return result;
 	}
 
-	public Type erasure() throws LookupException {
-		return actualReference().erasure();
-	}
+//	public Type erasure() throws LookupException {
+//		JavaTypeReference actualReference = actualReference();
+//		return actualReference.erasure();
+//	}
 
 	public Type getElement() throws LookupException {
 		return actualReference().getElement();

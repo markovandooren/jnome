@@ -120,7 +120,7 @@ public class Java extends ObjectOrientedLanguage {
   		if(constraints.size() > 0) {
   			TypeConstraint first = constraints.get(0);
   			if(first instanceof TypeConstraintWithReferences<?>) {
-  			  result = ((JavaTypeReference)((TypeConstraintWithReferences<?>)first).typeReference()).erasure();	
+  			  result = erasure(((TypeConstraintWithReferences<?>)first).bound());	
   			} else {
   				throw new ChameleonProgrammerException("The type constraint of type "+first.getClass().getName()+" is not a valid Java element");
   			}
@@ -146,7 +146,8 @@ public class Java extends ObjectOrientedLanguage {
 		result.setUniParent(signature.parent());
 		for(TypeReference tref : signature.typeReferences()) {
 			JavaTypeReference jref = (JavaTypeReference) tref;
-			result.add(jref.erasedReference());
+			JavaTypeReference erasedReference = jref.erasedReference();
+			result.add(erasedReference);
 		}
 		return result;
 	}
@@ -509,25 +510,35 @@ public class Java extends ObjectOrientedLanguage {
 				result.setUniParent(oldParent);
 			}	else if (type instanceof DerivedType){
 				result = new NonLocalJavaTypeReference(new BasicJavaTypeReference(type.signature().name()),type.parent());
+				result.setUniParent(type.parent());
 				// next setup the generic parameters.
 				for(TypeParameter parameter: type.parameters()) {
 					ActualTypeArgument arg = ((InstantiatedTypeParameter)parameter).argument().clone();
 					if(arg instanceof ActualTypeArgumentWithTypeReference) {
 						ActualTypeArgumentWithTypeReference argWithRef = (ActualTypeArgumentWithTypeReference) arg;
+						//argWithRef comes from a cloned argument, so we don't need to clone it again
+						//it will be detached from the cloned argument automatically
 						argWithRef.setTypeReference(new NonLocalJavaTypeReference((JavaTypeReference) argWithRef.typeReference()));
 					}
 				}
 			} else if (type instanceof ConstructedType) {
-				result = new NonLocalJavaTypeReference(new BasicJavaTypeReference(type.signature().name()),type.parent());
+				//result = new NonLocalJavaTypeReference(new BasicJavaTypeReference(type.signature().name()),type.parent());
+				result = new BasicJavaTypeReference(type.signature().name());
+				result.setUniParent(((ConstructedType)type).parameter().parent());
 			} else if (type instanceof RegularType) {
 				// for now, if this code is invoked, there are no generic parameters.
 				if(type.parameters().size() > 0) {
 					throw new ChameleonProgrammerException("requesting reference of RegularType with type parameters");
 				}
 				result = (JavaTypeReference) createTypeReferenceInDefaultNamespace(type.getFullyQualifiedName());
+			} else if (type instanceof RawType) {
+				result = (JavaTypeReference) createTypeReferenceInDefaultNamespace(type.getFullyQualifiedName());
 			}
 			else {
 				throw new ChameleonProgrammerException("Type of type is "+type.getClass().getName());
+			}
+			if(result.parent() == null) {
+				throw new ChameleonProgrammerException();
 			}
 			return result;
 		}

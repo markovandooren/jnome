@@ -542,4 +542,9 @@ public class Java extends ObjectOrientedLanguage {
 			}
 			return result;
 		}
+
+		@Override
+		public TypeReference createNonLocalTypeReference(TypeReference tref, Element lookupParent) {
+			return new NonLocalJavaTypeReference((JavaTypeReference) tref, lookupParent);
+		}
 }

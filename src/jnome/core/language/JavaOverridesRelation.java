@@ -32,21 +32,21 @@ public class JavaOverridesRelation extends StrictPartialOrder<Member> {
 		    Method<?,?,?,?> method1 = (Method<?,?,?,?>) first;
 		    Method<?,?,?,?> method2 = (Method<?,?,?,?>) second;
 		    Ternary temp = method2.is(method2.language(Java.class).OVERRIDABLE);
-		    boolean overridable;
 		    if(temp == Ternary.TRUE) {
-		      overridable = true;
+		      result = true;
 		    } else if (temp == Ternary.FALSE) {
-		      overridable = false;
+		      result = false;
 		    } else {
 		      throw new LookupException("The overridability of the other method could not be determined.");
 		    }
-		    MethodSignature signature1 = method1.signature();
-		    MethodSignature<?,?> signature2 = method2.signature();
-		    MethodSignature erasure2 = signature2.language(Java.class).erasure((SimpleNameMethodSignature) signature2);
-				result = overridable && 
-		             (signature1.sameParameterBoundsAs(signature2) || signature1.sameParameterBoundsAs(erasure2))&& // ) && // 
-		             method1.nearestAncestor(Type.class).subTypeOf(method2.nearestAncestor(Type.class)) && 
-		             method1.sameKind(method2);
+		    if(result) {
+		    	MethodSignature signature1 = method1.signature();
+		    	MethodSignature<?,?> signature2 = method2.signature();
+		    	MethodSignature erasure2 = signature2.language(Java.class).erasure((SimpleNameMethodSignature) signature2);
+		    	result = (signature1.sameParameterBoundsAs(signature2) || signature1.sameParameterBoundsAs(erasure2))&& // ) && // 
+		    	method1.nearestAncestor(Type.class).subTypeOf(method2.nearestAncestor(Type.class)) && 
+		    	method1.sameKind(method2);
+		    }
 		  } 
 		  else {
 		    result = false;

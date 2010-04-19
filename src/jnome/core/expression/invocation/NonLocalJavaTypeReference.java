@@ -18,14 +18,12 @@ import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.lookup.LookupStrategy;
 import chameleon.core.namespace.NamespaceElementImpl;
-import chameleon.core.reference.CrossReference;
 import chameleon.core.type.IntersectionTypeReference;
 import chameleon.core.type.Type;
 import chameleon.core.type.TypeReference;
 import chameleon.core.type.generics.TypeParameter;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
-import chameleon.exception.ChameleonProgrammerException;
 import chameleon.util.Util;
 
 public class NonLocalJavaTypeReference extends NamespaceElementImpl<NonLocalJavaTypeReference,Element> implements JavaTypeReference<NonLocalJavaTypeReference> {
@@ -70,12 +68,12 @@ public class NonLocalJavaTypeReference extends NamespaceElementImpl<NonLocalJava
 		return new NonLocalJavaTypeReference(actualReference().clone(),lookupParent());
 	}
 	
-	public static void replace(JavaTypeReference replacement, final TypeParameter parameterToBeReplaced, JavaTypeReference<?> in) throws LookupException {
+	public static void replace(JavaTypeReference replacement, final Declaration declarator, JavaTypeReference<?> in) throws LookupException {
 		List<BasicJavaTypeReference> crefs = in.descendants(BasicJavaTypeReference.class, 
 				new UnsafePredicate<BasicJavaTypeReference, LookupException>() {
 			@Override
 			public boolean eval(BasicJavaTypeReference object) throws LookupException {
-				return object.getDeclarator().sameAs(parameterToBeReplaced);
+				return object.getDeclarator().sameAs(declarator);
 			}
 		});
 		for(BasicJavaTypeReference cref: crefs) {

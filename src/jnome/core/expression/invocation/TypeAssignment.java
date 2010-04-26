@@ -2,8 +2,8 @@ package jnome.core.expression.invocation;
 
 import org.rejuse.association.SingleAssociation;
 
-import chameleon.core.type.Type;
-import chameleon.core.type.generics.TypeParameter;
+import chameleon.oo.type.Type;
+import chameleon.oo.type.generics.TypeParameter;
 
 public abstract class TypeAssignment {
 	

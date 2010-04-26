@@ -9,7 +9,7 @@ import chameleon.core.namespace.NamespaceScope;
 import chameleon.core.property.ChameleonProperty;
 import chameleon.core.scope.Scope;
 import chameleon.core.scope.ScopeProperty;
-import chameleon.core.type.Type;
+import chameleon.oo.type.Type;
 
 public class PackageProperty extends ScopeProperty {
 	

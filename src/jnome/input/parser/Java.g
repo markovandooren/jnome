@@ -59,23 +59,24 @@ import chameleon.core.reference.CrossReference;
 import chameleon.core.statement.Block;
 import chameleon.core.statement.Statement;
 
-import chameleon.core.type.ClassBody;
-import chameleon.core.type.RegularType;
-import chameleon.core.type.Type;
-import chameleon.core.type.TypeReference;
-import chameleon.core.type.TypeElement;
+import chameleon.oo.type.ClassBody;
+import chameleon.oo.type.RegularType;
+import chameleon.oo.type.Type;
+import chameleon.oo.type.TypeWithBody;
+import chameleon.oo.type.TypeReference;
+import chameleon.oo.type.TypeElement;
 
-import chameleon.core.type.generics.TypeParameter;
-import chameleon.core.type.generics.FormalTypeParameter;
-import chameleon.core.type.generics.ActualTypeArgument;
-import chameleon.core.type.generics.BasicTypeArgument;
-import chameleon.core.type.generics.TypeConstraint;
-import chameleon.core.type.generics.ExtendsConstraint;
-import chameleon.core.type.generics.PureWildCard;
-import chameleon.core.type.generics.ExtendsWildCard;
-import chameleon.core.type.generics.SuperWildCard;
+import chameleon.oo.type.generics.TypeParameter;
+import chameleon.oo.type.generics.FormalTypeParameter;
+import chameleon.oo.type.generics.ActualTypeArgument;
+import chameleon.oo.type.generics.BasicTypeArgument;
+import chameleon.oo.type.generics.TypeConstraint;
+import chameleon.oo.type.generics.ExtendsConstraint;
+import chameleon.oo.type.generics.PureWildCard;
+import chameleon.oo.type.generics.ExtendsWildCard;
+import chameleon.oo.type.generics.SuperWildCard;
 
-import chameleon.core.type.inheritance.SubtypeRelation;
+import chameleon.oo.type.inheritance.SubtypeRelation;
 
 import chameleon.core.variable.Variable;
 import chameleon.core.variable.FormalParameter;
@@ -170,6 +171,8 @@ import jnome.core.modifier.Volatile;
 import jnome.core.modifier.Synchronized;
 import jnome.core.modifier.JavaConstructor;
 import jnome.core.modifier.Implements;
+import jnome.core.modifier.AnnotationModifier;
+import jnome.core.modifier.AnnotationType;
 
 import jnome.core.type.JavaTypeReference;
 import jnome.core.type.ArrayTypeReference;

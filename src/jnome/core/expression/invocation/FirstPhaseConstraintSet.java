@@ -5,7 +5,7 @@ import java.util.List;
 import chameleon.core.expression.Invocation;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.method.Method;
-import chameleon.core.type.generics.TypeParameter;
+import chameleon.oo.type.generics.TypeParameter;
 
 
 public class FirstPhaseConstraintSet extends ConstraintSet<FirstPhaseConstraint> {

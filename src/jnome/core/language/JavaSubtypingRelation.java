@@ -16,14 +16,14 @@ import org.rejuse.logic.ternary.Ternary;
 
 import chameleon.core.lookup.LookupException;
 import chameleon.core.relation.WeakPartialOrder;
-import chameleon.core.type.ConstructedType;
-import chameleon.core.type.DerivedType;
-import chameleon.core.type.IntersectionType;
-import chameleon.core.type.Type;
-import chameleon.core.type.generics.FormalTypeParameter;
-import chameleon.core.type.generics.InstantiatedTypeParameter;
-import chameleon.core.type.generics.TypeParameter;
 import chameleon.oo.language.ObjectOrientedLanguage;
+import chameleon.oo.type.ConstructedType;
+import chameleon.oo.type.DerivedType;
+import chameleon.oo.type.IntersectionType;
+import chameleon.oo.type.Type;
+import chameleon.oo.type.generics.FormalTypeParameter;
+import chameleon.oo.type.generics.InstantiatedTypeParameter;
+import chameleon.oo.type.generics.TypeParameter;
 
 public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	
@@ -66,10 +66,10 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		}
 		else {
 			//SPEED iterate over the supertype graph 
-			Set<Type> supers = first.getAllSuperTypes();
-			supers.add(first);
-			Iterator<Type> typeIterator = supers.iterator();
 			if(! (second instanceof ConstructedType)) {
+				Set<Type> supers = first.getAllSuperTypes();
+				supers.add(first);
+				Iterator<Type> typeIterator = supers.iterator();
 				while((!result) && typeIterator.hasNext()) {
 					Type current = typeIterator.next();
 					result = (second instanceof RawType && second.baseType().sameAs(current.baseType()))|| sameBaseTypeWithCompatibleParameters(current, second);

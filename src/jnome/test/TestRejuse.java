@@ -9,7 +9,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import chameleon.core.lookup.LookupException;
-import chameleon.core.type.Type;
+import chameleon.oo.type.Type;
 import chameleon.support.test.ExpressionTest;
 import chameleon.test.provider.BasicModelProvider;
 import chameleon.test.provider.BasicNamespaceProvider;

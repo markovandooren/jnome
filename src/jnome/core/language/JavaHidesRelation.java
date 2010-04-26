@@ -8,9 +8,9 @@ import org.rejuse.logic.ternary.Ternary;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.member.Member;
 import chameleon.core.relation.StrictPartialOrder;
-import chameleon.core.type.Type;
 import chameleon.core.variable.RegularMemberVariable;
 import chameleon.oo.language.ObjectOrientedLanguage;
+import chameleon.oo.type.Type;
 import chameleon.support.member.simplename.method.NormalMethod;
 
 public class JavaHidesRelation extends StrictPartialOrder<Member> {

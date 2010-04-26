@@ -14,17 +14,17 @@ import org.rejuse.predicate.UnsafePredicate;
 
 import chameleon.core.lookup.LookupException;
 import chameleon.core.reference.CrossReference;
-import chameleon.core.type.ConstructedType;
-import chameleon.core.type.DerivedType;
-import chameleon.core.type.Type;
-import chameleon.core.type.generics.ActualTypeArgument;
-import chameleon.core.type.generics.ActualTypeArgumentWithTypeReference;
-import chameleon.core.type.generics.BasicTypeArgument;
-import chameleon.core.type.generics.ExtendsWildCard;
-import chameleon.core.type.generics.InstantiatedTypeParameter;
-import chameleon.core.type.generics.SuperWildCard;
-import chameleon.core.type.generics.TypeParameter;
 import chameleon.oo.language.ObjectOrientedLanguage;
+import chameleon.oo.type.ConstructedType;
+import chameleon.oo.type.DerivedType;
+import chameleon.oo.type.Type;
+import chameleon.oo.type.generics.ActualTypeArgument;
+import chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
+import chameleon.oo.type.generics.BasicTypeArgument;
+import chameleon.oo.type.generics.ExtendsWildCard;
+import chameleon.oo.type.generics.InstantiatedTypeParameter;
+import chameleon.oo.type.generics.SuperWildCard;
+import chameleon.oo.type.generics.TypeParameter;
 
 /**
  * A = type()

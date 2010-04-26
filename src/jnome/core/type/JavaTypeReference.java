@@ -3,9 +3,9 @@ package jnome.core.type;
 import java.util.List;
 
 import chameleon.core.lookup.LookupException;
-import chameleon.core.type.Type;
-import chameleon.core.type.TypeReference;
-import chameleon.core.type.generics.ActualTypeArgument;
+import chameleon.oo.type.Type;
+import chameleon.oo.type.TypeReference;
+import chameleon.oo.type.generics.ActualTypeArgument;
 
 /**
  * A class for Java type references. They add support for array types and generic parameters.

@@ -16,12 +16,12 @@ import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.NamespaceOrTypeReference;
 import chameleon.core.reference.CrossReference;
-import chameleon.core.type.BasicTypeReference;
-import chameleon.core.type.DerivedType;
-import chameleon.core.type.RegularType;
-import chameleon.core.type.Type;
-import chameleon.core.type.generics.ActualTypeArgument;
 import chameleon.exception.ChameleonProgrammerException;
+import chameleon.oo.type.BasicTypeReference;
+import chameleon.oo.type.DerivedType;
+import chameleon.oo.type.RegularType;
+import chameleon.oo.type.Type;
+import chameleon.oo.type.generics.ActualTypeArgument;
 import chameleon.util.CreationStackTrace;
 import chameleon.util.CreationStackTraceWithSingleFrame;
 
@@ -164,8 +164,6 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
 		return result;
 	}
 
-
-  
   public BasicJavaTypeReference clone() {
   	BasicJavaTypeReference result =  new BasicJavaTypeReference((getTarget() == null ? null : getTarget().clone()),(SimpleNameSignature)signature().clone());
   	for(ActualTypeArgument typeArgument: typeArguments()) {
@@ -173,26 +171,6 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
   	}
   	return result;
   }
-
-//	public void addArrayDimension(int arrayDimension) {
-//		if(arrayDimension > Integer.MAX_VALUE - _arrayDimension) {
-//			throw new ChameleonProgrammerException("Overflow of array dimension. Current value: "+_arrayDimension+" trying to add: "+arrayDimension);
-//		}
-//		if(_arrayDimension  < -arrayDimension) {
-//			throw new ChameleonProgrammerException("Trying to give a negative array dimension to a type reference.  Current value: "+_arrayDimension+" trying to add: "+arrayDimension);
-//		}
-//		_arrayDimension += arrayDimension;
-//	}
-
-//	public void decreaseArrayDimension(int arrayDimension) {
-//		if(- arrayDimension > Integer.MAX_VALUE - _arrayDimension) {
-//			throw new ChameleonProgrammerException("Overflow of array dimension. Current value: "+_arrayDimension+" trying to subtract: "+arrayDimension);
-//		}
-//		if(_arrayDimension < arrayDimension) {
-//			throw new ChameleonProgrammerException("Trying to give a negative array dimension to a type reference.  Current value: "+_arrayDimension+" trying to subtract: "+arrayDimension);
-//		}
-//		_arrayDimension -= arrayDimension;
-//	}
 
 	public JavaTypeReference erasedReference() {
 	  CrossReference<?, ?, ? extends TargetDeclaration> erasure = language(Java.class).erasure(getTarget());

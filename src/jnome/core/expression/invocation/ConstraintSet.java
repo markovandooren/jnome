@@ -11,7 +11,7 @@ import org.rejuse.association.OrderedMultiAssociation;
 
 import chameleon.core.expression.Invocation;
 import chameleon.core.method.Method;
-import chameleon.core.type.generics.TypeParameter;
+import chameleon.oo.type.generics.TypeParameter;
 
 public abstract class ConstraintSet<C extends Constraint> {
 	

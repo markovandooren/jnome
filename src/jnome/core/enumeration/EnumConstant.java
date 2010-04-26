@@ -11,15 +11,16 @@ import chameleon.core.expression.ActualArgument;
 import chameleon.core.expression.ActualArgumentList;
 import chameleon.core.member.FixedSignatureMember;
 import chameleon.core.member.Member;
-import chameleon.core.type.ClassBody;
-import chameleon.core.type.Type;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
+import chameleon.oo.type.ClassBody;
+import chameleon.oo.type.Type;
 
 public class EnumConstant extends FixedSignatureMember<EnumConstant,Type,SimpleNameSignature,EnumConstant> {
 
 	public EnumConstant(SimpleNameSignature signature) {
 		super(signature);
+		_parameters.connectTo(new ActualArgumentList().parentLink());
 	}
 	
 	@Override

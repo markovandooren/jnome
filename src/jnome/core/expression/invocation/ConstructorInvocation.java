@@ -3,6 +3,7 @@ package jnome.core.expression.invocation;
 import java.util.ArrayList;
 import java.util.List;
 
+import jnome.core.type.AnonymousInnerClass;
 import jnome.core.type.BasicJavaTypeReference;
 import jnome.core.type.JavaTypeReference;
 
@@ -23,13 +24,13 @@ import chameleon.core.lookup.LookupException;
 import chameleon.core.lookup.LookupStrategy;
 import chameleon.core.method.MethodSignature;
 import chameleon.core.relation.WeakPartialOrder;
-import chameleon.core.type.ClassBody;
-import chameleon.core.type.RegularType;
-import chameleon.core.type.Type;
-import chameleon.core.type.TypeElement;
-import chameleon.core.type.TypeReference;
-import chameleon.core.type.inheritance.SubtypeRelation;
 import chameleon.oo.language.ObjectOrientedLanguage;
+import chameleon.oo.type.ClassBody;
+import chameleon.oo.type.RegularType;
+import chameleon.oo.type.Type;
+import chameleon.oo.type.TypeElement;
+import chameleon.oo.type.TypeReference;
+import chameleon.oo.type.inheritance.SubtypeRelation;
 import chameleon.support.member.MoreSpecificTypesOrder;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.util.Util;
@@ -84,50 +85,34 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 //    return _anon.getOtherEnd();
 //  }
 
-	private SingleAssociation<ConstructorInvocation,ClassBody> _body = new SingleAssociation<ConstructorInvocation,ClassBody>(this);
+	private SingleAssociation<ConstructorInvocation,Type> _body = new SingleAssociation<ConstructorInvocation,Type>(this);
 	
-	public ClassBody body() {
-		return _body.getOtherEnd();
-	}
+//	public ClassBody body() {
+//		return _body.getOtherEnd();
+//	}
 	
 	public void setBody(ClassBody body) {
 		if(body == null) {
 			_body.connectTo(null);
 		} else {
-			_body.connectTo(body.parentLink());
+			_body.connectTo(createAnonymousType(body).parentLink());
 		}
 	}
 
-  private Type createAnonymousType() throws LookupException {
-  	final Type anon = new RegularType("TODO");
-  	TypeReference tref = getTypeReference();
- 	  Type writtenType = tref.getType();
-	  List<NormalMethod> superMembers = writtenType.localMembers(NormalMethod.class);
-	  new SafePredicate<NormalMethod>() {
-		  @Override
-		  public boolean eval(NormalMethod object) {
-			  return object.is(language(ObjectOrientedLanguage.class).CONSTRUCTOR) == Ternary.TRUE;
-		  }
-	  }.filter(superMembers);
-	  for(NormalMethod method: superMembers) {
-	  	anon.add(method.clone());
-	  }
-	  for(TypeElement element : body().elements()) {
-	  	anon.add(element.clone());
-	  }
-	  anon.addInheritanceRelation(new SubtypeRelation(tref.clone()));
-	  // Attach the created type to this element.
-		anon.setUniParent(this);
+  private Type createAnonymousType(ClassBody body) {
+  	RegularType anon = new AnonymousInnerClass();
+	  anon.setBody(body);
 		return anon;
 	}
 
   protected Type actualType() throws LookupException {
-    if (body() == null) {
+    Type anonymousInnerType = getAnonymousInnerType();
+		if (anonymousInnerType == null) {
       // Switching to target or not happens in getContext(Element) invoked by the type reference.
       return getTypeReference().getType();
     }
     else {
-      return getAnonymousInnerType();
+      return anonymousInnerType;
     }
   }
   
@@ -156,18 +141,23 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 //	private Reference<ConstructorInvocation,Type> _anonymousType= new Reference<ConstructorInvocation,Type>(this);
 
   
-  public Type getAnonymousInnerType() throws LookupException {
-  	if(body() == null) {
-  		return null;
+  public Type getAnonymousInnerType() {
+  	return _body.getOtherEnd();
+  }
+  
+  private void setAnonymousType(Type anonymous) {
+  	if(anonymous == null) {
+  		_body.connectTo(null);
   	} else {
-  	  return createAnonymousType();
+  		_body.connectTo(anonymous.parentLink());
   	}
   }
 
   protected ConstructorInvocation cloneInvocation(InvocationTarget target) {
     ConstructorInvocation result = new ConstructorInvocation((BasicJavaTypeReference)getTypeReference().clone(), (Expression)target);
-    if(body() != null) {
-      result.setBody(body().clone());
+    Type anonymousInnerType = getAnonymousInnerType();
+		if(anonymousInnerType != null) {
+      result.setAnonymousType(anonymousInnerType.clone());
     }
     return result;
   }
@@ -185,7 +175,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
    @*/
   public List<Element> children() {
     List<Element> result = super.children();
-    Util.addNonNull(body(), result);
+    Util.addNonNull(getAnonymousInnerType(), result);
     Util.addNonNull(getTypeReference(), result);
     return result;
   }

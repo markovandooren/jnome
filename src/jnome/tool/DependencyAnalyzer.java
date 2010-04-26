@@ -7,8 +7,8 @@ import jnome.input.JavaModelFactory;
 import org.apache.log4j.BasicConfigurator;
 
 import chameleon.core.declaration.Declaration;
-import chameleon.core.type.Type;
 import chameleon.input.ModelFactory;
+import chameleon.oo.type.Type;
 import chameleon.support.tool.ArgumentParser;
 import chameleon.support.tool.Arguments;
 

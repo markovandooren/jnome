@@ -9,7 +9,7 @@ import java.util.List;
 import jnome.core.type.ArrayType;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.relation.WeakPartialOrder;
-import chameleon.core.type.Type;
+import chameleon.oo.type.Type;
 import chameleon.support.member.MoreSpecificTypesOrder;
 
 public class JavaVarargsOrder extends WeakPartialOrder<List<Type>> {

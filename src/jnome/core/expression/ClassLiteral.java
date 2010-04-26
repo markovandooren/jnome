@@ -9,7 +9,7 @@ import jnome.core.type.JavaTypeReference;
 import org.rejuse.association.SingleAssociation;
 
 import chameleon.core.element.Element;
-import chameleon.core.type.TypeReference;
+import chameleon.oo.type.TypeReference;
 import chameleon.support.expression.LiteralWithTypeReference;
 import chameleon.util.Util;
 

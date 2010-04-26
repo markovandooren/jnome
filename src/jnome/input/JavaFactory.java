@@ -1,7 +1,7 @@
 package jnome.input;
 
 import chameleon.core.declaration.SimpleNameSignature;
-import chameleon.core.type.RegularType;
+import chameleon.oo.type.RegularType;
 
 public class JavaFactory {
 	

@@ -18,12 +18,12 @@ import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.lookup.LookupStrategy;
 import chameleon.core.namespace.NamespaceElementImpl;
-import chameleon.core.type.IntersectionTypeReference;
-import chameleon.core.type.Type;
-import chameleon.core.type.TypeReference;
-import chameleon.core.type.generics.TypeParameter;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
+import chameleon.oo.type.IntersectionTypeReference;
+import chameleon.oo.type.Type;
+import chameleon.oo.type.TypeReference;
+import chameleon.oo.type.generics.TypeParameter;
 import chameleon.util.Util;
 
 public class NonLocalJavaTypeReference extends NamespaceElementImpl<NonLocalJavaTypeReference,Element> implements JavaTypeReference<NonLocalJavaTypeReference> {

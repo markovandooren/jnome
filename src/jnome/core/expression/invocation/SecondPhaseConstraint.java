@@ -6,8 +6,8 @@ package jnome.core.expression.invocation;
 import jnome.core.language.Java;
 import jnome.core.type.JavaTypeReference;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.type.Type;
-import chameleon.core.type.generics.TypeParameter;
+import chameleon.oo.type.Type;
+import chameleon.oo.type.generics.TypeParameter;
 
 public abstract class SecondPhaseConstraint extends Constraint<SecondPhaseConstraint, SecondPhaseConstraintSet> {
 	

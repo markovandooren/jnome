@@ -2,6 +2,7 @@ package jnome.core.expression.invocation;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import jnome.core.language.Java;
@@ -10,22 +11,27 @@ import jnome.core.type.JavaTypeReference;
 import jnome.core.type.RawType;
 import jnome.core.variable.MultiFormalParameter;
 
+import org.rejuse.association.SingleAssociation;
 import org.rejuse.logic.ternary.Ternary;
 
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.Signature;
+import chameleon.core.element.Element;
 import chameleon.core.expression.ActualArgument;
 import chameleon.core.expression.Invocation;
 import chameleon.core.expression.InvocationTarget;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.relation.WeakPartialOrder;
-import chameleon.core.type.Type;
-import chameleon.core.type.TypeReference;
-import chameleon.core.type.generics.ActualTypeArgument;
-import chameleon.core.type.generics.TypeParameter;
 import chameleon.core.variable.FormalParameter;
 import chameleon.exception.ChameleonProgrammerException;
+import chameleon.oo.type.Type;
+import chameleon.oo.type.TypeReference;
+import chameleon.oo.type.generics.ActualTypeArgument;
+import chameleon.oo.type.generics.BasicTypeArgument;
+import chameleon.oo.type.generics.FormalTypeParameter;
+import chameleon.oo.type.generics.InstantiatedTypeParameter;
+import chameleon.oo.type.generics.TypeParameter;
 import chameleon.support.member.simplename.SimpleNameMethodSignature;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.member.simplename.method.RegularMethodInvocation;
@@ -47,6 +53,46 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
   	return new JavaMethodSelector();
   }
 
+  public <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
+  	X result = null;
+  	
+  	//OPTIMISATION
+  	boolean cache = selector.equals(selector());
+  	if(cache) {
+  		result = (X) getCache();
+  	}
+	  if(result != null) {
+	   	return result;
+	  }
+	   
+  	InvocationTarget target = getTarget();
+  	if(target == null) {
+      result = lexicalLookupStrategy().lookUp(selector);
+  	} else {
+  		result = target.targetContext().lookUp(selector);
+  	}
+		if (result != null) {
+			if(cache) {
+				result = (X) ((JavaMethodSelector)selector).instance((NormalMethod) result);
+			}
+	  	//OPTIMISATION
+	  	if(cache) {
+	  		setCache((NormalMethod) result);
+	  	}
+	    return result;
+		}
+		else {
+			//repeat lookup for debugging purposes.
+			//Config.setCaching(false);
+	  	if(target == null) {
+	      result = lexicalLookupStrategy().lookUp(selector);
+	  	} else {
+	  		result = target.targetContext().lookUp(selector);
+	  	}
+			throw new LookupException("Method returned by invocation is null", this);
+		}
+  }
+
 	
   public class JavaMethodSelector extends DeclarationSelector<NormalMethod> {
 
@@ -66,7 +112,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
     			// done by the container, so we check for names after the arguments.
     			if ((
     					(nbFormals == nbActuals) ||
-    					(   (nbFormals > 1) 
+    					((nbFormals > 1) 
     							&&
     							(method.lastFormalParameter() instanceof MultiFormalParameter)
     							&& 
@@ -86,9 +132,9 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
     	// conversion
     	if(tmp.isEmpty()) {
     		for(NormalMethod decl: candidates) {
-    			if(matchingApplicableByConversion(decl)) {
-    				tmp.add(decl);
-    			}
+      		if(matchingApplicableByConversion(decl)) {
+      			tmp.add(decl);
+      		}
     		}
     		// variable arity
     		if(tmp.isEmpty()) {
@@ -99,8 +145,14 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
     			}
     		}
     	}
-    	order().removeBiggerElements(tmp);
+    	applyOrder(tmp);
+    	// substitute the type parameters
     	return tmp;
+    }
+    
+    public NormalMethod instance(NormalMethod method) throws LookupException {
+			TypeAssignmentSet actualTypeParameters = actualTypeParameters(method, false);
+			return instantiatedMethodTemplate(method, actualTypeParameters);
     }
 
     public boolean selectedRegardlessOfName(NormalMethod declaration) throws LookupException {
@@ -167,9 +219,10 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 			List<ActualTypeArgument> typeArguments = typeArguments();
 			Java language = method.language(Java.class);
 			List<TypeParameter> parameters = method.typeParameters();
-			TypeAssignmentSet formals = new TypeAssignmentSet(parameters);
+			TypeAssignmentSet formals;
 			List<TypeParameter> methodTypeParameters = method.typeParameters();
-			if(methodTypeParameters.size() > 0) {
+			if(methodTypeParameters.size() > 0 && (method.typeParameter(1) instanceof FormalTypeParameter)) {
+				formals = new TypeAssignmentSet(parameters);
 				if(typeArguments.size() > 0) {
 					int size = typeArguments.size();
 					for(int i=0; i< size; i++) {
@@ -190,6 +243,8 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 					}
 					formals = constraints.resolve();
 				}
+			} else {
+				formals = new TypeAssignmentSet(Collections.EMPTY_LIST);
 			}
 			return formals;
 		}
@@ -197,16 +252,46 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 		private boolean matchingApplicableBySubtyping(NormalMethod method) throws LookupException {
 			TypeAssignmentSet actualTypeParameters = actualTypeParameters(method, false);
 			List<Type> formalParameterTypesInContext = formalParameterTypesInContext(method,actualTypeParameters);
-			boolean result = true;
+			boolean match = true;
 			int size = formalParameterTypesInContext.size();
 			List<ActualArgument> actualParameters = actualArgumentList().getActualParameters();
-			for(int i=0; result && i < size; i++) {
+			for(int i=0; match && i < size; i++) {
 				Type formalType = formalParameterTypesInContext.get(i);
 				Type actualType = actualParameters.get(i).getExpression().getType();
-				result = actualType.subTypeOf(formalType) || convertibleThroughUncheckedConversionAndSubtyping(actualType, formalType);
+				match = actualType.subTypeOf(formalType) || convertibleThroughUncheckedConversionAndSubtyping(actualType, formalType);
 			}
-			if(result) {
-				result = actualTypeParameters.valid();
+			if(match) {
+				match = actualTypeParameters.valid();
+			} 
+//			  &&  {
+//				result = method;
+//				if(actualTypeParameters.hasAssignments()) {
+//					// create instance
+//					result = instantiatedMethodTemplate(method, actualTypeParameters);
+//				}
+//			}
+			return match;
+		}
+
+		private NormalMethod instantiatedMethodTemplate(NormalMethod method, TypeAssignmentSet actualTypeParameters) throws LookupException {
+			NormalMethod result;
+			result = (NormalMethod) method.clone();
+			result.setUniParent(method.parent());
+			int nbTypeParameters = actualTypeParameters.nbAssignments();
+			for(int i=1; i <= nbTypeParameters;i++) {
+				TypeParameter originalPar = method.typeParameter(i);
+				TypeParameter clonedPar = result.typeParameter(i);
+				// we detach the signature from the clone.
+				Type assignedType = actualTypeParameters.type(originalPar);
+				Java language = language(Java.class);
+				JavaTypeReference reference = language.reference(assignedType);
+				Element parent = reference.parent();
+				reference.setUniParent(null);
+				BasicTypeArgument argument = new BasicTypeArgument(reference);
+				argument.setUniParent(parent);
+				TypeParameter newPar = new InstantiatedTypeParameter(clonedPar.signature(), argument);
+				SingleAssociation parentLink = clonedPar.parentLink();
+				parentLink.getOtherRelation().replace(parentLink, newPar.parentLink());
 			}
 			return result;
 		}
@@ -222,18 +307,25 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 		private boolean matchingApplicableByConversion(NormalMethod method) throws LookupException {
 			TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true);
 			List<Type> formalParameterTypesInContext = formalParameterTypesInContext(method,actualTypeParameters);
-			boolean result = true;
+			boolean match = true;
 			int size = formalParameterTypesInContext.size();
 			List<ActualArgument> actualParameters = actualArgumentList().getActualParameters();
-			for(int i=0; result && i < size; i++) {
+			for(int i=0; match && i < size; i++) {
 				Type formalType = formalParameterTypesInContext.get(i);
 				Type actualType = actualParameters.get(i).getExpression().getType();
-				result = convertibleThroughMethodInvocationConversion(actualType, formalType);
+				match = convertibleThroughMethodInvocationConversion(actualType, formalType);
 			}
-			if(result) {
-				result = actualTypeParameters.valid();
-			}
-			return result;
+			if(match) {
+				match = actualTypeParameters.valid();
+			} 
+//			  &&  {
+//				result = method;
+//				if(actualTypeParameters.hasAssignments()) {
+//					// create instance
+//					result = instantiatedMethodTemplate(method, actualTypeParameters);
+//				}
+//			}
+			return match;
 		}
 
 		private boolean convertibleThroughMethodInvocationConversion(Type first, Type second) throws LookupException {
@@ -345,29 +437,36 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 		
 
 		public boolean variableApplicableBySubtyping(NormalMethod method) throws LookupException {
-			boolean result = method.lastFormalParameter() instanceof MultiFormalParameter;
-			if(result) {
+			boolean match = method.lastFormalParameter() instanceof MultiFormalParameter;
+			if(match) {
 				TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true);
 				List<Type> formalParameterTypesInContext = formalParameterTypesInContext(method,actualTypeParameters);
 				int size = formalParameterTypesInContext.size();
 				List<ActualArgument> actualParameters = actualArgumentList().getActualParameters();
 				int actualSize = actualParameters.size();
 				// For the non-varags arguments, use method invocation conversion
-				for(int i=0; result && i < size-1; i++) {
+				for(int i=0; match && i < size-1; i++) {
 					Type formalType = formalParameterTypesInContext.get(i);
 					Type actualType = actualParameters.get(i).getExpression().getType();
-					result = convertibleThroughMethodInvocationConversion(actualType, formalType);
+					match = convertibleThroughMethodInvocationConversion(actualType, formalType);
 				}
 				Type formalType = formalParameterTypesInContext.get(size-1);
-				for(int i = size-1; result && i< actualSize;i++) {
+				for(int i = size-1; match && i< actualSize;i++) {
 					Type actualType = actualParameters.get(i).getExpression().getType();
-					result = convertibleThroughMethodInvocationConversion(actualType, formalType);
+					match = convertibleThroughMethodInvocationConversion(actualType, formalType);
 				}
-				if(result) {
-					result = actualTypeParameters.valid();
-				}
+				if(match) {
+					match = actualTypeParameters.valid();
+				} 
+//				  &&  {
+//					result = method;
+//					if(actualTypeParameters.hasAssignments()) {
+//						// create instance
+//						result = instantiatedMethodTemplate(method, actualTypeParameters);
+//					}
+//				}
 			}
-			return result;
+			return match;
 		}
     
   	@Override

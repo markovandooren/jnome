@@ -15,11 +15,11 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import chameleon.core.lookup.LookupException;
-import chameleon.core.type.Type;
-import chameleon.core.type.generics.BasicTypeArgument;
-import chameleon.core.type.generics.ExtendsWildCard;
-import chameleon.core.type.generics.SuperWildCard;
 import chameleon.input.ParseException;
+import chameleon.oo.type.Type;
+import chameleon.oo.type.generics.BasicTypeArgument;
+import chameleon.oo.type.generics.ExtendsWildCard;
+import chameleon.oo.type.generics.SuperWildCard;
 import chameleon.test.ModelTest;
 import chameleon.test.provider.BasicModelProvider;
 import chameleon.test.provider.BasicNamespaceProvider;

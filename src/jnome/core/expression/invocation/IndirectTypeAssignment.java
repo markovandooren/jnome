@@ -1,7 +1,7 @@
 package jnome.core.expression.invocation;
 
-import chameleon.core.type.Type;
-import chameleon.core.type.generics.TypeParameter;
+import chameleon.oo.type.Type;
+import chameleon.oo.type.generics.TypeParameter;
 
 public class IndirectTypeAssignment extends TypeAssignment {
 

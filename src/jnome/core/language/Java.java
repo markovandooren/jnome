@@ -2,7 +2,9 @@ package jnome.core.language;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import jnome.core.expression.invocation.NonLocalJavaTypeReference;
 import jnome.core.modifier.PackageProperty;
@@ -17,6 +19,7 @@ import jnome.core.type.RawType;
 import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.property.PropertyUniverse;
 
+import chameleon.core.Config;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.declaration.TargetDeclaration;
@@ -36,24 +39,24 @@ import chameleon.core.reference.ElementReferenceWithTarget;
 import chameleon.core.relation.EquivalenceRelation;
 import chameleon.core.relation.StrictPartialOrder;
 import chameleon.core.relation.WeakPartialOrder;
-import chameleon.core.type.ConstructedType;
-import chameleon.core.type.DerivedType;
-import chameleon.core.type.IntersectionType;
-import chameleon.core.type.IntersectionTypeReference;
-import chameleon.core.type.RegularType;
-import chameleon.core.type.Type;
-import chameleon.core.type.TypeReference;
-import chameleon.core.type.generics.ActualTypeArgument;
-import chameleon.core.type.generics.ActualTypeArgumentWithTypeReference;
-import chameleon.core.type.generics.FormalTypeParameter;
-import chameleon.core.type.generics.InstantiatedTypeParameter;
-import chameleon.core.type.generics.TypeConstraint;
-import chameleon.core.type.generics.TypeConstraintWithReferences;
-import chameleon.core.type.generics.TypeParameter;
-import chameleon.core.type.inheritance.InheritanceRelation;
 import chameleon.core.variable.MemberVariable;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.language.ObjectOrientedLanguage;
+import chameleon.oo.type.ConstructedType;
+import chameleon.oo.type.DerivedType;
+import chameleon.oo.type.IntersectionType;
+import chameleon.oo.type.IntersectionTypeReference;
+import chameleon.oo.type.RegularType;
+import chameleon.oo.type.Type;
+import chameleon.oo.type.TypeReference;
+import chameleon.oo.type.generics.ActualTypeArgument;
+import chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
+import chameleon.oo.type.generics.FormalTypeParameter;
+import chameleon.oo.type.generics.InstantiatedTypeParameter;
+import chameleon.oo.type.generics.TypeConstraint;
+import chameleon.oo.type.generics.TypeConstraintWithReferences;
+import chameleon.oo.type.generics.TypeParameter;
+import chameleon.oo.type.inheritance.InheritanceRelation;
 import chameleon.support.member.simplename.SimpleNameMethodSignature;
 import chameleon.support.modifier.PrivateProperty;
 import chameleon.support.modifier.ProtectedProperty;
@@ -87,6 +90,7 @@ public class Java extends ObjectOrientedLanguage {
 		NUMERIC_TYPE = new NumericTypeProperty("numeric", this);
 		REFERENCE_TYPE = PRIMITIVE_TYPE.inverse();
 		UNBOXABLE_TYPE = new UnboxableTypeProperty("unboxable", this);
+		ANNOTATION_TYPE = new StaticChameleonProperty("annotation", this, Type.class); 
 
 		// In Java, a constructor is a class method
 		CONSTRUCTOR.addImplication(CLASS);
@@ -109,12 +113,12 @@ public class Java extends ObjectOrientedLanguage {
 	
 	
   public Type erasure(Type original) throws LookupException {
-  	String fullyQualifiedName = original.getFullyQualifiedName();
   	Type result;
   	if(original instanceof ArrayType) {
   		ArrayType arrayType = (ArrayType) original;
   		result = new ArrayType(erasure(arrayType.elementType()));
-  	} else if(original instanceof ConstructedType){
+  	} 
+  	else if(original instanceof ConstructedType){
   		FormalTypeParameter formal = ((ConstructedType)original).parameter();
   		List<TypeConstraint> constraints = formal.constraints();
   		if(constraints.size() > 0) {
@@ -130,9 +134,7 @@ public class Java extends ObjectOrientedLanguage {
   	} 
   	else {
   		// Regular TYPE
-			List<TypeParameter> parameters = original.parameters();
-			int size = parameters.size();
-			if(size > 0 && (parameters.get(0) instanceof FormalTypeParameter)) {
+			if(original.nbTypeParameters() > 0 && (original.parameter(1) instanceof FormalTypeParameter)) {
 				result = RawType.create(original);
 			} else {
   			result = original;
@@ -152,12 +154,6 @@ public class Java extends ObjectOrientedLanguage {
 		return result;
 	}
 	
-//	public TypeReference erasure(JavaTypeReference jref) {
-//		JavaTypeReference result = createTypeReference(erasure(jref.getTarget()), (SimpleNameSignature)jref.signature().clone());
-//		result.setArrayDimension(jref.arrayDimension());
-//		return result;
-//	}
-
 	public <T extends CrossReference<?,?,? extends TargetDeclaration>> CrossReference<?,?,? extends TargetDeclaration> erasure(T ref) {
 		if(ref instanceof JavaTypeReference) {
 			return ((JavaTypeReference) ref).erasedReference();
@@ -259,7 +255,8 @@ public class Java extends ObjectOrientedLanguage {
 	public final DynamicChameleonProperty PRIMITIVE_TYPE;	
 	public final DynamicChameleonProperty NUMERIC_TYPE;	
 	public final ChameleonProperty REFERENCE_TYPE;	
-	public final ChameleonProperty UNBOXABLE_TYPE;	
+	public final ChameleonProperty UNBOXABLE_TYPE;
+	public final ChameleonProperty ANNOTATION_TYPE;
 	
 	public Type getNullType(){
 		return _nullType;
@@ -547,4 +544,20 @@ public class Java extends ObjectOrientedLanguage {
 		public TypeReference createNonLocalTypeReference(TypeReference tref, Element lookupParent) {
 			return new NonLocalJavaTypeReference((JavaTypeReference) tref, lookupParent);
 		}
+		
+		private Map<Type, RawType> _rawCache = new HashMap<Type, RawType>();
+		
+		public void putRawCache(Type type, RawType raw) {
+			if(Config.cacheDeclarations()) {
+			  _rawCache.put(type, raw);
+			} else {
+				_rawCache.clear();
+			}
+		}
+		
+		public RawType getRawCache(Type original) {
+			return _rawCache.get(original);
+		}
+
+
 }

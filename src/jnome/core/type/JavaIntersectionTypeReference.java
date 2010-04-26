@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import chameleon.core.lookup.LookupException;
-import chameleon.core.type.IntersectionTypeReference;
-import chameleon.core.type.Type;
-import chameleon.core.type.TypeReference;
-import chameleon.core.type.generics.ActualTypeArgument;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
 import chameleon.exception.ChameleonProgrammerException;
+import chameleon.oo.type.IntersectionTypeReference;
+import chameleon.oo.type.Type;
+import chameleon.oo.type.TypeReference;
+import chameleon.oo.type.generics.ActualTypeArgument;
 
 public class JavaIntersectionTypeReference extends IntersectionTypeReference<JavaIntersectionTypeReference> implements JavaTypeReference<JavaIntersectionTypeReference> {
 

@@ -409,7 +409,10 @@ typeDeclaration returns [Type element]
 classOrInterfaceDeclaration returns [Type element]
 @init{Token start = null; 
       Token end = null;}
-@after{setLocation(retval.element, start, end);}
+@after{
+  check_null(retval.element);
+  setLocation(retval.element, start, end);
+}
     :   mods=classOrInterfaceModifiers 
                 {if(mods != null) {start=mods.start;}}
          (cd=classDeclaration 
@@ -430,7 +433,7 @@ classOrInterfaceModifiers returns [List<Modifier> element]
 
 classOrInterfaceModifier returns [Modifier element]
 @after{setLocation(retval.element, (CommonToken)retval.start, (CommonToken)retval.stop);}
-    :   annotation   // class or interface
+    :   a=annotation {retval.element = a.element;}  // class or interface
     |   'public' {retval.element = new Public();}    // class or interface
     |   'protected' {retval.element = new Protected();} // class or interface
     |   'private' {retval.element = new Private();}   // class or interface
@@ -446,6 +449,7 @@ modifiers returns [List<Modifier> element]
     ;
 
 classDeclaration returns [Type element]
+@after{check_null(retval.element);}
     :   cd=normalClassDeclaration { retval.element = cd.element;}
     |   ed=enumDeclaration {retval.element = ed.element;}
     ;
@@ -467,7 +471,7 @@ normalClassDeclaration returns [RegularType element]
         body=classBody {retval.element.body().addAll(body.element.elements());}
         {
          setKeyword(retval.element,clkw);
-         // FIXME: the implements keyword should not be attached to the class, but there is only one. Stupid Java
+         // FIXME: the implements keyword should not be attached to the class, but there is only one.
          setKeyword(retval.element,impkw);
         }
     ;
@@ -518,7 +522,13 @@ scope{
 
 // Nothing must be done here
 enumBody returns [ClassBody element]
-    :   '{' (csts=enumConstants{for(EnumConstant el: csts.element){retval.element.add(el);}})? ','? (decls=enumBodyDeclarations {for(TypeElement el: decls.element){retval.element.add(el);}})? '}'
+@init{retval.element = new ClassBody();}
+    :   '{' (csts=enumConstants
+            {
+             for(EnumConstant el: csts.element) {
+                retval.element.add(el);
+             }
+            })? ','? (decls=enumBodyDeclarations {for(TypeElement el: decls.element){retval.element.add(el);}})? '}'
     ;
 
 enumConstants returns [List<EnumConstant> element]
@@ -534,6 +544,7 @@ enumBodyDeclarations returns [List<TypeElement> element]
     ;
     
 interfaceDeclaration returns [Type element]
+@after{check_null(retval.element);}
     :   id=normalInterfaceDeclaration {retval.element = id.element;}
     |   ad=annotationTypeDeclaration {retval.element = ad.element;}
     ;
@@ -966,12 +977,13 @@ booleanLiteral returns [Literal element]
 
 // ANNOTATIONS
 
-annotations
-    :   annotation+
+annotations returns [List<AnnotationModifier> element]
+@init{retval.element = new ArrayList<AnnotationModifier>();}
+    :   (a=annotation {retval.element.add(a.element);})+
     ;
 
-annotation
-    :   '@' annotationName ( '(' ( elementValuePairs | elementValue )? ')' )?
+annotation returns [AnnotationModifier element]
+    :   '@' a=annotationName {retval.element=new AnnotationModifier($a.text);} ( '(' ( elementValuePairs | elementValue )? ')' )?
     ;
     
 annotationName
@@ -996,37 +1008,57 @@ elementValueArrayInitializer
     :   '{' (elementValue (',' elementValue)*)? (',')? '}'
     ;
     
-annotationTypeDeclaration returns [Type element]
-    :   '@' 'interface' name=Identifier annotationTypeBody
+annotationTypeDeclaration returns [TypeWithBody element]
+    :   '@' 'interface' name=Identifier 
+             {
+               retval.element = (TypeWithBody)createType(new SimpleNameSignature($name.text));
+               retval.element.addModifier(new AnnotationType());
+               setLocation(retval.element,name,"__NAME");
+             } 
+             body=annotationTypeBody {retval.element.setBody(body.element);}
     ;
     
-annotationTypeBody
+annotationTypeBody returns [ClassBody element]
+@init{retval.element = new ClassBody();}
     :   '{' (annotationTypeElementDeclaration)* '}'
     ;
     
-annotationTypeElementDeclaration
-    :   modifiers annotationTypeElementRest
+annotationTypeElementDeclaration returns [TypeElement element]
+    :   mods=modifiers rest=annotationTypeElementRest 
+       {
+         retval.element = rest.element;
+         for(Modifier modifier: mods.element) {
+           retval.element.addModifier(modifier);
+         }
+       }
     ;
     
-annotationTypeElementRest
-    :   type annotationMethodOrConstantRest ';'
-    |   cd=normalClassDeclaration {              addNonTopLevelObjectInheritance(cd.element);}';'?
-    |   id=normalInterfaceDeclaration {                addNonTopLevelObjectInheritance(id.element);}';'?
-    |   enumDeclaration ';'?
-    |   annotationTypeDeclaration ';'?
+annotationTypeElementRest returns [TypeElement element]
+    :   t=type ann=annotationMethodOrConstantRest[$t.element] {retval.element = ann.element;} 
+        
+    ';' 
+    |   cd=normalClassDeclaration { retval.element = cd.element; addNonTopLevelObjectInheritance(cd.element);}';'?
+    |   id=normalInterfaceDeclaration { retval.element = id.element; addNonTopLevelObjectInheritance(id.element);}';'?
+    |   en=enumDeclaration {retval.element = en.element;} ';'?
+    |   an=annotationTypeDeclaration {retval.element = an.element;} ';'?
     ;
     
-annotationMethodOrConstantRest
-    :   annotationMethodRest
-    |   annotationConstantRest
+annotationMethodOrConstantRest[TypeReference type] returns [TypeElement element]
+    :   a=annotationMethodRest[$type] {retval.element = a.element;}
+    |   aa=annotationConstantRest[$type] {retval.element = aa.element;}
     ;
     
-annotationMethodRest
-    :   Identifier '(' ')' defaultValue?
+annotationMethodRest[TypeReference type] returns [Method element]
+    :   name=Identifier '(' ')' {retval.element = new NormalMethod(new SimpleNameMethodHeader($name.text),type);} (defaultValue {})?
     ;
     
-annotationConstantRest
-    :   variableDeclarators
+annotationConstantRest[TypeReference type] returns [MemberVariableDeclarator element]
+    :   decls=variableDeclarators 
+        {retval.element = new MemberVariableDeclarator(type);
+         for(VariableDeclaration decl: decls.element) {
+           retval.element.add(decl);
+         } 
+        }
     ;
     
 defaultValue

@@ -5,17 +5,17 @@ import jnome.core.language.Java;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.type.RegularType;
-import chameleon.core.type.Type;
-import chameleon.core.type.inheritance.SubtypeRelation;
 import chameleon.core.variable.RegularMemberVariable;
 import chameleon.oo.language.ObjectOrientedLanguage;
+import chameleon.oo.type.RegularType;
+import chameleon.oo.type.Type;
+import chameleon.oo.type.inheritance.SubtypeRelation;
 import chameleon.support.modifier.Final;
 
 /**
  * @author Marko van Dooren
  */
-public class ArrayType extends RegularType {
+public class ArrayType extends RegularType implements JavaType {
 //	TODO: this class should not be a member. This is just a quickfix
   public ArrayType(Type type) {
     super(new SimpleNameSignature(getArrayName(type.getName())));
@@ -110,9 +110,9 @@ public class ArrayType extends RegularType {
   protected ArrayType cloneThis() {
     return new ArrayType(elementType());
   }
-  
-//  public AccessibilityDomain getTypeAccessibilityDomain() throws LookupException {
-//    return getElementType().getTypeAccessibilityDomain();
-//  }
+
+	public Type erasure() {
+		return new ArrayType(((JavaType)elementType()).erasure());
+	}
   
 }

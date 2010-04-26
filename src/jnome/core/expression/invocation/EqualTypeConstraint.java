@@ -11,9 +11,9 @@ import jnome.core.type.JavaTypeReference;
 import chameleon.core.declaration.TargetDeclaration;
 import chameleon.core.expression.NamedTarget;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.type.ConstructedType;
-import chameleon.core.type.generics.FormalTypeParameter;
-import chameleon.core.type.generics.TypeParameter;
+import chameleon.oo.type.ConstructedType;
+import chameleon.oo.type.generics.FormalTypeParameter;
+import chameleon.oo.type.generics.TypeParameter;
 
 public class EqualTypeConstraint extends SecondPhaseConstraint {
 

@@ -13,10 +13,10 @@ import org.rejuse.java.collections.Visitor;
 import chameleon.core.element.Element;
 import chameleon.core.expression.Expression;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.type.Type;
-import chameleon.core.type.TypeReference;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
+import chameleon.oo.type.Type;
+import chameleon.oo.type.TypeReference;
 import chameleon.support.expression.ArrayIndex;
 import chameleon.util.Util;
 

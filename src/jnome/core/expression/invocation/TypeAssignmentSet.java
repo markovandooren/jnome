@@ -10,10 +10,10 @@ import jnome.core.type.JavaTypeReference;
 import org.rejuse.association.OrderedMultiAssociation;
 
 import chameleon.core.lookup.LookupException;
-import chameleon.core.type.Type;
-import chameleon.core.type.TypeReference;
-import chameleon.core.type.generics.FormalTypeParameter;
-import chameleon.core.type.generics.TypeParameter;
+import chameleon.oo.type.Type;
+import chameleon.oo.type.TypeReference;
+import chameleon.oo.type.generics.FormalTypeParameter;
+import chameleon.oo.type.generics.TypeParameter;
 
 public class TypeAssignmentSet {
 
@@ -21,15 +21,23 @@ public class TypeAssignmentSet {
 		_completeList = new ArrayList<TypeParameter>(typeParameters);
 	}
 	
-	private OrderedMultiAssociation<TypeAssignmentSet, TypeAssignment> _constraints = new OrderedMultiAssociation<TypeAssignmentSet, TypeAssignment>(this);
+	private OrderedMultiAssociation<TypeAssignmentSet, TypeAssignment> _assignments = new OrderedMultiAssociation<TypeAssignmentSet, TypeAssignment>(this);
 	
 	public List<TypeAssignment> assignments() {
-		return _constraints.getOtherEnds();
+		return _assignments.getOtherEnds();
+	}
+	
+	public int nbAssignments() {
+		return _assignments.size();
+	}
+	
+	public boolean hasAssignments() {
+		return nbAssignments() > 0;
 	}
 	
 	public void add(TypeAssignment assignment) {
 		if(assignment != null) {
-			_constraints.add(assignment.parentLink());
+			_assignments.add(assignment.parentLink());
 		}
 	}
 	
@@ -41,7 +49,7 @@ public class TypeAssignmentSet {
 	
 	public void remove(TypeAssignment assignment) {
 		if(assignment != null) {
-			_constraints.remove(assignment.parentLink());
+			_assignments.remove(assignment.parentLink());
 		}
 	}
 	
@@ -49,7 +57,7 @@ public class TypeAssignmentSet {
 		boolean result = unassigned().isEmpty();
 		if(result) {
 			for(TypeAssignment assignment: assignments()) {
-				TypeReference<?> upperBoundReference = ((FormalTypeParameter)assignment.parameter()).upperBoundReference();
+				TypeReference<?> upperBoundReference = assignment.parameter().upperBoundReference();
 				Java language = upperBoundReference.language(Java.class);
 				JavaTypeReference bound = (JavaTypeReference) upperBoundReference.clone();
 				bound.setUniParent(upperBoundReference);

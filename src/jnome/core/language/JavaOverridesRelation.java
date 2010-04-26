@@ -18,8 +18,8 @@ import chameleon.core.method.MethodSignature;
 import chameleon.core.reference.CrossReference;
 import chameleon.core.reference.ElementReferenceWithTarget;
 import chameleon.core.relation.StrictPartialOrder;
-import chameleon.core.type.Type;
-import chameleon.core.type.TypeReference;
+import chameleon.oo.type.Type;
+import chameleon.oo.type.TypeReference;
 import chameleon.support.member.simplename.SimpleNameMethodSignature;
 
 public class JavaOverridesRelation extends StrictPartialOrder<Member> {

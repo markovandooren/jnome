@@ -8,8 +8,8 @@ import java.util.Set;
 
 import jnome.core.type.JavaTypeReference;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.type.Type;
-import chameleon.core.type.generics.TypeParameter;
+import chameleon.oo.type.Type;
+import chameleon.oo.type.generics.TypeParameter;
 
 public class SupertypeConstraint extends SecondPhaseConstraint {
 

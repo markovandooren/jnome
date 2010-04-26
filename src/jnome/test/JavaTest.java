@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import chameleon.core.namespacepart.NamespacePart;
-import chameleon.core.type.Type;
+import chameleon.oo.type.Type;
 import chameleon.support.test.ExpressionTest;
 import chameleon.test.CompositeTest;
 import chameleon.test.VerificationTest;

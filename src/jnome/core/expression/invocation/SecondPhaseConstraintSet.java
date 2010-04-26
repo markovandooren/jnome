@@ -14,19 +14,19 @@ import org.rejuse.predicate.UnsafePredicate;
 import chameleon.core.expression.Invocation;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.method.Method;
-import chameleon.core.type.IntersectionType;
-import chameleon.core.type.Type;
-import chameleon.core.type.generics.ActualTypeArgument;
-import chameleon.core.type.generics.ActualTypeArgumentWithTypeReference;
-import chameleon.core.type.generics.BasicTypeArgument;
-import chameleon.core.type.generics.ExtendsWildCard;
-import chameleon.core.type.generics.FormalTypeParameter;
-import chameleon.core.type.generics.InstantiatedTypeParameter;
-import chameleon.core.type.generics.PureWildCard;
-import chameleon.core.type.generics.SuperWildCard;
-import chameleon.core.type.generics.TypeParameter;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.language.ObjectOrientedLanguage;
+import chameleon.oo.type.IntersectionType;
+import chameleon.oo.type.Type;
+import chameleon.oo.type.generics.ActualTypeArgument;
+import chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
+import chameleon.oo.type.generics.BasicTypeArgument;
+import chameleon.oo.type.generics.ExtendsWildCard;
+import chameleon.oo.type.generics.FormalTypeParameter;
+import chameleon.oo.type.generics.InstantiatedTypeParameter;
+import chameleon.oo.type.generics.PureWildCard;
+import chameleon.oo.type.generics.SuperWildCard;
+import chameleon.oo.type.generics.TypeParameter;
 import chameleon.support.expression.AssignmentExpression;
 
 public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstraint> {
@@ -336,7 +336,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		}
 		// additional constraints Bi[T1=B(T1) ... Tn=B(Tn)] >> Ti where Bi is the declared bound of Ti
 		for(TypeParameter param: unresolvedParameters()) {
-			JavaTypeReference bound = (JavaTypeReference) ((FormalTypeParameter)param).upperBoundReference();
+			JavaTypeReference bound = (JavaTypeReference) param.upperBoundReference();
 			JavaTypeReference Bi= substitutedReference(bound);
 			constraints.add(new GGConstraint(Bi, param.upperBound()));
 		}

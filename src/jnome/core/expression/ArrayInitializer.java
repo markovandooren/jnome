@@ -11,11 +11,11 @@ import org.rejuse.java.collections.Visitor;
 
 import chameleon.core.expression.Expression;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.type.Type;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
 import chameleon.core.variable.Variable;
 import chameleon.exception.ChameleonProgrammerException;
+import chameleon.oo.type.Type;
 import chameleon.support.variable.VariableDeclaration;
 
 /**

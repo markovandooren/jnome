@@ -1,67 +1,75 @@
 package jnome.core.type;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import jnome.core.language.Java;
 
 import org.rejuse.association.SingleAssociation;
 import org.rejuse.logic.ternary.Ternary;
 
+import chameleon.core.Config;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.method.Method;
-import chameleon.core.modifier.Modifier;
 import chameleon.core.reference.SimpleReference;
-import chameleon.core.type.AbstractType;
-import chameleon.core.type.Type;
-import chameleon.core.type.TypeElement;
-import chameleon.core.type.generics.BasicTypeArgument;
-import chameleon.core.type.generics.FormalTypeParameter;
-import chameleon.core.type.generics.InstantiatedTypeParameter;
-import chameleon.core.type.generics.TypeParameter;
-import chameleon.core.type.inheritance.InheritanceRelation;
 import chameleon.core.variable.FormalParameter;
 import chameleon.exception.ChameleonProgrammerException;
+import chameleon.oo.type.Type;
+import chameleon.oo.type.TypeElement;
+import chameleon.oo.type.TypeWithBody;
+import chameleon.oo.type.generics.BasicTypeArgument;
+import chameleon.oo.type.generics.FormalTypeParameter;
+import chameleon.oo.type.generics.InstantiatedTypeParameter;
+import chameleon.oo.type.generics.TypeParameter;
+import chameleon.oo.type.inheritance.InheritanceRelation;
+import chameleon.util.CreationStackTrace;
 
-public class RawType extends AbstractType {
-
+public class RawType extends TypeWithBody implements JavaType {
 
 	public static RawType create(Type original) {
-		if(original instanceof RawType) {
-			return (RawType) original;
-		}
 		Java language = original.language(Java.class);
-		if(original.is(language.INSTANCE) == Ternary.TRUE) {
-			Type outmostType = original.furthestAncestor(Type.class);
-			if(outmostType == null) {
-				outmostType = original;
-			}
-			RawType outer;
-			if(outmostType instanceof RawType) {
-				outer = (RawType) outmostType;
+		RawType result = language.getRawCache(original);
+		if(result == null) {
+			if(original instanceof RawType) {
+				result = (RawType) original;
 			} else {
-				outer = new RawType(outmostType);;
-			}
-			RawType current = outer;
-			List<Type> outerTypes = original.ancestors(Type.class);
+				if(original.is(language.INSTANCE) == Ternary.TRUE) {
+					Type outmostType = original.farthestAncestor(chameleon.oo.type.Type.class);
+					if(outmostType == null) {
+						outmostType = original;
+					}
+					RawType outer;
+					if(outmostType instanceof RawType) {
+						outer = (RawType) outmostType;
+					} else {
+						outer = new RawType(outmostType);
+					}
+					RawType current = outer;
+					List<Type> outerTypes = original.ancestors(Type.class);
 
-			int size = outerTypes.size();
-			for(int i = size - 1; i>=0;i--) {
-				SimpleReference<RawType> simpleRef = new SimpleReference<RawType>(outerTypes.get(i).signature().name(), RawType.class);
-				simpleRef.setUniParent(current);
-				try {
-					current = simpleRef.getElement();
-				} catch (LookupException e) {
-					e.printStackTrace();
-					throw new ChameleonProgrammerException("An inner type of a newly created outer raw type cannot be found",e);
+					int size = outerTypes.size();
+					for(int i = size - 1; i>=0;i--) {
+						SimpleReference<RawType> simpleRef = new SimpleReference<RawType>(outerTypes.get(i).signature().name(), RawType.class);
+						simpleRef.setUniParent(current);
+						try {
+							current = simpleRef.getElement();
+						} catch (LookupException e) {
+							e.printStackTrace();
+							throw new ChameleonProgrammerException("An inner type of a newly created outer raw type cannot be found",e);
+						}
+					}
+					result = current;
+				} else {
+					// static
+					result = new RawType(original);
 				}
 			}
-			return current;
-		} else {
-			// static
-			return new RawType(original);
+			language.putRawCache(original, result);
 		}
+		return result;
 	}
 
 	/**
@@ -120,6 +128,11 @@ public class RawType extends AbstractType {
 			if(element instanceof Method) {
 				Method<?,?,?,?> method = (Method)element;
 				eraseTypeParameters(method.typeParameters());
+				for(TypeParameter tp: method.typeParameters()) {
+					if(tp instanceof FormalTypeParameter) {
+						System.out.println("Nie zjust!");
+					}
+				}
 				for(FormalParameter param: method.formalParameters()) {
 					JavaTypeReference typeReference = (JavaTypeReference) param.getTypeReference();
 					param.setTypeReference(typeReference.erasedReference());
@@ -142,9 +155,10 @@ public class RawType extends AbstractType {
 			JavaTypeReference upperBoundReference = (JavaTypeReference) param.upperBoundReference();
 			JavaTypeReference erased = upperBoundReference.erasedReference();
 			BasicTypeArgument argument = new BasicTypeArgument(erased);
-			InstantiatedTypeParameter newParameter = new InstantiatedTypeParameter(typeParameter.signature().clone(),argument);
-			replaceParameter(typeParameter, newParameter);
 			argument.setUniParent(parent());
+			InstantiatedTypeParameter newParameter = new InstantiatedTypeParameter(typeParameter.signature().clone(),argument);
+			SingleAssociation parentLink = typeParameter.parentLink();
+			parentLink.getOtherRelation().replace(parentLink, newParameter.parentLink());
 		}
 	}
 
@@ -166,5 +180,17 @@ public class RawType extends AbstractType {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * The erasure of a raw type is the raw type itself.
+	 */
+ /*@
+   @ public behavior
+   @
+   @ post \result == this;
+   @*/
+	public Type erasure() {
+		return this;
 	}
 }

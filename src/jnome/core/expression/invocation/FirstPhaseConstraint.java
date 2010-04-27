@@ -109,7 +109,6 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 			}
 				int i = 0;
 				for(ActualTypeArgument typeArgumentOfFormalParameter: actualsOfF) {
-					i++;
 					if(typeArgumentOfFormalParameter instanceof BasicTypeArgument) {
 						JavaTypeReference U = (JavaTypeReference) ((BasicTypeArgument)typeArgumentOfFormalParameter).typeReference();
 						if(involvesTypeParameter(U)) {
@@ -126,6 +125,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 							caseSSFormalSuper(result, U, i);
 						}
 					}
+					i++;
 				}
 		}
 		else {
@@ -187,13 +187,17 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 	}
 	
 	public List<TypeParameter> involvedTypeParameters(JavaTypeReference<?> tref) throws LookupException {
-		List<BasicJavaTypeReference> list = tref.descendants(BasicJavaTypeReference.class, new UnsafePredicate<BasicJavaTypeReference, LookupException>() {
+		UnsafePredicate<BasicJavaTypeReference, LookupException> predicate = new UnsafePredicate<BasicJavaTypeReference, LookupException>() {
 
 			@Override
 			public boolean eval(BasicJavaTypeReference object) throws LookupException {
 				return parent().typeParameters().contains(object.getDeclarator());
 			}
-		});
+		};
+		List<BasicJavaTypeReference> list = tref.descendants(BasicJavaTypeReference.class, predicate);
+		if((tref instanceof BasicJavaTypeReference) && predicate.eval((BasicJavaTypeReference) tref)) {
+			list.add((BasicJavaTypeReference) tref);
+		}
 		List<TypeParameter> parameters = new ArrayList<TypeParameter>();
 		for(BasicJavaTypeReference cref: list) {
 			parameters.add((TypeParameter) cref.getDeclarator());

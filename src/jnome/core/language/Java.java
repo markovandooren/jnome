@@ -51,6 +51,7 @@ import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.generics.ActualTypeArgument;
 import chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
+import chameleon.oo.type.generics.ExtendsWildcardType;
 import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.InstantiatedTypeParameter;
 import chameleon.oo.type.generics.TypeConstraint;
@@ -506,17 +507,22 @@ public class Java extends ObjectOrientedLanguage {
 				result = new ArrayTypeReference(reference);
 				result.setUniParent(oldParent);
 			}	else if (type instanceof DerivedType){
-				result = new NonLocalJavaTypeReference(new BasicJavaTypeReference(type.signature().name()),type.parent());
+				BasicJavaTypeReference tref = new BasicJavaTypeReference(type.signature().name());
+				result = new NonLocalJavaTypeReference(tref,type.parent());
 				result.setUniParent(type.parent());
 				// next setup the generic parameters.
 				for(TypeParameter parameter: type.parameters()) {
-					ActualTypeArgument arg = ((InstantiatedTypeParameter)parameter).argument().clone();
+					ActualTypeArgument argument = ((InstantiatedTypeParameter)parameter).argument();
+					ActualTypeArgument arg = argument.clone();
+					//FIXME what happens with pure wildcards? Their meaning is context-sensitive, but the link with 'tref' is bidirectional
+					//      so it switches context.
 					if(arg instanceof ActualTypeArgumentWithTypeReference) {
 						ActualTypeArgumentWithTypeReference argWithRef = (ActualTypeArgumentWithTypeReference) arg;
-						//argWithRef comes from a cloned argument, so we don't need to clone it again
 						//it will be detached from the cloned argument automatically
-						argWithRef.setTypeReference(new NonLocalJavaTypeReference((JavaTypeReference) argWithRef.typeReference()));
+						NonLocalJavaTypeReference ref = new NonLocalJavaTypeReference((JavaTypeReference) argWithRef.typeReference(),argument);
+						argWithRef.setTypeReference(ref);
 					}
+					tref.addArgument(arg);
 				}
 			} else if (type instanceof ConstructedType) {
 				//result = new NonLocalJavaTypeReference(new BasicJavaTypeReference(type.signature().name()),type.parent());

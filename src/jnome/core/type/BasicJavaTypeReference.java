@@ -22,11 +22,8 @@ import chameleon.oo.type.DerivedType;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.ActualTypeArgument;
-import chameleon.util.CreationStackTrace;
-import chameleon.util.CreationStackTraceWithSingleFrame;
 
 public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeReference> implements JavaTypeReference<BasicJavaTypeReference> {
-
 
 	public BasicJavaTypeReference(CrossReference<?,?,? extends TargetDeclaration> target, String name) {
   	super(target,name);
@@ -149,16 +146,18 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
   private Type convertGenerics(Type type) throws LookupException {
   	Type result = type;
 		if (type != null) {
-			List<ActualTypeArgument> typeArguments = typeArguments();
-			if (typeArguments.size() > 0) {
-				result = new DerivedType(type, typeArguments);
-				// This is going to give trouble if there is a special lexical context
-				// selection for 'type' in its parent.
-				// set to the type itself? seems dangerous as well.
-				result.setUniParent(type.parent());
-			} else if(type instanceof RegularType){
-				// create raw typeif necessary
-				result = language(Java.class).erasure(type);
+			if(! (type instanceof RawType)) {
+				List<ActualTypeArgument> typeArguments = typeArguments();
+				if (typeArguments.size() > 0) {
+					result = new DerivedType(type, typeArguments);
+					// This is going to give trouble if there is a special lexical context
+					// selection for 'type' in its parent.
+					// set to the type itself? seems dangerous as well.
+					result.setUniParent(type.parent());
+				} else if(type instanceof RegularType){
+					// create raw type if necessary. The erasure method will check that.
+					result = language(Java.class).erasure(type);
+				}
 			}
 		}
 		return result;

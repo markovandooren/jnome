@@ -21,9 +21,11 @@ import chameleon.oo.type.ConstructedType;
 import chameleon.oo.type.DerivedType;
 import chameleon.oo.type.IntersectionType;
 import chameleon.oo.type.Type;
+import chameleon.oo.type.generics.ExtendsWildcardType;
 import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.InstantiatedTypeParameter;
 import chameleon.oo.type.generics.TypeParameter;
+import chameleon.oo.type.generics.WildCardType;
 
 public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	
@@ -42,6 +44,10 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 			result = true;
 		} else if (first.equals(first.language(ObjectOrientedLanguage.class).getNullType())) {
 			result = true;
+		} else if (first instanceof WildCardType) {
+			result = contains(((WildCardType)first).upperBound(), second);
+		} else if (second instanceof WildCardType) {
+			result = contains(first, ((WildCardType)second).lowerBound());
 		}
 		// The relations between arrays and object are covered by the subtyping relations
 		// that are added to ArrayType objects.
@@ -66,7 +72,7 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		}
 		else {
 			//SPEED iterate over the supertype graph 
-			if(! (second instanceof ConstructedType)) {
+//			if(! (second instanceof ConstructedType)) {
 				Set<Type> supers = first.getAllSuperTypes();
 				supers.add(first);
 				Iterator<Type> typeIterator = supers.iterator();
@@ -74,7 +80,7 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 					Type current = typeIterator.next();
 					result = (second instanceof RawType && second.baseType().sameAs(current.baseType()))|| sameBaseTypeWithCompatibleParameters(current, second);
 				}
-			}
+//			}
 		}
 		return result;
 	}

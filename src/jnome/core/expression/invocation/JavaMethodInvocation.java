@@ -103,10 +103,10 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
     public List<NormalMethod> selection(List<? extends Declaration> selectionCandidates) throws LookupException {
     	List<NormalMethod> tmp = new ArrayList<NormalMethod>();
     	List<NormalMethod> candidates = new ArrayList<NormalMethod>();
+    	int nbActuals = nbActualParameters();
     	for(Declaration decl: selectionCandidates) {
     		if(decl instanceof NormalMethod) {
     			NormalMethod method = (NormalMethod) decl;
-    			int nbActuals = nbActualParameters();
     			int nbFormals = method.nbFormalParameters();
     			// If caching is enable, selected based on the name will already have been
     			// done by the container, so we check for names after the arguments.
@@ -220,8 +220,8 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 			Java language = method.language(Java.class);
 			List<TypeParameter> parameters = method.typeParameters();
 			TypeAssignmentSet formals;
-			List<TypeParameter> methodTypeParameters = method.typeParameters();
-			if(methodTypeParameters.size() > 0 && (method.typeParameter(1) instanceof FormalTypeParameter)) {
+//			List<TypeParameter> methodTypeParameters = method.typeParameters();
+			if(parameters.size() > 0 && (parameters.get(0) instanceof FormalTypeParameter)) {
 				formals = new TypeAssignmentSet(parameters);
 				if(typeArguments.size() > 0) {
 					int size = typeArguments.size();
@@ -512,10 +512,12 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 		@Override
 		public boolean contains(NormalMethod first, NormalMethod second) throws LookupException {
 			boolean result = false;
-			if(!(first.lastFormalParameter() instanceof MultiFormalParameter) && ! (second.lastFormalParameter() instanceof MultiFormalParameter)) {
-				result = containsFixedArity(first, second);
-			} else if((first.lastFormalParameter() instanceof MultiFormalParameter) && (second.lastFormalParameter() instanceof MultiFormalParameter)){
-				result = containsVariableArity(first, second);
+			if(! first.sameAs(second)) {
+				if(!(first.lastFormalParameter() instanceof MultiFormalParameter) && ! (second.lastFormalParameter() instanceof MultiFormalParameter)) {
+					result = containsFixedArity(first, second);
+				} else if((first.lastFormalParameter() instanceof MultiFormalParameter) && (second.lastFormalParameter() instanceof MultiFormalParameter)){
+					result = containsVariableArity(first, second);
+				}
 			}
 			return result;
 		}

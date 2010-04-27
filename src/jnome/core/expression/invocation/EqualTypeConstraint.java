@@ -12,6 +12,7 @@ import chameleon.core.declaration.TargetDeclaration;
 import chameleon.core.expression.NamedTarget;
 import chameleon.core.lookup.LookupException;
 import chameleon.oo.type.ConstructedType;
+import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.TypeParameter;
 
@@ -22,12 +23,12 @@ public class EqualTypeConstraint extends SecondPhaseConstraint {
 	}
 	
 	public void process() throws LookupException {
-		if(U() instanceof ConstructedType) {
-			ConstructedType U = (ConstructedType) U();
+		Type Utype = U();
+		if(Utype instanceof ConstructedType && parent().typeParameters().contains(((ConstructedType)Utype).parameter())) {
+			ConstructedType U = (ConstructedType) Utype;
 			FormalTypeParameter parameter = U.parameter();
 			if(parameter.sameAs(typeParameter())) {
 				// Otherwise, if U is Tj, then this constraint carries no information and may be discarded.
-				parent().remove(this);
 			} else {
 				JavaTypeReference tref = typeParameter().language(Java.class).createTypeReference(parameter.signature().name());
 				tref.setUniParent(parameter);
@@ -37,8 +38,9 @@ public class EqualTypeConstraint extends SecondPhaseConstraint {
 			}
 		} else {
 			substituteRHS(URef());
-			parent().add(new ActualTypeAssignment(typeParameter(), U()));
+			parent().add(new ActualTypeAssignment(typeParameter(), Utype));
 		}
+		parent().remove(this);
 	}
 	
 	/**

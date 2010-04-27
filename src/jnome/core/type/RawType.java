@@ -49,9 +49,10 @@ public class RawType extends TypeWithBody implements JavaType {
 					}
 					RawType current = outer;
 					List<Type> outerTypes = original.ancestors(Type.class);
+					outerTypes.add(0, original);
 
 					int size = outerTypes.size();
-					for(int i = size - 1; i>=0;i--) {
+					for(int i = size - 2; i>=0;i--) {
 						SimpleReference<RawType> simpleRef = new SimpleReference<RawType>(outerTypes.get(i).signature().name(), RawType.class);
 						simpleRef.setUniParent(current);
 						try {
@@ -128,11 +129,11 @@ public class RawType extends TypeWithBody implements JavaType {
 			if(element instanceof Method) {
 				Method<?,?,?,?> method = (Method)element;
 				eraseTypeParameters(method.typeParameters());
-				for(TypeParameter tp: method.typeParameters()) {
-					if(tp instanceof FormalTypeParameter) {
-						System.out.println("Nie zjust!");
-					}
-				}
+//				for(TypeParameter tp: method.typeParameters()) {
+//					if(tp instanceof FormalTypeParameter) {
+//						System.out.println("Nie zjust!");
+//					}
+//				}
 				for(FormalParameter param: method.formalParameters()) {
 					JavaTypeReference typeReference = (JavaTypeReference) param.getTypeReference();
 					param.setTypeReference(typeReference.erasedReference());
@@ -155,8 +156,8 @@ public class RawType extends TypeWithBody implements JavaType {
 			JavaTypeReference upperBoundReference = (JavaTypeReference) param.upperBoundReference();
 			JavaTypeReference erased = upperBoundReference.erasedReference();
 			BasicTypeArgument argument = new BasicTypeArgument(erased);
-			argument.setUniParent(parent());
-			InstantiatedTypeParameter newParameter = new InstantiatedTypeParameter(typeParameter.signature().clone(),argument);
+			ErasedTypeParameter newParameter = new ErasedTypeParameter(typeParameter.signature().clone(),argument);
+			argument.setUniParent(newParameter);
 			SingleAssociation parentLink = typeParameter.parentLink();
 			parentLink.getOtherRelation().replace(parentLink, newParameter.parentLink());
 		}

@@ -65,10 +65,10 @@ import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.generics.ActualTypeArgument;
 import chameleon.oo.type.generics.BasicTypeArgument;
 import chameleon.oo.type.generics.ExtendsConstraint;
-import chameleon.oo.type.generics.ExtendsWildCard;
+import chameleon.oo.type.generics.ExtendsWildcard;
 import chameleon.oo.type.generics.FormalTypeParameter;
-import chameleon.oo.type.generics.PureWildCard;
-import chameleon.oo.type.generics.SuperWildCard;
+import chameleon.oo.type.generics.PureWildcard;
+import chameleon.oo.type.generics.SuperWildcard;
 import chameleon.oo.type.generics.TypeConstraint;
 import chameleon.oo.type.generics.TypeParameter;
 import chameleon.oo.type.inheritance.InheritanceRelation;
@@ -276,11 +276,11 @@ public class JavaCodeWriter extends Syntax {
     } else if(isAssert(element)) {
     	result = toCodeAssert((AssertStatement) element);
     } else if(isExtendsWildCard(element)) {
-    	result = toCodeExtendsWildCard((ExtendsWildCard) element);
+    	result = toCodeExtendsWildCard((ExtendsWildcard) element);
     } else if(isSuperWildCard(element)) {
-    	result = toCodeSuperWildCard((SuperWildCard) element);
+    	result = toCodeSuperWildCard((SuperWildcard) element);
     } else if(isPureWildCard(element)) {
-    	result = toCodePureWildCard((PureWildCard) element);
+    	result = toCodePureWildCard((PureWildcard) element);
     }
     else if(element == null) {
       result = "";
@@ -292,26 +292,26 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public boolean isExtendsWildCard(Element element) {
-  	return element instanceof ExtendsWildCard;
+  	return element instanceof ExtendsWildcard;
   }
   
-  public String toCodeExtendsWildCard(ExtendsWildCard element) throws LookupException {
+  public String toCodeExtendsWildCard(ExtendsWildcard element) throws LookupException {
   	return "? extends " + toCode(element.typeReference());
   }
   
   public boolean isSuperWildCard(Element element) {
-  	return element instanceof SuperWildCard;
+  	return element instanceof SuperWildcard;
   }
   
-  public String toCodeSuperWildCard(SuperWildCard element) throws LookupException {
+  public String toCodeSuperWildCard(SuperWildcard element) throws LookupException {
   	return "? super " + toCode(element.typeReference());
   }
   
   public boolean isPureWildCard(Element element) {
-  	return element instanceof PureWildCard;
+  	return element instanceof PureWildcard;
   }
   
-  public String toCodePureWildCard(PureWildCard element) throws LookupException {
+  public String toCodePureWildCard(PureWildcard element) throws LookupException {
   	return "?";
   }
   
@@ -1335,7 +1335,7 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public String toCodeClassLiteral(ClassLiteral literal) throws LookupException {
-    return toCode(literal.getTypeReference())+".class";
+    return toCode(literal.target())+".class";
   }
   
   public boolean isThisLiteral(Element element) {

@@ -11,7 +11,11 @@ import jnome.core.modifier.PackageProperty;
 import jnome.core.type.ArrayType;
 import jnome.core.type.ArrayTypeReference;
 import jnome.core.type.BasicJavaTypeReference;
+import jnome.core.type.JavaBasicTypeArgument;
+import jnome.core.type.JavaExtendsWildcard;
 import jnome.core.type.JavaIntersectionTypeReference;
+import jnome.core.type.JavaPureWildcard;
+import jnome.core.type.JavaSuperWildcard;
 import jnome.core.type.JavaTypeReference;
 import jnome.core.type.NullType;
 import jnome.core.type.RawType;
@@ -51,9 +55,15 @@ import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.generics.ActualTypeArgument;
 import chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
+import chameleon.oo.type.generics.BasicTypeArgument;
+import chameleon.oo.type.generics.ExtendsWildcard;
 import chameleon.oo.type.generics.ExtendsWildcardType;
 import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.InstantiatedTypeParameter;
+import chameleon.oo.type.generics.PureWildCardType;
+import chameleon.oo.type.generics.PureWildcard;
+import chameleon.oo.type.generics.SuperWildcard;
+import chameleon.oo.type.generics.SuperWildcardType;
 import chameleon.oo.type.generics.TypeConstraint;
 import chameleon.oo.type.generics.TypeConstraintWithReferences;
 import chameleon.oo.type.generics.TypeParameter;
@@ -536,6 +546,23 @@ public class Java extends ObjectOrientedLanguage {
 				result = (JavaTypeReference) createTypeReferenceInDefaultNamespace(type.getFullyQualifiedName());
 			} else if (type instanceof RawType) {
 				result = (JavaTypeReference) createTypeReferenceInDefaultNamespace(type.getFullyQualifiedName());
+			} else if (type instanceof ExtendsWildcardType) {
+				JavaTypeReference reference = reference(((ExtendsWildcardType)type).bound());
+				Element parent = reference.parent();
+				reference.setUniParent(null);
+				result = (JavaTypeReference) createExtendsWildcard(reference);
+				result.setUniParent(parent);
+			} else if (type instanceof SuperWildcardType) {
+				JavaTypeReference reference = reference(((SuperWildcardType)type).bound());
+				Element parent = reference.parent();
+				reference.setUniParent(null);
+				result = (JavaTypeReference) createSuperWildcard(reference);
+				result.setUniParent(parent);
+			} else if (type instanceof PureWildCardType) {
+				result = (JavaTypeReference) createPureWildcard();
+				// A pure wildcard type has the original pure wildcard as its parent. The parent of the new reference is the parent of
+				// the original pure wildcard.
+				result.setUniParent(type.parent().parent());
 			}
 			else {
 				throw new ChameleonProgrammerException("Type of type is "+type.getClass().getName());
@@ -549,6 +576,22 @@ public class Java extends ObjectOrientedLanguage {
 		@Override
 		public TypeReference createNonLocalTypeReference(TypeReference tref, Element lookupParent) {
 			return new NonLocalJavaTypeReference((JavaTypeReference) tref, lookupParent);
+		}
+		
+		public BasicTypeArgument createBasicTypeArgument(TypeReference tref) {
+			return new JavaBasicTypeArgument(tref);
+		}
+		
+		public ExtendsWildcard createExtendsWildcard(TypeReference tref) {
+			return new JavaExtendsWildcard(tref);
+		}
+		
+		public SuperWildcard createSuperWildcard(TypeReference tref) {
+			return new JavaSuperWildcard(tref);
+		}
+		
+		public PureWildcard createPureWildcard() {
+			return new JavaPureWildcard();
 		}
 		
 		private Map<Type, RawType> _rawCache = new HashMap<Type, RawType>();

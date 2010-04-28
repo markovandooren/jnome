@@ -72,9 +72,9 @@ import chameleon.oo.type.generics.ActualTypeArgument;
 import chameleon.oo.type.generics.BasicTypeArgument;
 import chameleon.oo.type.generics.TypeConstraint;
 import chameleon.oo.type.generics.ExtendsConstraint;
-import chameleon.oo.type.generics.PureWildCard;
-import chameleon.oo.type.generics.ExtendsWildCard;
-import chameleon.oo.type.generics.SuperWildCard;
+import chameleon.oo.type.generics.PureWildcard;
+import chameleon.oo.type.generics.ExtendsWildcard;
+import chameleon.oo.type.generics.SuperWildcard;
 
 import chameleon.oo.type.inheritance.SubtypeRelation;
 

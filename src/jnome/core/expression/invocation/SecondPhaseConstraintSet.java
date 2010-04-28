@@ -21,11 +21,11 @@ import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.ActualTypeArgument;
 import chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
 import chameleon.oo.type.generics.BasicTypeArgument;
-import chameleon.oo.type.generics.ExtendsWildCard;
+import chameleon.oo.type.generics.ExtendsWildcard;
 import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.InstantiatedTypeParameter;
-import chameleon.oo.type.generics.PureWildCard;
-import chameleon.oo.type.generics.SuperWildCard;
+import chameleon.oo.type.generics.PureWildcard;
+import chameleon.oo.type.generics.SuperWildcard;
 import chameleon.oo.type.generics.TypeParameter;
 import chameleon.support.expression.AssignmentExpression;
 
@@ -198,39 +198,39 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 					List<JavaTypeReference> list = new ArrayList<JavaTypeReference>();
 					list.add((JavaTypeReference) ((BasicTypeArgument)first).typeReference());
 					list.add((JavaTypeReference) ((BasicTypeArgument)second).typeReference());
-					return new ExtendsWildCard(lub(list));
+					return first.language(Java.class).createExtendsWildcard(lub(list));
 				}
 			}
-			if(first instanceof ExtendsWildCard || second instanceof ExtendsWildCard) {
+			if(first instanceof ExtendsWildcard || second instanceof ExtendsWildcard) {
 				BasicTypeArgument basic = (BasicTypeArgument) (first instanceof BasicTypeArgument? first : second);
-				ExtendsWildCard ext = (ExtendsWildCard)(basic == first ? second : first);
-				return new ExtendsWildCard(lub(typeReferenceList(basic,ext)));
+				ExtendsWildcard ext = (ExtendsWildcard)(basic == first ? second : first);
+				return first.language(Java.class).createExtendsWildcard(lub(typeReferenceList(basic,ext)));
 			}
-			if(first instanceof SuperWildCard || second instanceof SuperWildCard) {
+			if(first instanceof SuperWildcard || second instanceof SuperWildcard) {
 				BasicTypeArgument basic = (BasicTypeArgument) (first instanceof BasicTypeArgument? first : second);
-				SuperWildCard ext = (SuperWildCard)(basic == first ? second : first);
-				return new SuperWildCard(first.language(Java.class).glb(typeReferenceList(basic,ext)));
+				SuperWildcard ext = (SuperWildcard)(basic == first ? second : first);
+				return first.language(Java.class).createSuperWildcard(first.language(Java.class).glb(typeReferenceList(basic,ext)));
 			}
-		} else if(first instanceof ExtendsWildCard || second instanceof ExtendsWildCard) {
-			if(first instanceof ExtendsWildCard && second instanceof ExtendsWildCard) {
+		} else if(first instanceof ExtendsWildcard || second instanceof ExtendsWildcard) {
+			if(first instanceof ExtendsWildcard && second instanceof ExtendsWildcard) {
 				List<JavaTypeReference> list = new ArrayList<JavaTypeReference>();
-				list.add((JavaTypeReference) ((ExtendsWildCard)first).typeReference());
-				list.add((JavaTypeReference) ((ExtendsWildCard)second).typeReference());
-				return new ExtendsWildCard(lub(list));
+				list.add((JavaTypeReference) ((ExtendsWildcard)first).typeReference());
+				list.add((JavaTypeReference) ((ExtendsWildcard)second).typeReference());
+				return first.language(Java.class).createExtendsWildcard(lub(list));
 			}
-			if(first instanceof SuperWildCard || second instanceof SuperWildCard) {
-				ExtendsWildCard ext = (ExtendsWildCard) (first instanceof ExtendsWildCard? first : second);
-				SuperWildCard sup = (SuperWildCard)(ext == first ? second : first);
+			if(first instanceof SuperWildcard || second instanceof SuperWildcard) {
+				ExtendsWildcard ext = (ExtendsWildcard) (first instanceof ExtendsWildcard? first : second);
+				SuperWildcard sup = (SuperWildcard)(ext == first ? second : first);
 				Type U = ((BasicTypeArgument)first).type();
 				Type V = ((BasicTypeArgument)second).type();
 				if(U.sameAs(V)) {
-					return new BasicTypeArgument(ext.typeReference().clone());
+					return first.language(Java.class).createBasicTypeArgument(ext.typeReference().clone());
 				} else {
-					return new PureWildCard();
+					return first.language(Java.class).createPureWildcard();
 				}
 			}
-		} else if (first instanceof SuperWildCard && second instanceof SuperWildCard) {
-			return new SuperWildCard(first.language(Java.class).glb(typeReferenceList((SuperWildCard)first,(SuperWildCard)second)));
+		} else if (first instanceof SuperWildcard && second instanceof SuperWildcard) {
+			return first.language(Java.class).createSuperWildcard(first.language(Java.class).glb(typeReferenceList((SuperWildcard)first,(SuperWildcard)second)));
 		}
 		throw new ChameleonProgrammerException("lcta is not defined for the given actual type arguments of types " + first.getClass().getName() + " and " + second.getClass().getName());
 	}

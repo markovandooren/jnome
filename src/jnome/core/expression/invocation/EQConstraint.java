@@ -12,9 +12,9 @@ import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.ActualTypeArgument;
 import chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
 import chameleon.oo.type.generics.BasicTypeArgument;
-import chameleon.oo.type.generics.ExtendsWildCard;
+import chameleon.oo.type.generics.ExtendsWildcard;
 import chameleon.oo.type.generics.InstantiatedTypeParameter;
-import chameleon.oo.type.generics.SuperWildCard;
+import chameleon.oo.type.generics.SuperWildcard;
 import chameleon.oo.type.generics.TypeParameter;
 
 public class EQConstraint extends FirstPhaseConstraint {
@@ -49,12 +49,12 @@ public class EQConstraint extends FirstPhaseConstraint {
 	@Override
 	public void caseSSFormalExtends(List<SecondPhaseConstraint> result, JavaTypeReference U, int index)
 			throws LookupException {
-		processCaseSSFormalExtends(result, U, index, ExtendsWildCard.class);
+		processCaseSSFormalExtends(result, U, index, ExtendsWildcard.class);
 	}
 
 	@Override
 	public void caseSSFormalSuper(List<SecondPhaseConstraint> result, JavaTypeReference U, int index) throws LookupException {
-		processCaseSSFormalExtends(result, U, index, SuperWildCard.class);
+		processCaseSSFormalExtends(result, U, index, SuperWildcard.class);
 	}
 
 	private void processCaseSSFormalExtends(List<SecondPhaseConstraint> result, JavaTypeReference U, int index, Class<? extends ActualTypeArgumentWithTypeReference> t)

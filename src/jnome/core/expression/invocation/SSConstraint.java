@@ -14,9 +14,9 @@ import chameleon.core.lookup.LookupException;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.ActualTypeArgument;
 import chameleon.oo.type.generics.BasicTypeArgument;
-import chameleon.oo.type.generics.ExtendsWildCard;
+import chameleon.oo.type.generics.ExtendsWildcard;
 import chameleon.oo.type.generics.InstantiatedTypeParameter;
-import chameleon.oo.type.generics.SuperWildCard;
+import chameleon.oo.type.generics.SuperWildcard;
 import chameleon.oo.type.generics.TypeParameter;
 import chameleon.util.CreationStackTrace;
 
@@ -84,8 +84,8 @@ public class SSConstraint extends FirstPhaseConstraint {
 					result.addAll(recursive.process());
 				} 
 				// 2)
-				else if (arg instanceof ExtendsWildCard) {
-					JavaTypeReference V = (JavaTypeReference) ((ExtendsWildCard)arg).typeReference();
+				else if (arg instanceof ExtendsWildcard) {
+					JavaTypeReference V = (JavaTypeReference) ((ExtendsWildcard)arg).typeReference();
 					GGConstraint recursive = new GGConstraint(V, U.getElement());
 					result.addAll(recursive.process());
 				}
@@ -119,8 +119,8 @@ public class SSConstraint extends FirstPhaseConstraint {
 					result.addAll(recursive.process());
 				} 
 				// 2)
-				else if (arg instanceof ExtendsWildCard) {
-					JavaTypeReference V = (JavaTypeReference) ((ExtendsWildCard)arg).typeReference();
+				else if (arg instanceof ExtendsWildcard) {
+					JavaTypeReference V = (JavaTypeReference) ((ExtendsWildcard)arg).typeReference();
 					SSConstraint recursive = new SSConstraint(V, U.getElement());
 					result.addAll(recursive.process());
 				}

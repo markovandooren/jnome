@@ -1,40 +1,49 @@
 package jnome.core.expression;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jnome.core.type.BasicJavaTypeReference;
-import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.association.SingleAssociation;
 
 import chameleon.core.element.Element;
+import chameleon.core.expression.Expression;
+import chameleon.core.lookup.LookupException;
+import chameleon.core.validation.Valid;
+import chameleon.core.validation.VerificationResult;
+import chameleon.oo.language.ObjectOrientedLanguage;
+import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
-import chameleon.support.expression.LiteralWithTypeReference;
+import chameleon.oo.type.generics.BasicTypeArgument;
 import chameleon.util.Util;
 
 /**
  * @author Marko van Dooren
  */
-public class ClassLiteral extends LiteralWithTypeReference {
+public class ClassLiteral extends Expression<ClassLiteral> {
 
   public ClassLiteral(TypeReference tref) {
-    super("class");
     setTarget(tref);
-    //FIXME a class literal should not have a type reference to store its type, it is not present in the source code.
-    setTypeReference(new BasicJavaTypeReference("java.lang.Class"));
+  }
+
+  protected Type actualType() throws LookupException {
+  	BasicJavaTypeReference tref = (BasicJavaTypeReference) language(ObjectOrientedLanguage.class).createTypeReferenceInDefaultNamespace("java.lang.Class");
+  	tref.addArgument(new BasicTypeArgument<BasicTypeArgument>(target().clone()));
+  	tref.setUniParent(this);
+  	return tref.getElement();
   }
 
   public ClassLiteral clone() {
     TypeReference target = target();
 		TypeReference clone = (target == null ? null : target.clone());
 		ClassLiteral result = new ClassLiteral(clone);
-    result.setTypeReference((JavaTypeReference)getTypeReference().clone());
     return result;
   }
   
   public List<Element> children() {
-  	List<Element> result = super.children();
+  	List<Element> result = new ArrayList<Element>();
   	Util.addNonNull(target(), result);
   	return result;
   }
@@ -42,7 +51,7 @@ public class ClassLiteral extends LiteralWithTypeReference {
 	/**
 	 * TARGET
 	 */
-	private SingleAssociation<LiteralWithTypeReference,TypeReference> _typeReference = new SingleAssociation<LiteralWithTypeReference,TypeReference>(this);
+	private SingleAssociation<ClassLiteral,TypeReference> _typeReference = new SingleAssociation<ClassLiteral,TypeReference>(this);
 
   
   public TypeReference target() {
@@ -52,6 +61,11 @@ public class ClassLiteral extends LiteralWithTypeReference {
   public void setTarget(TypeReference type) {
     _typeReference.connectTo(type.parentLink());
   }
+
+	@Override
+	public VerificationResult verifySelf() {
+		return Valid.create();
+	}
 
 //  public AccessibilityDomain getAccessibilityDomain() throws LookupException {
 //    return getTypeReference().getType().getTypeAccessibilityDomain();

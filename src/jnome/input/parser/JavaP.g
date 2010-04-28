@@ -321,6 +321,10 @@ scope TargetScope {
   public JavaTypeReference createTypeReference(NamedTarget target) {
     return ((Java)language()).createTypeReference(target);
   }
+  
+  public Java java() {
+    return (Java)language();
+  }
 }
 
 
@@ -532,7 +536,7 @@ enumBody returns [ClassBody element]
     ;
 
 enumConstants returns [List<EnumConstant> element]
-    :   ct=enumConstant {retval.element = new ArrayList<EnumConstant>(); retval.element.add(ct.element);} (',' cst=enumConstant{$enumDeclaration::enumType.add(cst.element);})*
+    :   ct=enumConstant {retval.element = new ArrayList<EnumConstant>(); retval.element.add(ct.element);} (',' cst=enumConstant{retval.element.add(cst.element);})*
     ;
     
 enumConstant returns [EnumConstant element]
@@ -876,21 +880,21 @@ typeArgument returns [ActualTypeArgument element]
 boolean pure=true;
 boolean ext=true;
 }
-    :   t=type {retval.element = new BasicTypeArgument(t.element);}
+    :   t=type {retval.element = java().createBasicTypeArgument(t.element);}
     |   '?'  
         (
           {pure=false;}
           ('extends' | 'super'{ext=false;}) 
           t=type
           {if(ext) {
-            retval.element = new ExtendsWildCard(t.element);
+            retval.element = java().createExtendsWildcard(t.element);
            } else {
-            retval.element = new SuperWildCard(t.element);
+            retval.element = java().createSuperWildcard(t.element);
            }
           }
         )?
         {if(pure) {
-           retval.element = new PureWildCard();
+           retval.element = java().createPureWildcard();
          }
         }
     ;
@@ -1712,7 +1716,7 @@ explicitGenericInvocation returns [Expression element]
     ;
     
 nonWildcardTypeArguments returns [List<ActualTypeArgument> element]
-    :   '<' list=typeList {retval.element = new ArrayList<ActualTypeArgument>();for(TypeReference tref:list.element){retval.element.add(new BasicTypeArgument(tref));}}'>'
+    :   '<' list=typeList {retval.element = new ArrayList<ActualTypeArgument>();for(TypeReference tref:list.element){retval.element.add(java().createBasicTypeArgument(tref));}}'>'
     ;
     
 // NEEDS_TARGET

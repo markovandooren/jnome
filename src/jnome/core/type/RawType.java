@@ -138,6 +138,8 @@ public class RawType extends TypeWithBody implements JavaType {
 					JavaTypeReference typeReference = (JavaTypeReference) param.getTypeReference();
 					param.setTypeReference(typeReference.erasedReference());
 				}
+				// erase return type reference
+				method.setReturnTypeReference(((JavaTypeReference)method.returnTypeReference()).erasedReference());
 			}
 		}
 	}
@@ -151,11 +153,12 @@ public class RawType extends TypeWithBody implements JavaType {
 	}
 
 	private void eraseTypeParameters(List<TypeParameter> parameters) {
+		Java language = language(Java.class);
 		for(TypeParameter typeParameter: parameters) {
 			FormalTypeParameter param = (FormalTypeParameter) typeParameter;
 			JavaTypeReference upperBoundReference = (JavaTypeReference) param.upperBoundReference();
 			JavaTypeReference erased = upperBoundReference.erasedReference();
-			BasicTypeArgument argument = new BasicTypeArgument(erased);
+			BasicTypeArgument argument = language.createBasicTypeArgument(erased);
 			ErasedTypeParameter newParameter = new ErasedTypeParameter(typeParameter.signature().clone(),argument);
 			argument.setUniParent(newParameter);
 			SingleAssociation parentLink = typeParameter.parentLink();

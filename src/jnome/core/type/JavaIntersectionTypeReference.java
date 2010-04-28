@@ -56,10 +56,6 @@ public class JavaIntersectionTypeReference extends IntersectionTypeReference<Jav
 //		return erasedReference().erasure();
 //	}
 
-	public void setArrayDimension(int i) {
-		throw new ChameleonProgrammerException("Cannot change the dimension of an intersection type reference");
-	}
-
 	public JavaTypeReference toArray(int dimension) {
 		throw new ChameleonProgrammerException("Cannot change the dimension of an intersection type reference");
 	}

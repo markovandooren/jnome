@@ -287,7 +287,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 				JavaTypeReference reference = language.reference(assignedType);
 				Element parent = reference.parent();
 				reference.setUniParent(null);
-				BasicTypeArgument argument = new BasicTypeArgument(reference);
+				BasicTypeArgument argument = language.createBasicTypeArgument(reference);
 				argument.setUniParent(parent);
 				TypeParameter newPar = new InstantiatedTypeParameter(clonedPar.signature(), argument);
 				SingleAssociation parentLink = clonedPar.parentLink();
@@ -351,6 +351,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 			} else {
 				// E) reference widening
 				Collection<Type> candidates = referenceWideningConversionCandidates(first);
+				candidates.add(first);
 				if(candidates.contains(second)) {
 					result = true;
 				} else {

@@ -21,9 +21,9 @@ import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.ActualTypeArgument;
 import chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
 import chameleon.oo.type.generics.BasicTypeArgument;
-import chameleon.oo.type.generics.ExtendsWildCard;
+import chameleon.oo.type.generics.ExtendsWildcard;
 import chameleon.oo.type.generics.InstantiatedTypeParameter;
-import chameleon.oo.type.generics.SuperWildCard;
+import chameleon.oo.type.generics.SuperWildcard;
 import chameleon.oo.type.generics.TypeParameter;
 
 /**
@@ -114,13 +114,13 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 						if(involvesTypeParameter(U)) {
 						  caseSSFormalBasic(result, U, i);
 						}
-					} else if(typeArgumentOfFormalParameter instanceof ExtendsWildCard) {
-						JavaTypeReference U = (JavaTypeReference) ((ExtendsWildCard)typeArgumentOfFormalParameter).typeReference();
+					} else if(typeArgumentOfFormalParameter instanceof ExtendsWildcard) {
+						JavaTypeReference U = (JavaTypeReference) ((ExtendsWildcard)typeArgumentOfFormalParameter).typeReference();
 						if(involvesTypeParameter(U)) {
 						  caseSSFormalExtends(result, U, i);
 						}
-					} else if(typeArgumentOfFormalParameter instanceof SuperWildCard) {
-						JavaTypeReference U = (JavaTypeReference) ((SuperWildCard)typeArgumentOfFormalParameter).typeReference();
+					} else if(typeArgumentOfFormalParameter instanceof SuperWildcard) {
+						JavaTypeReference U = (JavaTypeReference) ((SuperWildcard)typeArgumentOfFormalParameter).typeReference();
 						if(involvesTypeParameter(U)) {
 							caseSSFormalSuper(result, U, i);
 						}

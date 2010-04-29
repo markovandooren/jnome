@@ -100,7 +100,7 @@ public class TypeAssignmentSet {
 		for(TypeParameter parameter: typeParameters()) {
 			int position = -1;
 			int index = 0;
-			for(TypeAssignment assignment: assignments()) {
+			for(TypeAssignment assignment: local) {
 				if(assignment.parameter().sameAs(parameter)) {
 					position = index;
 					break;

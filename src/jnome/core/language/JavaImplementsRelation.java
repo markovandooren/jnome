@@ -18,27 +18,22 @@ public class JavaImplementsRelation extends StrictPartialOrder<Member> {
 
 	@Override
 	public boolean contains(Member first, Member second) throws LookupException {
-	  boolean result;
-	  
-	  if((first != second) && (first instanceof Method) && (second instanceof Method)) {
+	  boolean result = false;
+	  if((!first.sameAs(second)) && (first instanceof Method) && (second instanceof Method)) {
 	    Method<?,?,?,?> method1 = (Method<?,?,?,?>) first;
 	    Method<?,?,?,?> method2 = (Method<?,?,?,?>) second;
-	    boolean defined1 = checkDefined(method1);
-	    if(defined1) {
-	    boolean defined2 = checkDefined(method2);
-	    MethodSignature signature1 = method1.signature();
-	    MethodSignature<?,?> signature2 = method2.signature();
-	    MethodSignature erasure2 = signature2.language(Java.class).erasure((SimpleNameMethodSignature) signature2);
-			result = (!defined2) && 
-	             signature1.sameParameterBoundsAs(signature2) &&
-	             (! method2.nearestAncestor(Type.class).subTypeOf(method1.nearestAncestor(Type.class))) &&
-	             method1.sameKind(method2);
-	    } else {
-	    	result = false;
-	    }
-	  }
-	  else {
-	    result = false;
+//	    result = checkDefined(method1);
+//	    if(result) {
+	    	result = !checkDefined(method2);
+	    	if(result) {
+	    		MethodSignature signature1 = method1.signature();
+	    		MethodSignature<?,?> signature2 = method2.signature();
+	    		MethodSignature erasure2 = signature2.language(Java.class).erasure((SimpleNameMethodSignature) signature2);
+	    		result = signature1.sameParameterBoundsAs(signature2) &&
+	    		(! method2.nearestAncestor(Type.class).subTypeOf(method1.nearestAncestor(Type.class))) &&
+	    		method1.sameKind(method2);
+	    	} 
+//	    } 
 	  }
 	  return result; 
 	}

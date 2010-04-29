@@ -99,7 +99,7 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
 
 	  boolean realSelector = selector.equals(selector());
 	  if(realSelector) {
-	    result = (X) getCache();
+	    result = (X) getGenericCache();
 	  }
 	  if(result != null) {
 	   	return result;
@@ -113,16 +113,11 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
     	//we know that result is a Type.
       // FILL IN GENERIC PARAMETERS
       result = (X) convertGenerics((Type)result);
-      // ARRAY TYPE
-//      if ((arrayDimension() != 0) && (result != null)) {
-//        result = (X) new ArrayType(((Type)result),arrayDimension());
-//      }
     }
     
     if(result != null) {
     	if(realSelector) {
-    		// This will flush the cache if the result is derived, for example, if it is an array type or generic instance
-        setCache((Type)result);
+        setGenericCache((Type)result);
     	}
       return result;
     } else {
@@ -130,17 +125,17 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
     }
   }
 
-  public Type erasure() throws LookupException {
-    Type result = null;
-
-    result = super.getElement(selector());
-    
-    if(result != null) {
-      return result;
-    } else {
-      throw new LookupException("Result of type reference lookup is null: "+signature(),this);
-    }
-  }
+//  public Type erasure() throws LookupException {
+//    Type result = null;
+//
+//    result = super.getElement(selector());
+//    
+//    if(result != null) {
+//      return result;
+//    } else {
+//      throw new LookupException("Result of type reference lookup is null: "+signature(),this);
+//    }
+//  }
 
   
   private Type convertGenerics(Type type) throws LookupException {
@@ -180,5 +175,31 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
 	public JavaTypeReference componentTypeReference() {
 		return this;
 	}
+
+	protected Type typeConstructor() throws LookupException {
+		return super.getElement(selector());
+	}
+	
+  private Type _genericCache;
+  
+  @Override
+  public void flushLocalCache() {
+  	super.flushLocalCache();
+  	_genericCache = null;
+  }
+  
+  protected Type getGenericCache() {
+  	if(Config.cacheElementReferences() == true) {
+  	  return _genericCache;
+  	} else {
+  		return null;
+  	}
+  }
+  
+  protected void setGenericCache(Type value) {
+    	if(Config.cacheElementReferences() == true) {
+    		_genericCache = value;
+    	}
+  }
 
 }

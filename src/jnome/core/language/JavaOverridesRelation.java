@@ -25,7 +25,7 @@ import chameleon.support.member.simplename.SimpleNameMethodSignature;
 public class JavaOverridesRelation extends StrictPartialOrder<Member> {
 		@Override
 		public boolean contains(Member first, Member second) throws LookupException {
-		  boolean result;
+		  boolean result = false;
 		  if((first instanceof Method) && (second instanceof Method)) {
 		    assert first != null;
 		    assert second != null;
@@ -40,17 +40,18 @@ public class JavaOverridesRelation extends StrictPartialOrder<Member> {
 		      throw new LookupException("The overridability of the other method could not be determined.");
 		    }
 		    if(result) {
+		    	result =  method1.sameKind(method2) && method1.nearestAncestor(Type.class).subTypeOf(method2.nearestAncestor(Type.class));
+		    	if(result) {
 		    	MethodSignature signature1 = method1.signature();
 		    	MethodSignature<?,?> signature2 = method2.signature();
+		    	result = signature1.sameParameterBoundsAs(signature2);
+		    	if(result) {
 		    	MethodSignature erasure2 = signature2.language(Java.class).erasure((SimpleNameMethodSignature) signature2);
-		    	result = (signature1.sameParameterBoundsAs(signature2) || signature1.sameParameterBoundsAs(erasure2))&& // ) && // 
-		    	method1.nearestAncestor(Type.class).subTypeOf(method2.nearestAncestor(Type.class)) && 
-		    	method1.sameKind(method2);
+		    	 result = signature1.sameParameterBoundsAs(erasure2);
+		    	}
+		    	}
 		    }
 		  } 
-		  else {
-		    result = false;
-		  }
 		  return result; 
 		}
 		

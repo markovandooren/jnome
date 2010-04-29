@@ -18,6 +18,8 @@ import jnome.core.type.JavaPureWildcard;
 import jnome.core.type.JavaSuperWildcard;
 import jnome.core.type.JavaTypeReference;
 import jnome.core.type.NullType;
+import jnome.core.type.PureWildCardType;
+import jnome.core.type.PureWildcard;
 import jnome.core.type.RawType;
 
 import org.rejuse.logic.ternary.Ternary;
@@ -60,8 +62,6 @@ import chameleon.oo.type.generics.ExtendsWildcard;
 import chameleon.oo.type.generics.ExtendsWildcardType;
 import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.InstantiatedTypeParameter;
-import chameleon.oo.type.generics.PureWildCardType;
-import chameleon.oo.type.generics.PureWildcard;
 import chameleon.oo.type.generics.SuperWildcard;
 import chameleon.oo.type.generics.SuperWildcardType;
 import chameleon.oo.type.generics.TypeConstraint;

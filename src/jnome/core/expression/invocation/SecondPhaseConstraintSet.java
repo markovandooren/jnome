@@ -7,6 +7,7 @@ import java.util.Set;
 
 import jnome.core.language.Java;
 import jnome.core.type.JavaTypeReference;
+import jnome.core.type.PureWildcard;
 
 import org.rejuse.predicate.TypePredicate;
 import org.rejuse.predicate.UnsafePredicate;
@@ -24,7 +25,6 @@ import chameleon.oo.type.generics.BasicTypeArgument;
 import chameleon.oo.type.generics.ExtendsWildcard;
 import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.InstantiatedTypeParameter;
-import chameleon.oo.type.generics.PureWildcard;
 import chameleon.oo.type.generics.SuperWildcard;
 import chameleon.oo.type.generics.TypeParameter;
 import chameleon.support.expression.AssignmentExpression;

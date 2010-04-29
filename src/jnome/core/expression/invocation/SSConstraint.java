@@ -71,9 +71,8 @@ public class SSConstraint extends FirstPhaseConstraint {
 	public void caseSSFormalSuper(List<SecondPhaseConstraint> result, JavaTypeReference U,
 			int index) throws LookupException {
 		Type G = GsuperTypeOfA();
-		TypeParameter ithTypeParameterOfG = G.parameters().get(index);
-
 		if(G != null) {
+			TypeParameter ithTypeParameterOfG = G.parameters().get(index);
 			if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
 				ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 				// 1)
@@ -106,9 +105,8 @@ public class SSConstraint extends FirstPhaseConstraint {
 			int index) throws LookupException {
 
 		Type G = GsuperTypeOfA();
-		TypeParameter ithTypeParameterOfG = G.parameters().get(index);
-
 		if(G != null) {
+			TypeParameter ithTypeParameterOfG = G.parameters().get(index);
 			if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
 				ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 				// 1)
@@ -138,29 +136,28 @@ public class SSConstraint extends FirstPhaseConstraint {
 			int index) throws LookupException {
 		// U = basic.typeReference()
 		Type G = GsuperTypeOfA();
-		if(G == null) {
-			G = GsuperTypeOfA();
-		}
-		try {
-			TypeParameter ithTypeParameterOfG = G.parameters().get(index);
+		if(G != null) {
+			try {
+				TypeParameter ithTypeParameterOfG = G.parameters().get(index);
 
-			if(G != null) {
-				if(involvesTypeParameter(U)) {
-					// Get the i-th type parameter of zuppa: V.
-					if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
-						ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
-						if(arg instanceof BasicTypeArgument) {
-							JavaTypeReference V = (JavaTypeReference) ((BasicTypeArgument)arg).typeReference();
-							EQConstraint recursive = new EQConstraint(V, U.getElement());
-							recursive.setUniParent(parent());
-							result.addAll(recursive.process());
+				if(G != null) {
+					if(involvesTypeParameter(U)) {
+						// Get the i-th type parameter of zuppa: V.
+						if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
+							ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
+							if(arg instanceof BasicTypeArgument) {
+								JavaTypeReference V = (JavaTypeReference) ((BasicTypeArgument)arg).typeReference();
+								EQConstraint recursive = new EQConstraint(V, U.getElement());
+								recursive.setUniParent(parent());
+								result.addAll(recursive.process());
+							}
 						}
 					}
 				}
 			}
-		}
-		catch(IndexOutOfBoundsException exc) {
-			return;
+			catch(IndexOutOfBoundsException exc) {
+				return;
+			}
 		}
 	}
 

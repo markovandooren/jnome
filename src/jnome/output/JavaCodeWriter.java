@@ -23,6 +23,7 @@ import jnome.core.type.ArrayTypeReference;
 import jnome.core.type.BasicJavaTypeReference;
 import jnome.core.type.JavaIntersectionTypeReference;
 import jnome.core.type.JavaTypeReference;
+import jnome.core.type.PureWildcard;
 
 import org.rejuse.java.collections.RobustVisitor;
 import org.rejuse.java.collections.Visitor;
@@ -67,7 +68,6 @@ import chameleon.oo.type.generics.BasicTypeArgument;
 import chameleon.oo.type.generics.ExtendsConstraint;
 import chameleon.oo.type.generics.ExtendsWildcard;
 import chameleon.oo.type.generics.FormalTypeParameter;
-import chameleon.oo.type.generics.PureWildcard;
 import chameleon.oo.type.generics.SuperWildcard;
 import chameleon.oo.type.generics.TypeConstraint;
 import chameleon.oo.type.generics.TypeParameter;

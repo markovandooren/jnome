@@ -23,6 +23,7 @@ import chameleon.core.validation.VerificationResult;
 import chameleon.oo.type.ClassBody;
 import chameleon.oo.type.DeclarationWithType;
 import chameleon.oo.type.Type;
+import chameleon.util.Util;
 
 public class EnumConstant extends FixedSignatureMember<EnumConstant,Type,SimpleNameSignature,EnumConstant> implements DeclarationWithType<EnumConstant,Type,SimpleNameSignature,EnumConstant>, DeclarationContainer<EnumConstant, Type>{
 
@@ -44,8 +45,9 @@ public class EnumConstant extends FixedSignatureMember<EnumConstant,Type,SimpleN
 	}
 
 	public List<Element> children() {
-    List<Element> result = new ArrayList<Element>();
+    List<Element> result = super.children();
     result.add(actualArgumentList());
+    Util.addNonNull(getBody(), result);
     return result;
 	}
 

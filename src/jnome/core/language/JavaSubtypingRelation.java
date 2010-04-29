@@ -4,8 +4,11 @@
 package jnome.core.language;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import jnome.core.type.ArrayType;
@@ -14,14 +17,13 @@ import jnome.core.type.RawType;
 import org.apache.log4j.Logger;
 import org.rejuse.logic.ternary.Ternary;
 
+import chameleon.core.Config;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.relation.WeakPartialOrder;
 import chameleon.oo.language.ObjectOrientedLanguage;
-import chameleon.oo.type.ConstructedType;
 import chameleon.oo.type.DerivedType;
 import chameleon.oo.type.IntersectionType;
 import chameleon.oo.type.Type;
-import chameleon.oo.type.generics.ExtendsWildcardType;
 import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.InstantiatedTypeParameter;
 import chameleon.oo.type.generics.TypeParameter;
@@ -35,10 +37,21 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		return _logger;
 	}
 	
+	// Can't use set for now because hashCode is not OK.
+	private Map<Type, Set<Type>> _cache = new HashMap<Type,Set<Type>>();
+	
 	@Override
 	public boolean contains(Type first, Type second) throws LookupException {
 		// OPTIMIZE
 		//getLogger().debug("Subtype check: "+first.getFullyQualifiedName()+" <: " + second.getFullyQualifiedName());
+		
+//		if(Config.cacheElementProperties()) {
+//			Set<Type> superTypes = _cache.get(first);
+//			if(superTypes != null && superTypes.contains(second)) {
+//				return true;
+//			}
+//		}
+		
 		boolean result = false;
 		if(first.equals(second)) {
 			result = true;
@@ -54,7 +67,7 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		else if (first instanceof ArrayType && second instanceof ArrayType && first.is(first.language(Java.class).REFERENCE_TYPE) == Ternary.TRUE) {
 			ArrayType first2 = (ArrayType)first;
 			ArrayType second2 = (ArrayType)second;
-			result = first2.dimension() == second2.dimension() && contains(first2.elementType(), second2.elementType());
+			result = contains(first2.elementType(), second2.elementType());
 		} else if(second instanceof IntersectionType) {
 			List<Type> types = ((IntersectionType)second).types();
 			int size = types.size();
@@ -82,6 +95,14 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 				}
 //			}
 		}
+//		if(Config.cacheElementProperties()) {
+//			Set<Type> superTypes = _cache.get(first);
+//			if(superTypes == null) {
+//				superTypes = new HashSet<Type>();
+//				_cache.put(first, superTypes);
+//			}
+//			superTypes.add(second);
+//		}
 		return result;
 	}
 	

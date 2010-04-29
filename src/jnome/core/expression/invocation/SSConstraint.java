@@ -138,6 +138,9 @@ public class SSConstraint extends FirstPhaseConstraint {
 			int index) throws LookupException {
 		// U = basic.typeReference()
 		Type G = GsuperTypeOfA();
+		if(G == null) {
+			G = GsuperTypeOfA();
+		}
 		try {
 			TypeParameter ithTypeParameterOfG = G.parameters().get(index);
 

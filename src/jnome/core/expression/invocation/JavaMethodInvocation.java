@@ -3,7 +3,9 @@ package jnome.core.expression.invocation;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import jnome.core.language.Java;
 import jnome.core.type.ArrayType;
@@ -123,7 +125,6 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
     			}
     		}
     	}
-
     	for(NormalMethod decl: candidates) {
     		if(matchingApplicableBySubtyping(decl)) {
     			tmp.add(decl);

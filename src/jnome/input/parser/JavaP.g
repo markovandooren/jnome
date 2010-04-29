@@ -498,10 +498,20 @@ Token stop = null;
         
 typeBound returns [ExtendsConstraint element]
 @init{retval.element = new ExtendsConstraint();
-JavaIntersectionTypeReference ref = new JavaIntersectionTypeReference();
-retval.element.setTypeReference(ref); 
+JavaIntersectionTypeReference ref = null;
 }
-    :   tp=type {ref.add(tp.element);}('&' tpp=type {ref.add(tpp.element);})*
+    :   tp=type 
+         {retval.element.setTypeReference(tp.element);}
+         ('&' tpp=type 
+          {
+           if(ref == null) {
+             ref = new JavaIntersectionTypeReference();
+             ref.add(retval.element.typeReference());
+             retval.element.setTypeReference(ref);
+           }
+           ref.add(tpp.element);
+          }
+         )*
     ;
 
 enumDeclaration returns [RegularType element]

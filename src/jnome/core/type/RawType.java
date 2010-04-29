@@ -174,6 +174,11 @@ public class RawType extends TypeWithBody implements JavaType {
 	public boolean uniSameAs(Element otherType) throws LookupException {
 		return (otherType instanceof RawType) && (baseType().sameAs(((RawType)otherType).baseType()));
 	}
+	
+	@Override
+	public int hashCode() {
+		return 87937+baseType().hashCode();
+	}
 
 	public boolean convertibleThroughUncheckedConversionAndSubtyping(Type second) throws LookupException {
 		Collection<Type> supers = getAllSuperTypes();

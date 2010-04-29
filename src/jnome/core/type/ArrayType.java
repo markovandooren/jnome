@@ -79,16 +79,25 @@ public class ArrayType extends RegularType implements JavaType {
 //  }
   
   public int dimension() {
-    return _arrayDimension; 
+    Type elementType = elementType();
+		if(elementType instanceof ArrayType) {
+			return 1+(((ArrayType) elementType).dimension());
+		} else {
+			return 1;
+		}
   }
-  
-  private int _arrayDimension;
+//  
+//  private int _arrayDimension;
   
   @Override
   public boolean uniSameAs(Element o) throws LookupException {
     return (o instanceof ArrayType) &&
-           ((ArrayType)o).dimension() == dimension() &&
            ((ArrayType)o).elementType().sameAs(elementType());
+  }
+  
+  @Override
+  public int hashCode() {
+  	return 1+elementType().hashCode();
   }
   
   public boolean assignableTo(Type other) throws LookupException {
@@ -102,8 +111,7 @@ public class ArrayType extends RegularType implements JavaType {
            ( // Primitive type
              (! elementType().subTypeOf(objType)) &&
              (other instanceof ArrayType) &&
-             elementType().equals(((ArrayType)other).elementType()) &&
-             ((ArrayType)other).dimension() == dimension()
+             elementType().equals(((ArrayType)other).elementType())
            );
   }
 

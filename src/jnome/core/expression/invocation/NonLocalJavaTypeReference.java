@@ -23,10 +23,12 @@ import chameleon.core.validation.VerificationResult;
 import chameleon.oo.type.IntersectionTypeReference;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
-import chameleon.oo.type.generics.TypeParameter;
+import chameleon.util.CreationStackTrace;
 import chameleon.util.Util;
 
 public class NonLocalJavaTypeReference extends NamespaceElementImpl<NonLocalJavaTypeReference,Element> implements JavaTypeReference<NonLocalJavaTypeReference> {
+
+	private CreationStackTrace _trace = new CreationStackTrace();
 
 	public NonLocalJavaTypeReference(JavaTypeReference tref) {
    this(tref,tref.parent());

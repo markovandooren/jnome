@@ -35,6 +35,10 @@ public class EnumConstant extends FixedSignatureMember<EnumConstant,Type,SimpleN
 	@Override
 	public EnumConstant clone() {
 		EnumConstant result = new EnumConstant(signature().clone());
+		result.setBody(getBody().clone());
+		for(ActualArgument arg: getActualParameters()) {
+			result.addParameter(arg.clone());
+		}
 		return result;
 	}
 

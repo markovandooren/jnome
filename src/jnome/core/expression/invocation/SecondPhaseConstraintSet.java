@@ -335,16 +335,19 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 			constraints.add(new GGConstraint(S, RprimeRef.getType()));
 		}
 		// additional constraints Bi[T1=B(T1) ... Tn=B(Tn)] >> Ti where Bi is the declared bound of Ti
-		for(TypeParameter param: unresolvedParameters()) {
+		for(TypeParameter param: typeParameters()) {
 			JavaTypeReference bound = (JavaTypeReference) param.upperBoundReference();
 			JavaTypeReference Bi= substitutedReference(bound);
-			constraints.add(new GGConstraint(Bi, param.upperBound()));
+			constraints.add(new GGConstraint(Bi, param.selectionDeclaration()));
 		}
 		SecondPhaseConstraintSet seconds = constraints.secondPhase();
 		seconds.processEqualityConstraints();
 		seconds.processSubtypeConstraints();
+		for(TypeParameter<?> param: seconds.unresolvedParameters()) {
+			seconds.add(new ActualTypeAssignment(param, param.language(ObjectOrientedLanguage.class).getDefaultSuperClass()));
+		}
 		for(TypeParameter<?> param: unresolvedParameters()) {
-			add(new ActualTypeAssignment(param, param.language(ObjectOrientedLanguage.class).getDefaultSuperClass()));
+			add(seconds.assignments().assignment(param));
 		}
 	}
 	
@@ -370,7 +373,9 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		for(JavaTypeReference URef: URefs) {
 			Us.add(URef.getElement());
 		}
-		return new IntersectionType(Us);
+		IntersectionType intersectionType = new IntersectionType(Us);
+		intersectionType.setUniParent(Tj.language().defaultNamespace());
+		return intersectionType;
 	}
 
 	

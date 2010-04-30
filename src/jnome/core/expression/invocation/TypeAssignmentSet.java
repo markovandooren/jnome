@@ -88,6 +88,15 @@ public class TypeAssignmentSet {
 		return null;
 	}
 	
+	public TypeAssignment assignment(TypeParameter parameter) throws LookupException {
+		for(TypeAssignment assignment: assignments()) {
+			if(assignment.parameter().sameAs(parameter)) {
+				return assignment;
+			}
+		}
+		return null;
+	}
+	
 	public List<TypeParameter> assigned() throws LookupException {
 		List<TypeParameter> result = typeParameters();
 		result.removeAll(unassigned());

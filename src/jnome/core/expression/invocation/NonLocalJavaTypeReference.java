@@ -28,8 +28,6 @@ import chameleon.util.Util;
 
 public class NonLocalJavaTypeReference extends NamespaceElementImpl<NonLocalJavaTypeReference,Element> implements JavaTypeReference<NonLocalJavaTypeReference> {
 
-	private CreationStackTrace _trace = new CreationStackTrace();
-
 	public NonLocalJavaTypeReference(JavaTypeReference tref) {
    this(tref,tref.parent());
 	}

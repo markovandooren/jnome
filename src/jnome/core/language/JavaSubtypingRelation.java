@@ -80,7 +80,7 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 			int size = types.size();
 			result = false;
 			for(int i=0; (!result) && i<size;i++) {
-				result = contains(first,types.get(i));
+				result = contains(types.get(i),second);
 			}
 		}
 		else {

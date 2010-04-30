@@ -22,6 +22,7 @@ import chameleon.oo.type.DerivedType;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.ActualTypeArgument;
+import chameleon.util.CreationStackTrace;
 
 public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeReference> implements JavaTypeReference<BasicJavaTypeReference> {
 

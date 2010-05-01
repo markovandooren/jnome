@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import jnome.core.language.Java;
 import jnome.core.type.ArrayType;
@@ -15,6 +16,7 @@ import jnome.core.variable.MultiFormalParameter;
 
 import org.rejuse.association.SingleAssociation;
 import org.rejuse.logic.ternary.Ternary;
+import org.rejuse.predicate.TypePredicate;
 
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.Signature;
@@ -104,50 +106,52 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
   	
     public List<NormalMethod> selection(List<? extends Declaration> selectionCandidates) throws LookupException {
     	List<NormalMethod> tmp = new ArrayList<NormalMethod>();
-    	List<NormalMethod> candidates = new ArrayList<NormalMethod>();
-    	int nbActuals = nbActualParameters();
-    	for(Declaration decl: selectionCandidates) {
-    		if(decl instanceof NormalMethod) {
-    			NormalMethod method = (NormalMethod) decl;
-    			int nbFormals = method.nbFormalParameters();
-    			// If caching is enable, selected based on the name will already have been
-    			// done by the container, so we check for names after the arguments.
-    			if ((
-    					(nbFormals == nbActuals) ||
-    					((nbFormals > 1) 
-    							&&
-    							(method.lastFormalParameter() instanceof MultiFormalParameter)
-    							&& 
-    							(nbActuals >= nbFormals - 1)
-    					)
-    			) && selectedBasedOnName(method.signature())){
-    				candidates.add(method);
-    			}
-    		}
-    	}
-    	for(NormalMethod decl: candidates) {
-    		if(matchingApplicableBySubtyping(decl)) {
-    			tmp.add(decl);
-    		}
-    	}
-    	// conversion
-    	if(tmp.isEmpty()) {
-    		for(NormalMethod decl: candidates) {
-      		if(matchingApplicableByConversion(decl)) {
-      			tmp.add(decl);
-      		}
-    		}
-    		// variable arity
-    		if(tmp.isEmpty()) {
-    			for(NormalMethod decl: candidates) {
-    				if(variableApplicableBySubtyping(decl)) {
-    					tmp.add(decl);
+    	if(! selectionCandidates.isEmpty()) {
+    		List<NormalMethod> candidates = new ArrayList<NormalMethod>();
+    		int nbActuals = nbActualParameters();
+    		for(Declaration decl: selectionCandidates) {
+    			if(decl instanceof NormalMethod) {
+    				NormalMethod method = (NormalMethod) decl;
+    				int nbFormals = method.nbFormalParameters();
+    				// If caching is enable, selected based on the name will already have been
+    				// done by the container, so we check for names after the arguments.
+    				if ((
+    						(nbFormals == nbActuals) ||
+    						((nbFormals > 1) 
+    								&&
+    								(method.lastFormalParameter() instanceof MultiFormalParameter)
+    								&& 
+    								(nbActuals >= nbFormals - 1)
+    						)
+    				) && selectedBasedOnName(method.signature())){
+    					candidates.add(method);
     				}
     			}
     		}
+    		for(NormalMethod decl: candidates) {
+    			if(matchingApplicableBySubtyping(decl)) {
+    				tmp.add(decl);
+    			}
+    		}
+    		// conversion
+    		if(tmp.isEmpty()) {
+    			for(NormalMethod decl: candidates) {
+    				if(matchingApplicableByConversion(decl)) {
+    					tmp.add(decl);
+    				}
+    			}
+    			// variable arity
+    			if(tmp.isEmpty()) {
+    				for(NormalMethod decl: candidates) {
+    					if(variableApplicableBySubtyping(decl)) {
+    						tmp.add(decl);
+    					}
+    				}
+    			}
+    		}
+    		applyOrder(tmp);
+    		// substitute the type parameters
     	}
-    	applyOrder(tmp);
-    	// substitute the type parameters
     	return tmp;
     }
     
@@ -434,7 +438,9 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 		}
 
 		public Collection<Type> referenceWideningConversionCandidates(Type type) throws LookupException {
-			return type.getAllSuperTypes();
+			Set<Type> allSuperTypes = type.getAllSuperTypes();
+			allSuperTypes.add(type);
+			return allSuperTypes;
 		}
 		
 
@@ -452,7 +458,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 					Type actualType = actualParameters.get(i).getExpression().getType();
 					match = convertibleThroughMethodInvocationConversion(actualType, formalType);
 				}
-				Type formalType = formalParameterTypesInContext.get(size-1);
+				Type formalType = ((ArrayType)formalParameterTypesInContext.get(size-1)).elementType();
 				for(int i = size-1; match && i< actualSize;i++) {
 					Type actualType = actualParameters.get(i).getExpression().getType();
 					match = convertibleThroughMethodInvocationConversion(actualType, formalType);
@@ -583,6 +589,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 			List<Type> Us = second.header().formalParameterTypes();
 			int size =Ts.size();
 			List typeParameters = second.typeParameters();
+			new TypePredicate<TypeParameter, FormalTypeParameter>(FormalTypeParameter.class).filter(typeParameters);
 			List<Type> Ss;
 			if(typeParameters.size() > 0) {
 				FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(_invocation, second);

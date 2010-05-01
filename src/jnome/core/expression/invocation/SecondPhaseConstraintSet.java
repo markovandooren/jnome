@@ -287,13 +287,18 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		boolean searching = true;
 		int index = 0;
 		while(searching) {
+			// Keep processing until there are no equality constraints.
 			List<? extends SecondPhaseConstraint> constraints = constraints();
 			new TypePredicate<SecondPhaseConstraint, EqualTypeConstraint>(EqualTypeConstraint.class).filter(constraints);
 			if(constraints.size() > 0) {
-				for(SecondPhaseConstraint constraint: constraints()) {
-					EqualTypeConstraint eq = (EqualTypeConstraint) constraint;
-					eq.process();
-				}
+			  EqualTypeConstraint eq = (EqualTypeConstraint) constraints.get(0);
+			  eq.process();
+//				for(SecondPhaseConstraint constraint: constraints()) {
+//					if(constraint instanceof EqualTypeConstraint) {
+//						EqualTypeConstraint eq = (EqualTypeConstraint) constraint;
+//						eq.process();
+//					}
+//				}
 			} else {
 				searching = false;
 			}
@@ -321,8 +326,10 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
   	if(inContextOfAssignmentConversion()) {
   		processUnresolved(S());
   	} else {
-  		ObjectOrientedLanguage language = (ObjectOrientedLanguage) typeParameters().get(0).language(ObjectOrientedLanguage.class);
-			processUnresolved((JavaTypeReference) language.createTypeReferenceInDefaultNamespace(language.getDefaultSuperClassFQN()));
+  		if(! typeParameters().isEmpty()) {
+  			ObjectOrientedLanguage language = (ObjectOrientedLanguage) typeParameters().get(0).language(ObjectOrientedLanguage.class);
+  			processUnresolved((JavaTypeReference) language.createTypeReferenceInDefaultNamespace(language.getDefaultSuperClassFQN()));
+  		}
   	}
   }
 

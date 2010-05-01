@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import jnome.core.type.ArrayType;
+import jnome.core.type.ErasedTypeParameter;
 import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.logic.ternary.Ternary;
@@ -140,18 +141,14 @@ public class SSConstraint extends FirstPhaseConstraint {
 			try {
 				TypeParameter ithTypeParameterOfG = G.parameters().get(index);
 
-				if(G != null) {
-					if(involvesTypeParameter(U)) {
-						// Get the i-th type parameter of zuppa: V.
-						if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
-							ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
-							if(arg instanceof BasicTypeArgument) {
-								JavaTypeReference V = (JavaTypeReference) ((BasicTypeArgument)arg).typeReference();
-								EQConstraint recursive = new EQConstraint(V, U.getElement());
-								recursive.setUniParent(parent());
-								result.addAll(recursive.process());
-							}
-						}
+				if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
+					// Get the i-th type parameter of zuppa: V.
+					ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
+					if(arg instanceof BasicTypeArgument) {
+						JavaTypeReference V = (JavaTypeReference) ((BasicTypeArgument)arg).typeReference();
+						EQConstraint recursive = new EQConstraint(V, U.getElement());
+						recursive.setUniParent(parent());
+						result.addAll(recursive.process());
 					}
 				}
 			}

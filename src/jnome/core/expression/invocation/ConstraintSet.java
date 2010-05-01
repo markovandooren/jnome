@@ -3,14 +3,15 @@
  */
 package jnome.core.expression.invocation;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.rejuse.association.OrderedMultiAssociation;
+import org.rejuse.predicate.TypePredicate;
 
 import chameleon.core.expression.Invocation;
 import chameleon.core.method.Method;
+import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.TypeParameter;
 
 public abstract class ConstraintSet<C extends Constraint> {
@@ -18,7 +19,9 @@ public abstract class ConstraintSet<C extends Constraint> {
 	public ConstraintSet(Invocation invocation, Method invokedMethod) {
 		_invocation = invocation;
 		_invokedGenericMethod = invokedMethod;
-		_typeParameters = invokedMethod.typeParameters();
+		List<TypeParameter> typeParameters = invokedMethod.typeParameters();
+		new TypePredicate<TypeParameter, FormalTypeParameter>(FormalTypeParameter.class).filter(typeParameters);
+		_typeParameters = typeParameters;
 	}
 	
 	private OrderedMultiAssociation<ConstraintSet<C>, C> _constraints = new OrderedMultiAssociation<ConstraintSet<C>, C>(this);

@@ -1,8 +1,8 @@
 package jnome.core.type;
 
 import chameleon.core.declaration.SimpleNameSignature;
+import chameleon.oo.type.generics.AbstractInstantiatedTypeParameter;
 import chameleon.oo.type.generics.ActualTypeArgument;
-import chameleon.oo.type.generics.InstantiatedTypeParameter;
 
 /**
  * The type argument of an erased type argument must always be in the same context as the parameter itself.
@@ -15,7 +15,7 @@ import chameleon.oo.type.generics.InstantiatedTypeParameter;
  * 
  * @author Marko van Dooren
  */
-public class ErasedTypeParameter extends InstantiatedTypeParameter<ErasedTypeParameter> {
+public class ErasedTypeParameter extends AbstractInstantiatedTypeParameter<ErasedTypeParameter> {
 
 	public ErasedTypeParameter(SimpleNameSignature signature, ActualTypeArgument argument) {
 		super(signature, argument);

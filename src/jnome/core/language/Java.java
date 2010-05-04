@@ -502,6 +502,10 @@ public class Java extends ObjectOrientedLanguage {
 		public JavaTypeReference reference(Type type) {
 			JavaTypeReference result;
 			if(type instanceof IntersectionType) {
+				IntersectionType intersection = (IntersectionType) type;
+				if(intersection.types().size() == 1) {
+					System.out.println("Hmmmm");
+				}
 				result = new JavaIntersectionTypeReference();
 				result.setUniParent(defaultNamespace());
 				for(Type t: ((IntersectionType)type).types()) {

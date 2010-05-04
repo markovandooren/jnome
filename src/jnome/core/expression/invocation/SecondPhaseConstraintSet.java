@@ -380,8 +380,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		for(JavaTypeReference URef: URefs) {
 			Us.add(URef.getElement());
 		}
-		IntersectionType intersectionType = new IntersectionType(Us);
-		intersectionType.setUniParent(Tj.language().defaultNamespace());
+		Type intersectionType = IntersectionType.create(Us);
 		return intersectionType;
 	}
 

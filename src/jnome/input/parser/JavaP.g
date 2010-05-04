@@ -395,10 +395,18 @@ packageDeclaration returns [NamespacePart element]
     
 importDeclaration returns [Import element]
     :   im='import' st='static'? qn=qualifiedName 
-        {retval.element = new TypeImport(typeRef($qn.text));
-         setKeyword(retval.element,im);
+        {if(st == null) {
+           retval.element = new TypeImport(typeRef($qn.text));
+           setKeyword(retval.element,im);
+         } else {
+           retval.element = new SingleStaticImport(typeRef(Util.getAllButLastPart($qn.text)),Util.getLastPart($qn.text));
+           setKeyword(retval.element,im);
+         }
         } 
-         ('.' '*' {retval.element = new DemandImport(new NamespaceReference($qn.text));})? ';'
+         ('.' '*' 
+            {retval.element = new DemandImport(new NamespaceReference($qn.text));
+             setKeyword(retval.element,im);
+            })? ';'
     ;
 
     

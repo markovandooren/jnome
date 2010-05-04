@@ -14,7 +14,7 @@ import chameleon.oo.type.generics.ActualTypeArgument;
 import chameleon.util.CreationStackTrace;
 
 public class JavaIntersectionTypeReference extends IntersectionTypeReference<JavaIntersectionTypeReference> implements JavaTypeReference<JavaIntersectionTypeReference> {
-
+	
 	public JavaIntersectionTypeReference() {
 		
 	}

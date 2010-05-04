@@ -72,7 +72,6 @@ import chameleon.oo.type.generics.ActualTypeArgument;
 import chameleon.oo.type.generics.BasicTypeArgument;
 import chameleon.oo.type.generics.TypeConstraint;
 import chameleon.oo.type.generics.ExtendsConstraint;
-import chameleon.oo.type.generics.PureWildcard;
 import chameleon.oo.type.generics.ExtendsWildcard;
 import chameleon.oo.type.generics.SuperWildcard;
 
@@ -156,12 +155,16 @@ import chameleon.support.variable.VariableDeclarator;
 
 import chameleon.support.input.ChameleonParser;
 
+import chameleon.util.Util;
+
 import jnome.core.expression.ArrayInitializer;
 import jnome.core.expression.ClassLiteral;
 import jnome.core.expression.ArrayAccessExpression;
 import jnome.core.expression.ArrayCreationExpression;
 import jnome.core.expression.invocation.ConstructorInvocation;
 import jnome.core.expression.invocation.JavaMethodInvocation;
+
+import jnome.core.imports.SingleStaticImport;
 
 import jnome.core.language.Java;
 
@@ -178,6 +181,7 @@ import jnome.core.type.JavaTypeReference;
 import jnome.core.type.ArrayTypeReference;
 import jnome.core.type.BasicJavaTypeReference;
 import jnome.core.type.JavaIntersectionTypeReference;
+import jnome.core.type.PureWildcard;
 
 import jnome.core.enumeration.EnumConstant;
 

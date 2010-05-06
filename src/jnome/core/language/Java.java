@@ -77,6 +77,7 @@ import chameleon.support.rule.member.MemberInstanceByDefault;
 import chameleon.support.rule.member.MemberOverridableByDefault;
 import chameleon.support.rule.member.TypeExtensibleByDefault;
 import chameleon.support.variable.VariableDeclarator;
+import chameleon.util.Pair;
 
 /**
  * @author Marko van Dooren
@@ -357,7 +358,7 @@ public class Java extends ObjectOrientedLanguage {
 		private JavaEquivalenceRelation _equivalenceRelation = new JavaEquivalenceRelation();
 
 		@Override
-		public WeakPartialOrder<Type> subtypeRelation() {
+		public JavaSubtypingRelation subtypeRelation() {
 			return _subtypingRelation;
 		}
 		
@@ -503,9 +504,6 @@ public class Java extends ObjectOrientedLanguage {
 			JavaTypeReference result;
 			if(type instanceof IntersectionType) {
 				IntersectionType intersection = (IntersectionType) type;
-				if(intersection.types().size() == 1) {
-					System.out.println("Hmmmm");
-				}
 				result = new JavaIntersectionTypeReference();
 				result.setUniParent(defaultNamespace());
 				for(Type t: ((IntersectionType)type).types()) {
@@ -610,6 +608,11 @@ public class Java extends ObjectOrientedLanguage {
 		
 		public RawType getRawCache(Type original) {
 			return _rawCache.get(original);
+		}
+
+		@Override
+		public boolean upperBoundNotHigherThan(Type first, Type second, List<Pair<TypeParameter, TypeParameter>> trace) throws LookupException {
+			return subtypeRelation().upperBoundNotHigherThan(first, second, trace);
 		}
 
 

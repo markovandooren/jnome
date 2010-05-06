@@ -81,9 +81,9 @@ public class NonLocalJavaTypeReference extends NamespaceElementImpl<NonLocalJava
 			if(replacement.isDerived()) {
 				Element oldParent = replacement.parent();
 				replacement.setUniParent(null);
-			  substitute = new NonLocalJavaTypeReference(replacement,oldParent);
+			  substitute = new NonLocalJavaTypeReference(replacement.clone(),oldParent);
 			} else {
-			  substitute = new NonLocalJavaTypeReference(replacement);
+			  substitute = new NonLocalJavaTypeReference(replacement.clone());
 			}
 			SingleAssociation crefParentLink = cref.parentLink();
 			crefParentLink.getOtherRelation().replace(crefParentLink, substitute.parentLink());

@@ -262,7 +262,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		} else if(candidates.size() == 1) {
 			return candidates.get(0);
 		} else {
-		  IntersectionType intersectionType = new IntersectionType(candidates);
+		  Type intersectionType = IntersectionType.create(candidates);
 		  intersectionType.setUniParent(Tj.language().defaultNamespace());
 		  return intersectionType;
 		}

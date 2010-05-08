@@ -17,6 +17,7 @@ import jnome.core.type.JavaIntersectionTypeReference;
 import jnome.core.type.JavaPureWildcard;
 import jnome.core.type.JavaSuperWildcard;
 import jnome.core.type.JavaTypeReference;
+import jnome.core.type.JavaUnionTypeReference;
 import jnome.core.type.NullType;
 import jnome.core.type.PureWildCardType;
 import jnome.core.type.PureWildcard;
@@ -44,7 +45,6 @@ import chameleon.core.reference.CrossReference;
 import chameleon.core.reference.ElementReferenceWithTarget;
 import chameleon.core.relation.EquivalenceRelation;
 import chameleon.core.relation.StrictPartialOrder;
-import chameleon.core.relation.WeakPartialOrder;
 import chameleon.core.variable.MemberVariable;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.language.ObjectOrientedLanguage;
@@ -55,6 +55,7 @@ import chameleon.oo.type.IntersectionTypeReference;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
+import chameleon.oo.type.UnionType;
 import chameleon.oo.type.generics.ActualTypeArgument;
 import chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
 import chameleon.oo.type.generics.BasicTypeArgument;
@@ -512,7 +513,18 @@ public class Java extends ObjectOrientedLanguage {
 					reference.setUniParent(null);
 					((JavaIntersectionTypeReference)result).add(reference);
 				}
-			} else if (type instanceof ArrayType) {
+			} else if(type instanceof UnionType) {
+				UnionType intersection = (UnionType) type;
+				result = new JavaUnionTypeReference();
+				result.setUniParent(defaultNamespace());
+				for(Type t: ((UnionType)type).types()) {
+					JavaTypeReference reference = reference(t);
+					// first clean up the uni link, we must add it to the intersection type.
+					reference.setUniParent(null);
+					((JavaUnionTypeReference)result).add(reference);
+				}
+			}
+			else if (type instanceof ArrayType) {
 				JavaTypeReference reference = reference(((ArrayType)type).elementType());
 				Element oldParent = reference.parent();
 				reference.setUniParent(null);
@@ -612,7 +624,8 @@ public class Java extends ObjectOrientedLanguage {
 
 		@Override
 		public boolean upperBoundNotHigherThan(Type first, Type second, List<Pair<TypeParameter, TypeParameter>> trace) throws LookupException {
-			return subtypeRelation().upperBoundNotHigherThan(first, second, trace);
+			JavaSubtypingRelation subtypeRelation = subtypeRelation();
+			return subtypeRelation.upperBoundNotHigherThan(first, second, trace);
 		}
 
 

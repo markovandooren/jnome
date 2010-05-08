@@ -65,6 +65,7 @@ public class TypeAssignmentSet {
 					NonLocalJavaTypeReference.replace(language.reference(nested.type()), nested.parameter(), bound);
 				}
 				if(! assignment.type().subTypeOf(bound.getElement())) {
+					System.out.println("Invalid inferred parameter: "+ assignment.parameter().signature().name());
 					result = false;
 					break;
 				}

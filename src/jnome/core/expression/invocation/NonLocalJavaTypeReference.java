@@ -69,13 +69,20 @@ public class NonLocalJavaTypeReference extends NamespaceElementImpl<NonLocalJava
 	}
 	
 	public static void replace(JavaTypeReference replacement, final Declaration declarator, JavaTypeReference<?> in) throws LookupException {
-		List<BasicJavaTypeReference> crefs = in.descendants(BasicJavaTypeReference.class, 
-				new UnsafePredicate<BasicJavaTypeReference, LookupException>() {
+		UnsafePredicate<BasicJavaTypeReference, LookupException> predicate = new UnsafePredicate<BasicJavaTypeReference, LookupException>() {
 			@Override
 			public boolean eval(BasicJavaTypeReference object) throws LookupException {
 				return object.getDeclarator().sameAs(declarator);
 			}
-		});
+		};
+		List<BasicJavaTypeReference> crefs = in.descendants(BasicJavaTypeReference.class, 
+				predicate);
+		if(in instanceof BasicJavaTypeReference) {
+			BasicJavaTypeReference in2 = (BasicJavaTypeReference) in;
+			if(predicate.eval(in2)) {
+				crefs.add(in2);
+			}
+		}
 		for(BasicJavaTypeReference cref: crefs) {
 			JavaTypeReference substitute;
 			if(replacement.isDerived()) {

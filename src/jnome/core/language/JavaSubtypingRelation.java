@@ -5,6 +5,7 @@ package jnome.core.language;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import jnome.core.expression.invocation.NonLocalJavaTypeReference;
 import jnome.core.type.ArrayType;
 import jnome.core.type.BasicJavaTypeReference;
 import jnome.core.type.JavaTypeReference;
+import jnome.core.type.NullType;
 import jnome.core.type.RawType;
 
 import org.apache.log4j.Logger;
@@ -31,6 +33,7 @@ import chameleon.oo.type.DerivedType;
 import chameleon.oo.type.IntersectionType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
+import chameleon.oo.type.UnionType;
 import chameleon.oo.type.generics.BasicTypeArgument;
 import chameleon.oo.type.generics.CapturedTypeParameter;
 import chameleon.oo.type.generics.FormalTypeParameter;
@@ -46,65 +49,88 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	
 	
 	public boolean upperBoundNotHigherThan(Type first, Type second, List<Pair<TypeParameter, TypeParameter>> trace) throws LookupException {
-		boolean result = false;
-		if(first instanceof ConstructedType && second instanceof ConstructedType) {
-			TypeParameter firstParam = ((ConstructedType)first).parameter();
-			TypeParameter secondParam = ((ConstructedType)second).parameter();
-			for(Pair<TypeParameter, TypeParameter> pair: trace) {
-				if((firstParam.sameAs(pair.first()) && secondParam.sameAs(pair.second())) || (firstParam.sameAs(pair.second()) && secondParam.sameAs(pair.first())) ) {
-					return true;
+//		List<Pair<TypeParameter, TypeParameter>> slowTrace = new ArrayList<Pair<TypeParameter, TypeParameter>>(trace);
+		List<Pair<TypeParameter, TypeParameter>> slowTrace = trace;
+	boolean result = false;
+		if(first instanceof NullType) {
+			result = true;
+		} else {
+			if(first instanceof ConstructedType && second instanceof ConstructedType) {
+				TypeParameter firstParam = ((ConstructedType)first).parameter();
+				TypeParameter secondParam = ((ConstructedType)second).parameter();
+				for(Pair<TypeParameter, TypeParameter> pair: slowTrace) {
+					if(firstParam.sameAs(pair.first()) && secondParam.sameAs(pair.second())) {
+						return true;
+					}
+				}
+				slowTrace.add(new Pair<TypeParameter, TypeParameter>(firstParam, secondParam));
+			}
+			if(first.equals(second)) {
+				result = true;
+			} else if (first.equals(first.language(ObjectOrientedLanguage.class).getNullType())) {
+				result = true;
+			} else if (first instanceof WildCardType) {
+				result = upperBoundNotHigherThan(((WildCardType)first).upperBound(), second,slowTrace);
+			} else if (second instanceof WildCardType) {
+				result = upperBoundNotHigherThan(first, ((WildCardType)second).lowerBound(),slowTrace);
+			}
+			// The relations between arrays and object are covered by the subtyping relations
+			// that are added to ArrayType objects.
+			else if (first instanceof ArrayType && second instanceof ArrayType && first.is(first.language(Java.class).REFERENCE_TYPE) == Ternary.TRUE) {
+				ArrayType first2 = (ArrayType)first;
+				ArrayType second2 = (ArrayType)second;
+				result = upperBoundNotHigherThan(first2.elementType(), second2.elementType(),slowTrace);
+			} else if(second instanceof IntersectionType) {
+				List<Type> types = ((IntersectionType)second).types();
+				int size = types.size();
+				result = size > 0;
+				for(int i=0; result && i<size;i++) {
+					result = upperBoundNotHigherThan(first,types.get(i),slowTrace);
+				}
+			} else if(first instanceof IntersectionType) {
+				List<Type> types = ((IntersectionType)first).types();
+				int size = types.size();
+				result = false;
+				for(int i=0; (!result) && i<size;i++) {
+					result = upperBoundNotHigherThan(types.get(i),second,slowTrace);
+				}
+			} else if(second instanceof UnionType) {
+				List<Type> types = ((UnionType)second).types();
+				int size = types.size();
+				result = false;
+				for(int i=0; (!result) && i<size;i++) {
+					result = upperBoundNotHigherThan(first,types.get(i),slowTrace);
+				}
+			} else if(first instanceof UnionType) {
+				List<Type> types = ((UnionType)first).types();
+				int size = types.size();
+				result = size > 0;
+				for(int i=0; result && i<size;i++) {
+					result = upperBoundNotHigherThan(types.get(i),second,slowTrace);
 				}
 			}
-			trace.add(new Pair<TypeParameter, TypeParameter>(firstParam, secondParam));
-		}
-		if(first.equals(second)) {
-			result = true;
-		} else if (first.equals(first.language(ObjectOrientedLanguage.class).getNullType())) {
-			result = true;
-		} else if (first instanceof WildCardType) {
-			result = contains(((WildCardType)first).upperBound(), second);
-		} else if (second instanceof WildCardType) {
-			result = contains(first, ((WildCardType)second).lowerBound());
-		}
-		// The relations between arrays and object are covered by the subtyping relations
-		// that are added to ArrayType objects.
-		else if (first instanceof ArrayType && second instanceof ArrayType && first.is(first.language(Java.class).REFERENCE_TYPE) == Ternary.TRUE) {
-			ArrayType first2 = (ArrayType)first;
-			ArrayType second2 = (ArrayType)second;
-			result = contains(first2.elementType(), second2.elementType());
-		} else if(second instanceof IntersectionType) {
-			List<Type> types = ((IntersectionType)second).types();
-			int size = types.size();
-			result = size > 0;
-			for(int i=0; result && i<size;i++) {
-				result = contains(first,types.get(i));
+			else {
+				//SPEED iterate over the supertype graph 
+				//			if(! (second instanceof ConstructedType)) {
+
+
+				//		  Type captured = captureConversion(first);
+				//			Set<Type> supers = getAllSuperTypes(captured);
+				//			supers.add(captured);
+
+				Set<Type> supers = getAllSuperTypes(first);
+				Type snd = captureConversion(second);
+
+				//				Set<Type> supers = first.getAllSuperTypes();
+				//				supers.add(first);
+
+				Iterator<Type> typeIterator = supers.iterator();
+				while((!result) && typeIterator.hasNext()) {
+					Type current = typeIterator.next();
+					result = (snd instanceof RawType && snd.baseType().sameAs(current.baseType()))|| sameBaseTypeWithCompatibleParameters(current, snd, slowTrace);
+				}
+				//			}
 			}
-		} else if(first instanceof IntersectionType) {
-			List<Type> types = ((IntersectionType)first).types();
-			int size = types.size();
-			result = false;
-			for(int i=0; (!result) && i<size;i++) {
-				result = contains(types.get(i),second);
-			}
-		}
-		else {
-			//SPEED iterate over the supertype graph 
-//			if(! (second instanceof ConstructedType)) {
-			
-			
-		  Type captured = captureConversion(first);
-			Set<Type> supers = captured.getAllSuperTypes();
-			supers.add(captured);
-			
-//				Set<Type> supers = first.getAllSuperTypes();
-//				supers.add(first);
-				
-			Iterator<Type> typeIterator = supers.iterator();
-			while((!result) && typeIterator.hasNext()) {
-				Type current = typeIterator.next();
-				result = (second instanceof RawType && second.baseType().sameAs(current.baseType()))|| sameBaseTypeWithCompatibleParameters(current, second, trace);
-			}
-			//			}
 		}
 		return result;
 	}
@@ -121,62 +147,83 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	@Override
 	public boolean contains(Type first, Type second) throws LookupException {
 		boolean result = false;
-		if(first.equals(second)) {
+		if(first instanceof NullType) {
 			result = true;
-		} else if (first.equals(first.language(ObjectOrientedLanguage.class).getNullType())) {
-			result = true;
-		} else if (first instanceof WildCardType) {
-			result = contains(((WildCardType)first).upperBound(), second);
-		} else if (second instanceof WildCardType) {
-			result = contains(first, ((WildCardType)second).lowerBound());
-		}
-		// The relations between arrays and object are covered by the subtyping relations
-		// that are added to ArrayType objects.
-		else if (first instanceof ArrayType && second instanceof ArrayType && first.is(first.language(Java.class).REFERENCE_TYPE) == Ternary.TRUE) {
-			ArrayType first2 = (ArrayType)first;
-			ArrayType second2 = (ArrayType)second;
-			result = contains(first2.elementType(), second2.elementType());
-		} else if(second instanceof IntersectionType) {
-			List<Type> types = ((IntersectionType)second).types();
-			int size = types.size();
-			result = size > 0;
-			for(int i=0; result && i<size;i++) {
-				result = contains(first,types.get(i));
+		} else {
+			if(first.equals(second)) {
+				result = true;
+			} else if (first.equals(first.language(ObjectOrientedLanguage.class).getNullType())) {
+				result = true;
+			} else if (first instanceof WildCardType) {
+				result = contains(((WildCardType)first).upperBound(), second);
+			} else if (second instanceof WildCardType) {
+				result = contains(first, ((WildCardType)second).lowerBound());
 			}
-		} else if(first instanceof IntersectionType) {
-			List<Type> types = ((IntersectionType)first).types();
-			int size = types.size();
-			result = false;
-			for(int i=0; (!result) && i<size;i++) {
-				result = contains(types.get(i),second);
+			// The relations between arrays and object are covered by the subtyping relations
+			// that are added to ArrayType objects.
+			else if (first instanceof ArrayType && second instanceof ArrayType && first.is(first.language(Java.class).REFERENCE_TYPE) == Ternary.TRUE) {
+				ArrayType first2 = (ArrayType)first;
+				ArrayType second2 = (ArrayType)second;
+				result = contains(first2.elementType(), second2.elementType());
+			} else if(second instanceof IntersectionType) {
+				List<Type> types = ((IntersectionType)second).types();
+				int size = types.size();
+				result = size > 0;
+				for(int i=0; result && i<size;i++) {
+					result = contains(first,types.get(i));
+				}
+			} else if(first instanceof IntersectionType) {
+				List<Type> types = ((IntersectionType)first).types();
+				int size = types.size();
+				result = false;
+				for(int i=0; (!result) && i<size;i++) {
+					result = contains(types.get(i),second);
+				}
+			} else if(second instanceof UnionType) {
+				List<Type> types = ((UnionType)first).types();
+				int size = types.size();
+				result = false;
+				for(int i=0; (!result) && i<size;i++) {
+					result = contains(first,types.get(i));
+				}
+			} else if(first instanceof UnionType) {
+				List<Type> types = ((UnionType)second).types();
+				int size = types.size();
+				result = size > 0;
+				for(int i=0; result && i<size;i++) {
+					result = contains(types.get(i),second);
+				}
 			}
-		}
-		else {
-			//SPEED iterate over the supertype graph 
-//			if(! (second instanceof ConstructedType)) {
-			
-			  Type captured = captureConversion(first);
-				Set<Type> supers = captured.getAllSuperTypes();
-				supers.add(captured);
-				
-//				Set<Type> supers = first.getAllSuperTypes();
-//				supers.add(first);
-				
+			else {
+				//SPEED iterate over the supertype graph 
+				//			if(! (second instanceof ConstructedType)) {
+
+				//			  Type captured = captureConversion(first);
+				//				Set<Type> supers = getAllSuperTypes(captured);
+				//				supers.add(captured);
+
+				Set<Type> supers = getAllSuperTypes(first);
+				Type snd = captureConversion(second);
+
+				//				Set<Type> supers = first.getAllSuperTypes();
+				//				supers.add(first);
+
 				Iterator<Type> typeIterator = supers.iterator();
 				while((!result) && typeIterator.hasNext()) {
 					Type current = typeIterator.next();
-					result = (second instanceof RawType && second.baseType().sameAs(current.baseType()))|| sameBaseTypeWithCompatibleParameters(current, second, new ArrayList());
+					result = (snd instanceof RawType && snd.baseType().sameAs(current.baseType()))|| sameBaseTypeWithCompatibleParameters(current, snd, new ArrayList());
 				}
-//			}
+				//			}
+			}
+			//		if(Config.cacheElementProperties()) {
+			//			Set<Type> superTypes = _cache.get(first);
+			//			if(superTypes == null) {
+			//				superTypes = new HashSet<Type>();
+			//				_cache.put(first, superTypes);
+			//			}
+			//			superTypes.add(second);
+			//		}
 		}
-//		if(Config.cacheElementProperties()) {
-//			Set<Type> superTypes = _cache.get(first);
-//			if(superTypes == null) {
-//				superTypes = new HashSet<Type>();
-//				_cache.put(first, superTypes);
-//			}
-//			superTypes.add(second);
-//		}
 		return result;
 	}
 	
@@ -185,51 +232,60 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		Type result = type;
 		if(result instanceof DerivedType) {
 			List<TypeParameter> typeParameters = new ArrayList<TypeParameter>();
-			Type base = type.baseType();
-			Iterator<TypeParameter> formals = base.parameters().iterator();
-			List<TypeParameter> actualParameters = type.parameters();
-			Iterator<TypeParameter> actuals = actualParameters.iterator();
-			// substitute parameters by their capture bounds.
-			while(actuals.hasNext()) {
-				TypeParameter formalParam = formals.next();
-				if(!(formalParam instanceof FormalTypeParameter)) {
-					throw new LookupException("Type parameter of base type is not a formal parameter.");
+//			if(! (type.parameter(1) instanceof CapturedTypeParameter)) {
+				Type base = type.baseType();
+				Iterator<TypeParameter> formals = base.parameters().iterator();
+				List<TypeParameter> actualParameters = type.parameters();
+				Iterator<TypeParameter> actuals = actualParameters.iterator();
+				// substitute parameters by their capture bounds.
+				while(actuals.hasNext()) {
+					TypeParameter formalParam = formals.next();
+					if(!(formalParam instanceof FormalTypeParameter)) {
+						throw new LookupException("Type parameter of base type is not a formal parameter.");
+					}
+					TypeParameter actualParam = actuals.next();
+					if(!(actualParam instanceof InstantiatedTypeParameter)) {
+						throw new LookupException("Type parameter of type instantiation is not an instantiated parameter.");
+					}
+					typeParameters.add(((InstantiatedTypeParameter) actualParam).capture((FormalTypeParameter) formalParam));
 				}
-				TypeParameter actualParam = actuals.next();
-				if(!(actualParam instanceof InstantiatedTypeParameter)) {
-					throw new LookupException("Type parameter of type instantiation is not an instantiated parameter.");
-				}
-				typeParameters.add(((InstantiatedTypeParameter) actualParam).capture((FormalTypeParameter) formalParam));
-			}
-			result = new DerivedType(typeParameters, base);
-			result.setUniParent(type.parent());
-			for(TypeParameter newParameter: typeParameters) {
-				for(TypeParameter oldParameter: actualParameters) {
-					JavaTypeReference tref = new BasicJavaTypeReference(oldParameter.signature().name());
-					if(newParameter instanceof CapturedTypeParameter) {
-						List<TypeConstraint> constraints = ((CapturedTypeParameter)newParameter).constraints();
-						for(TypeConstraint constraint : constraints) {
-							replace(tref, oldParameter, (JavaTypeReference<?>) ((TypeConstraintWithReferences)constraint).typeReference());
+				result = new DerivedType(typeParameters, base);
+				result.setUniParent(type.parent());
+				for(TypeParameter newParameter: typeParameters) {
+					for(TypeParameter oldParameter: actualParameters) {
+						JavaTypeReference tref = new BasicJavaTypeReference(oldParameter.signature().name());
+						if(newParameter instanceof CapturedTypeParameter) {
+							List<TypeConstraint> constraints = ((CapturedTypeParameter)newParameter).constraints();
+							for(TypeConstraint constraint : constraints) {
+								replace(tref, oldParameter, (JavaTypeReference<?>) ((TypeConstraintWithReferences)constraint).typeReference());
+							}
+						} else {
+							TypeReference t = ((BasicTypeArgument)((InstantiatedTypeParameter)newParameter).argument()).typeReference();
+							replace(tref, oldParameter, (JavaTypeReference<?>) t);
 						}
-					} else {
-						TypeReference t = ((BasicTypeArgument)((InstantiatedTypeParameter)newParameter).argument()).typeReference();
-						replace(tref, oldParameter, (JavaTypeReference<?>) t);
 					}
 				}
-			}
+//			}
 		}
 		return result;
 	}
 	
 	private void replace(JavaTypeReference replacement, final Declaration declarator, JavaTypeReference<?> in) throws LookupException {
+		UnsafePredicate<BasicJavaTypeReference, LookupException> predicate = new UnsafePredicate<BasicJavaTypeReference, LookupException>() {
+@Override
+public boolean eval(BasicJavaTypeReference object) throws LookupException {
+		return object.getDeclarator().sameAs(declarator);
+}
+};
 		List<BasicJavaTypeReference> crefs = in.descendants(BasicJavaTypeReference.class, 
-				new UnsafePredicate<BasicJavaTypeReference, LookupException>() {
-			@Override
-			public boolean eval(BasicJavaTypeReference object) throws LookupException {
-				return object.getDeclarator().sameAs(declarator);
+				predicate);
+		if(in instanceof BasicJavaTypeReference) {
+			BasicJavaTypeReference in2 = (BasicJavaTypeReference) in;
+			if(predicate.eval(in2)) {
+				crefs.add(in2);
 			}
-		});
-		for(BasicJavaTypeReference cref: crefs) {
+		}
+ 		for(BasicJavaTypeReference cref: crefs) {
 			JavaTypeReference substitute;
 			if(replacement.isDerived()) {
 			  substitute = new CaptureReference(replacement.clone());
@@ -261,9 +317,11 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	}
 
 	public boolean sameBaseTypeWithCompatibleParameters(Type first, Type second, List<Pair<TypeParameter, TypeParameter>> trace) throws LookupException {
+		List<Pair<TypeParameter, TypeParameter>> slowTrace = new ArrayList<Pair<TypeParameter, TypeParameter>>(trace);
+//		List<Pair<TypeParameter, TypeParameter>> slowTrace = trace;
 		boolean result = false;
 		if(first.baseType().equals(second.baseType())) {
-			result = compatibleParameters(first, second, trace);// || rawType(second); equality in formal parameter should take care of this.
+			result = compatibleParameters(first, second, slowTrace);// || rawType(second); equality in formal parameter should take care of this.
 		}
 		return result;
 	}
@@ -278,6 +336,8 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	}
 
 	private boolean compatibleParameters(Type first, Type second, List<Pair<TypeParameter, TypeParameter>> trace) throws LookupException {
+		List<Pair<TypeParameter, TypeParameter>> slowTrace = new ArrayList<Pair<TypeParameter, TypeParameter>>(trace);
+//		List<Pair<TypeParameter, TypeParameter>> slowTrace = trace;
 		boolean result;
 		List<TypeParameter> firstFormal= first.parameters();
 		List<TypeParameter> secondFormal= second.parameters();
@@ -287,8 +347,48 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		while(result && firstIter.hasNext()) {
 			TypeParameter firstParam = firstIter.next();
 			TypeParameter secondParam = secondIter.next();
-			result = firstParam.compatibleWith(secondParam, trace);
+			result = firstParam.compatibleWith(secondParam, slowTrace);
 		}
 		return result;
 	}
+	
+  private Set<Type> getAllSuperTypes(Type type) throws LookupException {
+  	Set<Type> result = _superTypeCache.get(type);
+  	if(result == null) {
+  		result = new HashSet<Type>();
+   		accumulateAllSuperTypes(type, result);
+   		_superTypeCache.put(type,result);
+  	}
+  	result = new HashSet<Type>(result);
+  	return result;
+//  	Set<Type> result = new HashSet<Type>();
+//  	accumulateAllSuperTypes(type, result);
+//  	return result;
+  }
+
+  private Map<Type,Set<Type>> _superTypeCache = new HashMap<Type, Set<Type>>();
+
+  private void accumulateAllSuperTypes(Type t, Set<Type> acc) throws LookupException {
+  	if(t instanceof DerivedType) {
+  		t = captureConversion(t);
+  	}
+  	acc.add(t);
+  	List<Type> temp = t.getDirectSuperTypes();
+//  	acc.addAll(temp);
+//  	for(Type type:temp) {
+//  		  type.accumulateAllSuperTypes(acc);
+//  	}
+  	for(Type type:temp) {
+//  		if(! acc.contains(type)) {
+//  			acc.add(type);
+  		  accumulateAllSuperTypes(type,acc);
+//  		}
+  	}
+  }
+  
+//  public List<Type> getDirectSuperTypes(Type type) throws LookupException {
+//  	return type.getDirectSuperTypes();
+//  }
+
+
 }

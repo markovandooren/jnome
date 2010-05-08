@@ -79,6 +79,9 @@ public class TestGenerics extends JavaTest {
 		assertTrue(type2.subTypeOf(type1));
 		assertTrue(type1.sameAs(type2));
 		assertTrue(type1.equals(type2));
+		if(! type3.subTypeOf(type1)) {
+			System.out.println("debug");
+		}
 		assertTrue(type3.subTypeOf(type1));
 		assertFalse(type4.subTypeOf(type1));
 		assertFalse(type1.subTypeOf(type4));

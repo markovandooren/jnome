@@ -93,7 +93,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 	  	} else {
 	  		result = target.targetContext().lookUp(selector);
 	  	}
-			throw new LookupException("Method returned by invocation is null", this);
+			throw new LookupException("Method returned by invocation of "+ name()+" is null", this);
 		}
   }
 

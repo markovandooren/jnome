@@ -1,35 +1,34 @@
 package jnome.core.type;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import jnome.core.language.Java;
 
 import org.rejuse.association.SingleAssociation;
 import org.rejuse.logic.ternary.Ternary;
 
-import chameleon.core.Config;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.method.Method;
 import chameleon.core.reference.SimpleReference;
 import chameleon.core.variable.FormalParameter;
 import chameleon.exception.ChameleonProgrammerException;
+import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeElement;
 import chameleon.oo.type.TypeWithBody;
 import chameleon.oo.type.generics.BasicTypeArgument;
 import chameleon.oo.type.generics.FormalTypeParameter;
-import chameleon.oo.type.generics.InstantiatedTypeParameter;
 import chameleon.oo.type.generics.TypeParameter;
 import chameleon.oo.type.inheritance.InheritanceRelation;
-import chameleon.util.CreationStackTrace;
 
 public class RawType extends TypeWithBody implements JavaType {
 
 	public static RawType create(Type original) {
+		while(original != original.origin()) {
+			original = (Type) original.origin();
+		}
 		Java language = original.language(Java.class);
 		RawType result = language.getRawCache(original);
 		if(result == null) {
@@ -109,7 +108,7 @@ public class RawType extends TypeWithBody implements JavaType {
 		for(Type type:childTypes) {
 			if(type.is(language.INSTANCE) == Ternary.TRUE) {
 			  // create raw type that does not erase anything
-			  RawType raw = new RawType(type,false);
+			  RawType raw = new RawType((Type) type.origin(),false);
 			  SingleAssociation<Type, Element> parentLink = type.parentLink();
 			  parentLink.getOtherRelation().replace(parentLink, raw.parentLink());
 			  raw.makeDescendantTypesRaw();

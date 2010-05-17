@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 import jnome.core.language.Java;
+import jnome.core.language.JavaSubtypingRelation;
 import jnome.core.type.JavaTypeReference;
-import jnome.core.type.PureWildcard;
 
 import org.rejuse.predicate.TypePredicate;
 import org.rejuse.predicate.UnsafePredicate;
@@ -23,7 +23,6 @@ import chameleon.oo.type.generics.ActualTypeArgument;
 import chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
 import chameleon.oo.type.generics.BasicTypeArgument;
 import chameleon.oo.type.generics.ExtendsWildcard;
-import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.InstantiatedTypeParameter;
 import chameleon.oo.type.generics.SuperWildcard;
 import chameleon.oo.type.generics.TypeParameter;
@@ -36,8 +35,9 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		_assignments = new TypeAssignmentSet(typeParameters());
 	}
 
-	public Set<Type> ST(JavaTypeReference U) throws LookupException {
-		Set<Type> result = U.getElement().getAllSuperTypes();
+	public Set<Type> ST(JavaTypeReference<?> U) throws LookupException {
+//		Set<Type> result = U.getElement().getAllSuperTypes();
+		Set<Type> result = U.language(Java.class).subtypeRelation().getAllSuperTypes(U.getElement());
 		result.add(U.getElement());
 		return result;
 	}
@@ -46,7 +46,8 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		Set<Type> STU = ST(U);
 		Set<Type> result = new HashSet<Type>();
 		for(Type type:STU) {
-			result.add(U.language(Java.class).erasure(type));
+			Type erasure = U.language(Java.class).erasure(type);
+			result.add(erasure);
 		}
 		return result;
 	}
@@ -147,6 +148,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	
 	public Type lci(Type first, Type second) throws LookupException {
 		Type result = first.clone();
+		result.setUniParent(first.parent());
 		List<ActualTypeArgument> firstArguments = arguments(first);
 		List<ActualTypeArgument> secondArguments = arguments(second);
 		int size = firstArguments.size();
@@ -162,11 +164,12 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		List<TypeParameter> parameters = type.parameters();
 		List<ActualTypeArgument> result = new ArrayList<ActualTypeArgument>();
 		for(TypeParameter parameter: parameters) {
-			if(parameter instanceof InstantiatedTypeParameter) {
-				result.add(((InstantiatedTypeParameter) parameter).argument());
-			} else {
-				throw new ChameleonProgrammerException("Trying to get the actual type arguments of a type that still has formal type parameters");
-			}
+			result.add(Java.argument(parameter));
+//			if(parameter instanceof InstantiatedTypeParameter) {
+//				result.add(((InstantiatedTypeParameter) parameter).argument());
+//			} else {
+//				throw new ChameleonProgrammerException("Trying to get the actual type arguments of a type that still has formal type parameters");
+//			}
 		}
 		return result;
 	}

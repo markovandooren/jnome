@@ -4,6 +4,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.List;
 
 import jnome.core.language.Java;
 import jnome.core.type.BasicJavaTypeReference;
@@ -16,10 +17,12 @@ import org.junit.Test;
 
 import chameleon.core.lookup.LookupException;
 import chameleon.input.ParseException;
+import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.BasicTypeArgument;
 import chameleon.oo.type.generics.ExtendsWildcard;
 import chameleon.oo.type.generics.SuperWildcard;
+import chameleon.support.test.ExpressionTest;
 import chameleon.test.ModelTest;
 import chameleon.test.provider.BasicModelProvider;
 import chameleon.test.provider.BasicNamespaceProvider;
@@ -125,6 +128,19 @@ public class TestGenerics extends JavaTest {
 		provider.includeCustom("testsource"+provider.separator()+"generics"+provider.separator());
 		return provider;
 	}
+
+//	@Override @Test
+//	public void testExpressions() throws Exception {
+//		ExpressionTest expressionTest = new ExpressionTest(modelProvider(), typeProvider());
+//		List<RegularType> elements = expressionTest.language().defaultNamespace().descendants(RegularType.class);
+//		System.out.println("Starting to lock down the regular types in the model.");
+//		for(RegularType element:elements) {
+//			element.parentLink().lock();
+//		}
+//		System.out.println("Locked down the model.");
+//		expressionTest.testExpressionTypes();
+//	}
+
 
 	@Override
 	public BasicNamespaceProvider namespaceProvider() {

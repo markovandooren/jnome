@@ -1,10 +1,7 @@
 package jnome.test;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-import jnome.core.language.Java;
 import jnome.input.JavaModelFactory;
 
 import org.apache.log4j.Level;
@@ -12,7 +9,6 @@ import org.apache.log4j.Logger;
 import org.rejuse.predicate.SafePredicate;
 
 import chameleon.core.language.Language;
-import chameleon.core.lookup.LookupException;
 import chameleon.oo.type.Type;
 import chameleon.test.provider.BasicDescendantProvider;
 import chameleon.test.provider.BasicModelProvider;
@@ -56,7 +52,7 @@ public class TestGenericRejuse extends JavaTest {
 //
 //					@Override
 //					public boolean eval(Type object) {
-//						return object.getFullyQualifiedName().equals("org.rejuse.predicate.TypePredicate");
+//						return object.getFullyQualifiedName().equals("org.rejuse.predicate.CompositePredicate");
 //					}
 //				}.filter(types);
 //				return types;

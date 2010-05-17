@@ -26,7 +26,11 @@ import chameleon.core.expression.Invocation;
 import chameleon.core.expression.InvocationTarget;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
+import chameleon.core.lookup.StubContextElement;
+import chameleon.core.namespace.NamespaceElementImpl;
 import chameleon.core.relation.WeakPartialOrder;
+import chameleon.core.validation.Valid;
+import chameleon.core.validation.VerificationResult;
 import chameleon.core.variable.FormalParameter;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.type.Type;
@@ -39,6 +43,7 @@ import chameleon.oo.type.generics.TypeParameter;
 import chameleon.support.member.simplename.SimpleNameMethodSignature;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.member.simplename.method.RegularMethodInvocation;
+import chameleon.util.Util;
 
 public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvocation> {
 
@@ -636,21 +641,55 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 			for(FormalParameter par: formalParameters) {
 				TypeReference tref = par.getTypeReference();
 				TypeReference clone = tref.clone();
-				clone.setUniParent(tref.parent());
+				ReferenceStub stub = new ReferenceStub(clone);
+				stub.setUniParent(tref.parent());
 				references.add(clone);
 			}
 			result = new ArrayList<Type>();
 			for(TypeReference tref: references) {
+				TypeReference subst = tref;
 				for(TypeParameter par: actualTypeParameters.assigned()) {
-					NonLocalJavaTypeReference.replace(language.reference(actualTypeParameters.type(par)), par, (JavaTypeReference<?>) tref);
+					subst = NonLocalJavaTypeReference.replace(language.reference(actualTypeParameters.type(par)), par, (JavaTypeReference<?>) tref);
 				}
-				result.add(tref.getElement());
+				result.add(subst.getElement());
 			}
 			
 		} else {
 			result = method.header().formalParameterTypes();
 		}
 		return result;
+	}
+	
+	private static class ReferenceStub extends NamespaceElementImpl<ReferenceStub, Element> {
+
+		public ReferenceStub(TypeReference tref) {
+			setTypeReference(tref);
+		}
+		
+		private SingleAssociation<ReferenceStub, TypeReference> _tref = new SingleAssociation<ReferenceStub, TypeReference>(this);
+		
+		public TypeReference typeReference() {
+			return _tref.getOtherEnd();
+		}
+		
+		public void setTypeReference(TypeReference tref) {
+			setAsParent(_tref, tref);
+		}
+		
+		@Override
+		public ReferenceStub clone() {
+			return new ReferenceStub(typeReference().clone());
+		}
+
+		@Override
+		public VerificationResult verifySelf() {
+			return Valid.create();
+		}
+
+		public List<? extends Element> children() {
+			return Util.createNonNullList(typeReference());
+		}
+		
 	}
 
 }

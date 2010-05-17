@@ -56,9 +56,13 @@ import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.UnionType;
+import chameleon.oo.type.generics.ActualType;
 import chameleon.oo.type.generics.ActualTypeArgument;
 import chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
 import chameleon.oo.type.generics.BasicTypeArgument;
+import chameleon.oo.type.generics.CapturedTypeParameter;
+import chameleon.oo.type.generics.EqualityConstraint;
+import chameleon.oo.type.generics.ExtendsConstraint;
 import chameleon.oo.type.generics.ExtendsWildcard;
 import chameleon.oo.type.generics.ExtendsWildcardType;
 import chameleon.oo.type.generics.FormalTypeParameter;
@@ -66,7 +70,6 @@ import chameleon.oo.type.generics.InstantiatedTypeParameter;
 import chameleon.oo.type.generics.SuperWildcard;
 import chameleon.oo.type.generics.SuperWildcardType;
 import chameleon.oo.type.generics.TypeConstraint;
-import chameleon.oo.type.generics.TypeConstraintWithReferences;
 import chameleon.oo.type.generics.TypeParameter;
 import chameleon.oo.type.inheritance.InheritanceRelation;
 import chameleon.support.member.simplename.SimpleNameMethodSignature;
@@ -136,11 +139,11 @@ public class Java extends ObjectOrientedLanguage {
   		List<TypeConstraint> constraints = formal.constraints();
   		if(constraints.size() > 0) {
   			TypeConstraint first = constraints.get(0);
-  			if(first instanceof TypeConstraintWithReferences<?>) {
-  			  result = erasure(((TypeConstraintWithReferences<?>)first).bound());	
-  			} else {
-  				throw new ChameleonProgrammerException("The type constraint of type "+first.getClass().getName()+" is not a valid Java element");
-  			}
+//  			if(first instanceof TypeConstraintWithReferences<?>) {
+  			  result = erasure(first.bound());	
+//  			} else {
+//  				throw new ChameleonProgrammerException("The type constraint of type "+first.getClass().getName()+" is not a valid Java element");
+//  			}
   		} else {
   			result = getDefaultSuperClass();
   		}
@@ -536,22 +539,18 @@ public class Java extends ObjectOrientedLanguage {
 				result.setUniParent(type.parent());
 				// next setup the generic parameters.
 				for(TypeParameter parameter: type.parameters()) {
-					ActualTypeArgument argument = ((InstantiatedTypeParameter)parameter).argument();
-					ActualTypeArgument arg = argument.clone();
-					//FIXME what happens with pure wildcards? Their meaning is context-sensitive, but the link with 'tref' is bidirectional
-					//      so it switches context.
-					if(arg instanceof ActualTypeArgumentWithTypeReference) {
-						ActualTypeArgumentWithTypeReference argWithRef = (ActualTypeArgumentWithTypeReference) arg;
-						//it will be detached from the cloned argument automatically
-						NonLocalJavaTypeReference ref = new NonLocalJavaTypeReference((JavaTypeReference) argWithRef.typeReference(),argument);
-						argWithRef.setTypeReference(ref);
-					}
+					ActualTypeArgument arg = argument(parameter);
+					arg.setUniParent(null);
 					tref.addArgument(arg);
 				}
 			} else if (type instanceof ConstructedType) {
 				//result = new NonLocalJavaTypeReference(new BasicJavaTypeReference(type.signature().name()),type.parent());
 				result = new BasicJavaTypeReference(type.signature().name());
 				result.setUniParent(((ConstructedType)type).parameter().parent());
+			} else if (type instanceof ActualType) {
+				//result = new NonLocalJavaTypeReference(new BasicJavaTypeReference(type.signature().name()),type.parent());
+				result = new BasicJavaTypeReference(type.signature().name());
+				result.setUniParent(((ActualType)type).parameter().parent());
 			} else if (type instanceof RegularType) {
 				// for now, if this code is invoked, there are no generic parameters.
 				if(type.parameters().size() > 0) {
@@ -585,6 +584,40 @@ public class Java extends ObjectOrientedLanguage {
 				throw new ChameleonProgrammerException();
 			}
 			return result;
+		}
+
+		public static ActualTypeArgument argument(TypeParameter parameter) {
+			ActualTypeArgument result = null;
+			if(parameter instanceof InstantiatedTypeParameter) {
+				ActualTypeArgument argument = ((InstantiatedTypeParameter)parameter).argument();
+				result = argument.clone();
+				if(result instanceof ActualTypeArgumentWithTypeReference) {
+					ActualTypeArgumentWithTypeReference argWithRef = (ActualTypeArgumentWithTypeReference) result;
+					//it will be detached from the cloned argument automatically
+					NonLocalJavaTypeReference ref = new NonLocalJavaTypeReference((JavaTypeReference) argWithRef.typeReference(),argument);
+					argWithRef.setTypeReference(ref);
+				} else {
+					throw new ChameleonProgrammerException();
+				}
+			} else {
+				List<TypeConstraint> constraints = ((CapturedTypeParameter)parameter).constraints();
+				if(constraints.size() == 1 && constraints.get(0) instanceof EqualityConstraint) {
+					result = new BasicTypeArgument(constraints.get(0).typeReference().clone());
+				}
+//					// there are always constraints in a captured type parameter
+//					for(TypeConstraint constraint: constraints) {
+//						if(constraints instanceof ExtendsConstraint) {
+//							
+//						}
+//					}
+				
+			}
+			if(result != null) {
+				result.setUniParent(parameter);
+				return result;
+			} else {
+				throw new ChameleonProgrammerException();
+			}
 		}
 
 		@Override

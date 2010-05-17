@@ -68,7 +68,8 @@ public class NonLocalJavaTypeReference extends NamespaceElementImpl<NonLocalJava
 		return new NonLocalJavaTypeReference(actualReference().clone(),lookupParent());
 	}
 	
-	public static void replace(JavaTypeReference replacement, final Declaration declarator, JavaTypeReference<?> in) throws LookupException {
+	public static JavaTypeReference replace(JavaTypeReference replacement, final Declaration declarator, JavaTypeReference<?> in) throws LookupException {
+		JavaTypeReference result = in;
 		UnsafePredicate<BasicJavaTypeReference, LookupException> predicate = new UnsafePredicate<BasicJavaTypeReference, LookupException>() {
 			@Override
 			public boolean eval(BasicJavaTypeReference object) throws LookupException {
@@ -94,7 +95,11 @@ public class NonLocalJavaTypeReference extends NamespaceElementImpl<NonLocalJava
 			}
 			SingleAssociation crefParentLink = cref.parentLink();
 			crefParentLink.getOtherRelation().replace(crefParentLink, substitute.parentLink());
+			if(cref == in) {
+				result = substitute;
+			}
 		}
+		return result;
 	}
 
 	private Element _lookupParent;

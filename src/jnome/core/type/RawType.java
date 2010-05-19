@@ -22,6 +22,7 @@ import chameleon.oo.type.generics.BasicTypeArgument;
 import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.TypeParameter;
 import chameleon.oo.type.inheritance.InheritanceRelation;
+import chameleon.util.Pair;
 
 public class RawType extends TypeWithBody implements JavaType {
 
@@ -200,6 +201,10 @@ public class RawType extends TypeWithBody implements JavaType {
    @*/
 	public Type erasure() {
 		return this;
+	}
+
+	public boolean uniSameAs(Type aliasedType, List<Pair<TypeParameter, TypeParameter>> trace) throws LookupException {
+		return uniSameAs(aliasedType);
 	}
 
 }

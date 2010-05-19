@@ -52,11 +52,6 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	
 	public boolean upperBoundNotHigherThan(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
 		List<Pair<Type, TypeParameter>> slowTrace = trace;
-		String x = first.getFullyQualifiedName();
-		String y = second.getFullyQualifiedName();
-		if(x.equals("chameleon.core.property.ChameleonProperty") && y.equals("org.rejuse.property.Property.F")) {
-			System.out.println("Checking if "+x+" <= "+y);
-		}
 	boolean result = false;
 		if(first instanceof NullType) {
 			result = true;
@@ -72,16 +67,15 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 				slowTrace.add(new Pair<Type, TypeParameter>(first, secondParam));
 			}
 			if(first instanceof ActualType && second instanceof ConstructedType) {
-				TypeParameter secondParam = ((ConstructedType)second).parameter();
+				TypeParameter firstParam = ((ActualType)first).parameter();
 				for(Pair<Type, TypeParameter> pair: slowTrace) {
-					if((first.sameAs(pair.first()) && secondParam.sameAs(pair.second()))
-						|| (first.sameAs(pair.second()) && secondParam.sameAs(pair.first())))
+					if(firstParam.sameAs(pair.second()) && second.sameAs(pair.first()))
 					{
 //						System.out.println("Match: true");
 						return true;
 					}
 				}
-				slowTrace.add(new Pair<Type, TypeParameter>(first, secondParam));
+				slowTrace.add(new Pair<Type, TypeParameter>(second, firstParam));
 			}
 			if(first.equals(second)) {
 				result = true;
@@ -133,25 +127,14 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 			}
 			else {
 				//SPEED iterate over the supertype graph 
-				//			if(! (second instanceof ConstructedType)) {
-
-
-				//		  Type captured = captureConversion(first);
-				//			Set<Type> supers = getAllSuperTypes(captured);
-				//			supers.add(captured);
-
 				Set<Type> supers = getAllSuperTypes(first);
 				Type snd = captureConversion(second);
-
-				//				Set<Type> supers = first.getAllSuperTypes();
-				//				supers.add(first);
 
 				Iterator<Type> typeIterator = supers.iterator();
 				while((!result) && typeIterator.hasNext()) {
 					Type current = typeIterator.next();
-					result = (snd instanceof RawType && snd.baseType().sameAs(current.baseType()))|| sameBaseTypeWithCompatibleParameters(current, snd, slowTrace);
+					result = (snd instanceof RawType && second.baseType().sameAs(current.baseType())) || sameBaseTypeWithCompatibleParameters(current, snd, slowTrace);
 				}
-				//			}
 			}
 		}
 //		System.out.println("Match: "+result);
@@ -224,34 +207,16 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 				}
 			}
 			else {
-				//SPEED iterate over the supertype graph 
-				//			if(! (second instanceof ConstructedType)) {
+					//SPEED iterate over the supertype graph 
+					Set<Type> supers = getAllSuperTypes(first);
+					Type snd = captureConversion(second);
 
-				//			  Type captured = captureConversion(first);
-				//				Set<Type> supers = getAllSuperTypes(captured);
-				//				supers.add(captured);
-
-				Set<Type> supers = getAllSuperTypes(first);
-				Type snd = captureConversion(second);
-
-				//				Set<Type> supers = first.getAllSuperTypes();
-				//				supers.add(first);
-
-				Iterator<Type> typeIterator = supers.iterator();
-				while((!result) && typeIterator.hasNext()) {
-					Type current = typeIterator.next();
-					result = (snd instanceof RawType && snd.baseType().sameAs(current.baseType()))|| sameBaseTypeWithCompatibleParameters(current, snd, new ArrayList());
-				}
-				//			}
+					Iterator<Type> typeIterator = supers.iterator();
+					while((!result) && typeIterator.hasNext()) {
+						Type current = typeIterator.next();
+						result = (snd instanceof RawType && second.baseType().sameAs(current.baseType())) || sameBaseTypeWithCompatibleParameters(current, snd, new ArrayList());
+					}
 			}
-			//		if(Config.cacheElementProperties()) {
-			//			Set<Type> superTypes = _cache.get(first);
-			//			if(superTypes == null) {
-			//				superTypes = new HashSet<Type>();
-			//				_cache.put(first, superTypes);
-			//			}
-			//			superTypes.add(second);
-			//		}
 		}
 		return result;
 	}

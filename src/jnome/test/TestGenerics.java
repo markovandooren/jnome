@@ -43,8 +43,8 @@ public class TestGenerics extends JavaTest {
 	public void testSubtyping() throws LookupException {
 		Java language = (Java)language();
 		BasicJavaTypeReference tref1 = (BasicJavaTypeReference) language.createTypeReference("generics.List");
-		tref1.setUniParent(language.defaultNamespace());
 		tref1.addArgument(language.createBasicTypeArgument(language.createTypeReference("java.lang.String")));
+		tref1.setUniParent(language.defaultNamespace());
 		BasicJavaTypeReference tref2 = (BasicJavaTypeReference) language.createTypeReference("generics.List");
 		tref2.addArgument(language.createBasicTypeArgument(language.createTypeReference("java.lang.String")));
 		tref2.setUniParent(language.defaultNamespace());
@@ -82,10 +82,10 @@ public class TestGenerics extends JavaTest {
 		assertTrue(type2.subTypeOf(type1));
 		assertTrue(type1.sameAs(type2));
 		assertTrue(type1.equals(type2));
-		if(! type3.subTypeOf(type1)) {
+		assertTrue(type3.subTypeOf(type1));
+		if(type4.subTypeOf(type1)) {
 			System.out.println("debug");
 		}
-		assertTrue(type3.subTypeOf(type1));
 		assertFalse(type4.subTypeOf(type1));
 		assertFalse(type1.subTypeOf(type4));
 		assertTrue(type1.subTypeOf(type5));

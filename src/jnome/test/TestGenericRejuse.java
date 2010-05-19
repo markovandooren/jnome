@@ -52,7 +52,7 @@ public class TestGenericRejuse extends JavaTest {
 //
 //					@Override
 //					public boolean eval(Type object) {
-//						return object.getFullyQualifiedName().equals("org.rejuse.predicate.CompositePredicate");
+//						return object.getFullyQualifiedName().equals("org.rejuse.property.PropertySet");
 //					}
 //				}.filter(types);
 //				return types;

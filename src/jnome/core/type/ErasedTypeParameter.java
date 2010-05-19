@@ -1,8 +1,14 @@
 package jnome.core.type;
 
+import java.util.List;
+
 import chameleon.core.declaration.SimpleNameSignature;
+import chameleon.core.lookup.LookupException;
+import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.AbstractInstantiatedTypeParameter;
 import chameleon.oo.type.generics.ActualTypeArgument;
+import chameleon.oo.type.generics.TypeParameter;
+import chameleon.util.Pair;
 
 /**
  * The type argument of an erased type argument must always be in the same context as the parameter itself.
@@ -29,4 +35,7 @@ public class ErasedTypeParameter extends AbstractInstantiatedTypeParameter<Erase
 		return result;
 	}
 	
+	public boolean compatibleWith(TypeParameter other,List<Pair<Type, TypeParameter>> trace) throws LookupException {
+		return other instanceof ErasedTypeParameter && super.compatibleWith(other, trace);
+	}
 }

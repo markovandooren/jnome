@@ -50,20 +50,20 @@ public class TestChameleon extends JavaTest {
 		return new BasicNamespaceProvider("chameleon");
 	}
 	
-//	public ElementProvider<Type> typeProvider() {
-//		return new ElementProvider<Type>() {
-//
-//			public Collection<Type> elements(Language language) {
-//				Collection<Type> types = new BasicDescendantProvider<Type>(namespaceProvider(), Type.class).elements(language);
-//				new SafePredicate<Type>() {
-//
-//					@Override
-//					public boolean eval(Type object) {
-//						return object.getFullyQualifiedName().equals("chameleon.core.reference.SpecificReference");
-//					}
-//				}.filter(types);
-//				return types;
-//			}
-//		};
-//	}
+	public ElementProvider<Type> typeProvider() {
+		return new ElementProvider<Type>() {
+
+			public Collection<Type> elements(Language language) {
+				Collection<Type> types = new BasicDescendantProvider<Type>(namespaceProvider(), Type.class).elements(language);
+				new SafePredicate<Type>() {
+
+					@Override
+					public boolean eval(Type object) {
+						return object.getFullyQualifiedName().equals("chameleon.oo.type.inheritance.InheritanceRelation");
+					}
+				}.filter(types);
+				return types;
+			}
+		};
+	}
 }

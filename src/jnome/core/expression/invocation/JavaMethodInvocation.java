@@ -3,9 +3,7 @@ package jnome.core.expression.invocation;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import jnome.core.language.Java;
@@ -26,13 +24,13 @@ import chameleon.core.expression.Invocation;
 import chameleon.core.expression.InvocationTarget;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.lookup.StubContextElement;
 import chameleon.core.namespace.NamespaceElementImpl;
 import chameleon.core.relation.WeakPartialOrder;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
 import chameleon.core.variable.FormalParameter;
 import chameleon.exception.ChameleonProgrammerException;
+import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.generics.ActualTypeArgument;
@@ -310,6 +308,17 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 			boolean result = false;
 			if(first instanceof RawType) {
 				result = ((RawType)first).convertibleThroughUncheckedConversionAndSubtyping(second);
+			} else if(first instanceof ArrayType && second instanceof ArrayType) {
+				ArrayType first2 = (ArrayType)first;
+				ArrayType second2 = (ArrayType)second;
+				result = convertibleThroughUncheckedConversionAndSubtyping(first2.elementType(), second2.elementType());
+			} else if(first instanceof RegularType) {
+				Set<Type> supers = language(Java.class).subtypeRelation().getAllSuperTypes(first);
+				for(Type type: supers) {
+					if(type.baseType().sameAs(second.baseType())) {
+						return true;
+					}
+				}
 			}
 			return result;
 		}
@@ -648,9 +657,6 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 			result = new ArrayList<Type>();
 			for(TypeReference tref: references) {
 				TypeReference subst = tref;
-				if(subst.parent() == null) {
-					System.out.println("debug");
-				}
 				for(TypeParameter par: actualTypeParameters.assigned()) {
 					subst = NonLocalJavaTypeReference.replace(language.reference(actualTypeParameters.type(par)), par, (JavaTypeReference<?>) tref);
 				}

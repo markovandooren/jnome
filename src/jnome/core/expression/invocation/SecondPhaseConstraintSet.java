@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 import jnome.core.language.Java;
-import jnome.core.language.JavaSubtypingRelation;
 import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.predicate.TypePredicate;
@@ -53,7 +52,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	}
 
 	public Set<Type> EC(TypeParameter Tj) throws LookupException {
-		List<JavaTypeReference> Us = Us(Tj);
+		List<JavaTypeReference> Us = Us(Tj, SupertypeConstraint.class);
 		List<Set<Type>> ESTs = new ArrayList<Set<Type>>();
 		for(JavaTypeReference URef: Us) {
 			ESTs.add(EST(URef));
@@ -72,10 +71,10 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		// Take intersection
 	}
 
-	private List<JavaTypeReference> Us(TypeParameter Tj) throws LookupException {
+	private List<JavaTypeReference> Us(TypeParameter Tj, Class<? extends SecondPhaseConstraint> kind) throws LookupException {
 		List<JavaTypeReference> Us = new ArrayList<JavaTypeReference>();
 		for(SecondPhaseConstraint constraint: constraints()) {
-			if(constraint.typeParameter().sameAs(Tj)) {
+			if((kind.isInstance(constraint)) && constraint.typeParameter().sameAs(Tj)) {
 				Us.add(constraint.URef());
 			}
 		}
@@ -99,7 +98,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	}
 	
 	public Set<Type> Inv(Type G, TypeParameter Tj) throws LookupException {
-		List<JavaTypeReference> Us = Us(Tj);
+		List<JavaTypeReference> Us = Us(Tj, SupertypeConstraint.class);
 		Set<Type> result = new HashSet<Type>();
 		for(JavaTypeReference U: Us) {
 			result.addAll(Inv(G, U));
@@ -385,7 +384,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	}
 	
 	private Type glb(TypeParameter Tj) throws LookupException {
-		List<JavaTypeReference> URefs = Us(Tj);
+		List<JavaTypeReference> URefs = Us(Tj, SubtypeConstraint.class);
 		List<Type> Us = new ArrayList<Type>();
 		for(JavaTypeReference URef: URefs) {
 			Us.add(URef.getElement());

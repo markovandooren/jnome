@@ -66,7 +66,7 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 				}
 				slowTrace.add(new Pair<Type, TypeParameter>(first, secondParam));
 			}
-			if(first instanceof ActualType && second instanceof ConstructedType) {
+			if(first instanceof ActualType) {
 				TypeParameter firstParam = ((ActualType)first).parameter();
 				for(Pair<Type, TypeParameter> pair: slowTrace) {
 					if(firstParam.sameAs(pair.second()) && second.sameAs(pair.first()))

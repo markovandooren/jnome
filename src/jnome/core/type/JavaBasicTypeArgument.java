@@ -27,5 +27,4 @@ public class JavaBasicTypeArgument extends BasicTypeArgument<JavaBasicTypeArgume
 		return new JavaBasicTypeArgument(typeReference().clone());
 	}
 
-	
 }

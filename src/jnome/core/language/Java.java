@@ -512,9 +512,11 @@ public class Java extends ObjectOrientedLanguage {
 				result.setUniParent(defaultNamespace());
 				for(Type t: ((IntersectionType)type).types()) {
 					JavaTypeReference reference = reference(t);
-					// first clean up the uni link, we must add it to the intersection type.
+					Element oldParent = reference.parent();
 					reference.setUniParent(null);
-					((JavaIntersectionTypeReference)result).add(reference);
+					// first clean up the uni link, we must add it to the non-local reference.
+					TypeReference nl = createNonLocalTypeReference(reference, oldParent);
+					((JavaIntersectionTypeReference)result).add(nl);
 				}
 			} else if(type instanceof UnionType) {
 				UnionType intersection = (UnionType) type;
@@ -522,9 +524,11 @@ public class Java extends ObjectOrientedLanguage {
 				result.setUniParent(defaultNamespace());
 				for(Type t: ((UnionType)type).types()) {
 					JavaTypeReference reference = reference(t);
-					// first clean up the uni link, we must add it to the intersection type.
+					Element oldParent = reference.parent();
 					reference.setUniParent(null);
-					((JavaUnionTypeReference)result).add(reference);
+					// first clean up the uni link, we must add it to the non-local reference.
+					TypeReference nl = createNonLocalTypeReference(reference, oldParent);
+					((JavaUnionTypeReference)result).add(nl);
 				}
 			}
 			else if (type instanceof ArrayType) {
@@ -583,6 +587,11 @@ public class Java extends ObjectOrientedLanguage {
 			if(result.parent() == null) {
 				throw new ChameleonProgrammerException();
 			}
+			try {
+				result.getElement();
+			} catch (LookupException e) {
+				e.printStackTrace();
+			}
 			return result;
 		}
 
@@ -596,8 +605,6 @@ public class Java extends ObjectOrientedLanguage {
 					//it will be detached from the cloned argument automatically
 					NonLocalJavaTypeReference ref = new NonLocalJavaTypeReference((JavaTypeReference) argWithRef.typeReference(),argument);
 					argWithRef.setTypeReference(ref);
-				} else {
-					throw new ChameleonProgrammerException();
 				}
 			} else {
 				List<TypeConstraint> constraints = ((CapturedTypeParameter)parameter).constraints();
@@ -656,7 +663,7 @@ public class Java extends ObjectOrientedLanguage {
 		}
 
 		@Override
-		public boolean upperBoundNotHigherThan(Type first, Type second, List<Pair<TypeParameter, TypeParameter>> trace) throws LookupException {
+		public boolean upperBoundNotHigherThan(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
 			JavaSubtypingRelation subtypeRelation = subtypeRelation();
 			return subtypeRelation.upperBoundNotHigherThan(first, second, trace);
 		}

@@ -648,6 +648,9 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 			result = new ArrayList<Type>();
 			for(TypeReference tref: references) {
 				TypeReference subst = tref;
+				if(subst.parent() == null) {
+					System.out.println("debug");
+				}
 				for(TypeParameter par: actualTypeParameters.assigned()) {
 					subst = NonLocalJavaTypeReference.replace(language.reference(actualTypeParameters.type(par)), par, (JavaTypeReference<?>) tref);
 				}

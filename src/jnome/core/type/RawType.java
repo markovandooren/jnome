@@ -201,4 +201,5 @@ public class RawType extends TypeWithBody implements JavaType {
 	public Type erasure() {
 		return this;
 	}
+
 }

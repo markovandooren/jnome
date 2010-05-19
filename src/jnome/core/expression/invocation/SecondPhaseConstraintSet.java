@@ -191,51 +191,59 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	}
 	
 	public ActualTypeArgument lcta(ActualTypeArgument<?> first, ActualTypeArgument second) throws LookupException {
+		ActualTypeArgument result;
 		if(first instanceof BasicTypeArgument || second instanceof BasicTypeArgument) {
 			if(first instanceof BasicTypeArgument && second instanceof BasicTypeArgument) {
 				Type U = ((BasicTypeArgument)first).type();
 				Type V = ((BasicTypeArgument)second).type();
 				if(U.sameAs(V)) {
-					return first.clone();
+					result = first.clone();
 				} else {
 					List<JavaTypeReference> list = new ArrayList<JavaTypeReference>();
 					list.add((JavaTypeReference) ((BasicTypeArgument)first).typeReference());
 					list.add((JavaTypeReference) ((BasicTypeArgument)second).typeReference());
-					return first.language(Java.class).createExtendsWildcard(lub(list));
+					result = first.language(Java.class).createExtendsWildcard(lub(list));
 				}
-			}
-			if(first instanceof ExtendsWildcard || second instanceof ExtendsWildcard) {
+			} else if(first instanceof ExtendsWildcard || second instanceof ExtendsWildcard) {
 				BasicTypeArgument basic = (BasicTypeArgument) (first instanceof BasicTypeArgument? first : second);
 				ExtendsWildcard ext = (ExtendsWildcard)(basic == first ? second : first);
-				return first.language(Java.class).createExtendsWildcard(lub(typeReferenceList(basic,ext)));
-			}
-			if(first instanceof SuperWildcard || second instanceof SuperWildcard) {
+				result = first.language(Java.class).createExtendsWildcard(lub(typeReferenceList(basic,ext)));
+			} else if(first instanceof SuperWildcard || second instanceof SuperWildcard) {
 				BasicTypeArgument basic = (BasicTypeArgument) (first instanceof BasicTypeArgument? first : second);
 				SuperWildcard ext = (SuperWildcard)(basic == first ? second : first);
-				return first.language(Java.class).createSuperWildcard(first.language(Java.class).glb(typeReferenceList(basic,ext)));
+				result = first.language(Java.class).createSuperWildcard(first.language(Java.class).glb(typeReferenceList(basic,ext)));
+			} else {
+				result = null;
 			}
 		} else if(first instanceof ExtendsWildcard || second instanceof ExtendsWildcard) {
 			if(first instanceof ExtendsWildcard && second instanceof ExtendsWildcard) {
 				List<JavaTypeReference> list = new ArrayList<JavaTypeReference>();
 				list.add((JavaTypeReference) ((ExtendsWildcard)first).typeReference());
 				list.add((JavaTypeReference) ((ExtendsWildcard)second).typeReference());
-				return first.language(Java.class).createExtendsWildcard(lub(list));
-			}
-			if(first instanceof SuperWildcard || second instanceof SuperWildcard) {
+				result = first.language(Java.class).createExtendsWildcard(lub(list));
+			} else if(first instanceof SuperWildcard || second instanceof SuperWildcard) {
 				ExtendsWildcard ext = (ExtendsWildcard) (first instanceof ExtendsWildcard? first : second);
 				SuperWildcard sup = (SuperWildcard)(ext == first ? second : first);
 				Type U = ((BasicTypeArgument)first).type();
 				Type V = ((BasicTypeArgument)second).type();
 				if(U.sameAs(V)) {
-					return first.language(Java.class).createBasicTypeArgument(ext.typeReference().clone());
+					result = first.language(Java.class).createBasicTypeArgument(ext.typeReference().clone());
 				} else {
-					return first.language(Java.class).createPureWildcard();
+					result = first.language(Java.class).createPureWildcard();
 				}
+			} else {
+				result = null;
 			}
 		} else if (first instanceof SuperWildcard && second instanceof SuperWildcard) {
-			return first.language(Java.class).createSuperWildcard(first.language(Java.class).glb(typeReferenceList((SuperWildcard)first,(SuperWildcard)second)));
+			result = first.language(Java.class).createSuperWildcard(first.language(Java.class).glb(typeReferenceList((SuperWildcard)first,(SuperWildcard)second)));
+		} else {
+			result = null;
 		}
-		throw new ChameleonProgrammerException("lcta is not defined for the given actual type arguments of types " + first.getClass().getName() + " and " + second.getClass().getName());
+		if(result == null) {
+		  throw new ChameleonProgrammerException("lcta is not defined for the given actual type arguments of types " + first.getClass().getName() + " and " + second.getClass().getName());
+		}
+		result.setUniParent(first.parent()); 
+		return result;
 	}
 	
 	public JavaTypeReference lub(List<? extends JavaTypeReference> types) {
@@ -266,7 +274,6 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 			return candidates.get(0);
 		} else {
 		  Type intersectionType = IntersectionType.create(candidates);
-		  intersectionType.setUniParent(Tj.language().defaultNamespace());
 		  return intersectionType;
 		}
 	}
@@ -413,7 +420,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 //			JavaTypeReference replacement = new DirectJavaTypeReference(type);
 			JavaTypeReference replacement = RRef.language(Java.class).reference(type);
 //			replacement.setUniParent(RRef.language().defaultNamespace()); XXX
-			NonLocalJavaTypeReference.replace(replacement, assignment.parameter(), RprimeRef);
+			RprimeRef = NonLocalJavaTypeReference.replace(replacement, assignment.parameter(), RprimeRef);
 		}
 		return RprimeRef;
 	}

@@ -50,8 +50,8 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	
 	
 	
-	public boolean upperBoundNotHigherThan(Type first, Type second, List<Pair<TypeParameter, TypeParameter>> trace) throws LookupException {
-		List<Pair<TypeParameter, TypeParameter>> slowTrace = trace;
+	public boolean upperBoundNotHigherThan(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
+		List<Pair<Type, TypeParameter>> slowTrace = trace;
 		String x = first.getFullyQualifiedName();
 		String y = second.getFullyQualifiedName();
 		if(x.equals("chameleon.core.property.ChameleonProperty") && y.equals("org.rejuse.property.Property.F")) {
@@ -61,29 +61,27 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		if(first instanceof NullType) {
 			result = true;
 		} else {
-			if(first instanceof ConstructedType && second instanceof ActualType) {
-				TypeParameter firstParam = ((ConstructedType)first).parameter();
+			if(second instanceof ActualType) {
 				TypeParameter secondParam = ((ActualType)second).parameter();
-				for(Pair<TypeParameter, TypeParameter> pair: slowTrace) {
-					if(firstParam.sameAs(pair.first()) && secondParam.sameAs(pair.second())) {
-						System.out.println("Match: true");
+				for(Pair<Type, TypeParameter> pair: slowTrace) {
+					if(first.sameAs(pair.first()) && secondParam.sameAs(pair.second())) {
+//						System.out.println("Match: true");
 						return true;
 					}
 				}
-				slowTrace.add(new Pair<TypeParameter, TypeParameter>(firstParam, secondParam));
+				slowTrace.add(new Pair<Type, TypeParameter>(first, secondParam));
 			}
 			if(first instanceof ActualType && second instanceof ConstructedType) {
-				TypeParameter firstParam = ((ActualType)first).parameter();
 				TypeParameter secondParam = ((ConstructedType)second).parameter();
-				for(Pair<TypeParameter, TypeParameter> pair: slowTrace) {
-					if((firstParam.sameAs(pair.first()) && secondParam.sameAs(pair.second()))
-						|| (firstParam.sameAs(pair.second()) && secondParam.sameAs(pair.first())))
+				for(Pair<Type, TypeParameter> pair: slowTrace) {
+					if((first.sameAs(pair.first()) && secondParam.sameAs(pair.second()))
+						|| (first.sameAs(pair.second()) && secondParam.sameAs(pair.first())))
 					{
-						System.out.println("Match: true");
+//						System.out.println("Match: true");
 						return true;
 					}
 				}
-				slowTrace.add(new Pair<TypeParameter, TypeParameter>(firstParam, secondParam));
+				slowTrace.add(new Pair<Type, TypeParameter>(first, secondParam));
 			}
 			if(first.equals(second)) {
 				result = true;
@@ -156,7 +154,7 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 				//			}
 			}
 		}
-		System.out.println("Match: "+result);
+//		System.out.println("Match: "+result);
 		return result;
 	}
 	
@@ -356,8 +354,8 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 //		
 //	}
 
-	public boolean sameBaseTypeWithCompatibleParameters(Type first, Type second, List<Pair<TypeParameter, TypeParameter>> trace) throws LookupException {
-		List<Pair<TypeParameter, TypeParameter>> slowTrace = new ArrayList<Pair<TypeParameter, TypeParameter>>(trace);
+	public boolean sameBaseTypeWithCompatibleParameters(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
+		List<Pair<Type, TypeParameter>> slowTrace = new ArrayList<Pair<Type, TypeParameter>>(trace);
 //		List<Pair<TypeParameter, TypeParameter>> slowTrace = trace;
 		boolean result = false;
 		if(first.baseType().equals(second.baseType())) {
@@ -375,8 +373,8 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		return true;
 	}
 
-	private boolean compatibleParameters(Type first, Type second, List<Pair<TypeParameter, TypeParameter>> trace) throws LookupException {
-		List<Pair<TypeParameter, TypeParameter>> slowTrace = new ArrayList<Pair<TypeParameter, TypeParameter>>(trace);
+	private boolean compatibleParameters(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
+		List<Pair<Type, TypeParameter>> slowTrace = new ArrayList<Pair<Type, TypeParameter>>(trace);
 //		List<Pair<TypeParameter, TypeParameter>> slowTrace = trace;
 		boolean result;
 		List<TypeParameter> firstFormal= first.parameters();
@@ -385,8 +383,8 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		Iterator<TypeParameter> firstIter = firstFormal.iterator();
 		Iterator<TypeParameter> secondIter = secondFormal.iterator();
 		while(result && firstIter.hasNext()) {
-			TypeParameter firstParam = firstIter.next();
-			TypeParameter secondParam = secondIter.next();
+			TypeParameter<?> firstParam = firstIter.next();
+			TypeParameter<?> secondParam = secondIter.next();
 			result = firstParam.compatibleWith(secondParam, slowTrace);
 		}
 		return result;

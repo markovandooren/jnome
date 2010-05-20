@@ -135,18 +135,15 @@ public class Java extends ObjectOrientedLanguage {
   		result = new ArrayType(erasure(arrayType.elementType()));
   	} 
   	else if(original instanceof ConstructedType){
-  		FormalTypeParameter formal = ((ConstructedType)original).parameter();
-  		List<TypeConstraint> constraints = formal.constraints();
-  		if(constraints.size() > 0) {
-  			TypeConstraint first = constraints.get(0);
-//  			if(first instanceof TypeConstraintWithReferences<?>) {
-  			  result = erasure(first.bound());	
-//  			} else {
-//  				throw new ChameleonProgrammerException("The type constraint of type "+first.getClass().getName()+" is not a valid Java element");
-//  			}
-  		} else {
-  			result = getDefaultSuperClass();
-  		}
+//  		FormalTypeParameter formal = ((ConstructedType)original).parameter();
+//  		List<TypeConstraint> constraints = formal.constraints();
+//  		if(constraints.size() > 0) {
+//  			TypeConstraint first = constraints.get(0);
+//  			  result = erasure(first.bound());	
+//  		} else {
+//  			result = getDefaultSuperClass();
+//  		}
+  		result = original;
   	} 
   	else {
   		// Regular TYPE

@@ -13,7 +13,6 @@ import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.predicate.UnsafePredicate;
 
 import chameleon.core.lookup.LookupException;
-import chameleon.core.reference.CrossReference;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.ConstructedType;
 import chameleon.oo.type.DerivedType;
@@ -21,9 +20,12 @@ import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.ActualTypeArgument;
 import chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
 import chameleon.oo.type.generics.BasicTypeArgument;
+import chameleon.oo.type.generics.CapturedTypeParameter;
+import chameleon.oo.type.generics.EqualityConstraint;
 import chameleon.oo.type.generics.ExtendsWildcard;
 import chameleon.oo.type.generics.InstantiatedTypeParameter;
 import chameleon.oo.type.generics.SuperWildcard;
+import chameleon.oo.type.generics.TypeConstraint;
 import chameleon.oo.type.generics.TypeParameter;
 
 /**
@@ -105,6 +107,16 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 			for(TypeParameter par: F().parameters()) {
 				if(par instanceof InstantiatedTypeParameter) {
 				  actualsOfF.add(((InstantiatedTypeParameter)par).argument());
+				} 
+				else if(par instanceof CapturedTypeParameter) {
+					CapturedTypeParameter captured = (CapturedTypeParameter) par;
+					List<TypeConstraint> constraints = ((CapturedTypeParameter) par).constraints();
+					if(constraints.size() == 1 && constraints.get(0) instanceof EqualityConstraint) {
+						EqualityConstraint eq = (EqualityConstraint) constraints.get(0);
+						BasicTypeArgument arg = new BasicTypeArgument<BasicTypeArgument>(eq.typeReference().clone());
+						arg.setUniParent(eq);
+						actualsOfF.add(arg);
+					}
 				}
 			}
 				int i = 0;

@@ -345,7 +345,8 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	private void processUnresolved(JavaTypeReference S) throws LookupException {
 		JavaTypeReference<?> RRef = (JavaTypeReference) invokedGenericMethod().returnTypeReference();
 		FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(invocation(), invokedGenericMethod());
-		if(! RRef.getElement().sameAs(RRef.language(Java.class).voidType())) {
+		Java java = RRef.language(Java.class);
+		if(! RRef.getElement().sameAs(java.voidType())) {
 		  // the constraint S >> R', provided R is not void	
 			JavaTypeReference RprimeRef = substitutedReference(RRef);
 			constraints.add(new GGConstraint(S, RprimeRef.getType()));
@@ -354,7 +355,18 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		for(TypeParameter param: typeParameters()) {
 			JavaTypeReference bound = (JavaTypeReference) param.upperBoundReference();
 			JavaTypeReference Bi= substitutedReference(bound);
-			constraints.add(new GGConstraint(Bi, param.selectionDeclaration()));
+			
+			Type Ti = assignments().type(param);
+			if(Ti == null) {
+			 Ti = param.selectionDeclaration();
+			 constraints.add(new GGConstraint(Bi, Ti));
+			} else {
+		   constraints.add(new SSConstraint(java.reference(Ti), Bi.getElement()));
+		  }
+
+//			 Type Ti = param.selectionDeclaration();
+//			 constraints.add(new GGConstraint(Bi, Ti));
+			
 		}
 		SecondPhaseConstraintSet seconds = constraints.secondPhase();
 		seconds.processEqualityConstraints();

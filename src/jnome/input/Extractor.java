@@ -17,6 +17,8 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import org.rejuse.java.collections.RobustVisitor;
@@ -32,7 +34,8 @@ public class Extractor {
 	/**
 	 * 
 	 */
-	public Extractor() {
+	public Extractor(List<String> classes) {
+		_classes = new ArrayList<String>(classes);
 	}
 
   public String getCompilationUnit(String fqn) throws ClassNotFoundException {
@@ -151,8 +154,16 @@ public class Extractor {
        result.append(" extends "+ getClassName(toString(clazz.getGenericSuperclass())));
      }
      
-     Type[] interfaces = clazz.getGenericInterfaces();
-     if(interfaces.length > 0) {
+     List<Type> interfaces = new ArrayList<Type>(Arrays.asList(clazz.getGenericInterfaces()));
+     Iterator<Type> iter = interfaces.iterator();
+     while(iter.hasNext()) {
+    	 String className = getClassName(toString(iter.next()));
+    	 if(!contains(getTypeConstructorName(className))) {
+    		 iter.remove();
+    	 }
+     }
+     int newSize = interfaces.size();
+     if(newSize > 0) {
        if(clazz.isInterface()) {
          result.append(" extends ");
        }
@@ -160,11 +171,12 @@ public class Extractor {
          result.append(" implements ");
        }
      }
-     for(int i = 0; i < interfaces.length; i++) {
-       if(i > 0) {
-         result.append(", ");
-       }
-       result.append(getClassName(toString(interfaces[i])));
+     for(int i = 0 ; i < newSize; i++) {
+    	 String className = getClassName(toString(interfaces.get(i)));
+    	 if(i > 0) {
+    		 result.append(", ");
+    	 }
+    	 result.append(className);
      }
      result.append(" {\n");
      
@@ -181,6 +193,32 @@ public class Extractor {
     result.append(indent + "}");
     
     return result.toString();
+  }
+  
+  private String getTypeConstructorName(String name) {
+  	int indexOf = name.indexOf("<");
+  	if(indexOf >=0) {
+		  return name.substring(0, indexOf);
+  	} else {
+  		return name;
+  	}
+  }
+  
+  private boolean contains(String name) {
+  	String cname = getTypeConstructorName(name);
+  	while (cname != null) {
+  		if(_classes.contains(cname)) {
+  			return true;
+  		} else {
+  			int lastIndexOf = cname.lastIndexOf(".");
+  			if(lastIndexOf >= 0) {
+  				cname = cname.substring(0,lastIndexOf);
+  			} else {
+  				cname = null;
+  			}
+  		}
+  	}
+  	return false;
   }
 
 	private void toCodeInnerClasses(Class clazz, final String indent, final StringBuffer result) {
@@ -380,7 +418,9 @@ public class Extractor {
     
   }
   
-  public void generate(List classes, final File root) throws Exception {
+  private List<String> _classes;
+  
+  public void generate(final File root) throws Exception {
     new RobustVisitor() {
         private int count = 0;
 		    public Object visit(Object element) throws IOException, ClassNotFoundException {
@@ -394,7 +434,7 @@ public class Extractor {
         public void unvisit(Object key, Object element) {
           // NOP 
         }
-		}.applyTo(classes);
+		}.applyTo(_classes);
   }
   
   /**
@@ -463,13 +503,13 @@ public class Extractor {
   }
   
   public static void main(String[] args) throws IOException, Exception {
-    Extractor extractor = new Extractor();
-    extractor.generate(extractor.readClassNames(new File(args[0])),new File(args[1]));
+    Extractor extractor = new Extractor(readClassNames(new File(args[0])));
+    extractor.generate(new File(args[1]));
     //System.out.println(extractor.getCompilationUnit("java.lang.Character"));
     System.out.println("Done");
   }
   
-  public List readClassNames(File file) throws IOException {
+  public static List readClassNames(File file) throws IOException {
     BufferedReader buffered = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
     LineNumberReader reader = new LineNumberReader(buffered);
     List result = new ArrayList();

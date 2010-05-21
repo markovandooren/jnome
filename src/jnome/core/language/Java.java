@@ -8,6 +8,7 @@ import java.util.Map;
 
 import jnome.core.expression.invocation.NonLocalJavaTypeReference;
 import jnome.core.modifier.PackageProperty;
+import jnome.core.type.AnonymousInnerClass;
 import jnome.core.type.ArrayType;
 import jnome.core.type.ArrayTypeReference;
 import jnome.core.type.BasicJavaTypeReference;
@@ -501,7 +502,7 @@ public class Java extends ObjectOrientedLanguage {
 			return new JavaIntersectionTypeReference(list);
 		}
 		
-		public JavaTypeReference reference(Type type) {
+		public JavaTypeReference reference(Type type) throws LookupException {
 			JavaTypeReference result;
 			if(type instanceof IntersectionType) {
 				IntersectionType intersection = (IntersectionType) type;
@@ -552,6 +553,9 @@ public class Java extends ObjectOrientedLanguage {
 				//result = new NonLocalJavaTypeReference(new BasicJavaTypeReference(type.signature().name()),type.parent());
 				result = new BasicJavaTypeReference(type.signature().name());
 				result.setUniParent(((ActualType)type).parameter().parent());
+			} else if (type instanceof AnonymousInnerClass) {
+				String fqn = ((AnonymousInnerClass)type).invocation().getTypeReference().getElement().getFullyQualifiedName();
+				result = (JavaTypeReference) createTypeReferenceInDefaultNamespace(fqn);
 			} else if (type instanceof RegularType) {
 				// for now, if this code is invoked, there are no generic parameters.
 				if(type.parameters().size() > 0) {
@@ -583,11 +587,6 @@ public class Java extends ObjectOrientedLanguage {
 			}
 			if(result.parent() == null) {
 				throw new ChameleonProgrammerException();
-			}
-			try {
-				result.getElement();
-			} catch (LookupException e) {
-				e.printStackTrace();
 			}
 			return result;
 		}

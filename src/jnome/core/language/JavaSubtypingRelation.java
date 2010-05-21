@@ -39,6 +39,7 @@ import chameleon.oo.type.UnionType;
 import chameleon.oo.type.generics.ActualType;
 import chameleon.oo.type.generics.BasicTypeArgument;
 import chameleon.oo.type.generics.CapturedTypeParameter;
+import chameleon.oo.type.generics.EqualityConstraint;
 import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.InstantiatedTypeParameter;
 import chameleon.oo.type.generics.TypeConstraint;
@@ -124,6 +125,14 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 				for(int i=0; result && i<size;i++) {
 					result = upperBoundNotHigherThan(types.get(i),second,slowTrace);
 				}
+			} else if(second instanceof RawType) {
+				Set<Type> supers = first.getAllSuperTypes();
+				supers.add(first);
+				Iterator<Type> typeIterator = supers.iterator();
+				while((!result) && typeIterator.hasNext()) {
+					Type current = typeIterator.next();
+					result = second.baseType().sameAs(current.baseType());
+				}
 			}
 			else {
 				//SPEED iterate over the supertype graph 
@@ -205,6 +214,14 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 				for(int i=0; result && i<size;i++) {
 					result = contains(types.get(i),second);
 				}
+			} else if(second instanceof RawType) {
+				Set<Type> supers = first.getAllSuperTypes();
+				supers.add(first);
+				Iterator<Type> typeIterator = supers.iterator();
+				while((!result) && typeIterator.hasNext()) {
+					Type current = typeIterator.next();
+					result = second.baseType().sameAs(current.baseType());
+				}
 			}
 			else {
 					//SPEED iterate over the supertype graph 
@@ -257,8 +274,8 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 							for(TypeConstraint constraint : constraints) {
 								if(toBeSubstituted.contains(constraint)) {
 									NonLocalJavaTypeReference.replace(tref, oldParameter, (JavaTypeReference<?>) constraint.typeReference());
-								}
 //								replace(tref, oldParameter, (JavaTypeReference<?>) constraint.typeReference());
+								}
 							}
 						} else {
 							throw new Error();
@@ -272,52 +289,61 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		return result;
 	}
 	
-//	private void replace(JavaTypeReference replacement, final Declaration declarator, JavaTypeReference<?> in) throws LookupException {
-//		UnsafePredicate<BasicJavaTypeReference, LookupException> predicate = new UnsafePredicate<BasicJavaTypeReference, LookupException>() {
-//@Override
-//public boolean eval(BasicJavaTypeReference object) throws LookupException {
-//		return object.getDeclarator().sameAs(declarator);
-//}
-//};
-//		List<BasicJavaTypeReference> crefs = in.descendants(BasicJavaTypeReference.class, 
-//				predicate);
-//		if(in instanceof BasicJavaTypeReference) {
-//			BasicJavaTypeReference in2 = (BasicJavaTypeReference) in;
-//			if(predicate.eval(in2)) {
-//				crefs.add(in2);
-//			}
-//		}
-// 		for(BasicJavaTypeReference cref: crefs) {
-// 			System.out.println("Capture replacing reference to parameter "+((SimpleNameSignature)cref.signature()).name() + " of "+cref.getElement().nearestAncestor(Type.class).getFullyQualifiedName());
-//			JavaTypeReference substitute;
-//			if(replacement.isDerived()) {
-//			  substitute = new CaptureReference(replacement.clone());
-//			} else {
-//			  substitute = new CaptureReference(replacement.clone());
-//			}
-//			SingleAssociation crefParentLink = cref.parentLink();
-//			crefParentLink.getOtherRelation().replace(crefParentLink, substitute.parentLink());
-//		}
-//	}
+	private JavaTypeReference replace(JavaTypeReference replacement, final Declaration declarator, JavaTypeReference<?> in) throws LookupException {
+		JavaTypeReference<?> result = in;
+		UnsafePredicate<BasicJavaTypeReference, LookupException> predicate = new UnsafePredicate<BasicJavaTypeReference, LookupException>() {
+			@Override
+			public boolean eval(BasicJavaTypeReference object) throws LookupException {
+				return object.getDeclarator().sameAs(declarator);
+			}
+		};
+		List<BasicJavaTypeReference> crefs = in.descendants(BasicJavaTypeReference.class, 
+				predicate);
+		if(in instanceof BasicJavaTypeReference) {
+			BasicJavaTypeReference in2 = (BasicJavaTypeReference) in;
+			if(predicate.eval(in2)) {
+				crefs.add(in2);
+			}
+		}
+		for(BasicJavaTypeReference cref: crefs) {
+			JavaTypeReference<?> substitute;
+			if(replacement.isDerived()) {
+			  substitute = new CaptureReference(replacement.clone());
+			  substitute.setOrigin(replacement);
+			} else {
+			  substitute = new CaptureReference(replacement.clone());
+			}
+			if(! cref.isDerived()) {
+				SingleAssociation crefParentLink = cref.parentLink();
+				crefParentLink.getOtherRelation().replace(crefParentLink, substitute.parentLink());
+			} else {
+				substitute.setUniParent(in.parent());
+			}
+			if(cref == in) {
+				result = substitute;
+			}
+		}
+		return result;
+	}
 
 	
-//	public static class CaptureReference extends NonLocalJavaTypeReference {
-//
-//		public CaptureReference(JavaTypeReference tref) {
-//			super(tref,null);
-//		}
-//
-//		@Override
-//		public Element lookupParent() {
-//			return nearestAncestor(TypeParameter.class);
-//		}
-//
-//		@Override
-//		public CaptureReference clone() {
-//			return new CaptureReference(actualReference().clone());
-//		}
-//		
-//	}
+	public static class CaptureReference extends NonLocalJavaTypeReference {
+
+		public CaptureReference(JavaTypeReference tref) {
+			super(tref,null);
+		}
+
+		@Override
+		public Element lookupParent() {
+			return nearestAncestor(TypeParameter.class);
+		}
+
+		@Override
+		public CaptureReference clone() {
+			return new CaptureReference(actualReference().clone());
+		}
+		
+	}
 
 	public boolean sameBaseTypeWithCompatibleParameters(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
 		List<Pair<Type, TypeParameter>> slowTrace = new ArrayList<Pair<Type, TypeParameter>>(trace);

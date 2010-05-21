@@ -130,4 +130,8 @@ public class EnumConstant extends FixedSignatureMember<EnumConstant,Type,SimpleN
 		return selector.selection(declarations());
 	}
 
+	public Declaration declarator() {
+		return this;
+	}
+
 }

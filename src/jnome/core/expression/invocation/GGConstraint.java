@@ -146,6 +146,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 						ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 						if(arg instanceof ExtendsWildcard) {
 							GGConstraint recursive = new GGConstraint((JavaTypeReference) ((ExtendsWildcard)arg).typeReference(), U.getElement());
+							recursive.setUniParent(parent());
 							result.addAll(recursive.process());
 						}
 					}

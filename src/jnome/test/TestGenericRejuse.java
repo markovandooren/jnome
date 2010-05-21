@@ -43,20 +43,20 @@ public class TestGenericRejuse extends JavaTest {
 		return new BasicNamespaceProvider("org.rejuse");
 	}
 	
-//	public ElementProvider<Type> typeProvider() {
-//		return new ElementProvider<Type>() {
-//
-//			public Collection<Type> elements(Language language) {
-//				Collection<Type> types = new BasicDescendantProvider<Type>(namespaceProvider(), Type.class).elements(language);
-//				new SafePredicate<Type>() {
-//
-//					@Override
-//					public boolean eval(Type object) {
-//						return object.getFullyQualifiedName().equals("org.rejuse.property.PropertySet");
-//					}
-//				}.filter(types);
-//				return types;
-//			}
-//		};
-//	}
+	public ElementProvider<Type> typeProvider() {
+		return new ElementProvider<Type>() {
+
+			public Collection<Type> elements(Language language) {
+				Collection<Type> types = new BasicDescendantProvider<Type>(namespaceProvider(), Type.class).elements(language);
+				new SafePredicate<Type>() {
+
+					@Override
+					public boolean eval(Type object) {
+						return object.getFullyQualifiedName().equals("org.rejuse.property.PropertySet");
+					}
+				}.filter(types);
+				return types;
+			}
+		};
+	}
 }

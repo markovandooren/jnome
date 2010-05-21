@@ -11,5 +11,10 @@ public class PureWildCardType extends WildCardType {
 	public PureWildCardType(Type type) throws LookupException {
 		super(new SimpleNameSignature("?"),type ,type.language(ObjectOrientedLanguage.class).getNullType());
 	}
+
+	@Override
+	public String getFullyQualifiedName() {
+		return "?";
+	}
 	
 }

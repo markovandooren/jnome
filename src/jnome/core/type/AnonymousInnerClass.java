@@ -24,8 +24,15 @@ import chameleon.util.Util;
 
 public class AnonymousInnerClass extends RegularType {
 
-	public AnonymousInnerClass() {
+	public AnonymousInnerClass(ConstructorInvocation invocation) {
 		super("TODO");
+		_invocation = invocation;
+	}
+	
+	private ConstructorInvocation _invocation;
+	
+	public ConstructorInvocation invocation() {
+		return _invocation;
 	}
 	
 	public TypeReference typeReference() {
@@ -99,7 +106,7 @@ public class AnonymousInnerClass extends RegularType {
 
 	@Override
 	protected AnonymousInnerClass cloneThis() {
-		return new AnonymousInnerClass();
+		return new AnonymousInnerClass(invocation());
 	}
 	
 	

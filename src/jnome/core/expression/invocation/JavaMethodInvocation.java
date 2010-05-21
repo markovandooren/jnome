@@ -155,6 +155,9 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
     		applyOrder(tmp);
     		// substitute the type parameters
     	}
+//    	if(tmp.size() == 1) {
+//    		System.out.println("Found match for "+JavaMethodInvocation.this.name());
+//    	}
     	return tmp;
     }
     

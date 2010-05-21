@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import jnome.core.type.ArrayType;
-import jnome.core.type.ErasedTypeParameter;
+import jnome.core.type.JavaExtendsWildcard;
+import jnome.core.type.JavaSuperWildcard;
 import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.logic.ternary.Ternary;
 
-import chameleon.core.declaration.Declaration;
 import chameleon.core.lookup.LookupException;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.ActualTypeArgument;
@@ -19,7 +18,6 @@ import chameleon.oo.type.generics.ExtendsWildcard;
 import chameleon.oo.type.generics.InstantiatedTypeParameter;
 import chameleon.oo.type.generics.SuperWildcard;
 import chameleon.oo.type.generics.TypeParameter;
-import chameleon.util.CreationStackTrace;
 
 /**
  * A << F
@@ -121,6 +119,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 				else if (arg instanceof ExtendsWildcard) {
 					JavaTypeReference V = (JavaTypeReference) ((ExtendsWildcard)arg).typeReference();
 					SSConstraint recursive = new SSConstraint(V, U.getElement());
+					recursive.setUniParent(parent());
 					result.addAll(recursive.process());
 				}
 				// Otherwise, no constraint is implied on Tj.
@@ -146,6 +145,18 @@ public class SSConstraint extends FirstPhaseConstraint {
 					ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 					if(arg instanceof BasicTypeArgument) {
 						JavaTypeReference V = (JavaTypeReference) ((BasicTypeArgument)arg).typeReference();
+						EQConstraint recursive = new EQConstraint(V, U.getElement());
+						recursive.setUniParent(parent());
+						result.addAll(recursive.process());
+					} else if(arg instanceof ExtendsWildcard) {
+						JavaTypeReference V = new JavaExtendsWildcard(((ExtendsWildcard)arg).typeReference());
+						V.setUniParent(ithTypeParameterOfG);
+						EQConstraint recursive = new EQConstraint(V, U.getElement());
+						recursive.setUniParent(parent());
+						result.addAll(recursive.process());
+					} else if(arg instanceof SuperWildcard) {
+						JavaTypeReference V = new JavaSuperWildcard(((SuperWildcard)arg).typeReference());
+						V.setUniParent(ithTypeParameterOfG);
 						EQConstraint recursive = new EQConstraint(V, U.getElement());
 						recursive.setUniParent(parent());
 						result.addAll(recursive.process());

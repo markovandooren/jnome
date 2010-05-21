@@ -56,7 +56,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 	/**
 	 * TYPE REFERENCE
 	 */
-	private SingleAssociation<ConstructorInvocation,JavaTypeReference> _typeReference = new SingleAssociation<ConstructorInvocation,JavaTypeReference>(this);
+	private SingleAssociation<ConstructorInvocation,BasicJavaTypeReference> _typeReference = new SingleAssociation<ConstructorInvocation,BasicJavaTypeReference>(this);
 
 
   public BasicJavaTypeReference getTypeReference() {
@@ -64,9 +64,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
   }
 
     public void setTypeReference(BasicJavaTypeReference type) {
-        SingleAssociation<? extends TypeReference, ? super ConstructorInvocation> tref = type.parentLink();
-        SingleAssociation<? extends JavaTypeReference, ? super ConstructorInvocation> ref = (SingleAssociation<? extends JavaTypeReference, ? super ConstructorInvocation>)tref;
-        _typeReference.connectTo(ref);
+    	setAsParent(_typeReference, type);
     }
 
   /******************
@@ -100,7 +98,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 	}
 
   private Type createAnonymousType(ClassBody body) {
-  	RegularType anon = new AnonymousInnerClass();
+  	RegularType anon = new AnonymousInnerClass(this);
 	  anon.setBody(body);
 		return anon;
 	}

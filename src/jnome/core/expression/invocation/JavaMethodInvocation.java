@@ -107,7 +107,16 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
   		throw new ChameleonProgrammerException();
   	}
   	
-    public List<NormalMethod> selection(List<? extends Declaration> selectionCandidates) throws LookupException {
+  	
+  	
+    @Override
+		public List<? extends Declaration> declarators(List<? extends Declaration> selectionCandidates) throws LookupException {
+			return selection(selectionCandidates);
+		}
+
+
+
+		public List<NormalMethod> selection(List<? extends Declaration> selectionCandidates) throws LookupException {
     	List<NormalMethod> tmp = new ArrayList<NormalMethod>();
     	if(! selectionCandidates.isEmpty()) {
     		List<NormalMethod> candidates = new ArrayList<NormalMethod>();

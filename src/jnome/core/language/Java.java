@@ -24,6 +24,7 @@ import jnome.core.type.PureWildCardType;
 import jnome.core.type.PureWildcard;
 import jnome.core.type.RawType;
 
+import org.rejuse.association.AssociationListener;
 import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.property.PropertyUniverse;
 
@@ -82,6 +83,7 @@ import chameleon.support.rule.member.MemberInstanceByDefault;
 import chameleon.support.rule.member.MemberOverridableByDefault;
 import chameleon.support.rule.member.TypeExtensibleByDefault;
 import chameleon.support.variable.VariableDeclarator;
+import chameleon.util.CreationStackTrace;
 import chameleon.util.Pair;
 
 /**
@@ -629,7 +631,39 @@ public class Java extends ObjectOrientedLanguage {
 		}
 		
 		public BasicTypeArgument createBasicTypeArgument(TypeReference tref) {
-			return new JavaBasicTypeArgument(tref);
+			if(tref == null) {
+				throw new ChameleonProgrammerException();
+			}
+			JavaBasicTypeArgument result = new JavaBasicTypeArgument(tref);
+//			tref.parentLink().getOtherRelation().addListener(new AssociationListener<Element>() {
+//
+//				private void printTrace() {
+//					try {
+//						throw new Exception();
+//					} catch (Exception e) {
+//						e.printStackTrace();
+//					}
+//				}
+//				
+//				public void notifyElementAdded(Element element) {
+//					System.out.println("+++++ ADDED +++++");
+//					printTrace();
+//				}
+//
+//				public void notifyElementRemoved(Element element) {
+//					System.out.println("+++++ REMOVED +++++ ");
+////					printTrace();
+//				}
+//
+//				public void notifyElementReplaced(Element oldElement, Element newElement) {
+//					JavaBasicTypeArgument javaBasicTypeArgument = (JavaBasicTypeArgument)newElement.nearestAncestor(JavaBasicTypeArgument.class);
+//					if(javaBasicTypeArgument != null) {
+//					  javaBasicTypeArgument._trace = new CreationStackTrace();
+//					}
+//					System.out.println("+++++ REPLACED +++++");
+//				}
+//			});
+			return result;
 		}
 		
 		public ExtendsWildcard createExtendsWildcard(TypeReference tref) {

@@ -386,7 +386,6 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
   	if(result == null) {
   		result = new HashSet<Type>();
    		accumulateAllSuperTypes(type, result);
-//   		_superTypeCache.put(type,result);
   	}
   	result = new HashSet<Type>(result);
   	return result;

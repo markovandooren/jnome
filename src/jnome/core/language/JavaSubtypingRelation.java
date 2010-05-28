@@ -386,13 +386,10 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
   	if(result == null) {
   		result = new HashSet<Type>();
    		accumulateAllSuperTypes(type, result);
-   		_superTypeCache.put(type,result);
+//   		_superTypeCache.put(type,result);
   	}
   	result = new HashSet<Type>(result);
   	return result;
-//  	Set<Type> result = new HashSet<Type>();
-//  	accumulateAllSuperTypes(type, result);
-//  	return result;
   }
 
   private Map<Type,Set<Type>> _superTypeCache = new HashMap<Type, Set<Type>>();
@@ -403,21 +400,9 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
   	}
   	acc.add(t);
   	List<Type> temp = t.getDirectSuperTypes();
-//  	acc.addAll(temp);
-//  	for(Type type:temp) {
-//  		  type.accumulateAllSuperTypes(acc);
-//  	}
   	for(Type type:temp) {
-//  		if(! acc.contains(type)) {
-//  			acc.add(type);
   		  accumulateAllSuperTypes(type,acc);
-//  		}
   	}
   }
   
-//  public List<Type> getDirectSuperTypes(Type type) throws LookupException {
-//  	return type.getDirectSuperTypes();
-//  }
-
-
 }

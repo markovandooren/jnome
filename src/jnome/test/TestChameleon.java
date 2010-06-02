@@ -59,7 +59,7 @@ public class TestChameleon extends JavaTest {
 //
 //					@Override
 //					public boolean eval(Type object) {
-//						return object.getFullyQualifiedName().equals("chameleon.oo.type.AbstractType");
+//						return object.getFullyQualifiedName().equals("chameleon.core.property.Defined");
 //					}
 //				}.filter(types);
 //				return types;

@@ -25,23 +25,20 @@ import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.predicate.UnsafePredicate;
 
 import chameleon.core.declaration.Declaration;
-import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.relation.WeakPartialOrder;
 import chameleon.oo.language.ObjectOrientedLanguage;
-import chameleon.oo.type.ConstructedType;
 import chameleon.oo.type.DerivedType;
 import chameleon.oo.type.IntersectionType;
 import chameleon.oo.type.Type;
-import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.UnionType;
+import chameleon.oo.type.generics.AbstractInstantiatedTypeParameter;
 import chameleon.oo.type.generics.ActualType;
-import chameleon.oo.type.generics.BasicTypeArgument;
 import chameleon.oo.type.generics.CapturedTypeParameter;
-import chameleon.oo.type.generics.EqualityConstraint;
 import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.InstantiatedTypeParameter;
+import chameleon.oo.type.generics.LazyTypeAlias;
 import chameleon.oo.type.generics.TypeConstraint;
 import chameleon.oo.type.generics.TypeParameter;
 import chameleon.oo.type.generics.WildCardType;
@@ -52,11 +49,40 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	
 	
 	public boolean upperBoundNotHigherThan(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
+//		String x = first.getFullyQualifiedName();
+//		String y = second.getFullyQualifiedName();
+//		if(x.equals("chameleon.core.property.ChameleonProperty") && y.equals("org.rejuse.property.Property.F")) {
+//			System.out.println(x +" <= "+y);
+//		}
 		List<Pair<Type, TypeParameter>> slowTrace = trace;
 	boolean result = false;
 		if(first instanceof NullType) {
 			result = true;
 		} else {
+			if(
+					//(first instanceof LazyTypeAlias) && 
+				(second instanceof AbstractInstantiatedTypeParameter.LazyTypeAlias)) {
+					TypeParameter secondParam = ((AbstractInstantiatedTypeParameter.LazyTypeAlias)second).parameter();
+					for(Pair<Type, TypeParameter> pair: slowTrace) {
+						if(first.sameAs(pair.first()) && secondParam.sameAs(pair.second())) {
+//													System.out.println("Match: true");
+							return true;
+						}
+					}
+					slowTrace.add(new Pair<Type, TypeParameter>(first, secondParam));
+			}
+			if(
+					//(second instanceof LazyTypeAlias) && 
+					(first instanceof AbstractInstantiatedTypeParameter.LazyTypeAlias)) {
+						TypeParameter firstParam = ((AbstractInstantiatedTypeParameter.LazyTypeAlias)first).parameter();
+						for(Pair<Type, TypeParameter> pair: slowTrace) {
+							if(second.sameAs(pair.first()) && firstParam.sameAs(pair.second())) {
+//														System.out.println("Match: true");
+								return true;
+							}
+						}
+						slowTrace.add(new Pair<Type, TypeParameter>(second, firstParam));
+				}
 			if(second instanceof ActualType) {
 				TypeParameter secondParam = ((ActualType)second).parameter();
 				for(Pair<Type, TypeParameter> pair: slowTrace) {
@@ -78,7 +104,7 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 				}
 				slowTrace.add(new Pair<Type, TypeParameter>(second, firstParam));
 			}
-			if(first.equals(second)) {
+			if(first.sameAs(second)) {
 				result = true;
 			} else if(first instanceof ActualType) {
 				result = upperBoundNotHigherThan(((ActualType) first).aliasedType(), second, slowTrace);
@@ -161,11 +187,12 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	
 	@Override
 	public boolean contains(Type first, Type second) throws LookupException {
+//		System.out.println(first.getFullyQualifiedName() +" <: "+second.getFullyQualifiedName());
 		boolean result = false;
 		if(first instanceof NullType) {
 			result = true;
 		} else {
-			if(first.equals(second)) {
+			if(first.sameAs(second)) {
 				result = true;
 			}
 			else if(first instanceof ActualType) {
@@ -340,7 +367,7 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 
 		@Override
 		public CaptureReference clone() {
-			return new CaptureReference(actualReference().clone());
+			return new CaptureReference((JavaTypeReference) actualReference().clone());
 		}
 		
 	}

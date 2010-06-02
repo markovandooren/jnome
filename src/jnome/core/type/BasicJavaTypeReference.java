@@ -1,5 +1,6 @@
 package jnome.core.type;
 
+import java.lang.ref.SoftReference;
 import java.util.List;
 
 import jnome.core.language.Java;
@@ -22,7 +23,6 @@ import chameleon.oo.type.DerivedType;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.ActualTypeArgument;
-import chameleon.util.CreationStackTrace;
 
 public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeReference> implements JavaTypeReference<BasicJavaTypeReference> {
 
@@ -146,6 +146,8 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
 				List<ActualTypeArgument> typeArguments = typeArguments();
 				if (typeArguments.size() > 0) {
 					result = new DerivedType(type, typeArguments);
+//					result = DerivedType.create(type, typeArguments);
+					
 					// This is going to give trouble if there is a special lexical context
 					// selection for 'type' in its parent.
 					// set to the type itself? seems dangerous as well.
@@ -181,7 +183,7 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
 		return super.getElement(selector());
 	}
 	
-  private Type _genericCache;
+  private SoftReference<Type> _genericCache;
   
   @Override
   public void flushLocalCache() {
@@ -190,16 +192,16 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
   }
   
   protected Type getGenericCache() {
+  	Type result = null;
   	if(Config.cacheElementReferences() == true) {
-  	  return _genericCache;
-  	} else {
-  		return null;
+  	  result = (_genericCache == null ? null : _genericCache.get());
   	}
+  	return result;
   }
   
   protected void setGenericCache(Type value) {
     	if(Config.cacheElementReferences() == true) {
-    		_genericCache = value;
+    		_genericCache = new SoftReference<Type>(value);
     	}
   }
 

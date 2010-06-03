@@ -563,7 +563,7 @@ public class JavaCodeWriter extends Syntax {
   }
 
   public boolean isClass(Element element) {
-    return (element instanceof RegularType);
+    return (element instanceof RegularType) && ((Type)element).is(((Java)language()).INTERFACE) != Ternary.TRUE;
   }
   
   public boolean isInterface(Element element) {
@@ -633,18 +633,7 @@ public class JavaCodeWriter extends Syntax {
     //Name
     result.append("class ");
     result.append(type.getName());
-    List<TypeParameter> parameters = type.parameters();
-		if(! parameters.isEmpty()) {
-    	result.append("<");
-    	Iterator<TypeParameter> iter = parameters.iterator();
-    	while(iter.hasNext()) {
-    		result.append(toCode(iter.next()));
-    		if(iter.hasNext()) {
-    			result.append(",");
-    		}
-    	}
-    	result.append(">");
-    }
+    appendTypeParameters(type.parameters(), result);
     List<InheritanceRelation> superTypes = type.inheritanceRelations();
     final List<TypeReference> classRefs = new ArrayList<TypeReference>();
     final List<TypeReference> interfaceRefs = new ArrayList<TypeReference>();
@@ -685,6 +674,20 @@ public class JavaCodeWriter extends Syntax {
     }
     
   }
+
+	private void appendTypeParameters(List<TypeParameter> parameters, final StringBuffer result) throws LookupException {
+		if(! parameters.isEmpty()) {
+    	result.append("<");
+    	Iterator<TypeParameter> iter = parameters.iterator();
+    	while(iter.hasNext()) {
+    		result.append(toCode(iter.next()));
+    		if(iter.hasNext()) {
+    			result.append(",");
+    		}
+    	}
+    	result.append(">");
+    }
+	}
   
   public boolean isFormalTypeParameter(Element element) {
   	return element instanceof FormalTypeParameter;
@@ -734,6 +737,7 @@ public class JavaCodeWriter extends Syntax {
     //Name
     result.append("interface ");
     result.append(type.getName());
+    appendTypeParameters(type.parameters(), result);
     List<InheritanceRelation> superTypes = type.inheritanceRelations();
     new AbstractPredicate<InheritanceRelation>() {
       public boolean eval(InheritanceRelation rel) throws LookupException {
@@ -777,6 +781,8 @@ public class JavaCodeWriter extends Syntax {
 	        result.append(" ");
 	      }
 	    }.applyTo(method.modifiers());
+	    
+	    appendTypeParameters(method.typeParameters(), result);
 	    
 	    if(! (method.is(method.language(Java.class).CONSTRUCTOR) == Ternary.TRUE)) {
 	        result.append(toCode(method.returnTypeReference()));

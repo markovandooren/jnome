@@ -5,16 +5,13 @@ import java.util.List;
 
 import jnome.core.type.AnonymousInnerClass;
 import jnome.core.type.BasicJavaTypeReference;
-import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.association.SingleAssociation;
 import org.rejuse.logic.ternary.Ternary;
-import org.rejuse.predicate.SafePredicate;
 
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.DeclarationContainer;
 import chameleon.core.declaration.Signature;
-import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.expression.Expression;
 import chameleon.core.expression.Invocation;
@@ -22,15 +19,13 @@ import chameleon.core.expression.InvocationTarget;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.lookup.LookupStrategy;
+import chameleon.core.lookup.TwoPhaseDeclarationSelector;
 import chameleon.core.method.MethodSignature;
 import chameleon.core.relation.WeakPartialOrder;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.ClassBody;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
-import chameleon.oo.type.TypeElement;
-import chameleon.oo.type.TypeReference;
-import chameleon.oo.type.inheritance.SubtypeRelation;
 import chameleon.support.member.MoreSpecificTypesOrder;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.util.Util;
@@ -204,7 +199,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 //    return result;
 //  }
 
-  public class ConstructorSelector extends DeclarationSelector<NormalMethod> {
+  public class ConstructorSelector extends TwoPhaseDeclarationSelector<NormalMethod> {
     
     public boolean selectedRegardlessOfName(NormalMethod declaration) throws LookupException {
     	return declaration.is(language(ObjectOrientedLanguage.class).CONSTRUCTOR)==Ternary.TRUE;
@@ -243,7 +238,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 		}
 
 		@Override
-		public String selectionName() {
+		public String selectionName(DeclarationContainer<?,?> container) {
 			return getTypeReference().signature().name();
 		}
 

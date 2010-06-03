@@ -7,11 +7,13 @@ import org.rejuse.association.SingleAssociation;
 import org.rejuse.logic.ternary.Ternary;
 
 import chameleon.core.declaration.Declaration;
+import chameleon.core.declaration.DeclarationContainer;
 import chameleon.core.declaration.Signature;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.lookup.SelectorWithoutOrder;
+import chameleon.core.lookup.TwoPhaseDeclarationSelector;
 import chameleon.core.member.Member;
 import chameleon.core.namespacepart.Import;
 import chameleon.core.relation.WeakPartialOrder;
@@ -67,7 +69,7 @@ public class SingleStaticImport extends Import<SingleStaticImport> {
 	}
 	
 	public DeclarationSelector<Member> selector() {
-		return new DeclarationSelector<Member>() {
+		return new TwoPhaseDeclarationSelector<Member>() {
 
 			@Override
 			public WeakPartialOrder<Member> order() {
@@ -91,7 +93,7 @@ public class SingleStaticImport extends Import<SingleStaticImport> {
 			}
 
 			@Override
-			public String selectionName() throws LookupException {
+			public String selectionName(DeclarationContainer<?,?> container) throws LookupException {
 				return name();
 			}
 			

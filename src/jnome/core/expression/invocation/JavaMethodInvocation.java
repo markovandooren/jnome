@@ -17,6 +17,7 @@ import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.predicate.TypePredicate;
 
 import chameleon.core.declaration.Declaration;
+import chameleon.core.declaration.DeclarationContainer;
 import chameleon.core.declaration.Signature;
 import chameleon.core.element.Element;
 import chameleon.core.expression.ActualArgument;
@@ -135,7 +136,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
     								&& 
     								(nbActuals >= nbFormals - 1)
     						)
-    				) && selectedBasedOnName(method.signature())){
+    				) && correctSignature(method.signature())){
     					candidates.add(method);
     				}
     			}
@@ -162,11 +163,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
     			}
     		}
     		applyOrder(tmp);
-    		// substitute the type parameters
     	}
-//    	if(tmp.size() == 1) {
-//    		System.out.println("Found match for "+JavaMethodInvocation.this.name());
-//    	}
     	return tmp;
     }
     
@@ -175,65 +172,6 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 			return instantiatedMethodTemplate(method, actualTypeParameters);
     }
 
-    public boolean selectedRegardlessOfName(NormalMethod declaration) throws LookupException {
-    	throw new ChameleonProgrammerException();
-//  		boolean result = declaration.is(language(ObjectOrientedLanguage.class).CONSTRUCTOR) != Ternary.TRUE;
-//  		if(result) {
-//  			Signature signature = declaration.signature();
-//  			if(signature instanceof SimpleNameMethodSignature) {
-//  				List<FormalParameter> formals = declaration.formalParameters();
-//  				
-//  				//declaration.scope().contains(JavaMethodInvocation.this);
-//  				
-//          int nbActuals = nbActualParameters();
-//          int nbFormals = formals.size();
-//          //List<Type> formalTypes = sig.parameterTypes();
-//          // We take a shortcut here, and skip the heavy calculations if the number of 
-//          // actual and formal parameters isn't equal
-//          if(nbActuals == nbFormals){
-//          	// Phases 1 and 2 and 3
-//						result = phases1and2and3(declaration);
-//          } else if
-//          // varargs
-//          	 (   (nbFormals > 1) 
-//          			   &&
-//          			 (formals.get(nbFormals - 1) instanceof MultiFormalParameter)
-//          			   && 
-//          			 (nbActuals >= nbFormals - 1)
-//          	 )
-//          	 {
-//          	// only Phase 3
-//						result = variableApplicableBySubtyping(declaration);
-//          } else {
-//          	result = false;
-//          }
-////          if(result) {
-////          	// Check the explicit parameters.
-////          	// FIXME isn't this done already?
-////          	List<ActualTypeArgument> actualTypeArguments = typeArguments();
-////          	int actualTypeArgumentsSize = actualTypeArguments.size();
-////						if(actualTypeArgumentsSize > 0) {
-////          		List<TypeParameter> formalTypeParameters = declaration.typeParameters();
-////          		result = actualTypeArgumentsSize == formalTypeParameters.size();
-////          		if(result) {
-////          			for(int i=0; result && i < actualTypeArgumentsSize; i++) {
-////          				result = formalTypeParameters.get(i).canBeAssigned(actualTypeArguments.get(i));
-////          			}
-////          		}
-////          	}
-////          }
-//  			}
-//  		}
-//  		return result;
-    }
-
-//		private boolean phases1and2and3(NormalMethod method) throws LookupException {
-//			//return MoreSpecificTypesOrder.create().contains(actuals,formalTypes);
-//			return matchingApplicableBySubtyping(method) ||
-//			       matchingApplicableByConversion(method) ||
-//			       variableApplicableBySubtyping(method);
-//		}
-		
 
 		private TypeAssignmentSet actualTypeParameters(NormalMethod<?, ?, ?> method, boolean includeNonreference) throws LookupException {
 			List<ActualTypeArgument> typeArguments = typeArguments();
@@ -503,8 +441,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 			return match;
 		}
     
-  	@Override
-    public boolean selectedBasedOnName(Signature signature) throws LookupException {
+    private boolean correctSignature(Signature signature) throws LookupException {
   		boolean result = false;
   		if(signature instanceof SimpleNameMethodSignature) {
   			SimpleNameMethodSignature sig = (SimpleNameMethodSignature)signature;
@@ -515,13 +452,6 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 
     @Override
     public WeakPartialOrder<NormalMethod> order() {
-//      return new WeakPartialOrder<NormalMethod>() {
-//        @Override
-//        public boolean contains(NormalMethod first, NormalMethod second)
-//            throws LookupException {
-//          return MoreSpecificTypesOrder.create().contains(((MethodHeader) first.header()).formalParameterTypes(), ((MethodHeader) second.header()).formalParameterTypes());
-//        }
-//      };
     	return new JavaMostSpecificMethodOrder(JavaMethodInvocation.this);
     }
 		@Override
@@ -530,7 +460,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 		}
 
 		@Override
-		public String selectionName() {
+		public String selectionName(DeclarationContainer<?,?> container) {
 			return name();
 		}
   }

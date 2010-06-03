@@ -698,5 +698,10 @@ public class Java extends ObjectOrientedLanguage {
 			return subtypeRelation.upperBoundNotHigherThan(first, second, trace);
 		}
 
+		@Override
+		public void flushCache() {
+			subtypeRelation().flushCache();
+		}
+
 
 }

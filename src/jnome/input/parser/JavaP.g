@@ -1378,7 +1378,9 @@ equalityExpression returns [Expression element]
 
 instanceOfExpression returns [Expression element]
 @after{check_null(retval.element);}
-    :   ex=relationalExpression {if(ex.element == null) {throw new Error("retval is null");} retval.element = ex.element;} 
+    :   ex=relationalExpression {
+            //if(ex.element == null) {throw new Error("retval is null");} 
+            retval.element = ex.element;} 
        ('instanceof' tref=type {retval.element = new InstanceofExpression(ex.element, tref.element);
          setLocation(retval.element,ex.start,tref.stop);
        }
@@ -1386,7 +1388,9 @@ instanceOfExpression returns [Expression element]
     ;
 
 relationalExpression returns [Expression element]
-    :   ex=shiftExpression {if(ex.element == null) {throw new Error("retval is null");}retval.element = ex.element;} ( op=relationalOp exx=shiftExpression 
+    :   ex=shiftExpression {
+              //if(ex.element == null) {throw new Error("retval is null");}
+              retval.element = ex.element;} ( op=relationalOp exx=shiftExpression 
         {
          retval.element = new InfixOperatorInvocation($op.text, retval.element);
          ((InfixOperatorInvocation)retval.element).addArgument(new ActualArgument(exx.element));

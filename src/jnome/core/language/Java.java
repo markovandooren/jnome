@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jnome.core.expression.invocation.JavaExtendsReference;
+import jnome.core.expression.invocation.JavaSuperReference;
 import jnome.core.expression.invocation.NonLocalJavaTypeReference;
 import jnome.core.modifier.PackageProperty;
 import jnome.core.type.AnonymousInnerClass;
@@ -570,13 +572,13 @@ public class Java extends ObjectOrientedLanguage {
 				JavaTypeReference reference = reference(((ExtendsWildcardType)type).bound());
 				Element parent = reference.parent();
 				reference.setUniParent(null);
-				result = (JavaTypeReference) createExtendsWildcard(reference);
+				result = new JavaExtendsReference(reference);
 				result.setUniParent(parent);
 			} else if (type instanceof SuperWildcardType) {
 				JavaTypeReference reference = reference(((SuperWildcardType)type).bound());
 				Element parent = reference.parent();
 				reference.setUniParent(null);
-				result = (JavaTypeReference) createSuperWildcard(reference);
+				result = new JavaSuperReference(reference);
 				result.setUniParent(parent);
 			} else if (type instanceof PureWildCardType) {
 				result = (JavaTypeReference) createPureWildcard();

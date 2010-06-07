@@ -5,19 +5,23 @@ import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.generics.BasicTypeArgument;
 import chameleon.util.CreationStackTrace;
 
-public class JavaBasicTypeArgument extends BasicTypeArgument<JavaBasicTypeArgument> implements JavaTypeReference<JavaBasicTypeArgument> {
+public class JavaBasicTypeArgument extends BasicTypeArgument<JavaBasicTypeArgument> 
+//    implements JavaTypeReference<JavaBasicTypeArgument> 
+{
+	
+//	private CreationStackTrace _trace = new CreationStackTrace();
 	
 	public JavaBasicTypeArgument(TypeReference ref) {
 		super(ref);
 	}
 
-	public JavaTypeReference componentTypeReference() {
-		return this;
-	}
-
-	public JavaTypeReference erasedReference() {
-		return new JavaBasicTypeArgument(((JavaTypeReference)typeReference()).erasedReference());
-	}
+//	public JavaTypeReference componentTypeReference() {
+//		return this;
+//	}
+//
+//	public JavaTypeReference erasedReference() {
+//		return new JavaBasicTypeArgument(((JavaTypeReference)typeReference()).erasedReference());
+//	}
 
 	public JavaTypeReference toArray(int dimension) {
 		throw new ChameleonProgrammerException();

@@ -23,6 +23,7 @@ import chameleon.oo.type.DerivedType;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.ActualTypeArgument;
+import chameleon.util.CreationStackTrace;
 
 public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeReference> implements JavaTypeReference<BasicJavaTypeReference> {
 
@@ -164,7 +165,8 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
   public BasicJavaTypeReference clone() {
   	BasicJavaTypeReference result =  new BasicJavaTypeReference((getTarget() == null ? null : getTarget().clone()),(SimpleNameSignature)signature().clone());
   	for(ActualTypeArgument typeArgument: typeArguments()) {
-  		result.addArgument(typeArgument.clone());
+  		ActualTypeArgument clone = typeArgument.clone();
+			result.addArgument(clone);
   	}
   	return result;
   }

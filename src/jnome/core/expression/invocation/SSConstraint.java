@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import jnome.core.type.JavaExtendsWildcard;
-import jnome.core.type.JavaSuperWildcard;
 import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.logic.ternary.Ternary;
@@ -149,13 +147,13 @@ public class SSConstraint extends FirstPhaseConstraint {
 						recursive.setUniParent(parent());
 						result.addAll(recursive.process());
 					} else if(arg instanceof ExtendsWildcard) {
-						JavaTypeReference V = new JavaExtendsWildcard(((ExtendsWildcard)arg).typeReference());
+						JavaTypeReference V = new JavaExtendsReference(((ExtendsWildcard)arg).typeReference());
 						V.setUniParent(ithTypeParameterOfG);
 						EQConstraint recursive = new EQConstraint(V, U.getElement());
 						recursive.setUniParent(parent());
 						result.addAll(recursive.process());
 					} else if(arg instanceof SuperWildcard) {
-						JavaTypeReference V = new JavaSuperWildcard(((SuperWildcard)arg).typeReference());
+						JavaTypeReference V = new JavaSuperReference(((SuperWildcard)arg).typeReference());
 						V.setUniParent(ithTypeParameterOfG);
 						EQConstraint recursive = new EQConstraint(V, U.getElement());
 						recursive.setUniParent(parent());
@@ -175,5 +173,4 @@ public class SSConstraint extends FirstPhaseConstraint {
 		Type G = typeWithSameBaseTypeAs(F(), supers);
 		return G;
 	}
-	
 }

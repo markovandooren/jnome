@@ -59,6 +59,8 @@ import chameleon.core.namespacepart.TypeImport;
 import chameleon.core.reference.SpecificReference;
 import chameleon.core.statement.Block;
 import chameleon.core.variable.FormalParameter;
+import chameleon.core.variable.VariableDeclaration;
+import chameleon.core.variable.VariableDeclarator;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeElement;
@@ -130,8 +132,6 @@ import chameleon.support.tool.Arguments;
 import chameleon.support.type.StaticInitializer;
 import chameleon.support.variable.LocalVariable;
 import chameleon.support.variable.LocalVariableDeclarator;
-import chameleon.support.variable.VariableDeclaration;
-import chameleon.support.variable.VariableDeclarator;
 import chameleon.tool.Connector;
 
 /**

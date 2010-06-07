@@ -210,13 +210,14 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
     	boolean result = false;
 			if(signature instanceof MethodSignature) {
 				MethodSignature<?,?> sig = (MethodSignature<?,?>)signature;
-			  if(sig.nearestAncestor(Type.class).signature().sameAs(getTypeReference().signature())) {
-				List<Type> actuals = getActualParameterTypes();
-				List<Type> formals = ((MethodSignature)signature).parameterTypes();
-				if (MoreSpecificTypesOrder.create().contains(actuals, formals)) {
-						result = true;
-				}
-			}
+//			  if(sig.nearestAncestor(Type.class).signature().sameAs(getTypeReference().signature())) {
+			  if(sig.name().equals(getTypeReference().signature().name())) {
+			  	List<Type> actuals = getActualParameterTypes();
+			  	List<Type> formals = ((MethodSignature)signature).parameterTypes();
+			  	if (MoreSpecificTypesOrder.create().contains(actuals, formals)) {
+			  		result = true;
+			  	}
+			  }
 			}
       return result;
 		}

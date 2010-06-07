@@ -5,8 +5,8 @@ import jnome.core.type.JavaTypeReference;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.expression.Expression;
 import chameleon.core.variable.Variable;
+import chameleon.core.variable.VariableDeclaration;
 import chameleon.exception.ChameleonProgrammerException;
-import chameleon.support.variable.VariableDeclaration;
 
 /**
  * Because the idiots who created Java had to allow array brackets after the name of a variable, we

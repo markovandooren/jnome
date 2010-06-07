@@ -13,13 +13,17 @@ import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.lookup.LookupStrategy;
 import chameleon.core.member.Member;
+import chameleon.core.method.Method;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.inheritance.InheritanceRelation;
 import chameleon.oo.type.inheritance.SubtypeRelation;
+import chameleon.support.member.simplename.SimpleNameMethodHeader;
 import chameleon.support.member.simplename.method.NormalMethod;
+import chameleon.support.modifier.Constructor;
+import chameleon.support.modifier.Public;
 import chameleon.util.Util;
 
 public class AnonymousInnerClass extends RegularType {
@@ -56,6 +60,15 @@ public class AnonymousInnerClass extends RegularType {
 			  return object.is(language(ObjectOrientedLanguage.class).CONSTRUCTOR) == Ternary.TRUE;
 		  }
 	  }.filter(superMembers);
+	  //if the super type is an interface, there will be no constructor, so we must
+	  //create a default constructor.
+	  if(superMembers.isEmpty()) {
+	  	NormalMethod cons = new NormalMethod(new SimpleNameMethodHeader(writtenType.signature().name()), tref.clone());
+	  	cons.addModifier(new Constructor());
+	  	cons.addModifier(new Public());
+	  	cons.setUniParent(this);
+	  	superMembers.add(cons);
+	  }
 		return superMembers;
 	}
 	

@@ -14,9 +14,9 @@ import chameleon.core.lookup.LookupException;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
 import chameleon.core.variable.Variable;
+import chameleon.core.variable.VariableDeclaration;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.type.Type;
-import chameleon.support.variable.VariableDeclaration;
 
 /**
  * @author Marko van Dooren

@@ -50,6 +50,7 @@ import chameleon.core.reference.ElementReferenceWithTarget;
 import chameleon.core.relation.EquivalenceRelation;
 import chameleon.core.relation.StrictPartialOrder;
 import chameleon.core.variable.MemberVariable;
+import chameleon.core.variable.VariableDeclarator;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.ConstructedType;
@@ -84,7 +85,6 @@ import chameleon.support.rule.member.MemberInheritableByDefault;
 import chameleon.support.rule.member.MemberInstanceByDefault;
 import chameleon.support.rule.member.MemberOverridableByDefault;
 import chameleon.support.rule.member.TypeExtensibleByDefault;
-import chameleon.support.variable.VariableDeclarator;
 import chameleon.util.CreationStackTrace;
 import chameleon.util.Pair;
 

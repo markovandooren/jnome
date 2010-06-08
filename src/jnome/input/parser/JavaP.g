@@ -835,23 +835,28 @@ type returns [JavaTypeReference element]
 	;
 
 classOrInterfaceType returns [JavaTypeReference element]
-@init{NamespaceOrTypeReference target = null;}
+@init{NamespaceOrTypeReference target = null;
+      Token stop = null;
+     }
 // We will process the different parts. The current type reference (return value) is kept in retval. Alongside that
 // we keep a version of the latest namespace or type reference. If at any point after processing the first identifier
 // target is null, we know that we have encountered a real type reference before, so anything after that becomes a type reference.
 	:	name=Identifier 
 	          {
 	           retval.element = typeRef($name.text); 
-	           target =  new NamespaceOrTypeReference($name.text); 
+	           target =  new NamespaceOrTypeReference($name.text);
+	           stop=name; 
 	          } 
 	        (args=typeArguments 
 	          {
 	           // Add the type arguments
 	           ((BasicJavaTypeReference)retval.element).addAllArguments(args.element);
 	           // In this case, we know that the current element must be a type reference,
-	           // so we se the target to the current type reference.
+	           // so we set the target to the current type reference.
 	           target = null;
-	          })?  
+	           stop=args.stop;
+	          })?
+	          {setLocation(retval.element,name,stop);}  
 	        ('.' namex=Identifier 
 	          {
 	           if(target != null) {
@@ -862,6 +867,7 @@ classOrInterfaceType returns [JavaTypeReference element]
 	           } else {
 	             retval.element = createTypeReference(retval.element,$namex.text);
 	           }
+	           stop=namex;
 	          } 
 	        (argsx=typeArguments 
 	          {
@@ -870,10 +876,12 @@ classOrInterfaceType returns [JavaTypeReference element]
 	           // In this case, we know that the current element must be a type reference,
 	           // so we se the target to the current type reference.
 	           target = null;
-	          })? )*
+	           stop = argsx.stop;
+	          })? {setLocation(retval.element,name,stop);})*
 	;
 
 primitiveType returns [JavaTypeReference element]
+@after{setLocation(retval.element, retval.start, retval.stop);}
     :   'boolean' {retval.element = typeRef("boolean");}
     |   'char' {retval.element = typeRef("char");}
     |   'byte' {retval.element = typeRef("byte");}
@@ -1538,7 +1546,9 @@ Token stop=null;
                          setKeyword($TargetScope::target,spkw);
                         } 
             supsuf=superSuffix {check_null(supsuf.element); retval.element = supsuf.element;}
-    |   '.' 'new' in=innerCreator {check_null(in.element); retval.element = in.element;}
+    |   '.' newkw='new' in=innerCreator {check_null(in.element); 
+                                         retval.element = in.element;
+                                         setKeyword(retval.element,newkw);}
     |   '[' arrex=expression bracket=']' 
           {retval.element = new ArrayAccessExpression((Expression)$TargetScope::target);
            ((ArrayAccessExpression)retval.element).addIndex(new FilledArrayIndex(arrex.element));
@@ -1570,7 +1580,7 @@ Token stop=null;
         setLocation($TargetScope::target,start,stop); // put locations on the SuperTarget.
         }
     |   lit=literal {retval.element = lit.element;}
-    |   nkw='new' {start=nkw;} cr=creator {retval.element = cr.element;}
+    |   nkw='new' {start=nkw;} cr=creator {retval.element = cr.element;setKeyword(retval.element,nkw);}
     |   morerubex=moreIdentifierSuffixRubbish {retval.element = morerubex.element;}
     |   vt=voidType '.' clkw='class' {retval.element = new ClassLiteral(vt.element); start=vt.start;stop=clkw; setLocation(retval.element,start,stop);}
     |   tref=type '.' clkww='class' {retval.element = new ClassLiteral(tref.element);start=tref.start;stop=clkww; setLocation(retval.element,start,stop);}
@@ -1628,7 +1638,7 @@ if(! retval.element.descendants().contains(scopeTarget)) {
             supsuf=superSuffix {
                retval.element = supsuf.element;
             }// REMOVE VARIABLE REFERENCE POSITION!
-    |   '.' 'new' in=innerCreator {retval.element = in.element;})?
+    |   '.' newkw='new' in=innerCreator {retval.element = in.element;setKeyword(retval.element,newkw);})?
 	;
 
 identifierSuffixRubbush returns [Expression element]
@@ -1650,7 +1660,7 @@ scope TargetScope;
               setLocation($TargetScope::target, $TargetScope::start,supkw);
              }
              supsuf=superSuffix {retval.element = supsuf.element;}
-    |   '.' 'new' in=innerCreator {retval.element = in.element;}
+    |   '.' newkw='new' in=innerCreator {retval.element = in.element;setKeyword(retval.element,newkw);}
    )?
 	;
 
@@ -1714,7 +1724,9 @@ createdName returns [JavaTypeReference element]
 innerCreator returns [ConstructorInvocation element]
     :   (targs=nonWildcardTypeArguments)? 
         name=Identifier rest=classCreatorRest 
-        {retval.element = new ConstructorInvocation((BasicJavaTypeReference)typeRef($name.text),$TargetScope::target);
+        {BasicJavaTypeReference tref = (BasicJavaTypeReference)typeRef($name.text);
+         setLocation(tref,name,name);
+         retval.element = new ConstructorInvocation(tref,$TargetScope::target);
          retval.element.setBody(rest.element.body());
          retval.element.addAllArguments(rest.element.arguments());
          if(targs != null) {

@@ -59,6 +59,9 @@ import chameleon.core.reference.CrossReference;
 import chameleon.core.statement.Block;
 import chameleon.core.statement.Statement;
 
+import chameleon.core.variable.VariableDeclaration;
+import chameleon.core.variable.VariableDeclarator;
+
 import chameleon.oo.type.ClassBody;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
@@ -149,9 +152,7 @@ import chameleon.support.statement.LabeledStatement;
 import chameleon.support.type.EmptyTypeElement;
 import chameleon.support.type.StaticInitializer;
 
-import chameleon.support.variable.VariableDeclaration;
 import chameleon.support.variable.LocalVariableDeclarator;
-import chameleon.support.variable.VariableDeclarator;
 
 import chameleon.support.input.ChameleonParser;
 

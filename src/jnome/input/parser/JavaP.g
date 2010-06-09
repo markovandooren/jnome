@@ -285,8 +285,11 @@ scope TargetScope {
     if(type == null) {throw new IllegalArgumentException("type given to processType is null.");}
     np.add(type);
     // inherit from java.lang.Object if there is no explicit extends relation
-    if(type.inheritanceRelations().isEmpty() && (! type.getFullyQualifiedName().equals("java.lang.Object"))){
-      type.addInheritanceRelation(new SubtypeRelation(createTypeReference(new NamespaceOrTypeReference("java.lang"),"Object")));
+    String fqn = type.getFullyQualifiedName();
+    if(fqn != null) {
+      if(type.inheritanceRelations().isEmpty() && (! fqn.equals("java.lang.Object"))){
+        type.addInheritanceRelation(new SubtypeRelation(createTypeReference(new NamespaceOrTypeReference("java.lang"),"Object")));
+      }
     }
 
   }

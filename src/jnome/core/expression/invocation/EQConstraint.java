@@ -60,7 +60,7 @@ public class EQConstraint extends FirstPhaseConstraint {
 	private void processCaseSSFormalExtends(List<SecondPhaseConstraint> result, JavaTypeReference U, int index, Class<? extends ActualTypeArgumentWithTypeReference> t)
 	throws LookupException {
 		try {
-			TypeParameter ithTypeParameterOfA = A().parameters().get(index);
+			TypeParameter ithTypeParameterOfA = A().parameters(TypeParameter.class).get(index);
 
 			if(ithTypeParameterOfA instanceof InstantiatedTypeParameter) {
 				ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfA).argument();

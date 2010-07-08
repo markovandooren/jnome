@@ -105,7 +105,8 @@ public class ArrayTypeReference  extends NamespaceElementImpl<ArrayTypeReference
 	}
 
 	public Declaration getDeclarator() throws LookupException {
-		return elementTypeReference().getDeclarator();
+		return getElement();
+//		return elementTypeReference().getDeclarator();
 	}
 
 	public List<? extends Element> children() {

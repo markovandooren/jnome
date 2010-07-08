@@ -69,7 +69,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 			int index) throws LookupException {
 		Type G = GsuperTypeOfA();
 		if(G != null) {
-			TypeParameter ithTypeParameterOfG = G.parameters().get(index);
+			TypeParameter ithTypeParameterOfG = G.parameters(TypeParameter.class).get(index);
 			if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
 				ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 				// 1)
@@ -103,7 +103,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 
 		Type G = GsuperTypeOfA();
 		if(G != null) {
-			TypeParameter ithTypeParameterOfG = G.parameters().get(index);
+			TypeParameter ithTypeParameterOfG = G.parameters(TypeParameter.class).get(index);
 			if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
 				ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 				// 1)
@@ -136,7 +136,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 		Type G = GsuperTypeOfA();
 		if(G != null) {
 			try {
-				TypeParameter ithTypeParameterOfG = G.parameters().get(index);
+				TypeParameter ithTypeParameterOfG = G.parameters(TypeParameter.class).get(index);
 
 				if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
 					// Get the i-th type parameter of zuppa: V.

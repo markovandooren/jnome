@@ -18,6 +18,7 @@ import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
+import chameleon.oo.type.generics.TypeParameter;
 import chameleon.oo.type.inheritance.InheritanceRelation;
 import chameleon.oo.type.inheritance.SubtypeRelation;
 import chameleon.support.member.simplename.SimpleNameMethodHeader;
@@ -106,7 +107,7 @@ public class AnonymousInnerClass extends RegularType {
 	public List<Element> children() {
 		List<Element> result = (List)modifiers();
     Util.addNonNull(signature(), result);
-		Util.addNonNull(parameterBlock(), result);
+		Util.addNonNull(parameterBlock(TypeParameter.class), result);
 		Util.addNonNull(body(), result);
 		return result;
 	}
@@ -114,7 +115,7 @@ public class AnonymousInnerClass extends RegularType {
 
 	@Override
 	protected void copyContents(Type from, boolean link) {
-		copyEverythingExceptionInheritanceRelations(from,link);
+		copyEverythingExceptInheritanceRelations(from,link);
 	}
 
 	@Override

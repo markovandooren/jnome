@@ -155,12 +155,12 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 			throw new ChameleonProgrammerException("The number of type parameters from the first list: "+size+" is different from the number of type parameters in the second list: "+secondArguments.size());
 		}
 		List<TypeParameter> newParameters = lcta(firstArguments, secondArguments);
-		result.replaceAllParameter(newParameters);
+		result.replaceAllParameter(TypeParameter.class,newParameters);
 		return result;
 	}
 	
 	public List<ActualTypeArgument> arguments(Type type) {
-		List<TypeParameter> parameters = type.parameters();
+		List<TypeParameter> parameters = type.parameters(TypeParameter.class);
 		List<ActualTypeArgument> result = new ArrayList<ActualTypeArgument>();
 		for(TypeParameter parameter: parameters) {
 			result.add(Java.argument(parameter));
@@ -254,7 +254,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	}
 	
 	public Type Candidate(Type W, TypeParameter Tj) throws LookupException {
-		if(W.parameters().size() > 0) {
+		if(W.parameters(TypeParameter.class).size() > 0) {
 			return CandidateInvocation(W, Tj);
 		} else {
 			return W;
@@ -352,7 +352,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 			constraints.add(new GGConstraint(S, RprimeRef.getType()));
 		}
 		// additional constraints Bi[T1=B(T1) ... Tn=B(Tn)] >> Ti where Bi is the declared bound of Ti
-		for(TypeParameter param: typeParameters()) {
+		for(TypeParameter<?> param: typeParameters()) {
 			JavaTypeReference bound = (JavaTypeReference) param.upperBoundReference();
 			JavaTypeReference Bi= substitutedReference(bound);
 			

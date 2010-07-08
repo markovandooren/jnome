@@ -275,11 +275,11 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		Type result = type;
 		if(result instanceof DerivedType) {
 			List<TypeParameter> typeParameters = new ArrayList<TypeParameter>();
-			if(! (type.parameter(1) instanceof CapturedTypeParameter)) {
+			if(! (type.parameter(TypeParameter.class,1) instanceof CapturedTypeParameter)) {
 				Type base = type.baseType();
-				List<TypeParameter> baseParameters = base.parameters();
+				List<TypeParameter> baseParameters = base.parameters(TypeParameter.class);
 				Iterator<TypeParameter> formals = baseParameters.iterator();
-				List<TypeParameter> actualParameters = type.parameters();
+				List<TypeParameter> actualParameters = type.parameters(TypeParameter.class);
 				Iterator<TypeParameter> actuals = actualParameters.iterator();
 				// substitute parameters by their capture bounds.
 				// ITERATOR because we iterate over 'formals' and 'actuals' simultaneously.
@@ -388,7 +388,7 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	}
 	
 	public boolean rawType(Type type) {
-		for(TypeParameter parameter: type.parameters()) {
+		for(TypeParameter parameter: type.parameters(TypeParameter.class)) {
 			if(! (parameter instanceof FormalTypeParameter)) {
 				return false;
 			}
@@ -400,8 +400,8 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		List<Pair<Type, TypeParameter>> slowTrace = new ArrayList<Pair<Type, TypeParameter>>(trace);
 //		List<Pair<TypeParameter, TypeParameter>> slowTrace = trace;
 		boolean result;
-		List<TypeParameter> firstFormal= first.parameters();
-		List<TypeParameter> secondFormal= second.parameters();
+		List<TypeParameter> firstFormal= first.parameters(TypeParameter.class);
+		List<TypeParameter> secondFormal= second.parameters(TypeParameter.class);
 		result = true;
 		Iterator<TypeParameter> firstIter = firstFormal.iterator();
 		Iterator<TypeParameter> secondIter = secondFormal.iterator();

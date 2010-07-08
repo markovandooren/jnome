@@ -104,7 +104,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 				// i is the index of the parameter we are processing.
 				// V= the type reference of the i-th type parameter of some supertype G of A.
 			List<ActualTypeArgument> actualsOfF = new ArrayList<ActualTypeArgument>();
-			for(TypeParameter par: F().parameters()) {
+			for(TypeParameter par: F().parameters(TypeParameter.class)) {
 				if(par instanceof InstantiatedTypeParameter) {
 				  actualsOfF.add(((InstantiatedTypeParameter)par).argument());
 				} 
@@ -187,7 +187,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 						return false;
 					}
 				}
-			}.exists(type.parameters());
+			}.exists(type.parameters(TypeParameter.class));
 	}
 	
 	public boolean involvesTypeParameter(ActualTypeArgument arg) throws LookupException {

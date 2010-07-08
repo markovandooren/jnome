@@ -633,7 +633,7 @@ public class JavaCodeWriter extends Syntax {
     //Name
     result.append("class ");
     result.append(type.getName());
-    appendTypeParameters(type.parameters(), result);
+    appendTypeParameters(type.parameters(TypeParameter.class), result);
     List<InheritanceRelation> superTypes = type.inheritanceRelations();
     final List<TypeReference> classRefs = new ArrayList<TypeReference>();
     final List<TypeReference> interfaceRefs = new ArrayList<TypeReference>();
@@ -737,7 +737,7 @@ public class JavaCodeWriter extends Syntax {
     //Name
     result.append("interface ");
     result.append(type.getName());
-    appendTypeParameters(type.parameters(), result);
+    appendTypeParameters(type.parameters(TypeParameter.class), result);
     List<InheritanceRelation> superTypes = type.inheritanceRelations();
     new AbstractPredicate<InheritanceRelation>() {
       public boolean eval(InheritanceRelation rel) throws LookupException {

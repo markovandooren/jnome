@@ -152,7 +152,7 @@ public class Java extends ObjectOrientedLanguage {
   	} 
   	else {
   		// Regular TYPE
-			if(original.nbTypeParameters() > 0 && (original.parameter(1) instanceof FormalTypeParameter)) {
+			if(original.nbTypeParameters(TypeParameter.class) > 0 && (original.parameter(TypeParameter.class,1) instanceof FormalTypeParameter)) {
 				result = RawType.create(original);
 			} else {
   			result = original;
@@ -544,7 +544,7 @@ public class Java extends ObjectOrientedLanguage {
 				result = new NonLocalJavaTypeReference(tref,type.parent());
 				result.setUniParent(type.parent());
 				// next setup the generic parameters.
-				for(TypeParameter parameter: type.parameters()) {
+				for(TypeParameter parameter: type.parameters(TypeParameter.class)) {
 					ActualTypeArgument arg = argument(parameter);
 					arg.setUniParent(null);
 					tref.addArgument(arg);
@@ -562,7 +562,7 @@ public class Java extends ObjectOrientedLanguage {
 				result = (JavaTypeReference) createTypeReferenceInDefaultNamespace(fqn);
 			} else if (type instanceof RegularType) {
 				// for now, if this code is invoked, there are no generic parameters.
-				if(type.parameters().size() > 0) {
+				if(type.nbTypeParameters(TypeParameter.class) > 0) {
 					throw new ChameleonProgrammerException("requesting reference of RegularType with type parameters");
 				}
 				result = (JavaTypeReference) createTypeReferenceInDefaultNamespace(type.getFullyQualifiedName());

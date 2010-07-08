@@ -33,7 +33,7 @@ public class TestChameleon extends JavaTest {
 	}
 
 	@Override
-	public ModelProvider modelProvider() {
+	public BasicModelProvider modelProvider() {
 		BasicModelProvider provider = new BasicModelProvider(new JavaModelFactory(), ".java");
 		provider.includeBase("testsource"+provider.separator()+"gen"+provider.separator());
 		provider.includeCustom("testsource"+provider.separator()+"jregex"+provider.separator());

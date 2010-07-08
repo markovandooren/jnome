@@ -58,7 +58,7 @@ public class PureWildcard<E extends PureWildcard> extends ActualTypeArgument<E> 
 		List<ActualTypeArgument> args = nearestAncestor.typeArguments();
 		int index = args.indexOf(this);
 		Type base = nearestAncestor.typeConstructor();
-		TypeParameter parameter = base.parameter(index+1);
+		TypeParameter parameter = base.parameter(TypeParameter.class,index+1);
 		Type result = parameter.upperBound();
 		return result;
 	}

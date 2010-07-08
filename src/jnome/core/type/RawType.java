@@ -88,7 +88,7 @@ public class RawType extends TypeWithBody implements JavaType {
 		// 1) inheritance relations
 		eraseInheritanceRelations();
 		// 2) type parameters
-		eraseTypeParameters(parameters());
+		eraseTypeParameters(parameters(TypeParameter.class));
 		// 3) members
 		eraseMethods();
 		// 4) member types

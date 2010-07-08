@@ -45,9 +45,9 @@ public class JavaOverridesRelation extends StrictPartialOrder<Member> {
 		    	MethodSignature signature1 = method1.signature();
 		    	MethodSignature<?,?> signature2 = method2.signature();
 		    	result = signature1.sameParameterBoundsAs(signature2);
-		    	if(result) {
-		    	MethodSignature erasure2 = signature2.language(Java.class).erasure((SimpleNameMethodSignature) signature2);
-		    	 result = signature1.sameParameterBoundsAs(erasure2);
+		    	if(!result) {
+		    	  MethodSignature erasure2 = signature2.language(Java.class).erasure((SimpleNameMethodSignature) signature2);
+		    	  result = signature1.sameParameterBoundsAs(erasure2);
 		    	}
 		    	}
 		    }

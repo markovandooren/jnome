@@ -44,7 +44,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 	@Override
 	public void caseSSFormalBasic(List<SecondPhaseConstraint> result, JavaTypeReference U, int index) throws LookupException {
 		try {
-			if(A().parameters().isEmpty()) {
+			if(A().parameters(TypeParameter.class).isEmpty()) {
 				// If A is an instance of a non-generic type, then no constraint is implied on Tj.
 			} else {
 				Type G = F().baseType();
@@ -55,17 +55,17 @@ public class GGConstraint extends FirstPhaseConstraint {
 						// G(S1,..,Sindex-1,U,Sindex+1,...,Sn) -> H
 						
 						List<TypeParameter> formalArgs = new ArrayList<TypeParameter>();
-						for(TypeParameter par: G.parameters()) {
+						for(TypeParameter<?> par: G.parameters(TypeParameter.class)) {
 							TypeParameter clone = par.clone();
 							formalArgs.add(clone);
 						}
 						Type GG = new DerivedType(formalArgs, G);
 						GG.setUniParent(G.parent());
 					  // replace the index-th parameter with a clone of type reference U.
-						TypeParameter oldParameter = GG.parameters().get(index);
+						TypeParameter oldParameter = GG.parameters(TypeParameter.class).get(index);
 					  BasicTypeArgument actual = (BasicTypeArgument) U.parent();
 						TypeParameter newParameter = new InstantiatedTypeParameter(oldParameter.signature().clone(), actual);
-					  GG.replaceParameter(oldParameter, newParameter);
+					  GG.replaceParameter(TypeParameter.class,oldParameter, newParameter);
 						Type V=typeWithSameBaseTypeAs(H, GG.getAllSuperTypes());
 						if(F().subTypeOf(V)) {
 						  GGConstraint recursive = new GGConstraint(ARef(), V);
@@ -73,7 +73,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 						  result.addAll(recursive.process());
 						}
 					} else {
-						TypeParameter ithTypeParameterOfG = G.parameters().get(index);
+						TypeParameter ithTypeParameterOfG = G.parameters(TypeParameter.class).get(index);
 						if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
 							ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 							if(arg instanceof BasicTypeArgument) {
@@ -103,7 +103,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 	@Override
 	public void caseSSFormalExtends(List<SecondPhaseConstraint> result, JavaTypeReference U, int index) throws LookupException {
 		try {
-			if(A().parameters().isEmpty()) {
+			if(A().parameters(TypeParameter.class).isEmpty()) {
 				// If A is an instance of a non-generic type, then no constraint is implied on Tj.
 			} else {
 				Type G = F().baseType();
@@ -113,27 +113,27 @@ public class GGConstraint extends FirstPhaseConstraint {
 					// G(S1,..,Sindex-1,U,Sindex+1,...,Sn) -> H
 					
 					List<TypeParameter> formalArgs = new ArrayList<TypeParameter>();
-					for(TypeParameter par: G.parameters()) {
+					for(TypeParameter<?> par: G.parameters(TypeParameter.class)) {
 						TypeParameter clone = par.clone();
 						formalArgs.add(clone);
 					}
 					Type GG = new DerivedType(formalArgs, G);
 					GG.setUniParent(G.parent());
 				  // replace the index-th parameter with a clone of type reference U.
-					TypeParameter oldParameter = GG.parameters().get(index);
+					TypeParameter oldParameter = GG.parameters(TypeParameter.class).get(index);
 				  BasicTypeArgument actual = (BasicTypeArgument) U.parent();
 					TypeParameter newParameter = new InstantiatedTypeParameter(oldParameter.signature().clone(), actual);
-				  GG.replaceParameter(oldParameter, newParameter);
+				  GG.replaceParameter(TypeParameter.class,oldParameter, newParameter);
 					Type V=typeWithSameBaseTypeAs(H, GG.getAllSuperTypes());
 					// Replace actual parameters with extends wildcards
-					for(TypeParameter<?> par: V.parameters()) {
+					for(TypeParameter<?> par: V.parameters(TypeParameter.class)) {
 						InstantiatedTypeParameter inst = (InstantiatedTypeParameter) par;
 						BasicTypeArgument basic = (BasicTypeArgument) inst.argument();
 						TypeReference typeReference = basic.typeReference();
 						ExtendsWildcard ext = par.language(Java.class).createExtendsWildcard(typeReference.clone());
 						ext.setUniParent(typeReference.parent());
 						TypeParameter newP = new InstantiatedTypeParameter(par.signature().clone(),ext);
-						V.replaceParameter(par, newP);
+						V.replaceParameter(TypeParameter.class,par, newP);
 					}
 					if(F().subTypeOf(V)) {
 					  GGConstraint recursive = new GGConstraint(ARef(), V);
@@ -141,7 +141,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 					  result.addAll(recursive.process());
 					}
 				} else {
-					TypeParameter ithTypeParameterOfG = G.parameters().get(index);
+					TypeParameter ithTypeParameterOfG = G.parameters(TypeParameter.class).get(index);
 					if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
 						ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 						if(arg instanceof ExtendsWildcard) {
@@ -161,7 +161,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 	@Override
 	public void caseSSFormalSuper(List<SecondPhaseConstraint> result, JavaTypeReference U, int index) throws LookupException {
 		try {
-			if(A().parameters().isEmpty()) {
+			if(A().parameters(TypeParameter.class).isEmpty()) {
 				// If A is an instance of a non-generic type, then no constraint is implied on Tj.
 			} else {
 				Type G = F().baseType();
@@ -171,27 +171,27 @@ public class GGConstraint extends FirstPhaseConstraint {
 					// G(S1,..,Sindex-1,U,Sindex+1,...,Sn) -> H
 					
 					List<TypeParameter> formalArgs = new ArrayList<TypeParameter>();
-					for(TypeParameter par: G.parameters()) {
+					for(TypeParameter<?> par: G.parameters(TypeParameter.class)) {
 						TypeParameter clone = par.clone();
 						formalArgs.add(clone);
 					}
 					Type GG = new DerivedType(formalArgs, G);
 					GG.setUniParent(G.parent());
 				  // replace the index-th parameter with a clone of type reference U.
-					TypeParameter oldParameter = GG.parameters().get(index);
+					TypeParameter oldParameter = GG.parameters(TypeParameter.class).get(index);
 				  BasicTypeArgument actual = (BasicTypeArgument) U.parent();
 					TypeParameter newParameter = new InstantiatedTypeParameter(oldParameter.signature().clone(), actual);
-				  GG.replaceParameter(oldParameter, newParameter);
+				  GG.replaceParameter(TypeParameter.class,oldParameter, newParameter);
 					Type V=typeWithSameBaseTypeAs(H, GG.getAllSuperTypes());
 					// Replace actual parameters with extends wildcards
-					for(TypeParameter<?> par: V.parameters()) {
+					for(TypeParameter<?> par: V.parameters(TypeParameter.class)) {
 						InstantiatedTypeParameter inst = (InstantiatedTypeParameter) par;
 						BasicTypeArgument basic = (BasicTypeArgument) inst.argument();
 						TypeReference typeReference = basic.typeReference();
 						SuperWildcard ext = par.language(Java.class).createSuperWildcard(typeReference.clone());
 						ext.setUniParent(typeReference.parent());
 						TypeParameter newP = new InstantiatedTypeParameter(par.signature().clone(),ext);
-						V.replaceParameter(par, newP);
+						V.replaceParameter(TypeParameter.class,par, newP);
 					}
 					if(F().subTypeOf(V)) {
 					  GGConstraint recursive = new GGConstraint(ARef(), V);
@@ -199,7 +199,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 					  result.addAll(recursive.process());
 					}
 				} else {
-					TypeParameter ithTypeParameterOfG = G.parameters().get(index);
+					TypeParameter ithTypeParameterOfG = G.parameters(TypeParameter.class).get(index);
 					if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
 						ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 						if(arg instanceof SuperWildcard) {

@@ -10,6 +10,7 @@ import jnome.core.language.Java;
 import jnome.core.type.JavaTypeReference;
 import chameleon.core.lookup.LookupException;
 import chameleon.oo.type.DerivedType;
+import chameleon.oo.type.ParameterSubstitution;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.generics.ActualTypeArgument;
@@ -59,7 +60,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 							TypeParameter clone = par.clone();
 							formalArgs.add(clone);
 						}
-						Type GG = new DerivedType(formalArgs, G);
+						Type GG = new DerivedType(TypeParameter.class,formalArgs, G);
 						GG.setUniParent(G.parent());
 					  // replace the index-th parameter with a clone of type reference U.
 						TypeParameter oldParameter = GG.parameters(TypeParameter.class).get(index);
@@ -117,7 +118,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 						TypeParameter clone = par.clone();
 						formalArgs.add(clone);
 					}
-					Type GG = new DerivedType(formalArgs, G);
+					Type GG = new DerivedType(TypeParameter.class,formalArgs, G);
 					GG.setUniParent(G.parent());
 				  // replace the index-th parameter with a clone of type reference U.
 					TypeParameter oldParameter = GG.parameters(TypeParameter.class).get(index);
@@ -175,7 +176,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 						TypeParameter clone = par.clone();
 						formalArgs.add(clone);
 					}
-					Type GG = new DerivedType(formalArgs, G);
+					Type GG = new DerivedType(TypeParameter.class,formalArgs, G);
 					GG.setUniParent(G.parent());
 				  // replace the index-th parameter with a clone of type reference U.
 					TypeParameter oldParameter = GG.parameters(TypeParameter.class).get(index);

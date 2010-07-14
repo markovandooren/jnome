@@ -470,7 +470,7 @@ classDeclaration returns [Type element]
     ;
     
 normalClassDeclaration returns [RegularType element]
-    :   clkw='class' name=Identifier {retval.element = createType(new SimpleNameSignature($name.text)); setLocation(retval.element,name,"__NAME");} (params=typeParameters{for(FormalTypeParameter par: params.element){retval.element.addParameter(par);}})?
+    :   clkw='class' name=Identifier {retval.element = createType(new SimpleNameSignature($name.text)); setLocation(retval.element,name,"__NAME");} (params=typeParameters{for(FormalTypeParameter par: params.element){retval.element.addParameter(TypeParameter.class,par);}})?
         (extkw='extends' sc=type 
             {SubtypeRelation extRelation = new SubtypeRelation(sc.element); 
              retval.element.addInheritanceRelation(extRelation);
@@ -578,7 +578,7 @@ normalInterfaceDeclaration returns [RegularType element]
     :   ifkw='interface' name=Identifier {retval.element = createType(new SimpleNameSignature($name.text)); 
                                           retval.element.addModifier(new Interface());
                                           setLocation(retval.element,name,"__NAME");} 
-         (params=typeParameters{for(TypeParameter par: params.element){retval.element.addParameter(par);}})? 
+         (params=typeParameters{for(TypeParameter par: params.element){retval.element.addParameter(TypeParameter.class,par);}})? 
          (extkw='extends' trefs=typeList 
            {
              for(TypeReference ref: trefs.element){

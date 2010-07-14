@@ -134,4 +134,8 @@ public class EnumConstant extends FixedSignatureMember<EnumConstant,Type,SimpleN
 		return this;
 	}
 
+	public void setName(String name) {
+		setSignature(new SimpleNameSignature(name));
+	}
+
 }

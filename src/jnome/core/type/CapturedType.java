@@ -11,7 +11,7 @@ import chameleon.oo.type.generics.TypeParameter;
 public class CapturedType extends DerivedType {
 
 	public CapturedType(List<TypeParameter> typeParameters, Type baseType) {
-		super(typeParameters, baseType);
+		super(TypeParameter.class,typeParameters, baseType);
 	}
 
 	public CapturedType(Type baseType, List<ActualTypeArgument> typeParameters) {

@@ -5,6 +5,7 @@ import java.util.List;
 
 import jnome.core.type.AnonymousInnerClass;
 import jnome.core.type.BasicJavaTypeReference;
+import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.association.SingleAssociation;
 import org.rejuse.logic.ternary.Ternary;
@@ -39,7 +40,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
   /**
    * @param target
    */
-  public ConstructorInvocation(BasicJavaTypeReference type, InvocationTarget target) {
+  public ConstructorInvocation(JavaTypeReference type, InvocationTarget target) {
     super(target);
     setTypeReference(type);
   }
@@ -51,14 +52,14 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 	/**
 	 * TYPE REFERENCE
 	 */
-	private SingleAssociation<ConstructorInvocation,BasicJavaTypeReference> _typeReference = new SingleAssociation<ConstructorInvocation,BasicJavaTypeReference>(this);
+	private SingleAssociation<ConstructorInvocation,JavaTypeReference> _typeReference = new SingleAssociation<ConstructorInvocation,JavaTypeReference>(this);
 
 
-  public BasicJavaTypeReference getTypeReference() {
-    return (BasicJavaTypeReference)_typeReference.getOtherEnd();
+  public JavaTypeReference getTypeReference() {
+    return _typeReference.getOtherEnd();
   }
 
-    public void setTypeReference(BasicJavaTypeReference type) {
+    public void setTypeReference(JavaTypeReference type) {
     	setAsParent(_typeReference, type);
     }
 
@@ -111,27 +112,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
   
   public <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
   	return actualType().targetContext().lookUp(selector);
-//  	InvocationTarget target = getTarget();
-//  	X result;
-//  	if(target == null) {
-//      result = lexicalLookupStrategy().lookUp(selector);
-//  	} else {
-//  		result = getTarget().targetContext().lookUp(selector);
-//  	}
-//		if (result == null) {
-//			//repeat lookup for debugging purposes.
-//	  	if(target == null) {
-//	      result = lexicalLookupStrategy().lookUp(selector);
-//	  	} else {
-//	  		result = getTarget().targetContext().lookUp(selector);
-//	  	}
-//			throw new LookupException("Method returned by invocation is null", this);
-//		}
-//    return result;
   }
-
-  
-//	private Reference<ConstructorInvocation,Type> _anonymousType= new Reference<ConstructorInvocation,Type>(this);
 
   
   public Type getAnonymousInnerType() {
@@ -201,6 +182,12 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 
   public class ConstructorSelector extends TwoPhaseDeclarationSelector<NormalMethod> {
     
+  	public ConstructorSelector(String name) {
+  		__name = name;
+  	}
+  	
+  	String __name;
+  	
     public boolean selectedRegardlessOfName(NormalMethod declaration) throws LookupException {
     	return declaration.is(language(ObjectOrientedLanguage.class).CONSTRUCTOR)==Ternary.TRUE;
     }
@@ -211,7 +198,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 			if(signature instanceof MethodSignature) {
 				MethodSignature<?,?> sig = (MethodSignature<?,?>)signature;
 //			  if(sig.nearestAncestor(Type.class).signature().sameAs(getTypeReference().signature())) {
-			  if(sig.name().equals(getTypeReference().signature().name())) {
+			  if(sig.name().equals(__name)) {
 			  	List<Type> actuals = getActualParameterTypes();
 			  	List<Type> formals = ((MethodSignature)signature).parameterTypes();
 			  	if (MoreSpecificTypesOrder.create().contains(actuals, formals)) {
@@ -240,7 +227,7 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 
 		@Override
 		public String selectionName(DeclarationContainer<?,?> container) {
-			return getTypeReference().signature().name();
+			return __name;
 		}
 
 
@@ -248,8 +235,8 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
   }
   
 	@Override
-	public DeclarationSelector<NormalMethod> createSelector() {
-		return new ConstructorSelector();
+	public DeclarationSelector<NormalMethod> createSelector() throws LookupException {
+		return new ConstructorSelector(getTypeReference().getElement().signature().name());
 	}
 
 	public List<? extends Type> declarations() throws LookupException {

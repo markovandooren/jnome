@@ -282,7 +282,7 @@ scope TargetScope {
 
   public void processType(NamespacePart np, Type type){
     if(np == null) {throw new IllegalArgumentException("namespace part given to processType is null.");}
-    if(type == null) {throw new IllegalArgumentException("type given to processType is null.");}
+    if(type == null) {return;}  //throw new IllegalArgumentException("type given to processType is null.");}
     np.add(type);
     // inherit from java.lang.Object if there is no explicit extends relation
     String fqn = type.getFullyQualifiedName();
@@ -470,7 +470,7 @@ classDeclaration returns [Type element]
     ;
     
 normalClassDeclaration returns [RegularType element]
-    :   clkw='class' name=Identifier {retval.element = createType(new SimpleNameSignature($name.text)); setLocation(retval.element,name,"__NAME");} (params=typeParameters{for(FormalTypeParameter par: params.element){retval.element.addParameter(TypeParameter.class,par);}})?
+    :   clkw='class' t=nameAndParams {retval.element=t.element;}
         (extkw='extends' sc=type 
             {SubtypeRelation extRelation = new SubtypeRelation(sc.element); 
              retval.element.addInheritanceRelation(extRelation);
@@ -483,13 +483,26 @@ normalClassDeclaration returns [RegularType element]
                 rel.addModifier(new Implements());
              }
             } )?
-        body=classBody {retval.element.body().addAll(body.element.elements());}
+        body=classBody {
+              if(body.element != null) {
+                retval.element.body().addAll(body.element.elements());
+              }
+             }
         {
          setKeyword(retval.element,clkw);
          // FIXME: the implements keyword should not be attached to the class, but there is only one.
          setKeyword(retval.element,impkw);
         }
     ;
+    
+nameAndParams returns [RegularType element]
+  :
+    tt=createClassHereBecauseANTLRisAnnoying {retval.element=tt.element;} (params=typeParameters{for(FormalTypeParameter par: params.element){retval.element.addParameter(TypeParameter.class,par);}})?
+  ;    
+    
+createClassHereBecauseANTLRisAnnoying returns [RegularType element]
+   :  name=Identifier {retval.element = createType(new SimpleNameSignature($name.text)); setLocation(retval.element,name,"__NAME");}
+   ;
     
 typeParameters returns [List<FormalTypeParameter> element]
 @init{retval.element = new ArrayList<FormalTypeParameter>();}
@@ -613,7 +626,12 @@ classBodyDeclaration returns [TypeElement element]
 @after{setLocation(retval.element, (CommonToken)start, (CommonToken)stop);}
     :   sckw=';' {retval.element = new EmptyTypeElement(); start=sckw; stop=sckw;}
     |   stkw='static'? bl=block {retval.element = new StaticInitializer(bl.element); start=stkw;stop=bl.stop;}
-    |   mods=modifiers decl=memberDecl {retval.element = decl.element; retval.element.addModifiers(mods.element); start=mods.start; stop=decl.stop;}
+    |   mods=modifiers decl=memberDecl 
+       {retval.element = decl.element;
+        if(retval.element != null) { 
+          retval.element.addModifiers(mods.element); start=mods.start; stop=decl.stop;
+        }
+       }
     ;
     
 memberDecl returns [TypeElement element]
@@ -855,7 +873,7 @@ classOrInterfaceType returns [JavaTypeReference element]
 	           // Add the type arguments
 	           ((BasicJavaTypeReference)retval.element).addAllArguments(args.element);
 	           // In this case, we know that the current element must be a type reference,
-	           // so we set the target to the current type reference.
+	           // so we set the target to null, and only create type references afterwards.
 	           target = null;
 	           stop=args.stop;
 	          })?
@@ -868,14 +886,15 @@ classOrInterfaceType returns [JavaTypeReference element]
 	             // type reference we just created.
 	             target = new NamespaceOrTypeReference(target.clone(),$namex.text);
 	           } else {
-	             retval.element = createTypeReference(retval.element,$namex.text);
+	             throw new Error();
+	             //retval.element = createTypeReference(retval.element,$namex.text);
 	           }
 	           stop=namex;
 	          } 
 	        (argsx=typeArguments 
 	          {
 	           // Add the type arguments
-                   ((BasicJavaTypeReference)retval.element).addAllArguments(argsx.element);
+             ((BasicJavaTypeReference)retval.element).addAllArguments(argsx.element);
 	           // In this case, we know that the current element must be a type reference,
 	           // so we se the target to the current type reference.
 	           target = null;
@@ -901,7 +920,11 @@ variableModifier returns [Modifier element]
     ;
 
 typeArguments returns [List<ActualTypeArgument> element]
-    :   '<' {retval.element = new ArrayList<ActualTypeArgument>();} arg=typeArgument {retval.element.add(arg.element);}(',' argx=typeArgument {retval.element.add(argx.element);})* '>'
+@init{retval.element = new ArrayList<ActualTypeArgument>();}
+    :   '<'  
+        arg=typeArgument {retval.element.add(arg.element);}
+        (',' argx=typeArgument {retval.element.add(argx.element);})* 
+        '>'
     ;
     
 typeArgument returns [ActualTypeArgument element]
@@ -1697,7 +1720,7 @@ creator returns [Expression element]
 //GEN_METH
 @init{int count = 0;}
     :   targs=nonWildcardTypeArguments tx=createdName restx=classCreatorRest
-         {retval.element = new ConstructorInvocation((BasicJavaTypeReference)tx.element,$TargetScope::target);
+         {retval.element = new ConstructorInvocation(tx.element,$TargetScope::target);
           ((ConstructorInvocation)retval.element).setBody(restx.element.body());
           ((ConstructorInvocation)retval.element).addAllArguments(restx.element.arguments());
           ((ConstructorInvocation)retval.element).addAllTypeArguments(targs.element);
@@ -1710,7 +1733,7 @@ creator returns [Expression element]
           ('[' exx=expression ']' {((ArrayCreationExpression)retval.element).addDimensionInitializer(new FilledArrayIndex(exx.element));})+ 
             ('[' ']' {((ArrayCreationExpression)retval.element).addDimensionInitializer(new EmptyArrayIndex(1));})*
     |   t=createdName rest=classCreatorRest 
-         {retval.element = new ConstructorInvocation((BasicJavaTypeReference)t.element,$TargetScope::target);
+         {retval.element = new ConstructorInvocation(t.element,$TargetScope::target);
           ((ConstructorInvocation)retval.element).setBody(rest.element.body());
           ((ConstructorInvocation)retval.element).addAllArguments(rest.element.arguments());
          }

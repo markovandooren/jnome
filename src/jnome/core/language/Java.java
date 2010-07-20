@@ -476,21 +476,21 @@ public class Java extends ObjectOrientedLanguage {
 		}
 
 		@Override
-		public JavaTypeReference createTypeReference(String fqn) {
+		public BasicJavaTypeReference createTypeReference(String fqn) {
 			return new BasicJavaTypeReference(fqn);
 		}
 
 		@Override
-		public JavaTypeReference createTypeReference(CrossReference<?, ?, ? extends TargetDeclaration> target, String name) {
+		public BasicJavaTypeReference createTypeReference(CrossReference<?, ?, ? extends TargetDeclaration> target, String name) {
 			return new BasicJavaTypeReference(target, name);
 		}
 
 		@Override
-		public JavaTypeReference createTypeReference(CrossReference<?, ?, ? extends TargetDeclaration> target, SimpleNameSignature signature) {
+		public BasicJavaTypeReference createTypeReference(CrossReference<?, ?, ? extends TargetDeclaration> target, SimpleNameSignature signature) {
 			return new BasicJavaTypeReference(target, signature);
 		}
 
-		public JavaTypeReference createTypeReference(NamedTarget target) {
+		public BasicJavaTypeReference createTypeReference(NamedTarget target) {
 			return new BasicJavaTypeReference(target);
 		}
 

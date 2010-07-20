@@ -22,7 +22,6 @@ import jnome.core.type.ArrayType;
 import jnome.core.type.ArrayTypeReference;
 import jnome.core.type.BasicJavaTypeReference;
 import jnome.core.type.JavaIntersectionTypeReference;
-import jnome.core.type.JavaTypeReference;
 import jnome.core.type.PureWildcard;
 
 import org.rejuse.java.collections.RobustVisitor;
@@ -748,7 +747,7 @@ public class JavaCodeWriter extends Syntax {
       result.append(" extends ");
       Iterator iter = superTypes.iterator();
       while(iter.hasNext()) {
-        TypeReference tr = (TypeReference)iter.next();
+        TypeReference tr = ((InheritanceRelation)iter.next()).superClassReference();
           result.append(toCode(tr));
           if (iter.hasNext()) {
             result.append(", ");

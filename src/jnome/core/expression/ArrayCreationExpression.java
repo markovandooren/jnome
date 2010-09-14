@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Set;
 
 import jnome.core.language.Java;
+import jnome.core.type.ArrayType;
+import jnome.core.type.ArrayTypeReference;
 import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.association.OrderedMultiAssociation;
@@ -18,13 +20,14 @@ import chameleon.core.validation.VerificationResult;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.support.expression.ArrayIndex;
+import chameleon.util.CreationStackTrace;
 import chameleon.util.Util;
 
 /**
  * @author Marko van Dooren
  */
 public class ArrayCreationExpression extends Expression<ArrayCreationExpression>{
-
+	
   public ArrayCreationExpression(JavaTypeReference type) {
     setTypeReference(type);
   }
@@ -94,7 +97,7 @@ public class ArrayCreationExpression extends Expression<ArrayCreationExpression>
   protected Type actualType() throws LookupException {
     JavaTypeReference tref = getTypeReference();
     if(tref != null) {
-		  return tref.getType();
+		  return new ArrayType(tref.getElement(), _dimensionInitializers.size());
     } else {
     	throw new LookupException("Type reference of array creation expression is null.");
     }

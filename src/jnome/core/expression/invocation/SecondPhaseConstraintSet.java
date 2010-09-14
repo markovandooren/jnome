@@ -431,7 +431,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 //			JavaTypeReference replacement = new DirectJavaTypeReference(type);
 			JavaTypeReference replacement = RRef.language(Java.class).reference(type);
 //			replacement.setUniParent(RRef.language().defaultNamespace()); XXX
-			RprimeRef = NonLocalJavaTypeReference.replace(replacement, assignment.parameter(), RprimeRef);
+			RprimeRef = (JavaTypeReference) NonLocalJavaTypeReference.replace(replacement, assignment.parameter(), RprimeRef);
 		}
 		return RprimeRef;
 	}

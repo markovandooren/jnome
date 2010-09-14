@@ -1605,12 +1605,17 @@ Token stop=null;
         {retval.element = supsuf.element; 
         setLocation($TargetScope::target,start,stop); // put locations on the SuperTarget.
         }
-    |   lit=literal {retval.element = lit.element;}
+    |   nt=nonTargetPrimary {retval.element=nt.element;}
     |   nkw='new' {start=nkw;} cr=creator {retval.element = cr.element;setKeyword(retval.element,nkw);}
     |   morerubex=moreIdentifierSuffixRubbish {retval.element = morerubex.element;}
     |   vt=voidType '.' clkw='class' {retval.element = new ClassLiteral(vt.element); start=vt.start;stop=clkw; setLocation(retval.element,start,stop);}
     |   tref=type '.' clkww='class' {retval.element = new ClassLiteral(tref.element);start=tref.start;stop=clkww; setLocation(retval.element,start,stop);}
     ;
+
+nonTargetPrimary returns [Expression element]
+   :
+     lit=literal {retval.element = lit.element;}
+   ;
 
 moreIdentifierSuffixRubbish returns [Expression element]
 scope TargetScope;
@@ -1718,17 +1723,15 @@ arrayAccessSuffixRubbish returns [Expression element]
 // NEEDS_TARGET
 creator returns [Expression element]
 //GEN_METH
-@init{int count = 0;}
     :   targs=nonWildcardTypeArguments tx=createdName restx=classCreatorRest
          {retval.element = new ConstructorInvocation(tx.element,$TargetScope::target);
           ((ConstructorInvocation)retval.element).setBody(restx.element.body());
           ((ConstructorInvocation)retval.element).addAllArguments(restx.element.arguments());
           ((ConstructorInvocation)retval.element).addAllTypeArguments(targs.element);
          }
-    |    tt=createdName  ('[' ']' {count++;})+ init=arrayInitializer 
-        {if(count > 0) {tt.element = new ArrayTypeReference(tt.element,count);} 
-         retval.element = new ArrayCreationExpression(tt.element);
-         ((ArrayCreationExpression)retval.element).setInitializer(init.element);}
+    |    tt=createdName {retval.element = new ArrayCreationExpression(tt.element);} 
+             ('[' ']' {((ArrayCreationExpression)retval.element).addDimensionInitializer(new EmptyArrayIndex(1));})+ init=arrayInitializer 
+        {((ArrayCreationExpression)retval.element).setInitializer(init.element);}
     |    ttt=createdName  {retval.element = new ArrayCreationExpression(ttt.element);} 
           ('[' exx=expression ']' {((ArrayCreationExpression)retval.element).addDimensionInitializer(new FilledArrayIndex(exx.element));})+ 
             ('[' ']' {((ArrayCreationExpression)retval.element).addDimensionInitializer(new EmptyArrayIndex(1));})*

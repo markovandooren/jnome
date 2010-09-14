@@ -626,6 +626,10 @@ public class Java extends ObjectOrientedLanguage {
 				throw new ChameleonProgrammerException();
 			}
 		}
+		
+		public <E extends Element<?,?>> E replace(TypeReference replacement, Declaration declarator, E in, Class<E> kind) throws LookupException {
+			return NonLocalJavaTypeReference.replace(replacement, declarator, in,kind);
+		}
 
 		@Override
 		public TypeReference createNonLocalTypeReference(TypeReference tref, Element lookupParent) {

@@ -34,6 +34,21 @@ public class ArrayType extends RegularType implements JavaType {
     addInheritanceRelation(new SubtypeRelation(language.createTypeReference("java.io.Serializable")));
   }
   
+  public ArrayType(Type componentType, int dimension) {
+  	this(consAux(componentType,dimension-1));
+  }
+  
+  private static Type consAux(Type componentType, int dimension) {
+  	if(dimension <0) {
+  		throw new Error();
+  	}
+  	if(dimension == 0) {
+  		return componentType;
+  	} else {
+  		return new ArrayType(componentType,dimension);
+  	}
+  }
+  
 //	@Override
 //	public ArrayType clone() {
 //		ArrayType result = cloneThis();

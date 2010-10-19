@@ -239,6 +239,10 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 		return new ConstructorSelector(getTypeReference().getElement().signature().name());
 	}
 
+	public List<? extends Declaration> locallyDeclaredDeclarations() throws LookupException {
+		return declarations();
+	}
+
 	public List<? extends Type> declarations() throws LookupException {
 		List<Type> result = new ArrayList<Type>();
 		if(getAnonymousInnerType() != null) {

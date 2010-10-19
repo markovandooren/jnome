@@ -119,6 +119,10 @@ public class EnumConstant extends FixedSignatureMember<EnumConstant,Type,SimpleN
   	}
 	}
 
+	public List<? extends Declaration> locallyDeclaredDeclarations() throws LookupException {
+		return getBody().declarations();
+	}
+
 	public List<? extends Declaration> declarations() throws LookupException {
 		List<Declaration> result = new ArrayList<Declaration>();
 		result.addAll(getBody().declarations());

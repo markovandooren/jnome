@@ -232,24 +232,27 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 		}
 
 		private NormalMethod instantiatedMethodTemplate(NormalMethod method, TypeAssignmentSet actualTypeParameters) throws LookupException {
-			NormalMethod result;
-			result = (NormalMethod) method.clone();
-			result.setUniParent(method.parent());
+			NormalMethod result=method;
 			int nbTypeParameters = actualTypeParameters.nbAssignments();
-			for(int i=1; i <= nbTypeParameters;i++) {
-				TypeParameter originalPar = method.typeParameter(i);
-				TypeParameter clonedPar = result.typeParameter(i);
-				// we detach the signature from the clone.
-				Type assignedType = actualTypeParameters.type(originalPar);
-				Java language = language(Java.class);
-				JavaTypeReference reference = language.reference(assignedType);
-				Element parent = reference.parent();
-				reference.setUniParent(null);
-				BasicTypeArgument argument = language.createBasicTypeArgument(reference);
-				argument.setUniParent(parent);
-				TypeParameter newPar = new InstantiatedTypeParameter(clonedPar.signature(), argument);
-				SingleAssociation parentLink = clonedPar.parentLink();
-				parentLink.getOtherRelation().replace(parentLink, newPar.parentLink());
+			if(nbTypeParameters > 0) {
+				result = (NormalMethod) method.clone();
+				result.setOrigin(method);
+				result.setUniParent(method.parent());
+				for(int i=1; i <= nbTypeParameters;i++) {
+					TypeParameter originalPar = method.typeParameter(i);
+					TypeParameter clonedPar = result.typeParameter(i);
+					// we detach the signature from the clone.
+					Type assignedType = actualTypeParameters.type(originalPar);
+					Java language = language(Java.class);
+					JavaTypeReference reference = language.reference(assignedType);
+					Element parent = reference.parent();
+					reference.setUniParent(null);
+					BasicTypeArgument argument = language.createBasicTypeArgument(reference);
+					argument.setUniParent(parent);
+					TypeParameter newPar = new InstantiatedTypeParameter(clonedPar.signature(), argument);
+					SingleAssociation parentLink = clonedPar.parentLink();
+					parentLink.getOtherRelation().replace(parentLink, newPar.parentLink());
+				}
 			}
 			return result;
 		}

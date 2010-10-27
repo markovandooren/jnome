@@ -81,10 +81,6 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 
 	private SingleAssociation<ConstructorInvocation,Type> _body = new SingleAssociation<ConstructorInvocation,Type>(this);
 	
-//	public ClassBody body() {
-//		return _body.getOtherEnd();
-//	}
-	
 	public void setBody(ClassBody body) {
 		if(body == null) {
 			_body.connectTo(null);
@@ -162,23 +158,6 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
       return super.lexicalLookupStrategy(element);
     }
   }
-
-//  public NormalMethod getMethod() throws LookupException {
-//  	InvocationTarget target = getTarget();
-//  	NormalMethod result;
-//  	if(getAnonymousInnerType() != null) {
-//  		LookupStrategy tctx = getAnonymousInnerType().targetContext();
-//  		result = tctx.lookUp(selector());
-//  	} else if(target == null) {
-//      result = lexicalLookupStrategy().lookUp(selector());
-//  	} else {
-//  		result = getTarget().targetContext().lookUp(selector());
-//  	}
-//		if (result == null) {
-//			throw new LookupException("Lookup in constructor invocation returned null",this);
-//		}
-//    return result;
-//  }
 
   public class ConstructorSelector extends TwoPhaseDeclarationSelector<NormalMethod> {
     

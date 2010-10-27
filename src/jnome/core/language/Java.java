@@ -628,9 +628,17 @@ public class Java extends ObjectOrientedLanguage {
 		}
 		
 		public <E extends Element<?,?>> E replace(TypeReference replacement, Declaration declarator, E in, Class<E> kind) throws LookupException {
-			return NonLocalJavaTypeReference.replace(replacement, declarator, in,kind);
+			count++;
+			if(count >= 20) {
+				System.out.println("DEBUG");
+			}
+			E replace = NonLocalJavaTypeReference.replace(replacement, declarator, in,kind);
+			count--;
+			return replace;
 		}
 
+		private static int count = 0;
+		
 		@Override
 		public TypeReference createNonLocalTypeReference(TypeReference tref, Element lookupParent) {
 			return new NonLocalJavaTypeReference((JavaTypeReference) tref, lookupParent);

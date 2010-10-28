@@ -1,15 +1,11 @@
 package jnome.test;
 
-import java.util.Collection;
+import java.util.List;
 
-import org.rejuse.predicate.SafePredicate;
-
-import chameleon.core.language.Language;
-import chameleon.oo.type.Type;
-import chameleon.test.provider.BasicDescendantProvider;
+import chameleon.core.expression.ActualArgument;
+import chameleon.core.expression.ActualArgumentList;
 import chameleon.test.provider.BasicModelProvider;
 import chameleon.test.provider.BasicNamespaceProvider;
-import chameleon.test.provider.ElementProvider;
 
 public class TestChameleonSupport extends TestChameleon {
 
@@ -20,6 +16,18 @@ public class TestChameleonSupport extends TestChameleon {
 		provider.includeCustom("testsource"+provider.separator()+"antlr-3.2"+provider.separator()+"src"+provider.separator());
 		return provider;
 	}
+
+	
+	
+//	@Override
+//	public void testExpressions() throws Exception {
+//		List l = modelProvider().model().defaultNamespace().descendants(ActualArgument.class);
+//		System.out.println("Actual arguments: "+l.size());
+//		l = modelProvider().model().defaultNamespace().descendants(ActualArgumentList.class);
+//		System.out.println("Actual argument lists: "+l.size());
+//	}
+
+
 
 	@Override
 	public BasicNamespaceProvider namespaceProvider() {

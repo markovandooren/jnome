@@ -189,7 +189,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 				} else {
 					// perform type inference
 					FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(JavaMethodInvocation.this,method);
-					List<ActualArgument> actualParameters = actualArgumentList().getActualParameters();
+					List<ActualArgument> actualParameters = getActualParameters();
 					List<Type> formalParameters = method.header().formalParameterTypes();
 					int size = actualParameters.size();
 					for(int i=0; i< size; i++) {
@@ -212,7 +212,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 			List<Type> formalParameterTypesInContext = formalParameterTypesInContext(method,actualTypeParameters);
 			boolean match = true;
 			int size = formalParameterTypesInContext.size();
-			List<ActualArgument> actualParameters = actualArgumentList().getActualParameters();
+			List<ActualArgument> actualParameters = getActualParameters();
 			for(int i=0; match && i < size; i++) {
 				Type formalType = formalParameterTypesInContext.get(i);
 				Type actualType = actualParameters.get(i).getExpression().getType();
@@ -281,7 +281,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 			List<Type> formalParameterTypesInContext = formalParameterTypesInContext(method,actualTypeParameters);
 			boolean match = true;
 			int size = formalParameterTypesInContext.size();
-			List<ActualArgument> actualParameters = actualArgumentList().getActualParameters();
+			List<ActualArgument> actualParameters = getActualParameters();
 			for(int i=0; match && i < size; i++) {
 				Type formalType = formalParameterTypesInContext.get(i);
 				Type actualType = actualParameters.get(i).getExpression().getType();
@@ -417,7 +417,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 				TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true);
 				List<Type> formalParameterTypesInContext = formalParameterTypesInContext(method,actualTypeParameters);
 				int size = formalParameterTypesInContext.size();
-				List<ActualArgument> actualParameters = actualArgumentList().getActualParameters();
+				List<ActualArgument> actualParameters = getActualParameters();
 				int actualSize = actualParameters.size();
 				// For the non-varags arguments, use method invocation conversion
 				for(int i=0; match && i < size-1; i++) {

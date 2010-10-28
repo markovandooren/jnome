@@ -3,15 +3,14 @@ package jnome.core.enumeration;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.rejuse.association.OrderedMultiAssociation;
 import org.rejuse.association.SingleAssociation;
-import org.rejuse.logic.ternary.Ternary;
 
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.DeclarationContainer;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
-import chameleon.core.expression.ActualArgument;
-import chameleon.core.expression.ActualArgumentList;
+import chameleon.core.expression.Expression;
 import chameleon.core.language.Language;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
@@ -29,14 +28,13 @@ public class EnumConstant extends FixedSignatureMember<EnumConstant,Type,SimpleN
 
 	public EnumConstant(SimpleNameSignature signature) {
 		super(signature);
-		_parameters.connectTo(new ActualArgumentList().parentLink());
 	}
 	
 	@Override
 	public EnumConstant clone() {
 		EnumConstant result = new EnumConstant(signature().clone());
-		result.setBody(getBody().clone());
-		for(ActualArgument arg: getActualParameters()) {
+		result.setBody(body().clone());
+		for(Expression arg: actualArguments()) {
 			result.addParameter(arg.clone());
 		}
 		return result;
@@ -50,48 +48,45 @@ public class EnumConstant extends FixedSignatureMember<EnumConstant,Type,SimpleN
 
 	public List<Element> children() {
     List<Element> result = super.children();
-    result.add(actualArgumentList());
-    Util.addNonNull(getBody(), result);
+    result.addAll(actualArguments());
+    Util.addNonNull(body(), result);
     return result;
 	}
 
 	/**
 	 * ACTUAL PARAMETERS
 	 */
- private SingleAssociation<EnumConstant,ActualArgumentList> _parameters = new SingleAssociation<EnumConstant,ActualArgumentList>(this);
+ private OrderedMultiAssociation<EnumConstant,Expression> _parameters = new OrderedMultiAssociation<EnumConstant,Expression>(this);
  
- public ActualArgumentList actualArgumentList() {
-	 return _parameters.getOtherEnd();
- }
-
-  public void addParameter(ActualArgument parameter) {
-  	actualArgumentList().addParameter(parameter);
+  public void addParameter(Expression parameter) {
+  	setAsParent(_parameters, parameter);
   }
   
-  public void addAllParameters(List<ActualArgument> parameters) {
-  	for(ActualArgument param: parameters) {
+  public void addAllParameters(List<Expression> parameters) {
+  	for(Expression param: parameters) {
   		addParameter(param);
   	}
   }
 
-  public void removeParameter(ActualArgument parameter) {
-  	actualArgumentList().removeParameter(parameter);
+  public void removeParameter(Expression parameter) {
+  	_parameters.remove(parameter.parentLink());
   }
 
-  public List<ActualArgument> getActualParameters() {
-    return actualArgumentList().getActualParameters();
+  public List<Expression> actualArguments() {
+    return _parameters.getOtherEnds();
   }
   
-  public ClassBody getBody() {
+  public ClassBody body() {
   	return _body.getOtherEnd();
   }
   
   public void setBody(ClassBody body) {
-  	if(body == null) {
-  		_body.connectTo(null);
-  	} else {
-  		_body.connectTo(body.parentLink());
-  	}
+  	setAsParent(_body,body);
+//  	if(body == null) {
+//  		_body.connectTo(null);
+//  	} else {
+//  		_body.connectTo(body.parentLink());
+//  	}
   }
   
   private SingleAssociation<EnumConstant,ClassBody> _body = new SingleAssociation<EnumConstant, ClassBody>(this);
@@ -120,12 +115,12 @@ public class EnumConstant extends FixedSignatureMember<EnumConstant,Type,SimpleN
 	}
 
 	public List<? extends Declaration> locallyDeclaredDeclarations() throws LookupException {
-		return getBody().declarations();
+		return body().declarations();
 	}
 
 	public List<? extends Declaration> declarations() throws LookupException {
 		List<Declaration> result = new ArrayList<Declaration>();
-		result.addAll(getBody().declarations());
+		result.addAll(body().declarations());
 		result.addAll(nearestAncestor(Type.class).declarations());
 		return result;
 	}

@@ -20,7 +20,7 @@ import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.DeclarationContainer;
 import chameleon.core.declaration.Signature;
 import chameleon.core.element.Element;
-import chameleon.core.expression.ActualArgument;
+import chameleon.core.expression.Expression;
 import chameleon.core.expression.Invocation;
 import chameleon.core.expression.InvocationTarget;
 import chameleon.core.lookup.DeclarationSelector;
@@ -189,12 +189,12 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 				} else {
 					// perform type inference
 					FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(JavaMethodInvocation.this,method);
-					List<ActualArgument> actualParameters = getActualParameters();
+					List<Expression> actualParameters = getActualParameters();
 					List<Type> formalParameters = method.header().formalParameterTypes();
 					int size = actualParameters.size();
 					for(int i=0; i< size; i++) {
 						// if the formal parameter type is reference type, add a constraint
-						Type argType = actualParameters.get(i).getExpression().getType();
+						Type argType = actualParameters.get(i).getType();
 						if(includeNonreference || argType.is(language.REFERENCE_TYPE) == Ternary.TRUE) {
 							constraints.add(new SSConstraint(language.reference(argType), formalParameters.get(i)));
 						}
@@ -212,10 +212,10 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 			List<Type> formalParameterTypesInContext = formalParameterTypesInContext(method,actualTypeParameters);
 			boolean match = true;
 			int size = formalParameterTypesInContext.size();
-			List<ActualArgument> actualParameters = getActualParameters();
+			List<Expression> actualParameters = getActualParameters();
 			for(int i=0; match && i < size; i++) {
 				Type formalType = formalParameterTypesInContext.get(i);
-				Type actualType = actualParameters.get(i).getExpression().getType();
+				Type actualType = actualParameters.get(i).getType();
 				match = actualType.subTypeOf(formalType) || convertibleThroughUncheckedConversionAndSubtyping(actualType, formalType);
 			}
 			if(match) {
@@ -281,10 +281,10 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 			List<Type> formalParameterTypesInContext = formalParameterTypesInContext(method,actualTypeParameters);
 			boolean match = true;
 			int size = formalParameterTypesInContext.size();
-			List<ActualArgument> actualParameters = getActualParameters();
+			List<Expression> actualParameters = getActualParameters();
 			for(int i=0; match && i < size; i++) {
 				Type formalType = formalParameterTypesInContext.get(i);
-				Type actualType = actualParameters.get(i).getExpression().getType();
+				Type actualType = actualParameters.get(i).getType();
 				match = convertibleThroughMethodInvocationConversion(actualType, formalType);
 			}
 			if(match) {
@@ -417,17 +417,17 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 				TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true);
 				List<Type> formalParameterTypesInContext = formalParameterTypesInContext(method,actualTypeParameters);
 				int size = formalParameterTypesInContext.size();
-				List<ActualArgument> actualParameters = getActualParameters();
+				List<Expression> actualParameters = getActualParameters();
 				int actualSize = actualParameters.size();
 				// For the non-varags arguments, use method invocation conversion
 				for(int i=0; match && i < size-1; i++) {
 					Type formalType = formalParameterTypesInContext.get(i);
-					Type actualType = actualParameters.get(i).getExpression().getType();
+					Type actualType = actualParameters.get(i).getType();
 					match = convertibleThroughMethodInvocationConversion(actualType, formalType);
 				}
 				Type formalType = ((ArrayType)formalParameterTypesInContext.get(size-1)).elementType();
 				for(int i = size-1; match && i< actualSize;i++) {
-					Type actualType = actualParameters.get(i).getExpression().getType();
+					Type actualType = actualParameters.get(i).getType();
 					match = convertibleThroughMethodInvocationConversion(actualType, formalType);
 				}
 				if(match) {

@@ -32,7 +32,6 @@ import org.rejuse.predicate.SafePredicate;
 
 import chameleon.core.compilationunit.CompilationUnit;
 import chameleon.core.element.Element;
-import chameleon.core.expression.ActualArgument;
 import chameleon.core.expression.Expression;
 import chameleon.core.expression.Invocation;
 import chameleon.core.expression.InvocationTarget;
@@ -260,9 +259,11 @@ public class JavaCodeWriter extends Syntax {
       result = toCodeSpecificReference((SpecificReference)element);
     } else if(isNamespacePart(element)) {
     	result = toCodeNamespacePart((NamespacePart) element);
-    } else if(isActualParameter(element)) {
-    	result = toCodeActualParameter((ActualArgument) element);
-    } else if(isSimpleForControl(element)) {
+    } 
+//    else if(isActualParameter(element)) {
+//    	result = toCodeActualParameter((ActualArgument) element);
+//    } 
+    else if(isSimpleForControl(element)) {
     	result = toCodeSimpleForControl((SimpleForControl) element);
     } else if(isEnhancedForControl(element)) {
     	result = toCodeEnhancedForControl((EnhancedForControl) element);
@@ -330,13 +331,13 @@ public class JavaCodeWriter extends Syntax {
 		return element instanceof BasicTypeArgument;
 	}
 
-	public boolean isActualParameter(Element element) {
-  	return element instanceof ActualArgument;
-  }
-  
-  public String toCodeActualParameter(ActualArgument parameter) throws LookupException {
-  	return toCode(parameter.getExpression());
-  }
+//	public boolean isActualParameter(Element element) {
+//  	return element instanceof ActualArgument;
+//  }
+//  
+//  public String toCodeActualParameter(ActualArgument parameter) throws LookupException {
+//  	return toCode(parameter.getExpression());
+//  }
   
   public boolean isNamespaceOrTypeReference(Element element) {
     return element instanceof NamespaceOrTypeReference;
@@ -1283,9 +1284,9 @@ public class JavaCodeWriter extends Syntax {
   public String getActualArgs(Invocation inv) throws LookupException {
     StringBuffer result = new StringBuffer();
     result.append("(");
-    Iterator iter = inv.getActualParameters().iterator();
+    Iterator<Expression> iter = inv.getActualParameters().iterator();
     while(iter.hasNext()) {
-      Expression expr = ((ActualArgument)iter.next()).getExpression();
+      Expression expr = iter.next();
       result.append(toCode(expr));
       if(iter.hasNext()) {
         result.append(", ");

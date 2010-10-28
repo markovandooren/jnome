@@ -1,9 +1,5 @@
 package jnome.test;
 
-import java.util.List;
-
-import chameleon.core.expression.ActualArgument;
-import chameleon.core.expression.ActualArgumentList;
 import chameleon.test.provider.BasicModelProvider;
 import chameleon.test.provider.BasicNamespaceProvider;
 
@@ -17,8 +13,6 @@ public class TestChameleonSupport extends TestChameleon {
 		return provider;
 	}
 
-	
-	
 //	@Override
 //	public void testExpressions() throws Exception {
 //		List l = modelProvider().model().defaultNamespace().descendants(ActualArgument.class);
@@ -26,9 +20,6 @@ public class TestChameleonSupport extends TestChameleon {
 //		l = modelProvider().model().defaultNamespace().descendants(ActualArgumentList.class);
 //		System.out.println("Actual argument lists: "+l.size());
 //	}
-
-
-
 	@Override
 	public BasicNamespaceProvider namespaceProvider() {
 		return new BasicNamespaceProvider("chameleon.support");

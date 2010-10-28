@@ -21,7 +21,6 @@ import chameleon.core.declaration.TargetDeclaration;
 
 import chameleon.core.element.Element;
 
-import chameleon.core.expression.ActualArgument;
 import chameleon.core.expression.Expression;
 import chameleon.core.expression.Invocation;
 import chameleon.core.expression.Literal;

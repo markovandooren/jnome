@@ -76,4 +76,5 @@ public abstract class WildCardReference<E extends WildCardReference> extends Nam
 		public List<? extends Element> children() {
 			return Util.createNonNullList(typeReference());
 		}
+		
 }

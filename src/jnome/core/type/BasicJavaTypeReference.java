@@ -17,6 +17,7 @@ import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.NamespaceOrTypeReference;
 import chameleon.core.reference.CrossReference;
+import chameleon.core.reference.CrossReferenceWithName;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.type.BasicTypeReference;
 import chameleon.oo.type.DerivedType;
@@ -26,7 +27,7 @@ import chameleon.oo.type.generics.ActualTypeArgument;
 import chameleon.util.CreationStackTrace;
 import chameleon.util.CreationStackTraceWithSingleFrame;
 
-public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeReference> implements JavaTypeReference<BasicJavaTypeReference> {
+public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeReference> implements JavaTypeReference<BasicJavaTypeReference>, CrossReferenceWithName<BasicJavaTypeReference, Element, Type> {
 
 	public BasicJavaTypeReference(CrossReference<?,?,? extends TargetDeclaration> target, String name) {
   	super(target,name);
@@ -41,7 +42,7 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
    * @param target
    */
   public BasicJavaTypeReference(NamedTarget target) {
-  	super(target.getTarget() == null ? null : new NamespaceOrTypeReference((NamedTarget)target.getTarget()),target.getName());
+  	super(target.getTarget() == null ? null : new NamespaceOrTypeReference((NamedTarget)target.getTarget()),target.name());
   }
   
   public BasicJavaTypeReference(String fqn) {

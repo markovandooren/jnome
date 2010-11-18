@@ -5,43 +5,35 @@ import java.util.List;
 
 import jnome.core.type.AnonymousInnerClass;
 import jnome.core.type.BasicJavaTypeReference;
-import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.association.SingleAssociation;
-import org.rejuse.logic.ternary.Ternary;
 
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.DeclarationContainer;
-import chameleon.core.declaration.Signature;
 import chameleon.core.element.Element;
 import chameleon.core.expression.Expression;
-import chameleon.core.expression.Invocation;
 import chameleon.core.expression.InvocationTarget;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.lookup.LookupStrategy;
-import chameleon.core.lookup.TwoPhaseDeclarationSelector;
-import chameleon.core.method.MethodSignature;
-import chameleon.core.relation.WeakPartialOrder;
-import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.ClassBody;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
-import chameleon.support.member.MoreSpecificTypesOrder;
 import chameleon.support.member.simplename.method.NormalMethod;
+import chameleon.support.member.simplename.method.RegularMethodInvocation;
 import chameleon.util.Util;
 
 /**
  * @author Marko van Dooren
  *
  */
-public class ConstructorInvocation extends Invocation<ConstructorInvocation, NormalMethod> implements DeclarationContainer<ConstructorInvocation, Element> {
+public class ConstructorInvocation extends RegularMethodInvocation<ConstructorInvocation> implements DeclarationContainer<ConstructorInvocation, Element> {
 
   /**
    * @param target
    */
-  public ConstructorInvocation(JavaTypeReference type, InvocationTarget target) {
-    super(target);
+  public ConstructorInvocation(BasicJavaTypeReference type, InvocationTarget target) {
+    super(type.name(),target);
     setTypeReference(type);
   }
 
@@ -52,14 +44,14 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 	/**
 	 * TYPE REFERENCE
 	 */
-	private SingleAssociation<ConstructorInvocation,JavaTypeReference> _typeReference = new SingleAssociation<ConstructorInvocation,JavaTypeReference>(this);
+	private SingleAssociation<ConstructorInvocation,BasicJavaTypeReference> _typeReference = new SingleAssociation<ConstructorInvocation,BasicJavaTypeReference>(this);
 
 
-  public JavaTypeReference getTypeReference() {
+  public BasicJavaTypeReference getTypeReference() {
     return _typeReference.getOtherEnd();
   }
 
-    public void setTypeReference(JavaTypeReference type) {
+    public void setTypeReference(BasicJavaTypeReference type) {
     	setAsParent(_typeReference, type);
     }
 
@@ -79,6 +71,8 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 //    return _anon.getOtherEnd();
 //  }
 
+    
+    
 	private SingleAssociation<ConstructorInvocation,Type> _body = new SingleAssociation<ConstructorInvocation,Type>(this);
 	
 	public void setBody(ClassBody body) {
@@ -107,7 +101,13 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
   }
   
   public <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
-  	return actualType().targetContext().lookUp(selector);
+  	X result = actualType().targetContext().lookUp(selector);
+  	if(result == null) {
+  		actualType().targetContext().lookUp(selector);
+			throw new LookupException("Constructor returned by invocation is null", this);
+  	} else {
+		  return result;
+  	}
   }
 
   
@@ -159,63 +159,9 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
     }
   }
 
-  public class ConstructorSelector extends TwoPhaseDeclarationSelector<NormalMethod> {
-    
-  	public ConstructorSelector(String name) {
-  		__name = name;
-  	}
-  	
-  	String __name;
-  	
-    public boolean selectedRegardlessOfName(NormalMethod declaration) throws LookupException {
-    	return declaration.is(language(ObjectOrientedLanguage.class).CONSTRUCTOR)==Ternary.TRUE;
-    }
-    
-		@Override
-		public boolean selectedBasedOnName(Signature signature) throws LookupException {
-    	boolean result = false;
-			if(signature instanceof MethodSignature) {
-				MethodSignature<?,?> sig = (MethodSignature<?,?>)signature;
-//			  if(sig.nearestAncestor(Type.class).signature().sameAs(getTypeReference().signature())) {
-			  if(sig.name().equals(__name)) {
-			  	List<Type> actuals = getActualParameterTypes();
-			  	List<Type> formals = ((MethodSignature)signature).parameterTypes();
-			  	if (MoreSpecificTypesOrder.create().contains(actuals, formals)) {
-			  		result = true;
-			  	}
-			  }
-			}
-      return result;
-		}
-
-    @Override
-    public WeakPartialOrder<NormalMethod> order() {
-      return new WeakPartialOrder<NormalMethod>() {
-        @Override
-        public boolean contains(NormalMethod first, NormalMethod second)
-            throws LookupException {
-          return MoreSpecificTypesOrder.create().contains(first.header().formalParameterTypes(), second.header().formalParameterTypes());
-        }
-      };
-    }
-
-		@Override
-		public Class<NormalMethod> selectedClass() {
-			return NormalMethod.class;
-		}
-
-		@Override
-		public String selectionName(DeclarationContainer<?,?> container) {
-			return __name;
-		}
-
-
-
-  }
-  
-	@Override
+  @Override
 	public DeclarationSelector<NormalMethod> createSelector() throws LookupException {
-		return new ConstructorSelector(getTypeReference().getElement().signature().name());
+		return new ConstructorSelector(this, getTypeReference().getElement().signature().name());
 	}
 
 	public List<? extends Declaration> locallyDeclaredDeclarations() throws LookupException {
@@ -233,5 +179,10 @@ public class ConstructorInvocation extends Invocation<ConstructorInvocation, Nor
 	public <D extends Declaration> List<D> declarations(DeclarationSelector<D> selector) throws LookupException {
 		return selector.selection(declarations());
 	}
+
+//	@Override
+//	public void setName(String name) {
+//		getTypeReference().setName(name);
+//	}
 
 }

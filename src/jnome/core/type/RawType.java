@@ -1,6 +1,8 @@
 package jnome.core.type;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import jnome.core.language.Java;
@@ -9,12 +11,13 @@ import org.rejuse.association.SingleAssociation;
 import org.rejuse.logic.ternary.Ternary;
 
 import chameleon.core.element.Element;
+import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
+import chameleon.core.member.Member;
 import chameleon.core.method.Method;
 import chameleon.core.reference.SimpleReference;
 import chameleon.core.variable.FormalParameter;
 import chameleon.exception.ChameleonProgrammerException;
-import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeElement;
 import chameleon.oo.type.TypeWithBody;
@@ -73,6 +76,20 @@ public class RawType extends TypeWithBody implements JavaType {
 		return result;
 	}
 
+	private List<Member> _implicitMembers;
+	
+	@Override
+	public List<Member> implicitMembers() {
+		return new ArrayList<Member>(_implicitMembers);
+	}
+	
+	@Override
+	public <D extends Member> List<D> implicitMembers(DeclarationSelector<D> selector) throws LookupException {
+		return selector.selection(Collections.unmodifiableList(_implicitMembers));
+	}
+
+
+
 	/**
 	 * Create a new raw type. The type parameters, super class and interface references, 
 	 * and all members will be erased according to the definitions in the JLS.
@@ -81,6 +98,7 @@ public class RawType extends TypeWithBody implements JavaType {
 		// first copy everything
 		super(original.signature().clone());
 		copyContents(original, true);
+		copyImplicitMembers(original);
 		_baseType = original;
 		setUniParent(original.parent());
 		setOrigin(original);
@@ -98,11 +116,31 @@ public class RawType extends TypeWithBody implements JavaType {
 	private RawType(Type original, boolean useless) {
 		super(original.signature().clone());
 		copyContents(original, true);
+		copyImplicitMembers(original);
 		_baseType = original;
 		setOrigin(original);
-		// no need to set the parent, it will be attacted to an outer type anyway.
+
+		setUniParent(original.parent());
+		// 1) inheritance relations
+		eraseInheritanceRelations();
+		// 2) type parameters
+		eraseTypeParameters(parameters(TypeParameter.class));
+		// 3) members
+		eraseMethods();
+		// 4) member types
+		setUniParent(null);
 	}
 	
+	private void copyImplicitMembers(Type original) {
+		_implicitMembers = new ArrayList<Member>();
+		List<Member> implicits = original.implicitMembers();
+		for(Member m: implicits) {
+			Member clone = m.clone();
+			clone.setUniParent(body());
+			_implicitMembers.add(clone);
+		}
+	}
+
 	private void makeDescendantTypesRaw() {
 		List<Type> childTypes = directlyDeclaredElements(Type.class);
 		Java language = language(Java.class);

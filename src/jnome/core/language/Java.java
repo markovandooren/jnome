@@ -114,7 +114,7 @@ public class Java extends ObjectOrientedLanguage {
 		ANNOTATION_TYPE = new StaticChameleonProperty("annotation", this, Type.class); 
 
 		// In Java, a constructor is a class method
-		CONSTRUCTOR.addImplication(CLASS);
+//		CONSTRUCTOR.addImplication(CLASS);
 		// In Java, constructors are not inheritable
 		CONSTRUCTOR.addImplication(INHERITABLE.inverse());
 		// A numeric type is a primitive type
@@ -294,6 +294,7 @@ public class Java extends ObjectOrientedLanguage {
   	addPropertyRule(new MemberInheritableByDefault());
   	addPropertyRule(new TypeExtensibleByDefault());
   	addPropertyRule(new MemberInstanceByDefault());
+  	addPropertyRule(new MemberPackageAccessibleByDefault());
   }
 
  /*@

@@ -50,13 +50,18 @@ public abstract class AnonymousType extends RegularType {
 	  //if the super type is an interface, there will be no constructor, so we must
 	  //create a default constructor.
 	  if(superMembers.isEmpty()) {
-	  	NormalMethod cons = new NormalMethod(new SimpleNameMethodHeader(writtenType.signature().name()), tref.clone());
-	  	cons.addModifier(new Constructor());
-	  	cons.addModifier(new Public());
-	  	cons.setUniParent(this);
+	  	NormalMethod cons = defaultDefaultConstructor(tref, writtenType);
 	  	superMembers.add(cons);
 	  }
 		return superMembers;
+	}
+
+	private NormalMethod defaultDefaultConstructor(TypeReference tref, Type writtenType) {
+		NormalMethod cons = new NormalMethod(new SimpleNameMethodHeader(writtenType.signature().name()), tref.clone());
+		cons.addModifier(new Constructor());
+		cons.addModifier(new Public());
+		cons.setUniParent(this);
+		return cons;
 	}
 
 	public <D extends Member> List<D> localMembers(DeclarationSelector<D> selector) throws LookupException {

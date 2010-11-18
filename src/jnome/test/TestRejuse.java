@@ -1,18 +1,19 @@
 package jnome.test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import jnome.input.JavaModelFactory;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.rejuse.predicate.SafePredicate;
 
-import chameleon.core.lookup.LookupException;
+import chameleon.core.language.Language;
 import chameleon.oo.type.Type;
-import chameleon.support.test.ExpressionTest;
+import chameleon.test.provider.BasicDescendantProvider;
 import chameleon.test.provider.BasicModelProvider;
 import chameleon.test.provider.BasicNamespaceProvider;
+import chameleon.test.provider.ElementProvider;
 import chameleon.test.provider.ModelProvider;
 
 /**
@@ -41,4 +42,22 @@ public class TestRejuse extends JavaTest {
 	public BasicNamespaceProvider namespaceProvider() {
 		return new BasicNamespaceProvider("org.jutil");
 	}
+	
+//public ElementProvider<Type> typeProvider() {
+//return new ElementProvider<Type>() {
+//
+//	public Collection<Type> elements(Language language) {
+//		Collection<Type> types = new BasicDescendantProvider<Type>(namespaceProvider(), Type.class).elements(language);
+//		new SafePredicate<Type>() {
+//
+//			@Override
+//			public boolean eval(Type object) {
+//				return object.getFullyQualifiedName().equals("org.jutil.Test");
+//			}
+//		}.filter(types);
+//		return types;
+//	}
+//};
+//}
+
 }

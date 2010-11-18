@@ -116,4 +116,9 @@ public class ArrayTypeReference  extends NamespaceElementImpl<ArrayTypeReference
 	public JavaTypeReference componentTypeReference() {
 		return elementTypeReference().componentTypeReference();
 	}
+
+//	@Override
+//	public void setName(String name) {
+//		elementTypeReference().setName(name);
+//	}
 }

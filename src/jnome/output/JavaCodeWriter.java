@@ -14,6 +14,8 @@ import jnome.core.expression.ArrayInitializer;
 import jnome.core.expression.ClassLiteral;
 import jnome.core.expression.DimensionInitializer;
 import jnome.core.expression.invocation.ConstructorInvocation;
+import jnome.core.expression.invocation.SuperConstructorDelegation;
+import jnome.core.expression.invocation.ThisConstructorDelegation;
 import jnome.core.language.Java;
 import jnome.core.modifier.Default;
 import jnome.core.modifier.StrictFP;
@@ -82,9 +84,7 @@ import chameleon.support.expression.ConditionalOrExpression;
 import chameleon.support.expression.EmptyArrayIndex;
 import chameleon.support.expression.FilledArrayIndex;
 import chameleon.support.expression.InstanceofExpression;
-import chameleon.support.expression.SuperConstructorDelegation;
 import chameleon.support.expression.SuperTarget;
-import chameleon.support.expression.ThisConstructorDelegation;
 import chameleon.support.expression.ThisLiteral;
 import chameleon.support.member.simplename.SimpleNameMethodSignature;
 import chameleon.support.member.simplename.method.RegularMethodInvocation;
@@ -568,7 +568,7 @@ public class JavaCodeWriter extends Syntax {
   
   public boolean isInterface(Element element) {
     if(element instanceof Type){
-    	return ((Type)element).is(((Java)language()).INTERFACE) == Ternary.TRUE;
+    	return (element).is(((Java)language()).INTERFACE) == Ternary.TRUE;
     }
     return false;
   }
@@ -1374,7 +1374,7 @@ public class JavaCodeWriter extends Syntax {
       result.append(toCode(nt.getTarget()));
       result.append(".");
     }
-    result.append(nt.getName());
+    result.append(nt.name());
     return result.toString();
   }
   
@@ -1400,9 +1400,9 @@ public class JavaCodeWriter extends Syntax {
   public String toCodeNamedTargetRef(NamedTargetExpression var) throws LookupException {
     InvocationTarget target = var.getTarget();
     if(target != null) {
-		  return toCode(target)+"."+var.getName();
+		  return toCode(target)+"."+var.name();
     } else {
-    	return var.getName();
+    	return var.name();
     }
   }
 

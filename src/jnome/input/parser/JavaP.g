@@ -1650,7 +1650,7 @@ if(! retval.element.descendants().contains(scopeTarget)) {
 	        setLocation($TargetScope::target, $TargetScope::start, idx);
 	       }
 	  )* 
-	{retval.element = new NamedTargetExpression(((NamedTarget)$TargetScope::target).getName(),cloneTargetOfTarget(((NamedTarget)$TargetScope::target)));
+	{retval.element = new NamedTargetExpression(((NamedTarget)$TargetScope::target).name(),cloneTargetOfTarget(((NamedTarget)$TargetScope::target)));
 	 setLocation(retval.element, $TargetScope::start, stop);
 	 //The variable reference is only returned if none of the following subrules match.
 	}
@@ -1687,7 +1687,7 @@ scope TargetScope;
 	{if($TargetScope::target instanceof ThisLiteral) {
 	  retval.element = (ThisLiteral)$TargetScope::target;
 	 } else {
-	  retval.element = new NamedTargetExpression(((NamedTarget)$TargetScope::target).getName(),cloneTargetOfTarget((NamedTarget)$TargetScope::target));
+	  retval.element = new NamedTargetExpression(((NamedTarget)$TargetScope::target).name(),cloneTargetOfTarget((NamedTarget)$TargetScope::target));
 	 }}
    (
         arr=arrayAccessSuffixRubbish {retval.element = arr.element;}
@@ -1709,7 +1709,7 @@ scope TargetScope;
 argumentsSuffixRubbish returns [RegularMethodInvocation element]
 // the last part of target is the method name
 	:	args=arguments 
-	        {String name = ((NamedTarget)$TargetScope::target).getName();
+	        {String name = ((NamedTarget)$TargetScope::target).name();
 	         $TargetScope::target = ((NamedTarget)$TargetScope::target).getTarget(); //chop off head
 	         retval.element = invocation(name, $TargetScope::target);
 	         retval.element.addAllArguments(args.element);
@@ -1720,7 +1720,7 @@ argumentsSuffixRubbish returns [RegularMethodInvocation element]
 // NEEDS_TARGET
 arrayAccessSuffixRubbish returns [Expression element]
 @after{setLocation(retval.element, $TargetScope::start, retval.stop);}
-	:	{retval.element = new ArrayAccessExpression(new NamedTargetExpression(((NamedTarget)$TargetScope::target).getName(),cloneTargetOfTarget((NamedTarget)$TargetScope::target)));} 
+	:	{retval.element = new ArrayAccessExpression(new NamedTargetExpression(((NamedTarget)$TargetScope::target).name(),cloneTargetOfTarget((NamedTarget)$TargetScope::target)));} 
 	        (open='[' arrex=expression close=']' 
 	          { FilledArrayIndex index = new FilledArrayIndex(arrex.element);
 	           ((ArrayAccessExpression)retval.element).addIndex(index);
@@ -1734,7 +1734,7 @@ arrayAccessSuffixRubbish returns [Expression element]
 creator returns [Expression element]
 //GEN_METH
     :   targs=nonWildcardTypeArguments tx=createdName restx=classCreatorRest
-         {retval.element = new ConstructorInvocation(tx.element,$TargetScope::target);
+         {retval.element = new ConstructorInvocation((BasicJavaTypeReference)tx.element,$TargetScope::target);
           ((ConstructorInvocation)retval.element).setBody(restx.element.body());
           ((ConstructorInvocation)retval.element).addAllArguments(restx.element.arguments());
           ((ConstructorInvocation)retval.element).addAllTypeArguments(targs.element);
@@ -1746,7 +1746,7 @@ creator returns [Expression element]
           ('[' exx=expression ']' {((ArrayCreationExpression)retval.element).addDimensionInitializer(new FilledArrayIndex(exx.element));})+ 
             ('[' ']' {((ArrayCreationExpression)retval.element).addDimensionInitializer(new EmptyArrayIndex(1));})*
     |   t=createdName rest=classCreatorRest 
-         {retval.element = new ConstructorInvocation(t.element,$TargetScope::target);
+         {retval.element = new ConstructorInvocation((BasicJavaTypeReference)t.element,$TargetScope::target);
           ((ConstructorInvocation)retval.element).setBody(rest.element.body());
           ((ConstructorInvocation)retval.element).addAllArguments(rest.element.arguments());
          }
@@ -1765,7 +1765,7 @@ innerCreator returns [ConstructorInvocation element]
         name=Identifier rest=classCreatorRest 
         {BasicJavaTypeReference tref = (BasicJavaTypeReference)typeRef($name.text);
          setLocation(tref,name,name);
-         retval.element = new ConstructorInvocation(tref,$TargetScope::target);
+         retval.element = new ConstructorInvocation((BasicJavaTypeReference)tref,$TargetScope::target);
          retval.element.setBody(rest.element.body());
          retval.element.addAllArguments(rest.element.arguments());
          if(targs != null) {

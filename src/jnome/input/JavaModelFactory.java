@@ -39,7 +39,7 @@ import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.inheritance.SubtypeRelation;
-import chameleon.output.Syntax;
+import chameleon.plugin.output.Syntax;
 import chameleon.support.input.ChameleonParser;
 import chameleon.support.input.ModelFactoryUsingANTLR;
 import chameleon.support.member.simplename.SimpleNameMethodHeader;
@@ -64,7 +64,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 	 */
 	public JavaModelFactory() {
 		Java lang = new Java();
-		lang.setConnector(Syntax.class, new JavaCodeWriter());
+		lang.setPlugin(Syntax.class, new JavaCodeWriter());
 		setLanguage(lang, ModelFactory.class);
 	}
 	

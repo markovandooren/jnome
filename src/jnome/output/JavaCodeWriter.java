@@ -74,7 +74,8 @@ import chameleon.oo.type.generics.SuperWildcard;
 import chameleon.oo.type.generics.TypeConstraint;
 import chameleon.oo.type.generics.TypeParameter;
 import chameleon.oo.type.inheritance.InheritanceRelation;
-import chameleon.output.Syntax;
+import chameleon.plugin.Plugin;
+import chameleon.plugin.output.Syntax;
 import chameleon.support.expression.ArrayIndex;
 import chameleon.support.expression.AssignmentExpression;
 import chameleon.support.expression.ClassCastExpression;
@@ -130,7 +131,6 @@ import chameleon.support.tool.Arguments;
 import chameleon.support.type.StaticInitializer;
 import chameleon.support.variable.LocalVariable;
 import chameleon.support.variable.LocalVariableDeclarator;
-import chameleon.tool.Connector;
 
 /**
  * @author Marko van Dooren
@@ -1610,7 +1610,7 @@ public class JavaCodeWriter extends Syntax {
   }
 
 	@Override
-	public Connector clone() {
+	public Plugin clone() {
 		return new JavaCodeWriter(_tabSize);
 	}
 }

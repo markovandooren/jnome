@@ -9,14 +9,14 @@ import java.util.List;
 import org.rejuse.association.OrderedMultiAssociation;
 import org.rejuse.predicate.TypePredicate;
 
-import chameleon.core.expression.Invocation;
+import chameleon.core.expression.MethodInvocation;
 import chameleon.core.method.Method;
 import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.TypeParameter;
 
 public abstract class ConstraintSet<C extends Constraint> {
 	
-	public ConstraintSet(Invocation invocation, Method invokedMethod) {
+	public ConstraintSet(MethodInvocation invocation, Method invokedMethod) {
 		_invocation = invocation;
 		_invokedGenericMethod = invokedMethod;
 		List<TypeParameter> typeParameters = invokedMethod.typeParameters();
@@ -61,11 +61,11 @@ public abstract class ConstraintSet<C extends Constraint> {
 	
 	private List<TypeParameter> _typeParameters;
 	
-  public Invocation invocation() {
+  public MethodInvocation invocation() {
   	return _invocation;
   }
   
-  private Invocation _invocation;
+  private MethodInvocation _invocation;
   
   public Method invokedGenericMethod() {
   	return _invokedGenericMethod;

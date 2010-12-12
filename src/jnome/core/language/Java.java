@@ -32,6 +32,7 @@ import org.rejuse.property.PropertyUniverse;
 
 import chameleon.core.Config;
 import chameleon.core.declaration.Declaration;
+import chameleon.core.declaration.SimpleNameDeclarationWithParametersSignature;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.declaration.TargetDeclaration;
 import chameleon.core.element.Element;
@@ -77,7 +78,6 @@ import chameleon.oo.type.generics.SuperWildcardType;
 import chameleon.oo.type.generics.TypeConstraint;
 import chameleon.oo.type.generics.TypeParameter;
 import chameleon.oo.type.inheritance.InheritanceRelation;
-import chameleon.support.member.simplename.SimpleNameMethodSignature;
 import chameleon.support.modifier.PrivateProperty;
 import chameleon.support.modifier.ProtectedProperty;
 import chameleon.support.modifier.PublicProperty;
@@ -161,8 +161,8 @@ public class Java extends ObjectOrientedLanguage {
   	return result;
   }
   
-	public SimpleNameMethodSignature erasure(SimpleNameMethodSignature signature) {
-		SimpleNameMethodSignature result = new SimpleNameMethodSignature(signature.name());
+	public SimpleNameDeclarationWithParametersSignature erasure(SimpleNameDeclarationWithParametersSignature signature) {
+		SimpleNameDeclarationWithParametersSignature result = new SimpleNameDeclarationWithParametersSignature(signature.name());
 		result.setUniParent(signature.parent());
 		for(TypeReference tref : signature.typeReferences()) {
 			JavaTypeReference jref = (JavaTypeReference) tref;

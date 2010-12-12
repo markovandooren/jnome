@@ -19,7 +19,7 @@ import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.Signature;
 import chameleon.core.element.Element;
 import chameleon.core.expression.Expression;
-import chameleon.core.expression.Invocation;
+import chameleon.core.expression.MethodInvocation;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.relation.WeakPartialOrder;
@@ -43,7 +43,7 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 		return selection(selectionCandidates);
 	}
 	
-	protected abstract Invocation<?,?> invocation();
+	protected abstract MethodInvocation<?,?> invocation();
 	
 	public abstract boolean correctSignature(Signature signature) throws LookupException;
 

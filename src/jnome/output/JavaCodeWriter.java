@@ -33,9 +33,10 @@ import org.rejuse.predicate.AbstractPredicate;
 import org.rejuse.predicate.SafePredicate;
 
 import chameleon.core.compilationunit.CompilationUnit;
+import chameleon.core.declaration.SimpleNameDeclarationWithParametersSignature;
 import chameleon.core.element.Element;
 import chameleon.core.expression.Expression;
-import chameleon.core.expression.Invocation;
+import chameleon.core.expression.MethodInvocation;
 import chameleon.core.expression.InvocationTarget;
 import chameleon.core.expression.Literal;
 import chameleon.core.expression.NamedTarget;
@@ -87,7 +88,6 @@ import chameleon.support.expression.FilledArrayIndex;
 import chameleon.support.expression.InstanceofExpression;
 import chameleon.support.expression.SuperTarget;
 import chameleon.support.expression.ThisLiteral;
-import chameleon.support.member.simplename.SimpleNameMethodSignature;
 import chameleon.support.member.simplename.method.RegularMethodInvocation;
 import chameleon.support.member.simplename.operator.infix.InfixOperatorInvocation;
 import chameleon.support.member.simplename.operator.postfix.PostfixOperatorInvocation;
@@ -789,7 +789,7 @@ public class JavaCodeWriter extends Syntax {
 	        result.append(" ");
 	      }
 	    
-	    result.append(((SimpleNameMethodSignature)method.signature()).name());
+	    result.append(((SimpleNameDeclarationWithParametersSignature)method.signature()).name());
 	    result.append("(");
 	    Iterator iter = method.formalParameters().iterator();
 	    while(iter.hasNext()) {
@@ -1281,7 +1281,7 @@ public class JavaCodeWriter extends Syntax {
     return result.toString();
   }
   
-  public String getActualArgs(Invocation inv) throws LookupException {
+  public String getActualArgs(MethodInvocation inv) throws LookupException {
     StringBuffer result = new StringBuffer();
     result.append("(");
     Iterator<Expression> iter = inv.getActualParameters().iterator();

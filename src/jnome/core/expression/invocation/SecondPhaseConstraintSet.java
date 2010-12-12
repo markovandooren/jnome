@@ -11,7 +11,7 @@ import jnome.core.type.JavaTypeReference;
 import org.rejuse.predicate.TypePredicate;
 import org.rejuse.predicate.UnsafePredicate;
 
-import chameleon.core.expression.Invocation;
+import chameleon.core.expression.MethodInvocation;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.method.Method;
 import chameleon.exception.ChameleonProgrammerException;
@@ -29,7 +29,7 @@ import chameleon.support.expression.AssignmentExpression;
 
 public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstraint> {
 
-	public SecondPhaseConstraintSet(Invocation invocation, Method invokedMethod) {
+	public SecondPhaseConstraintSet(MethodInvocation invocation, Method invokedMethod) {
 		super(invocation,invokedMethod);
 		_assignments = new TypeAssignmentSet(typeParameters());
 	}

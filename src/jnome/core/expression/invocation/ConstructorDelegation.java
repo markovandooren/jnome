@@ -2,7 +2,7 @@ package jnome.core.expression.invocation;
 
 
 
-import chameleon.core.expression.Invocation;
+import chameleon.core.expression.MethodInvocation;
 import chameleon.core.expression.InvocationTarget;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.support.member.simplename.method.NormalMethod;
@@ -12,7 +12,7 @@ import chameleon.support.member.simplename.method.NormalMethod;
  */
 
 public abstract class ConstructorDelegation<E extends ConstructorDelegation<E>>
-    extends Invocation<E, NormalMethod> {
+    extends MethodInvocation<E, NormalMethod> {
 
   public ConstructorDelegation(InvocationTarget target) {
     super(target);

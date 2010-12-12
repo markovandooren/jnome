@@ -9,7 +9,7 @@ import jnome.core.variable.MultiFormalParameter;
 
 import org.rejuse.predicate.TypePredicate;
 
-import chameleon.core.expression.Invocation;
+import chameleon.core.expression.MethodInvocation;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.relation.WeakPartialOrder;
 import chameleon.oo.type.Type;
@@ -19,9 +19,9 @@ import chameleon.support.member.simplename.method.NormalMethod;
 
 public class JavaMostSpecificMethodOrder extends WeakPartialOrder<NormalMethod> {
 	
-	Invocation _invocation;
+	MethodInvocation _invocation;
 	
-	public JavaMostSpecificMethodOrder(Invocation invocation) {
+	public JavaMostSpecificMethodOrder(MethodInvocation invocation) {
 		_invocation = invocation;
 	}
 

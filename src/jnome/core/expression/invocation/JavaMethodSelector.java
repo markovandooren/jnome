@@ -6,10 +6,10 @@ package jnome.core.expression.invocation;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.DeclarationContainer;
 import chameleon.core.declaration.Signature;
+import chameleon.core.declaration.SimpleNameDeclarationWithParametersSignature;
 import chameleon.core.lookup.LookupException;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.support.member.simplename.SimpleNameMethodInvocation;
-import chameleon.support.member.simplename.SimpleNameMethodSignature;
 import chameleon.support.member.simplename.method.NormalMethod;
 
 public class JavaMethodSelector extends AbstractJavaMethodSelector {
@@ -36,8 +36,8 @@ public class JavaMethodSelector extends AbstractJavaMethodSelector {
   	
     public boolean correctSignature(Signature signature) throws LookupException {
   		boolean result = false;
-  		if(signature instanceof SimpleNameMethodSignature) {
-  			SimpleNameMethodSignature sig = (SimpleNameMethodSignature)signature;
+  		if(signature instanceof SimpleNameDeclarationWithParametersSignature) {
+  			SimpleNameDeclarationWithParametersSignature sig = (SimpleNameDeclarationWithParametersSignature)signature;
   			result = sig.name().equals(invocation().name());
   		}
   		return result;

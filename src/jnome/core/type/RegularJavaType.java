@@ -14,7 +14,7 @@ import chameleon.core.member.Member;
 import chameleon.core.modifier.Modifier;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.TypeElement;
-import chameleon.oo.type.inheritance.InheritanceRelation;
+import chameleon.oo.type.inheritance.AbstractInheritanceRelation;
 import chameleon.support.member.simplename.SimpleNameMethodHeader;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.modifier.Constructor;

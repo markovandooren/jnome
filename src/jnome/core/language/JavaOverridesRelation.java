@@ -58,7 +58,7 @@ public class JavaOverridesRelation extends StrictPartialOrder<Member> {
 		
 		
 		@Override
-		public boolean equal(Member first, Member second) {
-		  return first.equals(second);
+		public boolean equal(Member first, Member second) throws LookupException {
+		  return first.sameAs(second);
 		}
 	}

@@ -73,7 +73,9 @@ import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.SuperWildcard;
 import chameleon.oo.type.generics.TypeConstraint;
 import chameleon.oo.type.generics.TypeParameter;
+import chameleon.oo.type.inheritance.AbstractInheritanceRelation;
 import chameleon.oo.type.inheritance.InheritanceRelation;
+import chameleon.oo.type.inheritance.SubtypeRelation;
 import chameleon.plugin.Plugin;
 import chameleon.plugin.output.Syntax;
 import chameleon.support.expression.ArrayIndex;
@@ -634,12 +636,12 @@ public class JavaCodeWriter extends Syntax {
     result.append("class ");
     result.append(type.getName());
     appendTypeParameters(type.parameters(TypeParameter.class), result);
-    List<InheritanceRelation> superTypes = type.inheritanceRelations();
+    List<SubtypeRelation> superTypes = type.inheritanceRelations(SubtypeRelation.class);
     final List<TypeReference> classRefs = new ArrayList<TypeReference>();
     final List<TypeReference> interfaceRefs = new ArrayList<TypeReference>();
-    for(InheritanceRelation<?> rel:superTypes) {
-    	TypeReference typeRef = rel.superClassReference();
-      if(rel.is(rel.language(Java.class).IMPLEMENTS_RELATION) == Ternary.TRUE) {
+    for(SubtypeRelation relation:superTypes) {
+    	TypeReference typeRef = relation.superClassReference();
+      if(relation.is(relation.language(Java.class).IMPLEMENTS_RELATION) == Ternary.TRUE) {
         interfaceRefs.add(typeRef);
       } else {
         classRefs.add(typeRef);
@@ -738,17 +740,17 @@ public class JavaCodeWriter extends Syntax {
     result.append("interface ");
     result.append(type.getName());
     appendTypeParameters(type.parameters(TypeParameter.class), result);
-    List<InheritanceRelation> superTypes = type.inheritanceRelations();
-    new AbstractPredicate<InheritanceRelation>() {
-      public boolean eval(InheritanceRelation rel) throws LookupException {
-        return ! toCode(rel.superClassReference()).equals("java.lang.Object");
+    List<SubtypeRelation> superTypes = type.inheritanceRelations(SubtypeRelation.class);
+    new AbstractPredicate<SubtypeRelation>() {
+      public boolean eval(SubtypeRelation rel) throws LookupException {
+        return ! toCode((rel).superClassReference()).equals("java.lang.Object");
       }
     }.filter(superTypes);
     if(superTypes.size() > 0) {
       result.append(" extends ");
       Iterator iter = superTypes.iterator();
       while(iter.hasNext()) {
-        TypeReference tr = ((InheritanceRelation)iter.next()).superClassReference();
+        TypeReference tr = ((AbstractInheritanceRelation)iter.next()).superClassReference();
           result.append(toCode(tr));
           if (iter.hasNext()) {
             result.append(", ");

@@ -25,6 +25,7 @@ import chameleon.oo.type.generics.BasicTypeArgument;
 import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.TypeParameter;
 import chameleon.oo.type.inheritance.InheritanceRelation;
+import chameleon.oo.type.inheritance.SubtypeRelation;
 import chameleon.util.Pair;
 
 public class RawType extends TypeWithBody implements JavaType {
@@ -183,7 +184,7 @@ public class RawType extends TypeWithBody implements JavaType {
 	}
 	
 	private void eraseInheritanceRelations() {
-		for(InheritanceRelation relation: inheritanceRelations()) {
+		for(SubtypeRelation relation: inheritanceRelations(SubtypeRelation.class)) {
 			JavaTypeReference superClassReference = (JavaTypeReference) relation.superClassReference();
 			JavaTypeReference erasedReference = superClassReference.erasedReference();
 			relation.setSuperClassReference(erasedReference);

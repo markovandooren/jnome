@@ -76,7 +76,7 @@ import chameleon.oo.type.generics.SuperWildcard;
 import chameleon.oo.type.generics.SuperWildcardType;
 import chameleon.oo.type.generics.TypeConstraint;
 import chameleon.oo.type.generics.TypeParameter;
-import chameleon.oo.type.inheritance.InheritanceRelation;
+import chameleon.oo.type.inheritance.AbstractInheritanceRelation;
 import chameleon.support.member.simplename.SimpleNameMethodSignature;
 import chameleon.support.modifier.PrivateProperty;
 import chameleon.support.modifier.ProtectedProperty;
@@ -102,7 +102,7 @@ public class Java extends ObjectOrientedLanguage {
 		SYNCHRONIZED = new StaticChameleonProperty("synchronized", this, Method.class);
 		TRANSIENT = new StaticChameleonProperty("transient", this, MemberVariable.class);
 		VOLATILE = new StaticChameleonProperty("volatile", this, MemberVariable.class);
-		IMPLEMENTS_RELATION = new StaticChameleonProperty("implements", this, InheritanceRelation.class);
+		IMPLEMENTS_RELATION = new StaticChameleonProperty("implements", this, AbstractInheritanceRelation.class);
 		PROTECTED = new ProtectedProperty(this, SCOPE_MUTEX);
 		PRIVATE = new PrivateProperty(this, SCOPE_MUTEX);
 		PUBLIC = new PublicProperty(this, SCOPE_MUTEX);
@@ -687,7 +687,7 @@ public class Java extends ObjectOrientedLanguage {
 		
 		private Map<Type, RawType> _rawCache = new HashMap<Type, RawType>();
 		
-		public void putRawCache(Type type, RawType raw) {
+		public synchronized void putRawCache(Type type, RawType raw) {
 			if(Config.cacheDeclarations()) {
 			  _rawCache.put(type, raw);
 			} else {
@@ -695,7 +695,7 @@ public class Java extends ObjectOrientedLanguage {
 			}
 		}
 		
-		public RawType getRawCache(Type original) {
+		public synchronized RawType getRawCache(Type original) {
 			return _rawCache.get(original);
 		}
 
@@ -706,8 +706,8 @@ public class Java extends ObjectOrientedLanguage {
 		}
 
 		@Override
-		public void flushCache() {
-			subtypeRelation().flushCache();
+		public synchronized void flushCache() {
+		  _rawCache = new HashMap<Type, RawType>();
 		}
 
 

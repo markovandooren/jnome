@@ -183,12 +183,12 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	}
 	
 	
-	public void flushCache() {
-		_cache = new HashMap<Type,Set<Type>>();
-	}
+//	public void flushCache() {
+//		_cache = new HashMap<Type,Set<Type>>();
+//	}
 
 	// Can't use set for now because hashCode is not OK.
-	private Map<Type, Set<Type>> _cache = new HashMap<Type,Set<Type>>();
+//	private Map<Type, Set<Type>> _cache = new HashMap<Type,Set<Type>>();
 	
 	@Override
 	public boolean contains(Type first, Type second) throws LookupException {
@@ -413,15 +413,15 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		return result;
 	}
 	
-  public Set<Type> getAllSuperTypes(Type type) throws LookupException {
-  	Set<Type> result = _superTypeCache.get(type);
-  	if(result == null) {
-  		result = new HashSet<Type>();
-   		accumulateAllSuperTypes(type, result);
-  	}
-  	result = new HashSet<Type>(result);
-  	return result;
-  }
+	public synchronized Set<Type> getAllSuperTypes(Type type) throws LookupException {
+		Set<Type> result = _superTypeCache.get(type);
+		if(result == null) {
+			result = new HashSet<Type>();
+			accumulateAllSuperTypes(type, result);
+		}
+		result = new HashSet<Type>(result);
+		return result;
+	}
 
   private Map<Type,Set<Type>> _superTypeCache = new HashMap<Type, Set<Type>>();
 

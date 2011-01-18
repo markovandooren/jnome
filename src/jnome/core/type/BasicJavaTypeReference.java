@@ -190,12 +190,12 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
   private SoftReference<Type> _genericCache;
   
   @Override
-  public void flushLocalCache() {
+  public synchronized void flushLocalCache() {
   	super.flushLocalCache();
   	_genericCache = null;
   }
   
-  protected Type getGenericCache() {
+  protected synchronized Type getGenericCache() {
   	Type result = null;
   	if(Config.cacheElementReferences() == true) {
   	  result = (_genericCache == null ? null : _genericCache.get());
@@ -203,7 +203,7 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
   	return result;
   }
   
-  protected void setGenericCache(Type value) {
+  protected synchronized void setGenericCache(Type value) {
     	if(Config.cacheElementReferences() == true) {
     		_genericCache = new SoftReference<Type>(value);
     	}

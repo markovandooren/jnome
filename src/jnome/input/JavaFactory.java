@@ -6,6 +6,10 @@ import chameleon.oo.type.RegularType;
 
 public class JavaFactory {
 	
+	public JavaFactory() {
+		
+	}
+	
 	public RegularType createRegularType(SimpleNameSignature signature) {
 		return new RegularJavaType(signature);
 	}

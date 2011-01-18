@@ -195,7 +195,7 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 			ArrayType second2 = (ArrayType)second;
 			result = convertibleThroughUncheckedConversionAndSubtyping(first2.elementType(), second2.elementType());
 		} else if(first instanceof RegularType) {
-			Set<Type> supers = invocation().language(Java.class).subtypeRelation().getAllSuperTypes(first);
+			Set<Type> supers = invocation().language(Java.class).subtypeRelation().getAllSuperTypesView(first);
 			for(Type type: supers) {
 				if(type.baseType().sameAs(second.baseType())) {
 					return true;

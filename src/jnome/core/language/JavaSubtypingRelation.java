@@ -4,6 +4,7 @@
 package jnome.core.language;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -162,7 +163,7 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 			}
 			else {
 				//SPEED iterate over the supertype graph 
-				Set<Type> supers = getAllSuperTypes(first);
+				Set<Type> supers = getAllSuperTypesView(first);
 				Type snd = captureConversion(second);
 
 				Iterator<Type> typeIterator = supers.iterator();
@@ -257,7 +258,7 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 			}
 			else {
 					//SPEED iterate over the supertype graph 
-					Set<Type> supers = getAllSuperTypes(first);
+					Set<Type> supers = getAllSuperTypesView(first);
 					Type snd = captureConversion(second);
 
 					Iterator<Type> typeIterator = supers.iterator();
@@ -418,11 +419,23 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		if(result == null) {
 			result = new HashSet<Type>();
 			accumulateAllSuperTypes(type, result);
+			_superTypeCache.put(type, result);
 		}
 		result = new HashSet<Type>(result);
 		return result;
 	}
 
+	public synchronized Set<Type> getAllSuperTypesView(Type type) throws LookupException {
+		Set<Type> result = _superTypeCache.get(type);
+		if(result == null) {
+			result = new HashSet<Type>();
+			accumulateAllSuperTypes(type, result);
+			_superTypeCache.put(type, result);
+		}
+		result = Collections.unmodifiableSet(result);
+		return result;
+	}
+	
   private Map<Type,Set<Type>> _superTypeCache = new HashMap<Type, Set<Type>>();
 
   private void accumulateAllSuperTypes(Type t, Set<Type> acc) throws LookupException {

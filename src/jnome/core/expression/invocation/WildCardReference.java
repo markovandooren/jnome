@@ -24,6 +24,8 @@ import chameleon.util.Util;
 
 public abstract class WildCardReference<E extends WildCardReference> extends NamespaceElementImpl<E,Element> implements JavaTypeReference<E> {
 	
+		public abstract E clone();
+	
 		public WildCardReference(TypeReference tref) {
 			_tref.connectTo(tref.parentLink());
 		}

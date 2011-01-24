@@ -77,7 +77,7 @@ public class SingleStaticImport extends Import<SingleStaticImport> {
 			}
 
 			@Override
-			protected boolean selectedBasedOnName(Signature signature) throws LookupException {
+			public boolean selectedBasedOnName(Signature signature) throws LookupException {
 				return signature.name().equals(name());
 			}
 
@@ -87,7 +87,7 @@ public class SingleStaticImport extends Import<SingleStaticImport> {
 			}
 
 			@Override
-			protected boolean selectedRegardlessOfName(Member declaration) throws LookupException {
+			public boolean selectedRegardlessOfName(Member declaration) throws LookupException {
 				ObjectOrientedLanguage language = (ObjectOrientedLanguage) declaration.language(ObjectOrientedLanguage.class);
 				return declaration.is(language.CLASS) == Ternary.TRUE;
 			}

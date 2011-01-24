@@ -50,11 +50,6 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	
 	
 	public boolean upperBoundNotHigherThan(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
-//		String x = first.getFullyQualifiedName();
-//		String y = second.getFullyQualifiedName();
-//		if(x.equals("chameleon.core.property.ChameleonProperty") && y.equals("org.rejuse.property.Property.F")) {
-//			System.out.println(x +" <= "+y);
-//		}
 		List<Pair<Type, TypeParameter>> slowTrace = trace;
 	boolean result = false;
 		if(first instanceof NullType) {
@@ -184,15 +179,19 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	}
 	
 	
-//	public void flushCache() {
-//		_cache = new HashMap<Type,Set<Type>>();
-//	}
+	public void flushCache() {
+		_cache = new HashMap<Type,Set<Type>>();
+	}
 
 	// Can't use set for now because hashCode is not OK.
-//	private Map<Type, Set<Type>> _cache = new HashMap<Type,Set<Type>>();
+	private Map<Type, Set<Type>> _cache = new HashMap<Type,Set<Type>>();
 	
 	@Override
 	public boolean contains(Type first, Type second) throws LookupException {
+		Set<Type> zuppas = _cache.get(first);
+		if(zuppas != null && zuppas.contains(second)) {
+			return true;
+		}
 //		System.out.println(first.getFullyQualifiedName() +" <: "+second.getFullyQualifiedName());
 		boolean result = false;
 		if(first instanceof NullType) {
@@ -267,6 +266,14 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 						result = (snd instanceof RawType && second.baseType().sameAs(current.baseType())) || sameBaseTypeWithCompatibleParameters(current, snd, new ArrayList());
 					}
 			}
+		}
+		if(result) {
+			zuppas = _cache.get(first);
+			if(zuppas == null) {
+				zuppas = new HashSet<Type>();
+				_cache.put(first, zuppas);
+			}
+			zuppas.add(second);
 		}
 		return result;
 	}

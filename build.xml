@@ -8,6 +8,9 @@
     <property environment="env"/>
     <property name="Chameleon.location" value="../chameleon"/>
     <property name="Chameleon Support.location" value="../chameleon-support"/>
+    <property name="Jnome Editor.location" value="../jnome-editor"/>
+    <property name="Subobject Java.location" value="../subobject-java"/>
+    <property name="Subobject Java Editor.location" value="../subobject-java-editor"/>
     <property name="junit.output.dir" value="junit"/>
     <property name="rejuse.location" value="../rejuse"/>
     <property name="Chameleon Tools.location" value="../chameleon-tools"/>
@@ -81,12 +84,20 @@
             <classpath refid="Jnome.classpath"/>
         </javac>
     </target>
-    <target name="test">
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects">
+        <ant antfile="build.xml" dir="${Jnome Editor.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${Jnome Editor.location}" inheritAll="false" target="build"/>
+        <ant antfile="build.xml" dir="${Subobject Java.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${Subobject Java.location}" inheritAll="false" target="build"/>
+        <ant antfile="build.xml" dir="${Subobject Java Editor.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${Subobject Java Editor.location}" inheritAll="false" target="build"/>
+    </target>
+    <target name="AllTests">
         <mkdir dir="${junit.output.dir}"/>
         <junit fork="yes" printsummary="withOutAndErr">
             <formatter type="xml"/>
             <test name="jnome.test.AllTests" todir="${junit.output.dir}"/>
-            <jvmarg line="-Xmx1024m"/>
+            <jvmarg line="-Xmx2024m -Xms1024m"/>
             <classpath refid="Jnome.classpath"/>
         </junit>
     </target>

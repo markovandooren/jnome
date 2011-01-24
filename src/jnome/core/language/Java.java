@@ -325,11 +325,6 @@ public class Java extends ObjectOrientedLanguage {
 	  }
 	  
     @Override
-    public StrictPartialOrder<Member> overridesRelation() {
-     return new JavaOverridesRelation();
-    }
-
-    @Override
 		public Type booleanType() throws LookupException {
 			return findType("boolean");
 		}
@@ -339,12 +334,12 @@ public class Java extends ObjectOrientedLanguage {
 			return findType("java.lang.ClassCastException");
 		}
 
-		@Override
-		public StrictPartialOrder<Member> hidesRelation() {
-			return _hidesRelation;
-		}
-		
-		private JavaHidesRelation _hidesRelation = new JavaHidesRelation();
+//		@Override
+//		public StrictPartialOrder<Member> hidesRelation() {
+//			return _hidesRelation;
+//		}
+//		
+//		private JavaHidesRelation _hidesRelation = new JavaHidesRelation();
 		
 		public StrictPartialOrder<Member> implementsRelation() {
 			return _implementsRelation;
@@ -708,6 +703,7 @@ public class Java extends ObjectOrientedLanguage {
 		@Override
 		public synchronized void flushCache() {
 		  _rawCache = new HashMap<Type, RawType>();
+		  subtypeRelation().flushCache();
 		}
 
 

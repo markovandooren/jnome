@@ -14,6 +14,7 @@ import jnome.core.type.AnonymousInnerClass;
 import jnome.core.type.ArrayType;
 import jnome.core.type.ArrayTypeReference;
 import jnome.core.type.BasicJavaTypeReference;
+import jnome.core.type.CapturedType;
 import jnome.core.type.JavaBasicTypeArgument;
 import jnome.core.type.JavaExtendsWildcard;
 import jnome.core.type.JavaIntersectionTypeReference;
@@ -57,6 +58,8 @@ import chameleon.oo.type.ConstructedType;
 import chameleon.oo.type.DerivedType;
 import chameleon.oo.type.IntersectionType;
 import chameleon.oo.type.IntersectionTypeReference;
+import chameleon.oo.type.Parameter;
+import chameleon.oo.type.ParameterSubstitution;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
@@ -490,6 +493,10 @@ public class Java extends ObjectOrientedLanguage {
 			return new BasicJavaTypeReference(target);
 		}
 
+		public <P extends Parameter> DerivedType createDerivedType(Class<P> kind, List<P> parameters, Type baseType) {
+			return new DerivedType(kind, parameters, baseType);
+		}
+		
 		public TypeReference glb(List<? extends JavaTypeReference> typeReferenceList) {
 			return new JavaIntersectionTypeReference(typeReferenceList);
 		}
@@ -704,6 +711,10 @@ public class Java extends ObjectOrientedLanguage {
 		public synchronized void flushCache() {
 		  _rawCache = new HashMap<Type, RawType>();
 		  subtypeRelation().flushCache();
+		}
+
+		public Type createdCapturedType(ParameterSubstitution parameterSubstitution, Type base) {
+			return new CapturedType(parameterSubstitution, base);
 		}
 
 

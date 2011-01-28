@@ -97,7 +97,7 @@
         <junit fork="yes" printsummary="withOutAndErr">
             <formatter type="xml"/>
             <test name="jnome.test.AllTests" todir="${junit.output.dir}"/>
-            <jvmarg line="-Xmx2024m -Xms1024m"/>
+            <jvmarg line="-Xmx1024m"/>
             <classpath refid="Jnome.classpath"/>
         </junit>
     </target>

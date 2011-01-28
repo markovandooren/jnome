@@ -32,6 +32,7 @@ import chameleon.core.relation.WeakPartialOrder;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.DerivedType;
 import chameleon.oo.type.IntersectionType;
+import chameleon.oo.type.ParameterSubstitution;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.UnionType;
 import chameleon.oo.type.generics.AbstractInstantiatedTypeParameter;
@@ -39,7 +40,6 @@ import chameleon.oo.type.generics.ActualType;
 import chameleon.oo.type.generics.CapturedTypeParameter;
 import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.InstantiatedTypeParameter;
-import chameleon.oo.type.generics.LazyTypeAlias;
 import chameleon.oo.type.generics.TypeConstraint;
 import chameleon.oo.type.generics.TypeParameter;
 import chameleon.oo.type.generics.WildCardType;
@@ -303,7 +303,7 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 					}
 					typeParameters.add(((InstantiatedTypeParameter) actualParam).capture((FormalTypeParameter) formalParam,toBeSubstituted));
 				}
-				result = new CapturedType(typeParameters, base);
+				result = type.language(Java.class).createdCapturedType(new ParameterSubstitution(TypeParameter.class,typeParameters), base);
 				result.setUniParent(type.parent());
 				for(TypeParameter newParameter: typeParameters) {
 					for(TypeParameter oldParameter: baseParameters) {

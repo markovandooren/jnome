@@ -646,7 +646,7 @@ memberDecl returns [TypeElement element]
 voidMethodDeclaration returns [Method element]
 scope MethodScope;
 @after{setLocation(retval.element, methodname, "__NAME");}
-    	: vt=voidType methodname=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($methodname.text), vt.element); $MethodScope::method = retval.element;} voidMethodDeclaratorRest	
+    	: vt=voidType methodname=Identifier {retval.element = new NormalMethod(new SimpleNameDeclarationWithParametersHeader($methodname.text), vt.element); $MethodScope::method = retval.element;} voidMethodDeclaratorRest	
     	;
 
 voidType returns [JavaTypeReference element]
@@ -658,7 +658,7 @@ constructorDeclaration returns [Method element]
 scope MethodScope;
         : consname=Identifier 
             {
-             retval.element = new NormalMethod(new SimpleNameMethodHeader($consname.text), typeRef($consname.text)); 
+             retval.element = new NormalMethod(new SimpleNameDeclarationWithParametersHeader($consname.text), typeRef($consname.text)); 
              retval.element.addModifier(new JavaConstructor());
              $MethodScope::method = retval.element;
             } 
@@ -678,13 +678,13 @@ genericMethodOrConstructorRest returns [Method element]
 scope MethodScope;
 @init{TypeReference tref = null;}
 @after{check_null(retval.element);}
-    :   (t=type {tref=t.element;}| 'void' {tref = typeRef("void");}) name=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($name.text),tref); $MethodScope::method = retval.element;} methodDeclaratorRest
-    |   name=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($name.text),typeRef($name.text)); $MethodScope::method = retval.element;} constructorDeclaratorRest
+    :   (t=type {tref=t.element;}| 'void' {tref = typeRef("void");}) name=Identifier {retval.element = new NormalMethod(new SimpleNameDeclarationWithParametersHeader($name.text),tref); $MethodScope::method = retval.element;} methodDeclaratorRest
+    |   name=Identifier {retval.element = new NormalMethod(new SimpleNameDeclarationWithParametersHeader($name.text),typeRef($name.text)); $MethodScope::method = retval.element;} constructorDeclaratorRest
     ;
 
 methodDeclaration returns [Method element]
 scope MethodScope;
-    :   t=type name=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($name.text),t.element); $MethodScope::method = retval.element;} methodDeclaratorRest
+    :   t=type name=Identifier {retval.element = new NormalMethod(new SimpleNameDeclarationWithParametersHeader($name.text),t.element); $MethodScope::method = retval.element;} methodDeclaratorRest
     ;
 
 fieldDeclaration returns [MemberVariableDeclarator element]
@@ -706,7 +706,7 @@ interfaceMemberDecl returns [TypeElement element]
     
 voidInterfaceMethodDeclaration  returns [Method element]
 scope MethodScope;
-    	: vt=voidType methodname=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($methodname.text), vt.element); $MethodScope::method = retval.element;} voidInterfaceMethodDeclaratorRest
+    	: vt=voidType methodname=Identifier {retval.element = new NormalMethod(new SimpleNameDeclarationWithParametersHeader($methodname.text), vt.element); $MethodScope::method = retval.element;} voidInterfaceMethodDeclaratorRest
     	;    
     
 interfaceMethodOrFieldDecl returns [TypeElement element]
@@ -721,7 +721,7 @@ interfaceConstant returns [MemberVariableDeclarator element]
 
 interfaceMethod returns [Method element]
 scope MethodScope;
-	: tref=type methodname=Identifier {retval.element = new NormalMethod(new SimpleNameMethodHeader($methodname.text), tref.element); $MethodScope::method = retval.element;} interfaceMethodDeclaratorRest
+	: tref=type methodname=Identifier {retval.element = new NormalMethod(new SimpleNameDeclarationWithParametersHeader($methodname.text), tref.element); $MethodScope::method = retval.element;} interfaceMethodDeclaratorRest
 	;
 
     
@@ -991,7 +991,7 @@ constructorBody returns [Block element]
          (bs=blockStatement {retval.element.addStatement(bs.element);})* '}'
     ;
 
-explicitConstructorInvocation returns [Invocation element]
+explicitConstructorInvocation returns [MethodInvocation element]
 @init{Expression target=null;}
     :   nonWildcardTypeArguments? 'this' args=arguments ';'
        {retval.element = new ThisConstructorDelegation();
@@ -1105,7 +1105,7 @@ annotationMethodOrConstantRest[TypeReference type] returns [TypeElement element]
     ;
     
 annotationMethodRest[TypeReference type] returns [Method element]
-    :   name=Identifier '(' ')' {retval.element = new NormalMethod(new SimpleNameMethodHeader($name.text),type);} (defaultValue {})?
+    :   name=Identifier '(' ')' {retval.element = new NormalMethod(new SimpleNameDeclarationWithParametersHeader($name.text),type);} (defaultValue {})?
     ;
     
 annotationConstantRest[TypeReference type] returns [MemberVariableDeclarator element]

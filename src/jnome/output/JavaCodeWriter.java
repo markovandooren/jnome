@@ -36,9 +36,9 @@ import chameleon.core.compilationunit.CompilationUnit;
 import chameleon.core.declaration.SimpleNameDeclarationWithParametersSignature;
 import chameleon.core.element.Element;
 import chameleon.core.expression.Expression;
-import chameleon.core.expression.MethodInvocation;
 import chameleon.core.expression.InvocationTarget;
 import chameleon.core.expression.Literal;
+import chameleon.core.expression.MethodInvocation;
 import chameleon.core.expression.NamedTarget;
 import chameleon.core.expression.NamedTargetExpression;
 import chameleon.core.expression.VariableReference;
@@ -62,6 +62,7 @@ import chameleon.core.statement.Block;
 import chameleon.core.variable.FormalParameter;
 import chameleon.core.variable.VariableDeclaration;
 import chameleon.core.variable.VariableDeclarator;
+import chameleon.oo.type.AspectOrType;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeElement;
@@ -282,6 +283,7 @@ public class JavaCodeWriter extends Syntax {
     } else if(isPureWildCard(element)) {
     	result = toCodePureWildCard((PureWildcard) element);
     }
+    // /ASPECTS
     else if(element == null) {
       result = "";
     }
@@ -291,7 +293,8 @@ public class JavaCodeWriter extends Syntax {
     return result;
   }
   
-  public boolean isExtendsWildCard(Element element) {
+
+public boolean isExtendsWildCard(Element element) {
   	return element instanceof ExtendsWildcard;
   }
   
@@ -503,7 +506,7 @@ public class JavaCodeWriter extends Syntax {
     	}
     }
     result.append("\n");
-    Collection<Type> types = part.declarations(Type.class);
+    Collection<AspectOrType> types = part.declarations(AspectOrType.class);
     new SafePredicate() {
       public boolean eval(Object o) {
         return !(o instanceof ArrayType);

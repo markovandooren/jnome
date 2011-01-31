@@ -3,19 +3,14 @@ package jnome.core.type;
 import java.util.ArrayList;
 import java.util.List;
 
-import jnome.core.language.Java;
 import jnome.core.modifier.JavaConstructor;
-import chameleon.core.declaration.Declaration;
+import chameleon.core.declaration.SimpleNameDeclarationWithParametersHeader;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
-import chameleon.core.lookup.DeclarationSelector;
-import chameleon.core.lookup.LookupException;
 import chameleon.core.member.Member;
 import chameleon.core.modifier.Modifier;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.TypeElement;
-import chameleon.oo.type.inheritance.AbstractInheritanceRelation;
-import chameleon.support.member.simplename.SimpleNameMethodHeader;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.modifier.Constructor;
 import chameleon.support.modifier.Public;
@@ -44,7 +39,7 @@ public class RegularJavaType extends RegularType {
 	private NormalMethod _defaultDefaultConstructor;
 	
 	protected void setDefaultDefaultConstructor() {
-		NormalMethod cons = new NormalMethod(new SimpleNameMethodHeader(signature().name()), new BasicJavaTypeReference(signature().name()));
+		NormalMethod cons = new NormalMethod(new SimpleNameDeclarationWithParametersHeader(signature().name()), new BasicJavaTypeReference(signature().name()));
 		cons.addModifier(new Constructor());
 		cons.addModifier(new Public());
 		cons.setUniParent(this);

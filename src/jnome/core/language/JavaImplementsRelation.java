@@ -5,14 +5,14 @@ package jnome.core.language;
 
 import org.rejuse.logic.ternary.Ternary;
 
+import chameleon.core.declaration.DeclarationWithParametersSignature;
+import chameleon.core.declaration.SimpleNameDeclarationWithParametersSignature;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.member.Member;
 import chameleon.core.method.Method;
-import chameleon.core.method.MethodSignature;
 import chameleon.core.relation.StrictPartialOrder;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.Type;
-import chameleon.support.member.simplename.SimpleNameMethodSignature;
 
 public class JavaImplementsRelation extends StrictPartialOrder<Member> {
 
@@ -26,9 +26,9 @@ public class JavaImplementsRelation extends StrictPartialOrder<Member> {
 //	    if(result) {
 	    	result = !checkDefined(method2);
 	    	if(result) {
-	    		MethodSignature signature1 = method1.signature();
-	    		MethodSignature<?,?> signature2 = method2.signature();
-	    		MethodSignature erasure2 = signature2.language(Java.class).erasure((SimpleNameMethodSignature) signature2);
+	    		DeclarationWithParametersSignature signature1 = method1.signature();
+	    		DeclarationWithParametersSignature<?,?> signature2 = method2.signature();
+	    		DeclarationWithParametersSignature erasure2 = signature2.language(Java.class).erasure((SimpleNameDeclarationWithParametersSignature) signature2);
 	    		result = signature1.sameParameterBoundsAs(signature2) &&
 	    		(! method2.nearestAncestor(Type.class).subTypeOf(method1.nearestAncestor(Type.class))) &&
 	    		method1.sameKind(method2);

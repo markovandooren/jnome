@@ -4,26 +4,22 @@ import jnome.core.language.Java;
 
 import org.rejuse.association.Association;
 import org.rejuse.association.SingleAssociation;
-import org.rejuse.logic.ternary.Ternary;
 
+import chameleon.core.declaration.DeclarationWithParametersHeader;
+import chameleon.core.declaration.DeclarationWithParametersSignature;
 import chameleon.core.declaration.Signature;
+import chameleon.core.declaration.SimpleNameDeclarationWithParametersSignature;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.lookup.SelectorWithoutOrder;
 import chameleon.core.member.OverridesRelation;
 import chameleon.core.member.OverridesRelationSelector;
 import chameleon.core.method.Method;
-import chameleon.core.method.MethodHeader;
-import chameleon.core.method.MethodSignature;
 import chameleon.core.method.RegularMethod;
-import chameleon.core.variable.MemberVariable;
-import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.type.TypeReference;
-import chameleon.support.member.simplename.SimpleNameMethodSignature;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.util.CreationStackTrace;
 
-public class JavaNormalMethod<E extends RegularMethod<E,H,S,NormalMethod>, H extends MethodHeader<H, E, S>, S extends MethodSignature> extends NormalMethod<E,H,S> {
+public class JavaNormalMethod<E extends RegularMethod<E,H,S,NormalMethod>, H extends DeclarationWithParametersHeader<H, E, S>, S extends DeclarationWithParametersSignature> extends NormalMethod<E,H,S> {
 
 	public JavaNormalMethod(H header, TypeReference returnType) {
 		super(header,returnType);
@@ -45,11 +41,11 @@ public class JavaNormalMethod<E extends RegularMethod<E,H,S,NormalMethod>, H ext
 		if(result) {
 			result =  first.sameKind(second);// && first.nearestAncestor(Type.class).subTypeOf(second.nearestAncestor(Type.class));
 			if(result) {
-				MethodSignature signature1 = first.signature();
-				MethodSignature<?,?> signature2 = second.signature();
+				DeclarationWithParametersSignature signature1 = first.signature();
+				DeclarationWithParametersSignature<?,?> signature2 = second.signature();
 				result = signature1.sameParameterBoundsAs(signature2);
 				if(!result) {
-					MethodSignature erasure2 = signature2.language(Java.class).erasure((SimpleNameMethodSignature) signature2);
+					DeclarationWithParametersSignature erasure2 = signature2.language(Java.class).erasure((SimpleNameDeclarationWithParametersSignature) signature2);
 					result = signature1.sameParameterBoundsAs(erasure2);
 				}
 			}

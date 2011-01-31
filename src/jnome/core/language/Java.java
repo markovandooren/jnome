@@ -27,12 +27,12 @@ import jnome.core.type.PureWildCardType;
 import jnome.core.type.PureWildcard;
 import jnome.core.type.RawType;
 
-import org.rejuse.association.AssociationListener;
 import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.property.PropertyUniverse;
 
 import chameleon.core.Config;
 import chameleon.core.declaration.Declaration;
+import chameleon.core.declaration.SimpleNameDeclarationWithParametersSignature;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.declaration.TargetDeclaration;
 import chameleon.core.element.Element;
@@ -70,7 +70,6 @@ import chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
 import chameleon.oo.type.generics.BasicTypeArgument;
 import chameleon.oo.type.generics.CapturedTypeParameter;
 import chameleon.oo.type.generics.EqualityConstraint;
-import chameleon.oo.type.generics.ExtendsConstraint;
 import chameleon.oo.type.generics.ExtendsWildcard;
 import chameleon.oo.type.generics.ExtendsWildcardType;
 import chameleon.oo.type.generics.FormalTypeParameter;
@@ -80,7 +79,6 @@ import chameleon.oo.type.generics.SuperWildcardType;
 import chameleon.oo.type.generics.TypeConstraint;
 import chameleon.oo.type.generics.TypeParameter;
 import chameleon.oo.type.inheritance.AbstractInheritanceRelation;
-import chameleon.support.member.simplename.SimpleNameMethodSignature;
 import chameleon.support.modifier.PrivateProperty;
 import chameleon.support.modifier.ProtectedProperty;
 import chameleon.support.modifier.PublicProperty;
@@ -88,7 +86,6 @@ import chameleon.support.rule.member.MemberInheritableByDefault;
 import chameleon.support.rule.member.MemberInstanceByDefault;
 import chameleon.support.rule.member.MemberOverridableByDefault;
 import chameleon.support.rule.member.TypeExtensibleByDefault;
-import chameleon.util.CreationStackTrace;
 import chameleon.util.Pair;
 
 /**
@@ -164,8 +161,8 @@ public class Java extends ObjectOrientedLanguage {
   	return result;
   }
   
-	public SimpleNameMethodSignature erasure(SimpleNameMethodSignature signature) {
-		SimpleNameMethodSignature result = new SimpleNameMethodSignature(signature.name());
+	public SimpleNameDeclarationWithParametersSignature erasure(SimpleNameDeclarationWithParametersSignature signature) {
+		SimpleNameDeclarationWithParametersSignature result = new SimpleNameDeclarationWithParametersSignature(signature.name());
 		result.setUniParent(signature.parent());
 		for(TypeReference tref : signature.typeReferences()) {
 			JavaTypeReference jref = (JavaTypeReference) tref;

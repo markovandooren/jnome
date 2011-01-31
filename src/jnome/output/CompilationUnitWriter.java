@@ -5,12 +5,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import chameleon.core.compilationunit.CompilationUnit;
-import chameleon.core.language.Language;
 import chameleon.core.lookup.LookupException;
 import chameleon.exception.ModelException;
 import chameleon.oo.type.Type;
+import chameleon.oo.type.AspectOrType;
 import chameleon.plugin.output.Syntax;
-import chameleon.test.provider.ElementProvider;
 
 public class CompilationUnitWriter {
 
@@ -53,7 +52,7 @@ public class CompilationUnitWriter {
 	}
 	
 	public String fileName(CompilationUnit compilationUnit) throws LookupException, ModelException {
-		Type result = mainType(compilationUnit);
+		AspectOrType result = mainType(compilationUnit);
 		String name = (result == null ? null : result.getName()+_extension);
 		return name;
 	}
@@ -62,10 +61,10 @@ public class CompilationUnitWriter {
 		return mainType(compilationUnit).getNamespace().getFullyQualifiedName();
 	}
 	
-	private Type mainType(CompilationUnit compilationUnit) throws LookupException, ModelException {
-		Type result = null;
-		for(Type type: compilationUnit.descendants(Type.class)) {
-			if((type.nearestAncestor(Type.class) == null) && ((result == null) || (type.scope().ge(result.scope())))) {
+	private AspectOrType mainType(CompilationUnit compilationUnit) throws LookupException, ModelException {
+		AspectOrType result = null;
+		for(AspectOrType type: compilationUnit.descendants(AspectOrType.class)) {
+			if((type.nearestAncestor(AspectOrType.class) == null) && ((result == null) || (type.scope().ge(result.scope())))) {
 				result = type;
 			}
 		}

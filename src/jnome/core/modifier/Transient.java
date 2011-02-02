@@ -11,7 +11,7 @@ import chameleon.core.property.ChameleonProperty;
 /**
  * @author Marko van Dooren
  */
-public class Transient extends ModifierImpl<Transient,Element> {
+public class Transient extends ModifierImpl<Transient> {
 
   public Transient() {
   }

@@ -25,7 +25,7 @@ import chameleon.core.lookup.LookupException;
   	String __name;
 
 		@Override
-		public String selectionName(DeclarationContainer<?,?> container) {
+		public String selectionName(DeclarationContainer<?> container) {
 			return __name;
 		}
   }

@@ -27,7 +27,7 @@ import chameleon.util.Util;
  * @author Marko van Dooren
  *
  */
-public class ConstructorInvocation extends RegularMethodInvocation<ConstructorInvocation> implements DeclarationContainer<ConstructorInvocation, Element> {
+public class ConstructorInvocation extends RegularMethodInvocation<ConstructorInvocation> implements DeclarationContainer<ConstructorInvocation> {
 
   /**
    * @param target

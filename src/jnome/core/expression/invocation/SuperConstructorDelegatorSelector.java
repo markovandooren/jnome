@@ -14,7 +14,7 @@ class SuperConstructorDelegatorSelector extends NamelessConstructorSelector {
 	}
 
 	@Override
-	public String selectionName(DeclarationContainer<?,?> container) {
+	public String selectionName(DeclarationContainer<?> container) {
 		return container.nearestAncestor(Type.class).signature().name();
 	}
 	

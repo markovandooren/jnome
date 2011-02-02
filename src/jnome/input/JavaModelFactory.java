@@ -355,7 +355,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         parser.compilationUnit();
     }
     
-  	protected <P extends Element> Element parse(Element<?,P> element, String text) throws ParseException {
+  	protected <P extends Element> Element parse(Element<?> element, String text) throws ParseException {
   		try {
   		  InputStream inputStream = new StringBufferInputStream(text);
   		  Element result = null;

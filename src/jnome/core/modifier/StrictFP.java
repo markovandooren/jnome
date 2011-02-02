@@ -11,7 +11,7 @@ import chameleon.core.property.ChameleonProperty;
 /**
  * @author Marko van Dooren
  */
-public class StrictFP extends ModifierImpl<StrictFP,Element> {
+public class StrictFP extends ModifierImpl<StrictFP> {
 
   public StrictFP() {
   }

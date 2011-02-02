@@ -22,7 +22,7 @@ import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.util.Util;
 
-public abstract class WildCardReference<E extends WildCardReference> extends NamespaceElementImpl<E,Element> implements JavaTypeReference<E> {
+public abstract class WildCardReference<E extends WildCardReference> extends NamespaceElementImpl<E> implements JavaTypeReference<E> {
 	
 		public abstract E clone();
 	

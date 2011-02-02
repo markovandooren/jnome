@@ -11,7 +11,7 @@ import chameleon.core.property.ChameleonProperty;
 /**
  * @author Marko van Dooren
  */
-public class Synchronized extends ModifierImpl<Synchronized,Element> {
+public class Synchronized extends ModifierImpl<Synchronized> {
 	
 	public Synchronized() {
 	}

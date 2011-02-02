@@ -19,7 +19,7 @@ import chameleon.oo.type.TypeReference;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.util.CreationStackTrace;
 
-public class JavaNormalMethod<E extends RegularMethod<E,H,S,NormalMethod>, H extends DeclarationWithParametersHeader<H, E, S>, S extends DeclarationWithParametersSignature> extends NormalMethod<E,H,S> {
+public class JavaNormalMethod<E extends RegularMethod<E,H,S,NormalMethod>, H extends DeclarationWithParametersHeader<H, S>, S extends DeclarationWithParametersSignature> extends NormalMethod<E,H,S> {
 
 	public JavaNormalMethod(H header, TypeReference returnType) {
 		super(header,returnType);
@@ -42,7 +42,7 @@ public class JavaNormalMethod<E extends RegularMethod<E,H,S,NormalMethod>, H ext
 			result =  first.sameKind(second);// && first.nearestAncestor(Type.class).subTypeOf(second.nearestAncestor(Type.class));
 			if(result) {
 				DeclarationWithParametersSignature signature1 = first.signature();
-				DeclarationWithParametersSignature<?,?> signature2 = second.signature();
+				DeclarationWithParametersSignature<?> signature2 = second.signature();
 				result = signature1.sameParameterBoundsAs(signature2);
 				if(!result) {
 					DeclarationWithParametersSignature erasure2 = signature2.language(Java.class).erasure((SimpleNameDeclarationWithParametersSignature) signature2);

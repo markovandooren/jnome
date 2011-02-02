@@ -1437,7 +1437,7 @@ public boolean isExtendsWildCard(Element element) {
   
   public String toCodeSuperTarget(SuperTarget nt) throws LookupException {
     StringBuffer result = new StringBuffer();
-    InvocationTarget<?, ?> target = nt.getTarget();
+    InvocationTarget<?> target = nt.getTarget();
 		if(target != null) {
       result.append(toCode(target));
       result.append(".");

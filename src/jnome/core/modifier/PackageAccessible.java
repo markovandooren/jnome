@@ -10,7 +10,7 @@ import chameleon.core.property.ChameleonProperty;
  * @author Marko van Dooren
  * @author Tim Laeremans
  */
-public class PackageAccessible extends ModifierImpl<PackageAccessible,Element> {
+public class PackageAccessible extends ModifierImpl<PackageAccessible> {
 
   public PackageAccessible() {
   }

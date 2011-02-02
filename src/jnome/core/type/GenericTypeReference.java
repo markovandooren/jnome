@@ -25,7 +25,7 @@ import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.generics.ActualTypeArgument;
 import chameleon.util.Util;
 
-public class GenericTypeReference extends NamespaceElementImpl<GenericTypeReference,Element> implements JavaTypeReference<GenericTypeReference> {
+public class GenericTypeReference extends NamespaceElementImpl<GenericTypeReference> implements JavaTypeReference<GenericTypeReference> {
 
 	public GenericTypeReference(BasicJavaTypeReference target,List<ActualTypeArgument> arguments) {
 		setTarget(target);

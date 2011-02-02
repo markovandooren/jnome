@@ -24,16 +24,14 @@ import chameleon.oo.type.DerivedType;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.ActualTypeArgument;
-import chameleon.util.CreationStackTrace;
-import chameleon.util.CreationStackTraceWithSingleFrame;
 
-public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeReference> implements JavaTypeReference<BasicJavaTypeReference>, CrossReferenceWithName<BasicJavaTypeReference, Element, Type> {
+public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeReference> implements JavaTypeReference<BasicJavaTypeReference>, CrossReferenceWithName<BasicJavaTypeReference, Type> {
 
-	public BasicJavaTypeReference(CrossReference<?,?,? extends TargetDeclaration> target, String name) {
+	public BasicJavaTypeReference(CrossReference<?,? extends TargetDeclaration> target, String name) {
   	super(target,name);
   }
   
-  public BasicJavaTypeReference(CrossReference<?,?,? extends TargetDeclaration> target, SimpleNameSignature signature) {
+  public BasicJavaTypeReference(CrossReference<?,? extends TargetDeclaration> target, SimpleNameSignature signature) {
   	super(target,signature);
   }
   
@@ -174,7 +172,7 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
   }
 
 	public JavaTypeReference erasedReference() {
-	  CrossReference<?, ?, ? extends TargetDeclaration> erasure = language(Java.class).erasure(getTarget());
+	  CrossReference<?, ? extends TargetDeclaration> erasure = language(Java.class).erasure(getTarget());
 		JavaTypeReference result = new BasicJavaTypeReference(erasure, (SimpleNameSignature)signature().clone());
 	  return result;
 	}

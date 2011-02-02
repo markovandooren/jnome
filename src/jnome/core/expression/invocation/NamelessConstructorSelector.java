@@ -60,7 +60,7 @@ public class NamelessConstructorSelector extends AbstractConstructorSelector {
 //  }
 
 	@Override
-	public String selectionName(DeclarationContainer<?,?> container) {
+	public String selectionName(DeclarationContainer<?> container) {
 		return _constructorDelegation.nearestAncestor(Type.class).signature().name();
 	}
 }

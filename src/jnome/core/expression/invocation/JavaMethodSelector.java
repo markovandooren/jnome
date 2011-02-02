@@ -44,7 +44,7 @@ public class JavaMethodSelector extends AbstractJavaMethodSelector {
     }
 
     @Override
-		public String selectionName(DeclarationContainer<?,?> container) {
+		public String selectionName(DeclarationContainer<?> container) {
 			return invocation().name();
 		}
 

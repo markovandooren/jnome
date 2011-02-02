@@ -8,7 +8,7 @@ import chameleon.core.element.Element;
 import chameleon.core.modifier.ModifierImpl;
 import chameleon.core.property.ChameleonProperty;
 
-public class Implements extends ModifierImpl<Implements,Element> {
+public class Implements extends ModifierImpl<Implements> {
 
 	@Override
 	public Implements clone() {

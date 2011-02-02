@@ -317,11 +317,11 @@ scope TargetScope {
     return ((Java)language()).createTypeReference(qn);
   }
 
-  public JavaTypeReference createTypeReference(CrossReference<?, ?, ? extends TargetDeclaration> target, String name) {
+  public JavaTypeReference createTypeReference(CrossReference<?, ? extends TargetDeclaration> target, String name) {
     return ((Java)language()).createTypeReference(target,name);
   }
   
-  public JavaTypeReference createTypeReference(CrossReference<?, ?, ? extends TargetDeclaration> target, SimpleNameSignature signature) {
+  public JavaTypeReference createTypeReference(CrossReference<?, ? extends TargetDeclaration> target, SimpleNameSignature signature) {
     return ((Java)language()).createTypeReference(target,signature);
   }
 

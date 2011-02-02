@@ -121,7 +121,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 		return result;
 	}
 	
-	private static class ReferenceStub extends NamespaceElementImpl<ReferenceStub, Element> {
+	private static class ReferenceStub extends NamespaceElementImpl<ReferenceStub> {
 
 		public ReferenceStub(TypeReference tref) {
 			setTypeReference(tref);

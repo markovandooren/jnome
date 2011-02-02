@@ -25,7 +25,7 @@ import chameleon.util.Util;
 /**
  * @author Marko van Dooren
  */
-public class ArrayAccessExpression extends Expression<ArrayAccessExpression> implements Assignable<ArrayAccessExpression,Element> {
+public class ArrayAccessExpression extends Expression<ArrayAccessExpression> implements Assignable<ArrayAccessExpression> {
 
   public ArrayAccessExpression(Expression target) {
     setTarget(target);

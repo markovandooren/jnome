@@ -16,8 +16,8 @@ import chameleon.support.member.simplename.method.NormalMethod;
 public class JavaHidesRelation extends StrictPartialOrder<Member> {
 	@Override
 	public boolean contains(Member fst, Member snd) throws LookupException {
-		Member<?,?,?,?> first = fst;
-		Member<?,?,?,?> second = snd;
+		Member<?,?,?> first = fst;
+		Member<?,?,?> second = snd;
 		boolean result = false;
 		if((first instanceof NormalMethod) && (second instanceof NormalMethod)) {
 			result = first.nearestAncestor(Type.class).subTypeOf(second.nearestAncestor(Type.class)) &&

@@ -18,7 +18,7 @@ import chameleon.oo.type.TypeReference;
 import chameleon.util.CreationStackTrace;
 import chameleon.util.Util;
 
-public class ArrayTypeReference  extends NamespaceElementImpl<ArrayTypeReference,Element> implements JavaTypeReference<ArrayTypeReference> {
+public class ArrayTypeReference  extends NamespaceElementImpl<ArrayTypeReference> implements JavaTypeReference<ArrayTypeReference> {
 	
 	/**
 	 * If the given a

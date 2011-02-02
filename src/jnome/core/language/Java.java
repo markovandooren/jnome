@@ -172,15 +172,15 @@ public class Java extends ObjectOrientedLanguage {
 		return result;
 	}
 	
-	public <T extends CrossReference<?,?,? extends TargetDeclaration>> CrossReference<?,?,? extends TargetDeclaration> erasure(T ref) {
+	public <T extends CrossReference<?,? extends TargetDeclaration>> CrossReference<?,? extends TargetDeclaration> erasure(T ref) {
 		if(ref instanceof JavaTypeReference) {
 			return ((JavaTypeReference) ref).erasedReference();
 		} else if( ref != null){
-			CrossReference<?,?,? extends TargetDeclaration> result = ref.clone();
+			CrossReference<?,? extends TargetDeclaration> result = ref.clone();
 			// replace target with erasure.
 			if(ref instanceof NamedTarget) {
 				NamedTarget namedTarget = (NamedTarget)result;
-				InvocationTarget<?, ?> target = namedTarget.getTarget();
+				InvocationTarget<?> target = namedTarget.getTarget();
 				if(target instanceof CrossReference) {
 				  namedTarget.setTarget((InvocationTarget)erasure((T)target));
 				}
@@ -477,12 +477,12 @@ public class Java extends ObjectOrientedLanguage {
 		}
 
 		@Override
-		public BasicJavaTypeReference createTypeReference(CrossReference<?, ?, ? extends TargetDeclaration> target, String name) {
+		public BasicJavaTypeReference createTypeReference(CrossReference<?, ? extends TargetDeclaration> target, String name) {
 			return new BasicJavaTypeReference(target, name);
 		}
 
 		@Override
-		public BasicJavaTypeReference createTypeReference(CrossReference<?, ?, ? extends TargetDeclaration> target, SimpleNameSignature signature) {
+		public BasicJavaTypeReference createTypeReference(CrossReference<?, ? extends TargetDeclaration> target, SimpleNameSignature signature) {
 			return new BasicJavaTypeReference(target, signature);
 		}
 
@@ -627,7 +627,7 @@ public class Java extends ObjectOrientedLanguage {
 			}
 		}
 		
-		public <E extends Element<?,?>> E replace(TypeReference replacement, Declaration declarator, E in, Class<E> kind) throws LookupException {
+		public <E extends Element<?>> E replace(TypeReference replacement, Declaration declarator, E in, Class<E> kind) throws LookupException {
 			return NonLocalJavaTypeReference.replace(replacement, declarator, in,kind);
 		}
 

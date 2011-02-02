@@ -27,7 +27,7 @@ public class JavaImplementsRelation extends StrictPartialOrder<Member> {
 	    	result = !checkDefined(method2);
 	    	if(result) {
 	    		DeclarationWithParametersSignature signature1 = method1.signature();
-	    		DeclarationWithParametersSignature<?,?> signature2 = method2.signature();
+	    		DeclarationWithParametersSignature<?> signature2 = method2.signature();
 	    		DeclarationWithParametersSignature erasure2 = signature2.language(Java.class).erasure((SimpleNameDeclarationWithParametersSignature) signature2);
 	    		result = signature1.sameParameterBoundsAs(signature2) &&
 	    		(! method2.nearestAncestor(Type.class).subTypeOf(method1.nearestAncestor(Type.class))) &&
@@ -38,7 +38,7 @@ public class JavaImplementsRelation extends StrictPartialOrder<Member> {
 	  return result; 
 	}
 
-	public boolean checkDefined(Member<?,?,?,?> member) throws LookupException {
+	public boolean checkDefined(Member<?,?,?> member) throws LookupException {
 		Ternary temp1 = member.is(member.language(ObjectOrientedLanguage.class).DEFINED);
 		boolean defined1;
 		if(temp1 == Ternary.TRUE) {

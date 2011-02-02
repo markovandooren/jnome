@@ -93,7 +93,7 @@ public class SingleStaticImport extends Import<SingleStaticImport> {
 			}
 
 			@Override
-			public String selectionName(DeclarationContainer<?,?> container) throws LookupException {
+			public String selectionName(DeclarationContainer<?> container) throws LookupException {
 				return name();
 			}
 			

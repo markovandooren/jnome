@@ -6,7 +6,7 @@ import chameleon.core.element.Element;
 import chameleon.core.modifier.ModifierImpl;
 import chameleon.core.property.ChameleonProperty;
 
-public class AnnotationModifier extends ModifierImpl<AnnotationModifier,Element> {
+public class AnnotationModifier extends ModifierImpl<AnnotationModifier> {
 
 	public AnnotationModifier(String name) {
 		setName(name);

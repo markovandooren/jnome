@@ -35,7 +35,7 @@ public class NonLocalJavaTypeReference extends NonLocalTypeReference<NonLocalJav
 		return new NonLocalJavaTypeReference((JavaTypeReference) actualReference().clone(),lookupParent());
 	}
 	
-	public static <E extends Element<?,?>> E replace(TypeReference replacement, final Declaration declarator, E in, Class<E> kind) throws LookupException {
+	public static <E extends Element<?>> E replace(TypeReference replacement, final Declaration declarator, E in, Class<E> kind) throws LookupException {
 		ObjectOrientedLanguage lang = in.language(ObjectOrientedLanguage.class);
 		E result = in;
 		UnsafePredicate<BasicTypeReference, LookupException> predicate = new UnsafePredicate<BasicTypeReference, LookupException>() {

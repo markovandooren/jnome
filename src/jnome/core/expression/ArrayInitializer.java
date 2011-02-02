@@ -15,6 +15,7 @@ import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
 import chameleon.core.variable.Variable;
 import chameleon.core.variable.VariableDeclaration;
+import chameleon.core.variable.VariableDeclarator;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.type.Type;
 
@@ -62,7 +63,7 @@ public class ArrayInitializer extends Expression<ArrayInitializer> {
       return ((Variable)parent()).getType();
     }
     else if (parent() instanceof VariableDeclaration<?>) {
-      return ((VariableDeclaration<?>)parent()).parent().typeReference().getType();
+      return nearestAncestor(VariableDeclarator.class).typeReference().getType();
     }
     else {
     	System.out.println(parent().getClass().getName());

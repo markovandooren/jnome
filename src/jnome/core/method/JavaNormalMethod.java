@@ -59,33 +59,33 @@ public class JavaNormalMethod<E extends RegularMethod<E,H,S,NormalMethod>, H ext
 		}
 	};
 
-	private CreationStackTrace _trace;
-
-	private boolean _connected = false;
-	private boolean _disconnected = false;
-	
-	@Override
-  protected SingleAssociation<E,Element> createParentLink() {
-  	return new SingleAssociation<E,Element>((E) this) {
-
-  		@Override
-  		protected void register(Association<? extends Element, ? super E> other) {
-  			_connected = true;
-  			super.register(other);
-  			if(other == null) {
-  				_trace = new CreationStackTrace();
-  			}
-  		}
-    	
-  		@Override 
-  	  protected void unregister(Association<? extends Element,? super E> other) {
-  			_disconnected = true;
-  			if(other == getOtherRelation()) {
-  				_trace = new CreationStackTrace();
-  			}
-  			super.unregister(other);
-  		}
-
-    };  }
+//	private CreationStackTrace _trace;
+//
+//	private boolean _connected = false;
+//	private boolean _disconnected = false;
+//	
+//	@Override
+//  protected SingleAssociation<E,Element> createParentLink() {
+//  	return new SingleAssociation<E,Element>((E) this) {
+//
+//  		@Override
+//  		protected void register(Association<? extends Element, ? super E> other) {
+//  			_connected = true;
+//  			super.register(other);
+//  			if(other == null) {
+//  				_trace = new CreationStackTrace();
+//  			}
+//  		}
+//    	
+//  		@Override 
+//  	  protected void unregister(Association<? extends Element,? super E> other) {
+//  			_disconnected = true;
+//  			if(other == getOtherRelation()) {
+//  				_trace = new CreationStackTrace();
+//  			}
+//  			super.unregister(other);
+//  		}
+//
+//    };  }
 
 }

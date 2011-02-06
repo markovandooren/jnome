@@ -145,8 +145,9 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
 		if (type != null) {
 			if(! (type instanceof RawType)) {
 				List<ActualTypeArgument> typeArguments = typeArguments();
+				Java language = language(Java.class);
 				if (typeArguments.size() > 0) {
-					result = new DerivedType(type, typeArguments);
+					result = language.createDerivedType(type, typeArguments);
 //					result = DerivedType.create(type, typeArguments);
 					
 					// This is going to give trouble if there is a special lexical context
@@ -155,7 +156,7 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
 					result.setUniParent(type.parent());
 				} else if(type instanceof RegularType){
 					// create raw type if necessary. The erasure method will check that.
-					result = language(Java.class).erasure(type);
+					result = language.erasure(type);
 				}
 			}
 		}

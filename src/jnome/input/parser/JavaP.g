@@ -291,7 +291,7 @@ scope TargetScope {
     // inherit from java.lang.Object if there is no explicit extends relation
     String fqn = type.getFullyQualifiedName();
     if(fqn != null) {
-      if(type.inheritanceRelations().isEmpty() && (! fqn.equals("java.lang.Object"))){
+      if(type.nonMemberInheritanceRelations().isEmpty() && (! fqn.equals("java.lang.Object"))){
         type.addInheritanceRelation(new SubtypeRelation(createTypeReference(new NamespaceOrTypeReference("java.lang"),"Object")));
       }
     }
@@ -308,7 +308,7 @@ scope TargetScope {
   }
   
   public void addNonTopLevelObjectInheritance(Type type) {
-    if(type.inheritanceRelations().isEmpty()){
+    if(type.nonMemberInheritanceRelations().isEmpty()){
       type.addInheritanceRelation(new SubtypeRelation(createTypeReference(new NamespaceOrTypeReference("java.lang"),"Object")));
     }
   }

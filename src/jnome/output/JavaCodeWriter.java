@@ -639,7 +639,7 @@ public boolean isExtendsWildCard(Element element) {
     result.append("class ");
     result.append(type.getName());
     appendTypeParameters(type.parameters(TypeParameter.class), result);
-    List<SubtypeRelation> superTypes = type.inheritanceRelations(SubtypeRelation.class);
+    List<SubtypeRelation> superTypes = type.nonMemberInheritanceRelations(SubtypeRelation.class);
     final List<TypeReference> classRefs = new ArrayList<TypeReference>();
     final List<TypeReference> interfaceRefs = new ArrayList<TypeReference>();
     for(SubtypeRelation relation:superTypes) {
@@ -743,7 +743,7 @@ public boolean isExtendsWildCard(Element element) {
     result.append("interface ");
     result.append(type.getName());
     appendTypeParameters(type.parameters(TypeParameter.class), result);
-    List<SubtypeRelation> superTypes = type.inheritanceRelations(SubtypeRelation.class);
+    List<SubtypeRelation> superTypes = type.nonMemberInheritanceRelations(SubtypeRelation.class);
     new AbstractPredicate<SubtypeRelation>() {
       public boolean eval(SubtypeRelation rel) throws LookupException {
         return ! toCode((rel).superClassReference()).equals("java.lang.Object");

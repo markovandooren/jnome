@@ -184,7 +184,7 @@ public class RawType extends TypeWithBody implements JavaType {
 	}
 	
 	private void eraseInheritanceRelations() {
-		for(SubtypeRelation relation: inheritanceRelations(SubtypeRelation.class)) {
+		for(SubtypeRelation relation: nonMemberInheritanceRelations(SubtypeRelation.class)) {
 			JavaTypeReference superClassReference = (JavaTypeReference) relation.superClassReference();
 			JavaTypeReference erasedReference = superClassReference.erasedReference();
 			relation.setSuperClassReference(erasedReference);

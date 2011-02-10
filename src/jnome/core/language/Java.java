@@ -9,6 +9,7 @@ import java.util.Map;
 import jnome.core.expression.invocation.JavaExtendsReference;
 import jnome.core.expression.invocation.JavaSuperReference;
 import jnome.core.expression.invocation.NonLocalJavaTypeReference;
+import jnome.core.method.JavaNormalMethod;
 import jnome.core.modifier.PackageProperty;
 import jnome.core.type.AnonymousInnerClass;
 import jnome.core.type.ArrayType;
@@ -32,6 +33,7 @@ import org.rejuse.property.PropertyUniverse;
 
 import chameleon.core.Config;
 import chameleon.core.declaration.Declaration;
+import chameleon.core.declaration.DeclarationWithParametersHeader;
 import chameleon.core.declaration.SimpleNameDeclarationWithParametersSignature;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.declaration.TargetDeclaration;
@@ -79,6 +81,7 @@ import chameleon.oo.type.generics.SuperWildcardType;
 import chameleon.oo.type.generics.TypeConstraint;
 import chameleon.oo.type.generics.TypeParameter;
 import chameleon.oo.type.inheritance.AbstractInheritanceRelation;
+import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.modifier.PrivateProperty;
 import chameleon.support.modifier.ProtectedProperty;
 import chameleon.support.modifier.PublicProperty;
@@ -498,6 +501,10 @@ public class Java extends ObjectOrientedLanguage {
 			return new DerivedType(baseType,typeArguments);
 		}
 		
+		public NormalMethod createNormalMethod(DeclarationWithParametersHeader header, TypeReference returnType) {
+			return new JavaNormalMethod(header, returnType);
+		}
+
 		public TypeReference glb(List<? extends JavaTypeReference> typeReferenceList) {
 			return new JavaIntersectionTypeReference(typeReferenceList);
 		}

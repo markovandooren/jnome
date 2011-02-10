@@ -3,6 +3,7 @@ package jnome.core.type;
 import java.util.ArrayList;
 import java.util.List;
 
+import jnome.core.method.JavaNormalMethod;
 import jnome.core.modifier.JavaConstructor;
 import chameleon.core.declaration.SimpleNameDeclarationWithParametersHeader;
 import chameleon.core.declaration.SimpleNameSignature;
@@ -39,7 +40,11 @@ public class RegularJavaType extends RegularType {
 	private NormalMethod _defaultDefaultConstructor;
 	
 	protected void setDefaultDefaultConstructor() {
-		NormalMethod cons = new NormalMethod(new SimpleNameDeclarationWithParametersHeader(signature().name()), new BasicJavaTypeReference(signature().name()));
+		// FIXME Because this code is ran when a regular Java type is constructed, we cannot ask the
+		//       language for the factory. Management of the constructor should be done lazily. When
+		//       the type is actually used, we can assume that a language is attached. Otherwise, we
+		//       throw an exception.
+		NormalMethod cons = new JavaNormalMethod(new SimpleNameDeclarationWithParametersHeader(signature().name()), new BasicJavaTypeReference(signature().name()));
 		cons.addModifier(new Constructor());
 		cons.addModifier(new Public());
 		cons.setUniParent(this);

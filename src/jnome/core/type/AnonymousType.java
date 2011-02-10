@@ -2,6 +2,8 @@ package jnome.core.type;
 
 import java.util.List;
 
+import jnome.core.language.Java;
+
 import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.predicate.SafePredicate;
 
@@ -57,7 +59,7 @@ public abstract class AnonymousType extends RegularType {
 	}
 
 	private NormalMethod defaultDefaultConstructor(TypeReference tref, Type writtenType) {
-		NormalMethod cons = new NormalMethod(new SimpleNameDeclarationWithParametersHeader(writtenType.signature().name()), tref.clone());
+		NormalMethod cons = language(Java.class).createNormalMethod(new SimpleNameDeclarationWithParametersHeader(writtenType.signature().name()), tref.clone());
 		cons.addModifier(new Constructor());
 		cons.addModifier(new Public());
 		cons.setUniParent(this);

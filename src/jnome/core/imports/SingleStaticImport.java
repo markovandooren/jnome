@@ -125,4 +125,11 @@ public class SingleStaticImport extends Import<SingleStaticImport> {
   	}
   }
 
+//@Override
+//public boolean importsSameAs(Import other) throws LookupException {
+//	boolean result = other instanceof SingleStaticImport;
+//	
+//	return result;
+//}
+
 }

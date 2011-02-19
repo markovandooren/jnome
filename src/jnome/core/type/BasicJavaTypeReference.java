@@ -207,5 +207,22 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
     		_genericCache = new SoftReference<Type>(value);
     	}
   }
+  
+  public String toString() {
+  	StringBuffer result = new StringBuffer(super.toString());
+  	List<ActualTypeArgument> arguments = typeArguments();
+  	if(! arguments.isEmpty()) {
+  		result.append('<');
+  		int size = arguments.size();
+  		for(int i =0; i<size;i++) {
+  			result.append(arguments.get(i).toString());
+  			if(i<size-1) {
+  				result.append(',');
+  			}
+  		}
+  		result.append('>');
+  	}
+  	return result.toString();
+  }
 
 }

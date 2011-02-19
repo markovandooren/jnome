@@ -82,5 +82,5 @@ public class PureWildcard<E extends PureWildcard> extends ActualTypeArgument<E> 
 	public VerificationResult verifySelf() {
 		return Valid.create();
 	}
-
+	
 }

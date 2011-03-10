@@ -53,7 +53,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 	   	return result;
 	  }
 	   
-  	InvocationTarget target = getTarget();
+  	InvocationTarget<?> target = getTarget();
   	if(target == null) {
       result = lexicalLookupStrategy().lookUp(selector);
   	} else {

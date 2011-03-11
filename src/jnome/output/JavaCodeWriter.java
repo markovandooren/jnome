@@ -50,6 +50,7 @@ import chameleon.core.method.RegularImplementation;
 import chameleon.core.method.exception.ExceptionClause;
 import chameleon.core.method.exception.ExceptionDeclaration;
 import chameleon.core.method.exception.TypeExceptionDeclaration;
+import chameleon.core.modifier.ElementWithModifiers;
 import chameleon.core.modifier.Modifier;
 import chameleon.core.namespace.NamespaceOrTypeReference;
 import chameleon.core.namespace.NamespaceReference;
@@ -76,7 +77,6 @@ import chameleon.oo.type.generics.SuperWildcard;
 import chameleon.oo.type.generics.TypeConstraint;
 import chameleon.oo.type.generics.TypeParameter;
 import chameleon.oo.type.inheritance.AbstractInheritanceRelation;
-import chameleon.oo.type.inheritance.InheritanceRelation;
 import chameleon.oo.type.inheritance.SubtypeRelation;
 import chameleon.plugin.Plugin;
 import chameleon.plugin.output.Syntax;
@@ -780,12 +780,7 @@ public boolean isExtendsWildCard(Element element) {
 	    final StringBuffer result = startLine();
 	    //Modifiers
 	    
-	    new Visitor() {
-	      public void visit(Object element) {
-	        result.append((toCodeModifier((Modifier)element)));
-	        result.append(" ");
-	      }
-	    }.applyTo(method.modifiers());
+	    addModifiers(method, result);
 	    
 	    appendTypeParameters(method.typeParameters(), result);
 	    
@@ -849,6 +844,16 @@ public boolean isExtendsWildCard(Element element) {
 //    undent();
 //    return result.toString();
 //  }
+
+
+	protected void addModifiers(ElementWithModifiers element, final StringBuffer result) {
+		new Visitor() {
+		  public void visit(Object element) {
+		    result.append((toCodeModifier((Modifier)element)));
+		    result.append(" ");
+		  }
+		}.applyTo(element.modifiers());
+	}
   
   public String toCodeImplementation(Implementation impl) throws LookupException {
     if((impl == null) || (impl instanceof NativeImplementation)) {

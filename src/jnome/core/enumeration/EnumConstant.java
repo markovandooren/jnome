@@ -13,8 +13,8 @@ import chameleon.core.element.Element;
 import chameleon.core.expression.Expression;
 import chameleon.core.language.Language;
 import chameleon.core.lookup.DeclarationSelector;
+import chameleon.core.lookup.LocalLookupStrategy;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.lookup.LookupStrategy;
 import chameleon.core.member.FixedSignatureMember;
 import chameleon.core.member.Member;
 import chameleon.core.validation.Valid;
@@ -105,7 +105,7 @@ public class EnumConstant extends FixedSignatureMember<EnumConstant,SimpleNameSi
 		return nearestAncestor(Type.class);
 	}
 
-	public LookupStrategy targetContext() throws LookupException {
+	public LocalLookupStrategy<?> targetContext() throws LookupException {
   	Language language = language();
   	if(language != null) {
 		  return language.lookupFactory().createTargetLookupStrategy(this);

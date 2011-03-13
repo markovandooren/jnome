@@ -129,6 +129,11 @@ public class Java extends ObjectOrientedLanguage {
   	PROTECTED.addValidElementType(VariableDeclarator.class);
   	OVERRIDABLE.addValidElementType(VariableDeclarator.class);
   	DEFINED.addValidElementType(VariableDeclarator.class);
+  	
+  	_operatorNames = new ArrayList<String>();
+  	for(String string: new String[]{"==","!=","+","++","-","--","*","/","+=","-=","*=","/=","&","&&","|","||","^","!","&=","|=","^=","<<=",">>=",">>>+","%","<",">","<=",">=","%=","<<",">>",">>>"}) {
+  		_operatorNames.add(string);
+  	}
 	}
 	
 	public Java() {
@@ -163,6 +168,16 @@ public class Java extends ObjectOrientedLanguage {
   	}
   	return result;
   }
+  
+  public boolean isOperator(Method method) {
+  	return operatorNames().contains(method.name());
+  }
+  
+  public List<String> operatorNames() {
+  	return new ArrayList(_operatorNames);
+  }
+  
+  private List<String> _operatorNames;
   
 	public SimpleNameDeclarationWithParametersSignature erasure(SimpleNameDeclarationWithParametersSignature signature) {
 		SimpleNameDeclarationWithParametersSignature result = new SimpleNameDeclarationWithParametersSignature(signature.name());

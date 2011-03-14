@@ -1284,6 +1284,9 @@ public boolean isExtendsWildCard(Element element) {
     }
     result.append("new ");
     result.append(toCode(inv.getTypeReference()));
+    if(toCode(inv.getTypeReference()).equals("Float_implementation")) {
+    	System.out.println("debug");
+    }
     result.append(getActualArgs(inv));
     if(inv.getAnonymousInnerType() != null) {
       result.append(toCode(inv.getAnonymousInnerType()));

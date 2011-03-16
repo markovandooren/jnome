@@ -315,9 +315,6 @@ public class Extractor {
      
      new Visitor() {
             public void visit(Object element) {
-            	if(clazz.getSimpleName().equals("StandardMBean")) {
-            		System.out.println("KOPS");
-            	}
           Constructor constructor = (Constructor) element;
           if(! Modifier.isPrivate(constructor.getModifiers())) {
           StringBuffer cons = new StringBuffer();

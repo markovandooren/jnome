@@ -17,8 +17,6 @@ import chameleon.util.CreationStackTrace;
 
 public class JavaNormalMethod<E extends RegularMethod<E,H,S,NormalMethod>, H extends DeclarationWithParametersHeader<H, S>, S extends DeclarationWithParametersSignature> extends NormalMethod<E,H,S> {
 	
-	private CreationStackTrace _trace = new CreationStackTrace();
-
 	public JavaNormalMethod(H header, TypeReference returnType) {
 		super(header,returnType);
 	}

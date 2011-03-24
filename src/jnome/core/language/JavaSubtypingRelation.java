@@ -188,7 +188,10 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	
 	@Override
 	public boolean contains(Type first, Type second) throws LookupException {
-		Set<Type> zuppas = _cache.get(first);
+		Set<Type> zuppas;
+		synchronized (this) {
+			zuppas = _cache.get(first);
+		}
 		if(zuppas != null && zuppas.contains(second)) {
 			return true;
 		}
@@ -268,12 +271,14 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 			}
 		}
 		if(result) {
-			zuppas = _cache.get(first);
-			if(zuppas == null) {
-				zuppas = new HashSet<Type>();
-				_cache.put(first, zuppas);
+			synchronized(this) {
+				zuppas = _cache.get(first);
+				if(zuppas == null) {
+					zuppas = new HashSet<Type>();
+					_cache.put(first, zuppas);
+				}
+				zuppas.add(second);
 			}
-			zuppas.add(second);
 		}
 		return result;
 	}

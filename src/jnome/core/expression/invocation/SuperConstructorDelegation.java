@@ -36,6 +36,9 @@ public class SuperConstructorDelegation extends ConstructorDelegation<SuperConst
   public <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
   	X result = null;
   	Type parent = nearestAncestor(Type.class);
+  	if(parent == null) {
+  		throw new ChameleonProgrammerException("The super constructor delegation is not inside a type.");
+  	}
   	List<Type> types = parent.getDirectSuperTypes();
   	for(Type type: types) {
   		result = type.targetContext().lookUp(selector);

@@ -82,6 +82,7 @@ import chameleon.oo.type.generics.TypeConstraint;
 import chameleon.oo.type.generics.TypeParameter;
 import chameleon.oo.type.inheritance.AbstractInheritanceRelation;
 import chameleon.support.member.simplename.method.NormalMethod;
+import chameleon.support.member.simplename.variable.MemberVariableDeclarator;
 import chameleon.support.modifier.PrivateProperty;
 import chameleon.support.modifier.ProtectedProperty;
 import chameleon.support.modifier.PublicProperty;
@@ -129,6 +130,7 @@ public class Java extends ObjectOrientedLanguage {
   	PROTECTED.addValidElementType(VariableDeclarator.class);
   	OVERRIDABLE.addValidElementType(VariableDeclarator.class);
   	DEFINED.addValidElementType(VariableDeclarator.class);
+  	REFINABLE.addValidElementType(MemberVariableDeclarator.class);
   	
   	_operatorNames = new ArrayList<String>();
   	for(String string: new String[]{"==","!=","+","++","-","--","*","/","+=","-=","*=","/=","&","&&","|","||","^","!","&=","|=","^=","<<=",">>=",">>>+","%","<",">","<=",">=","%=","<<",">>",">>>"}) {

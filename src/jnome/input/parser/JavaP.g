@@ -1017,7 +1017,14 @@ qualifiedName returns [String element]
     
 literal returns [Literal element]
     :   intl=integerLiteral {retval.element=intl.element;}
-    |   fl=FloatingPointLiteral {retval.element=new RegularLiteral(typeRef("float"),$fl.text);}
+    |   fl=FloatingPointLiteral {
+           String text = $fl.text;
+           if(text.endsWith("f") || text.endsWith("F")) { 
+             retval.element=new RegularLiteral(typeRef("float"),text);
+           } else {
+             retval.element=new RegularLiteral(typeRef("double"),text);
+           }
+        }
     |   charl=CharacterLiteral {retval.element=new RegularLiteral(typeRef("char"),$charl.text);}
     |   strl=StringLiteral {retval.element=new RegularLiteral(typeRef("java.lang.String"),$strl.text);}
     |   booll=booleanLiteral {retval.element=booll.element;}
@@ -1736,6 +1743,7 @@ arrayAccessSuffixRubbish returns [Expression element]
 
 // NEEDS_TARGET
 creator returns [Expression element]
+@after{setLocation(retval.element, retval.start, retval.stop);}
 //GEN_METH
     :   targs=nonWildcardTypeArguments tx=createdName restx=classCreatorRest
          {retval.element = new ConstructorInvocation((BasicJavaTypeReference)tx.element,$TargetScope::target);

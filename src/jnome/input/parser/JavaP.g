@@ -87,9 +87,9 @@ TODO
  *      Updated localVariableDeclaration to allow annotations.  Interestingly the JLS
  *          doesn't appear to indicate this is legal, but it does work as of at least
  *          JDK 1.5.0_06.
- *      Moved the Identifier portion of annotationTypeElementRest to annotationMethodRest.
+ *      Moved the identifierRule portion of annotationTypeElementRest to annotationMethodRest.
  *          Because annotationConstantRest already references variableDeclarator which 
- *          has the Identifier portion in it, the parser would fail on constants in 
+ *          has the identifierRule portion in it, the parser would fail on constants in 
  *          annotation definitions because it expected two identifiers.  
  *      Added optional trailing ';' to the alternatives in annotationTypeElementRest.
  *          Wouldn't handle an inner interface that has a trailing ';'.
@@ -117,7 +117,7 @@ TODO
  *  Version 1.0.6 -- John Ridgway, March 17, 2008
  *      Made "assert" a switchable keyword like "enum".
  *      Fixed compilationUnit to disallow "annotation importDeclaration ...".
- *      Changed "Identifier ('.' Identifier)*" to "qualifiedName" in more 
+ *      Changed "identifierRule ('.' identifierRule)*" to "qualifiedName" in more 
  *          places.
  *      Changed modifier* and/or variableModifier* to classOrInterfaceModifiers,
  *          modifiers or variableModifiers, as appropriate.
@@ -169,9 +169,9 @@ TODO
  *  Known remaining problems:
  *      "Letter" and "JavaIDDigit" are wrong.  The actual specification of
  *      "Letter" should be "a character for which the method
- *      Character.isJavaIdentifierStart(int) returns true."  A "Java 
+ *      Character.isJavaidentifierRuleStart(int) returns true."  A "Java 
  *      letter-or-digit is a character for which the method 
- *      Character.isJavaIdentifierPart(int) returns true."
+ *      Character.isJavaidentifierRulePart(int) returns true."
  */
 parser grammar JavaP;
 
@@ -338,6 +338,12 @@ scope TargetScope {
 // starting point for parsing a java file
 /* The annotations are separated out to make parsing faster, but must be associated with
    a packageDeclaration or a typeDeclaration (and not an empty one). */
+   
+   
+identifierRule returns [String element]
+    : id=Identifier {retval.element = $id.text;} 
+    ;   
+   
 compilationUnit returns [CompilationUnit element] 
 @init{ 
 NamespacePart npp = null;
@@ -505,7 +511,7 @@ nameAndParams returns [RegularType element]
   ;    
     
 createClassHereBecauseANTLRisAnnoying returns [RegularType element]
-   :  name=Identifier {retval.element = createType(new SimpleNameSignature($name.text)); setLocation(retval.element,name,"__NAME");}
+   :  name=identifierRule {retval.element = createType(new SimpleNameSignature($name.text)); setLocation(retval.element,name.start,"__NAME");}
    ;
     
 typeParameters returns [List<FormalTypeParameter> element]
@@ -517,10 +523,10 @@ typeParameter returns [FormalTypeParameter element]
 @init{
 Token stop = null;
 }
-    :   name=Identifier{retval.element = new FormalTypeParameter(new SimpleNameSignature($name.text)); stop=name;} (extkw='extends' bound=typeBound{retval.element.addConstraint(bound.element); stop=bound.stop;})?
+    :   name=identifierRule{retval.element = new FormalTypeParameter(new SimpleNameSignature($name.text)); stop=name.start;} (extkw='extends' bound=typeBound{retval.element.addConstraint(bound.element); stop=bound.stop;})?
         {setKeyword(retval.element,extkw);
-         setLocation(retval.element, name, stop);
-         setLocation(retval.element,name,"__NAME");
+         setLocation(retval.element, name.start, stop);
+         setLocation(retval.element,name.start,"__NAME");
         }
     ;
         
@@ -546,10 +552,10 @@ enumDeclaration returns [RegularType element]
 scope{
   Type enumType;
 }
-    :   ENUM name=Identifier {retval.element = createType(new SimpleNameSignature($name.text)); 
+    :   ENUM name=identifierRule {retval.element = createType(new SimpleNameSignature($name.text)); 
                               retval.element.addModifier(new Enum()); 
                               $enumDeclaration::enumType=retval.element;
-                              setLocation(retval.element,name,"__NAME");}
+                              setLocation(retval.element,name.start,"__NAME");}
                   ('implements' trefs=typeList 
                          {for(TypeReference ref: trefs.element)
                                {
@@ -578,7 +584,7 @@ enumConstants returns [List<EnumConstant> element]
     ;
     
 enumConstant returns [EnumConstant element]
-    :   annotations? name=Identifier {retval.element = new EnumConstant(new SimpleNameSignature($name.text));} (args=arguments {retval.element.addAllParameters(args.element);})? (body=classBody {retval.element.setBody(body.element);})?
+    :   annotations? name=identifierRule {retval.element = new EnumConstant(new SimpleNameSignature($name.text));} (args=arguments {retval.element.addAllParameters(args.element);})? (body=classBody {retval.element.setBody(body.element);})?
     ;
     
 enumBodyDeclarations returns [List<TypeElement> element]
@@ -592,9 +598,9 @@ interfaceDeclaration returns [Type element]
     ;
     
 normalInterfaceDeclaration returns [RegularType element]
-    :   ifkw='interface' name=Identifier {retval.element = createType(new SimpleNameSignature($name.text)); 
+    :   ifkw='interface' name=identifierRule {retval.element = createType(new SimpleNameSignature($name.text)); 
                                           retval.element.addModifier(new Interface());
-                                          setLocation(retval.element,name,"__NAME");} 
+                                          setLocation(retval.element,name.start,"__NAME");} 
          (params=typeParameters{for(TypeParameter par: params.element){retval.element.addParameter(TypeParameter.class,par);}})? 
          (extkw='extends' trefs=typeList 
            {
@@ -653,8 +659,8 @@ memberDecl returns [TypeElement element]
     
 voidMethodDeclaration returns [Method element]
 scope MethodScope;
-@after{setLocation(retval.element, methodname, "__NAME");}
-    	: vt=voidType methodname=Identifier {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($methodname.text), vt.element); $MethodScope::method = retval.element;} voidMethodDeclaratorRest	
+@after{setLocation(retval.element, methodname.start, "__NAME");}
+    	: vt=voidType methodname=identifierRule {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($methodname.text), vt.element); $MethodScope::method = retval.element;} voidMethodDeclaratorRest	
     	;
 
 voidType returns [JavaTypeReference element]
@@ -664,7 +670,7 @@ voidType returns [JavaTypeReference element]
     	
 constructorDeclaration returns [Method element]
 scope MethodScope;
-        : consname=Identifier 
+        : consname=identifierRule 
             {
              retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($consname.text), typeRef($consname.text)); 
              retval.element.addModifier(new JavaConstructor());
@@ -686,13 +692,13 @@ genericMethodOrConstructorRest returns [Method element]
 scope MethodScope;
 @init{TypeReference tref = null;}
 @after{check_null(retval.element);}
-    :   (t=type {tref=t.element;}| 'void' {tref = typeRef("void");}) name=Identifier {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($name.text),tref); $MethodScope::method = retval.element;} methodDeclaratorRest
-    |   name=Identifier {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($name.text),typeRef($name.text)); $MethodScope::method = retval.element;} constructorDeclaratorRest
+    :   (t=type {tref=t.element;}| 'void' {tref = typeRef("void");}) name=identifierRule {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($name.text),tref); $MethodScope::method = retval.element;} methodDeclaratorRest
+    |   name=identifierRule {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($name.text),typeRef($name.text)); $MethodScope::method = retval.element;} constructorDeclaratorRest
     ;
 
 methodDeclaration returns [Method element]
 scope MethodScope;
-    :   t=type name=Identifier {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($name.text),t.element); $MethodScope::method = retval.element;} methodDeclaratorRest
+    :   t=type name=identifierRule {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($name.text),t.element); $MethodScope::method = retval.element;} methodDeclaratorRest
     ;
 
 fieldDeclaration returns [MemberVariableDeclarator element]
@@ -714,7 +720,7 @@ interfaceMemberDecl returns [TypeElement element]
     
 voidInterfaceMethodDeclaration  returns [Method element]
 scope MethodScope;
-    	: vt=voidType methodname=Identifier {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($methodname.text), vt.element); $MethodScope::method = retval.element;} voidInterfaceMethodDeclaratorRest
+    	: vt=voidType methodname=identifierRule {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($methodname.text), vt.element); $MethodScope::method = retval.element;} voidInterfaceMethodDeclaratorRest
     	;    
     
 interfaceMethodOrFieldDecl returns [TypeElement element]
@@ -729,7 +735,7 @@ interfaceConstant returns [MemberVariableDeclarator element]
 
 interfaceMethod returns [Method element]
 scope MethodScope;
-	: tref=type methodname=Identifier {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($methodname.text), tref.element); $MethodScope::method = retval.element;} interfaceMethodDeclaratorRest
+	: tref=type methodname=identifierRule {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($methodname.text), tref.element); $MethodScope::method = retval.element;} interfaceMethodDeclaratorRest
 	;
 
     
@@ -776,7 +782,7 @@ interfaceMethodDeclaratorRest
     ;
     
 interfaceGenericMethodDecl returns [TypeElement element]
-    :   typeParameters (type | 'void') Identifier
+    :   typeParameters (type | 'void') identifierRule
         interfaceMethodDeclaratorRest
     ;
     
@@ -795,11 +801,11 @@ constructorDeclaratorRest
 constantDeclarator returns [JavaVariableDeclaration element]
 @init{int count = 0;}
 @after{setLocation(retval.element, (CommonToken)retval.start, (CommonToken)retval.stop);}
-    :   name=Identifier (('[' ']' {count++;})* '=' init=variableInitializer) 
+    :   name=identifierRule (('[' ']' {count++;})* '=' init=variableInitializer) 
        {retval.element = new JavaVariableDeclaration($name.text);
         retval.element.setArrayDimension(count); 
         retval.element.setInitialization(init.element);
-        setLocation(retval.element, name, "__NAME");
+        setLocation(retval.element, name.start, "__NAME");
         }
     ;
     
@@ -820,7 +826,7 @@ variableDeclarator returns [JavaVariableDeclaration element]
     
 variableDeclaratorId returns [StupidVariableDeclaratorId element]
 @init{int count = 0;}
-    :   name=Identifier ('[' ']' {count++;})* { retval.element = new StupidVariableDeclaratorId($name.text, count,(CommonToken)name);}
+    :   name=identifierRule ('[' ']' {count++;})* { retval.element = new StupidVariableDeclaratorId($name.text, count,(CommonToken)name.start);}
     ;
 
 variableInitializer returns [Expression element]
@@ -846,7 +852,7 @@ modifier returns [Modifier element]
     ;
 
 enumConstantName returns [String element]
-    :   id=Identifier {retval.element=$id.text;}
+    :   id=identifierRule {retval.element=$id.text;}
     ;
 
 typeName returns [String element]
@@ -870,11 +876,11 @@ classOrInterfaceType returns [JavaTypeReference element]
 // We will process the different parts. The current type reference (return value) is kept in retval. Alongside that
 // we keep a version of the latest namespace or type reference. If at any point after processing the first identifier
 // target is null, we know that we have encountered a real type reference before, so anything after that becomes a type reference.
-	:	name=Identifier 
+	:	name=identifierRule 
 	          {
 	           retval.element = typeRef($name.text); 
 	           target =  new NamespaceOrTypeReference($name.text);
-	           stop=name; 
+	           stop=name.start; 
 	          } 
 	        (args=typeArguments 
 	          {
@@ -885,8 +891,8 @@ classOrInterfaceType returns [JavaTypeReference element]
 	           target = null;
 	           stop=args.stop;
 	          })?
-	          {setLocation(retval.element,name,stop);}  
-	        ('.' namex=Identifier 
+	          {setLocation(retval.element,name.start,stop);}  
+	        ('.' namex=identifierRule 
 	          {
 	           if(target != null) {
 	             retval.element = createTypeReference(target,$namex.text);
@@ -897,7 +903,7 @@ classOrInterfaceType returns [JavaTypeReference element]
 	             throw new Error();
 	             //retval.element = createTypeReference(retval.element,$namex.text);
 	           }
-	           stop=namex;
+	           stop=namex.start;
 	          } 
 	        (argsx=typeArguments 
 	          {
@@ -907,7 +913,7 @@ classOrInterfaceType returns [JavaTypeReference element]
 	           // so we se the target to the current type reference.
 	           target = null;
 	           stop = argsx.stop;
-	          })? {setLocation(retval.element,name,stop);})*
+	          })? {setLocation(retval.element,name.start,stop);})*
 	;
 
 primitiveType returns [JavaTypeReference element]
@@ -1016,7 +1022,7 @@ explicitConstructorInvocation returns [MethodInvocation element]
 
 qualifiedName returns [String element]
 @init{StringBuffer buffer = new StringBuffer();}
-    :   id=Identifier {buffer.append($id.text);}('.' idx=Identifier {buffer.append($idx.text);})*
+    :   id=identifierRule {buffer.append($id.text);}('.' idx=identifierRule {buffer.append($idx.text);})*
     ;
     
 literal returns [Literal element]
@@ -1058,7 +1064,7 @@ annotation returns [AnnotationModifier element]
     ;
     
 annotationName
-    : Identifier ('.' Identifier)*
+    : identifierRule ('.' identifierRule)*
     ;
 
 elementValuePairs
@@ -1066,7 +1072,7 @@ elementValuePairs
     ;
 
 elementValuePair
-    :   Identifier '=' elementValue
+    :   identifierRule '=' elementValue
     ;
     
 elementValue
@@ -1080,11 +1086,11 @@ elementValueArrayInitializer
     ;
     
 annotationTypeDeclaration returns [TypeWithBody element]
-    :   '@' 'interface' name=Identifier 
+    :   '@' 'interface' name=identifierRule 
              {
                retval.element = (TypeWithBody)createType(new SimpleNameSignature($name.text));
                retval.element.addModifier(new AnnotationType());
-               setLocation(retval.element,name,"__NAME");
+               setLocation(retval.element,name.start,"__NAME");
              } 
              body=annotationTypeBody {retval.element.setBody(body.element);}
     ;
@@ -1120,7 +1126,7 @@ annotationMethodOrConstantRest[TypeReference type] returns [TypeElement element]
     ;
     
 annotationMethodRest[TypeReference type] returns [Method element]
-    :   name=Identifier '(' ')' {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($name.text),type);} (defaultValue {})?
+    :   name=identifierRule '(' ')' {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($name.text),type);} (defaultValue {})?
     ;
     
 annotationConstantRest[TypeReference type] returns [MemberVariableDeclarator element]
@@ -1216,14 +1222,14 @@ setLocation(retval.element, (CommonToken)retval.start, (CommonToken)retval.stop)
     |   breakkey='break' 
         {retval.element = new BreakStatement();
         setKeyword(retval.element,breakkey);} 
-        (name=Identifier {((BreakStatement)retval.element).setLabel($name.text);})? ';'
+        (name=identifierRule {((BreakStatement)retval.element).setLabel($name.text);})? ';'
     |   continuekey='continue' 
         {retval.element = new ContinueStatement();
         setKeyword(retval.element,continuekey);} 
-        (name=Identifier {((ContinueStatement)retval.element).setLabel($name.text);})? ';'
+        (name=identifierRule {((ContinueStatement)retval.element).setLabel($name.text);})? ';'
     |   ';' {retval.element = new EmptyStatement();}
     |   stattex=statementExpression {retval.element = new StatementExpression(stattex.element);} ';'
-    |   name=Identifier ':' labstat=statement {retval.element = new LabeledStatement($name.text,labstat.element);}
+    |   name=identifierRule ':' labstat=statement {retval.element = new LabeledStatement($name.text,labstat.element);}
     ;
     
 catches returns [List<CatchClause> element]
@@ -1571,10 +1577,10 @@ Token stop=null;
 InvocationTarget old = $TargetScope::target;
 }
 	:	
-	'.' name=Identifier 
+	'.' name=identifierRule 
 	        {
 	         retval.element = new NamedTargetExpression($name.text,cloneTarget($TargetScope::target));
-	         stop=name;
+	         stop=name.start;
 	        } 
 	    (args=arguments 
 	        {retval.element = invocation($name.text, $TargetScope::target);
@@ -1630,7 +1636,7 @@ Token stop=null;
         }
     |   nt=nonTargetPrimary {retval.element=nt.element;}
     |   nkw='new' {start=nkw;} cr=creator {retval.element = cr.element;setKeyword(retval.element,nkw);}
-    |   morerubex=moreIdentifierSuffixRubbish {retval.element = morerubex.element;}
+    |   morerubex=moreidentifierRuleSuffixRubbish {retval.element = morerubex.element;}
     |   vt=voidType '.' clkw='class' {retval.element = new ClassLiteral(vt.element); start=vt.start;stop=clkw; setLocation(retval.element,start,stop);}
     |   tref=type '.' clkww='class' {retval.element = new ClassLiteral(tref.element);start=tref.start;stop=clkww; setLocation(retval.element,start,stop);}
     ;
@@ -1640,7 +1646,7 @@ nonTargetPrimary returns [Expression element]
      lit=literal {retval.element = lit.element;}
    ;
 
-moreIdentifierSuffixRubbish returns [Expression element]
+moreidentifierRuleSuffixRubbish returns [Expression element]
 scope TargetScope;
 @init{
 Token stop = null;
@@ -1651,18 +1657,18 @@ if(! retval.element.descendants().contains(scopeTarget)) {
   scopeTarget.removeAllTags();
 }
 }
-	:	id=Identifier 
+	:	id=identifierRule 
 	           {$TargetScope::target = new NamedTarget($id.text);
 	            scopeTarget = $TargetScope::target;  
-	            $TargetScope::start=id; 
-	            stop=id;
+	            $TargetScope::start=id.start; 
+	            stop=id.start;
 	            setLocation($TargetScope::target,$TargetScope::start,stop);
 	            }
-	  ('.' idx=Identifier 
+	  ('.' idx=identifierRule 
 	       {$TargetScope::target = new NamedTarget($idx.text,$TargetScope::target);
 	        scopeTarget = $TargetScope::target;
-	        stop=idx;
-	        setLocation($TargetScope::target, $TargetScope::start, idx);
+	        stop=idx.start;
+	        setLocation($TargetScope::target, $TargetScope::start, idx.start);
 	       }
 	  )* 
 	{retval.element = new NamedTargetExpression(((NamedTarget)$TargetScope::target).name(),cloneTargetOfTarget(((NamedTarget)$TargetScope::target)));
@@ -1698,7 +1704,7 @@ if(! retval.element.descendants().contains(scopeTarget)) {
 
 identifierSuffixRubbush returns [Expression element]
 scope TargetScope;
-	:	'this' {$TargetScope::target = new ThisLiteral();}('.' id=Identifier {$TargetScope::target = new NamedTarget($id.text,$TargetScope::target);})* 
+	:	'this' {$TargetScope::target = new ThisLiteral();}('.' id=identifierRule {$TargetScope::target = new NamedTarget($id.text,$TargetScope::target);})* 
 	{if($TargetScope::target instanceof ThisLiteral) {
 	  retval.element = (ThisLiteral)$TargetScope::target;
 	 } else {
@@ -1778,9 +1784,9 @@ createdName returns [JavaTypeReference element]
 //GEN_METH
 innerCreator returns [ConstructorInvocation element]
     :   (targs=nonWildcardTypeArguments)? 
-        name=Identifier rest=classCreatorRest 
+        name=identifierRule rest=classCreatorRest 
         {BasicJavaTypeReference tref = (BasicJavaTypeReference)typeRef($name.text);
-         setLocation(tref,name,name);
+         setLocation(tref,name.start,name.start);
          retval.element = new ConstructorInvocation((BasicJavaTypeReference)tref,$TargetScope::target);
          retval.element.setBody(rest.element.body());
          retval.element.addAllArguments(rest.element.arguments());
@@ -1797,7 +1803,7 @@ classCreatorRest returns [ClassCreatorRest element]
     
 // NEEDS_TARGET
 explicitGenericInvocation returns [Expression element]
-    :   targs=nonWildcardTypeArguments name=Identifier args=arguments
+    :   targs=nonWildcardTypeArguments name=identifierRule args=arguments
           {retval.element = invocation($name.text,$TargetScope::target);
            ((RegularMethodInvocation)retval.element).addAllArguments(args.element);
            ((RegularMethodInvocation)retval.element).addAllTypeArguments(targs.element);
@@ -1816,9 +1822,9 @@ superSuffix returns [TargetedExpression element]
 }
     :   //arguments
         //|   
-    '.' name=Identifier {retval.element = new NamedTargetExpression($name.text);
-                         start = name;
-                         stop = name;} 
+    '.' name=identifierRule {retval.element = new NamedTargetExpression($name.text);
+                         start = name.start;
+                         stop = name.start;} 
         (args=arguments
           {retval.element = invocation($name.text,null);
           ((RegularMethodInvocation)retval.element).addAllArguments(args.element);

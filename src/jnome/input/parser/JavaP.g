@@ -619,7 +619,11 @@ classBody returns [ClassBody element]
     ;
     
 interfaceBody returns [ClassBody element]
-    :   '{' {retval.element = new ClassBody();} (decl=interfaceBodyDeclaration {retval.element.add(decl.element);})* '}'
+    :   '{' {retval.element = new ClassBody();} 
+            (decl=interfaceBodyDeclaration 
+               {if(decl != null && decl.element != null) {retval.element.add(decl.element);}}
+            )* 
+            '}'
     ;
 
 classBodyDeclaration returns [TypeElement element]

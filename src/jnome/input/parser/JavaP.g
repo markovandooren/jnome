@@ -491,6 +491,7 @@ normalClassDeclaration returns [RegularType element]
                 SubtypeRelation rel = new SubtypeRelation(ref);
                 retval.element.addInheritanceRelation(rel);
                 rel.addModifier(new Implements());
+                setKeyword(rel, impkw);
              }
             } )?
         body=classBody {

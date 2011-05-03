@@ -130,6 +130,7 @@ import chameleon.support.statement.ThrowStatement;
 import chameleon.support.statement.TryStatement;
 import chameleon.support.statement.WhileStatement;
 import chameleon.support.tool.Arguments;
+import chameleon.support.type.EmptyTypeElement;
 import chameleon.support.type.StaticInitializer;
 import chameleon.support.variable.LocalVariable;
 import chameleon.support.variable.LocalVariableDeclarator;
@@ -283,6 +284,8 @@ public class JavaCodeWriter extends Syntax {
     	result = toCodeSuperWildCard((SuperWildcard) element);
     } else if(isPureWildCard(element)) {
     	result = toCodePureWildCard((PureWildcard) element);
+    } else if(isEmptyTypeElement(element)) {
+    	result = toCodeEmptyTypeElement((EmptyTypeElement)element);
     }
     // /ASPECTS
     else if(element == null) {
@@ -294,8 +297,15 @@ public class JavaCodeWriter extends Syntax {
     return result;
   }
   
+  public boolean isEmptyTypeElement(Element element) {
+  	return element instanceof EmptyTypeElement;
+  }
 
-public boolean isExtendsWildCard(Element element) {
+  public String toCodeEmptyTypeElement(EmptyTypeElement element) {
+  	return ";";
+  }
+
+  public boolean isExtendsWildCard(Element element) {
   	return element instanceof ExtendsWildcard;
   }
   

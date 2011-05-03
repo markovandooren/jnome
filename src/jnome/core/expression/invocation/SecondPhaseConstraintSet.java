@@ -358,7 +358,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 			
 			Type Ti = assignments().type(param);
 			if(Ti == null) {
-			 Ti = param.selectionDeclaration();
+			 Ti = (Type) param.selectionDeclaration();
 			 constraints.add(new GGConstraint(Bi, Ti));
 			} else {
 		   constraints.add(new SSConstraint(java.reference(Ti), Bi.getElement()));

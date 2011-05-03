@@ -24,7 +24,7 @@ import chameleon.oo.type.DeclarationWithType;
 import chameleon.oo.type.Type;
 import chameleon.util.Util;
 
-public class EnumConstant extends FixedSignatureMember<EnumConstant,SimpleNameSignature,EnumConstant> implements DeclarationWithType<EnumConstant,SimpleNameSignature,EnumConstant>, DeclarationContainer<EnumConstant>{
+public class EnumConstant extends FixedSignatureMember<EnumConstant,SimpleNameSignature,EnumConstant> implements DeclarationWithType<EnumConstant,SimpleNameSignature>, DeclarationContainer<EnumConstant>{
 
 	public EnumConstant(SimpleNameSignature signature) {
 		super(signature);

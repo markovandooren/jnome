@@ -63,7 +63,6 @@ import chameleon.core.statement.Block;
 import chameleon.core.variable.FormalParameter;
 import chameleon.core.variable.VariableDeclaration;
 import chameleon.core.variable.VariableDeclarator;
-import chameleon.oo.type.AspectOrType;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeElement;
@@ -508,7 +507,7 @@ public boolean isExtendsWildCard(Element element) {
     	}
     }
     result.append("\n");
-    Collection<AspectOrType> types = part.declarations(AspectOrType.class);
+    Collection<Type> types = part.declarations(Type.class);
     new SafePredicate() {
       public boolean eval(Object o) {
         return !(o instanceof ArrayType);
@@ -775,7 +774,7 @@ public boolean isExtendsWildCard(Element element) {
     
   }
 
-  public String toCodeMethod(Method<?,?,?,?> method) throws LookupException {
+  public String toCodeMethod(Method<?,?,?> method) throws LookupException {
    //XXX modifiers
 	    final StringBuffer result = startLine();
 	    //Modifiers

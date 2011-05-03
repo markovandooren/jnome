@@ -8,7 +8,6 @@ import chameleon.core.compilationunit.CompilationUnit;
 import chameleon.core.lookup.LookupException;
 import chameleon.exception.ModelException;
 import chameleon.oo.type.Type;
-import chameleon.oo.type.AspectOrType;
 import chameleon.plugin.output.Syntax;
 
 public class CompilationUnitWriter {
@@ -52,7 +51,7 @@ public class CompilationUnitWriter {
 	}
 	
 	public String fileName(CompilationUnit compilationUnit) throws LookupException, ModelException {
-		AspectOrType result = mainType(compilationUnit);
+		Type result = mainType(compilationUnit);
 		String name = (result == null ? null : result.getName()+_extension);
 		return name;
 	}
@@ -61,10 +60,10 @@ public class CompilationUnitWriter {
 		return mainType(compilationUnit).getNamespace().getFullyQualifiedName();
 	}
 	
-	private AspectOrType mainType(CompilationUnit compilationUnit) throws LookupException, ModelException {
-		AspectOrType result = null;
-		for(AspectOrType type: compilationUnit.descendants(AspectOrType.class)) {
-			if((type.nearestAncestor(AspectOrType.class) == null) && ((result == null) || (type.scope().ge(result.scope())))) {
+	private Type mainType(CompilationUnit compilationUnit) throws LookupException, ModelException {
+		Type result = null;
+		for(Type type: compilationUnit.descendants(Type.class)) {
+			if((type.nearestAncestor(Type.class) == null) && ((result == null) || (type.scope().ge(result.scope())))) {
 				result = type;
 			}
 		}

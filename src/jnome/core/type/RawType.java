@@ -166,7 +166,7 @@ public class RawType extends TypeWithBody implements JavaType {
 	private void eraseMethods() {
 		for(TypeElement element: directlyDeclaredElements()) {
 			if(element instanceof Method) {
-				Method<?,?,?,?> method = (Method)element;
+				Method<?,?,?> method = (Method)element;
 				eraseTypeParameters(method.typeParameters());
 //				for(TypeParameter tp: method.typeParameters()) {
 //					if(tp instanceof FormalTypeParameter) {

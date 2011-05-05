@@ -512,7 +512,7 @@ nameAndParams returns [RegularType element]
   ;    
     
 createClassHereBecauseANTLRisAnnoying returns [RegularType element]
-   :  name=identifierRule {retval.element = createType(new SimpleNameSignature($name.text)); setLocation(retval.element,name.start,"__NAME");}
+   :  name=identifierRule {retval.element = createType(new SimpleNameSignature($name.text)); setName(retval.element,name.start);}
    ;
     
 typeParameters returns [List<FormalTypeParameter> element]
@@ -527,7 +527,7 @@ Token stop = null;
     :   name=identifierRule{retval.element = new FormalTypeParameter(new SimpleNameSignature($name.text)); stop=name.start;} (extkw='extends' bound=typeBound{retval.element.addConstraint(bound.element); stop=bound.stop;})?
         {setKeyword(retval.element,extkw);
          setLocation(retval.element, name.start, stop);
-         setLocation(retval.element,name.start,"__NAME");
+         setName(retval.element,name.start);
         }
     ;
         
@@ -556,7 +556,7 @@ scope{
     :   ENUM name=identifierRule {retval.element = createType(new SimpleNameSignature($name.text)); 
                               retval.element.addModifier(new Enum()); 
                               $enumDeclaration::enumType=retval.element;
-                              setLocation(retval.element,name.start,"__NAME");}
+                              setName(retval.element,name.start);}
                   ('implements' trefs=typeList 
                          {for(TypeReference ref: trefs.element)
                                {
@@ -601,7 +601,7 @@ interfaceDeclaration returns [Type element]
 normalInterfaceDeclaration returns [RegularType element]
     :   ifkw='interface' name=identifierRule {retval.element = createType(new SimpleNameSignature($name.text)); 
                                           retval.element.addModifier(new Interface());
-                                          setLocation(retval.element,name.start,"__NAME");} 
+                                          setName(retval.element,name.start);} 
          (params=typeParameters{for(TypeParameter par: params.element){retval.element.addParameter(TypeParameter.class,par);}})? 
          (extkw='extends' trefs=typeList 
            {
@@ -660,8 +660,12 @@ memberDecl returns [TypeElement element]
     
 voidMethodDeclaration returns [Method element]
 scope MethodScope;
-@after{setLocation(retval.element, methodname.start, "__NAME");}
-    	: vt=voidType methodname=identifierRule {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($methodname.text), vt.element); $MethodScope::method = retval.element;} voidMethodDeclaratorRest	
+@after{setName(retval.element, methodname.start);}
+    	: vt=voidType methodname=identifierRule 
+    	 {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($methodname.text), vt.element); 
+    	  $MethodScope::method = retval.element;
+    	  setName(retval.element,methodname.start);
+    	  } voidMethodDeclaratorRest	
     	;
 
 voidType returns [JavaTypeReference element]
@@ -676,6 +680,7 @@ scope MethodScope;
              retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($consname.text), typeRef($consname.text)); 
              retval.element.addModifier(new JavaConstructor());
              $MethodScope::method = retval.element;
+             setName(retval.element, consname.start);
             } 
              constructorDeclaratorRest
 	;
@@ -693,13 +698,25 @@ genericMethodOrConstructorRest returns [Method element]
 scope MethodScope;
 @init{TypeReference tref = null;}
 @after{check_null(retval.element);}
-    :   (t=type {tref=t.element;}| 'void' {tref = typeRef("void");}) name=identifierRule {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($name.text),tref); $MethodScope::method = retval.element;} methodDeclaratorRest
-    |   name=identifierRule {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($name.text),typeRef($name.text)); $MethodScope::method = retval.element;} constructorDeclaratorRest
+    :   (t=type {tref=t.element;}| 'void' {tref = typeRef("void");}) name=identifierRule 
+        {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($name.text),tref); 
+         $MethodScope::method = retval.element;
+         setName(retval.element,name.start);
+        } methodDeclaratorRest
+    |   name=identifierRule 
+        {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($name.text),typeRef($name.text)); 
+         $MethodScope::method = retval.element;
+         setName(retval.element,name.start);
+        } constructorDeclaratorRest
     ;
 
 methodDeclaration returns [Method element]
 scope MethodScope;
-    :   t=type name=identifierRule {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($name.text),t.element); $MethodScope::method = retval.element;} methodDeclaratorRest
+    :   t=type name=identifierRule 
+        {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($name.text),t.element); 
+         $MethodScope::method = retval.element;
+         setName(retval.element,name.start);
+         } methodDeclaratorRest
     ;
 
 fieldDeclaration returns [MemberVariableDeclarator element]
@@ -721,7 +738,11 @@ interfaceMemberDecl returns [TypeElement element]
     
 voidInterfaceMethodDeclaration  returns [Method element]
 scope MethodScope;
-    	: vt=voidType methodname=identifierRule {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($methodname.text), vt.element); $MethodScope::method = retval.element;} voidInterfaceMethodDeclaratorRest
+    	: vt=voidType methodname=identifierRule 
+    	  {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($methodname.text), vt.element); 
+    	   $MethodScope::method = retval.element;
+    	   setName(retval.element,methodname.start);
+    	   } voidInterfaceMethodDeclaratorRest
     	;    
     
 interfaceMethodOrFieldDecl returns [TypeElement element]
@@ -736,7 +757,12 @@ interfaceConstant returns [MemberVariableDeclarator element]
 
 interfaceMethod returns [Method element]
 scope MethodScope;
-	: tref=type methodname=identifierRule {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($methodname.text), tref.element); $MethodScope::method = retval.element;} interfaceMethodDeclaratorRest
+	: tref=type methodname=identifierRule 
+	   {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($methodname.text), tref.element); 
+	    $MethodScope::method = retval.element;
+	    setName(retval.element,methodname.start);
+	   } 
+	   interfaceMethodDeclaratorRest
 	;
 
     
@@ -806,7 +832,7 @@ constantDeclarator returns [JavaVariableDeclaration element]
        {retval.element = new JavaVariableDeclaration($name.text);
         retval.element.setArrayDimension(count); 
         retval.element.setInitialization(init.element);
-        setLocation(retval.element, name.start, "__NAME");
+        setName(retval.element, name.start);
         }
     ;
     
@@ -819,7 +845,7 @@ variableDeclarator returns [JavaVariableDeclaration element]
     :   id=variableDeclaratorId 
              {retval.element = new JavaVariableDeclaration(id.element.name()); 
               retval.element.setArrayDimension(id.element.dimension());
-              setLocation(retval.element, id.element.nameToken(), "__NAME");
+              setName(retval.element, id.element.nameToken());
               } ('=' init=variableInitializer {retval.element.setInitialization(init.element);})?
     ;
     
@@ -1091,7 +1117,7 @@ annotationTypeDeclaration returns [TypeWithBody element]
              {
                retval.element = (TypeWithBody)createType(new SimpleNameSignature($name.text));
                retval.element.addModifier(new AnnotationType());
-               setLocation(retval.element,name.start,"__NAME");
+               setName(retval.element,name.start);
              } 
              body=annotationTypeBody {retval.element.setBody(body.element);}
     ;
@@ -1127,7 +1153,10 @@ annotationMethodOrConstantRest[TypeReference type] returns [TypeElement element]
     ;
     
 annotationMethodRest[TypeReference type] returns [Method element]
-    :   name=identifierRule '(' ')' {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($name.text),type);} (defaultValue {})?
+    :   name=identifierRule '(' ')' 
+        {retval.element = createNormalMethod(new SimpleNameDeclarationWithParametersHeader($name.text),type);
+         setName(retval.element,name.start);
+        } (defaultValue {})?
     ;
     
 annotationConstantRest[TypeReference type] returns [MemberVariableDeclarator element]
@@ -1337,7 +1366,7 @@ expression returns [Expression element]
            retval.element = new InfixOperatorInvocation($op.text,ex.element);
            ((InfixOperatorInvocation)retval.element).addArgument(exx.element);
          }
-         setLocation(retval.element,op.start,op.stop,"__NAME");
+         //setName(retval.element,op.start,op.stop);
          setLocation(retval.element,retval.start,exx.stop);
         }
         )?

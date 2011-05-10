@@ -119,6 +119,9 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
     
     if(result != null) {
     	if(realSelector) {
+    		if(result.signature() == null) {
+    			System.out.println("debug");
+    		}
         setGenericCache((Type)result);
     	}
       return result;

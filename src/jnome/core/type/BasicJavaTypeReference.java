@@ -20,7 +20,6 @@ import chameleon.core.reference.CrossReference;
 import chameleon.core.reference.CrossReferenceWithName;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.type.BasicTypeReference;
-import chameleon.oo.type.DerivedType;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.ActualTypeArgument;
@@ -119,9 +118,6 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
     
     if(result != null) {
     	if(realSelector) {
-    		if(result.signature() == null) {
-    			System.out.println("debug");
-    		}
         setGenericCache((Type)result);
     	}
       return result;

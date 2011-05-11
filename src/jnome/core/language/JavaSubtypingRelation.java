@@ -178,7 +178,6 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		return _logger;
 	}
 	
-	
 	public void flushCache() {
 		_cache = new HashMap<Type,Set<Type>>();
 		_superTypeCache = new HashMap<Type, Set<Type>>();

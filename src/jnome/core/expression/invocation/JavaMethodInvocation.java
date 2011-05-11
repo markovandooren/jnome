@@ -6,7 +6,6 @@ import java.util.List;
 import jnome.core.language.Java;
 import jnome.core.type.JavaTypeReference;
 
-import org.rejuse.association.Association;
 import org.rejuse.association.SingleAssociation;
 
 import chameleon.core.declaration.Declaration;
@@ -23,7 +22,6 @@ import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.generics.TypeParameter;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.member.simplename.method.RegularMethodInvocation;
-import chameleon.util.CreationStackTrace;
 import chameleon.util.Util;
 
 public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvocation> {

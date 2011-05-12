@@ -17,6 +17,7 @@ import jnome.core.expression.invocation.ConstructorInvocation;
 import jnome.core.expression.invocation.SuperConstructorDelegation;
 import jnome.core.expression.invocation.ThisConstructorDelegation;
 import jnome.core.language.Java;
+import jnome.core.modifier.AnnotationModifier;
 import jnome.core.modifier.Default;
 import jnome.core.modifier.StrictFP;
 import jnome.core.modifier.Synchronized;
@@ -566,6 +567,8 @@ public class JavaCodeWriter extends Syntax {
     	return "native";
     } else if(element instanceof Interface) {
     	return "";
+    } else if(element instanceof AnnotationModifier) {
+    	return "@" + ((AnnotationModifier) element).name();
     }
     else {
       throw new IllegalArgumentException("The given element is not know by the Java syntax: "+element.getClass().getName());
@@ -1410,6 +1413,7 @@ public class JavaCodeWriter extends Syntax {
       result.append(toCode(inv.getTarget()));
       result.append(".");
     }
+    appendTypeParameters(inv.typeArguments(), result);
     result.append(inv.name());
     result.append(getActualArgs(inv));
     return result.toString();
@@ -1550,9 +1554,9 @@ public class JavaCodeWriter extends Syntax {
     result.append(toCode(expr.getTarget()));
     Iterator iter = expr.getIndices().iterator();
     while(iter.hasNext()) {
-      result.append("[");
+      //result.append("[");
       result.append(toCode((Element)iter.next()));
-      result.append("]");
+      //result.append("]");
     }
     return result.toString();
   }

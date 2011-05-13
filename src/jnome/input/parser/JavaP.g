@@ -1208,7 +1208,7 @@ setLocation(retval.element, (CommonToken)retval.start, (CommonToken)retval.stop)
          {retval.element=new IfThenElseStatement(ifexpr.element, ifif.element, (ifelse == null ? null : ifelse.element));
           setKeyword(retval.element,ifkey);
           if(ifelse != null) {
-            setKeyword(retval.element,elsekey);
+            setKeyword(ifelse.element,elsekey);
           }
          }
     |   forkey='for' '(' forc=forControl ')' forstat=statement 

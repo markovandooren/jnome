@@ -7,8 +7,6 @@ import jnome.core.language.Java;
 
 import org.rejuse.association.OrderedMultiAssociation;
 
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
-
 import chameleon.core.Config;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.SimpleNameSignature;

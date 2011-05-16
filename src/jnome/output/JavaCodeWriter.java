@@ -287,6 +287,10 @@ public class JavaCodeWriter extends Syntax {
     	result = toCodePureWildCard((PureWildcard) element);
     } else if(isEmptyTypeElement(element)) {
     	result = toCodeEmptyTypeElement((EmptyTypeElement)element);
+    } else if(isDemandImport(element)) {
+    	result = toCodeDemandImport((DemandImport)element);
+    } else if(isTypeImport(element)) {
+    	result = toCodeTypeImport((TypeImport)element);
     }
     // /ASPECTS
     else if(element == null) {
@@ -504,18 +508,28 @@ public class JavaCodeWriter extends Syntax {
   public boolean isNamespacePart(Element element) {
   	return element instanceof NamespacePart;
   }
+
+  public boolean isDemandImport(Element element) {
+  	return element instanceof DemandImport;
+  }
+  
+  public String toCodeDemandImport(DemandImport imp) throws LookupException {
+    return "import "+toCode(imp.namespaceReference()) +".*;\n";
+  }
+  
+  public boolean isTypeImport(Element element) {
+  	return element instanceof TypeImport;
+  }
+  
+  public String toCodeTypeImport(TypeImport imp) throws LookupException {
+    return "import "+toCode(((TypeImport)imp).getTypeReference()) +";\n";
+  }
   
   public String toCodeNamespacePart(NamespacePart part) throws LookupException {
     StringBuffer result = new StringBuffer();
     result.append("package "+part.namespace().getFullyQualifiedName() +";\n\n");
-    
     for(Import imp: part.imports()) {
-    	if(imp instanceof TypeImport) {
-        result.append("import "+toCode(((TypeImport)imp).getTypeReference()) +";\n");
-    	}
-    	else if(imp instanceof DemandImport) {
-        result.append("import "+toCode(((DemandImport)imp).namespaceReference()) +".*;\n");
-    	}
+        result.append(toCode(imp));
     }
     result.append("\n");
     Collection<Type> types = part.declarations(Type.class);

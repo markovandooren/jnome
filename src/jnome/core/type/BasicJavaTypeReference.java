@@ -126,19 +126,6 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
     }
   }
 
-//  public Type erasure() throws LookupException {
-//    Type result = null;
-//
-//    result = super.getElement(selector());
-//    
-//    if(result != null) {
-//      return result;
-//    } else {
-//      throw new LookupException("Result of type reference lookup is null: "+signature(),this);
-//    }
-//  }
-
-  
   private Type convertGenerics(Type type) throws LookupException {
   	Type result = type;
 		if (type != null) {

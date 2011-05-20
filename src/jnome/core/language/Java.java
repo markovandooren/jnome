@@ -142,7 +142,6 @@ public class Java extends ObjectOrientedLanguage {
 		this("Java");
 	}
 	
-	
   public Type erasure(Type original) throws LookupException {
   	Type result;
   	if(original instanceof ArrayType) {
@@ -150,14 +149,6 @@ public class Java extends ObjectOrientedLanguage {
   		result = new ArrayType(erasure(arrayType.elementType()));
   	} 
   	else if(original instanceof ConstructedType){
-//  		FormalTypeParameter formal = ((ConstructedType)original).parameter();
-//  		List<TypeConstraint> constraints = formal.constraints();
-//  		if(constraints.size() > 0) {
-//  			TypeConstraint first = constraints.get(0);
-//  			  result = erasure(first.bound());	
-//  		} else {
-//  			result = getDefaultSuperClass();
-//  		}
   		result = original;
   	} 
   	else {

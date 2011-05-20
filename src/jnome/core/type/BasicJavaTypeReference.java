@@ -44,11 +44,6 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
   
   public BasicJavaTypeReference(String fqn) {
   	super(fqn);
-  	if(Config.DEBUG) {
-  		if((fqn != null) && (fqn.contains("["))) {
-  			throw new ChameleonProgrammerException("Initializing a type reference with a [ in the name.");
-  		}
-  	}
   }
   
   public List<ActualTypeArgument> typeArguments() {

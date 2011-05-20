@@ -137,4 +137,9 @@ public class EnumConstant extends FixedSignatureMember<EnumConstant,SimpleNameSi
 		setSignature(new SimpleNameSignature(name));
 	}
 
+	@Override
+	public boolean complete() throws LookupException {
+		return true;
+	}
+
 }

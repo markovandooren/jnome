@@ -3,18 +3,22 @@ package jnome.core.type;
 import java.util.ArrayList;
 import java.util.List;
 
+import jnome.core.expression.invocation.SuperConstructorDelegation;
 import jnome.core.method.JavaNormalMethod;
 import jnome.core.modifier.JavaConstructor;
 import chameleon.core.declaration.SimpleNameDeclarationWithParametersHeader;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.member.Member;
+import chameleon.core.method.RegularImplementation;
 import chameleon.core.modifier.Modifier;
+import chameleon.core.statement.Block;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.TypeElement;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.modifier.Constructor;
 import chameleon.support.modifier.Public;
+import chameleon.support.statement.StatementExpression;
 import chameleon.util.Util;
 
 public class RegularJavaType extends RegularType {
@@ -47,6 +51,9 @@ public class RegularJavaType extends RegularType {
 		NormalMethod cons = new JavaNormalMethod(new SimpleNameDeclarationWithParametersHeader(signature().name()), new BasicJavaTypeReference(signature().name()));
 		cons.addModifier(new Constructor());
 		cons.addModifier(new Public());
+		Block body = new Block();
+		cons.setImplementation(new RegularImplementation(body));
+		body.addStatement(new StatementExpression(new SuperConstructorDelegation()));
 		cons.setUniParent(this);
 		_defaultDefaultConstructor = cons;
 	}

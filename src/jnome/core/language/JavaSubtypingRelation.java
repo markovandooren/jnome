@@ -25,10 +25,12 @@ import org.rejuse.association.SingleAssociation;
 import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.predicate.UnsafePredicate;
 
+import chameleon.core.Config;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.relation.WeakPartialOrder;
+import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.DerivedType;
 import chameleon.oo.type.IntersectionType;
@@ -190,7 +192,16 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	public boolean contains(Type first, Type second) throws LookupException {
 		Set<Type> zuppas;
 		synchronized (this) {
+			try {
 			zuppas = _cache.get(first);
+			} catch(ChameleonProgrammerException exc) {
+				Throwable cause = exc.getCause();
+				if(cause instanceof LookupException) {
+				  throw (LookupException)cause;
+				} else {
+					throw exc;
+				}
+			}
 		}
 		if(zuppas != null && zuppas.contains(second)) {
 			return true;
@@ -275,6 +286,13 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 				zuppas = _cache.get(first);
 				if(zuppas == null) {
 					zuppas = new HashSet<Type>();
+//					if(first.signature().name().equals("MultiProperty")) {
+//						Config.debug();
+//						if(Config.debug()) {
+//							List<TypeParameter> params = first.parameters(TypeParameter.class);
+//							((InstantiatedTypeParameter)params.get(0)).argument().parentLink().lock();
+//						}
+//					}
 					_cache.put(first, zuppas);
 				}
 				zuppas.add(second);

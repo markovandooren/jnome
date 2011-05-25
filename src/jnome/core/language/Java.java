@@ -505,7 +505,7 @@ public class Java extends ObjectOrientedLanguage {
 			return new DerivedType(kind, parameters, baseType);
 		}
 		
-		public DerivedType createDerivedType(Type baseType, List<ActualTypeArgument> typeArguments) {
+		public DerivedType createDerivedType(Type baseType, List<ActualTypeArgument> typeArguments) throws LookupException {
 			return new DerivedType(baseType,typeArguments);
 		}
 		

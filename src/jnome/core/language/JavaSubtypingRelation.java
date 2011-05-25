@@ -456,6 +456,7 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	}
 
 	public synchronized Set<Type> getAllSuperTypesView(Type type) throws LookupException {
+		try {
 		Set<Type> result = _superTypeCache.get(type);
 		if(result == null) {
 			result = new HashSet<Type>();
@@ -464,6 +465,13 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		}
 		result = Collections.unmodifiableSet(result);
 		return result;
+		} catch(ChameleonProgrammerException exc) {
+			if(exc.getCause() instanceof LookupException) {
+				throw (LookupException) exc.getCause();
+			} else {
+				throw exc;
+			}
+		}
 	}
 	
   private Map<Type,Set<Type>> _superTypeCache = new HashMap<Type, Set<Type>>();

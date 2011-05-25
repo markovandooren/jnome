@@ -141,4 +141,9 @@ public class NonLocalJavaTypeReference extends NonLocalTypeReference<NonLocalJav
   	return result;
   }
 
+	@Override
+	public String infoDisplayName() {
+		return actualReference().infoDisplayName();
+	}
+
 }

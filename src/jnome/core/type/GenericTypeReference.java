@@ -170,9 +170,21 @@ public class GenericTypeReference extends NamespaceElementImpl<GenericTypeRefere
 		return target().getElement();
 	}
 
-//	@Override
-//	public void setName(String name) {
-//		target().setName(name);
-//	}
+	@Override
+	public String infoDisplayName() {
+		StringBuffer result = new StringBuffer();
+		result.append(target().infoDisplayName());
+		result.append('<');
+		List<ActualTypeArgument> args = typeArguments();
+		int size = args.size();
+		for(int i=0; i<size;i++) {
+			result.append(args.get(i).infoDisplayName());
+			if(i < size - 1) {
+				result.append(',');
+			}
+		}
+		result.append('>');
+		return result.toString();
+	}
 
 }

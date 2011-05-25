@@ -25,4 +25,9 @@ public class JavaExtendsReference extends WildCardReference<JavaExtendsReference
 		return extendsWildcardType;
 	}
 
+	@Override
+	public String infoDisplayName() {
+		return "? extends "+typeReference().infoDisplayName();
+	}
+
 }

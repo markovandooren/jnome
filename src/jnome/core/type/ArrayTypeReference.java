@@ -15,7 +15,6 @@ import chameleon.core.validation.VerificationResult;
 import chameleon.oo.type.IntersectionTypeReference;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
-import chameleon.util.CreationStackTrace;
 import chameleon.util.Util;
 
 public class ArrayTypeReference  extends NamespaceElementImpl<ArrayTypeReference> implements JavaTypeReference<ArrayTypeReference> {
@@ -94,7 +93,7 @@ public class ArrayTypeReference  extends NamespaceElementImpl<ArrayTypeReference
 	}
 
 	public TypeReference intersectionDoubleDispatch(TypeReference other) {
-		IntersectionTypeReference<IntersectionTypeReference> intersectionTypeReference = language(Java.class).createIntersectionReference(clone(), other.clone());
+		IntersectionTypeReference intersectionTypeReference = language(Java.class).createIntersectionReference(clone(), other.clone());
 		return intersectionTypeReference;
 	}
 
@@ -106,7 +105,6 @@ public class ArrayTypeReference  extends NamespaceElementImpl<ArrayTypeReference
 
 	public Declaration getDeclarator() throws LookupException {
 		return getElement();
-//		return elementTypeReference().getDeclarator();
 	}
 
 	public List<? extends Element> children() {
@@ -117,8 +115,9 @@ public class ArrayTypeReference  extends NamespaceElementImpl<ArrayTypeReference
 		return elementTypeReference().componentTypeReference();
 	}
 
-//	@Override
-//	public void setName(String name) {
-//		elementTypeReference().setName(name);
-//	}
+	@Override
+	public String infoDisplayName() {
+		return elementTypeReference().infoDisplayName()+"[]";
+	}
+
 }

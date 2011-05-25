@@ -53,10 +53,6 @@ public class JavaIntersectionTypeReference extends IntersectionTypeReference<Jav
 		return 0;
 	}
 
-//	public Type erasure() throws LookupException {
-//		return erasedReference().erasure();
-//	}
-
 	public JavaTypeReference toArray(int dimension) {
 		throw new ChameleonProgrammerException("Cannot change the dimension of an intersection type reference");
 	}
@@ -66,7 +62,7 @@ public class JavaIntersectionTypeReference extends IntersectionTypeReference<Jav
 	}
 
 	public JavaTypeReference erasedReference() {
-		return ((JavaTypeReference)_types.getOtherEnds().get(0)).erasedReference();
+		return ((JavaTypeReference)elementAt(1)).erasedReference();
 	}
 
 	public JavaTypeReference componentTypeReference() {

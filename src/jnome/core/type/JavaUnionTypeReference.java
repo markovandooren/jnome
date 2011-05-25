@@ -66,7 +66,7 @@ public class JavaUnionTypeReference extends IntersectionTypeReference<JavaUnionT
 	}
 
 	public JavaTypeReference erasedReference() {
-		return ((JavaTypeReference)_types.getOtherEnds().get(0)).erasedReference();
+		return ((JavaTypeReference)elementAt(1)).erasedReference();
 	}
 
 	public JavaTypeReference componentTypeReference() {

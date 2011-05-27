@@ -488,6 +488,18 @@ public class Java extends ObjectOrientedLanguage {
 		}
 
 		@Override
+		public TypeReference createTypeReference(Type type) {
+			BasicJavaTypeReference result = createTypeReference(type.getFullyQualifiedName());
+			for(TypeParameter par: type.parameters(TypeParameter.class)) {
+				if(par instanceof InstantiatedTypeParameter) {
+					InstantiatedTypeParameter inst = (InstantiatedTypeParameter) par;
+					result.addArgument(inst.argument().clone());
+				}
+			}
+			return result;
+		}
+
+		@Override
 		public BasicJavaTypeReference createTypeReference(CrossReference<?, ? extends TargetDeclaration> target, String name) {
 			return new BasicJavaTypeReference(target, name);
 		}

@@ -88,4 +88,7 @@ public class PureWildcard<E extends PureWildcard> extends ActualTypeArgument<E> 
 		return "?";
 	}
 	
+	public String toString() {
+		return "?";
+	}
 }

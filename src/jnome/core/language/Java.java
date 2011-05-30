@@ -64,6 +64,7 @@ import chameleon.oo.type.Parameter;
 import chameleon.oo.type.ParameterSubstitution;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
+import chameleon.oo.type.TypeIndirection;
 import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.UnionType;
 import chameleon.oo.type.generics.ActualType;
@@ -490,10 +491,12 @@ public class Java extends ObjectOrientedLanguage {
 		@Override
 		public TypeReference createTypeReference(Type type) {
 			BasicJavaTypeReference result = createTypeReference(type.getFullyQualifiedName());
-			for(TypeParameter par: type.parameters(TypeParameter.class)) {
-				if(par instanceof InstantiatedTypeParameter) {
-					InstantiatedTypeParameter inst = (InstantiatedTypeParameter) par;
-					result.addArgument(inst.argument().clone());
+			if(! (type instanceof TypeIndirection)) {
+				for(TypeParameter par: type.parameters(TypeParameter.class)) {
+					if(par instanceof InstantiatedTypeParameter) {
+						InstantiatedTypeParameter inst = (InstantiatedTypeParameter) par;
+						result.addArgument(inst.argument().clone());
+					}
 				}
 			}
 			return result;

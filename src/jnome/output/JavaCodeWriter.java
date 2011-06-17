@@ -522,7 +522,7 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public String toCodeTypeImport(TypeImport imp) throws LookupException {
-    return "import "+toCode(((TypeImport)imp).getTypeReference()) +";\n";
+		return "import "+ toCode(((TypeImport)imp).getTypeReference()) +";\n";
   }
   
   public String toCodeNamespacePart(NamespacePart part) throws LookupException {

@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import jnome.core.language.Java;
+import jnome.core.type.RegularJavaType;
 import jnome.input.parser.JavaLexer;
 import jnome.input.parser.JavaParser;
 import jnome.output.JavaCodeWriter;
@@ -21,7 +22,6 @@ import org.rejuse.io.fileset.FileSet;
 import org.rejuse.io.fileset.PatternPredicate;
 
 import chameleon.core.compilationunit.CompilationUnit;
-import chameleon.core.declaration.SimpleNameDeclarationWithParametersHeader;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
@@ -256,7 +256,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     public void addVoid(Namespace mm) {
         NamespacePart cu = getNamespacePart(mm);
         Public pub = new Public();
-        Type clas = new RegularType("void") {
+        Type clas = new RegularJavaType("void") {
 
             public boolean assignableTo(Type other) {
                 return false;
@@ -276,7 +276,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     public void addByte(Namespace mm) {
         NamespacePart cu = getNamespacePart(mm);
         Public pub = new Public();
-        Type byteT = new RegularType("byte") {
+        Type byteT = new RegularJavaType("byte") {
             public boolean assignableTo(Type other) {
                 return other.equals(this)
                         || other.getFullyQualifiedName().equals("short")
@@ -302,7 +302,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     public void addShort(Namespace mm) {
         NamespacePart cu = getNamespacePart(mm);
         Public pub = new Public();
-        Type shortT = new RegularType("short") {
+        Type shortT = new RegularJavaType("short") {
             public boolean assignableTo(Type other) {
                 return other.equals(this)
                         || other.getFullyQualifiedName().equals("char")
@@ -327,7 +327,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         NamespacePart cu = getNamespacePart(mm);
         Public pub = new Public();
 
-        Type charT = new RegularType("char") {
+        Type charT = new RegularJavaType("char") {
             public boolean assignableTo(Type other) {
                 return other.equals(this)
                         || other.getFullyQualifiedName().equals("int")
@@ -350,7 +350,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         NamespacePart cu = getNamespacePart(mm);
         Public pub = new Public();
 
-        Type intT = new RegularType("int") {
+        Type intT = new RegularJavaType("int") {
             public boolean assignableTo(Type other) {
                 return other.equals(this)
                         || other.getFullyQualifiedName().equals("long")
@@ -372,7 +372,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         NamespacePart cu = getNamespacePart(mm);
         Public pub = new Public();
 
-        Type longT = new RegularType("long") {
+        Type longT = new RegularJavaType("long") {
             public boolean assignableTo(Type other) {
                 return other.equals(this)
                         || other.getFullyQualifiedName().equals("float")
@@ -393,7 +393,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         NamespacePart cu = getNamespacePart(mm);
         Public pub = new Public();
 
-        Type floatT = new RegularType("float") {
+        Type floatT = new RegularJavaType("float") {
             public boolean assignableTo(Type other) {
                 return other.equals(this)
                         || other.getFullyQualifiedName().equals("double");
@@ -413,7 +413,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         NamespacePart cu = getNamespacePart(mm);
         Public pub = new Public();
 
-        Type doubleT = new RegularType("double");
+        Type doubleT = new RegularJavaType("double");
         doubleT.addModifier(pub);
         cu.add(doubleT);
         doubleT.addModifier(new ValueType());
@@ -524,7 +524,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 
     public void addBoolean(Namespace mm) {
         Public pub = new Public();
-        Type booleanT = new RegularType("boolean");
+        Type booleanT = new RegularJavaType("boolean");
         booleanT.addModifier(pub);
         getNamespacePart(mm).add(booleanT);
         addPrefixOperator(booleanT, "boolean", "!");

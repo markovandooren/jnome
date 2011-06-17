@@ -125,4 +125,16 @@ public class TypeAssignmentSet {
 		return result;
 	}
 
+	public void substitute(TypeParameter oldParameter, TypeParameter newParameter) {
+		for(TypeAssignment assignment: assignments()) {
+			assignment.substitute(oldParameter, newParameter);
+		}
+		int size = _completeList.size();
+		for(int i = 0; i < size; i++) {
+			if(_completeList.get(i).equals(oldParameter)) {
+				_completeList.set(i, newParameter);
+			}
+		}
+	}
+
 }

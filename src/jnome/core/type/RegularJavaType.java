@@ -6,11 +6,11 @@ import java.util.List;
 import jnome.core.expression.invocation.SuperConstructorDelegation;
 import jnome.core.method.JavaNormalMethod;
 import jnome.core.modifier.JavaConstructor;
-import chameleon.core.declaration.SimpleNameDeclarationWithParametersHeader;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.member.Member;
 import chameleon.core.method.RegularImplementation;
+import chameleon.core.method.SimpleNameMethodHeader;
 import chameleon.core.modifier.Modifier;
 import chameleon.core.statement.Block;
 import chameleon.oo.type.RegularType;
@@ -48,7 +48,7 @@ public class RegularJavaType extends RegularType {
 		//       language for the factory. Management of the constructor should be done lazily. When
 		//       the type is actually used, we can assume that a language is attached. Otherwise, we
 		//       throw an exception.
-		NormalMethod cons = new JavaNormalMethod(new SimpleNameDeclarationWithParametersHeader(signature().name()), new BasicJavaTypeReference(signature().name()));
+		NormalMethod cons = new JavaNormalMethod(new SimpleNameMethodHeader(signature().name(), new BasicJavaTypeReference(signature().name())));
 		cons.addModifier(new Constructor());
 		cons.addModifier(new Public());
 		Block body = new Block();

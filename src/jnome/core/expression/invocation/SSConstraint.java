@@ -18,7 +18,7 @@ import chameleon.oo.type.generics.SuperWildcard;
 import chameleon.oo.type.generics.TypeParameter;
 
 /**
- * A << F
+ * A << F See Java language Specification (v3.0 p. 453)
  * 
  * Type << JavaTypeReference
  * 

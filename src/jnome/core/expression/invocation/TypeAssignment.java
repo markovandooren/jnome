@@ -29,4 +29,10 @@ public abstract class TypeAssignment {
 		return _parentLink.getOtherEnd();
 	}
 
+	public void substitute(TypeParameter oldParameter, TypeParameter newParameter) {
+		if(parameter().equals(oldParameter)) {
+			_parameter = newParameter; 
+		}
+	}
+
 }

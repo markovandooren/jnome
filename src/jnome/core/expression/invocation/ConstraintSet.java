@@ -11,12 +11,13 @@ import org.rejuse.predicate.TypePredicate;
 
 import chameleon.core.expression.MethodInvocation;
 import chameleon.core.method.Method;
+import chameleon.core.method.MethodHeader;
 import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.TypeParameter;
 
 public abstract class ConstraintSet<C extends Constraint> {
 	
-	public ConstraintSet(MethodInvocation invocation, Method invokedMethod) {
+	public ConstraintSet(MethodInvocation invocation, MethodHeader invokedMethod) {
 		_invocation = invocation;
 		_invokedGenericMethod = invokedMethod;
 		List<TypeParameter> typeParameters = invokedMethod.typeParameters();
@@ -67,10 +68,10 @@ public abstract class ConstraintSet<C extends Constraint> {
   
   private MethodInvocation _invocation;
   
-  public Method invokedGenericMethod() {
+  public MethodHeader invokedGenericMethod() {
   	return _invokedGenericMethod;
   }
   
-  private Method _invokedGenericMethod;
+  private MethodHeader _invokedGenericMethod;
 
 }

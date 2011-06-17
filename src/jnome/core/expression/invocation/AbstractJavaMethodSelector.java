@@ -22,6 +22,7 @@ import chameleon.core.expression.Expression;
 import chameleon.core.expression.MethodInvocation;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
+import chameleon.core.method.MethodHeader;
 import chameleon.core.relation.WeakPartialOrder;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
@@ -102,39 +103,47 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 		return instantiatedMethodTemplate(method, actualTypeParameters);
 	}
 
-	private TypeAssignmentSet actualTypeParameters(NormalMethod<?, ?, ?> method, boolean includeNonreference) throws LookupException {
+	private TypeAssignmentSet actualTypeParameters(NormalMethod<?, ?, ?> originalMethod, boolean includeNonreference) throws LookupException {
+		MethodHeader methodHeader = originalMethod.header().clone();
+		methodHeader.setUniParent(originalMethod.parent());
+		List<TypeParameter> parameters = methodHeader.typeParameters();
+		TypeAssignmentSet formals;
+		//			List<TypeParameter> methodTypeParameters = method.typeParameters();
+		if(parameters.size() > 0 && (parameters.get(0) instanceof FormalTypeParameter)) {
+			if(invocation().hasTypeArguments()) {
 				List<ActualTypeArgument> typeArguments = invocation().typeArguments();
-				Java language = method.language(Java.class);
-				List<TypeParameter> parameters = method.typeParameters();
-				TypeAssignmentSet formals;
-	//			List<TypeParameter> methodTypeParameters = method.typeParameters();
-				if(parameters.size() > 0 && (parameters.get(0) instanceof FormalTypeParameter)) {
-					formals = new TypeAssignmentSet(parameters);
-					if(typeArguments.size() > 0) {
-						int size = typeArguments.size();
-						for(int i=0; i< size; i++) {
-							formals.add(new ActualTypeAssignment(parameters.get(i),typeArguments.get(i).upperBound()));
-						}
-					} else {
-						// perform type inference
-						FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(invocation(),method);
-						List<Expression> actualParameters = invocation().getActualParameters();
-						List<Type> formalParameters = method.header().formalParameterTypes();
-						int size = actualParameters.size();
-						for(int i=0; i< size; i++) {
-							// if the formal parameter type is reference type, add a constraint
-							Type argType = actualParameters.get(i).getType();
-							if(includeNonreference || argType.is(language.REFERENCE_TYPE) == Ternary.TRUE) {
-								constraints.add(new SSConstraint(language.reference(argType), formalParameters.get(i)));
-							}
-						}
-						formals = constraints.resolve();
-					}
-				} else {
-					formals = new TypeAssignmentSet(Collections.EMPTY_LIST);
+				formals = new TypeAssignmentSet(parameters);
+				int size = typeArguments.size();
+				for(int i=0; i< size; i++) {
+					formals.add(new ActualTypeAssignment(parameters.get(i),typeArguments.get(i).upperBound()));
 				}
-				return formals;
+			} else {
+				Java language = originalMethod.language(Java.class);
+				// perform type inference
+				FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(invocation(),methodHeader);
+				List<Expression> actualParameters = invocation().getActualParameters();
+				List<Type> formalParameters = methodHeader.formalParameterTypes();
+				int size = actualParameters.size();
+				for(int i=0; i< size; i++) {
+					// if the formal parameter type is reference type, add a constraint
+					Type argType = actualParameters.get(i).getType();
+					if(includeNonreference || argType.is(language.REFERENCE_TYPE) == Ternary.TRUE) {
+						constraints.add(new SSConstraint(language.reference(argType), formalParameters.get(i)));
+					}
+				}
+				formals = constraints.resolve();
 			}
+		} else {
+			formals = new TypeAssignmentSet(Collections.EMPTY_LIST);
+		}
+		int size = parameters.size();
+		List<TypeParameter> originalParameters = originalMethod.typeParameters();
+
+		for(int i = 0; i < size; i++) {
+			formals.substitute(parameters.get(i), originalParameters.get(i));
+		}
+		return formals;
+	}
 
 	private boolean matchingApplicableBySubtyping(NormalMethod method) throws LookupException {
 				TypeAssignmentSet actualTypeParameters = actualTypeParameters(method, false);
@@ -150,13 +159,6 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 				if(match) {
 					match = actualTypeParameters.valid();
 				} 
-	//			  &&  {
-	//				result = method;
-	//				if(actualTypeParameters.hasAssignments()) {
-	//					// create instance
-	//					result = instantiatedMethodTemplate(method, actualTypeParameters);
-	//				}
-	//			}
 				return match;
 			}
 

@@ -7,11 +7,11 @@ import jnome.core.language.Java;
 import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.predicate.SafePredicate;
 
-import chameleon.core.declaration.SimpleNameDeclarationWithParametersHeader;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.member.Member;
+import chameleon.core.method.SimpleNameMethodHeader;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
@@ -59,7 +59,7 @@ public abstract class AnonymousType extends RegularType {
 	}
 
 	private NormalMethod defaultDefaultConstructor(TypeReference tref, Type writtenType) {
-		NormalMethod cons = language(Java.class).createNormalMethod(new SimpleNameDeclarationWithParametersHeader(writtenType.signature().name()), tref.clone());
+		NormalMethod cons = language(Java.class).createNormalMethod(new SimpleNameMethodHeader(writtenType.signature().name(), tref.clone()));
 		cons.addModifier(new Constructor());
 		cons.addModifier(new Public());
 		cons.setUniParent(this);

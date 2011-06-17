@@ -9,7 +9,6 @@ import java.util.Collection;
 import java.util.Set;
 
 import jnome.core.language.Java;
-import jnome.core.type.JavaTypeReference;
 import jnome.input.parser.JavaLexer;
 import jnome.input.parser.JavaParser;
 import jnome.output.JavaCodeWriter;
@@ -27,6 +26,7 @@ import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.member.Member;
+import chameleon.core.method.SimpleNameMethodHeader;
 import chameleon.core.namespace.Namespace;
 import chameleon.core.namespace.NamespaceReference;
 import chameleon.core.namespacepart.DemandImport;
@@ -214,7 +214,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     public void addPrefixOperator(Type type, String returnType, String symbol) {
         TypeReference tr = ((Java)language()).createTypeReference(null, returnType);
         Public pub = new Public();
-        PrefixOperator op = new PrefixOperator(new SimpleNameDeclarationWithParametersHeader(symbol), tr);
+        PrefixOperator op = new PrefixOperator(new SimpleNameMethodHeader(symbol, tr));
         op.addModifier(pub);
         op.addModifier(new Native());
         type.add(op);
@@ -223,7 +223,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     public void addPostfixOperator(Type type, String returnType, String symbol) {
         TypeReference tr = ((Java)language()).createTypeReference(null, returnType);
         Public pub = new Public();
-        PostfixOperator op = new PostfixOperator(new SimpleNameDeclarationWithParametersHeader(symbol), tr);
+        PostfixOperator op = new PostfixOperator(new SimpleNameMethodHeader(symbol, tr));
         op.addModifier(pub);
         op.addModifier(new Native());
         type.add(op);
@@ -232,8 +232,8 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     public void addInfixOperator(Type type, String returnType, String symbol, String argType) {
         TypeReference tr = ((Java)language()).createTypeReference(returnType);
         Public pub = new Public();
-        SimpleNameDeclarationWithParametersHeader sig =  new SimpleNameDeclarationWithParametersHeader(symbol);
-        InfixOperator op = new InfixOperator(sig, tr);
+        SimpleNameMethodHeader sig =  new SimpleNameMethodHeader(symbol,tr);
+        InfixOperator op = new InfixOperator(sig);
         op.addModifier(pub);
 
         TypeReference tr2 = ((Java)language()).createTypeReference(argType);

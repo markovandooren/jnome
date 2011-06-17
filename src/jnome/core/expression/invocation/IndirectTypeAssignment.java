@@ -26,4 +26,11 @@ public class IndirectTypeAssignment extends TypeAssignment {
 		return _source;
 	}
 
+	@Override
+	public void substitute(TypeParameter oldParameter, TypeParameter newParameter) {
+		super.substitute(oldParameter, newParameter);
+		if(source().equals(oldParameter)) {
+			_source = newParameter;
+		}
+	}
 }

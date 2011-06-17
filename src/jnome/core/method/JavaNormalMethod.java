@@ -1,7 +1,6 @@
 package jnome.core.method;
 
 import jnome.core.language.Java;
-import chameleon.core.declaration.DeclarationWithParametersHeader;
 import chameleon.core.declaration.DeclarationWithParametersSignature;
 import chameleon.core.declaration.Signature;
 import chameleon.core.declaration.SimpleNameDeclarationWithParametersSignature;
@@ -10,20 +9,19 @@ import chameleon.core.member.Member;
 import chameleon.core.member.MemberRelationSelector;
 import chameleon.core.member.OverridesRelation;
 import chameleon.core.method.Method;
+import chameleon.core.method.MethodHeader;
 import chameleon.core.method.RegularMethod;
 import chameleon.oo.type.Type;
-import chameleon.oo.type.TypeReference;
 import chameleon.support.member.simplename.method.NormalMethod;
-import chameleon.util.CreationStackTrace;
 
-public class JavaNormalMethod<E extends RegularMethod<E,H,S>, H extends DeclarationWithParametersHeader<H, S>, S extends DeclarationWithParametersSignature> extends NormalMethod<E,H,S> {
+public class JavaNormalMethod<E extends RegularMethod<E,H,S>, H extends MethodHeader<H, S>, S extends DeclarationWithParametersSignature> extends NormalMethod<E,H,S> {
 	
-	public JavaNormalMethod(H header, TypeReference returnType) {
-		super(header,returnType);
+	public JavaNormalMethod(H header) {
+		super(header);
 	}
 	
 	protected E cloneThis() {
-    return (E) new JavaNormalMethod(header().clone(), (TypeReference)returnTypeReference().clone());
+    return (E) new JavaNormalMethod(header().clone());
   }
 
 	public MemberRelationSelector<Method> overridesSelector() {

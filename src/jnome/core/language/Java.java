@@ -27,13 +27,13 @@ import jnome.core.type.NullType;
 import jnome.core.type.PureWildCardType;
 import jnome.core.type.PureWildcard;
 import jnome.core.type.RawType;
+import jnome.core.type.RegularJavaType;
 
 import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.property.PropertyUniverse;
 
 import chameleon.core.Config;
 import chameleon.core.declaration.Declaration;
-import chameleon.core.declaration.DeclarationWithParametersHeader;
 import chameleon.core.declaration.SimpleNameDeclarationWithParametersSignature;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.declaration.TargetDeclaration;
@@ -44,6 +44,7 @@ import chameleon.core.language.Language;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.member.Member;
 import chameleon.core.method.Method;
+import chameleon.core.method.MethodHeader;
 import chameleon.core.namespace.RootNamespace;
 import chameleon.core.property.ChameleonProperty;
 import chameleon.core.property.DynamicChameleonProperty;
@@ -253,8 +254,8 @@ public class Java extends ObjectOrientedLanguage {
 		@Override
 		public Ternary appliesTo(Element element) {
 			Ternary result = Ternary.FALSE;
-			if(element instanceof Type) {
-				String fqn = ((Type)element).getFullyQualifiedName();
+			if(element instanceof RegularJavaType) {
+				String fqn = ((RegularJavaType)element).getFullyQualifiedName();
 				if(fqn.equals("void") || fqn.equals("int") || fqn.equals("long")|| fqn.equals("float")|| fqn.equals("double")
 						|| fqn.equals("boolean")|| fqn.equals("byte")|| fqn.equals("char") || fqn.equals("short")) {
 					result = Ternary.TRUE;
@@ -524,8 +525,8 @@ public class Java extends ObjectOrientedLanguage {
 			return new DerivedType(baseType,typeArguments);
 		}
 		
-		public NormalMethod createNormalMethod(DeclarationWithParametersHeader header, TypeReference returnType) {
-			return new JavaNormalMethod(header, returnType);
+		public NormalMethod createNormalMethod(MethodHeader header) {
+			return new JavaNormalMethod(header);
 		}
 
 		public TypeReference glb(List<? extends JavaTypeReference> typeReferenceList) {
@@ -596,10 +597,16 @@ public class Java extends ObjectOrientedLanguage {
 				result = (JavaTypeReference) createTypeReferenceInDefaultNamespace(fqn);
 			} else if (type instanceof RegularType) {
 				// for now, if this code is invoked, there are no generic parameters.
-				if(type.nbTypeParameters(TypeParameter.class) > 0) {
-					throw new ChameleonProgrammerException("requesting reference of RegularType with type parameters");
-				}
 				result = (JavaTypeReference) createTypeReferenceInDefaultNamespace(type.getFullyQualifiedName());
+				if(type.nbTypeParameters(TypeParameter.class) > 0) {
+//					throw new ChameleonProgrammerException("requesting reference of RegularType with type parameters");
+					for(TypeParameter tpar: type.parameters(TypeParameter.class)) {
+						Element lookupParent = tpar;
+						JavaTypeReference nameref = createTypeReference(tpar.signature().name());
+						TypeReference tref = new NonLocalJavaTypeReference(nameref, lookupParent);
+						((BasicJavaTypeReference)result).addArgument(new BasicTypeArgument<BasicTypeArgument>(tref));
+					}
+				}
 			} else if (type instanceof RawType) {
 				result = (JavaTypeReference) createTypeReferenceInDefaultNamespace(type.getFullyQualifiedName());
 			} else if (type instanceof ExtendsWildcardType) {

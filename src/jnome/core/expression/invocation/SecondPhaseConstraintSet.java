@@ -13,7 +13,7 @@ import org.rejuse.predicate.UnsafePredicate;
 
 import chameleon.core.expression.MethodInvocation;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.method.Method;
+import chameleon.core.method.MethodHeader;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.IntersectionType;
@@ -29,7 +29,7 @@ import chameleon.support.expression.AssignmentExpression;
 
 public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstraint> {
 
-	public SecondPhaseConstraintSet(MethodInvocation invocation, Method invokedMethod) {
+	public SecondPhaseConstraintSet(MethodInvocation invocation, MethodHeader invokedMethod) {
 		super(invocation,invokedMethod);
 		_assignments = new TypeAssignmentSet(typeParameters());
 	}

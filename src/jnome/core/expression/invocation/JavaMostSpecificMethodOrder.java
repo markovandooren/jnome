@@ -38,7 +38,7 @@ public class JavaMostSpecificMethodOrder extends WeakPartialOrder<NormalMethod> 
 		return result;
 	}
 
-	public boolean containsVariableArity(NormalMethod first, NormalMethod second) throws LookupException {
+	public boolean containsVariableArity(NormalMethod<?,?,?> first, NormalMethod<?,?,?> second) throws LookupException {
 		boolean result = true;
 		Java language = (Java) first.language(Java.class);
 		List<Type> firstTypes = first.header().formalParameterTypes();
@@ -59,7 +59,7 @@ public class JavaMostSpecificMethodOrder extends WeakPartialOrder<NormalMethod> 
 		List typeParameters = second.typeParameters();
 		List<Type> Ss;
 		if(typeParameters.size() > 0) {
-			FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(_invocation,second);
+			FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(_invocation,second.header());
 			for(int i=0; i < k-1; i++) {
 				constraints.add(new SSConstraint(language.reference(firstTypes.get(i)), secondTypes.get(i)));
 			}
@@ -90,7 +90,7 @@ public class JavaMostSpecificMethodOrder extends WeakPartialOrder<NormalMethod> 
 		return result;
 	}
 	
-	public boolean containsFixedArity(NormalMethod first, NormalMethod second) throws LookupException {
+	public boolean containsFixedArity(NormalMethod<?,?,?> first, NormalMethod<?,?,?> second) throws LookupException {
 		boolean result = true;
 		Java language = (Java) first.language(Java.class);
 		List<Type> Ts = first.header().formalParameterTypes();
@@ -100,7 +100,7 @@ public class JavaMostSpecificMethodOrder extends WeakPartialOrder<NormalMethod> 
 		new TypePredicate<TypeParameter, FormalTypeParameter>(FormalTypeParameter.class).filter(typeParameters);
 		List<Type> Ss;
 		if(typeParameters.size() > 0) {
-			FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(_invocation, second);
+			FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(_invocation, second.header());
 			for(int i=0; i < size; i++) {
 				constraints.add(new SSConstraint(language.reference(Ts.get(i)), Us.get(i)));
 			}

@@ -3,15 +3,12 @@ package jnome.core.type;
 import java.util.ArrayList;
 import java.util.List;
 
-import chameleon.core.lookup.LookupException;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.type.IntersectionTypeReference;
-import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.generics.ActualTypeArgument;
-import chameleon.util.CreationStackTrace;
 
 public class JavaUnionTypeReference extends IntersectionTypeReference<JavaUnionTypeReference> implements JavaTypeReference<JavaUnionTypeReference> {
 	

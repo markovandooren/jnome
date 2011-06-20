@@ -5,7 +5,6 @@ import java.util.Set;
 
 import jnome.core.language.Java;
 import jnome.core.type.ArrayType;
-import jnome.core.type.ArrayTypeReference;
 import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.association.OrderedMultiAssociation;
@@ -20,7 +19,6 @@ import chameleon.core.validation.VerificationResult;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.support.expression.ArrayIndex;
-import chameleon.util.CreationStackTrace;
 import chameleon.util.Util;
 
 /**

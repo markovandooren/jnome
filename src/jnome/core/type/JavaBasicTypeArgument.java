@@ -3,7 +3,6 @@ package jnome.core.type;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.generics.BasicTypeArgument;
-import chameleon.util.CreationStackTrace;
 
 public class JavaBasicTypeArgument extends BasicTypeArgument<JavaBasicTypeArgument> 
 //    implements JavaTypeReference<JavaBasicTypeArgument> 

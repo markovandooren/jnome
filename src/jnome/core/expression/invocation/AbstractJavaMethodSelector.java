@@ -23,7 +23,6 @@ import chameleon.core.expression.MethodInvocation;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.method.MethodHeader;
-import chameleon.core.method.SimpleNameMethodHeader;
 import chameleon.core.relation.WeakPartialOrder;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
@@ -33,7 +32,6 @@ import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.InstantiatedTypeParameter;
 import chameleon.oo.type.generics.TypeParameter;
 import chameleon.support.member.simplename.method.NormalMethod;
-import chameleon.util.CreationStackTrace;
 
 public abstract class AbstractJavaMethodSelector extends DeclarationSelector<NormalMethod> {
 
@@ -107,8 +105,6 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 
 	private TypeAssignmentSet actualTypeParameters(NormalMethod<?, ?, ?> originalMethod, boolean includeNonreference) throws LookupException {
 		MethodHeader methodHeader = originalMethod.header().clone();
-		// This object somehow escapes
-		((SimpleNameMethodHeader)methodHeader)._trace = new CreationStackTrace();
 		methodHeader.setOrigin(originalMethod.header());
 		methodHeader.setUniParent(originalMethod.parent());
 		List<TypeParameter> parameters = methodHeader.typeParameters();

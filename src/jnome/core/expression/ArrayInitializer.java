@@ -9,15 +9,15 @@ import jnome.core.type.ArrayType;
 import org.rejuse.association.OrderedMultiAssociation;
 import org.rejuse.java.collections.Visitor;
 
-import chameleon.core.expression.Expression;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
-import chameleon.core.variable.Variable;
-import chameleon.core.variable.VariableDeclaration;
-import chameleon.core.variable.VariableDeclarator;
 import chameleon.exception.ChameleonProgrammerException;
+import chameleon.oo.expression.Expression;
 import chameleon.oo.type.Type;
+import chameleon.oo.variable.Variable;
+import chameleon.oo.variable.VariableDeclaration;
+import chameleon.oo.variable.VariableDeclarator;
 
 /**
  * @author Marko van Dooren

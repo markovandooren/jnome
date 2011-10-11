@@ -9,9 +9,9 @@ import jnome.core.variable.MultiFormalParameter;
 
 import org.rejuse.predicate.TypePredicate;
 
-import chameleon.core.expression.MethodInvocation;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.relation.WeakPartialOrder;
+import chameleon.oo.expression.MethodInvocation;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.TypeParameter;

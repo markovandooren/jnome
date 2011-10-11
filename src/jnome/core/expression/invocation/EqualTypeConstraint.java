@@ -9,8 +9,8 @@ import jnome.core.type.JavaTypeReference;
 
 
 import chameleon.core.declaration.TargetDeclaration;
-import chameleon.core.expression.NamedTarget;
 import chameleon.core.lookup.LookupException;
+import chameleon.oo.expression.NamedTarget;
 import chameleon.oo.type.ConstructedType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.FormalTypeParameter;

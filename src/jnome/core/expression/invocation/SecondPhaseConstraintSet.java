@@ -11,11 +11,11 @@ import jnome.core.type.JavaTypeReference;
 import org.rejuse.predicate.TypePredicate;
 import org.rejuse.predicate.UnsafePredicate;
 
-import chameleon.core.expression.MethodInvocation;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.method.MethodHeader;
 import chameleon.exception.ChameleonProgrammerException;
+import chameleon.oo.expression.MethodInvocation;
 import chameleon.oo.language.ObjectOrientedLanguage;
+import chameleon.oo.method.MethodHeader;
 import chameleon.oo.type.IntersectionType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.ActualTypeArgument;

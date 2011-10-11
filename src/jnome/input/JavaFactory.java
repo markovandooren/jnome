@@ -3,7 +3,7 @@ package jnome.input;
 import jnome.core.method.JavaNormalMethod;
 import jnome.core.type.RegularJavaType;
 import chameleon.core.declaration.SimpleNameSignature;
-import chameleon.core.method.MethodHeader;
+import chameleon.oo.method.MethodHeader;
 import chameleon.oo.plugin.ObjectOrientedFactory;
 import chameleon.oo.type.RegularType;
 import chameleon.plugin.Plugin;

@@ -5,13 +5,13 @@ package jnome.core.language;
 
 import org.rejuse.logic.ternary.Ternary;
 
-import chameleon.core.declaration.DeclarationWithParametersSignature;
-import chameleon.core.declaration.SimpleNameDeclarationWithParametersSignature;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.member.Member;
-import chameleon.core.method.Method;
 import chameleon.core.relation.StrictPartialOrder;
 import chameleon.oo.language.ObjectOrientedLanguage;
+import chameleon.oo.member.DeclarationWithParametersSignature;
+import chameleon.oo.member.Member;
+import chameleon.oo.member.SimpleNameDeclarationWithParametersSignature;
+import chameleon.oo.method.Method;
 import chameleon.oo.type.Type;
 
 public class JavaImplementsRelation extends StrictPartialOrder<Member> {

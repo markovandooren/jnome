@@ -5,11 +5,11 @@ import jnome.core.language.Java;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.variable.RegularMemberVariable;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.inheritance.SubtypeRelation;
+import chameleon.oo.variable.RegularMemberVariable;
 import chameleon.support.modifier.Final;
 
 /**

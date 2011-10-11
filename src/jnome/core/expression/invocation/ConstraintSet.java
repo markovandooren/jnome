@@ -9,9 +9,9 @@ import java.util.List;
 import org.rejuse.association.OrderedMultiAssociation;
 import org.rejuse.predicate.TypePredicate;
 
-import chameleon.core.expression.MethodInvocation;
-import chameleon.core.method.Method;
-import chameleon.core.method.MethodHeader;
+import chameleon.oo.expression.MethodInvocation;
+import chameleon.oo.method.Method;
+import chameleon.oo.method.MethodHeader;
 import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.TypeParameter;
 

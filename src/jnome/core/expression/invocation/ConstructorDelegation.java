@@ -2,9 +2,9 @@ package jnome.core.expression.invocation;
 
 
 
-import chameleon.core.expression.MethodInvocation;
-import chameleon.core.expression.InvocationTarget;
 import chameleon.core.lookup.DeclarationSelector;
+import chameleon.oo.expression.InvocationTarget;
+import chameleon.oo.expression.MethodInvocation;
 import chameleon.support.member.simplename.method.NormalMethod;
 
 /**

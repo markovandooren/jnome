@@ -1,8 +1,8 @@
 package jnome.core.expression.invocation;
 
-import chameleon.core.expression.MethodInvocation;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.method.MethodHeader;
+import chameleon.oo.expression.MethodInvocation;
+import chameleon.oo.method.MethodHeader;
 
 
 public class FirstPhaseConstraintSet extends ConstraintSet<FirstPhaseConstraint> {

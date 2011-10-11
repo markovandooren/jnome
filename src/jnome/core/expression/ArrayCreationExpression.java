@@ -12,10 +12,10 @@ import org.rejuse.association.SingleAssociation;
 import org.rejuse.java.collections.Visitor;
 
 import chameleon.core.element.Element;
-import chameleon.core.expression.Expression;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
+import chameleon.oo.expression.Expression;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.support.expression.ArrayIndex;

@@ -6,9 +6,9 @@ package jnome.core.expression.invocation;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.DeclarationContainer;
 import chameleon.core.declaration.Signature;
-import chameleon.core.declaration.SimpleNameDeclarationWithParametersSignature;
 import chameleon.core.lookup.LookupException;
 import chameleon.exception.ChameleonProgrammerException;
+import chameleon.oo.member.SimpleNameDeclarationWithParametersSignature;
 import chameleon.support.member.simplename.SimpleNameMethodInvocation;
 import chameleon.support.member.simplename.method.NormalMethod;
 

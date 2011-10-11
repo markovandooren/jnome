@@ -2,10 +2,10 @@ package jnome.core.type;
 
 import jnome.core.language.Java;
 import chameleon.core.declaration.SimpleNameSignature;
-import chameleon.core.method.SimpleNameMethodHeader;
-import chameleon.core.variable.FormalParameter;
+import chameleon.oo.method.SimpleNameMethodHeader;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
+import chameleon.oo.variable.FormalParameter;
 import chameleon.support.member.simplename.operator.infix.InfixOperator;
 import chameleon.support.modifier.Native;
 import chameleon.support.modifier.Public;

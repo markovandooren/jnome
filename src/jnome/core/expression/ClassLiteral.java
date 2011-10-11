@@ -9,10 +9,10 @@ import jnome.core.type.BasicJavaTypeReference;
 import org.rejuse.association.SingleAssociation;
 
 import chameleon.core.element.Element;
-import chameleon.core.expression.Expression;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
+import chameleon.oo.expression.Expression;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;

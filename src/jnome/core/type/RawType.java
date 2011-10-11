@@ -13,11 +13,10 @@ import org.rejuse.logic.ternary.Ternary;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.member.Member;
-import chameleon.core.method.Method;
 import chameleon.core.reference.SimpleReference;
-import chameleon.core.variable.FormalParameter;
 import chameleon.exception.ChameleonProgrammerException;
+import chameleon.oo.member.Member;
+import chameleon.oo.method.Method;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeElement;
 import chameleon.oo.type.TypeWithBody;
@@ -26,6 +25,7 @@ import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.TypeParameter;
 import chameleon.oo.type.inheritance.InheritanceRelation;
 import chameleon.oo.type.inheritance.SubtypeRelation;
+import chameleon.oo.variable.FormalParameter;
 import chameleon.util.Pair;
 
 public class RawType extends TypeWithBody implements JavaType {

@@ -3,9 +3,9 @@ package jnome.core.language;
 import org.rejuse.property.PropertySet;
 
 import chameleon.core.element.Element;
-import chameleon.core.member.Member;
 import chameleon.core.property.ChameleonProperty;
 import chameleon.core.property.PropertyRule;
+import chameleon.oo.member.Member;
 import chameleon.oo.type.TypeElement;
 import chameleon.support.member.simplename.variable.MemberVariableDeclarator;
 

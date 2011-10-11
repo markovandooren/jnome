@@ -1,16 +1,16 @@
 package jnome.core.method;
 
 import jnome.core.language.Java;
-import chameleon.core.declaration.DeclarationWithParametersSignature;
 import chameleon.core.declaration.Signature;
-import chameleon.core.declaration.SimpleNameDeclarationWithParametersSignature;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.member.Member;
-import chameleon.core.member.MemberRelationSelector;
-import chameleon.core.member.OverridesRelation;
-import chameleon.core.method.Method;
-import chameleon.core.method.MethodHeader;
-import chameleon.core.method.RegularMethod;
+import chameleon.oo.member.DeclarationWithParametersSignature;
+import chameleon.oo.member.Member;
+import chameleon.oo.member.MemberRelationSelector;
+import chameleon.oo.member.OverridesRelation;
+import chameleon.oo.member.SimpleNameDeclarationWithParametersSignature;
+import chameleon.oo.method.Method;
+import chameleon.oo.method.MethodHeader;
+import chameleon.oo.method.RegularMethod;
 import chameleon.oo.type.Type;
 import chameleon.support.member.simplename.method.NormalMethod;
 

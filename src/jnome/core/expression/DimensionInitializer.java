@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.rejuse.association.SingleAssociation;
 
-import chameleon.core.expression.Expression;
 import chameleon.core.namespace.Namespace;
 import chameleon.core.namespace.NamespaceElement;
 import chameleon.core.namespace.NamespaceElementImpl;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
+import chameleon.oo.expression.Expression;
 import chameleon.util.Util;
 
 /**

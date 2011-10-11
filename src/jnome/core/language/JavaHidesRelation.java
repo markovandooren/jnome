@@ -6,11 +6,11 @@ package jnome.core.language;
 import org.rejuse.logic.ternary.Ternary;
 
 import chameleon.core.lookup.LookupException;
-import chameleon.core.member.Member;
 import chameleon.core.relation.StrictPartialOrder;
-import chameleon.core.variable.RegularMemberVariable;
 import chameleon.oo.language.ObjectOrientedLanguage;
+import chameleon.oo.member.Member;
 import chameleon.oo.type.Type;
+import chameleon.oo.variable.RegularMemberVariable;
 import chameleon.support.member.simplename.method.NormalMethod;
 
 public class JavaHidesRelation extends StrictPartialOrder<Member> {

@@ -1,9 +1,9 @@
 package jnome.core.expression.invocation;
 
 import chameleon.core.declaration.Declaration;
-import chameleon.core.expression.InvocationTarget;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
+import chameleon.oo.expression.InvocationTarget;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.ClassBody;
 import chameleon.oo.type.Type;

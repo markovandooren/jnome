@@ -1,3 +1,7 @@
 bin
 .classpath
 .project
+src/jnome/input/parser/JavaLexer.java
+src/jnome/input/parser/JavaParser.java
+src/jnome/input/parser/Java_JavaL.java
+src/jnome/input/parser/Java_JavaP.java

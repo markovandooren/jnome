@@ -490,7 +490,7 @@ public class Java extends ObjectOrientedLanguage {
 		}
 
 		@Override
-		public TypeReference createTypeReference(Type type) {
+		public BasicJavaTypeReference createTypeReference(Type type) {
 			BasicJavaTypeReference result = createTypeReference(type.getFullyQualifiedName());
 			if(! (type instanceof TypeIndirection)) {
 				for(TypeParameter par: type.parameters(TypeParameter.class)) {
@@ -503,6 +503,28 @@ public class Java extends ObjectOrientedLanguage {
 			return result;
 		}
 
+		public BasicJavaTypeReference createExpandedTypeReference(Type type) throws LookupException {
+			BasicJavaTypeReference result = createTypeReference(type.getFullyQualifiedName());
+			if(! (type instanceof TypeIndirection)) {
+				for(TypeParameter par: type.parameters(TypeParameter.class)) {
+					if(par instanceof InstantiatedTypeParameter) {
+						InstantiatedTypeParameter inst = (InstantiatedTypeParameter) par;
+						ActualTypeArgument argument = inst.argument();
+						ActualTypeArgument clone = argument.clone();
+						if(argument instanceof ActualTypeArgumentWithTypeReference) {
+							ActualTypeArgumentWithTypeReference arg = (ActualTypeArgumentWithTypeReference) argument;
+							TypeReference tref = arg.typeReference();
+							Type t = tref.getType();
+							((ActualTypeArgumentWithTypeReference)clone).setTypeReference(createExpandedTypeReference(t));
+						}
+						result.addArgument(clone);
+					}
+				}
+			}
+			return result;
+		}
+		
+		
 		@Override
 		public BasicJavaTypeReference createTypeReference(CrossReference<?, ? extends TargetDeclaration> target, String name) {
 			return new BasicJavaTypeReference(target, name);

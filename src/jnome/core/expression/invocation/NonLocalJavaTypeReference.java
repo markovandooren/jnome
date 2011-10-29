@@ -19,9 +19,12 @@ import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.BasicTypeReference;
 import chameleon.oo.type.NonLocalTypeReference;
 import chameleon.oo.type.TypeReference;
+import chameleon.util.CreationStackTrace;
 
 public class NonLocalJavaTypeReference extends NonLocalTypeReference<NonLocalJavaTypeReference> implements JavaTypeReference<NonLocalJavaTypeReference>{
 
+	private CreationStackTrace _trace = new CreationStackTrace();
+	
 	public NonLocalJavaTypeReference(JavaTypeReference tref) {
     super(tref);
 	}
@@ -82,43 +85,6 @@ public class NonLocalJavaTypeReference extends NonLocalTypeReference<NonLocalJav
 	
 	public static TypeReference replace(TypeReference replacement, final Declaration declarator, TypeReference<?> in) throws LookupException {
 		return replace(replacement, declarator,in,TypeReference.class);
-//		ObjectOrientedLanguage lang = in.language(ObjectOrientedLanguage.class);
-//		TypeReference result = in;
-//		UnsafePredicate<BasicTypeReference, LookupException> predicate = new UnsafePredicate<BasicTypeReference, LookupException>() {
-//			@Override
-//			public boolean eval(BasicTypeReference object) throws LookupException {
-//				return object.getDeclarator().sameAs(declarator);
-//			}
-//		};
-//		List<BasicTypeReference> crefs = in.descendants(BasicTypeReference.class, 
-//				predicate);
-//		if(in instanceof BasicTypeReference) {
-//			BasicTypeReference in2 = (BasicTypeReference) in;
-//			if(predicate.eval(in2)) {
-//				crefs.add(in2);
-//			}
-//		}
-//		for(BasicTypeReference cref: crefs) {
-//			TypeReference substitute;
-//			if(replacement.isDerived()) {
-//				Element oldParent = replacement.parent();
-////				replacement.setUniParent(null);
-//			  substitute = lang.createNonLocalTypeReference(replacement.clone(),oldParent);
-//			  substitute.setOrigin(replacement);
-//			} else {
-//			  substitute = lang.createNonLocalTypeReference(replacement.clone());
-//			}
-//			if(! cref.isDerived()) {
-//				SingleAssociation crefParentLink = cref.parentLink();
-//				crefParentLink.getOtherRelation().replace(crefParentLink, substitute.parentLink());
-//			} else {
-//				substitute.setUniParent(in.parent());
-//			}
-//			if(cref == in) {
-//				result = substitute;
-//			}
-//		}
-//		return result;
 	}
 
 	public JavaTypeReference componentTypeReference() {
@@ -130,11 +96,6 @@ public class NonLocalJavaTypeReference extends NonLocalTypeReference<NonLocalJav
 		NonLocalJavaTypeReference result = new NonLocalJavaTypeReference(erasedReference, lookupParent());
 		return result;
 	}
-
-//	public Type erasure() throws LookupException {
-//		JavaTypeReference actualReference = actualReference();
-//		return actualReference.erasure();
-//	}
 
 	public JavaTypeReference toArray(int arrayDimension) {
   	JavaTypeReference result = new ArrayTypeReference(clone(), arrayDimension);

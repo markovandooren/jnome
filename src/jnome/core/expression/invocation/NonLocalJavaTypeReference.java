@@ -19,11 +19,10 @@ import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.BasicTypeReference;
 import chameleon.oo.type.NonLocalTypeReference;
 import chameleon.oo.type.TypeReference;
-import chameleon.util.CreationStackTrace;
 
 public class NonLocalJavaTypeReference extends NonLocalTypeReference<NonLocalJavaTypeReference> implements JavaTypeReference<NonLocalJavaTypeReference>{
 
-	private CreationStackTrace _trace = new CreationStackTrace();
+//	private CreationStackTrace _trace = new CreationStackTrace();
 	
 	public NonLocalJavaTypeReference(JavaTypeReference tref) {
     super(tref);

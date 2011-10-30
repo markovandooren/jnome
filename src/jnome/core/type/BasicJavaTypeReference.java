@@ -17,19 +17,17 @@ import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.NamespaceOrTypeReference;
 import chameleon.core.reference.CrossReference;
 import chameleon.core.reference.CrossReferenceWithName;
-import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.expression.NamedTarget;
 import chameleon.oo.type.BasicTypeReference;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.ActualTypeArgument;
-import chameleon.util.CreationStackTrace;
 
 public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeReference> implements JavaTypeReference<BasicJavaTypeReference>, CrossReferenceWithName<BasicJavaTypeReference, Type> {
 
-	public static boolean TRACE = false;
-	
-	private CreationStackTrace _trace = (TRACE ? new CreationStackTrace() : null);
+//	public static boolean TRACE = false;
+//	
+//	private CreationStackTrace _trace = (TRACE ? new CreationStackTrace() : null);
 	
 	public BasicJavaTypeReference(CrossReference<?,? extends TargetDeclaration> target, String name) {
   	super(target,name);

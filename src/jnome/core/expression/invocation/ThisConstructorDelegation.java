@@ -3,7 +3,7 @@ package jnome.core.expression.invocation;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
-import chameleon.oo.expression.InvocationTarget;
+import chameleon.core.reference.CrossReferenceTarget;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.ClassBody;
 import chameleon.oo.type.Type;
@@ -40,7 +40,7 @@ public class ThisConstructorDelegation extends ConstructorDelegation<ThisConstru
 	   }
   }
 
-  protected ThisConstructorDelegation cloneInvocation(InvocationTarget target) {
+  protected ThisConstructorDelegation cloneInvocation(CrossReferenceTarget target) {
     return new ThisConstructorDelegation();
   }
 

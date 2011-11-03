@@ -13,9 +13,9 @@ import chameleon.core.element.Element;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.NamespaceElementImpl;
+import chameleon.core.reference.CrossReferenceTarget;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
-import chameleon.oo.expression.InvocationTarget;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.generics.TypeParameter;
@@ -26,12 +26,12 @@ import chameleon.util.Util;
 
 public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvocation> {
 
-	public JavaMethodInvocation(String name, InvocationTarget target) {
+	public JavaMethodInvocation(String name, CrossReferenceTarget target) {
 		super(name, target);
 	}
 
 	@Override
-  protected JavaMethodInvocation cloneInvocation(InvocationTarget target) {
+  protected JavaMethodInvocation cloneInvocation(CrossReferenceTarget target) {
   	// target is already cloned.
 		return new JavaMethodInvocation(name(), target);
   }
@@ -53,7 +53,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 	   	return result;
 	  }
 	   
-  	InvocationTarget<?> target = getTarget();
+  	CrossReferenceTarget<?> target = getTarget();
   	if(target == null) {
       result = lexicalLookupStrategy().lookUp(selector);
   	} else {

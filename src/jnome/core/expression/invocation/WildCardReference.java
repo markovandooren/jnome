@@ -12,6 +12,7 @@ import org.rejuse.association.SingleAssociation;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
+import chameleon.core.lookup.LookupStrategy;
 import chameleon.core.namespace.NamespaceElementImpl;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
@@ -79,4 +80,7 @@ public abstract class WildCardReference<E extends WildCardReference> extends Nam
 			return Util.createNonNullList(typeReference());
 		}
 		
+		public LookupStrategy targetContext() throws LookupException {
+			return getType().targetContext();
+		}
 }

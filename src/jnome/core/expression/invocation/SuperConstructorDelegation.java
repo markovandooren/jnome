@@ -5,8 +5,8 @@ import java.util.List;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
+import chameleon.core.reference.CrossReferenceTarget;
 import chameleon.exception.ChameleonProgrammerException;
-import chameleon.oo.expression.InvocationTarget;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.Type;
 import chameleon.support.member.simplename.method.NormalMethod;
@@ -29,7 +29,7 @@ public class SuperConstructorDelegation extends ConstructorDelegation<SuperConst
 	    return nearestAncestor(Type.class).getDirectSuperTypes().get(0).lexicalLookupStrategy().lookUp(selector());
   }
   
-  protected SuperConstructorDelegation cloneInvocation(InvocationTarget target) {
+  protected SuperConstructorDelegation cloneInvocation(CrossReferenceTarget target) {
     return new SuperConstructorDelegation();
   }
 

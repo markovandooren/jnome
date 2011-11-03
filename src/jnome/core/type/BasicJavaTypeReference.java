@@ -16,6 +16,7 @@ import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.NamespaceOrTypeReference;
 import chameleon.core.reference.CrossReference;
+import chameleon.core.reference.CrossReferenceTarget;
 import chameleon.core.reference.CrossReferenceWithName;
 import chameleon.oo.expression.NamedTarget;
 import chameleon.oo.type.BasicTypeReference;
@@ -29,11 +30,11 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
 //	
 //	private CreationStackTrace _trace = (TRACE ? new CreationStackTrace() : null);
 	
-	public BasicJavaTypeReference(CrossReference<?,? extends TargetDeclaration> target, String name) {
+	public BasicJavaTypeReference(CrossReferenceTarget<?> target, String name) {
   	super(target,name);
   }
   
-  public BasicJavaTypeReference(CrossReference<?,? extends TargetDeclaration> target, SimpleNameSignature signature) {
+  public BasicJavaTypeReference(CrossReferenceTarget<?> target, SimpleNameSignature signature) {
   	super(target,signature);
   }
   
@@ -157,8 +158,14 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
   }
 
 	public JavaTypeReference erasedReference() {
-	  CrossReference<?, ? extends TargetDeclaration> erasure = language(Java.class).erasure(getTarget());
-		JavaTypeReference result = new BasicJavaTypeReference(erasure, (SimpleNameSignature)signature().clone());
+		JavaTypeReference result = null;
+	  CrossReferenceTarget<?> target = getTarget();
+	  if(target instanceof CrossReference) {
+	  	CrossReference<?, ? extends TargetDeclaration> erasure = language(Java.class).erasure((CrossReference)target);
+	  	result = new BasicJavaTypeReference(erasure, (SimpleNameSignature)signature().clone());
+	  } else if (target == null) {
+	  	result = new BasicJavaTypeReference(null, (SimpleNameSignature)signature().clone());
+	  }
 	  return result;
 	}
 

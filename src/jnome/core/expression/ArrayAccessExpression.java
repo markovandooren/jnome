@@ -11,12 +11,12 @@ import org.rejuse.java.collections.Visitor;
 
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
+import chameleon.core.reference.CrossReferenceTarget;
 import chameleon.core.validation.BasicProblem;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
 import chameleon.oo.expression.Assignable;
 import chameleon.oo.expression.Expression;
-import chameleon.oo.expression.InvocationTarget;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.Type;
 import chameleon.support.expression.ArrayIndex;
@@ -74,7 +74,7 @@ public class ArrayAccessExpression extends Expression<ArrayAccessExpression> imp
   }
 
   public ArrayAccessExpression clone() {
-    InvocationTarget target = null;
+    CrossReferenceTarget target = null;
     if(getTarget() != null) {
       target = getTarget().clone();
     }

@@ -43,9 +43,9 @@ import chameleon.core.namespacepart.DemandImport;
 import chameleon.core.namespacepart.Import;
 import chameleon.core.namespacepart.NamespacePart;
 import chameleon.core.namespacepart.TypeImport;
+import chameleon.core.reference.CrossReferenceTarget;
 import chameleon.core.reference.SpecificReference;
 import chameleon.oo.expression.Expression;
-import chameleon.oo.expression.InvocationTarget;
 import chameleon.oo.expression.Literal;
 import chameleon.oo.expression.MethodInvocation;
 import chameleon.oo.expression.NamedTarget;
@@ -1435,7 +1435,7 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public String toCodeNamedTargetRef(NamedTargetExpression var) throws LookupException {
-    InvocationTarget target = var.getTarget();
+    CrossReferenceTarget target = var.getTarget();
     if(target != null) {
 		  return toCode(target)+"."+var.name();
     } else {
@@ -1469,7 +1469,7 @@ public class JavaCodeWriter extends Syntax {
   
   public String toCodeSuperTarget(SuperTarget nt) throws LookupException {
     StringBuffer result = new StringBuffer();
-    InvocationTarget<?> target = nt.getTarget();
+    CrossReferenceTarget<?> target = nt.getTarget();
 		if(target != null) {
       result.append(toCode(target));
       result.append(".");

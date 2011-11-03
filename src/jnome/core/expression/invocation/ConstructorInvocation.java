@@ -14,8 +14,8 @@ import chameleon.core.element.Element;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.lookup.LookupStrategy;
+import chameleon.core.reference.CrossReferenceTarget;
 import chameleon.oo.expression.Expression;
-import chameleon.oo.expression.InvocationTarget;
 import chameleon.oo.type.ClassBody;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
@@ -32,7 +32,7 @@ public class ConstructorInvocation extends RegularMethodInvocation<ConstructorIn
   /**
    * @param target
    */
-  public ConstructorInvocation(BasicJavaTypeReference type, InvocationTarget target) {
+  public ConstructorInvocation(BasicJavaTypeReference type, CrossReferenceTarget target) {
     super(type.name(),target);
     setTypeReference(type);
   }
@@ -123,7 +123,7 @@ public class ConstructorInvocation extends RegularMethodInvocation<ConstructorIn
   	}
   }
 
-  protected ConstructorInvocation cloneInvocation(InvocationTarget target) {
+  protected ConstructorInvocation cloneInvocation(CrossReferenceTarget target) {
     ConstructorInvocation result = new ConstructorInvocation((BasicJavaTypeReference)getTypeReference().clone(), (Expression)target);
     Type anonymousInnerType = getAnonymousInnerType();
 		if(anonymousInnerType != null) {

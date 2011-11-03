@@ -10,14 +10,13 @@ import org.rejuse.association.SingleAssociation;
 
 import chameleon.core.declaration.Declaration;
 import chameleon.core.element.Element;
-import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
+import chameleon.core.lookup.LookupStrategy;
 import chameleon.core.namespace.NamespaceElementImpl;
 import chameleon.core.reference.UnresolvableCrossReference;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
 import chameleon.oo.language.ObjectOrientedLanguage;
-import chameleon.oo.type.DerivedType;
 import chameleon.oo.type.IntersectionTypeReference;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
@@ -187,4 +186,8 @@ public class GenericTypeReference extends NamespaceElementImpl<GenericTypeRefere
 		return result.toString();
 	}
 
+	@Override
+	public LookupStrategy targetContext() throws LookupException {
+		return getElement().targetContext();
+	}
 }

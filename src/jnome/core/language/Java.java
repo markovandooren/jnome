@@ -45,10 +45,10 @@ import chameleon.core.property.DynamicChameleonProperty;
 import chameleon.core.property.StaticChameleonProperty;
 import chameleon.core.reference.CrossReference;
 import chameleon.core.reference.ElementReferenceWithTarget;
+import chameleon.core.reference.CrossReferenceTarget;
 import chameleon.core.relation.EquivalenceRelation;
 import chameleon.core.relation.StrictPartialOrder;
 import chameleon.exception.ChameleonProgrammerException;
-import chameleon.oo.expression.InvocationTarget;
 import chameleon.oo.expression.NamedTarget;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.member.Member;
@@ -186,25 +186,26 @@ public class Java extends ObjectOrientedLanguage {
 	}
 	
 	public <T extends CrossReference<?,? extends TargetDeclaration>> CrossReference<?,? extends TargetDeclaration> erasure(T ref) {
+		CrossReference result = null;
 		if(ref instanceof JavaTypeReference) {
-			return ((JavaTypeReference) ref).erasedReference();
-		} else if( ref != null){
-			CrossReference<?,? extends TargetDeclaration> result = ref.clone();
-			// replace target with erasure.
+			result = ((JavaTypeReference) ref).erasedReference();
+		} else if (ref != null) { 
+			result = ref.clone();
 			if(ref instanceof NamedTarget) {
 				NamedTarget namedTarget = (NamedTarget)result;
-				InvocationTarget<?> target = namedTarget.getTarget();
+				CrossReferenceTarget<?> target = namedTarget.getTarget();
 				if(target instanceof CrossReference) {
-				  namedTarget.setTarget((InvocationTarget)erasure((T)target));
+					namedTarget.setTarget((CrossReferenceTarget)erasure((T)target));
 				}
 			} else if(ref instanceof ElementReferenceWithTarget) {
 				ElementReferenceWithTarget eref = (ElementReferenceWithTarget) result;
-				eref.setTarget(erasure(eref.getTarget()));
+				CrossReferenceTarget target = eref.getTarget();
+				if(target instanceof CrossReference) {
+					eref.setTarget(erasure((CrossReference)target));
+				}
 			}
-			return result;
-		} else {
-			return null;
 		}
+		return result;
 	}
 
 	private static class NumericTypeProperty extends DynamicChameleonProperty {

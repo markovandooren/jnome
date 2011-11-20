@@ -3,6 +3,7 @@ package jnome.core.expression.invocation;
 import java.util.List;
 
 import chameleon.core.declaration.Declaration;
+import chameleon.core.lookup.DeclarationCollector;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.reference.CrossReferenceTarget;
@@ -26,7 +27,8 @@ public class SuperConstructorDelegation extends ConstructorDelegation<SuperConst
   
   // @FIXME: does not work with multiple inheritance. Call is ambiguous.
   public NormalMethod getMethod() throws LookupException {
-	    return nearestAncestor(Type.class).getDirectSuperTypes().get(0).lexicalLookupStrategy().lookUp(selector());
+//	    return nearestAncestor(Type.class).getDirectSuperTypes().get(0).lexicalLookupStrategy().lookUp(selector());
+  	return getElement();
   }
   
   protected SuperConstructorDelegation cloneInvocation(CrossReferenceTarget target) {
@@ -34,19 +36,19 @@ public class SuperConstructorDelegation extends ConstructorDelegation<SuperConst
   }
 
   public <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
-  	X result = null;
   	Type parent = nearestAncestor(Type.class);
   	if(parent == null) {
   		throw new ChameleonProgrammerException("The super constructor delegation is not inside a type.");
   	}
   	List<Type> types = parent.getDirectSuperTypes();
+		DeclarationCollector<X> collector = new DeclarationCollector<X>(selector);
   	for(Type type: types) {
-  		result = type.targetContext().lookUp(selector);
-  		if(result != null) {
-  			break;
+  		type.targetContext().lookUp(collector);
+  		if(!collector.willProceed()) {
+  			return collector.result();
   		}
   	}
-  	return result;
+  	throw new LookupException("No super constructor was found.");
   }
 
 	@Override

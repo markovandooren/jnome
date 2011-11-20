@@ -11,6 +11,7 @@ import org.rejuse.association.SingleAssociation;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.DeclarationContainer;
 import chameleon.core.element.Element;
+import chameleon.core.lookup.DeclarationCollector;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.lookup.LookupStrategy;
@@ -101,13 +102,15 @@ public class ConstructorInvocation extends RegularMethodInvocation<ConstructorIn
   }
   
   public <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
-  	X result = actualType().targetContext().lookUp(selector);
-  	if(result == null) {
-  		actualType().targetContext().lookUp(selector);
-			throw new LookupException("Constructor returned by invocation is null", this);
-  	} else {
-		  return result;
-  	}
+		DeclarationCollector<X> collector = new DeclarationCollector<X>(selector);
+  	actualType().targetContext().lookUp(collector);
+  	return collector.result();
+//  	if(result == null) {
+//  		actualType().targetContext().lookUp(selector);
+//			throw new LookupException("Constructor returned by invocation is null", this);
+//  	} else {
+//		  return result;
+//  	}
   }
 
   

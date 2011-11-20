@@ -1,6 +1,7 @@
 package jnome.core.expression.invocation;
 
 import chameleon.core.declaration.Declaration;
+import chameleon.core.lookup.DeclarationCollector;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.reference.CrossReferenceTarget;
@@ -31,13 +32,15 @@ public class ThisConstructorDelegation extends ConstructorDelegation<ThisConstru
 //  }
 
   public <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
-	   X result = nearestAncestor(ClassBody.class).lexicalLookupStrategy().lookUp(selector);
-	   if(result != null) {
-		   return result;
-	   } else {
-	  	 nearestAncestor(ClassBody.class).lexicalLookupStrategy().lookUp(selector);
-	  	 throw new LookupException("Cannot find the target of a this constructor delegation.");
-	   }
+		DeclarationCollector<X> collector = new DeclarationCollector<X>(selector);
+	  nearestAncestor(ClassBody.class).lexicalLookupStrategy().lookUp(collector);
+	  return collector.result();
+//	   if(result != null) {
+//		   return result;
+//	   } else {
+//	  	 nearestAncestor(ClassBody.class).lexicalLookupStrategy().lookUp(selector);
+//	  	 throw new LookupException("Cannot find the target of a this constructor delegation.");
+//	   }
   }
 
   protected ThisConstructorDelegation cloneInvocation(CrossReferenceTarget target) {

@@ -10,6 +10,7 @@ import org.rejuse.association.SingleAssociation;
 
 import chameleon.core.declaration.Declaration;
 import chameleon.core.element.Element;
+import chameleon.core.lookup.DeclarationCollector;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.NamespaceElementImpl;
@@ -53,32 +54,34 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 	   	return result;
 	  }
 	   
+		DeclarationCollector<X> collector = new DeclarationCollector<X>(selector);
   	CrossReferenceTarget<?> target = getTarget();
   	if(target == null) {
-      result = lexicalLookupStrategy().lookUp(selector);
+      lexicalLookupStrategy().lookUp(collector);
   	} else {
-  		result = target.targetContext().lookUp(selector);
+  		target.targetContext().lookUp(collector);
   	}
-		if (result != null) {
-			if(cache) {
+  	result = collector.result();
+//		if (result != null) {
+//			if(cache) {
 				result = (X) ((JavaMethodSelector)selector).instance((NormalMethod) result);
-			}
+//			}
 	  	//OPTIMISATION
 	  	if(cache) {
 	  		setCache((NormalMethod) result);
 	  	}
 	    return result;
-		}
-		else {
-			//repeat lookup for debugging purposes.
-			//Config.setCaching(false);
-	  	if(target == null) {
-	      result = lexicalLookupStrategy().lookUp(selector);
-	  	} else {
-	  		result = target.targetContext().lookUp(selector);
-	  	}
-			throw new LookupException("Method returned by invocation of "+ name()+" is null", this);
-		}
+//		}
+//		else {
+//			//repeat lookup for debugging purposes.
+//			//Config.setCaching(false);
+//	  	if(target == null) {
+//	      result = lexicalLookupStrategy().lookUp(selector);
+//	  	} else {
+//	  		result = target.targetContext().lookUp(selector);
+//	  	}
+//			throw new LookupException("Method returned by invocation of "+ name()+" is null", this);
+//		}
   }
 
 	

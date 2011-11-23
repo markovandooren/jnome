@@ -29,7 +29,7 @@ import chameleon.oo.expression.Literal;
 import chameleon.oo.expression.Assignable;
 import chameleon.oo.expression.NamedTarget;
 import chameleon.oo.expression.NamedTargetExpression;
-import chameleon.oo.expression.InvocationTarget;
+import chameleon.core.reference.CrossReferenceTarget;
 import chameleon.oo.expression.TargetedExpression;
 import chameleon.oo.expression.VariableReference;
 

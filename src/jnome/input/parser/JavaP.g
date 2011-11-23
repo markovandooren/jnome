@@ -188,14 +188,14 @@ scope MethodScope {
 }
 
 scope TargetScope {
-  InvocationTarget target;
+  CrossReferenceTarget target;
   Token start;
 }
 
 
 @parser::members {
 
-  public RegularMethodInvocation invocation(String name, InvocationTarget target) {
+  public RegularMethodInvocation invocation(String name, CrossReferenceTarget target) {
     return new JavaMethodInvocation(name, target);
   }
 
@@ -209,10 +209,10 @@ scope TargetScope {
     _javaFactory = factory;
   }
 
-  public InvocationTarget cloneTargetOfTarget(NamedTarget target) {
-    InvocationTarget result = null;
+  public CrossReferenceTarget cloneTargetOfTarget(NamedTarget target) {
+    CrossReferenceTarget result = null;
     if(target != null) {
-      InvocationTarget targetOfTarget = target.getTarget();
+      CrossReferenceTarget targetOfTarget = target.getTarget();
       if(targetOfTarget != null) {
         result = targetOfTarget.clone();
       }
@@ -228,8 +228,8 @@ scope TargetScope {
      return factory().createNormalMethod(header);
   }
 
-  public InvocationTarget cloneTarget(InvocationTarget target) {
-    InvocationTarget result = null;
+  public CrossReferenceTarget cloneTarget(CrossReferenceTarget target) {
+    CrossReferenceTarget result = null;
     if(target != null) {
         result = target.clone();
     }
@@ -1604,7 +1604,7 @@ selector returns [Expression element]
 @init{
 Token start=$TargetScope::start;
 Token stop=null;
-InvocationTarget old = $TargetScope::target;
+CrossReferenceTarget old = $TargetScope::target;
 }
 	:	
 	'.' name=identifierRule 
@@ -1624,7 +1624,7 @@ InvocationTarget old = $TargetScope::target;
             {
               check_null(supsuf.element); 
               retval.element = supsuf.element;
-              InvocationTarget tar = new SuperTarget(old);
+              CrossReferenceTarget tar = new SuperTarget(old);
               ((TargetedExpression)retval.element).setTarget(tar);
               setKeyword(tar,spkw);
               setLocation(old,start,spkw);
@@ -1658,7 +1658,7 @@ Token stop=null;
                      $TargetScope::start=skw;
                      } 
         supsuf=superSuffix 
-        {InvocationTarget tar = new SuperTarget();
+        {CrossReferenceTarget tar = new SuperTarget();
          setKeyword(tar,skw);
          retval.element = supsuf.element;
          ((TargetedExpression)retval.element).setTarget(tar); 
@@ -1680,7 +1680,7 @@ moreidentifierRuleSuffixRubbish returns [Expression element]
 scope TargetScope;
 @init{
 Token stop = null;
-InvocationTarget scopeTarget = null;
+CrossReferenceTarget scopeTarget = null;
 }
 @after {
 if(! retval.element.descendants().contains(scopeTarget)) {
@@ -1723,7 +1723,7 @@ if(! retval.element.descendants().contains(scopeTarget)) {
     |   '.' supkw='super'  
             supsuf=superSuffix {
                retval.element.removeAllTags();
-               InvocationTarget tar = new SuperTarget($TargetScope::target);
+               CrossReferenceTarget tar = new SuperTarget($TargetScope::target);
                setKeyword(tar,supkw); 
                setLocation(tar,$TargetScope::start,supkw);
                retval.element = supsuf.element;
@@ -1746,7 +1746,7 @@ scope TargetScope;
     |   '.' 'class' {retval.element = new ClassLiteral(createTypeReference((NamedTarget)$TargetScope::target));}
     |   '.' gen=explicitGenericInvocation {retval.element = gen.element;}
     |   '.' supkw='super' supsuf=superSuffix {
-              InvocationTarget tar = new SuperTarget($TargetScope::target);
+              CrossReferenceTarget tar = new SuperTarget($TargetScope::target);
               setKeyword(tar,supkw);
               setLocation(tar, $TargetScope::start,supkw);
               retval.element = supsuf.element;

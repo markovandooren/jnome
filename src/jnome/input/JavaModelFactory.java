@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Set;
 
 import jnome.core.language.Java;
 import jnome.core.type.RegularJavaType;
@@ -17,9 +15,6 @@ import jnome.output.JavaCodeWriter;
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
-import org.rejuse.io.fileset.FileNamePattern;
-import org.rejuse.io.fileset.FileSet;
-import org.rejuse.io.fileset.PatternPredicate;
 
 import chameleon.core.compilationunit.CompilationUnit;
 import chameleon.core.declaration.SimpleNameSignature;
@@ -35,7 +30,6 @@ import chameleon.input.ParseException;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.member.Member;
 import chameleon.oo.method.SimpleNameMethodHeader;
-import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.inheritance.SubtypeRelation;
@@ -194,22 +188,22 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
   		}
   	}
 
-    public static void main(String[] args) {
-        try {
-            long start = Calendar.getInstance().getTimeInMillis();
-            FileSet fileSet = new FileSet();
-            fileSet.include(new PatternPredicate(new File(args[0]),
-                    new FileNamePattern(args[1])));
-            Set files = fileSet.getFiles();
-            ModelFactoryUsingANTLR factory = new JavaModelFactory(files);
-            long stop = Calendar.getInstance().getTimeInMillis();
-            System.out.println("DONE !!!");
-            System.out.println("Acquiring took " + (stop - start) + "ms.");
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    public static void main(String[] args) {
+//        try {
+//            long start = Calendar.getInstance().getTimeInMillis();
+//            FileSet fileSet = new FileSet();
+//            fileSet.include(new PatternPredicate(new File(args[0]),
+//                    new FileNamePattern(args[1])));
+//            Set files = fileSet.getFiles();
+//            ModelFactoryUsingANTLR factory = new JavaModelFactory(files);
+//            long stop = Calendar.getInstance().getTimeInMillis();
+//            System.out.println("DONE !!!");
+//            System.out.println("Acquiring took " + (stop - start) + "ms.");
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public void addPrefixOperator(Type type, String returnType, String symbol) {
         TypeReference tr = ((Java)language()).createTypeReference(null, returnType);

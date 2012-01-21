@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project basedir="." default="build" name="Chameleon" xmlns:ivy="antlib:org.apache.ivy.ant">
+<project basedir="." default="build" name="Jnome" xmlns:ivy="antlib:org.apache.ivy.ant">
   <property file="properties"/>
   <property file="default.properties"/>
 
@@ -22,25 +22,18 @@
   <property name="dist.local.jar" value="${dist.local}/jar"/>
   <property name="src" value="src"/>
 
-  <!-- <path id="chameleon.classpath">
-      <pathelement location="lib/log4j-1.2.16.jar"/>
-      <pathelement location="lib/junit-4.10.jar"/>
-      <pathelement location="lib/rejuse-1.0.0.jar"/>
-  </path> -->
-
   <target name="bootstrap">
     <ivy:settings file="ivy/generic_ivy_settings.xml"/>
     <ivy:resolve file="ivy/bootstrap.xml"/>
     <ivy:retrieve/>
   </target>
 
-
   <target name="init-ivy">
     <ivy:settings file="ivy/ivysettings.xml"/>
     <ivy:resolve file="ivy/ivy.xml"/>
     <ivy:retrieve/>
     <ivy:buildnumber organisation="distrinet.cs.kuleuven.be" module="chameleon"/>
-    <ivy:cachepath pathid="chameleon.classpath" conf="default" />
+    <ivy:cachepath pathid="jnome.classpath" conf="default" />
   </target>
 
   <target name="init" depends="init-ivy">
@@ -70,7 +63,7 @@
   </target>
 
   <target name="jar" depends="compile">
-    <jar jarfile="${dist.local.jar}/chameleon-local.jar" basedir="${bin}"        includes="**"/>
+    <jar jarfile="${dist.local.jar}/jnome-local.jar" basedir="${bin}"        includes="**"/>
   </target>
 
   <target name="build" depends="jar">
@@ -78,7 +71,7 @@
 
   <target name="build-version" depends="compile">
     <fail unless="version" message="You must provide a version with the       command line argument -Dversion=major.minor.micro"/>
-    <jar jarfile="${dist.jar}/chameleon-${version}.jar" basedir="${bin}"         includes="**"/>
+    <jar jarfile="${dist.jar}/jnome-${version}.jar" basedir="${bin}"         includes="**"/>
     <echo message="${ant.project.name}: ${ant.file}"/>
   </target>
 

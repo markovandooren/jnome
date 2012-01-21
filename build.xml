@@ -32,7 +32,7 @@
     <ivy:settings file="ivy/ivysettings.xml"/>
     <ivy:resolve file="ivy/ivy.xml"/>
     <ivy:retrieve/>
-    <ivy:buildnumber organisation="distrinet.cs.kuleuven.be" module="chameleon"/>
+    <ivy:buildnumber organisation="distrinet.cs.kuleuven.be" module="jnome"/>
     <ivy:cachepath pathid="jnome.classpath" conf="default" />
   </target>
 
@@ -58,7 +58,7 @@
   <target name="compile" depends="init">
     <javac debug="true" debuglevel="${debuglevel}" destdir="${bin}" source="${source}" target="${target}">
       <src path="${src}"/>
-      <classpath refid="chameleon.classpath"/>
+      <classpath refid="jnome.classpath"/>
     </javac>
   </target>
 

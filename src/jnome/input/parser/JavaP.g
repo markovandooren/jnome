@@ -409,7 +409,7 @@ packageDeclaration returns [NamespacePart element]
 importDeclaration returns [Import element]
     :   im='import' st='static'? qn=qualifiedName 
         {if(st == null) {
-           retval.element = new TypeImport(typeRef($qn.text));
+           retval.element = new DirectImport(typeRef($qn.text),Type.class);
            setKeyword(retval.element,im);
          } else {
            retval.element = new SingleStaticImport(typeRef(Util.getAllButLastPart($qn.text)),Util.getLastPart($qn.text));

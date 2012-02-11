@@ -412,7 +412,7 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		List<Pair<Type, TypeParameter>> slowTrace = new ArrayList<Pair<Type, TypeParameter>>(trace);
 //		List<Pair<TypeParameter, TypeParameter>> slowTrace = trace;
 		boolean result = false;
-		if(first.baseType().equals(second.baseType())) {
+		if(first.baseType().sameAs(second.baseType())) {
 			result = compatibleParameters(first, second, slowTrace);// || rawType(second); equality in formal parameter should take care of this.
 		}
 		return result;

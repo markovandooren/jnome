@@ -55,7 +55,7 @@ import chameleon.core.namespace.NamespaceReference;
 
 import chameleon.core.namespacepart.NamespacePart;
 import chameleon.core.namespacepart.Import;
-import chameleon.core.namespacepart.DirectImport;
+import chameleon.oo.namespacepart.TypeImport;
 import chameleon.core.namespacepart.DemandImport;
 
 import chameleon.core.reference.CrossReference;

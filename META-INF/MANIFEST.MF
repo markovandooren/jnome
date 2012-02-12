@@ -1,0 +1,31 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Chameleon Java Plugin
+Bundle-SymbolicName: be.chameleon.eclipse.java;singleton:=true
+Bundle-Version: 1.0.6
+Bundle-ClassPath: bin/.,
+ .,
+ lib/antlr-runtime-3.2.jar,
+ dist/local/jar/jnome-local.jar
+Bundle-Vendor: KU Leuven
+Export-Package: jnome.core.decorator,
+ jnome.core.enumeration,
+ jnome.core.expression,
+ jnome.core.expression.invocation,
+ jnome.core.imports,
+ jnome.core.language,
+ jnome.core.method,
+ jnome.core.modifier,
+ jnome.core.type,
+ jnome.core.variable,
+ jnome.eclipse,
+ jnome.input,
+ jnome.input.parser,
+ jnome.output,
+ jnome.test,
+ jnome.tool,
+ jnome.tool.design
+Require-Bundle: org.eclipse.swt;bundle-version="3.7.0",
+ be.chameleon.eclipse;bundle-version="1.0.4",
+ org.eclipse.jface;bundle-version="3.7.0"
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

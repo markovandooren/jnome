@@ -33,7 +33,13 @@
     <ivy:resolve file="ivy/ivy.xml"/>
     <ivy:retrieve/>
     <ivy:buildnumber organisation="distrinet.cs.kuleuven.be" module="jnome"/>
-    <ivy:cachepath pathid="jnome.classpath" conf="default" />
+    <ivy:cachepath pathid="ivy.classpath" conf="default" />
+    <path id="project.classpath">
+      <path refid="ivy.classpath"/>
+      <fileset dir="${eclipse.home}">
+        <include name="**/*.jar"/>
+      </fileset>
+    </path>
   </target>
 
   <target name="init" depends="init-ivy">
@@ -58,7 +64,7 @@
   <target name="compile" depends="init">
     <javac debug="true" debuglevel="${debuglevel}" destdir="${bin}" source="${source}" target="${target}">
       <src path="${src}"/>
-      <classpath refid="jnome.classpath"/>
+      <classpath refid="project.classpath"/>
     </javac>
   </target>
 

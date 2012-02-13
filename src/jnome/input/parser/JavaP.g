@@ -957,7 +957,7 @@ primitiveType returns [JavaTypeReference element]
 
 variableModifier returns [Modifier element]
     :   'final' {retval.element = new Final();}
-    |   annotation
+    |   a=annotation {retval.element = a.element;}
     ;
 
 typeArguments returns [List<ActualTypeArgument> element]

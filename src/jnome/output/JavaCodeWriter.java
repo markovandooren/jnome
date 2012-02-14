@@ -802,9 +802,7 @@ public class JavaCodeWriter extends Syntax {
   }
 
   public String toCodeMethod(Method<?,?,?> method) throws LookupException {
-   //XXX modifiers
 	    final StringBuffer result = startLine();
-	    //Modifiers
 	    
 	    addModifiers(method, result);
 	    

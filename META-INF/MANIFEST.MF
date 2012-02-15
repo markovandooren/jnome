@@ -24,7 +24,11 @@ Export-Package: jnome.core.decorator,
  jnome.output,
  jnome.test,
  jnome.tool,
- jnome.tool.design
+ jnome.tool.design,
+ org.antlr.runtime,
+ org.antlr.runtime.debug,
+ org.antlr.runtime.misc,
+ org.antlr.runtime.tree
 Require-Bundle: org.eclipse.swt;bundle-version="3.7.0",
  be.chameleon.eclipse;bundle-version="1.0.4",
  org.eclipse.jface;bundle-version="3.7.0"

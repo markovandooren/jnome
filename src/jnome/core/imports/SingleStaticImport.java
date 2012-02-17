@@ -24,7 +24,7 @@ import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.util.Util;
 
-public class SingleStaticImport extends Import<SingleStaticImport> {
+public class SingleStaticImport extends Import {
 
 	public SingleStaticImport(TypeReference tref, String name) {
 		setTypeReference(tref);
@@ -93,7 +93,7 @@ public class SingleStaticImport extends Import<SingleStaticImport> {
 			}
 
 			@Override
-			public String selectionName(DeclarationContainer<?> container) throws LookupException {
+			public String selectionName(DeclarationContainer container) throws LookupException {
 				return name();
 			}
 			
@@ -117,19 +117,7 @@ public class SingleStaticImport extends Import<SingleStaticImport> {
   }
 
   public void setTypeReference(TypeReference reference) {
-  	if(reference != null) {
-  		_typeReference.connectTo(reference.parentLink());
-  	}
-  	else {
-  		_typeReference.connectTo(null);
-  	}
+  	setAsParent(_typeReference,reference);
   }
-
-//@Override
-//public boolean importsSameAs(Import other) throws LookupException {
-//	boolean result = other instanceof SingleStaticImport;
-//	
-//	return result;
-//}
 
 }

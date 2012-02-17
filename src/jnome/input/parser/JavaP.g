@@ -292,7 +292,7 @@ scope TargetScope {
     String fqn = type.getFullyQualifiedName();
     if(fqn != null) {
       if(type.nonMemberInheritanceRelations().isEmpty() && (! fqn.equals("java.lang.Object"))){
-        type.addInheritanceRelation(new SubtypeRelation(createTypeReference(new NamespaceOrTypeReference("java.lang"),"Object")));
+        type.addInheritanceRelation(new SubtypeRelation(createTypeReference(new NamedTarget("java.lang"),"Object")));
       }
     }
 
@@ -309,7 +309,7 @@ scope TargetScope {
   
   public void addNonTopLevelObjectInheritance(Type type) {
     if(type.nonMemberInheritanceRelations().isEmpty()){
-      type.addInheritanceRelation(new SubtypeRelation(createTypeReference(new NamespaceOrTypeReference("java.lang"),"Object")));
+      type.addInheritanceRelation(new SubtypeRelation(createTypeReference(new NamedTarget("java.lang"),"Object")));
     }
   }
   
@@ -317,11 +317,11 @@ scope TargetScope {
     return ((Java)language()).createTypeReference(qn);
   }
 
-  public JavaTypeReference createTypeReference(CrossReference<?, ? extends TargetDeclaration> target, String name) {
+  public JavaTypeReference createTypeReference(CrossReference<? extends TargetDeclaration> target, String name) {
     return ((Java)language()).createTypeReference(target,name);
   }
   
-  public JavaTypeReference createTypeReference(CrossReference<?, ? extends TargetDeclaration> target, SimpleNameSignature signature) {
+  public JavaTypeReference createTypeReference(CrossReference<? extends TargetDeclaration> target, SimpleNameSignature signature) {
     return ((Java)language()).createTypeReference(target,signature);
   }
 
@@ -897,7 +897,7 @@ type returns [JavaTypeReference element]
 	;
 
 classOrInterfaceType returns [JavaTypeReference element]
-@init{NamespaceOrTypeReference target = null;
+@init{NamedTarget target = null;
       Token stop = null;
      }
 // We will process the different parts. The current type reference (return value) is kept in retval. Alongside that
@@ -906,7 +906,7 @@ classOrInterfaceType returns [JavaTypeReference element]
 	:	name=identifierRule 
 	          {
 	           retval.element = typeRef($name.text); 
-	           target =  new NamespaceOrTypeReference($name.text);
+	           target =  new NamedTarget($name.text);
 	           stop=name.start; 
 	          } 
 	        (args=typeArguments 
@@ -925,7 +925,7 @@ classOrInterfaceType returns [JavaTypeReference element]
 	             retval.element = createTypeReference(target,$namex.text);
 	             // We must clone the target here, or else it will be removed from the
 	             // type reference we just created.
-	             target = new NamespaceOrTypeReference(target.clone(),$namex.text);
+	             target = new NamedTarget($namex.text,target.clone());
 	           } else {
 	             throw new Error();
 	             //retval.element = createTypeReference(retval.element,$namex.text);

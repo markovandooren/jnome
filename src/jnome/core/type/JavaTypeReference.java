@@ -7,9 +7,9 @@ import chameleon.oo.type.TypeReference;
  * 
  * @author Marko van Dooren
  */
-public interface JavaTypeReference<E extends JavaTypeReference> extends TypeReference<E> {
+public interface JavaTypeReference extends TypeReference {
 
-	public E clone();
+	public JavaTypeReference clone();
 	
 //	public void setArrayDimension(int i);
 	

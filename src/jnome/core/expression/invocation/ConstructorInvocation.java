@@ -15,6 +15,7 @@ import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.lookup.LookupStrategy;
 import chameleon.core.reference.CrossReferenceTarget;
+import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.expression.Expression;
 import chameleon.oo.type.ClassBody;
 import chameleon.oo.type.RegularType;
@@ -27,7 +28,7 @@ import chameleon.util.Util;
  * @author Marko van Dooren
  *
  */
-public class ConstructorInvocation extends RegularMethodInvocation<ConstructorInvocation> implements DeclarationContainer<ConstructorInvocation> {
+public class ConstructorInvocation extends RegularMethodInvocation implements DeclarationContainer {
 
   /**
    * @param target
@@ -79,7 +80,7 @@ public class ConstructorInvocation extends RegularMethodInvocation<ConstructorIn
 		if(body == null) {
 			_body.connectTo(null);
 		} else {
-			_body.connectTo(createAnonymousType(body).parentLink());
+			setAsParent(_body,createAnonymousType(body));
 		}
 	}
 
@@ -116,11 +117,7 @@ public class ConstructorInvocation extends RegularMethodInvocation<ConstructorIn
   }
   
   private void setAnonymousType(Type anonymous) {
-  	if(anonymous == null) {
-  		_body.connectTo(null);
-  	} else {
-  		_body.connectTo(anonymous.parentLink());
-  	}
+  	setAsParent(_body,anonymous);
   }
 
   protected ConstructorInvocation cloneInvocation(CrossReferenceTarget target) {
@@ -180,9 +177,9 @@ public class ConstructorInvocation extends RegularMethodInvocation<ConstructorIn
 		return selector.selection(declarations());
 	}
 
-//	@Override
-//	public void setName(String name) {
-//		getTypeReference().setName(name);
-//	}
+	@Override
+	public LookupStrategy localStrategy() throws LookupException {
+		return language().lookupFactory().createLocalLookupStrategy(this);
+	}
 
 }

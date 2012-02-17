@@ -21,7 +21,7 @@ import chameleon.oo.type.BasicTypeReference;
 import chameleon.oo.type.NonLocalTypeReference;
 import chameleon.oo.type.TypeReference;
 
-public class NonLocalJavaTypeReference extends NonLocalTypeReference<NonLocalJavaTypeReference> implements JavaTypeReference<NonLocalJavaTypeReference>{
+public class NonLocalJavaTypeReference extends NonLocalTypeReference implements JavaTypeReference {
 
 //	private CreationStackTrace _trace = new CreationStackTrace();
 	
@@ -38,7 +38,7 @@ public class NonLocalJavaTypeReference extends NonLocalTypeReference<NonLocalJav
 		return new NonLocalJavaTypeReference((JavaTypeReference) actualReference().clone(),lookupParent());
 	}
 	
-	public static <E extends Element<?>> E replace(TypeReference replacement, final Declaration declarator, E in, Class<E> kind) throws LookupException {
+	public static <E extends Element> E replace(TypeReference replacement, final Declaration declarator, E in, Class<E> kind) throws LookupException {
 		ObjectOrientedLanguage lang = in.language(ObjectOrientedLanguage.class);
 		E result = in;
 		UnsafePredicate<BasicTypeReference, LookupException> predicate = new UnsafePredicate<BasicTypeReference, LookupException>() {
@@ -83,7 +83,7 @@ public class NonLocalJavaTypeReference extends NonLocalTypeReference<NonLocalJav
 	}
 
 	
-	public static TypeReference replace(TypeReference replacement, final Declaration declarator, TypeReference<?> in) throws LookupException {
+	public static TypeReference replace(TypeReference replacement, final Declaration declarator, TypeReference in) throws LookupException {
 		return replace(replacement, declarator,in,TypeReference.class);
 	}
 
@@ -103,8 +103,8 @@ public class NonLocalJavaTypeReference extends NonLocalTypeReference<NonLocalJav
   }
 
 	@Override
-	public String infoDisplayName() {
-		return actualReference().infoDisplayName();
+	public String toString() {
+		return actualReference().toString();
 	}
 
 }

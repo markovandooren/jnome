@@ -8,7 +8,7 @@ import chameleon.core.element.Element;
 import chameleon.core.modifier.ModifierImpl;
 import chameleon.core.property.ChameleonProperty;
 
-public class AnnotationType extends ModifierImpl<AnnotationType> {
+public class AnnotationType extends ModifierImpl {
 
 	@Override
 	public AnnotationType clone() {

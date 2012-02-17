@@ -113,7 +113,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 					List<TypeConstraint> constraints = ((CapturedTypeParameter) par).constraints();
 					if(constraints.size() == 1 && constraints.get(0) instanceof EqualityConstraint) {
 						EqualityConstraint eq = (EqualityConstraint) constraints.get(0);
-						BasicTypeArgument arg = new BasicTypeArgument<BasicTypeArgument>(eq.typeReference().clone());
+						BasicTypeArgument arg = new BasicTypeArgument(eq.typeReference().clone());
 						arg.setUniParent(eq);
 						actualsOfF.add(arg);
 					}
@@ -198,7 +198,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 		}
 	}
 	
-	public List<TypeParameter> involvedTypeParameters(JavaTypeReference<?> tref) throws LookupException {
+	public List<TypeParameter> involvedTypeParameters(JavaTypeReference tref) throws LookupException {
 		UnsafePredicate<BasicJavaTypeReference, LookupException> predicate = new UnsafePredicate<BasicJavaTypeReference, LookupException>() {
 
 			@Override

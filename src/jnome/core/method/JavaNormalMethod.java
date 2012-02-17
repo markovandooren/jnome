@@ -14,14 +14,14 @@ import chameleon.oo.method.RegularMethod;
 import chameleon.oo.type.Type;
 import chameleon.support.member.simplename.method.NormalMethod;
 
-public class JavaNormalMethod<E extends RegularMethod<E,H,S>, H extends MethodHeader<H, S>, S extends DeclarationWithParametersSignature> extends NormalMethod<E,H,S> {
+public class JavaNormalMethod extends NormalMethod {
 	
-	public JavaNormalMethod(H header) {
+	public JavaNormalMethod(MethodHeader header) {
 		super(header);
 	}
 	
-	protected E cloneThis() {
-    return (E) new JavaNormalMethod(header().clone());
+	protected JavaNormalMethod cloneThis() {
+    return new JavaNormalMethod((MethodHeader) header().clone());
   }
 
 	public MemberRelationSelector<Method> overridesSelector() {
@@ -41,7 +41,7 @@ public class JavaNormalMethod<E extends RegularMethod<E,H,S>, H extends MethodHe
 			result =  first.sameKind(second) && ((Type)first.nearestAncestor(Type.class)).subTypeOf((Type)second.nearestAncestor(Type.class));
 			if(result) {
 				DeclarationWithParametersSignature signature1 = first.signature();
-				DeclarationWithParametersSignature<?> signature2 = second.signature();
+				DeclarationWithParametersSignature signature2 = second.signature();
 				result = signature1.sameParameterBoundsAs(signature2);
 				if(!result) {
 					DeclarationWithParametersSignature erasure2 = signature2.language(Java.class).erasure((SimpleNameDeclarationWithParametersSignature) signature2);

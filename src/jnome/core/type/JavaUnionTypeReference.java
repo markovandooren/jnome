@@ -10,7 +10,7 @@ import chameleon.oo.type.IntersectionTypeReference;
 import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.generics.ActualTypeArgument;
 
-public class JavaUnionTypeReference extends IntersectionTypeReference<JavaUnionTypeReference> implements JavaTypeReference<JavaUnionTypeReference> {
+public class JavaUnionTypeReference extends IntersectionTypeReference implements JavaTypeReference {
 	
 	public JavaUnionTypeReference() {
 		

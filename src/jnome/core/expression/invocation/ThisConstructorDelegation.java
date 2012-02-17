@@ -12,7 +12,7 @@ import chameleon.support.member.simplename.method.NormalMethod;
 /**
  * @author Marko van Dooren
  */
-public class ThisConstructorDelegation extends ConstructorDelegation<ThisConstructorDelegation> {
+public class ThisConstructorDelegation extends ConstructorDelegation {
 
   public ThisConstructorDelegation(){
     super(null);

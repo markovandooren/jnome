@@ -14,7 +14,7 @@ import chameleon.oo.variable.VariableDeclaration;
  * 
  * @author Marko
  */
-public class JavaVariableDeclaration<V extends Variable> extends VariableDeclaration<V> {
+public class JavaVariableDeclaration extends VariableDeclaration {
 	
   public JavaVariableDeclaration(SimpleNameSignature sig, Expression expr) {
 		super(sig,expr);
@@ -57,7 +57,7 @@ public class JavaVariableDeclaration<V extends Variable> extends VariableDeclara
  /**
   * This method adds the array dimension. 
   */
- protected void transform(V variable) {
+ protected void transform(Variable variable) {
 	 int arrayDimension = arrayDimension();
 	 if(arrayDimension > 0) {
 	   JavaTypeReference ref = (JavaTypeReference)variable.getTypeReference();

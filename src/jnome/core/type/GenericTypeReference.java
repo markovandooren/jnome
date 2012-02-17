@@ -24,7 +24,7 @@ import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.generics.ActualTypeArgument;
 import chameleon.util.Util;
 
-public class GenericTypeReference extends NamespaceElementImpl<GenericTypeReference> implements JavaTypeReference<GenericTypeReference> {
+public class GenericTypeReference extends NamespaceElementImpl implements JavaTypeReference {
 
 	public GenericTypeReference(BasicJavaTypeReference target,List<ActualTypeArgument> arguments) {
 		setTarget(target);
@@ -36,9 +36,7 @@ public class GenericTypeReference extends NamespaceElementImpl<GenericTypeRefere
   }
   
   public void addArgument(ActualTypeArgument arg) {
-  	if(arg != null) {
-  		_genericParameters.add(arg.parentLink());
-  	}
+  	add(_genericParameters,arg);
   }
   
   public void addAllArguments(List<ActualTypeArgument> args) {
@@ -48,9 +46,7 @@ public class GenericTypeReference extends NamespaceElementImpl<GenericTypeRefere
   }
   
   public void removeArgument(ActualTypeArgument arg) {
-  	if(arg != null) {
-  		_genericParameters.remove(arg.parentLink());
-  	}
+  	remove(_genericParameters,arg);
   }
   
   private OrderedMultiAssociation<GenericTypeReference,ActualTypeArgument> _genericParameters = new OrderedMultiAssociation<GenericTypeReference, ActualTypeArgument>(this);
@@ -105,8 +101,8 @@ public class GenericTypeReference extends NamespaceElementImpl<GenericTypeRefere
 		return language(ObjectOrientedLanguage.class).createIntersectionReference(clone(), other.clone());
 	}
 
-	public TypeReference intersectionDoubleDispatch(IntersectionTypeReference<?> other) {
-		IntersectionTypeReference<?> result = other.clone();
+	public TypeReference intersectionDoubleDispatch(IntersectionTypeReference other) {
+		IntersectionTypeReference result = other.clone();
 		result.add(clone());
 		return result;
 	}
@@ -170,14 +166,14 @@ public class GenericTypeReference extends NamespaceElementImpl<GenericTypeRefere
 	}
 
 	@Override
-	public String infoDisplayName() {
+	public String toString() {
 		StringBuffer result = new StringBuffer();
-		result.append(target().infoDisplayName());
+		result.append(target().toString());
 		result.append('<');
 		List<ActualTypeArgument> args = typeArguments();
 		int size = args.size();
 		for(int i=0; i<size;i++) {
-			result.append(args.get(i).infoDisplayName());
+			result.append(args.get(i).toString());
 			if(i < size - 1) {
 				result.append(',');
 			}

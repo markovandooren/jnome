@@ -63,7 +63,7 @@ public class JavaEditorExtension extends EclipseEditorExtension {
 		try {
 			String result;
 			if (element instanceof Method) {
-				Method<?,?,?> method = (Method<?,?,? >)element;
+				Method method = (Method)element;
 				result = method.name();
 				List<FormalParameter> params = method.formalParameters();
 				result += "(";

@@ -21,7 +21,7 @@ import chameleon.util.Pair;
  * 
  * @author Marko van Dooren
  */
-public class ErasedTypeParameter extends AbstractInstantiatedTypeParameter<ErasedTypeParameter> {
+public class ErasedTypeParameter extends AbstractInstantiatedTypeParameter {
 
 	public ErasedTypeParameter(SimpleNameSignature signature, ActualTypeArgument argument) {
 		super(signature, argument);

@@ -11,8 +11,7 @@ import chameleon.support.member.simplename.method.NormalMethod;
  * @author Marko van Dooren
  */
 
-public abstract class ConstructorDelegation<E extends ConstructorDelegation<E>>
-    extends MethodInvocation<E, NormalMethod> {
+public abstract class ConstructorDelegation extends MethodInvocation<NormalMethod> {
 
   public ConstructorDelegation(CrossReferenceTarget target) {
     super(target);

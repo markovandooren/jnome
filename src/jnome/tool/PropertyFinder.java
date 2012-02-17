@@ -56,11 +56,11 @@ public class PropertyFinder {
 		  	//		  	System.out.println("Searching type "+count+" of "+size);
 		  	Java lang = type.language(Java.class);
 		  	count++;
-		  	for(Method<?,?,?> method: type.directlyDeclaredElements(Method.class)) {
+		  	for(Method method: type.directlyDeclaredElements(Method.class)) {
 		  		String name = method.signature().name();
 		  		if(name.startsWith(first)) {
 		  			String X = name.substring(3);
-		  			for(Method<?,?,?> getter: type.directlyDeclaredElements(Method.class)) {
+		  			for(Method getter: type.directlyDeclaredElements(Method.class)) {
 		  				String otherName = getter.signature().name();
 		  				if(otherName.equals(second+X)) {
 		  					if(! type.isTrue(lang.INTERFACE)) {
@@ -113,11 +113,11 @@ public class PropertyFinder {
 //		  	System.out.println("Searching type "+count+" of "+size);
 		  	Java lang = type.language(Java.class);
 		  		count++;
-		  		for(Method<?,?,?> method: type.directlyDeclaredElements(Method.class)) {
+		  		for(Method method: type.directlyDeclaredElements(Method.class)) {
 		  			String name = method.signature().name();
 		  			if(name.startsWith(first)) {
 		  				String X = name.substring(3);
-		  				for(Method<?,?,?> getter: type.directlyDeclaredElements(Method.class)) {
+		  				for(Method getter: type.directlyDeclaredElements(Method.class)) {
 		  					String otherName = getter.signature().name();
 		  					if(otherName.equals(second+X)) {
 //				  		  System.out.println(method.nearestAncestor(Type.class).getFullyQualifiedName()+" : "+X);
@@ -144,16 +144,16 @@ public class PropertyFinder {
 				//				System.out.println("Searching type "+count+" of "+size);
 				Java lang = type.language(Java.class);
 				count++;
-				for(Method<?,?,?> method: type.directlyDeclaredElements(Method.class)) {
+				for(Method method: type.directlyDeclaredElements(Method.class)) {
 					String name = method.signature().name();
 					if(name.startsWith(first)) {
 						String X = name.substring(3);
-						for(Method<?,?,?> getter: type.directlyDeclaredElements(Method.class)) {
+						for(Method getter: type.directlyDeclaredElements(Method.class)) {
 							String otherName = getter.signature().name();
 							if(otherName.equals(second+X)) {
 			  				boolean foundThird = false;
 
-								for(Method<?,?,?> three: type.directlyDeclaredElements(Method.class)) {
+								for(Method three: type.directlyDeclaredElements(Method.class)) {
 									String thirdName = three.signature().name();
 									if(thirdName.equals(third+X+"s")) {
 			  						foundThird = true;

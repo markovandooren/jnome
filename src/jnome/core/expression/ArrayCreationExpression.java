@@ -24,7 +24,7 @@ import chameleon.util.Util;
 /**
  * @author Marko van Dooren
  */
-public class ArrayCreationExpression extends Expression<ArrayCreationExpression>{
+public class ArrayCreationExpression extends Expression {
 	
   public ArrayCreationExpression(JavaTypeReference type) {
     setTypeReference(type);
@@ -41,11 +41,9 @@ public class ArrayCreationExpression extends Expression<ArrayCreationExpression>
     return _typeReference.getOtherEnd();
   }
 
-    public void setTypeReference(JavaTypeReference type) {
-        SingleAssociation<? extends TypeReference, ? super ArrayCreationExpression> tref = type.parentLink();
-        SingleAssociation<? extends JavaTypeReference, ? super ArrayCreationExpression> ref = (SingleAssociation<? extends JavaTypeReference, ? super ArrayCreationExpression>)tref;
-        _typeReference.connectTo(ref);
-    }
+  public void setTypeReference(JavaTypeReference type) {
+  	setAsParent(_typeReference,type);
+  }
 
 	/**
 	 * DIMENSION INITIALIZERS
@@ -59,12 +57,12 @@ public class ArrayCreationExpression extends Expression<ArrayCreationExpression>
   }
 
   public void addDimensionInitializer(ArrayIndex init) {
-	    _dimensionInitializers.add(init.parentLink());
-	  }
+  	add(_dimensionInitializers,init);
+  }
 
-	  public void removeDimensionInitializer(ArrayIndex init) {
-	    _dimensionInitializers.remove(init.parentLink());
-	  }
+  public void removeDimensionInitializer(ArrayIndex init) {
+  	remove(_dimensionInitializers,init);
+  }
 
   public List<ArrayIndex> getDimensionInitializers() {
     return _dimensionInitializers.getOtherEnds();
@@ -84,12 +82,7 @@ public class ArrayCreationExpression extends Expression<ArrayCreationExpression>
   }
 
   public void setInitializer(ArrayInitializer initializer) {
-    if (initializer != null) {
-      _init.connectTo(initializer.parentLink());
-    }
-    else {
-      _init.connectTo(null);
-    }
+    setAsParent(_init,initializer);
   }
 
   protected Type actualType() throws LookupException {

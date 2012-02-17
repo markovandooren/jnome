@@ -22,7 +22,7 @@ import chameleon.util.Util;
 /**
  * @author Marko van Dooren
  */
-public class ClassLiteral extends Expression<ClassLiteral> {
+public class ClassLiteral extends Expression {
 
   public ClassLiteral(TypeReference tref) {
     setTarget(tref);
@@ -30,7 +30,7 @@ public class ClassLiteral extends Expression<ClassLiteral> {
 
   protected Type actualType() throws LookupException {
   	BasicJavaTypeReference tref = (BasicJavaTypeReference) language(ObjectOrientedLanguage.class).createTypeReferenceInDefaultNamespace("java.lang.Class");
-  	tref.addArgument(new BasicTypeArgument<BasicTypeArgument>(target().clone()));
+  	tref.addArgument(new BasicTypeArgument(target().clone()));
   	tref.setUniParent(this);
   	return tref.getElement();
   }
@@ -59,7 +59,7 @@ public class ClassLiteral extends Expression<ClassLiteral> {
   }
   
   public void setTarget(TypeReference type) {
-    _typeReference.connectTo(type.parentLink());
+    setAsParent(_typeReference,type);
   }
 
 	@Override

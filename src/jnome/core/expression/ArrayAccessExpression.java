@@ -25,7 +25,7 @@ import chameleon.util.Util;
 /**
  * @author Marko van Dooren
  */
-public class ArrayAccessExpression extends Expression<ArrayAccessExpression> implements Assignable<ArrayAccessExpression> {
+public class ArrayAccessExpression extends Expression implements Assignable {
 
   public ArrayAccessExpression(Expression target) {
     setTarget(target);
@@ -39,7 +39,7 @@ public class ArrayAccessExpression extends Expression<ArrayAccessExpression> imp
   }
 
   public void setTarget(Expression expression) {
-    _target.connectTo(expression.parentLink());
+    setAsParent(_target,expression);
   }
 
 	/**
@@ -52,12 +52,12 @@ public class ArrayAccessExpression extends Expression<ArrayAccessExpression> imp
   }
 
   public void addIndex(ArrayIndex index) {
-	    _indicesLink.add(index.parentLink());
-	  }
+  	add(_indicesLink,index);
+  }
 
-	  public void removeIndex(ArrayIndex index) {
-	    _indicesLink.remove(index.parentLink());
-	  }
+  public void removeIndex(ArrayIndex index) {
+  	remove(_indicesLink,index);
+  }
 	  
   public List<ArrayIndex> getIndices() {
     return _indicesLink.getOtherEnds();

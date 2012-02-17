@@ -38,7 +38,7 @@ public class JavaMostSpecificMethodOrder extends WeakPartialOrder<NormalMethod> 
 		return result;
 	}
 
-	public boolean containsVariableArity(NormalMethod<?,?,?> first, NormalMethod<?,?,?> second) throws LookupException {
+	public boolean containsVariableArity(NormalMethod first, NormalMethod second) throws LookupException {
 		boolean result = true;
 		Java language = (Java) first.language(Java.class);
 		List<Type> firstTypes = first.header().formalParameterTypes();
@@ -90,7 +90,7 @@ public class JavaMostSpecificMethodOrder extends WeakPartialOrder<NormalMethod> 
 		return result;
 	}
 	
-	public boolean containsFixedArity(NormalMethod<?,?,?> first, NormalMethod<?,?,?> second) throws LookupException {
+	public boolean containsFixedArity(NormalMethod first, NormalMethod second) throws LookupException {
 		boolean result = true;
 		Java language = (Java) first.language(Java.class);
 		List<Type> Ts = first.header().formalParameterTypes();

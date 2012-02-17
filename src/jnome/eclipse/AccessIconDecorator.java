@@ -9,12 +9,12 @@ import chameleon.exception.ModelException;
 public class AccessIconDecorator extends PrefixIconDecorator {
 
 	@Override
-	public boolean appliesTo(Element<?> element) throws ModelException {
+	public boolean appliesTo(Element element) throws ModelException {
 		return element instanceof ElementWithModifiers;
 	}
 
 	@Override
-	public String prefix(Element<?> element) throws ModelException {
+	public String prefix(Element element) throws ModelException {
 		Java language = element.language(Java.class);
 		String result;
 		if(element.isTrue(language.PRIVATE)) {

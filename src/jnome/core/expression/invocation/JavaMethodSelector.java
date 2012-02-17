@@ -17,7 +17,7 @@ public class JavaMethodSelector extends AbstractJavaMethodSelector {
   	/**
 		 * 
 		 */
-		private final SimpleNameMethodInvocation<?,?> _javaMethodInvocation;
+		private final SimpleNameMethodInvocation _javaMethodInvocation;
 
 		/**
 		 * @param javaMethodInvocation
@@ -44,13 +44,13 @@ public class JavaMethodSelector extends AbstractJavaMethodSelector {
     }
 
     @Override
-		public String selectionName(DeclarationContainer<?> container) {
+		public String selectionName(DeclarationContainer container) {
 			return invocation().name();
 		}
 
 
 
-		protected SimpleNameMethodInvocation<?,?> invocation() {
+		protected SimpleNameMethodInvocation invocation() {
 			return _javaMethodInvocation;
 		}
   }

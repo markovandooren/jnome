@@ -14,6 +14,7 @@ import chameleon.core.language.Language;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LocalLookupStrategy;
 import chameleon.core.lookup.LookupException;
+import chameleon.core.lookup.LookupStrategy;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
 import chameleon.oo.expression.Expression;
@@ -24,7 +25,7 @@ import chameleon.oo.type.DeclarationWithType;
 import chameleon.oo.type.Type;
 import chameleon.util.Util;
 
-public class EnumConstant extends FixedSignatureMember<EnumConstant,SimpleNameSignature,EnumConstant> implements DeclarationWithType<EnumConstant,SimpleNameSignature>, DeclarationContainer<EnumConstant>{
+public class EnumConstant extends FixedSignatureMember implements DeclarationWithType, DeclarationContainer {
 
 	public EnumConstant(SimpleNameSignature signature) {
 		super(signature);
@@ -32,7 +33,7 @@ public class EnumConstant extends FixedSignatureMember<EnumConstant,SimpleNameSi
 	
 	@Override
 	public EnumConstant clone() {
-		EnumConstant result = new EnumConstant(signature().clone());
+		EnumConstant result = new EnumConstant((SimpleNameSignature) signature().clone());
 		result.setBody(body().clone());
 		for(Expression arg: actualArguments()) {
 			result.addParameter(arg.clone());
@@ -59,7 +60,7 @@ public class EnumConstant extends FixedSignatureMember<EnumConstant,SimpleNameSi
  private OrderedMultiAssociation<EnumConstant,Expression> _parameters = new OrderedMultiAssociation<EnumConstant,Expression>(this);
  
   public void addParameter(Expression parameter) {
-  	setAsParent(_parameters, parameter);
+  	add(_parameters, parameter);
   }
   
   public void addAllParameters(List<Expression> parameters) {
@@ -69,7 +70,7 @@ public class EnumConstant extends FixedSignatureMember<EnumConstant,SimpleNameSi
   }
 
   public void removeParameter(Expression parameter) {
-  	_parameters.remove(parameter.parentLink());
+  	remove(_parameters,parameter);
   }
 
   public List<Expression> actualArguments() {
@@ -141,5 +142,9 @@ public class EnumConstant extends FixedSignatureMember<EnumConstant,SimpleNameSi
 	public boolean complete() throws LookupException {
 		return true;
 	}
-
+	
+	@Override
+	public LookupStrategy localStrategy() throws LookupException {
+		return language().lookupFactory().createLocalLookupStrategy(this);
+	}
 }

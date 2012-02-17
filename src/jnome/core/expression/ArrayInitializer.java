@@ -22,7 +22,7 @@ import chameleon.oo.variable.VariableDeclarator;
 /**
  * @author Marko van Dooren
  */
-public class ArrayInitializer extends Expression<ArrayInitializer> {
+public class ArrayInitializer extends Expression {
 
 	public ArrayInitializer() {
 	}
@@ -37,11 +37,11 @@ public class ArrayInitializer extends Expression<ArrayInitializer> {
   }
 
   public void addInitializer(Expression init) {
-    _inits.add(init.parentLink());
+    add(_inits,init);
   }
 
   public void removeInitializer(Expression init) {
-    _inits.remove(init.parentLink());
+    remove(_inits,init);
   }
 
   public List<Expression> getVariableInitializers() {
@@ -62,7 +62,7 @@ public class ArrayInitializer extends Expression<ArrayInitializer> {
     else if (parent() instanceof Variable) {
       return ((Variable)parent()).getType();
     }
-    else if (parent() instanceof VariableDeclaration<?>) {
+    else if (parent() instanceof VariableDeclaration) {
       return nearestAncestor(VariableDeclarator.class).typeReference().getType();
     }
     else {

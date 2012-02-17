@@ -8,7 +8,7 @@ import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.generics.ExtendsWildcardType;
 
-public class JavaExtendsReference extends WildCardReference<JavaExtendsReference> {
+public class JavaExtendsReference extends WildCardReference {
 
 	public JavaExtendsReference(TypeReference tref) {
 		super(tref);
@@ -26,8 +26,8 @@ public class JavaExtendsReference extends WildCardReference<JavaExtendsReference
 	}
 
 	@Override
-	public String infoDisplayName() {
-		return "? extends "+typeReference().infoDisplayName();
+	public String toString() {
+		return "? extends "+typeReference().toString();
 	}
 
 }

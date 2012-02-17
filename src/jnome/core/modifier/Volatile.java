@@ -13,7 +13,7 @@ import chameleon.core.property.ChameleonProperty;
 /**
  * @author Marko van Dooren
  */
-public class Volatile extends ModifierImpl<Volatile> {
+public class Volatile extends ModifierImpl {
 
   public Volatile() {
   }

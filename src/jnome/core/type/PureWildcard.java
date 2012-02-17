@@ -16,7 +16,7 @@ import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.TypeConstraint;
 import chameleon.oo.type.generics.TypeParameter;
 
-public class PureWildcard<E extends PureWildcard> extends ActualTypeArgument<E> {
+public class PureWildcard extends ActualTypeArgument {
 
 	public PureWildcard() {
 		
@@ -34,8 +34,8 @@ public class PureWildcard<E extends PureWildcard> extends ActualTypeArgument<E> 
 	}
 
 	@Override
-	public E clone() {
-		return (E) new PureWildcard();
+	public PureWildcard clone() {
+		return new PureWildcard();
 	}
 
 	// TypeVariable concept invoeren, en lowerbound,... verplaatsen naar daar? Deze is context sensitive. Hoewel, dat
@@ -83,11 +83,6 @@ public class PureWildcard<E extends PureWildcard> extends ActualTypeArgument<E> 
 		return Valid.create();
 	}
 
-	@Override
-	public String infoDisplayName() {
-		return "?";
-	}
-	
 	public String toString() {
 		return "?";
 	}

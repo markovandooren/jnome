@@ -2,9 +2,7 @@ package jnome.core.type;
 
 import chameleon.exception.ChameleonProgrammerException;
 
-public class JavaPureWildcard extends PureWildcard<JavaPureWildcard> 
-//implements JavaTypeReference<JavaPureWildcard> 
-{
+public class JavaPureWildcard extends PureWildcard {
 
 //	public JavaTypeReference componentTypeReference() {
 //		return this;

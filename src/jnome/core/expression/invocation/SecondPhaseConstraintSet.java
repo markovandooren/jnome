@@ -34,14 +34,14 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		_assignments = new TypeAssignmentSet(typeParameters());
 	}
 
-	public Set<Type> ST(JavaTypeReference<?> U) throws LookupException {
+	public Set<Type> ST(JavaTypeReference U) throws LookupException {
 //		Set<Type> result = U.getElement().getAllSuperTypes();
 		Set<Type> result = U.language(Java.class).subtypeRelation().getAllSuperTypes(U.getElement());
 		result.add(U.getElement());
 		return result;
 	}
 
-	public Set<Type> EST(JavaTypeReference<?> U) throws LookupException {
+	public Set<Type> EST(JavaTypeReference U) throws LookupException {
 		Set<Type> STU = ST(U);
 		Set<Type> result = new HashSet<Type>();
 		for(Type type:STU) {
@@ -189,7 +189,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		return list;
 	}
 	
-	public ActualTypeArgument lcta(ActualTypeArgument<?> first, ActualTypeArgument second) throws LookupException {
+	public ActualTypeArgument lcta(ActualTypeArgument first, ActualTypeArgument second) throws LookupException {
 		ActualTypeArgument result;
 		if(first instanceof BasicTypeArgument || second instanceof BasicTypeArgument) {
 			if(first instanceof BasicTypeArgument && second instanceof BasicTypeArgument) {
@@ -261,7 +261,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		}
 	}
 	
-	public Type inferredType(TypeParameter<?> Tj) throws LookupException {
+	public Type inferredType(TypeParameter Tj) throws LookupException {
 		List<Type> MEC = new ArrayList<Type>(MEC(Tj));
 		List<Type> candidates = new ArrayList<Type>();
 		for(Type W:MEC) {
@@ -343,7 +343,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
   }
 
 	private void processUnresolved(JavaTypeReference S) throws LookupException {
-		JavaTypeReference<?> RRef = (JavaTypeReference) invokedGenericMethod().returnTypeReference();
+		JavaTypeReference RRef = (JavaTypeReference) invokedGenericMethod().returnTypeReference();
 		FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(invocation(), invokedGenericMethod());
 		Java java = RRef.language(Java.class);
 		if(! RRef.getElement().sameAs(java.voidType())) {
@@ -352,7 +352,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 			constraints.add(new GGConstraint(S, RprimeRef.getType()));
 		}
 		// additional constraints Bi[T1=B(T1) ... Tn=B(Tn)] >> Ti where Bi is the declared bound of Ti
-		for(TypeParameter<?> param: typeParameters()) {
+		for(TypeParameter param: typeParameters()) {
 			JavaTypeReference bound = (JavaTypeReference) param.upperBoundReference();
 			JavaTypeReference Bi= substitutedReference(bound);
 			
@@ -371,10 +371,10 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		SecondPhaseConstraintSet seconds = constraints.secondPhase();
 		seconds.processEqualityConstraints();
 		seconds.processSubtypeConstraints();
-		for(TypeParameter<?> param: seconds.unresolvedParameters()) {
+		for(TypeParameter param: seconds.unresolvedParameters()) {
 			seconds.add(new ActualTypeAssignment(param, param.language(ObjectOrientedLanguage.class).getDefaultSuperClass()));
 		}
-		for(TypeParameter<?> param: unresolvedParameters()) {
+		for(TypeParameter param: unresolvedParameters()) {
 			add(seconds.assignments().assignment(param));
 		}
 	}
@@ -422,7 +422,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	
 
 
-	private JavaTypeReference substitutedReference(JavaTypeReference<?> RRef) throws LookupException {
+	private JavaTypeReference substitutedReference(JavaTypeReference RRef) throws LookupException {
 		JavaTypeReference RprimeRef = RRef.clone();
 		RprimeRef.setUniParent(RRef.parent());
 		// Let R' = R[T1=B(T1) ... Tn=B(Tn)] where B(Ti) is the type inferred for Ti in the previous section, or Ti if no type was inferred.
@@ -436,12 +436,12 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		return RprimeRef;
 	}
   
-  public JavaTypeReference<?> S() throws LookupException {
+  public JavaTypeReference S() throws LookupException {
   	if(! inContextOfAssignmentConversion()) {
   		throw new ChameleonProgrammerException();
   	} else {
 //  		return new DirectJavaTypeReference(((AssignmentExpression)invocation().parent()).getVariable().getType());
-  		return ((TypeParameter<?>)typeParameters().get(0)).language(Java.class).reference(((AssignmentExpression)invocation().parent()).getVariable().getType());
+  		return ((TypeParameter)typeParameters().get(0)).language(Java.class).reference(((AssignmentExpression)invocation().parent()).getVariable().getType());
   	}
   }
   

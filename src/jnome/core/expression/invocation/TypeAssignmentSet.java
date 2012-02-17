@@ -57,7 +57,7 @@ public class TypeAssignmentSet {
 		boolean result = unassigned().isEmpty();
 		if(result) {
 			for(TypeAssignment assignment: assignments()) {
-				TypeReference<?> upperBoundReference = assignment.parameter().upperBoundReference();
+				TypeReference upperBoundReference = assignment.parameter().upperBoundReference();
 				Java language = upperBoundReference.language(Java.class);
 				JavaTypeReference bound = (JavaTypeReference) upperBoundReference.clone();
 				bound.setUniParent(upperBoundReference);

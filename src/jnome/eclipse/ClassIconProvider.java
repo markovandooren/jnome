@@ -17,7 +17,7 @@ public class ClassIconProvider extends AbstractIconProvider {
 	}
 
 	@Override
-	public String baseIconName(Element<?> element) {
+	public String baseIconName(Element element) {
 		String result;
 		Java language = element.language(Java.class);
 		if(element.isTrue(language.INTERFACE)) {

@@ -1,10 +1,6 @@
 package jnome.core.expression.invocation;
 
-import java.util.Iterator;
-
 import chameleon.core.declaration.DeclarationContainer;
-import chameleon.core.declaration.Signature;
-import chameleon.core.lookup.LookupException;
 
 	public class ConstructorSelector extends AbstractConstructorSelector {
     
@@ -25,7 +21,7 @@ import chameleon.core.lookup.LookupException;
   	String __name;
 
 		@Override
-		public String selectionName(DeclarationContainer<?> container) {
+		public String selectionName(DeclarationContainer container) {
 			return __name;
 		}
   }

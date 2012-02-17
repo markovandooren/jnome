@@ -4,9 +4,7 @@ import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.generics.BasicTypeArgument;
 
-public class JavaBasicTypeArgument extends BasicTypeArgument<JavaBasicTypeArgument> 
-//    implements JavaTypeReference<JavaBasicTypeArgument> 
-{
+public class JavaBasicTypeArgument extends BasicTypeArgument {
 	
 //	private CreationStackTrace _trace = new CreationStackTrace();
 	

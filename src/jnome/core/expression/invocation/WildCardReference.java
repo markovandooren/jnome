@@ -23,12 +23,12 @@ import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.util.Util;
 
-public abstract class WildCardReference<E extends WildCardReference> extends NamespaceElementImpl<E> implements JavaTypeReference<E> {
+public abstract class WildCardReference<E extends WildCardReference> extends NamespaceElementImpl implements JavaTypeReference {
 	
 		public abstract E clone();
 	
 		public WildCardReference(TypeReference tref) {
-			_tref.connectTo(tref.parentLink());
+			setAsParent(_tref,tref);
 		}
 
 		public TypeReference typeReference() {
@@ -66,8 +66,8 @@ public abstract class WildCardReference<E extends WildCardReference> extends Nam
 			return language(ObjectOrientedLanguage.class).createIntersectionReference(clone(), other.clone());
 		}
 
-		public TypeReference intersectionDoubleDispatch(IntersectionTypeReference<?> other) {
-			IntersectionTypeReference<?> result = other.clone();
+		public TypeReference intersectionDoubleDispatch(IntersectionTypeReference other) {
+			IntersectionTypeReference result = other.clone();
 			result.add(clone());
 			return result;
 		}

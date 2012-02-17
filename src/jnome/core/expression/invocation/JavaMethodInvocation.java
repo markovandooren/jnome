@@ -24,7 +24,7 @@ import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.member.simplename.method.RegularMethodInvocation;
 import chameleon.util.Util;
 
-public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvocation> {
+public class JavaMethodInvocation extends RegularMethodInvocation {
 
 	public JavaMethodInvocation(String name, CrossReferenceTarget target) {
 		super(name, target);
@@ -53,7 +53,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 	   	return result;
 	  }
 	   
-  	CrossReferenceTarget<?> target = getTarget();
+  	CrossReferenceTarget target = getTarget();
   	if(target == null) {
       result = lexicalLookupStrategy().lookUp(selector);
   	} else {
@@ -91,7 +91,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 	 * type arguments are inferred.
 	 * @throws LookupException 
 	 */
-	public static List<Type> formalParameterTypesInContext(NormalMethod<?,?,?> method,TypeAssignmentSet actualTypeParameters) throws LookupException {
+	public static List<Type> formalParameterTypesInContext(NormalMethod method,TypeAssignmentSet actualTypeParameters) throws LookupException {
 		List<TypeParameter> parameters = method.typeParameters();
 		List<Type> result;
 		if(parameters.size() > 0) {
@@ -110,7 +110,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 			for(TypeReference tref: references) {
 				TypeReference subst = tref;
 				for(TypeParameter par: actualTypeParameters.assigned()) {
-					subst = NonLocalJavaTypeReference.replace(language.reference(actualTypeParameters.type(par)), par, (JavaTypeReference<?>) tref);
+					subst = NonLocalJavaTypeReference.replace(language.reference(actualTypeParameters.type(par)), par, (JavaTypeReference) tref);
 				}
 				result.add(subst.getElement());
 			}
@@ -121,7 +121,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation<JavaMethodInvo
 		return result;
 	}
 	
-	private static class ReferenceStub extends NamespaceElementImpl<ReferenceStub> {
+	private static class ReferenceStub extends NamespaceElementImpl {
 
 		public ReferenceStub(TypeReference tref) {
 			setTypeReference(tref);

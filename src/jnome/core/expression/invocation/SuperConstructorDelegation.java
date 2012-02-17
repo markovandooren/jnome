@@ -14,7 +14,7 @@ import chameleon.support.member.simplename.method.NormalMethod;
 /**
  * @author Marko van Dooren
  */
-public class SuperConstructorDelegation extends ConstructorDelegation<SuperConstructorDelegation> {
+public class SuperConstructorDelegation extends ConstructorDelegation {
 
   public SuperConstructorDelegation(){
     super(null);

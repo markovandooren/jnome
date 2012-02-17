@@ -18,7 +18,7 @@ import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.util.Util;
 
-public class ArrayTypeReference  extends NamespaceElementImpl<ArrayTypeReference> implements JavaTypeReference<ArrayTypeReference> {
+public class ArrayTypeReference  extends NamespaceElementImpl implements JavaTypeReference {
 	
 	/**
 	 * If the given a
@@ -32,14 +32,14 @@ public class ArrayTypeReference  extends NamespaceElementImpl<ArrayTypeReference
    @*/
 	public ArrayTypeReference(JavaTypeReference elementType, int arrayDimension) {
 		if(arrayDimension > 1) {
-			_elementType.connectTo(new ArrayTypeReference(elementType, arrayDimension - 1).parentLink());
+			setAsParent(_elementType,new ArrayTypeReference(elementType, arrayDimension - 1));
 		} else {
-			_elementType.connectTo(elementType.parentLink());
+			setAsParent(_elementType,elementType);
 		}
 	}
 	
 	public ArrayTypeReference(JavaTypeReference componentType) {
-		_elementType.connectTo(componentType.parentLink());
+		setAsParent(_elementType,componentType);
 	}
 	
 //  public int arrayDimension() {
@@ -98,8 +98,8 @@ public class ArrayTypeReference  extends NamespaceElementImpl<ArrayTypeReference
 		return intersectionTypeReference;
 	}
 
-	public TypeReference intersectionDoubleDispatch(IntersectionTypeReference<?> other) {
-		IntersectionTypeReference<?> result = other.clone();
+	public TypeReference intersectionDoubleDispatch(IntersectionTypeReference other) {
+		IntersectionTypeReference result = other.clone();
 		result.add(clone());
 		return result;
 	}
@@ -117,8 +117,8 @@ public class ArrayTypeReference  extends NamespaceElementImpl<ArrayTypeReference
 	}
 
 	@Override
-	public String infoDisplayName() {
-		return elementTypeReference().infoDisplayName()+"[]";
+	public String toString() {
+		return elementTypeReference().toString()+"[]";
 	}
 
 	@Override

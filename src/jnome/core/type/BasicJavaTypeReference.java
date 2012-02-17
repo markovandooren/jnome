@@ -14,7 +14,6 @@ import chameleon.core.declaration.TargetDeclaration;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.namespace.NamespaceOrTypeReference;
 import chameleon.core.reference.CrossReference;
 import chameleon.core.reference.CrossReferenceTarget;
 import chameleon.core.reference.CrossReferenceWithName;
@@ -24,17 +23,17 @@ import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.ActualTypeArgument;
 
-public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeReference> implements JavaTypeReference<BasicJavaTypeReference>, CrossReferenceWithName<BasicJavaTypeReference, Type> {
+public class BasicJavaTypeReference extends BasicTypeReference implements JavaTypeReference, CrossReferenceWithName<Type> {
 
 //	public static boolean TRACE = false;
 //	
 //	private CreationStackTrace _trace = (TRACE ? new CreationStackTrace() : null);
 	
-	public BasicJavaTypeReference(CrossReferenceTarget<?> target, String name) {
+	public BasicJavaTypeReference(CrossReferenceTarget target, String name) {
   	super(target,name);
   }
   
-  public BasicJavaTypeReference(CrossReferenceTarget<?> target, SimpleNameSignature signature) {
+  public BasicJavaTypeReference(CrossReferenceTarget target, SimpleNameSignature signature) {
   	super(target,signature);
   }
   
@@ -43,7 +42,7 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
    * @param target
    */
   public BasicJavaTypeReference(NamedTarget target) {
-  	super(target.getTarget() == null ? null : new NamespaceOrTypeReference((NamedTarget)target.getTarget()),target.name());
+  	super(target.getTarget() == null ? null : target.getTarget(),target.name());
   }
   
   public BasicJavaTypeReference(String fqn) {
@@ -55,9 +54,7 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
   }
   
   public void addArgument(ActualTypeArgument arg) {
-  	if(arg != null) {
-  		_genericParameters.add(arg.parentLink());
-  	}
+  	add(_genericParameters,arg);
   }
   
   public void addAllArguments(List<ActualTypeArgument> args) {
@@ -67,9 +64,7 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
   }
   
   public void removeArgument(ActualTypeArgument arg) {
-  	if(arg != null) {
-  		_genericParameters.remove(arg.parentLink());
-  	}
+  	remove(_genericParameters,arg);
   }
   
   private OrderedMultiAssociation<JavaTypeReference,ActualTypeArgument> _genericParameters = new OrderedMultiAssociation<JavaTypeReference, ActualTypeArgument>(this);
@@ -157,11 +152,12 @@ public class BasicJavaTypeReference extends BasicTypeReference<BasicJavaTypeRefe
   	return result;
   }
 
+	@SuppressWarnings("unchecked")
 	public JavaTypeReference erasedReference() {
 		JavaTypeReference result = null;
-	  CrossReferenceTarget<?> target = getTarget();
+	  CrossReferenceTarget target = getTarget();
 	  if(target instanceof CrossReference) {
-	  	CrossReference<?, ? extends TargetDeclaration> erasure = language(Java.class).erasure((CrossReference)target);
+	  	CrossReference<? extends TargetDeclaration> erasure = language(Java.class).erasure((CrossReference)target);
 	  	result = new BasicJavaTypeReference(erasure, (SimpleNameSignature)signature().clone());
 	  } else if (target == null) {
 	  	result = new BasicJavaTypeReference(null, (SimpleNameSignature)signature().clone());

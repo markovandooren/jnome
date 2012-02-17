@@ -12,14 +12,14 @@ import chameleon.support.member.simplename.variable.MemberVariableDeclarator;
 public class JavaOutlineSelector extends ChameleonOutlineSelector {
 
 	@Override
-	public boolean isAllowed(Element<?> element) throws ModelException {
+	public boolean isAllowed(Element element) throws ModelException {
 		return (! (element instanceof FormalParameter)) && 
 		       (! (element instanceof TypeParameter)) &&
 		       super.isAllowed(element);
 	}
 
 	@Override
-	public List<Element> outlineChildren(Element<?> element) throws ModelException {
+	public List<Element> outlineChildren(Element element) throws ModelException {
 		List<Element> result = super.outlineChildren(element);
 		if(element instanceof MemberVariableDeclarator) {
 			MemberVariableDeclarator decl = (MemberVariableDeclarator) element;

@@ -26,7 +26,7 @@ public class JavaSuperReference extends WildCardReference<JavaSuperReference> {
 	}
 
 	@Override
-	public String infoDisplayName() {
-		return "? super "+typeReference().infoDisplayName();
+	public String toString() {
+		return "? super "+typeReference().toString();
 	}
 }

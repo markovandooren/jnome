@@ -44,7 +44,7 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 		return selection(selectionCandidates);
 	}
 	
-	protected abstract MethodInvocation<?,?> invocation();
+	protected abstract MethodInvocation invocation();
 	
 	public abstract boolean correctSignature(Signature signature) throws LookupException;
 
@@ -103,8 +103,8 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 		return instantiatedMethodTemplate(method, actualTypeParameters);
 	}
 
-	private TypeAssignmentSet actualTypeParameters(NormalMethod<?, ?, ?> originalMethod, boolean includeNonreference) throws LookupException {
-		MethodHeader methodHeader = originalMethod.header().clone();
+	private TypeAssignmentSet actualTypeParameters(NormalMethod originalMethod, boolean includeNonreference) throws LookupException {
+		MethodHeader methodHeader = (MethodHeader) originalMethod.header().clone();
 		methodHeader.setOrigin(originalMethod.header());
 		methodHeader.setUniParent(originalMethod.parent());
 		List<TypeParameter> parameters = methodHeader.typeParameters();

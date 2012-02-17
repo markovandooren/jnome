@@ -37,7 +37,6 @@ import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.modifier.ElementWithModifiers;
 import chameleon.core.modifier.Modifier;
-import chameleon.core.namespace.NamespaceOrTypeReference;
 import chameleon.core.namespace.NamespaceReference;
 import chameleon.core.namespacepart.DemandImport;
 import chameleon.core.namespacepart.DirectImport;
@@ -133,7 +132,6 @@ import chameleon.support.statement.WhileStatement;
 import chameleon.support.tool.Arguments;
 import chameleon.support.type.EmptyTypeElement;
 import chameleon.support.type.StaticInitializer;
-import chameleon.support.variable.LocalVariable;
 import chameleon.support.variable.LocalVariableDeclarator;
 
 /**
@@ -249,8 +247,6 @@ public class JavaCodeWriter extends Syntax {
       result = toCodeCompilationUnit((CompilationUnit)element);
     } else if(isNamespaceReference(element)) {
       result = toCodeNamespaceReference((NamespaceReference)element);
-    } else if(isNamespaceOrTypeReference(element)) {
-      result = toCodeNamespaceOrTypeReference((NamespaceOrTypeReference)element);
     } else if(isBasicTypeReference(element)) {
       result = toCodeBasicTypeReference((BasicJavaTypeReference)element);
     } else if(isIntersectionTypeReference(element)) {
@@ -358,18 +354,18 @@ public class JavaCodeWriter extends Syntax {
 //  	return toCode(parameter.getExpression());
 //  }
   
-  public boolean isNamespaceOrTypeReference(Element element) {
-    return element instanceof NamespaceOrTypeReference;
-  }
-  
-  public String toCodeNamespaceOrTypeReference(NamespaceOrTypeReference typeReference) throws LookupException {
-    String result = toCode(typeReference.getTarget());
-    if(result.length() > 0) {
-      result = result + ".";
-    }
-    result = result + typeReference.signature();
-    return result;
-  }
+//  public boolean isNamespaceOrTypeReference(Element element) {
+//    return element instanceof NamespaceOrTypeReference;
+//  }
+//  
+//  public String toCodeNamespaceOrTypeReference(NamespaceOrTypeReference typeReference) throws LookupException {
+//    String result = toCode(typeReference.getTarget());
+//    if(result.length() > 0) {
+//      result = result + ".";
+//    }
+//    result = result + typeReference.signature();
+//    return result;
+//  }
 
   public boolean isSpecificReference(Element element) {
     return element instanceof SpecificReference;
@@ -706,10 +702,10 @@ public class JavaCodeWriter extends Syntax {
     
   }
 
-	private void appendTypeParameters(List<TypeParameter> parameters, final StringBuffer result) throws LookupException {
+	private void appendTypeParameters(List<? extends Element> parameters, final StringBuffer result) throws LookupException {
 		if(! parameters.isEmpty()) {
     	result.append("<");
-    	Iterator<TypeParameter> iter = parameters.iterator();
+    	Iterator<? extends Element> iter = parameters.iterator();
     	while(iter.hasNext()) {
     		result.append(toCode(iter.next()));
     		if(iter.hasNext()) {
@@ -801,7 +797,7 @@ public class JavaCodeWriter extends Syntax {
     
   }
 
-  public String toCodeMethod(Method<?,?,?> method) throws LookupException {
+  public String toCodeMethod(Method method) throws LookupException {
 	    final StringBuffer result = startLine();
 	    
 	    addModifiers(method, result);
@@ -1192,10 +1188,10 @@ public class JavaCodeWriter extends Syntax {
     result.append(toCode(local.typeReference()));
     result.append(" ");
     try {
-      new RobustVisitor<VariableDeclaration<LocalVariable>>() {
+      new RobustVisitor<VariableDeclaration>() {
         private boolean first = true;
 
-        public Object visit(VariableDeclaration<LocalVariable> element) throws LookupException {
+        public Object visit(VariableDeclaration element) throws LookupException {
 //          LocalVariable variable = (LocalVariable)element;
           if (!first) {
             result.append(", ");
@@ -1212,7 +1208,7 @@ public class JavaCodeWriter extends Syntax {
           return null;
         }
 
-        public void unvisit(VariableDeclaration<LocalVariable> el, Object undo) {
+        public void unvisit(VariableDeclaration el, Object undo) {
           //NOP
         }
       }.applyTo(local.variableDeclarations());
@@ -1467,7 +1463,7 @@ public class JavaCodeWriter extends Syntax {
   
   public String toCodeSuperTarget(SuperTarget nt) throws LookupException {
     StringBuffer result = new StringBuffer();
-    CrossReferenceTarget<?> target = nt.getTarget();
+    CrossReferenceTarget target = nt.getTarget();
 		if(target != null) {
       result.append(toCode(target));
       result.append(".");

@@ -10,6 +10,7 @@ import jnome.core.language.Java;
 import org.rejuse.association.SingleAssociation;
 import org.rejuse.logic.ternary.Ternary;
 
+import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
@@ -97,7 +98,7 @@ public class RawType extends TypeWithBody implements JavaType {
 	 */
 	private RawType(Type original) {
 		// first copy everything
-		super(original.signature().clone());
+		super((SimpleNameSignature) original.signature().clone());
 		copyContents(original, true);
 		copyImplicitMembers(original);
 		_baseType = original;
@@ -115,7 +116,7 @@ public class RawType extends TypeWithBody implements JavaType {
 	}
 	
 	private RawType(Type original, boolean useless) {
-		super(original.signature().clone());
+		super((SimpleNameSignature) original.signature().clone());
 		copyContents(original, true);
 		copyImplicitMembers(original);
 		_baseType = original;
@@ -149,7 +150,7 @@ public class RawType extends TypeWithBody implements JavaType {
 			if(type.is(language.INSTANCE) == Ternary.TRUE) {
 			  // create raw type that does not erase anything
 			  RawType raw = new RawType((Type) type.origin(),false);
-			  SingleAssociation<Type, Element> parentLink = type.parentLink();
+			  SingleAssociation parentLink = type.parentLink();
 			  parentLink.getOtherRelation().replace(parentLink, raw.parentLink());
 			  raw.makeDescendantTypesRaw();
 			}
@@ -166,7 +167,7 @@ public class RawType extends TypeWithBody implements JavaType {
 	private void eraseMethods() {
 		for(TypeElement element: directlyDeclaredElements()) {
 			if(element instanceof Method) {
-				Method<?,?,?> method = (Method)element;
+				Method method = (Method)element;
 				eraseTypeParameters(method.typeParameters());
 //				for(TypeParameter tp: method.typeParameters()) {
 //					if(tp instanceof FormalTypeParameter) {
@@ -211,7 +212,7 @@ public class RawType extends TypeWithBody implements JavaType {
 	}
 
 	@Override
-	public Type clone() {
+	public RawType clone() {
 		return new RawType(baseType());
 	}
 	

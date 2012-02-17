@@ -185,15 +185,15 @@ public class Java extends ObjectOrientedLanguage {
 		return result;
 	}
 	
-	public <T extends CrossReference<?,? extends TargetDeclaration>> CrossReference<?,? extends TargetDeclaration> erasure(T ref) {
+	public <T extends CrossReference<? extends TargetDeclaration>> CrossReference<? extends TargetDeclaration> erasure(T ref) {
 		CrossReference result = null;
 		if(ref instanceof JavaTypeReference) {
 			result = ((JavaTypeReference) ref).erasedReference();
 		} else if (ref != null) { 
-			result = ref.clone();
+			result = (CrossReference) ref.clone();
 			if(ref instanceof NamedTarget) {
 				NamedTarget namedTarget = (NamedTarget)result;
-				CrossReferenceTarget<?> target = namedTarget.getTarget();
+				CrossReferenceTarget target = namedTarget.getTarget();
 				if(target instanceof CrossReference) {
 					namedTarget.setTarget((CrossReferenceTarget)erasure((T)target));
 				}
@@ -527,12 +527,12 @@ public class Java extends ObjectOrientedLanguage {
 		
 		
 		@Override
-		public BasicJavaTypeReference createTypeReference(CrossReference<?, ? extends TargetDeclaration> target, String name) {
+		public BasicJavaTypeReference createTypeReference(CrossReference<? extends TargetDeclaration> target, String name) {
 			return new BasicJavaTypeReference(target, name);
 		}
 
 		@Override
-		public BasicJavaTypeReference createTypeReference(CrossReference<?, ? extends TargetDeclaration> target, SimpleNameSignature signature) {
+		public BasicJavaTypeReference createTypeReference(CrossReference<? extends TargetDeclaration> target, SimpleNameSignature signature) {
 			return new BasicJavaTypeReference(target, signature);
 		}
 
@@ -627,7 +627,7 @@ public class Java extends ObjectOrientedLanguage {
 						Element lookupParent = tpar;
 						JavaTypeReference nameref = createTypeReference(tpar.signature().name());
 						TypeReference tref = new NonLocalJavaTypeReference(nameref, lookupParent);
-						((BasicJavaTypeReference)result).addArgument(new BasicTypeArgument<BasicTypeArgument>(tref));
+						((BasicJavaTypeReference)result).addArgument(new BasicTypeArgument(tref));
 					}
 				}
 			} else if (type instanceof RawType) {
@@ -691,7 +691,7 @@ public class Java extends ObjectOrientedLanguage {
 			}
 		}
 		
-		public <E extends Element<?>> E replace(TypeReference replacement, Declaration declarator, E in, Class<E> kind) throws LookupException {
+		public <E extends Element> E replace(TypeReference replacement, Declaration declarator, E in, Class<E> kind) throws LookupException {
 			return NonLocalJavaTypeReference.replace(replacement, declarator, in,kind);
 		}
 

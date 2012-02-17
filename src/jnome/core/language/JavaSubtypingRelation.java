@@ -330,13 +330,13 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 				result.setUniParent(type.parent());
 				for(TypeParameter newParameter: typeParameters) {
 					for(TypeParameter oldParameter: baseParameters) {
-						JavaTypeReference<?> tref = new BasicJavaTypeReference(oldParameter.signature().name());
+						JavaTypeReference tref = new BasicJavaTypeReference(oldParameter.signature().name());
 						tref.setUniParent(newParameter);
 						if(newParameter instanceof CapturedTypeParameter) {
 							List<TypeConstraint> constraints = ((CapturedTypeParameter)newParameter).constraints();
 							for(TypeConstraint constraint : constraints) {
 								if(toBeSubstituted.contains(constraint)) {
-									NonLocalJavaTypeReference.replace(tref, oldParameter, (JavaTypeReference<?>) constraint.typeReference());
+									NonLocalJavaTypeReference.replace(tref, oldParameter, (JavaTypeReference) constraint.typeReference());
 //								replace(tref, oldParameter, (JavaTypeReference<?>) constraint.typeReference());
 								}
 							}
@@ -352,8 +352,8 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		return result;
 	}
 	
-	private JavaTypeReference replace(JavaTypeReference replacement, final Declaration declarator, JavaTypeReference<?> in) throws LookupException {
-		JavaTypeReference<?> result = in;
+	private JavaTypeReference replace(JavaTypeReference replacement, final Declaration declarator, JavaTypeReference in) throws LookupException {
+		JavaTypeReference result = in;
 		UnsafePredicate<BasicJavaTypeReference, LookupException> predicate = new UnsafePredicate<BasicJavaTypeReference, LookupException>() {
 			@Override
 			public boolean eval(BasicJavaTypeReference object) throws LookupException {
@@ -369,7 +369,7 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 			}
 		}
 		for(BasicJavaTypeReference cref: crefs) {
-			JavaTypeReference<?> substitute;
+			JavaTypeReference substitute;
 			if(replacement.isDerived()) {
 			  substitute = new CaptureReference(replacement.clone());
 			  substitute.setOrigin(replacement);
@@ -440,8 +440,8 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		Iterator<TypeParameter> firstIter = firstFormal.iterator();
 		Iterator<TypeParameter> secondIter = secondFormal.iterator();
 		while(result && firstIter.hasNext()) {
-			TypeParameter<?> firstParam = firstIter.next();
-			TypeParameter<?> secondParam = secondIter.next();
+			TypeParameter firstParam = firstIter.next();
+			TypeParameter secondParam = secondIter.next();
 			result = firstParam.compatibleWith(secondParam, slowTrace);
 		}
 		return result;

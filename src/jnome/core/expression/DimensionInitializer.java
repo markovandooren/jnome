@@ -15,7 +15,7 @@ import chameleon.util.Util;
 /**
  * @author Marko van Dooren
  */
-public class DimensionInitializer extends NamespaceElementImpl<DimensionInitializer> {
+public class DimensionInitializer extends NamespaceElementImpl {
 
 	//FIXME: what is this class for anyway?
   public DimensionInitializer(Expression expr) {
@@ -33,12 +33,7 @@ public class DimensionInitializer extends NamespaceElementImpl<DimensionInitiali
   }
 
   public void setExpression(Expression expression) {
-    if (expression != null) {
-      _expression.connectTo(expression.parentLink());
-    }
-    else {
-      _expression.connectTo(null);
-    }
+    setAsParent(_expression,expression);
   }
 
 

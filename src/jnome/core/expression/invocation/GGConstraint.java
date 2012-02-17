@@ -56,8 +56,8 @@ public class GGConstraint extends FirstPhaseConstraint {
 						// G(S1,..,Sindex-1,U,Sindex+1,...,Sn) -> H
 						
 						List<TypeParameter> formalArgs = new ArrayList<TypeParameter>();
-						for(TypeParameter<?> par: G.parameters(TypeParameter.class)) {
-							TypeParameter clone = par.clone();
+						for(TypeParameter par: G.parameters(TypeParameter.class)) {
+							TypeParameter clone = (TypeParameter) par.clone();
 							formalArgs.add(clone);
 						}
 						Type GG = G.language(ObjectOrientedLanguage.class).createDerivedType(TypeParameter.class,formalArgs, G);
@@ -114,8 +114,8 @@ public class GGConstraint extends FirstPhaseConstraint {
 					// G(S1,..,Sindex-1,U,Sindex+1,...,Sn) -> H
 					
 					List<TypeParameter> formalArgs = new ArrayList<TypeParameter>();
-					for(TypeParameter<?> par: G.parameters(TypeParameter.class)) {
-						TypeParameter clone = par.clone();
+					for(TypeParameter par: G.parameters(TypeParameter.class)) {
+						TypeParameter clone = (TypeParameter) par.clone();
 						formalArgs.add(clone);
 					}
 					Type GG = G.language(ObjectOrientedLanguage.class).createDerivedType(TypeParameter.class,formalArgs, G);
@@ -127,7 +127,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 				  GG.replaceParameter(TypeParameter.class,oldParameter, newParameter);
 					Type V=typeWithSameBaseTypeAs(H, GG.getAllSuperTypes());
 					// Replace actual parameters with extends wildcards
-					for(TypeParameter<?> par: V.parameters(TypeParameter.class)) {
+					for(TypeParameter par: V.parameters(TypeParameter.class)) {
 						InstantiatedTypeParameter inst = (InstantiatedTypeParameter) par;
 						BasicTypeArgument basic = (BasicTypeArgument) inst.argument();
 						TypeReference typeReference = basic.typeReference();
@@ -172,8 +172,8 @@ public class GGConstraint extends FirstPhaseConstraint {
 					// G(S1,..,Sindex-1,U,Sindex+1,...,Sn) -> H
 					
 					List<TypeParameter> formalArgs = new ArrayList<TypeParameter>();
-					for(TypeParameter<?> par: G.parameters(TypeParameter.class)) {
-						TypeParameter clone = par.clone();
+					for(TypeParameter par: G.parameters(TypeParameter.class)) {
+						TypeParameter clone = (TypeParameter) par.clone();
 						formalArgs.add(clone);
 					}
 					Type GG = G.language(ObjectOrientedLanguage.class).createDerivedType(TypeParameter.class,formalArgs, G);
@@ -185,7 +185,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 				  GG.replaceParameter(TypeParameter.class,oldParameter, newParameter);
 					Type V=typeWithSameBaseTypeAs(H, GG.getAllSuperTypes());
 					// Replace actual parameters with extends wildcards
-					for(TypeParameter<?> par: V.parameters(TypeParameter.class)) {
+					for(TypeParameter par: V.parameters(TypeParameter.class)) {
 						InstantiatedTypeParameter inst = (InstantiatedTypeParameter) par;
 						BasicTypeArgument basic = (BasicTypeArgument) inst.argument();
 						TypeReference typeReference = basic.typeReference();

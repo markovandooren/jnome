@@ -39,7 +39,6 @@ import chameleon.core.modifier.ElementWithModifiers;
 import chameleon.core.modifier.Modifier;
 import chameleon.core.namespace.NamespaceReference;
 import chameleon.core.namespacepart.DemandImport;
-import chameleon.core.namespacepart.DirectImport;
 import chameleon.core.namespacepart.Import;
 import chameleon.core.namespacepart.NamespacePart;
 import chameleon.core.reference.CrossReferenceTarget;
@@ -59,6 +58,7 @@ import chameleon.oo.method.exception.ExceptionClause;
 import chameleon.oo.method.exception.ExceptionDeclaration;
 import chameleon.oo.method.exception.TypeExceptionDeclaration;
 import chameleon.oo.modifier.AnnotationModifier;
+import chameleon.oo.namespacepart.TypeImport;
 import chameleon.oo.statement.Block;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
@@ -286,7 +286,7 @@ public class JavaCodeWriter extends Syntax {
     } else if(isDemandImport(element)) {
     	result = toCodeDemandImport((DemandImport)element);
     } else if(isTypeImport(element)) {
-    	result = toCodeTypeImport((DirectImport)element);
+    	result = toCodeTypeImport((TypeImport)element);
     }
     // /ASPECTS
     else if(element == null) {
@@ -514,11 +514,11 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public boolean isTypeImport(Element element) {
-  	return element instanceof DirectImport;
+  	return element instanceof TypeImport;
   }
   
-  public String toCodeTypeImport(DirectImport imp) throws LookupException {
-		return "import "+ toCode(((DirectImport)imp).crossReference()) +";\n";
+  public String toCodeTypeImport(TypeImport imp) throws LookupException {
+		return "import "+ toCode(((TypeImport)imp).getTypeReference()) +";\n";
   }
   
   public String toCodeNamespacePart(NamespacePart part) throws LookupException {

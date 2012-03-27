@@ -10,9 +10,9 @@ import org.rejuse.association.SingleAssociation;
 
 import chameleon.core.declaration.Declaration;
 import chameleon.core.element.Element;
+import chameleon.core.element.ElementImpl;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.namespace.NamespaceElementImpl;
 import chameleon.core.reference.CrossReferenceTarget;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
@@ -121,7 +121,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation {
 		return result;
 	}
 	
-	private static class ReferenceStub extends NamespaceElementImpl {
+	private static class ReferenceStub extends ElementImpl {
 
 		public ReferenceStub(TypeReference tref) {
 			setTypeReference(tref);

@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.rejuse.association.SingleAssociation;
 
+import chameleon.core.element.Element;
+import chameleon.core.element.ElementImpl;
 import chameleon.core.namespace.Namespace;
-import chameleon.core.namespace.NamespaceElement;
-import chameleon.core.namespace.NamespaceElementImpl;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
 import chameleon.oo.expression.Expression;
@@ -15,7 +15,7 @@ import chameleon.util.Util;
 /**
  * @author Marko van Dooren
  */
-public class DimensionInitializer extends NamespaceElementImpl {
+public class DimensionInitializer extends ElementImpl {
 
 	//FIXME: what is this class for anyway?
   public DimensionInitializer(Expression expr) {
@@ -48,9 +48,6 @@ public class DimensionInitializer extends NamespaceElementImpl {
     return new DimensionInitializer(expr);
   }
 
-  public Namespace getNamespace() {
-    return nearestAncestor(NamespaceElement.class).getNamespace();
-  }
 
  /*@
    @ also public behavior

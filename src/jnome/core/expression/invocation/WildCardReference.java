@@ -11,9 +11,9 @@ import org.rejuse.association.SingleAssociation;
 
 import chameleon.core.declaration.Declaration;
 import chameleon.core.element.Element;
+import chameleon.core.element.ElementImpl;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.lookup.LookupStrategy;
-import chameleon.core.namespace.NamespaceElementImpl;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
 import chameleon.exception.ChameleonProgrammerException;
@@ -23,7 +23,7 @@ import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.util.Util;
 
-public abstract class WildCardReference<E extends WildCardReference> extends NamespaceElementImpl implements JavaTypeReference {
+public abstract class WildCardReference<E extends WildCardReference> extends ElementImpl implements JavaTypeReference {
 	
 		public abstract E clone();
 	

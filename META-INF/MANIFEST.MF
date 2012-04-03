@@ -5,8 +5,7 @@ Bundle-SymbolicName: be.chameleon.eclipse.java;singleton:=true
 Bundle-Version: 1.0.6
 Bundle-ClassPath: bin/.,
  .,
- lib/antlr-runtime-3.2.jar,
- dist/local/jar/jnome-local.jar
+ lib/antlr-runtime-3.2.jar
 Bundle-Vendor: KU Leuven
 Export-Package: jnome.core.decorator,
  jnome.core.enumeration,

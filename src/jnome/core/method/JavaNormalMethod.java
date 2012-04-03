@@ -13,9 +13,10 @@ import chameleon.oo.method.MethodHeader;
 import chameleon.oo.method.RegularMethod;
 import chameleon.oo.type.Type;
 import chameleon.support.member.simplename.method.NormalMethod;
+import chameleon.util.CreationStackTrace;
 
 public class JavaNormalMethod extends NormalMethod {
-	
+		
 	public JavaNormalMethod(MethodHeader header) {
 		super(header);
 	}

@@ -48,7 +48,7 @@ public class RegularJavaType extends RegularType {
 		//       language for the factory. Management of the constructor should be done lazily. When
 		//       the type is actually used, we can assume that a language is attached. Otherwise, we
 		//       throw an exception.
-		NormalMethod cons = new JavaNormalMethod(new SimpleNameMethodHeader(signature().name(), new BasicJavaTypeReference(signature().name())));
+		JavaNormalMethod cons = new JavaNormalMethod(new SimpleNameMethodHeader(signature().name(), new BasicJavaTypeReference(signature().name())));
 		cons.addModifier(new Constructor());
 		cons.addModifier(new Public());
 		Block body = new Block();
@@ -62,12 +62,12 @@ public class RegularJavaType extends RegularType {
 		_defaultDefaultConstructor = null;
 	}
 	
-	protected void initDefaultConstructor() {
-		if(!_initialized) {
-	    setDefaultDefaultConstructor();
-	    _initialized = true;
-		}
-	}
+//	protected void initDefaultConstructor() {
+//		if(!_initialized) {
+//	    setDefaultDefaultConstructor();
+//	    _initialized = true;
+//		}
+//	}
 	
 	private boolean _initialized = false;
 

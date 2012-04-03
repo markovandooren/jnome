@@ -19,12 +19,16 @@ import chameleon.oo.expression.Expression;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.support.expression.ArrayIndex;
+import chameleon.util.CreationStackTrace;
 import chameleon.util.Util;
 
 /**
  * @author Marko van Dooren
  */
 public class ArrayCreationExpression extends Expression {
+	
+	
+	private CreationStackTrace _trace = new CreationStackTrace();
 	
   public ArrayCreationExpression(JavaTypeReference type) {
     setTypeReference(type);

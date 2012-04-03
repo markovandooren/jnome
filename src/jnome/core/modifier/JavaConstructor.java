@@ -29,5 +29,10 @@ public class JavaConstructor extends Constructor {
     result.add(language(ObjectOrientedLanguage.class).INHERITABLE.inverse());
     return result;
   }
+  
+  @Override
+  public Constructor clone() {
+  	return new JavaConstructor();
+  }
 
 }

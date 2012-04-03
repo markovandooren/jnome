@@ -8,6 +8,7 @@ import java.util.List;
 
 import jnome.core.language.Java;
 import jnome.eclipse.JavaEditorExtension;
+import jnome.input.JavaFactory;
 import jnome.input.JavaModelFactory;
 import jnome.output.JavaCodeWriter;
 import chameleon.core.language.Language;
@@ -17,6 +18,7 @@ import chameleon.eclipse.connector.EclipseEditorExtension;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.input.ModelFactory;
 import chameleon.input.ParseException;
+import chameleon.oo.plugin.ObjectOrientedFactory;
 import chameleon.plugin.output.Syntax;
 
 public class Bootstrapper extends EclipseBootstrapper {
@@ -71,6 +73,7 @@ public class Bootstrapper extends EclipseBootstrapper {
 		
 		result.setPlugin(EclipseEditorExtension.class, new JavaEditorExtension());
 		result.setPlugin(Syntax.class, new JavaCodeWriter());
+		result.setPlugin(ObjectOrientedFactory.class, new JavaFactory());
 		return result;
 	}
 

@@ -434,9 +434,9 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		List<TypeParameter> firstFormal= first.parameters(TypeParameter.class);
 		List<TypeParameter> secondFormal= second.parameters(TypeParameter.class);
 		result = true;
-		if(firstFormal.size() != secondFormal.size()) {
-			System.out.println("debug");
-		}
+//		if(firstFormal.size() != secondFormal.size()) {
+//			System.out.println("debug");
+//		}
 		Iterator<TypeParameter> firstIter = firstFormal.iterator();
 		Iterator<TypeParameter> secondIter = secondFormal.iterator();
 		while(result && firstIter.hasNext()) {

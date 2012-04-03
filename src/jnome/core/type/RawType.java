@@ -177,10 +177,10 @@ public class RawType extends TypeWithBody implements JavaType {
 				for(FormalParameter param: method.formalParameters()) {
 					JavaTypeReference typeReference = (JavaTypeReference) param.getTypeReference();
 					JavaTypeReference erasedReference = typeReference.erasedReference();
-					if(erasedReference == null) {
-						System.out.println("debug");
-						typeReference.erasedReference();
-					}
+//					if(erasedReference == null) {
+//						System.out.println("debug");
+//						typeReference.erasedReference();
+//					}
 					param.setTypeReference(erasedReference);
 				}
 				// erase return type reference

@@ -6,7 +6,6 @@ import java.util.List;
 import jnome.core.language.Java;
 import jnome.core.type.JavaTypeReference;
 
-import org.rejuse.association.AssociationListener;
 import org.rejuse.association.SingleAssociation;
 
 import chameleon.core.declaration.Declaration;
@@ -23,30 +22,27 @@ import chameleon.oo.type.generics.TypeParameter;
 import chameleon.oo.variable.FormalParameter;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.member.simplename.method.RegularMethodInvocation;
-import chameleon.util.CreationStackTrace;
 import chameleon.util.Util;
 
 public class JavaMethodInvocation extends RegularMethodInvocation {
-	private CreationStackTrace _trace = new CreationStackTrace();
 
 	public JavaMethodInvocation(String name, CrossReferenceTarget target) {
 		super(name, target);
-  	parentLink().addListener(new AssociationListener<Element>() {
-      
-  		public void notifyElementAdded(Element element) {
-  			_trace = new CreationStackTrace();
-  		}
-  
-  		public void notifyElementRemoved(Element element) {
-  			_trace = new CreationStackTrace();
-  		}
-  
-  		public void notifyElementReplaced(Element oldElement, Element newElement) {
-  			_trace = new CreationStackTrace();
-  		}
-  		
-  	});
-
+//  	parentLink().addListener(new AssociationListener<Element>() {
+//      
+//  		public void notifyElementAdded(Element element) {
+//  			_trace = new CreationStackTrace();
+//  		}
+//  
+//  		public void notifyElementRemoved(Element element) {
+//  			_trace = new CreationStackTrace();
+//  		}
+//  
+//  		public void notifyElementReplaced(Element oldElement, Element newElement) {
+//  			_trace = new CreationStackTrace();
+//  		}
+//  		
+//  	});
 
 	}
 

@@ -71,7 +71,7 @@ public class DesignAnalyzer {
 	
 	public VerificationResult analyze(Method method) {
 		EncapsulationViolatingStatement predicate = new EncapsulationViolatingStatement(method);
-	//	method.descendants(predicate);
+		method.descendants(ReturnStatement.class,predicate);
 		return predicate.result();
 	}
 	

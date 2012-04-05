@@ -9,7 +9,6 @@ import jnome.core.type.JavaTypeReference;
 import org.rejuse.association.SingleAssociation;
 
 import chameleon.core.declaration.Declaration;
-import chameleon.core.element.Element;
 import chameleon.core.element.ElementImpl;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
@@ -22,7 +21,6 @@ import chameleon.oo.type.generics.TypeParameter;
 import chameleon.oo.variable.FormalParameter;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.member.simplename.method.RegularMethodInvocation;
-import chameleon.util.Util;
 
 public class JavaMethodInvocation extends RegularMethodInvocation {
 
@@ -162,11 +160,5 @@ public class JavaMethodInvocation extends RegularMethodInvocation {
 		public VerificationResult verifySelf() {
 			return Valid.create();
 		}
-
-		public List<? extends Element> children() {
-			return Util.createNonNullList(typeReference());
-		}
-		
 	}
-
 }

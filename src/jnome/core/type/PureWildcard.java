@@ -1,6 +1,5 @@
 package jnome.core.type;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import chameleon.core.element.Element;
@@ -8,7 +7,6 @@ import chameleon.core.lookup.LookupException;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
 import chameleon.oo.language.ObjectOrientedLanguage;
-import chameleon.oo.type.BasicTypeReference;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.ActualTypeArgument;
 import chameleon.oo.type.generics.CapturedTypeParameter;
@@ -72,10 +70,6 @@ public class PureWildcard extends ActualTypeArgument {
 	public Type upperBound() throws LookupException {
 		//return language(ObjectOrientedLanguage.class).getDefaultSuperClass();
 		return parameterBound();
-	}
-
-	public List<Element> children() {
-		return new ArrayList<Element>();
 	}
 
 	@Override

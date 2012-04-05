@@ -11,7 +11,6 @@ import chameleon.core.Config;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.declaration.TargetDeclaration;
-import chameleon.core.element.Element;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.reference.CrossReference;
@@ -68,12 +67,6 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
   }
   
   private OrderedMultiAssociation<JavaTypeReference,ActualTypeArgument> _genericParameters = new OrderedMultiAssociation<JavaTypeReference, ActualTypeArgument>(this);
-  
-  public List<Element> children() {
-  	List<Element> result = super.children();
-  	result.addAll(_genericParameters.getOtherEnds());
-  	return result;
-  }
   
   public JavaTypeReference toArray(int arrayDimension) {
   	JavaTypeReference result;

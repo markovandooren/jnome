@@ -48,17 +48,6 @@ public class DimensionInitializer extends ElementImpl {
     return new DimensionInitializer(expr);
   }
 
-
- /*@
-   @ also public behavior
-   @
-   @ post getExpression() != null ==> \result.contains(getExpression());
-   @ post \result.size() == 1;
-   @*/
-  public List children() {
-    return Util.createNonNullList(getExpression());
-  }
-
   @Override
   public VerificationResult verifySelf() {
 	  return Valid.create();

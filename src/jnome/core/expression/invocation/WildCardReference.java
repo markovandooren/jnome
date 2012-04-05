@@ -76,10 +76,6 @@ public abstract class WildCardReference<E extends WildCardReference> extends Ele
 			return getElement();
 		}
 
-		public List<? extends Element> children() {
-			return Util.createNonNullList(typeReference());
-		}
-		
 		public LookupStrategy targetContext() throws LookupException {
 			return getType().targetContext();
 		}

@@ -108,19 +108,6 @@ public class ArrayCreationExpression extends Expression {
     return result;
   }
 
- /*@
-   @ also public behavior
-   @
-   @ post \result.containsAll(getDimensionInitializers());
-   @ post getInitializer() != null ==> \result.contains(getInitializer());
-   @*/
-  public List<? extends Element> children() {
-    final List<? extends Element> result = getDimensionInitializers();
-    Util.addNonNull(getInitializer(), result);
-    Util.addNonNull(getTypeReference(), result);
-    return result;
-  }
-
   public Set<Type> getDirectExceptions() throws LookupException {
   	TypeReference ref = language(Java.class).createTypeReferenceInDefaultNamespace("java.lang.NegativeArraySizeException");
   	ref.setUniParent(getNamespace().defaultNamespace());

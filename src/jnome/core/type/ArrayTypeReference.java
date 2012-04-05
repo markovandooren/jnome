@@ -1,13 +1,10 @@
 package jnome.core.type;
 
-import java.util.List;
-
 import jnome.core.language.Java;
 
 import org.rejuse.association.SingleAssociation;
 
 import chameleon.core.declaration.Declaration;
-import chameleon.core.element.Element;
 import chameleon.core.element.ElementImpl;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.lookup.LookupStrategy;
@@ -16,7 +13,6 @@ import chameleon.core.validation.VerificationResult;
 import chameleon.oo.type.IntersectionTypeReference;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
-import chameleon.util.Util;
 
 public class ArrayTypeReference  extends ElementImpl implements JavaTypeReference {
 	
@@ -106,10 +102,6 @@ public class ArrayTypeReference  extends ElementImpl implements JavaTypeReferenc
 
 	public Declaration getDeclarator() throws LookupException {
 		return getElement();
-	}
-
-	public List<? extends Element> children() {
-		return Util.createNonNullList(elementTypeReference());
 	}
 
 	public JavaTypeReference componentTypeReference() {

@@ -92,12 +92,6 @@ public class ArrayAccessExpression extends Expression implements Assignable {
     return (Assignable)clone();
   }
 
-  public List children() {
-    List result = Util.createNonNullList(getTarget());
-    result.addAll(getIndices());
-    return result;
-  }
-
   public Set getDirectExceptions() throws LookupException {
     return Util.createNonNullSet(language(ObjectOrientedLanguage.class).getNullInvocationException());
   }

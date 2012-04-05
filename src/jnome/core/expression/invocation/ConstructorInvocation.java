@@ -135,18 +135,6 @@ public class ConstructorInvocation extends RegularMethodInvocation implements De
 //    }
 //  }
 
- /*@
-   @ also public behavior
-   @
-   @ post getAnonymousInnerType() != null ==> \result.contains(getAnonymousInnerType());
-   @*/
-  public List<Element> children() {
-    List<Element> result = super.children();
-    Util.addNonNull(getAnonymousInnerType(), result);
-    Util.addNonNull(getTypeReference(), result);
-    return result;
-  }
-  
   @Override
   public LookupStrategy lexicalLookupStrategy(Element element) throws LookupException {
     if ((element == getTypeReference()) && (getTargetExpression() != null)) {

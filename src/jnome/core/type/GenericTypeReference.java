@@ -9,7 +9,6 @@ import org.rejuse.association.OrderedMultiAssociation;
 import org.rejuse.association.SingleAssociation;
 
 import chameleon.core.declaration.Declaration;
-import chameleon.core.element.Element;
 import chameleon.core.element.ElementImpl;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.lookup.LookupStrategy;
@@ -22,7 +21,6 @@ import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.generics.ActualTypeArgument;
-import chameleon.util.Util;
 
 public class GenericTypeReference extends ElementImpl implements JavaTypeReference {
 
@@ -104,12 +102,6 @@ public class GenericTypeReference extends ElementImpl implements JavaTypeReferen
 	public TypeReference intersectionDoubleDispatch(IntersectionTypeReference other) {
 		IntersectionTypeReference result = other.clone();
 		result.add(clone());
-		return result;
-	}
-
-	public List<? extends Element> children() {
-		List<Element> result = Util.createNonNullList(target());
-		result.addAll(typeArguments());
 		return result;
 	}
 

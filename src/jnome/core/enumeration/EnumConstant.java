@@ -47,13 +47,6 @@ public class EnumConstant extends FixedSignatureMember implements DeclarationWit
 		return result;
 	}
 
-	public List<Element> children() {
-    List<Element> result = super.children();
-    result.addAll(actualArguments());
-    Util.addNonNull(body(), result);
-    return result;
-	}
-
 	/**
 	 * ACTUAL PARAMETERS
 	 */

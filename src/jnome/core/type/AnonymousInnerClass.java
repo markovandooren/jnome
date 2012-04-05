@@ -56,16 +56,6 @@ public class AnonymousInnerClass extends AnonymousType {
   }
 
 	@Override
-	public List<Element> children() {
-		List<Element> result = (List)modifiers();
-    Util.addNonNull(signature(), result);
-		Util.addNonNull(parameterBlock(TypeParameter.class), result);
-		Util.addNonNull(body(), result);
-		return result;
-	}
-
-
-	@Override
 	protected void copyContents(Type from, boolean link) {
 		copyEverythingExceptInheritanceRelations(from,link);
 	}

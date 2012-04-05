@@ -81,10 +81,6 @@ public class ArrayInitializer extends Expression {
     return result;
   }
 
-  public List<? extends Expression> children() {
-    return getVariableInitializers();
-  }
-
   public Set<Type> getDirectExceptions() throws LookupException {
     return new HashSet<Type>();
   }

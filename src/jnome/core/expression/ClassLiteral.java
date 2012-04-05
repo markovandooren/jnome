@@ -42,12 +42,6 @@ public class ClassLiteral extends Expression {
     return result;
   }
   
-  public List<Element> children() {
-  	List<Element> result = new ArrayList<Element>();
-  	Util.addNonNull(target(), result);
-  	return result;
-  }
- 
 	/**
 	 * TARGET
 	 */

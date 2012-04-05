@@ -105,10 +105,6 @@ public class SingleStaticImport extends Import {
 		return Valid.create();
 	}
 
-  public List<Element> children() {
-    return Util.createNonNullList(typeReference());
-  }
-
 	private SingleAssociation<SingleStaticImport, TypeReference> _typeReference = new SingleAssociation<SingleStaticImport, TypeReference>(this);
 
   

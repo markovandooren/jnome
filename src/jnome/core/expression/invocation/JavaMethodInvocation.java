@@ -5,11 +5,9 @@ import java.util.List;
 
 import jnome.core.language.Java;
 import jnome.core.type.JavaTypeReference;
-
-import org.rejuse.association.SingleAssociation;
-
 import chameleon.core.declaration.Declaration;
 import chameleon.core.element.ElementImpl;
+import chameleon.core.lookup.DeclarationCollector;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.reference.CrossReferenceTarget;
@@ -21,6 +19,7 @@ import chameleon.oo.type.generics.TypeParameter;
 import chameleon.oo.variable.FormalParameter;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.member.simplename.method.RegularMethodInvocation;
+import chameleon.util.association.Single;
 
 public class JavaMethodInvocation extends RegularMethodInvocation {
 
@@ -67,32 +66,34 @@ public class JavaMethodInvocation extends RegularMethodInvocation {
 	   	return result;
 	  }
 	   
+		DeclarationCollector<X> collector = new DeclarationCollector<X>(selector);
   	CrossReferenceTarget target = getTarget();
   	if(target == null) {
-      result = lexicalLookupStrategy().lookUp(selector);
+      lexicalLookupStrategy().lookUp(collector);
   	} else {
-  		result = target.targetContext().lookUp(selector);
+  		target.targetContext().lookUp(collector);
   	}
-		if (result != null) {
-			if(cache) {
+  	result = collector.result();
+//		if (result != null) {
+//			if(cache) {
 				result = (X) ((JavaMethodSelector)selector).instance((NormalMethod) result);
-			}
+//			}
 	  	//OPTIMISATION
 	  	if(cache) {
 	  		setCache((NormalMethod) result);
 	  	}
 	    return result;
-		}
-		else {
-			//repeat lookup for debugging purposes.
-			//Config.setCaching(false);
-	  	if(target == null) {
-	      result = lexicalLookupStrategy().lookUp(selector);
-	  	} else {
-	  		result = target.targetContext().lookUp(selector);
-	  	}
-			throw new LookupException("Method returned by invocation of "+ name()+" is null", this);
-		}
+//		}
+//		else {
+//			//repeat lookup for debugging purposes.
+//			//Config.setCaching(false);
+//	  	if(target == null) {
+//	      result = lexicalLookupStrategy().lookUp(selector);
+//	  	} else {
+//	  		result = target.targetContext().lookUp(selector);
+//	  	}
+//			throw new LookupException("Method returned by invocation of "+ name()+" is null", this);
+//		}
   }
 
 	
@@ -141,14 +142,14 @@ public class JavaMethodInvocation extends RegularMethodInvocation {
 			setTypeReference(tref);
 		}
 		
-		private SingleAssociation<ReferenceStub, TypeReference> _tref = new SingleAssociation<ReferenceStub, TypeReference>(this);
+		private Single<TypeReference> _tref = new Single<TypeReference>(this);
 		
 		public TypeReference typeReference() {
 			return _tref.getOtherEnd();
 		}
 		
 		public void setTypeReference(TypeReference tref) {
-			setAsParent(_tref, tref);
+			set(_tref, tref);
 		}
 		
 		@Override

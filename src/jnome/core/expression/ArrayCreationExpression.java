@@ -8,10 +8,8 @@ import jnome.core.type.ArrayType;
 import jnome.core.type.JavaTypeReference;
 
 import org.rejuse.association.OrderedMultiAssociation;
-import org.rejuse.association.SingleAssociation;
 import org.rejuse.java.collections.Visitor;
 
-import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
@@ -20,6 +18,8 @@ import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.support.expression.ArrayIndex;
 import chameleon.util.Util;
+import chameleon.util.association.Multi;
+import chameleon.util.association.Single;
 
 /**
  * @author Marko van Dooren
@@ -34,7 +34,7 @@ public class ArrayCreationExpression extends Expression {
 	 * TYPE
 	 *
 	 */
-	private SingleAssociation<ArrayCreationExpression,JavaTypeReference> _typeReference = new SingleAssociation<ArrayCreationExpression,JavaTypeReference>(this);
+	private Single<JavaTypeReference> _typeReference = new Single<JavaTypeReference>(this);
 
 
   public JavaTypeReference getTypeReference() {
@@ -42,13 +42,13 @@ public class ArrayCreationExpression extends Expression {
   }
 
   public void setTypeReference(JavaTypeReference type) {
-  	setAsParent(_typeReference,type);
+  	set(_typeReference,type);
   }
 
 	/**
 	 * DIMENSION INITIALIZERS
 	 */
-	private OrderedMultiAssociation<ArrayCreationExpression,ArrayIndex> _dimensionInitializers = new OrderedMultiAssociation<ArrayCreationExpression,ArrayIndex>(
+	private Multi<ArrayIndex> _dimensionInitializers = new Multi<ArrayIndex>(
 		this);
 
 
@@ -75,14 +75,14 @@ public class ArrayCreationExpression extends Expression {
 	 * @uml.associationEnd
 	 * @uml.property name="_init" multiplicity="(0 -1)" elementType="org.jnome.mm.expression.ArrayInitializer"
 	 */
-	private SingleAssociation<ArrayCreationExpression,ArrayInitializer> _init = new SingleAssociation<ArrayCreationExpression,ArrayInitializer>(this);
+	private Single<ArrayInitializer> _init = new Single<ArrayInitializer>(this);
 
   public ArrayInitializer getInitializer() {
     return _init.getOtherEnd();
   }
 
   public void setInitializer(ArrayInitializer initializer) {
-    setAsParent(_init,initializer);
+    set(_init,initializer);
   }
 
   protected Type actualType() throws LookupException {

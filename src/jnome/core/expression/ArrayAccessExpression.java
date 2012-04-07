@@ -5,11 +5,8 @@ import java.util.Set;
 
 import jnome.core.type.ArrayType;
 
-import org.rejuse.association.OrderedMultiAssociation;
-import org.rejuse.association.SingleAssociation;
 import org.rejuse.java.collections.Visitor;
 
-import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.reference.CrossReferenceTarget;
 import chameleon.core.validation.BasicProblem;
@@ -21,6 +18,8 @@ import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.Type;
 import chameleon.support.expression.ArrayIndex;
 import chameleon.util.Util;
+import chameleon.util.association.Multi;
+import chameleon.util.association.Single;
 
 /**
  * @author Marko van Dooren
@@ -31,7 +30,7 @@ public class ArrayAccessExpression extends Expression implements Assignable {
     setTarget(target);
   }
 
-	private SingleAssociation<ArrayAccessExpression,Expression> _target = new SingleAssociation<ArrayAccessExpression,Expression>(this);
+	private Single<Expression> _target = new Single<Expression>(this,false);
 
 
   public Expression getTarget() {
@@ -39,17 +38,13 @@ public class ArrayAccessExpression extends Expression implements Assignable {
   }
 
   public void setTarget(Expression expression) {
-    setAsParent(_target,expression);
+    set(_target,expression);
   }
 
 	/**
 	 * INDICES
 	 */
-	private OrderedMultiAssociation<ArrayAccessExpression,ArrayIndex> _indicesLink = new OrderedMultiAssociation<ArrayAccessExpression,ArrayIndex>(this);
-
-  public OrderedMultiAssociation getIndicesLink() {
-    return _indicesLink;
-  }
+	private Multi<ArrayIndex> _indicesLink = new Multi<ArrayIndex>(this);
 
   public void addIndex(ArrayIndex index) {
   	add(_indicesLink,index);

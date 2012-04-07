@@ -3,14 +3,8 @@
  */
 package jnome.core.expression.invocation;
 
-import java.util.List;
-
 import jnome.core.type.JavaTypeReference;
-
-import org.rejuse.association.SingleAssociation;
-
 import chameleon.core.declaration.Declaration;
-import chameleon.core.element.Element;
 import chameleon.core.element.ElementImpl;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.lookup.LookupStrategy;
@@ -21,21 +15,21 @@ import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.IntersectionTypeReference;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
-import chameleon.util.Util;
+import chameleon.util.association.Single;
 
 public abstract class WildCardReference<E extends WildCardReference> extends ElementImpl implements JavaTypeReference {
 	
 		public abstract E clone();
 	
 		public WildCardReference(TypeReference tref) {
-			setAsParent(_tref,tref);
+			set(_tref,tref);
 		}
 
 		public TypeReference typeReference() {
 			return _tref.getOtherEnd();
 		}
 		
-		private SingleAssociation<WildCardReference, TypeReference> _tref = new SingleAssociation<WildCardReference, TypeReference>(this); 
+		private Single<TypeReference> _tref = new Single<TypeReference>(this); 
 		
 		@Override
 		public VerificationResult verifySelf() {

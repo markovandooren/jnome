@@ -3,13 +3,11 @@ package jnome.core.imports;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.rejuse.association.SingleAssociation;
 import org.rejuse.logic.ternary.Ternary;
 
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.DeclarationContainer;
 import chameleon.core.declaration.Signature;
-import chameleon.core.element.Element;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.lookup.SelectorWithoutOrder;
@@ -22,7 +20,7 @@ import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.member.Member;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
-import chameleon.util.Util;
+import chameleon.util.association.Single;
 
 public class SingleStaticImport extends Import {
 
@@ -105,15 +103,15 @@ public class SingleStaticImport extends Import {
 		return Valid.create();
 	}
 
-	private SingleAssociation<SingleStaticImport, TypeReference> _typeReference = new SingleAssociation<SingleStaticImport, TypeReference>(this);
+	private Single<TypeReference> _typeReference = new Single<TypeReference>(this);
 
   
   public TypeReference typeReference() {
-    return (TypeReference)_typeReference.getOtherEnd();
+    return _typeReference.getOtherEnd();
   }
 
   public void setTypeReference(TypeReference reference) {
-  	setAsParent(_typeReference,reference);
+  	set(_typeReference,reference);
   }
 
 }

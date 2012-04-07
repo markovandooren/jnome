@@ -1,9 +1,6 @@
 package jnome.core.type;
 
 import jnome.core.language.Java;
-
-import org.rejuse.association.SingleAssociation;
-
 import chameleon.core.declaration.Declaration;
 import chameleon.core.element.ElementImpl;
 import chameleon.core.lookup.LookupException;
@@ -13,6 +10,7 @@ import chameleon.core.validation.VerificationResult;
 import chameleon.oo.type.IntersectionTypeReference;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
+import chameleon.util.association.Single;
 
 public class ArrayTypeReference  extends ElementImpl implements JavaTypeReference {
 	
@@ -28,14 +26,14 @@ public class ArrayTypeReference  extends ElementImpl implements JavaTypeReferenc
    @*/
 	public ArrayTypeReference(JavaTypeReference elementType, int arrayDimension) {
 		if(arrayDimension > 1) {
-			setAsParent(_elementType,new ArrayTypeReference(elementType, arrayDimension - 1));
+			set(_elementType,new ArrayTypeReference(elementType, arrayDimension - 1));
 		} else {
-			setAsParent(_elementType,elementType);
+			set(_elementType,elementType);
 		}
 	}
 	
 	public ArrayTypeReference(JavaTypeReference componentType) {
-		setAsParent(_elementType,componentType);
+		set(_elementType,componentType);
 	}
 	
 //  public int arrayDimension() {
@@ -46,7 +44,7 @@ public class ArrayTypeReference  extends ElementImpl implements JavaTypeReferenc
   	return _elementType.getOtherEnd();
   }
   
-  private SingleAssociation<ArrayTypeReference, JavaTypeReference> _elementType = new SingleAssociation<ArrayTypeReference, JavaTypeReference>(this);
+  private Single<JavaTypeReference> _elementType = new Single<JavaTypeReference>(this);
 
 	public JavaTypeReference erasedReference() {
 		JavaTypeReference erasedReference = elementTypeReference().erasedReference();

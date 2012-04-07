@@ -38,6 +38,11 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 	public AbstractJavaMethodSelector() {
 		super();
 	}
+	
+	@Override
+	public boolean usesSelectionNameOnly() {
+		return false;
+	}
 
 	@Override
 	public List<? extends Declaration> declarators(List<? extends Declaration> selectionCandidates) throws LookupException {

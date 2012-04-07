@@ -4,9 +4,6 @@ import java.lang.ref.SoftReference;
 import java.util.List;
 
 import jnome.core.language.Java;
-
-import org.rejuse.association.OrderedMultiAssociation;
-
 import chameleon.core.Config;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.SimpleNameSignature;
@@ -21,6 +18,7 @@ import chameleon.oo.type.BasicTypeReference;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.ActualTypeArgument;
+import chameleon.util.association.Multi;
 
 public class BasicJavaTypeReference extends BasicTypeReference implements JavaTypeReference, CrossReferenceWithName<Type> {
 
@@ -66,7 +64,7 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
   	remove(_genericParameters,arg);
   }
   
-  private OrderedMultiAssociation<JavaTypeReference,ActualTypeArgument> _genericParameters = new OrderedMultiAssociation<JavaTypeReference, ActualTypeArgument>(this);
+  private Multi<ActualTypeArgument> _genericParameters = new Multi<ActualTypeArgument>(this);
   
   public JavaTypeReference toArray(int arrayDimension) {
   	JavaTypeReference result;

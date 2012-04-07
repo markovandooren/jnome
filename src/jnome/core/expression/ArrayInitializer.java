@@ -6,7 +6,6 @@ import java.util.Set;
 
 import jnome.core.type.ArrayType;
 
-import org.rejuse.association.OrderedMultiAssociation;
 import org.rejuse.java.collections.Visitor;
 
 import chameleon.core.lookup.LookupException;
@@ -18,6 +17,7 @@ import chameleon.oo.type.Type;
 import chameleon.oo.variable.Variable;
 import chameleon.oo.variable.VariableDeclaration;
 import chameleon.oo.variable.VariableDeclarator;
+import chameleon.util.association.Multi;
 
 /**
  * @author Marko van Dooren
@@ -30,11 +30,7 @@ public class ArrayInitializer extends Expression {
 	/**
 	 * VARIABLE INITIALIZER
 	 */
-	private OrderedMultiAssociation<ArrayInitializer,Expression> _inits = new OrderedMultiAssociation<ArrayInitializer,Expression>(this);
-
-  public OrderedMultiAssociation getInitializersLink() {
-    return _inits;
-  }
+	private Multi<Expression> _inits = new Multi<Expression>(this);
 
   public void addInitializer(Expression init) {
     add(_inits,init);

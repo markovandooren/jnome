@@ -5,24 +5,21 @@ import java.util.List;
 
 import jnome.core.type.AnonymousInnerClass;
 import jnome.core.type.BasicJavaTypeReference;
-
-import org.rejuse.association.SingleAssociation;
-
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.DeclarationContainer;
 import chameleon.core.element.Element;
+import chameleon.core.lookup.DeclarationCollector;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.lookup.LookupStrategy;
 import chameleon.core.reference.CrossReferenceTarget;
-import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.expression.Expression;
 import chameleon.oo.type.ClassBody;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.member.simplename.method.RegularMethodInvocation;
-import chameleon.util.Util;
+import chameleon.util.association.Single;
 
 /**
  * @author Marko van Dooren
@@ -45,7 +42,7 @@ public class ConstructorInvocation extends RegularMethodInvocation implements De
 	/**
 	 * TYPE REFERENCE
 	 */
-	private SingleAssociation<ConstructorInvocation,BasicJavaTypeReference> _typeReference = new SingleAssociation<ConstructorInvocation,BasicJavaTypeReference>(this);
+	private Single<BasicJavaTypeReference> _typeReference = new Single<BasicJavaTypeReference>(this);
 
 
   public BasicJavaTypeReference getTypeReference() {
@@ -53,7 +50,7 @@ public class ConstructorInvocation extends RegularMethodInvocation implements De
   }
 
     public void setTypeReference(BasicJavaTypeReference type) {
-    	setAsParent(_typeReference, type);
+    	set(_typeReference, type);
     }
 
   /******************
@@ -74,13 +71,13 @@ public class ConstructorInvocation extends RegularMethodInvocation implements De
 
     
     
-	private SingleAssociation<ConstructorInvocation,Type> _body = new SingleAssociation<ConstructorInvocation,Type>(this);
+	private Single<Type> _body = new Single<Type>(this);
 	
 	public void setBody(ClassBody body) {
 		if(body == null) {
 			_body.connectTo(null);
 		} else {
-			setAsParent(_body,createAnonymousType(body));
+			set(_body,createAnonymousType(body));
 		}
 	}
 
@@ -102,13 +99,15 @@ public class ConstructorInvocation extends RegularMethodInvocation implements De
   }
   
   public <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
-  	X result = actualType().targetContext().lookUp(selector);
-  	if(result == null) {
-  		actualType().targetContext().lookUp(selector);
-			throw new LookupException("Constructor returned by invocation is null", this);
-  	} else {
-		  return result;
-  	}
+		DeclarationCollector<X> collector = new DeclarationCollector<X>(selector);
+  	actualType().targetContext().lookUp(collector);
+  	return collector.result();
+//  	if(result == null) {
+//  		actualType().targetContext().lookUp(selector);
+//			throw new LookupException("Constructor returned by invocation is null", this);
+//  	} else {
+//		  return result;
+//  	}
   }
 
   
@@ -117,7 +116,7 @@ public class ConstructorInvocation extends RegularMethodInvocation implements De
   }
   
   private void setAnonymousType(Type anonymous) {
-  	setAsParent(_body,anonymous);
+  	set(_body,anonymous);
   }
 
   protected ConstructorInvocation cloneInvocation(CrossReferenceTarget target) {

@@ -3,13 +3,9 @@ package jnome.core.enumeration;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.rejuse.association.OrderedMultiAssociation;
-import org.rejuse.association.SingleAssociation;
-
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.DeclarationContainer;
 import chameleon.core.declaration.SimpleNameSignature;
-import chameleon.core.element.Element;
 import chameleon.core.language.Language;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LocalLookupStrategy;
@@ -23,7 +19,8 @@ import chameleon.oo.member.Member;
 import chameleon.oo.type.ClassBody;
 import chameleon.oo.type.DeclarationWithType;
 import chameleon.oo.type.Type;
-import chameleon.util.Util;
+import chameleon.util.association.Multi;
+import chameleon.util.association.Single;
 
 public class EnumConstant extends FixedSignatureMember implements DeclarationWithType, DeclarationContainer {
 
@@ -50,7 +47,7 @@ public class EnumConstant extends FixedSignatureMember implements DeclarationWit
 	/**
 	 * ACTUAL PARAMETERS
 	 */
- private OrderedMultiAssociation<EnumConstant,Expression> _parameters = new OrderedMultiAssociation<EnumConstant,Expression>(this);
+ private Multi<Expression> _parameters = new Multi<Expression>(this);
  
   public void addParameter(Expression parameter) {
   	add(_parameters, parameter);
@@ -75,7 +72,7 @@ public class EnumConstant extends FixedSignatureMember implements DeclarationWit
   }
   
   public void setBody(ClassBody body) {
-  	setAsParent(_body,body);
+  	set(_body,body);
 //  	if(body == null) {
 //  		_body.connectTo(null);
 //  	} else {
@@ -83,7 +80,7 @@ public class EnumConstant extends FixedSignatureMember implements DeclarationWit
 //  	}
   }
   
-  private SingleAssociation<EnumConstant,ClassBody> _body = new SingleAssociation<EnumConstant, ClassBody>(this);
+  private Single<ClassBody> _body = new Single<ClassBody>(this);
 
 	@Override
 	public VerificationResult verifySelf() {

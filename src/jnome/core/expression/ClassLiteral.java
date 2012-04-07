@@ -1,14 +1,7 @@
 package jnome.core.expression;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import jnome.core.type.BasicJavaTypeReference;
-
-import org.rejuse.association.SingleAssociation;
-
-import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
@@ -17,7 +10,7 @@ import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.generics.BasicTypeArgument;
-import chameleon.util.Util;
+import chameleon.util.association.Single;
 
 /**
  * @author Marko van Dooren
@@ -45,7 +38,7 @@ public class ClassLiteral extends Expression {
 	/**
 	 * TARGET
 	 */
-	private SingleAssociation<ClassLiteral,TypeReference> _typeReference = new SingleAssociation<ClassLiteral,TypeReference>(this);
+	private Single<TypeReference> _typeReference = new Single<TypeReference>(this);
 
   
   public TypeReference target() {
@@ -53,7 +46,7 @@ public class ClassLiteral extends Expression {
   }
   
   public void setTarget(TypeReference type) {
-    setAsParent(_typeReference,type);
+    set(_typeReference,type);
   }
 
 	@Override

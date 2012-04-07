@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jnome.core.language.Java;
-
-import org.rejuse.association.OrderedMultiAssociation;
-import org.rejuse.association.SingleAssociation;
-
 import chameleon.core.declaration.Declaration;
 import chameleon.core.element.ElementImpl;
 import chameleon.core.lookup.LookupException;
@@ -21,6 +17,8 @@ import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.generics.ActualTypeArgument;
+import chameleon.util.association.Multi;
+import chameleon.util.association.Single;
 
 public class GenericTypeReference extends ElementImpl implements JavaTypeReference {
 
@@ -47,16 +45,16 @@ public class GenericTypeReference extends ElementImpl implements JavaTypeReferen
   	remove(_genericParameters,arg);
   }
   
-  private OrderedMultiAssociation<GenericTypeReference,ActualTypeArgument> _genericParameters = new OrderedMultiAssociation<GenericTypeReference, ActualTypeArgument>(this);
+  private Multi<ActualTypeArgument> _genericParameters = new Multi<ActualTypeArgument>(this);
 
-  private SingleAssociation<GenericTypeReference,BasicJavaTypeReference> _target = new SingleAssociation<GenericTypeReference,BasicJavaTypeReference>(this);
+  private Single<BasicJavaTypeReference> _target = new Single<BasicJavaTypeReference>(this,true);
 
   public BasicJavaTypeReference target() {
   	return _target.getOtherEnd();
   }
   
   public void setTarget(BasicJavaTypeReference target) {
-  	setAsParent(_target, target);
+  	set(_target, target);
   }
   
 

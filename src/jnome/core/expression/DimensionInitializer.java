@@ -1,16 +1,10 @@
 package jnome.core.expression;
 
-import java.util.List;
-
-import org.rejuse.association.SingleAssociation;
-
-import chameleon.core.element.Element;
 import chameleon.core.element.ElementImpl;
-import chameleon.core.namespace.Namespace;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
 import chameleon.oo.expression.Expression;
-import chameleon.util.Util;
+import chameleon.util.association.Single;
 
 /**
  * @author Marko van Dooren
@@ -26,14 +20,14 @@ public class DimensionInitializer extends ElementImpl {
 	/**
 	 * EXPRESSION
 	 */
-	private SingleAssociation<DimensionInitializer,Expression> _expression = new SingleAssociation<DimensionInitializer,Expression>(this);
+	private Single<Expression> _expression = new Single<Expression>(this);
 
   public Expression getExpression() {
     return _expression.getOtherEnd();
   }
 
   public void setExpression(Expression expression) {
-    setAsParent(_expression,expression);
+    set(_expression,expression);
   }
 
 

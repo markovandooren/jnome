@@ -2,7 +2,7 @@ package jnome.output;
 
 import java.io.File;
 
-import chameleon.core.compilationunit.CompilationUnit;
+import chameleon.core.compilationunit.Document;
 import chameleon.core.lookup.LookupException;
 import chameleon.exception.ModelException;
 import chameleon.oo.type.Type;
@@ -16,17 +16,17 @@ public class JavaCompilationUnitWriter extends CompilationUnitWriter {
 		super(outputDir,extension);
 	}
 
-	public String fileName(CompilationUnit compilationUnit) throws LookupException, ModelException {
+	public String fileName(Document compilationUnit) throws LookupException, ModelException {
 		Type result = mainType(compilationUnit);
 		String name = (result == null ? null : result.getName()+extension());
 		return name;
 	}
 
-	public String packageFQN(CompilationUnit compilationUnit) throws LookupException, ModelException {
+	public String packageFQN(Document compilationUnit) throws LookupException, ModelException {
 		return mainType(compilationUnit).getNamespace().getFullyQualifiedName();
 	}
 	
-	private Type mainType(CompilationUnit compilationUnit) throws LookupException, ModelException {
+	private Type mainType(Document compilationUnit) throws LookupException, ModelException {
 		Type result = null;
 		for(Type type: compilationUnit.descendants(Type.class)) {
 			if((type.nearestAncestor(Type.class) == null) && ((result == null) || (type.scope().ge(result.scope())))) {

@@ -37,11 +37,11 @@ import chameleon.oo.type.IntersectionType;
 import chameleon.oo.type.ParameterSubstitution;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.UnionType;
-import chameleon.oo.type.generics.AbstractInstantiatedTypeParameter;
-import chameleon.oo.type.generics.ActualType;
+import chameleon.oo.type.generics.InstantiatedParameterType;
 import chameleon.oo.type.generics.CapturedTypeParameter;
 import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.InstantiatedTypeParameter;
+import chameleon.oo.type.generics.LazyInstantiatedAlias;
 import chameleon.oo.type.generics.TypeConstraint;
 import chameleon.oo.type.generics.TypeParameter;
 import chameleon.oo.type.generics.WildCardType;
@@ -59,8 +59,8 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		} else {
 			if(
 					//(first instanceof LazyTypeAlias) && 
-				(second instanceof AbstractInstantiatedTypeParameter.LazyTypeAlias)) {
-					TypeParameter secondParam = ((AbstractInstantiatedTypeParameter.LazyTypeAlias)second).parameter();
+				(second instanceof LazyInstantiatedAlias)) {
+					TypeParameter secondParam = ((LazyInstantiatedAlias)second).parameter();
 					for(Pair<Type, TypeParameter> pair: slowTrace) {
 						if(first.sameAs(pair.first()) && secondParam.sameAs(pair.second())) {
 //													System.out.println("Match: true");
@@ -71,8 +71,8 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 			}
 			if(
 					//(second instanceof LazyTypeAlias) && 
-					(first instanceof AbstractInstantiatedTypeParameter.LazyTypeAlias)) {
-						TypeParameter firstParam = ((AbstractInstantiatedTypeParameter.LazyTypeAlias)first).parameter();
+					(first instanceof LazyInstantiatedAlias)) {
+						TypeParameter firstParam = ((LazyInstantiatedAlias)first).parameter();
 						for(Pair<Type, TypeParameter> pair: slowTrace) {
 							if(second.sameAs(pair.first()) && firstParam.sameAs(pair.second())) {
 //														System.out.println("Match: true");
@@ -81,8 +81,8 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 						}
 						slowTrace.add(new Pair<Type, TypeParameter>(second, firstParam));
 				}
-			if(second instanceof ActualType) {
-				TypeParameter secondParam = ((ActualType)second).parameter();
+			if(second instanceof InstantiatedParameterType) {
+				TypeParameter secondParam = ((InstantiatedParameterType)second).parameter();
 				for(Pair<Type, TypeParameter> pair: slowTrace) {
 					if(first.sameAs(pair.first()) && secondParam.sameAs(pair.second())) {
 //						System.out.println("Match: true");
@@ -91,8 +91,8 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 				}
 				slowTrace.add(new Pair<Type, TypeParameter>(first, secondParam));
 			}
-			if(first instanceof ActualType) {
-				TypeParameter firstParam = ((ActualType)first).parameter();
+			if(first instanceof InstantiatedParameterType) {
+				TypeParameter firstParam = ((InstantiatedParameterType)first).parameter();
 				for(Pair<Type, TypeParameter> pair: slowTrace) {
 					if(firstParam.sameAs(pair.second()) && second.sameAs(pair.first()))
 					{
@@ -104,10 +104,10 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 			}
 			if(first.sameAs(second)) {
 				result = true;
-			} else if(first instanceof ActualType) {
-				result = upperBoundNotHigherThan(((ActualType) first).aliasedType(), second, slowTrace);
-			} else if(second instanceof ActualType) {
-				result = upperBoundNotHigherThan(first, ((ActualType) second).aliasedType(), slowTrace);
+			} else if(first instanceof InstantiatedParameterType) {
+				result = upperBoundNotHigherThan(((InstantiatedParameterType) first).aliasedType(), second, slowTrace);
+			} else if(second instanceof InstantiatedParameterType) {
+				result = upperBoundNotHigherThan(first, ((InstantiatedParameterType) second).aliasedType(), slowTrace);
 			}	else if (first.equals(first.language(ObjectOrientedLanguage.class).getNullType())) {
 				result = true;
 			} else if (first instanceof WildCardType) {
@@ -214,10 +214,10 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 			if(first.sameAs(second)) {
 				result = true;
 			}
-			else if(first instanceof ActualType) {
-				result = contains(((ActualType) first).aliasedType(),second);
-			} else if(second instanceof ActualType) {
-				result = contains(first,((ActualType) second).aliasedType());
+			else if(first instanceof InstantiatedParameterType) {
+				result = contains(((InstantiatedParameterType) first).aliasedType(),second);
+			} else if(second instanceof InstantiatedParameterType) {
+				result = contains(first,((InstantiatedParameterType) second).aliasedType());
 			}
 			 else if (first.equals(first.language(ObjectOrientedLanguage.class).getNullType())) {
 				result = true;

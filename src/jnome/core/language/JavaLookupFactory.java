@@ -9,7 +9,7 @@ public class JavaLookupFactory extends LookupStrategyFactory {
 
   public  LookupStrategy createLocalLookupStrategy(DeclarationContainer element) {
 		if(element instanceof Namespace) {
-			return new JavaNoRelativeNamespaceLookupStrategy((Namespace)element);
+			return new JavaNonNestedPackageLookupStrategy((Namespace)element);
 		} else {
 			return super.createLocalLookupStrategy(element);
 		}

@@ -11,8 +11,8 @@ import jnome.core.type.JavaTypeReference;
 import chameleon.core.declaration.TargetDeclaration;
 import chameleon.core.lookup.LookupException;
 import chameleon.oo.expression.NamedTarget;
-import chameleon.oo.type.ConstructedType;
 import chameleon.oo.type.Type;
+import chameleon.oo.type.generics.FormalParameterType;
 import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.TypeParameter;
 
@@ -24,8 +24,8 @@ public class EqualTypeConstraint extends SecondPhaseConstraint {
 	
 	public void process() throws LookupException {
 		Type Utype = U();
-		if(Utype instanceof ConstructedType && parent().typeParameters().contains(((ConstructedType)Utype).parameter())) {
-			ConstructedType U = (ConstructedType) Utype;
+		if(Utype instanceof FormalParameterType && parent().typeParameters().contains(((FormalParameterType)Utype).parameter())) {
+			FormalParameterType U = (FormalParameterType) Utype;
 			FormalTypeParameter parameter = U.parameter();
 			if(parameter.sameAs(typeParameter())) {
 				// Otherwise, if U is Tj, then this constraint carries no information and may be discarded.

@@ -14,7 +14,6 @@ import org.rejuse.predicate.UnsafePredicate;
 
 import chameleon.core.lookup.LookupException;
 import chameleon.oo.language.ObjectOrientedLanguage;
-import chameleon.oo.type.ConstructedType;
 import chameleon.oo.type.DerivedType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.ActualTypeArgument;
@@ -23,6 +22,7 @@ import chameleon.oo.type.generics.BasicTypeArgument;
 import chameleon.oo.type.generics.CapturedTypeParameter;
 import chameleon.oo.type.generics.EqualityConstraint;
 import chameleon.oo.type.generics.ExtendsWildcard;
+import chameleon.oo.type.generics.FormalParameterType;
 import chameleon.oo.type.generics.InstantiatedTypeParameter;
 import chameleon.oo.type.generics.SuperWildcard;
 import chameleon.oo.type.generics.TypeConstraint;
@@ -81,9 +81,9 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 	public List<SecondPhaseConstraint> processFirstLevel() throws LookupException {
 		List<SecondPhaseConstraint> result = new ArrayList<SecondPhaseConstraint>();
 //		Declaration declarator = typeReference().getDeclarator();
-		if(F() instanceof ConstructedType && parent().typeParameters().contains(((ConstructedType)F()).parameter())) {
+		if(F() instanceof FormalParameterType && parent().typeParameters().contains(((FormalParameterType)F()).parameter())) {
 			// Otherwise, if F=Tj, then the constraint Tj :> A is implied.
-				result.add(FequalsTj(((ConstructedType)F()).parameter(), ARef()));
+				result.add(FequalsTj(((FormalParameterType)F()).parameter(), ARef()));
 		}
 		else if(F() instanceof ArrayType) {
 			// If F=U[], where the type U involves Tj, then if A is an array type V[], or
@@ -166,7 +166,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 	}
 	
 	public boolean involvesTypeParameter(Type type) throws LookupException {
-		if((type instanceof ConstructedType) && (parent().typeParameters().contains(((ConstructedType)type).parameter()))) {
+		if((type instanceof FormalParameterType) && (parent().typeParameters().contains(((FormalParameterType)type).parameter()))) {
 			return true;
 		} 
 		if((type instanceof ArrayType) && (involvesTypeParameter(((ArrayType)type).elementType()))) {

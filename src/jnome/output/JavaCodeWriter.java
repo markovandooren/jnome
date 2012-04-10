@@ -32,7 +32,7 @@ import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.predicate.AbstractPredicate;
 import org.rejuse.predicate.SafePredicate;
 
-import chameleon.core.compilationunit.CompilationUnit;
+import chameleon.core.compilationunit.Document;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.modifier.ElementWithModifiers;
@@ -40,7 +40,7 @@ import chameleon.core.modifier.Modifier;
 import chameleon.core.namespace.NamespaceReference;
 import chameleon.core.namespacepart.DemandImport;
 import chameleon.core.namespacepart.Import;
-import chameleon.core.namespacepart.NamespacePart;
+import chameleon.core.namespacepart.NamespaceDeclaration;
 import chameleon.core.reference.CrossReferenceTarget;
 import chameleon.core.reference.SpecificReference;
 import chameleon.oo.expression.Expression;
@@ -244,7 +244,7 @@ public class JavaCodeWriter extends Syntax {
     } else if(isStaticInitializer(element)) {
       result = toCodeStaticInitializer((StaticInitializer)element);
     } else if(isCompilationUnit(element)) {
-      result = toCodeCompilationUnit((CompilationUnit)element);
+      result = toCodeCompilationUnit((Document)element);
     } else if(isNamespaceReference(element)) {
       result = toCodeNamespaceReference((NamespaceReference)element);
     } else if(isBasicTypeReference(element)) {
@@ -258,7 +258,7 @@ public class JavaCodeWriter extends Syntax {
       else if(isSpecificReference(element)) {
       result = toCodeSpecificReference((SpecificReference)element);
     } else if(isNamespacePart(element)) {
-    	result = toCodeNamespacePart((NamespacePart) element);
+    	result = toCodeNamespacePart((NamespaceDeclaration) element);
     } 
 //    else if(isActualParameter(element)) {
 //    	result = toCodeActualParameter((ActualArgument) element);
@@ -498,11 +498,11 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public boolean isCompilationUnit(Element element) {
-    return element instanceof CompilationUnit;
+    return element instanceof Document;
   }
   
   public boolean isNamespacePart(Element element) {
-  	return element instanceof NamespacePart;
+  	return element instanceof NamespaceDeclaration;
   }
 
   public boolean isDemandImport(Element element) {
@@ -521,7 +521,7 @@ public class JavaCodeWriter extends Syntax {
 		return "import "+ toCode(((TypeImport)imp).getTypeReference()) +";\n";
   }
   
-  public String toCodeNamespacePart(NamespacePart part) throws LookupException {
+  public String toCodeNamespacePart(NamespaceDeclaration part) throws LookupException {
     StringBuffer result = new StringBuffer();
     result.append("package "+part.namespace().getFullyQualifiedName() +";\n\n");
     for(Import imp: part.imports()) {
@@ -544,9 +544,9 @@ public class JavaCodeWriter extends Syntax {
     return result.toString();
   }
   
-  public String toCodeCompilationUnit(CompilationUnit cu) throws LookupException {
+  public String toCodeCompilationUnit(Document cu) throws LookupException {
     StringBuffer result = new StringBuffer();
-  	for(NamespacePart part: cu.namespaceParts()) {
+  	for(NamespaceDeclaration part: cu.namespaceParts()) {
   		result.append(toCodeNamespacePart(part));
   	}
   	return result.toString();

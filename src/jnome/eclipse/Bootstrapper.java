@@ -25,34 +25,10 @@ public class Bootstrapper extends EclipseBootstrapper {
 
 	public final static String PLUGIN_ID = "be.chameleon.eclipse.java";
 	
-	public String getLanguageName() {
-		return "Java";
+	public Bootstrapper() {
+		super("Java","1.5","java");
 	}
-
-	public void registerFileExtensions() {
-		addExtension("java");
-	}
-
-	public String getLanguageVersion() {
-		return "1.5";
-	}
-
-	public String getVersion() {
-		return "Jnome build Auguest 27 2009";
-	}
-
-	public String getDescription() {
-		return "Jnome: a Chameleon model for Java";
-	}
-
-	public String getLicense() {
-		return "";
-	}
-
-	public Syntax getCodeWriter() {
-		return new JavaCodeWriter();
-	}
-
+	
 	public Language createLanguage() throws IOException, ParseException {
 		Java result = new Java();
 		ModelFactory factory = new JavaModelFactory(result);
@@ -67,10 +43,6 @@ public class Bootstrapper extends EclipseBootstrapper {
 		} catch(ChameleonProgrammerException exc) {
 			// Object and String may not be present yet.
 		}
-
-		
-//		factory.initializeBase(new ArrayList<File>());
-		
 		result.setPlugin(EclipseEditorExtension.class, new JavaEditorExtension());
 		result.setPlugin(Syntax.class, new JavaCodeWriter());
 		result.setPlugin(ObjectOrientedFactory.class, new JavaFactory());

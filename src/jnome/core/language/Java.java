@@ -38,6 +38,7 @@ import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.declaration.TargetDeclaration;
 import chameleon.core.element.Element;
 import chameleon.core.language.Language;
+import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.RootNamespace;
 import chameleon.core.property.ChameleonProperty;
@@ -55,7 +56,6 @@ import chameleon.oo.member.Member;
 import chameleon.oo.member.SimpleNameDeclarationWithParametersSignature;
 import chameleon.oo.method.Method;
 import chameleon.oo.method.MethodHeader;
-import chameleon.oo.type.ConstructedType;
 import chameleon.oo.type.DerivedType;
 import chameleon.oo.type.IntersectionType;
 import chameleon.oo.type.IntersectionTypeReference;
@@ -66,7 +66,7 @@ import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeIndirection;
 import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.UnionType;
-import chameleon.oo.type.generics.ActualType;
+import chameleon.oo.type.generics.InstantiatedParameterType;
 import chameleon.oo.type.generics.ActualTypeArgument;
 import chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
 import chameleon.oo.type.generics.BasicTypeArgument;
@@ -74,6 +74,7 @@ import chameleon.oo.type.generics.CapturedTypeParameter;
 import chameleon.oo.type.generics.EqualityConstraint;
 import chameleon.oo.type.generics.ExtendsWildcard;
 import chameleon.oo.type.generics.ExtendsWildcardType;
+import chameleon.oo.type.generics.FormalParameterType;
 import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.InstantiatedTypeParameter;
 import chameleon.oo.type.generics.SuperWildcard;
@@ -150,15 +151,19 @@ public class Java extends ObjectOrientedLanguage {
   		ArrayType arrayType = (ArrayType) original;
   		result = new ArrayType(erasure(arrayType.elementType()));
   	} 
-  	else if(original instanceof ConstructedType){
+  	else if(original instanceof FormalParameterType){
   		result = original;
   	} 
   	else {
-  		// Regular TYPE
+  		try {
 			if(original.nbTypeParameters(TypeParameter.class) > 0 && (original.parameter(TypeParameter.class,1) instanceof FormalTypeParameter)) {
 				result = RawType.create(original);
 			} else {
   			result = original;
+  		}
+  		} catch(NullPointerException exc) {
+  			System.out.println("debug");
+  			return null;
   		}
   	}
   	return result;
@@ -487,7 +492,12 @@ public class Java extends ObjectOrientedLanguage {
 
 		@Override
 		public BasicJavaTypeReference createTypeReference(String fqn) {
-			return new BasicJavaTypeReference(fqn);
+			Type t = _primitiveCache.get(fqn);
+			if(t != null) {
+				return new PrimitiveTypeReference(fqn,t);
+			} else {
+				return new BasicJavaTypeReference(fqn);
+			}
 		}
 
 		@Override
@@ -607,14 +617,14 @@ public class Java extends ObjectOrientedLanguage {
 					arg.setUniParent(null);
 					tref.addArgument(arg);
 				}
-			} else if (type instanceof ConstructedType) {
+			} else if (type instanceof FormalParameterType) {
 				//result = new NonLocalJavaTypeReference(new BasicJavaTypeReference(type.signature().name()),type.parent());
 				result = new BasicJavaTypeReference(type.signature().name());
-				result.setUniParent(((ConstructedType)type).parameter().parent());
-			} else if (type instanceof ActualType) {
+				result.setUniParent(((FormalParameterType)type).parameter().parent());
+			} else if (type instanceof InstantiatedParameterType) {
 				//result = new NonLocalJavaTypeReference(new BasicJavaTypeReference(type.signature().name()),type.parent());
 				result = new BasicJavaTypeReference(type.signature().name());
-				result.setUniParent(((ActualType)type).parameter().parent());
+				result.setUniParent(((InstantiatedParameterType)type).parameter().parent());
 			} else if (type instanceof AnonymousInnerClass) {
 				String fqn = ((AnonymousInnerClass)type).invocation().getTypeReference().getElement().getFullyQualifiedName();
 				result = (JavaTypeReference) createTypeReferenceInDefaultNamespace(fqn);
@@ -778,5 +788,41 @@ public class Java extends ObjectOrientedLanguage {
 			return new CapturedType(parameterSubstitution, base);
 		}
 
+		private class PrimitiveTypeReference extends BasicJavaTypeReference {
+			public PrimitiveTypeReference(String name, Type type) {
+				super(name);
+				_type = type;
+			}
+			private Type _type;
+			@Override
+			protected <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
+				return (X) _type;
+			}
+		}
+		
+		private Map<String, Type> _primitiveCache = new HashMap<String,Type>();
+		
+		public void storePrimitiveType(String name, Type type) {
+			_primitiveCache.put(name, type);
+		}
+		
+//		public Type intType() throws LookupException {
+//			Type result = _int;
+////			if(result == null) {
+////				result = findType("int");
+////				_int = result;
+////			}
+//			return result;
+//		}
+//		private Type _int;
 
+		public Type objectType() throws LookupException {
+			Type result = _object;
+			if(result == null) {
+				result = findType("java.lang.Object");
+				_object = result;
+			}
+			return result;
+		}
+		private Type _object;
 }

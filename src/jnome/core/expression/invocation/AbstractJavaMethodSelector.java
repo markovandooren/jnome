@@ -40,7 +40,7 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 	}
 	
 	@Override
-	public boolean usesSelectionNameOnly() {
+	public boolean canBeCached() {
 		return false;
 	}
 

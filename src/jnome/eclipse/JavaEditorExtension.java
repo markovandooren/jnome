@@ -5,18 +5,9 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import jnome.eclipse.Bootstrapper;
-import jnome.core.language.Java;
 import jnome.core.modifier.Default;
-
-import org.eclipse.swt.graphics.Image;
-
-import chameleon.core.declaration.Declaration;
-import chameleon.core.declaration.Signature;
 import chameleon.core.element.Element;
 import chameleon.core.modifier.Modifier;
-import chameleon.core.namespace.Namespace;
-import chameleon.core.namespacepart.NamespaceDeclaration;
 import chameleon.eclipse.connector.EclipseEditorExtension;
 import chameleon.eclipse.presentation.treeview.CompositeIconProvider;
 import chameleon.eclipse.presentation.treeview.DefaultIconProvider;

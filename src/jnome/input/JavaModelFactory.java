@@ -573,7 +573,9 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     @Override
 		public ModelFactoryUsingANTLR clone() {
 			try {
-				return new JavaModelFactory();
+				JavaModelFactory javaModelFactory = new JavaModelFactory();
+				javaModelFactory.setDebug(debug());
+				return javaModelFactory;
 			} catch (Exception e) {
 				throw new RuntimeException("Exception while cloning a JavaModelFactory", e);
 			}

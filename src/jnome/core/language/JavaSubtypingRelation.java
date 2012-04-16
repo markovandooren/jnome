@@ -58,24 +58,20 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 			result = true;
 		} else {
 			if(
-					//(first instanceof LazyTypeAlias) && 
 				(second instanceof LazyInstantiatedAlias)) {
 					TypeParameter secondParam = ((LazyInstantiatedAlias)second).parameter();
 					for(Pair<Type, TypeParameter> pair: slowTrace) {
 						if(first.sameAs(pair.first()) && secondParam.sameAs(pair.second())) {
-//													System.out.println("Match: true");
 							return true;
 						}
 					}
 					slowTrace.add(new Pair<Type, TypeParameter>(first, secondParam));
 			}
 			if(
-					//(second instanceof LazyTypeAlias) && 
 					(first instanceof LazyInstantiatedAlias)) {
 						TypeParameter firstParam = ((LazyInstantiatedAlias)first).parameter();
 						for(Pair<Type, TypeParameter> pair: slowTrace) {
 							if(second.sameAs(pair.first()) && firstParam.sameAs(pair.second())) {
-//														System.out.println("Match: true");
 								return true;
 							}
 						}
@@ -85,7 +81,6 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 				TypeParameter secondParam = ((InstantiatedParameterType)second).parameter();
 				for(Pair<Type, TypeParameter> pair: slowTrace) {
 					if(first.sameAs(pair.first()) && secondParam.sameAs(pair.second())) {
-//						System.out.println("Match: true");
 						return true;
 					}
 				}
@@ -96,7 +91,6 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 				for(Pair<Type, TypeParameter> pair: slowTrace) {
 					if(firstParam.sameAs(pair.second()) && second.sameAs(pair.first()))
 					{
-//						System.out.println("Match: true");
 						return true;
 					}
 				}

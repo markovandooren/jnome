@@ -1571,7 +1571,7 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public String toCodeAssignment(AssignmentExpression expr) throws LookupException {
-    return toCode((Element)expr.getVariable()) + " = " + toCode(expr.getValue());
+    return toCode((Element)expr.getVariableExpression()) + " = " + toCode(expr.getValue());
   }
   
 	public boolean isEmptyArrayIndex(Element element) {

@@ -17,7 +17,7 @@ import chameleon.support.expression.AssignmentExpression;
 import chameleon.support.tool.ArgumentParser;
 import chameleon.support.tool.Arguments;
 
-public class PropertyFinder {
+public class PropertyFinder extends Tool {
 
 	  /**
 	   * args[0] = path for the directory to write output
@@ -32,13 +32,8 @@ public class PropertyFinder {
 	   * java Copy c:\output\ c:\input1\ c:\input2\ @javax.swing @java.lang #java #java.security 
 	   */
 	  public PropertyFinder(String[] args, ModelFactory factory) throws Exception {
-	    if(args.length < 2) {
-	      System.out.println("Usage: java .... PropertyFinder outputDir inputDir* @recursivePackageFQN* #packageFQN* $typeFQN*");
-	    }
-	    BasicConfigurator.configure();
-	    Arguments arguments = new ArgumentParser(factory,false).parse(args,".java");
-		  Language lang = factory.language();
-		  List<Type> types = lang.defaultNamespace().descendants(Type.class);
+	  	super(args,factory,false);
+		  List<Type> types = language().defaultNamespace().descendants(Type.class);
 		  findProperties(types,"set","get");
 		  findPairs(types,"set","get");
 		  findPairs(types,"add","remove");
@@ -68,8 +63,8 @@ public class PropertyFinder {
 			  					if(exprs.size() == 1) {
 			  						AssignmentExpression e = exprs.get(0);
 			  						String varName = null;
-			  						if(e.getVariable() instanceof NamedTargetExpression) {
-			  							varName = ((NamedTargetExpression)e.getVariable()).name();
+			  						if(e.getVariableExpression() instanceof NamedTargetExpression) {
+			  							varName = ((NamedTargetExpression)e.getVariableExpression()).name();
 			  						} 
 			  						boolean found = false;
 			  						List<NamedTargetExpression> reads = method.descendants(NamedTargetExpression.class);

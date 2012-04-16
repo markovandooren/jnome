@@ -16,12 +16,17 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
-import org.rejuse.java.collections.RobustVisitor;
 import org.rejuse.java.collections.Visitor;
 
 import chameleon.util.Util;
@@ -37,9 +42,15 @@ public class Extractor {
 	public Extractor(List<String> classes) {
 		_classes = new ArrayList<String>(classes);
 	}
+	
+	private URL _url;
+	
+	public void setJar(String pathName) throws MalformedURLException {
+		_url = new File(pathName).toURI().toURL();
+	}
 
   public String getCompilationUnit(String fqn) throws ClassNotFoundException {
-    Class clazz = Class.forName(fqn);
+    Class clazz = getClass(fqn);
     final StringBuffer result = new StringBuffer();
     
     // PACKAGE
@@ -47,6 +58,22 @@ public class Extractor {
     result.append(getType(clazz,""));
     return result.toString(); 
   }
+
+	private Class<?> getClass(String fqn) throws ClassNotFoundException {
+		if(_url == null) {
+			return Class.forName(fqn);
+		} else {
+			return loadFromJar(fqn);
+		}
+	}
+	
+	private Class<?> loadFromJar(String fqn) throws ClassNotFoundException {
+		ClassLoader loader = URLClassLoader.newInstance(
+		    new URL[] {_url},
+		    getClass().getClassLoader()
+		);
+		return Class.forName(fqn, true, loader);
+	}
   
   public String toString(TypeVariable var) {
   	StringBuffer result = new StringBuffer();
@@ -418,20 +445,12 @@ public class Extractor {
   private List<String> _classes;
   
   public void generate(final File root) throws Exception {
-    new RobustVisitor() {
-        private int count = 0;
-		    public Object visit(Object element) throws IOException, ClassNotFoundException {
-          String name = (String)element;
-          File dest = new File(root.getAbsolutePath()+File.separator + getFileName(name));
-          System.out.println(++count + " Writing "+name + " to "+dest.getAbsolutePath());
-          
-          generate(name, dest);
-          return null;
-        }
-        public void unvisit(Object key, Object element) {
-          // NOP 
-        }
-		}.applyTo(_classes);
+  	int count = 0;
+  	for(String name: _classes) {
+  		File dest = new File(root.getAbsolutePath()+File.separator + getFileName(name));
+  		System.out.println(++count + " Writing "+name + " to "+dest.getAbsolutePath());
+  		generate(name, dest);
+  	}
   }
   
   /**
@@ -492,7 +511,6 @@ public class Extractor {
     FileWriter fw = new FileWriter(file);
     fw.write(getCompilationUnit(name));
     fw.close();
-//    getCompilationUnit(name);
   }
   
   public String getFileName(String className) {
@@ -500,10 +518,40 @@ public class Extractor {
   }
   
   public static void main(String[] args) throws IOException, Exception {
-    Extractor extractor = new Extractor(readClassNames(new File(args[0])));
+  	Extractor extractor;
+  	if(args[0].endsWith(".jar")) {
+  		extractor = new Extractor(readClassNamesFromJar(new JarFile(args[0])));
+  		extractor.setJar(args[0]);
+  	} else {
+  		extractor = new Extractor(readClassNames(new File(args[0])));
+  	}
     extractor.generate(new File(args[1]));
     //System.out.println(extractor.getCompilationUnit("java.lang.Character"));
     System.out.println("Done");
+  }
+  
+  public static List readClassNamesFromJar(JarFile file) throws IOException {
+  	Enumeration<JarEntry> entries = file.entries();
+  	List<String> result = new ArrayList<String>();
+		while(entries.hasMoreElements()) {
+  		JarEntry entry = entries.nextElement();
+  		String name = entry.getName();
+  		if(name.endsWith(".class")) {
+  			String className = name.substring(0, name.length()-6).replace(File.separatorChar, '.');
+  			String shortName = Util.getLastPart(className);
+  			boolean validClassName = ! shortName.contains("$");
+  			try {
+  				Integer i = new Integer(shortName);
+  			} catch(NumberFormatException e) {
+  				validClassName = true;
+  			}
+  			if(validClassName) {
+  				result.add(className);
+  			  System.out.println(className);
+  			}
+  		}
+  	}
+		return result;
   }
   
   public static List readClassNames(File file) throws IOException {

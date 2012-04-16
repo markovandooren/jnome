@@ -128,7 +128,7 @@ public class DesignAnalyzer {
     File outputDir = provider.outputDir();
     long start = System.currentTimeMillis();
     VerificationResult result = new DesignAnalyzer((Java) provider.language(), provider.namespaceProvider()).analyze();
-    System.out.println(result.toString());
+    System.out.println(result.message());
     long stop = System.currentTimeMillis();
     System.out.println("Translation took "+(stop - start) + " milliseconds.");
 

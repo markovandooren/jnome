@@ -284,7 +284,7 @@ scope TargetScope {
   }
   
 
-  public void processType(NamespacePart np, Type type){
+  public void processType(NamespaceDeclaration np, Type type){
     if(np == null) {throw new IllegalArgumentException("namespace part given to processType is null.");}
     if(type == null) {return;}  //throw new IllegalArgumentException("type given to processType is null.");}
     np.add(type);
@@ -344,10 +344,10 @@ identifierRule returns [String element]
     : id=Identifier {retval.element = $id.text;} 
     ;   
    
-compilationUnit returns [CompilationUnit element] 
+compilationUnit returns [Document element] 
 @init{ 
-NamespacePart npp = null;
-retval.element = getCompilationUnit();
+NamespaceDeclaration npp = null;
+retval.element = getDocument();
 }
     :    annotations
         (   np=packageDeclaration
@@ -361,7 +361,7 @@ retval.element = getCompilationUnit();
                 }
             )*
         |   cd=classOrInterfaceDeclaration
-               {npp = new NamespacePart(language().defaultNamespace());
+               {npp = new NamespaceDeclaration(language().defaultNamespace());
                 retval.element.add(npp);
                 npp.addImport(new DemandImport(new NamespaceReference("java.lang")));
                 processType(npp,cd.element);
@@ -378,7 +378,7 @@ retval.element = getCompilationUnit();
          )?
         {
          if(npp == null) {
-           npp = new NamespacePart(language().defaultNamespace());
+           npp = new NamespaceDeclaration(language().defaultNamespace());
          }
          npp.addImport(new DemandImport(new NamespaceReference("java.lang")));
          retval.element.add(npp);
@@ -393,10 +393,10 @@ retval.element = getCompilationUnit();
         )*
     ;
 
-packageDeclaration returns [NamespacePart element]
+packageDeclaration returns [NamespaceDeclaration element]
     :   pkgkw='package' qn=qualifiedName ';'
          {try{
-           retval.element = new NamespacePart(getDefaultNamespace().getOrCreateNamespace($qn.text));
+           retval.element = new NamespaceDeclaration(getDefaultNamespace().getOrCreateNamespace($qn.text));
            setKeyword(retval.element,pkgkw);
          }
          catch(ModelException exc) {
@@ -1684,7 +1684,7 @@ CrossReferenceTarget scopeTarget = null;
 }
 @after {
 if(! retval.element.descendants().contains(scopeTarget)) {
-  scopeTarget.removeAllTags();
+  scopeTarget.removeAllMetadata();
 }
 }
 	:	id=identifierRule 
@@ -1708,21 +1708,21 @@ if(! retval.element.descendants().contains(scopeTarget)) {
 (       ('[' ']')+ '.' 'class'
     |   
         arr=arrayAccessSuffixRubbish {retval.element = arr.element;}
-    |   arg=argumentsSuffixRubbish {retval.element.removeAllTags(); retval.element = arg.element;} // REMOVE VARIABLE REFERENCE POSITION!
+    |   arg=argumentsSuffixRubbish {retval.element.removeAllMetadata(); retval.element = arg.element;} // REMOVE VARIABLE REFERENCE POSITION!
     |   '.' clkw='class' 
-         {retval.element.removeAllTags();
+         {retval.element.removeAllMetadata();
          retval.element = new ClassLiteral(createTypeReference((NamedTarget)$TargetScope::target));
           setLocation(retval.element, $TargetScope::start, clkw);
          }
-    |   '.' gen=explicitGenericInvocation {retval.element.removeAllTags(); retval.element = gen.element;} // REMOVE VARIABLE REFERENCE POSITION!
+    |   '.' gen=explicitGenericInvocation {retval.element.removeAllMetadata(); retval.element = gen.element;} // REMOVE VARIABLE REFERENCE POSITION!
     |   '.' thiskw='this' 
-        {retval.element.removeAllTags();
+        {retval.element.removeAllMetadata();
           retval.element = new ThisLiteral(createTypeReference((NamedTarget)$TargetScope::target));
           setLocation(retval.element, $TargetScope::start, thiskw);
         }
     |   '.' supkw='super'  
             supsuf=superSuffix {
-               retval.element.removeAllTags();
+               retval.element.removeAllMetadata();
                CrossReferenceTarget tar = new SuperTarget($TargetScope::target);
                setKeyword(tar,supkw); 
                setLocation(tar,$TargetScope::start,supkw);

@@ -2,7 +2,7 @@ package jnome.output;
 
 import java.io.File;
 
-import chameleon.core.compilationunit.Document;
+import chameleon.core.document.Document;
 import chameleon.core.lookup.LookupException;
 import chameleon.exception.ModelException;
 import chameleon.oo.type.Type;

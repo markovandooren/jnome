@@ -12,7 +12,7 @@ import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.lookup.SelectorWithoutOrder;
 import chameleon.core.lookup.TwoPhaseDeclarationSelector;
-import chameleon.core.namespacepart.Import;
+import chameleon.core.namespacedeclaration.Import;
 import chameleon.core.relation.WeakPartialOrder;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;

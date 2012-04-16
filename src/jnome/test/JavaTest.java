@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
-import chameleon.core.namespacepart.NamespaceDeclaration;
+import chameleon.core.namespacedeclaration.NamespaceDeclaration;
 import chameleon.oo.type.Type;
 import chameleon.support.test.ExpressionTest;
 import chameleon.test.CompositeTest;

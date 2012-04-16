@@ -14,7 +14,7 @@ import chameleon.exception.ChameleonProgrammerException;
 
 import chameleon.core.lookup.LookupStrategyFactory;
 
-import chameleon.core.compilationunit.CompilationUnit;
+import chameleon.core.document.Document;
 
 import chameleon.oo.member.DeclarationWithParametersHeader;
 import chameleon.oo.member.SimpleNameDeclarationWithParametersHeader;
@@ -52,10 +52,10 @@ import chameleon.core.namespace.Namespace;
 import chameleon.core.namespace.RootNamespace;
 import chameleon.core.namespace.NamespaceReference;
 
-import chameleon.core.namespacepart.NamespacePart;
-import chameleon.core.namespacepart.Import;
-import chameleon.oo.namespacepart.TypeImport;
-import chameleon.core.namespacepart.DemandImport;
+import chameleon.core.namespacedeclaration.NamespaceDeclaration;
+import chameleon.core.namespacedeclaration.Import;
+import chameleon.oo.namespacedeclaration.TypeImport;
+import chameleon.core.namespacedeclaration.DemandImport;
 
 import chameleon.core.reference.CrossReference;
 
@@ -210,12 +210,12 @@ import java.util.ArrayList;
     return gJavaP.language();
   }
   
-  public CompilationUnit getCompilationUnit() {
-    return gJavaP.getCompilationUnit();
+  public Document getDocument() {
+    return gJavaP.getDocument();
   }
 	   
-  public void setCompilationUnit(CompilationUnit compilationUnit) {
-    gJavaP.setCompilationUnit(compilationUnit);
+  public void setDocument(Document compilationUnit) {
+    gJavaP.setDocument(compilationUnit);
   }
   
   public Namespace getDefaultNamespace() {

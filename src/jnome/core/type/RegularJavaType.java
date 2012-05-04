@@ -1,6 +1,7 @@
 package jnome.core.type;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import jnome.core.expression.invocation.SuperConstructorDelegation;
@@ -8,13 +9,19 @@ import jnome.core.method.JavaNormalMethod;
 import jnome.core.modifier.JavaConstructor;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
+import chameleon.core.lookup.LookupException;
 import chameleon.core.modifier.Modifier;
+import chameleon.core.tag.TagImpl;
+import chameleon.oo.expression.NamedTarget;
+import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.member.Member;
 import chameleon.oo.method.RegularImplementation;
 import chameleon.oo.method.SimpleNameMethodHeader;
 import chameleon.oo.statement.Block;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.TypeElement;
+import chameleon.oo.type.inheritance.InheritanceRelation;
+import chameleon.oo.type.inheritance.SubtypeRelation;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.modifier.Constructor;
 import chameleon.support.modifier.Public;
@@ -62,17 +69,6 @@ public class RegularJavaType extends RegularType {
 		_defaultDefaultConstructor = null;
 	}
 	
-//	protected void initDefaultConstructor() {
-//		if(!_initialized) {
-//	    setDefaultDefaultConstructor();
-//	    _initialized = true;
-//		}
-//	}
-	
-	private boolean _initialized = false;
-
-	
-	
   @Override
 	public List<Member> implicitMembers() {
   	List<Member> result = new ArrayList<Member>();
@@ -80,46 +76,12 @@ public class RegularJavaType extends RegularType {
   	return result;
 	}
 
-//	@Override
-//	public <M extends Member> List<M> members(Class<M> kind) throws LookupException {
-//  	List<M> result = super.members(kind);
-//  	NormalMethod cons = defaultDefaultConstructor();
-//		if(kind.isInstance(cons)) {
-//  		result.add((M)cons);
-//  	}
-//  	return result;
-//	}
-
-//	public <D extends Member> List<D> members(DeclarationSelector<D> selector) throws LookupException {
-//		// 1) All defined members of the requested kind are added.
-//		List<D> result = localMembers(selector);
-//		
-//		Declaration cons = defaultDefaultConstructor();
-//		if(cons != null) {
-//			ArrayList l = new ArrayList<Declaration>();
-//			l.add(cons);
-//			result.addAll(selector.selection(l));
-//		}
-//
-//		// 2) Fetch all potentially inherited members from all inheritance relations
-//		for (InheritanceRelation rel : inheritanceRelations()) {
-//				rel.accumulateInheritedMembers(selector, result);
-//		}
-//		// The selector must still apply its order to the candidates.
-//		//selector.applyOrder(result);
-//		
-//		return selector.selection(result);
-//  }
-  
   public void reactOnDescendantAdded(Element element) {
   	if(element instanceof TypeElement) {
   		if(isConstructor(element)) {
 		    clearDefaultDefaultConstructor();
   		}
   	}
-//  	if(element.isTrue(language(Java.class).CONSTRUCTOR)) {
-//  		clearDefaultDefaultConstructor();
-//  	}
   }
 
 	private boolean isConstructor(Element element) {
@@ -143,21 +105,42 @@ public class RegularJavaType extends RegularType {
   		setDefaultDefaultConstructor();
   	}
   	
-  	//  	Java language = language(Java.class);
-//		if(element.isTrue(language.CONSTRUCTOR)) {
-//  		List<TypeElement> elements = body().elements();
-//  		for(TypeElement el: elements) {
-//  			if(el.isTrue(language.CONSTRUCTOR)) {
-//  				return;
-//  			}
-//  		}
-//  		setDefaultDefaultConstructor();
-//  	}
   }
 
   public void reactOnDescendantReplaced(Element oldElement, Element newElement) {
   	reactOnDescendantRemoved(oldElement);
   	reactOnDescendantAdded(newElement);
   }
+  
+//  @Override
+//  protected void addImplicitInheritanceRelations(List<InheritanceRelation> list) {
+//    if(explicitNonMemberInheritanceRelations().isEmpty() && (! "Object".equals(name())) && (! getFullyQualifiedName().equals("java.lang.Object"))) {
+//    	InheritanceRelation relation = new SubtypeRelation(language(ObjectOrientedLanguage.class).createTypeReference(new NamedTarget("java.lang"),"Object"));
+//    	relation.setUniParent(this);
+//    	relation.setMetadata(new TagImpl(), IMPLICIT_CHILD);
+//    	list.add(relation);
+//    }
+//  }
+  
+  @Override
+  public List<InheritanceRelation> implicitNonMemberInheritanceRelations() {
+    if(explicitNonMemberInheritanceRelations().isEmpty() && (! "Object".equals(name())) && (! getFullyQualifiedName().equals("java.lang.Object"))) {
+    	InheritanceRelation relation = new SubtypeRelation(language(ObjectOrientedLanguage.class).createTypeReference(new NamedTarget("java.lang"),"Object"));
+    	relation.setUniParent(this);
+    	relation.setMetadata(new TagImpl(), IMPLICIT_CHILD);
+    	List<InheritanceRelation> result = new ArrayList<InheritanceRelation>();
+    	result.add(relation);
+    	return result;
+    } else {
+    	return Collections.EMPTY_LIST;
+    }
+  }
+  
+  @Override
+  public boolean hasInheritanceRelation(InheritanceRelation relation) throws LookupException {
+  	return super.hasInheritanceRelation(relation) || relation.hasMetadata(IMPLICIT_CHILD);
+  }
+  
+  public final static String IMPLICIT_CHILD = "IMPLICIT CHILD";
 
 }

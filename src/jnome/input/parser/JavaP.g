@@ -289,12 +289,12 @@ scope TargetScope {
     if(type == null) {return;}  //throw new IllegalArgumentException("type given to processType is null.");}
     np.add(type);
     // inherit from java.lang.Object if there is no explicit extends relation
-    String fqn = type.getFullyQualifiedName();
-    if(fqn != null) {
-      if(type.nonMemberInheritanceRelations().isEmpty() && (! fqn.equals("java.lang.Object"))){
-        type.addInheritanceRelation(new SubtypeRelation(createTypeReference(new NamedTarget("java.lang"),"Object")));
-      }
-    }
+    //String fqn = type.getFullyQualifiedName();
+    //if(fqn != null) {
+    //  if(type.nonMemberInheritanceRelations().isEmpty() && (! fqn.equals("java.lang.Object"))){
+    //    type.addInheritanceRelation(new SubtypeRelation(createTypeReference(new NamedTarget("java.lang"),"Object")));
+    //  }
+    //}
 
   }
   
@@ -308,9 +308,9 @@ scope TargetScope {
   }
   
   public void addNonTopLevelObjectInheritance(Type type) {
-    if(type.nonMemberInheritanceRelations().isEmpty()){
-      type.addInheritanceRelation(new SubtypeRelation(createTypeReference(new NamedTarget("java.lang"),"Object")));
-    }
+    //if(type.nonMemberInheritanceRelations().isEmpty()){
+    //  type.addInheritanceRelation(new SubtypeRelation(createTypeReference(new NamedTarget("java.lang"),"Object")));
+    //}
   }
   
   public JavaTypeReference typeRef(String qn) {
@@ -1112,10 +1112,10 @@ elementValueArrayInitializer
     :   '{' (elementValue (',' elementValue)*)? (',')? '}'
     ;
     
-annotationTypeDeclaration returns [TypeWithBody element]
+annotationTypeDeclaration returns [ClassWithBody element]
     :   '@' 'interface' name=identifierRule 
              {
-               retval.element = (TypeWithBody)createType(new SimpleNameSignature($name.text));
+               retval.element = (ClassWithBody)createType(new SimpleNameSignature($name.text));
                retval.element.addModifier(new AnnotationType());
                setName(retval.element,name.start);
              } 

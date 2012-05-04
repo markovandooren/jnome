@@ -15,7 +15,7 @@ import chameleon.support.modifier.Final;
 /**
  * @author Marko van Dooren
  */
-public class ArrayType extends RegularType implements JavaType {
+public class ArrayType extends RegularType {
 //	TODO: this class should not be a member. This is just a quickfix
   public ArrayType(Type type) {
     super(new SimpleNameSignature(getArrayName(type.getName())));
@@ -134,8 +134,8 @@ public class ArrayType extends RegularType implements JavaType {
     return new ArrayType(elementType());
   }
 
-	public Type erasure() {
-		return new ArrayType(((JavaType)elementType()).erasure());
-	}
+//	public Type erasure() {
+//		return new ArrayType(((JavaType)elementType()).erasure());
+//	}
   
 }

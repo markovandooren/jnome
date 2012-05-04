@@ -15,12 +15,15 @@ import chameleon.core.element.Element;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.reference.SimpleReference;
+import chameleon.core.tag.TagImpl;
 import chameleon.exception.ChameleonProgrammerException;
+import chameleon.oo.expression.NamedTarget;
+import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.member.Member;
 import chameleon.oo.method.Method;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeElement;
-import chameleon.oo.type.TypeWithBody;
+import chameleon.oo.type.ClassWithBody;
 import chameleon.oo.type.generics.BasicTypeArgument;
 import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.TypeParameter;
@@ -29,7 +32,7 @@ import chameleon.oo.type.inheritance.SubtypeRelation;
 import chameleon.oo.variable.FormalParameter;
 import chameleon.util.Pair;
 
-public class RawType extends TypeWithBody implements JavaType {
+public class RawType extends ClassWithBody {
 
 	public static RawType create(Type original) {
 		while(original != original.origin()) {
@@ -90,8 +93,6 @@ public class RawType extends TypeWithBody implements JavaType {
 		return selector.selection(Collections.unmodifiableList(_implicitMembers));
 	}
 
-
-
 	/**
 	 * Create a new raw type. The type parameters, super class and interface references, 
 	 * and all members will be erased according to the definitions in the JLS.
@@ -100,6 +101,7 @@ public class RawType extends TypeWithBody implements JavaType {
 		// first copy everything
 		super((SimpleNameSignature) original.signature().clone());
 		copyContents(original, true);
+//		copyImplicitInheritanceRelations(original);
 		copyImplicitMembers(original);
 		_baseType = original;
 		setUniParent(original.parent());
@@ -115,6 +117,34 @@ public class RawType extends TypeWithBody implements JavaType {
 		makeDescendantTypesRaw();
 	}
 	
+  @Override
+  public List<InheritanceRelation> implicitNonMemberInheritanceRelations() {
+    if(explicitNonMemberInheritanceRelations().isEmpty() && (! "Object".equals(name())) && (! getFullyQualifiedName().equals("java.lang.Object"))) {
+    	InheritanceRelation relation = new SubtypeRelation(language(ObjectOrientedLanguage.class).createTypeReference(new NamedTarget("java.lang"),"Object"));
+    	relation.setUniParent(this);
+    	relation.setMetadata(new TagImpl(), IMPLICIT_CHILD);
+    	List<InheritanceRelation> result = new ArrayList<InheritanceRelation>();
+    	result.add(relation);
+    	return result;
+    } else {
+    	return Collections.EMPTY_LIST;
+    }
+  }
+  
+  @Override
+  public boolean hasInheritanceRelation(InheritanceRelation relation) throws LookupException {
+  	return super.hasInheritanceRelation(relation) || relation.hasMetadata(IMPLICIT_CHILD);
+  }
+  
+  public final static String IMPLICIT_CHILD = "IMPLICIT CHILD";
+
+//	private void copyImplicitInheritanceRelations(Type original) {
+//		for(InheritanceRelation i: original.implicitNonMemberInheritanceRelations()) {
+//			InheritanceRelation clone = i.clone();
+//			addInheritanceRelation(clone);
+//		}
+//	}
+
 	private RawType(Type original, boolean useless) {
 		super((SimpleNameSignature) original.signature().clone());
 		copyContents(original, true);

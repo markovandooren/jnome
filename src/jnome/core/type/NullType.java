@@ -13,7 +13,7 @@ import chameleon.support.modifier.Public;
 /**
  * @author Marko van Dooren
  */
-public class NullType extends RegularType implements JavaType {
+public class NullType extends RegularType {
 
   public NullType(Java lang) {
     super("null type");
@@ -41,16 +41,16 @@ public class NullType extends RegularType implements JavaType {
     return new NullType((Java) language());
   }
 
-	/**
-	 * The erasure of a null type is the null type itself.
-	 */
- /*@
-   @ public behavior
-   @
-   @ post \result == this;
-   @*/
-	public Type erasure() {
-		return this;
-	}
+//	/**
+//	 * The erasure of a null type is the null type itself.
+//	 */
+// /*@
+//   @ public behavior
+//   @
+//   @ post \result == this;
+//   @*/
+//	public Type erasure() {
+//		return this;
+//	}
 
 }

@@ -30,6 +30,7 @@ import chameleon.input.ParseException;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.member.Member;
 import chameleon.oo.method.SimpleNameMethodHeader;
+import chameleon.oo.plugin.ObjectOrientedFactory;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.inheritance.SubtypeRelation;
@@ -59,6 +60,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 	public JavaModelFactory() {
 		Java lang = new Java();
 		lang.setPlugin(Syntax.class, new JavaCodeWriter());
+		lang.setPlugin(ObjectOrientedFactory.class, new JavaFactory());
 		setLanguage(lang, ModelFactory.class);
 	}
 	
@@ -240,7 +242,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     private NamespaceDeclaration getNamespacePart(Namespace pack) {
         // Namespace javaLang = (Namespace)pack.getOrCreatePackage("java.lang");
 
-        NamespaceDeclaration pp = new NamespaceDeclaration(pack);
+        NamespaceDeclaration pp = pack.language().plugin(ObjectOrientedFactory.class).createNamespaceDeclaration(pack);
         new Document(pp);
         pp.addImport(new DemandImport(new NamespaceReference(
                 new NamespaceReference("java"), "lang")));

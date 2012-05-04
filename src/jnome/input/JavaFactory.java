@@ -1,9 +1,12 @@
 package jnome.input;
 
 import jnome.core.method.JavaNormalMethod;
+import jnome.core.namespacedeclaration.JavaNamespaceDeclaration;
 import jnome.core.type.RegularJavaType;
 import chameleon.aspect.oo.weave.factory.OOFactory;
 import chameleon.core.declaration.SimpleNameSignature;
+import chameleon.core.namespace.Namespace;
+import chameleon.core.namespacedeclaration.NamespaceDeclaration;
 import chameleon.oo.expression.Expression;
 import chameleon.oo.method.MethodHeader;
 import chameleon.oo.plugin.ObjectOrientedFactory;
@@ -27,6 +30,11 @@ public class JavaFactory extends ObjectOrientedFactory implements OOFactory {
 	
 	public NormalMethod createNormalMethod(MethodHeader header) {
 		return new JavaNormalMethod(header);
+	}
+	
+	@Override
+	public NamespaceDeclaration createNamespaceDeclaration(Namespace ns) {
+		return new JavaNamespaceDeclaration(ns);
 	}
 
 	@Override

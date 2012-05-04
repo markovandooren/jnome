@@ -329,6 +329,10 @@ scope TargetScope {
     return ((Java)language()).createTypeReference(target);
   }
   
+  public NamespaceDeclaration createNamespaceDeclaration(Namespace ns) {
+    return ((Java)language()).plugin(ObjectOrientedFactory.class).createNamespaceDeclaration(ns);
+  }
+  
   public Java java() {
     return (Java)language();
   }
@@ -353,7 +357,6 @@ retval.element = getDocument();
         (   np=packageDeclaration
                 {npp=np.element;
                  retval.element.add(npp);
-                 npp.addImport(new DemandImport(new NamespaceReference("java.lang")));
                 } 
             (imp=importDeclaration{npp.addImport(imp.element);})* 
             (typech=typeDeclaration
@@ -361,9 +364,8 @@ retval.element = getDocument();
                 }
             )*
         |   cd=classOrInterfaceDeclaration
-               {npp = new NamespaceDeclaration(language().defaultNamespace());
+               {npp = createNamespaceDeclaration(language().defaultNamespace());
                 retval.element.add(npp);
-                npp.addImport(new DemandImport(new NamespaceReference("java.lang")));
                 processType(npp,cd.element);
                } 
             (typech=typeDeclaration
@@ -378,25 +380,18 @@ retval.element = getDocument();
          )?
         {
          if(npp == null) {
-           npp = new NamespaceDeclaration(language().defaultNamespace());
+           npp = createNamespaceDeclaration(language().defaultNamespace());
          }
-         npp.addImport(new DemandImport(new NamespaceReference("java.lang")));
          retval.element.add(npp);
         }
-        (imp=importDeclaration
-          {npp.addImport(imp.element);}
-        )* 
-        (typech=typeDeclaration
-          {
-           processType(npp,typech.element);
-          }
-        )*
+        (imp=importDeclaration {npp.addImport(imp.element);} )* 
+        (typech=typeDeclaration {processType(npp,typech.element);} )*
     ;
 
 packageDeclaration returns [NamespaceDeclaration element]
     :   pkgkw='package' qn=qualifiedName ';'
          {try{
-           retval.element = new NamespaceDeclaration(getDefaultNamespace().getOrCreateNamespace($qn.text));
+           retval.element = createNamespaceDeclaration(getDefaultNamespace().getOrCreateNamespace($qn.text));
            setKeyword(retval.element,pkgkw);
          }
          catch(ModelException exc) {

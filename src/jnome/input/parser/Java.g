@@ -161,6 +161,8 @@ import chameleon.support.input.ChameleonParser;
 
 import chameleon.util.Util;
 
+import chameleon.oo.plugin.ObjectOrientedFactory;
+
 import jnome.core.expression.ArrayInitializer;
 import jnome.core.expression.ClassLiteral;
 import jnome.core.expression.ArrayAccessExpression;

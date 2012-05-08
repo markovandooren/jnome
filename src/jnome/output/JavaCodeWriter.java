@@ -1622,7 +1622,7 @@ public class JavaCodeWriter extends Syntax {
     int i = 1;
     for(Type type:types) {
       String fileName = type.getName()+".java";
-      String packageFQN = type.getNamespace().getFullyQualifiedName();
+      String packageFQN = type.namespace().getFullyQualifiedName();
       String relDirName = packageFQN.replace('.', File.separatorChar);
       File out = new File(arguments.getOutputDirName()+File.separatorChar + relDirName + File.separatorChar + fileName);
       

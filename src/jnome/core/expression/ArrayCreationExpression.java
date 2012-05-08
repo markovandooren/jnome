@@ -110,7 +110,7 @@ public class ArrayCreationExpression extends Expression {
 
   public Set<Type> getDirectExceptions() throws LookupException {
   	TypeReference ref = language(Java.class).createTypeReferenceInDefaultNamespace("java.lang.NegativeArraySizeException");
-  	ref.setUniParent(getNamespace().defaultNamespace());
+  	ref.setUniParent(namespace().defaultNamespace());
     return Util.createNonNullSet(ref.getType());
   }
 

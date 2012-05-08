@@ -23,7 +23,7 @@ public class JavaCompilationUnitWriter extends CompilationUnitWriter {
 	}
 
 	public String packageFQN(Document compilationUnit) throws LookupException, ModelException {
-		return mainType(compilationUnit).getNamespace().getFullyQualifiedName();
+		return mainType(compilationUnit).namespace().getFullyQualifiedName();
 	}
 	
 	private Type mainType(Document compilationUnit) throws LookupException, ModelException {

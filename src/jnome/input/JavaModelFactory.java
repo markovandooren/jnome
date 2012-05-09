@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import jnome.core.language.Java;
 import jnome.core.type.RegularJavaType;
@@ -33,6 +35,7 @@ import chameleon.oo.method.SimpleNameMethodHeader;
 import chameleon.oo.plugin.ObjectOrientedFactory;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
+import chameleon.oo.type.inheritance.InheritanceRelation;
 import chameleon.oo.type.inheritance.SubtypeRelation;
 import chameleon.oo.variable.FormalParameter;
 import chameleon.plugin.output.Syntax;
@@ -252,7 +255,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     public void addVoid(Namespace mm) {
         NamespaceDeclaration cu = getNamespacePart(mm);
         Public pub = new Public();
-        Type voidT = new RegularJavaType("void") {
+        Type voidT = new PrimitiveType("void") {
 
             public boolean assignableTo(Type other) {
                 return false;
@@ -273,7 +276,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     public void addByte(Namespace mm) {
         NamespaceDeclaration cu = getNamespacePart(mm);
         Public pub = new Public();
-        Type byteT = new RegularJavaType("byte") {
+        Type byteT = new PrimitiveType("byte") {
             public boolean assignableTo(Type other) {
                 return other.equals(this)
                         || other.getFullyQualifiedName().equals("short")
@@ -299,7 +302,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     public void addShort(Namespace mm) {
         NamespaceDeclaration cu = getNamespacePart(mm);
         Public pub = new Public();
-        Type shortT = new RegularJavaType("short") {
+        Type shortT = new PrimitiveType("short") {
             public boolean assignableTo(Type other) {
                 return other.equals(this)
                         || other.getFullyQualifiedName().equals("char")
@@ -325,7 +328,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         NamespaceDeclaration cu = getNamespacePart(mm);
         Public pub = new Public();
 
-        Type charT = new RegularJavaType("char") {
+        Type charT = new PrimitiveType("char") {
             public boolean assignableTo(Type other) {
                 return other.equals(this)
                         || other.getFullyQualifiedName().equals("int")
@@ -349,7 +352,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         NamespaceDeclaration cu = getNamespacePart(mm);
         Public pub = new Public();
 
-        Type intT = new RegularJavaType("int") {
+        Type intT = new PrimitiveType("int") {
             public boolean assignableTo(Type other) {
                 return other.equals(this)
                         || other.getFullyQualifiedName().equals("long")
@@ -372,7 +375,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         NamespaceDeclaration cu = getNamespacePart(mm);
         Public pub = new Public();
 
-        Type longT = new RegularJavaType("long") {
+        Type longT = new PrimitiveType("long") {
             public boolean assignableTo(Type other) {
                 return other.equals(this)
                         || other.getFullyQualifiedName().equals("float")
@@ -394,7 +397,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         NamespaceDeclaration cu = getNamespacePart(mm);
         Public pub = new Public();
 
-        Type floatT = new RegularJavaType("float") {
+        Type floatT = new PrimitiveType("float") {
             public boolean assignableTo(Type other) {
                 return other.equals(this)
                         || other.getFullyQualifiedName().equals("double");
@@ -410,12 +413,27 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         addBinNumOps(floatT);
         mm.language(Java.class).storePrimitiveType("float",floatT);
     }
+    
+    private static class PrimitiveType extends RegularJavaType {
+    	public PrimitiveType(SimpleNameSignature sig) {
+				super(sig);
+			}
+
+			public PrimitiveType(String name) {
+				super(name);
+			}
+
+			@Override
+    	public List<InheritanceRelation> implicitNonMemberInheritanceRelations() {
+    		return Collections.EMPTY_LIST;
+    	}
+    }
 
     public void addDouble(Namespace mm) {
         NamespaceDeclaration cu = getNamespacePart(mm);
         Public pub = new Public();
 
-        Type doubleT = new RegularJavaType("double");
+        Type doubleT = new PrimitiveType("double");
         doubleT.addModifier(pub);
         cu.add(doubleT);
         doubleT.addModifier(new ValueType());
@@ -527,7 +545,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 
     public void addBoolean(Namespace mm) {
         Public pub = new Public();
-        Type booleanT = new RegularJavaType("boolean");
+        Type booleanT = new PrimitiveType("boolean");
         booleanT.addModifier(pub);
         getNamespacePart(mm).add(booleanT);
         addPrefixOperator(booleanT, "boolean", "!");

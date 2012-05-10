@@ -10,6 +10,7 @@ import chameleon.core.declaration.DeclarationContainer;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.DeclarationCollector;
 import chameleon.core.lookup.DeclarationSelector;
+import chameleon.core.lookup.DeclaratorSelector;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.lookup.LookupStrategy;
 import chameleon.core.reference.CrossReferenceTarget;
@@ -108,6 +109,13 @@ public class ConstructorInvocation extends RegularMethodInvocation implements De
 //  	} else {
 //		  return result;
 //  	}
+  }
+  
+  @Override
+  public Declaration getDeclarator() throws LookupException {
+		DeclarationCollector<Declaration> collector = new DeclarationCollector<Declaration>(new DeclaratorSelector(selector()));
+  	actualType().targetContext().lookUp(collector);
+  	return collector.result();
   }
 
   

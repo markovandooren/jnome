@@ -1688,6 +1688,9 @@ CrossReferenceTarget scopeTarget = null;
 @after {
 if(! retval.element.descendants().contains(scopeTarget)) {
   scopeTarget.removeAllMetadata();
+  for(Element e: scopeTarget.descendants()) {
+    e.removeAllMetadata();
+  }
 }
 }
 	:	id=identifierRule 

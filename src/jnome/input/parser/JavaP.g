@@ -1353,6 +1353,7 @@ constantExpression returns [Expression element]
     ;
     
 expression returns [Expression element]
+@after{check_null(retval.element);}
     :   ex=conditionalExpression {retval.element=ex.element;} (op=assignmentOperator exx=expression 
         {String txt = $op.text; 
          if(txt.equals("=")) {
@@ -1397,6 +1398,7 @@ assignmentOperator
     ;
 
 conditionalExpression returns [Expression element]
+@after{check_null(retval.element);}
     :   ex=conditionalOrExpression {retval.element = ex.element;}( '?' exx=expression ':' exxx=expression 
         {retval.element = new ConditionalExpression(retval.element,exx.element,exxx.element);
          setLocation(retval.element,retval.start,exxx.stop);
@@ -1405,6 +1407,7 @@ conditionalExpression returns [Expression element]
     ;
 
 conditionalOrExpression returns [Expression element]
+@after{check_null(retval.element);}
     :   ex=conditionalAndExpression {retval.element = ex.element;} ( '||' exx=conditionalAndExpression 
         {retval.element = new ConditionalOrExpression(retval.element, exx.element);
          setLocation(retval.element,retval.start,exx.stop);
@@ -1412,6 +1415,7 @@ conditionalOrExpression returns [Expression element]
     ;
 
 conditionalAndExpression returns [Expression element]
+@after{check_null(retval.element);}
     :   ex=inclusiveOrExpression {retval.element = ex.element;} ( '&&' exx=inclusiveOrExpression 
         {retval.element = new ConditionalAndExpression(retval.element, exx.element);
          setLocation(retval.element,retval.start,exx.stop);
@@ -1419,6 +1423,7 @@ conditionalAndExpression returns [Expression element]
     ;
 
 inclusiveOrExpression returns [Expression element]
+@after{check_null(retval.element);}
     :   ex=exclusiveOrExpression {retval.element = ex.element;} ( '|' exx=exclusiveOrExpression 
        {
          retval.element = new InfixOperatorInvocation("|", retval.element);
@@ -1428,6 +1433,7 @@ inclusiveOrExpression returns [Expression element]
     ;
 
 exclusiveOrExpression returns [Expression element]
+@after{check_null(retval.element);}
     :   ex=andExpression {retval.element = ex.element;} ( '^' exx=andExpression
     {
          retval.element = new InfixOperatorInvocation("^", retval.element);
@@ -1437,6 +1443,7 @@ exclusiveOrExpression returns [Expression element]
     ;
 
 andExpression returns [Expression element]
+@after{check_null(retval.element);}
     :   ex=equalityExpression {retval.element = ex.element;} ( '&' exx=equalityExpression
     {
          retval.element = new InfixOperatorInvocation("&", retval.element);
@@ -1447,6 +1454,7 @@ andExpression returns [Expression element]
 
 equalityExpression returns [Expression element]
 @init{String op=null;}
+@after{check_null(retval.element);}
     :   ex=instanceOfExpression  {retval.element = ex.element;} 
           ( ('==' {op="==";} | '!=' {op="!=";}) exx=instanceOfExpression 
         {

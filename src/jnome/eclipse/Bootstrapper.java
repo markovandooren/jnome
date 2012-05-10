@@ -43,7 +43,7 @@ public class Bootstrapper extends EclipseBootstrapper {
 		} catch(ChameleonProgrammerException exc) {
 			// Object and String may not be present yet.
 		}
-		result.setPlugin(EclipseEditorExtension.class, new JavaEditorExtension());
+		result.setPlugin(EclipseEditorExtension.class, new JavaEditorExtension(getLanguageName()));
 		result.setPlugin(Syntax.class, new JavaCodeWriter());
 		result.setPlugin(ObjectOrientedFactory.class, new JavaFactory());
 		return result;

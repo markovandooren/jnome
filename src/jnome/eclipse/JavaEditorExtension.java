@@ -35,7 +35,8 @@ import chameleon.support.modifier.Static;
  */
 public class JavaEditorExtension extends EclipseEditorExtension {
 
-	public JavaEditorExtension() {
+	public JavaEditorExtension(String name) {
+		super(name);
 		ACCESS_ICON_DECORATOR = new AccessIconDecorator();
 		CLASS_ICON_PROVIDER = new ClassIconProvider(ACCESS_ICON_DECORATOR);
 		FIELD_ICON_PROVIDER = new DefaultIconProvider("field", MemberVariable.class,ACCESS_ICON_DECORATOR);
@@ -47,7 +48,7 @@ public class JavaEditorExtension extends EclipseEditorExtension {
 	}
 
 	public Plugin clone() {
-		return new JavaEditorExtension();
+		return new JavaEditorExtension(languageName());
 	}
 
 	public String getLabel(Element element) {

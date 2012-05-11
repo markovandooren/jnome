@@ -1310,10 +1310,18 @@ public class JavaCodeWriter extends Syntax {
     }
     return result.toString();
   }
+
+  protected String getActualArgsOpeningBrace() {
+	  return "(";
+  }
+
+  protected String getActualArgsClosingBrace() {
+	  return ")";
+  }
   
   public String getActualArgs(MethodInvocation inv) throws LookupException {
     StringBuffer result = new StringBuffer();
-    result.append("(");
+    result.append(getActualArgsOpeningBrace());
     Iterator<Expression> iter = inv.getActualParameters().iterator();
     while(iter.hasNext()) {
       Expression expr = iter.next();
@@ -1322,7 +1330,7 @@ public class JavaCodeWriter extends Syntax {
         result.append(", ");
       }
     }
-    result.append(")");
+    result.append(getActualArgsClosingBrace());
     return result.toString();
   }
   

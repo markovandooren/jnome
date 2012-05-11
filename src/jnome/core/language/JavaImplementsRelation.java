@@ -25,11 +25,16 @@ public class JavaImplementsRelation extends StrictPartialOrder<Member> {
 //	    result = checkDefined(method1);
 //	    if(result) {
 	    	result = !checkDefined(method2);
+	    	result = result && first.name().equals(second.name());
 	    	if(result) {
 	    		DeclarationWithParametersSignature signature1 = method1.signature();
 	    		DeclarationWithParametersSignature signature2 = method2.signature();
-	    		DeclarationWithParametersSignature erasure2 = signature2.language(Java.class).erasure((SimpleNameDeclarationWithParametersSignature) signature2);
-	    		result = signature1.sameParameterBoundsAs(signature2) &&
+	    		result = signature1.sameParameterBoundsAs(signature2);
+					if(!result) {
+						DeclarationWithParametersSignature erasure2 = signature2.language(Java.class).erasure((SimpleNameDeclarationWithParametersSignature) signature2);
+						result = signature1.sameParameterBoundsAs(erasure2);
+					}
+	    		result = result &&
 	    		(! method2.nearestAncestor(Type.class).subTypeOf(method1.nearestAncestor(Type.class))) &&
 	    		method1.sameKind(method2);
 	    	} 

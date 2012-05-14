@@ -122,7 +122,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
             if (obj != null) {
                 addInfixOperator(obj, "boolean", "==", "Object");
                 addInfixOperator(obj, "boolean", "!=", "Object");
-                addInfixOperator(obj, "String", "+", "String");
+                addPlusString(obj);
             }
             Type string = findType(defaultPackage, "java.lang.String");
             if (string != null) {
@@ -247,8 +247,8 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 
         NamespaceDeclaration pp = pack.language().plugin(ObjectOrientedFactory.class).createNamespaceDeclaration(pack);
         new Document(pp);
-        pp.addImport(new DemandImport(new NamespaceReference(
-                new NamespaceReference("java"), "lang")));
+        //pp.addImport(new DemandImport(new NamespaceReference(
+          //      new NamespaceReference("java"), "lang")));
         return pp;
     }
 
@@ -473,8 +473,12 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         addCompoundAssignment(type, "%=");
         addCompoundAssignment(type, "+=");
         addCompoundAssignment(type, "-=");
-        addInfixOperator(type, "String", "+", "String");
+        addPlusString(type);
     }
+
+		protected void addPlusString(Type type) {
+			addInfixOperator(type, "String", "+", "String");
+		}
 
     public void addBinComp(Type type, String operator) {
         addInfixOperator(type, "boolean", operator, "char");

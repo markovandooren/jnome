@@ -1,5 +1,6 @@
 package jnome.input;
 
+import jnome.core.expression.invocation.JavaMethodInvocation;
 import jnome.core.method.JavaNormalMethod;
 import jnome.core.namespacedeclaration.JavaNamespaceDeclaration;
 import jnome.core.type.RegularJavaType;
@@ -7,7 +8,9 @@ import chameleon.aspect.oo.weave.factory.OOFactory;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.namespace.Namespace;
 import chameleon.core.namespacedeclaration.NamespaceDeclaration;
+import chameleon.core.reference.CrossReferenceTarget;
 import chameleon.oo.expression.Expression;
+import chameleon.oo.expression.MethodInvocation;
 import chameleon.oo.method.MethodHeader;
 import chameleon.oo.plugin.ObjectOrientedFactory;
 import chameleon.oo.statement.Statement;
@@ -52,5 +55,10 @@ public class JavaFactory extends ObjectOrientedFactory implements OOFactory {
 		TryStatement result = new TryStatement(tr);
 		result.setFinallyClause(new FinallyClause(fin));
 		return result;
+	}
+	
+	@Override
+	public MethodInvocation createInvocation(String name, CrossReferenceTarget target) {
+		return new JavaMethodInvocation(name, target);
 	}
 }

@@ -195,8 +195,8 @@ scope TargetScope {
 
 @parser::members {
 
-  public RegularMethodInvocation invocation(String name, CrossReferenceTarget target) {
-    return new JavaMethodInvocation(name, target);
+  public MethodInvocation invocation(String name, CrossReferenceTarget target) {
+    return factory().createInvocation(name, target);
   }
 
   private JavaFactory _javaFactory = new JavaFactory();
@@ -1617,7 +1617,7 @@ CrossReferenceTarget old = $TargetScope::target;
 	        } 
 	    (args=arguments 
 	        {retval.element = invocation($name.text, $TargetScope::target);
-	         ((RegularMethodInvocation)retval.element).addAllArguments(args.element);
+	         ((MethodInvocation)retval.element).addAllArguments(args.element);
 	         stop=args.stop;
 	        })?
 	        {setLocation(retval.element,start,stop);}
@@ -1763,7 +1763,7 @@ scope TargetScope;
 	;
 
 // NEEDS_TARGET
-argumentsSuffixRubbish returns [RegularMethodInvocation element]
+argumentsSuffixRubbish returns [MethodInvocation element]
 // the last part of target is the method name
 	:	args=arguments 
 	        {String name = ((NamedTarget)$TargetScope::target).name();
@@ -1841,8 +1841,8 @@ classCreatorRest returns [ClassCreatorRest element]
 explicitGenericInvocation returns [Expression element]
     :   targs=nonWildcardTypeArguments name=identifierRule args=arguments
           {retval.element = invocation($name.text,$TargetScope::target);
-           ((RegularMethodInvocation)retval.element).addAllArguments(args.element);
-           ((RegularMethodInvocation)retval.element).addAllTypeArguments(targs.element);
+           ((MethodInvocation)retval.element).addAllArguments(args.element);
+           ((MethodInvocation)retval.element).addAllTypeArguments(targs.element);
           }
     ;
     
@@ -1863,7 +1863,7 @@ superSuffix returns [TargetedExpression element]
                          stop = name.start;} 
         (args=arguments
           {retval.element = invocation($name.text,null);
-          ((RegularMethodInvocation)retval.element).addAllArguments(args.element);
+          ((MethodInvocation)retval.element).addAllArguments(args.element);
           stop = args.stop;
           }
         )?

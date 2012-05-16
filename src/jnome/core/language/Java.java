@@ -43,6 +43,7 @@ import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.RootNamespace;
 import chameleon.core.property.ChameleonProperty;
 import chameleon.core.property.DynamicChameleonProperty;
+import chameleon.core.property.PropertyRule;
 import chameleon.core.property.StaticChameleonProperty;
 import chameleon.core.reference.CrossReference;
 import chameleon.core.reference.ElementReferenceWithTarget;
@@ -309,12 +310,16 @@ public class Java extends ObjectOrientedLanguage {
   }
   
   protected void initializePropertyRules() {
-  	addPropertyRule(new MemberOverridableByDefault());
-  	addPropertyRule(new MemberInheritableByDefault());
-  	addPropertyRule(new TypeExtensibleByDefault());
+  	addPropertyRule(MEMBER_OVERRIDABLE_BY_DEFAULT);
+  	addPropertyRule(MEMBER_INHERITABLE_BY_DEFAULT);
+  	addPropertyRule(TYPE_EXTENSIBLE_BY_DEFAULT);
   	addPropertyRule(new MemberInstanceByDefault());
   	addPropertyRule(new MemberPackageAccessibleByDefault());
   }
+  
+  public final static PropertyRule<Member> MEMBER_OVERRIDABLE_BY_DEFAULT = new MemberOverridableByDefault();
+  public final static PropertyRule<Member> MEMBER_INHERITABLE_BY_DEFAULT = new MemberInheritableByDefault();
+  public final static PropertyRule<Member> TYPE_EXTENSIBLE_BY_DEFAULT = new TypeExtensibleByDefault();
 
  /*@
    @ also public behavior

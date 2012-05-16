@@ -310,6 +310,9 @@ public class Java extends ObjectOrientedLanguage {
   }
   
   protected void initializePropertyRules() {
+  	MEMBER_OVERRIDABLE_BY_DEFAULT = new MemberOverridableByDefault();
+  	MEMBER_INHERITABLE_BY_DEFAULT = new MemberInheritableByDefault();
+  	TYPE_EXTENSIBLE_BY_DEFAULT = new TypeExtensibleByDefault();
   	addPropertyRule(MEMBER_OVERRIDABLE_BY_DEFAULT);
   	addPropertyRule(MEMBER_INHERITABLE_BY_DEFAULT);
   	addPropertyRule(TYPE_EXTENSIBLE_BY_DEFAULT);
@@ -317,10 +320,14 @@ public class Java extends ObjectOrientedLanguage {
   	addPropertyRule(new MemberPackageAccessibleByDefault());
   }
   
-  public final static PropertyRule<Member> MEMBER_OVERRIDABLE_BY_DEFAULT = new MemberOverridableByDefault();
-  public final static PropertyRule<Member> MEMBER_INHERITABLE_BY_DEFAULT = new MemberInheritableByDefault();
-  public final static PropertyRule<Member> TYPE_EXTENSIBLE_BY_DEFAULT = new TypeExtensibleByDefault();
+  private PropertyRule<Member> MEMBER_OVERRIDABLE_BY_DEFAULT;
+  private PropertyRule<Member> MEMBER_INHERITABLE_BY_DEFAULT;
+  private PropertyRule<Member> TYPE_EXTENSIBLE_BY_DEFAULT;
 
+  public PropertyRule<Member> ruleMemberOverridableByDefault() {
+  	return MEMBER_OVERRIDABLE_BY_DEFAULT;
+  }
+  
  /*@
    @ also public behavior
    @

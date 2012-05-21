@@ -3,6 +3,7 @@ lexer grammar JavaL;
   package jnome.input.parser;
 }
 @members {
+  public final static int JAVADOC_CHANNEL=1;
   protected boolean enumIsKeyword = true;
   protected boolean assertIsKeyword = true;
 }

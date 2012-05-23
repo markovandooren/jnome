@@ -220,7 +220,7 @@ public class Java extends ObjectOrientedLanguage {
 		}
 
 		@Override
-		public Ternary appliesTo(Element element) {
+		public Ternary selfAppliesTo(Element element) {
 			Ternary result = Ternary.FALSE;
 			Java language = (Java) element.language(Java.class);
 			if(element instanceof Type) {
@@ -240,7 +240,7 @@ public class Java extends ObjectOrientedLanguage {
 		}
 
 		@Override
-		public Ternary appliesTo(Element element) {
+		public Ternary selfAppliesTo(Element element) {
 			Ternary result = Ternary.FALSE;
 			if(element instanceof Type) {
 				String fqn = ((Type)element).getFullyQualifiedName();
@@ -259,7 +259,7 @@ public class Java extends ObjectOrientedLanguage {
 		}
 
 		@Override
-		public Ternary appliesTo(Element element) {
+		public Ternary selfAppliesTo(Element element) {
 			Ternary result = Ternary.FALSE;
 			if(element instanceof RegularJavaType) {
 				String fqn = ((RegularJavaType)element).getFullyQualifiedName();

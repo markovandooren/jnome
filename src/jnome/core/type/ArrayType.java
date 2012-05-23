@@ -18,7 +18,7 @@ import chameleon.support.modifier.Final;
 public class ArrayType extends RegularType {
 //	TODO: this class should not be a member. This is just a quickfix
   public ArrayType(Type type) {
-    super(new SimpleNameSignature(getArrayName(type.getName())));
+    super(new SimpleNameSignature(getArrayName(type.name())));
     //FIXME: copy the modifiers?
     //addModifier(type.getAccessModifier());
     _type = type;

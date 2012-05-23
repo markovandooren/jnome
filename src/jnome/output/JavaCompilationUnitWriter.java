@@ -18,7 +18,7 @@ public class JavaCompilationUnitWriter extends CompilationUnitWriter {
 
 	public String fileName(Document compilationUnit) throws LookupException, ModelException {
 		Type result = mainType(compilationUnit);
-		String name = (result == null ? null : result.getName()+extension());
+		String name = (result == null ? null : result.name()+extension());
 		return name;
 	}
 

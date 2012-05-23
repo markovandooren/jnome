@@ -491,29 +491,29 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     }
 
     public void addBinProm(Type type, String operator) {
-        addInfixOperator(type, getBinProm("double", type.getName()), operator,
+        addInfixOperator(type, getBinProm("double", type.name()), operator,
                 "double");
-        addInfixOperator(type, getBinProm("float", type.getName()), operator,
+        addInfixOperator(type, getBinProm("float", type.name()), operator,
                 "float");
         addBinPromIntegral(type, operator);
     }
 
     public void addBinPromIntegral(Type type, String operator) {
-        addInfixOperator(type, getBinProm("long", type.getName()), operator,
+        addInfixOperator(type, getBinProm("long", type.name()), operator,
                 "long");
-        addInfixOperator(type, getBinProm("int", type.getName()), operator,
+        addInfixOperator(type, getBinProm("int", type.name()), operator,
                 "int");
-        addInfixOperator(type, getBinProm("char", type.getName()), operator,
+        addInfixOperator(type, getBinProm("char", type.name()), operator,
                 "char");
-        addInfixOperator(type, getBinProm("byte", type.getName()), operator,
+        addInfixOperator(type, getBinProm("byte", type.name()), operator,
                 "byte");
-        addInfixOperator(type, getBinProm("short", type.getName()), operator,
+        addInfixOperator(type, getBinProm("short", type.name()), operator,
                 "short");
 
     }
 
     public void addUniPromIntegral(Type type) {
-        addPrefixOperator(type, getUniProm(type.getName()), "~");
+        addPrefixOperator(type, getUniProm(type.name()), "~");
         addShift(type, "<<");
         addShift(type, ">>");
         addShift(type, ">>>");
@@ -521,30 +521,30 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     }
 
     public void addUniProm(Type type) {
-        addPrefixOperator(type, getUniProm(type.getName()), "-");
-        addPrefixOperator(type, getUniProm(type.getName()), "+");
-        addPrefixOperator(type, type.getName(), "--");
-        addPrefixOperator(type, type.getName(), "++");
-        addPostfixOperator(type, type.getName(), "--");
-        addPostfixOperator(type, type.getName(), "++");
+        addPrefixOperator(type, getUniProm(type.name()), "-");
+        addPrefixOperator(type, getUniProm(type.name()), "+");
+        addPrefixOperator(type, type.name(), "--");
+        addPrefixOperator(type, type.name(), "++");
+        addPostfixOperator(type, type.name(), "--");
+        addPostfixOperator(type, type.name(), "++");
     }
 
     public void addShift(Type type, String operator) {
-        addInfixOperator(type, getUniProm(type.getName()), operator, "char");
-        addInfixOperator(type, getUniProm(type.getName()), operator, "byte");
-        addInfixOperator(type, getUniProm(type.getName()), operator, "short");
-        addInfixOperator(type, getUniProm(type.getName()), operator, "int");
-        addInfixOperator(type, getUniProm(type.getName()), operator, "long");
+        addInfixOperator(type, getUniProm(type.name()), operator, "char");
+        addInfixOperator(type, getUniProm(type.name()), operator, "byte");
+        addInfixOperator(type, getUniProm(type.name()), operator, "short");
+        addInfixOperator(type, getUniProm(type.name()), operator, "int");
+        addInfixOperator(type, getUniProm(type.name()), operator, "long");
     }
 
     public void addCompoundAssignment(Type type, String operator) {
-        addInfixOperator(type, type.getName(), operator, "double");
-        addInfixOperator(type, type.getName(), operator, "float");
-        addInfixOperator(type, type.getName(), operator, "long");
-        addInfixOperator(type, type.getName(), operator, "int");
-        addInfixOperator(type, type.getName(), operator, "short");
-        addInfixOperator(type, type.getName(), operator, "char");
-        addInfixOperator(type, type.getName(), operator, "byte");
+        addInfixOperator(type, type.name(), operator, "double");
+        addInfixOperator(type, type.name(), operator, "float");
+        addInfixOperator(type, type.name(), operator, "long");
+        addInfixOperator(type, type.name(), operator, "int");
+        addInfixOperator(type, type.name(), operator, "short");
+        addInfixOperator(type, type.name(), operator, "char");
+        addInfixOperator(type, type.name(), operator, "byte");
     }
 
     public void addBoolean(Namespace mm) {

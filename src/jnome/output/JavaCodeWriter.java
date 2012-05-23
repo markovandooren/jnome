@@ -659,7 +659,7 @@ public class JavaCodeWriter extends Syntax {
     
     //Name
     result.append("class ");
-    result.append(type.getName());
+    result.append(type.name());
     appendTypeParameters(type.parameters(TypeParameter.class), result);
     List<SubtypeRelation> superTypes = type.nonMemberInheritanceRelations(SubtypeRelation.class);
     final List<TypeReference> classRefs = new ArrayList<TypeReference>();
@@ -763,7 +763,7 @@ public class JavaCodeWriter extends Syntax {
     
     //Name
     result.append("interface ");
-    result.append(type.getName());
+    result.append(type.name());
     appendTypeParameters(type.parameters(TypeParameter.class), result);
     List<SubtypeRelation> superTypes = type.nonMemberInheritanceRelations(SubtypeRelation.class);
     new AbstractPredicate<SubtypeRelation>() {
@@ -1629,7 +1629,7 @@ public class JavaCodeWriter extends Syntax {
     }.filter(types);
     int i = 1;
     for(Type type:types) {
-      String fileName = type.getName()+".java";
+      String fileName = type.name()+".java";
       String packageFQN = type.namespace().getFullyQualifiedName();
       String relDirName = packageFQN.replace('.', File.separatorChar);
       File out = new File(arguments.getOutputDirName()+File.separatorChar + relDirName + File.separatorChar + fileName);

@@ -242,7 +242,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         type.add(op);
     }
 
-    private NamespaceDeclaration getNamespacePart(Namespace pack) {
+    protected NamespaceDeclaration getNamespacePart(Namespace pack) {
         // Namespace javaLang = (Namespace)pack.getOrCreatePackage("java.lang");
 
         NamespaceDeclaration pp = pack.language().plugin(ObjectOrientedFactory.class).createNamespaceDeclaration(pack);

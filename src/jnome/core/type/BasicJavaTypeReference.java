@@ -80,7 +80,7 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
   	return 0;
   }
   
-  protected <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
+  public <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
     X result = null;
 
 	  boolean realSelector = selector.equals(selector());

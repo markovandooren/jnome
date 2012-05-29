@@ -807,7 +807,7 @@ public class Java extends ObjectOrientedLanguage {
 			}
 			private Type _type;
 			@Override
-			protected <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
+			public <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
 				return (X) _type;
 			}
 		}

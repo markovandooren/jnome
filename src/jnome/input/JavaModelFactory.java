@@ -115,12 +115,16 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 	  	Java lang = (Java) defaultNamespace.language();
 	  	return lang.findType(fqn);
 	  }
-	
+	  
+	  protected String equality() {
+			return "==";
+		}
+	  
     public void addInfixOperators(Namespace defaultPackage) {
         try {
             Type obj = findType(defaultPackage, "java.lang.Object");
             if (obj != null) {
-                addInfixOperator(obj, "boolean", "==", "Object");
+                addInfixOperator(obj, "boolean", equality(), "Object");
                 addInfixOperator(obj, "boolean", "!=", "Object");
                 addPlusString(obj);
             }
@@ -466,7 +470,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         addBinComp(type, ">");
         addBinComp(type, "<=");
         addBinComp(type, ">=");
-        addBinComp(type, "==");
+        addBinComp(type, equality());
         addBinComp(type, "!=");
         addCompoundAssignment(type, "*=");
         addCompoundAssignment(type, "/=");
@@ -553,7 +557,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         booleanT.addModifier(pub);
         getNamespacePart(mm).add(booleanT);
         addPrefixOperator(booleanT, "boolean", "!");
-        addInfixOperator(booleanT, "boolean", "==", "boolean");
+        addInfixOperator(booleanT, "boolean", equality(), "boolean");
         addInfixOperator(booleanT, "boolean", "!=", "boolean");
         addInfixOperator(booleanT, "boolean", "&", "boolean");
         addInfixOperator(booleanT, "boolean", "|", "boolean");

@@ -331,13 +331,10 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 							for(TypeConstraint constraint : constraints) {
 								if(toBeSubstituted.contains(constraint)) {
 									NonLocalJavaTypeReference.replace(tref, oldParameter, (JavaTypeReference) constraint.typeReference());
-//								replace(tref, oldParameter, (JavaTypeReference<?>) constraint.typeReference());
 								}
 							}
 						} else {
-							throw new Error();
-//							TypeReference t = ((BasicTypeArgument)((InstantiatedTypeParameter)newParameter).argument()).typeReference();
-//							replace(tref, oldParameter, (JavaTypeReference<?>) t);
+							throw new ChameleonProgrammerException();
 						}
 					}
 				}

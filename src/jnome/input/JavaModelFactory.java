@@ -86,7 +86,6 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 		this(new Java(), base);
 	}
 	
-	//FIXME: Object and String must be parsed.
 	public JavaModelFactory(Java language, Collection<File> base) throws IOException, ParseException {
 		setLanguage(language, ModelFactory.class);
 		initializeBase(base);

@@ -443,10 +443,6 @@ public class JavaCodeWriter extends Syntax {
     return result;
   }
 
-//  public boolean isMemberVariable(Element element) {
-//    return element instanceof RegularMemberVariable;
-//  }
-  
   public boolean isStaticInitializer(Element element) {
     return element instanceof StaticInitializer;
   }

@@ -917,6 +917,8 @@ classOrInterfaceType returns [JavaTypeReference element]
 	        ('.' namex=identifierRule 
 	          {
 	           if(target != null) {
+	             retval.element.removeAllMetadata();
+	             for(Element e: retval.element.descendants()) {e.removeAllMetadata();}
 	             retval.element = createTypeReference(target,$namex.text);
 	             // We must clone the target here, or else it will be removed from the
 	             // type reference we just created.

@@ -1,15 +1,12 @@
 package jnome.test;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
-import chameleon.core.namespacedeclaration.NamespaceDeclaration;
+import chameleon.core.Config;
 import chameleon.oo.type.Type;
 import chameleon.support.test.ExpressionTest;
 import chameleon.test.CompositeTest;
-import chameleon.test.VerificationTest;
 import chameleon.test.provider.BasicDescendantProvider;
 import chameleon.test.provider.ElementProvider;
 
@@ -22,6 +19,11 @@ public abstract class JavaTest extends CompositeTest {
 	public void setLogLevels() {
 //		Logger.getRootLogger().setLevel(Level.FATAL);
 //		Logger.getLogger("chameleon.test.expression").setLevel(Level.FATAL);
+	}
+	
+	@Override
+	public void setCaching() {
+	  Config.setCaching(false);
 	}
 	
 	/**

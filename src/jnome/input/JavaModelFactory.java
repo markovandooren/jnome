@@ -67,6 +67,10 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 		setLanguage(lang, ModelFactory.class);
 	}
 	
+	protected JavaModelFactory(boolean bogus) {
+		
+	}
+	
 	/**
 	 * BE SURE TO CALL INIT() IF YOU USE THIS CONSTRUCTOR.
 	 * 

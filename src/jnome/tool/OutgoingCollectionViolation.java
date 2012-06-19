@@ -18,7 +18,8 @@ public class OutgoingCollectionViolation extends SafePredicate<ReturnStatement> 
 	@Override
 	public boolean eval(ReturnStatement statement) {
 		boolean result = false;
-		if(statement.nearestAncestor(Method.class).isTrue(statement.language(Java.class).PUBLIC)) {
+		Method nearestAncestor = statement.nearestAncestor(Method.class);
+		if(nearestAncestor != null && nearestAncestor.isTrue(statement.language(Java.class).PUBLIC)) {
 			try {
 				Expression expr = statement.getExpression();
 				if(expr instanceof CrossReference) {

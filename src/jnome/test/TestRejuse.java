@@ -1,20 +1,13 @@
 package jnome.test;
 
-import java.util.Collection;
-
 import jnome.input.JavaModelFactory;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.rejuse.predicate.SafePredicate;
 
-import chameleon.core.language.Language;
-import chameleon.oo.type.Type;
-import chameleon.test.provider.BasicDescendantProvider;
-import chameleon.test.provider.BasicModelProvider;
 import chameleon.test.provider.BasicNamespaceProvider;
-import chameleon.test.provider.ElementProvider;
-import chameleon.test.provider.ModelProvider;
+import chameleon.test.provider.DirectoryProjectBuilder;
+import chameleon.workspace.ProjectBuilder;
 
 /**
  * @author Marko van Dooren
@@ -29,8 +22,8 @@ public class TestRejuse extends JavaTest {
 	}
 
 	@Override
-	public ModelProvider modelProvider() {
-		BasicModelProvider provider = new BasicModelProvider(new JavaModelFactory(), ".java");
+	public ProjectBuilder projectBuilder() {
+		DirectoryProjectBuilder provider = new DirectoryProjectBuilder(new JavaModelFactory(), ".java");
 		provider.includeBase("testsource"+provider.separator()+"gen"+provider.separator());
 		provider.includeCustom("testsource"+provider.separator()+"jregex"+provider.separator());
 		provider.includeCustom("testsource"+provider.separator()+"jutil"+provider.separator()+"src"+provider.separator());

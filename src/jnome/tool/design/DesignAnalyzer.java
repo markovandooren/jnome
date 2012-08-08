@@ -31,22 +31,23 @@ import chameleon.support.statement.ReturnStatement;
 import chameleon.support.tool.ModelBuilder;
 import chameleon.test.provider.BasicDescendantProvider;
 import chameleon.test.provider.ElementProvider;
+import chameleon.workspace.Project;
 
 
 public class DesignAnalyzer {
 	
-	public DesignAnalyzer(Java language, ElementProvider<Namespace> namespaceProvider) throws ParseException, IOException {
-		_sourceLanguage = language;
-		_sourceLanguage.setPlugin(ObjectOrientedFactory.class, new JavaFactory());
+	public DesignAnalyzer(Project project, ElementProvider<Namespace> namespaceProvider) throws ParseException, IOException {
+		_sourceProject = project;
+		_sourceProject.language().setPlugin(ObjectOrientedFactory.class, new JavaFactory());
 		_typeProvider = new BasicDescendantProvider<Type>(namespaceProvider, Type.class);
 	}
 	
-	private Java _sourceLanguage;
-
-	public Java sourceLanguage() {
-		return _sourceLanguage;
-	}
+	private Project _sourceProject;
 	
+	public Project sourceProject() {
+		return _sourceProject;
+	}
+
 	public ElementProvider<? extends Type> typeProvider() {
 		return _typeProvider;
 	}
@@ -55,7 +56,7 @@ public class DesignAnalyzer {
 
 	public VerificationResult analyze() {
 		VerificationResult result = Valid.create();
-		for(Type type: typeProvider().elements(sourceLanguage())) {
+		for(Type type: typeProvider().elements(sourceProject())) {
 			result = result.and(analyze(type));
 		}
 		return result;
@@ -127,7 +128,7 @@ public class DesignAnalyzer {
     ModelBuilder provider = new ModelBuilder(new JavaModelFactory(),args,".java",true,true);
     File outputDir = provider.outputDir();
     long start = System.currentTimeMillis();
-    VerificationResult result = new DesignAnalyzer((Java) provider.language(), provider.namespaceProvider()).analyze();
+    VerificationResult result = new DesignAnalyzer(provider.project(), provider.namespaceProvider()).analyze();
     System.out.println(result.message());
     long stop = System.currentTimeMillis();
     System.out.println("Translation took "+(stop - start) + " milliseconds.");

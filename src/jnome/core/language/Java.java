@@ -46,8 +46,8 @@ import chameleon.core.property.DynamicChameleonProperty;
 import chameleon.core.property.PropertyRule;
 import chameleon.core.property.StaticChameleonProperty;
 import chameleon.core.reference.CrossReference;
-import chameleon.core.reference.ElementReferenceWithTarget;
 import chameleon.core.reference.CrossReferenceTarget;
+import chameleon.core.reference.ElementReferenceWithTarget;
 import chameleon.core.relation.EquivalenceRelation;
 import chameleon.core.relation.StrictPartialOrder;
 import chameleon.exception.ChameleonProgrammerException;
@@ -67,7 +67,6 @@ import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeIndirection;
 import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.UnionType;
-import chameleon.oo.type.generics.InstantiatedParameterType;
 import chameleon.oo.type.generics.ActualTypeArgument;
 import chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
 import chameleon.oo.type.generics.BasicTypeArgument;
@@ -77,6 +76,7 @@ import chameleon.oo.type.generics.ExtendsWildcard;
 import chameleon.oo.type.generics.ExtendsWildcardType;
 import chameleon.oo.type.generics.FormalParameterType;
 import chameleon.oo.type.generics.FormalTypeParameter;
+import chameleon.oo.type.generics.InstantiatedParameterType;
 import chameleon.oo.type.generics.InstantiatedTypeParameter;
 import chameleon.oo.type.generics.SuperWildcard;
 import chameleon.oo.type.generics.SuperWildcardType;
@@ -95,17 +95,26 @@ import chameleon.support.rule.member.MemberInstanceByDefault;
 import chameleon.support.rule.member.MemberOverridableByDefault;
 import chameleon.support.rule.member.TypeExtensibleByDefault;
 import chameleon.util.Pair;
+import chameleon.workspace.Project;
 
 /**
  * @author Marko van Dooren
  */
 public class Java extends ObjectOrientedLanguage {
 
-	protected Java(String name) {
+	@Override
+	public void setProject(Project project) {
+		super.setProject(project);
+		// FIXME Rootnamespace should not know about null type
+		if(project != null) {
+			this.defaultNamespace().setNullType();
+		}
+	}
+	
+	protected Java(String name, Project project) {
 		super(name, new JavaLookupFactory());
 		_nullType = new NullType(this);
-		new RootNamespace(new SimpleNameSignature(""), this);
-		this.defaultNamespace().setNullType();
+		setProject(project);
 		STRICTFP = new StaticChameleonProperty("strictfp", this, Declaration.class);
 		SYNCHRONIZED = new StaticChameleonProperty("synchronized", this, Method.class);
 		TRANSIENT = new StaticChameleonProperty("transient", this, MemberVariable.class);
@@ -122,7 +131,7 @@ public class Java extends ObjectOrientedLanguage {
 		ANNOTATION_TYPE = new StaticChameleonProperty("annotation", this, Type.class); 
 
 		// In Java, a constructor is a class method
-//		CONSTRUCTOR.addImplication(CLASS);
+    // CONSTRUCTOR.addImplication(CLASS);
 		// In Java, constructors are not inheritable
 		CONSTRUCTOR.addImplication(INHERITABLE.inverse());
 		// A numeric type is a primitive type
@@ -142,8 +151,8 @@ public class Java extends ObjectOrientedLanguage {
   	}
 	}
 	
-	public Java() {
-		this("Java");
+	public Java(Project project) {
+		this("Java",project);
 	}
 	
   public Type erasure(Type original) throws LookupException {
@@ -422,7 +431,7 @@ public class Java extends ObjectOrientedLanguage {
 
 		@Override
 		protected Language cloneThis() {
-			return new Java();
+			return new Java(null);
 		}
 
 		public Type box(Type type) throws LookupException {

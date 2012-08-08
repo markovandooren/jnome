@@ -7,11 +7,12 @@ import java.net.URL;
 import java.util.List;
 
 import jnome.core.language.Java;
-import jnome.eclipse.JavaEditorExtension;
 import jnome.input.JavaFactory;
 import jnome.input.JavaModelFactory;
 import jnome.output.JavaCodeWriter;
+import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.language.Language;
+import chameleon.core.namespace.RootNamespace;
 import chameleon.eclipse.LanguageMgt;
 import chameleon.eclipse.connector.EclipseBootstrapper;
 import chameleon.eclipse.connector.EclipseEditorExtension;
@@ -20,6 +21,7 @@ import chameleon.input.ModelFactory;
 import chameleon.input.ParseException;
 import chameleon.oo.plugin.ObjectOrientedFactory;
 import chameleon.plugin.output.Syntax;
+import chameleon.workspace.Project;
 
 public class Bootstrapper extends EclipseBootstrapper {
 
@@ -30,7 +32,8 @@ public class Bootstrapper extends EclipseBootstrapper {
 	}
 	
 	public Language createLanguage() throws IOException, ParseException {
-		Java result = new Java();
+		Project project = new Project("x", new RootNamespace(new SimpleNameSignature("")));
+		Java result = new Java(project);
 		ModelFactory factory = new JavaModelFactory(result);
 		factory.setLanguage(result, ModelFactory.class);
 

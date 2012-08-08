@@ -1,13 +1,13 @@
 package jnome.test;
 
-import chameleon.test.provider.BasicModelProvider;
+import chameleon.test.provider.DirectoryProjectBuilder;
 import chameleon.test.provider.BasicNamespaceProvider;
 
 public class TestChameleonSupport extends TestChameleon {
 
 	@Override
-	public BasicModelProvider modelProvider() {
-		BasicModelProvider provider = super.modelProvider();
+	public DirectoryProjectBuilder projectBuilder() {
+		DirectoryProjectBuilder provider = super.projectBuilder();
 		provider.includeCustom("testsource"+provider.separator()+"chameleon-support"+provider.separator()+"src"+provider.separator());
 		provider.includeCustom("testsource"+provider.separator()+"antlr-3.2"+provider.separator()+"src"+provider.separator());
 		return provider;

@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import jnome.input.JavaModelFactory;
-
 import org.apache.log4j.BasicConfigurator;
 import org.rejuse.predicate.SafePredicate;
 import org.rejuse.predicate.UnsafePredicate;
@@ -21,6 +19,7 @@ import chameleon.core.namespace.Namespace;
 import chameleon.input.ModelFactory;
 import chameleon.input.ParseException;
 import chameleon.support.tool.ModelBuilder;
+import chameleon.workspace.Project;
 
 public abstract class Tool {
 
@@ -33,20 +32,24 @@ public abstract class Tool {
 //    ((JavaModelFactory)factory).setDebug(true);
     _provider = new ModelBuilder(factory,args,".java",output,true);
     
-	  _lang = _provider.language();
+	  _project = _provider.project();
 	}
 	
 	ModelBuilder _provider;
 	
 	public Language language() {
-		return _lang;
+		return project().language();
+	}
+	
+	public Project project() {
+		return _project;
 	}
 	
 	public Collection<Namespace> namespaces() {
-		return _provider.namespaceProvider().elements(_lang);
+		return _provider.namespaceProvider().elements(project());
 	}
 	
-	private Language _lang;
+	private Project _project;
 	
 	public <E extends Element> List<E> find(Class<E> kind, SafePredicate<E> safe) {
 		List<E> result = new ArrayList<E>();

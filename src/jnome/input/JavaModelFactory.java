@@ -24,6 +24,7 @@ import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.Namespace;
 import chameleon.core.namespace.NamespaceReference;
+import chameleon.core.namespace.RootNamespace;
 import chameleon.core.namespacedeclaration.DemandImport;
 import chameleon.core.namespacedeclaration.NamespaceDeclaration;
 import chameleon.exception.ChameleonProgrammerException;
@@ -81,24 +82,15 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 		setLanguage(language, ModelFactory.class);
 	}
 	
-	
-	/**
-	 * Initialize a new Java model factory with the given collection of base classes.
-	 * All predefined elements of the language will be initialized. 
-	 */
-	public JavaModelFactory(Collection<File> base) throws IOException, ParseException {
-		this(new Java(), base);
-	}
-	
 	public JavaModelFactory(Java language, Collection<File> base) throws IOException, ParseException {
 		setLanguage(language, ModelFactory.class);
 		initializeBase(base);
 	}
   
 	@Override
-	public void initializePredefinedElements() {
-	  addPrimitives(language().defaultNamespace());
-	  addInfixOperators(language().defaultNamespace());
+	public void initializePredefinedElements(RootNamespace root) {
+	  addPrimitives(root);
+	  addInfixOperators(root);
 	}
 
 
@@ -167,8 +159,8 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     }
 
 
-
-    public ChameleonParser getParser(InputStream inputStream, String fileName) throws IOException {
+    @Override
+    public ChameleonParser getParser(InputStream inputStream) throws IOException {
         ANTLRInputStream input = new ANTLRInputStream(inputStream);
         JavaLexer lexer = new JavaLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);

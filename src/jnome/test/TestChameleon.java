@@ -1,12 +1,15 @@
 package jnome.test;
 
-import jnome.input.JavaModelFactory;
+import jnome.core.language.Java;
+import jnome.core.language.JavaLanguageFactory;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import chameleon.core.namespace.RootNamespace;
 import chameleon.test.provider.BasicNamespaceProvider;
 import chameleon.test.provider.DirectoryProjectBuilder;
+import chameleon.workspace.Project;
 
 /**
  * @author Marko van Dooren
@@ -22,7 +25,8 @@ public class TestChameleon extends JavaTest {
 
 	@Override
 	public DirectoryProjectBuilder projectBuilder() {
-		DirectoryProjectBuilder provider = new DirectoryProjectBuilder(new JavaModelFactory(), ".java");
+		Java lang = new JavaLanguageFactory().create();
+		DirectoryProjectBuilder provider = new DirectoryProjectBuilder(new Project("test", new RootNamespace(), lang), ".java");
 		provider.includeBase("testsource"+provider.separator()+"gen"+provider.separator());
 		provider.includeCustom("testsource"+provider.separator()+"jregex"+provider.separator());
 		provider.includeCustom("testsource"+provider.separator()+"rejuse"+provider.separator()+"src"+provider.separator());

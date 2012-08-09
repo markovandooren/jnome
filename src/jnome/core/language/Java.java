@@ -36,11 +36,11 @@ import chameleon.core.Config;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.declaration.TargetDeclaration;
+import chameleon.core.document.Document;
 import chameleon.core.element.Element;
-import chameleon.core.language.Language;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.namespace.RootNamespace;
+import chameleon.core.namespacedeclaration.NamespaceDeclaration;
 import chameleon.core.property.ChameleonProperty;
 import chameleon.core.property.DynamicChameleonProperty;
 import chameleon.core.property.PropertyRule;
@@ -105,16 +105,17 @@ public class Java extends ObjectOrientedLanguage {
 	@Override
 	public void setProject(Project project) {
 		super.setProject(project);
-		// FIXME Rootnamespace should not know about null type
+		// FIXME This should be done when initializing the predefined elements.
 		if(project != null) {
-			this.defaultNamespace().setNullType();
+			NamespaceDeclaration pp = new NamespaceDeclaration(project.namespace());
+			pp.add(getNullType());
+			new Document(pp);
 		}
 	}
 	
-	protected Java(String name, Project project) {
+	protected Java(String name) {
 		super(name, new JavaLookupFactory());
 		_nullType = new NullType(this);
-		setProject(project);
 		STRICTFP = new StaticChameleonProperty("strictfp", this, Declaration.class);
 		SYNCHRONIZED = new StaticChameleonProperty("synchronized", this, Method.class);
 		TRANSIENT = new StaticChameleonProperty("transient", this, MemberVariable.class);
@@ -151,8 +152,8 @@ public class Java extends ObjectOrientedLanguage {
   	}
 	}
 	
-	public Java(Project project) {
-		this("Java",project);
+	public Java() {
+		this("Java");
 	}
 	
   public Type erasure(Type original) throws LookupException {
@@ -429,10 +430,10 @@ public class Java extends ObjectOrientedLanguage {
 			
 		}
 
-		@Override
-		protected Language cloneThis() {
-			return new Java(null);
-		}
+//		@Override
+//		protected Language cloneThis() {
+//			return new Java(null);
+//		}
 
 		public Type box(Type type) throws LookupException {
 			String fqn = type.getFullyQualifiedName();

@@ -1,10 +1,8 @@
 package jnome.input;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,9 +21,7 @@ import chameleon.core.document.Document;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.Namespace;
-import chameleon.core.namespace.NamespaceReference;
 import chameleon.core.namespace.RootNamespace;
-import chameleon.core.namespacedeclaration.DemandImport;
 import chameleon.core.namespacedeclaration.NamespaceDeclaration;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.input.ModelFactory;
@@ -55,38 +51,26 @@ import chameleon.support.modifier.ValueType;
 
 public class JavaModelFactory extends ModelFactoryUsingANTLR {
 
-	/**
-	 * BE SURE TO CALL INIT() IF YOU USE THIS CONSTRUCTOR.
-	 * 
-	 * @throws IOException
-	 * @throws ParseException
-	 */
-	public JavaModelFactory() {
-		Java lang = new Java();
-		lang.setPlugin(Syntax.class, new JavaCodeWriter());
-		lang.setPlugin(ObjectOrientedFactory.class, new JavaFactory());
-		setLanguage(lang, ModelFactory.class);
-	}
+//	/**
+//	 * BE SURE TO CALL INIT() IF YOU USE THIS CONSTRUCTOR.
+//	 * 
+//	 * @throws IOException
+//	 * @throws ParseException
+//	 */
+//	public JavaModelFactory() {
+//		Java lang = new Java();
+//		setLanguage(lang, ModelFactory.class);
+//	}
 	
 	protected JavaModelFactory(boolean bogus) {
 		
 	}
 	
 	/**
-	 * BE SURE TO CALL INIT() IF YOU USE THIS CONSTRUCTOR.
-	 * 
-	 * @throws IOException
-	 * @throws ParseException
 	 */
-	public JavaModelFactory(Java language) throws IOException, ParseException {
-		setLanguage(language, ModelFactory.class);
+	public JavaModelFactory() {
 	}
 	
-	public JavaModelFactory(Java language, Collection<File> base) throws IOException, ParseException {
-		setLanguage(language, ModelFactory.class);
-		initializeBase(base);
-	}
-  
 	@Override
 	public void initializePredefinedElements(RootNamespace root) {
 	  addPrimitives(root);
@@ -182,7 +166,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
   		  InputStream inputStream = new StringBufferInputStream(text);
   		  Element result = null;
   		  if(element instanceof Member) {
-  	  		result = ((JavaParser)getParser(inputStream, "document")).memberDecl().element;
+  	  		result = ((JavaParser)getParser(inputStream)).memberDecl().element;
   			}
   			return result;
   		} catch(RecognitionException exc) {

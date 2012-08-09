@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 
 import jnome.core.language.Java;
+import jnome.core.language.JavaLanguageFactory;
 import jnome.core.type.BasicJavaTypeReference;
 import jnome.input.JavaModelFactory;
 
@@ -14,11 +15,13 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import chameleon.core.lookup.LookupException;
+import chameleon.core.namespace.RootNamespace;
 import chameleon.input.ParseException;
 import chameleon.oo.type.Type;
 import chameleon.test.ModelTest;
 import chameleon.test.provider.BasicNamespaceProvider;
 import chameleon.test.provider.DirectoryProjectBuilder;
+import chameleon.workspace.Project;
 import chameleon.workspace.ProjectBuilder;
 import chameleon.workspace.ProjectException;
 
@@ -114,7 +117,8 @@ public class TestGenerics extends JavaTest {
 
 	@Override
 	public ProjectBuilder projectBuilder() {
-		DirectoryProjectBuilder provider = new DirectoryProjectBuilder(new JavaModelFactory(), ".java");
+		Java lang = new JavaLanguageFactory().create();
+		DirectoryProjectBuilder provider = new DirectoryProjectBuilder(new Project("test", new RootNamespace(), lang), ".java");
 		provider.includeBase("testsource"+provider.separator()+"gen"+provider.separator());
 		provider.includeCustom("testsource"+provider.separator()+"generics"+provider.separator());
 		return provider;

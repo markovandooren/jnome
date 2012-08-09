@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import jnome.core.language.Java;
+import jnome.core.language.JavaLanguageFactory;
+
 import org.apache.log4j.BasicConfigurator;
 import org.rejuse.predicate.SafePredicate;
 import org.rejuse.predicate.UnsafePredicate;
@@ -16,6 +19,7 @@ import chameleon.core.element.Element;
 import chameleon.core.language.Language;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.Namespace;
+import chameleon.core.namespace.RootNamespace;
 import chameleon.input.ModelFactory;
 import chameleon.input.ParseException;
 import chameleon.support.tool.ModelBuilder;
@@ -30,7 +34,10 @@ public abstract class Tool {
     Config.setCaching(true);
     BasicConfigurator.configure();
 //    ((JavaModelFactory)factory).setDebug(true);
-    _provider = new ModelBuilder(factory,args,".java",output,true);
+		Java lang = new JavaLanguageFactory().create();
+		Project project = new Project("test", new RootNamespace(), lang);
+
+    _provider = new ModelBuilder(project,args,".java",output,true);
     
 	  _project = _provider.project();
 	}

@@ -2,15 +2,20 @@ package jnome.tool;
 
 import java.util.Set;
 
+import jnome.core.language.Java;
+import jnome.core.language.JavaLanguageFactory;
 import jnome.input.JavaModelFactory;
 
 import org.apache.log4j.BasicConfigurator;
 
 import chameleon.core.declaration.Declaration;
+import chameleon.core.namespace.RootNamespace;
 import chameleon.input.ModelFactory;
 import chameleon.oo.type.Type;
 import chameleon.support.tool.ArgumentParser;
 import chameleon.support.tool.Arguments;
+import chameleon.test.provider.DirectoryProjectBuilder;
+import chameleon.workspace.Project;
 
 public class DependencyAnalyzer {
 
@@ -31,7 +36,10 @@ public class DependencyAnalyzer {
       System.out.println("Usage: java .... DependencyAnalyzer outputDir inputDir* @recursivePackageFQN* #packageFQN* $typeFQN*");
     }
     BasicConfigurator.configure();
-    Arguments arguments = new ArgumentParser(factory,false).parse(args,".java");
+		Java language = new JavaLanguageFactory().create();
+		String extension = ".java";
+		DirectoryProjectBuilder builder = new DirectoryProjectBuilder(new Project("copy test",new RootNamespace(),language),extension);
+		Arguments arguments = new ArgumentParser(builder,false).parse(args,extension);
 	  chameleon.tool.analysis.DependencyAnalyzer analyzer = new chameleon.tool.analysis.DependencyAnalyzer();
 	  Set<Declaration> deps = analyzer.dependenciesOfAll(arguments.getTypes());
 	  Set<Type> types = analyzer.nearestAncestors(deps, Type.class);

@@ -7,14 +7,18 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import jnome.input.JavaModelFactory;
+import jnome.core.language.Java;
+import jnome.core.language.JavaLanguageFactory;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import chameleon.core.namespace.RootNamespace;
 import chameleon.input.ParseException;
 import chameleon.support.tool.ArgumentParser;
 import chameleon.support.tool.Arguments;
+import chameleon.test.provider.DirectoryProjectBuilder;
+import chameleon.workspace.Project;
 
 /**
  * This is an abstract class to facilitate testing of both the output and the input. These tests output a model,
@@ -80,7 +84,9 @@ public abstract class OutputTest {
 	@Before
 	public void setUp() throws MalformedURLException, FileNotFoundException, ParseException, IOException, Exception {
 		addTestFiles();
-		_args = new ArgumentParser(new JavaModelFactory(),true).parse(arguments(), _extension);
+		Java language = new JavaLanguageFactory().create();
+		DirectoryProjectBuilder builder = new DirectoryProjectBuilder(new Project("output test",new RootNamespace(),language) ,_extension);
+		_args = new ArgumentParser(builder,true).parse(arguments(), _extension);
 	}
 
 	@Test

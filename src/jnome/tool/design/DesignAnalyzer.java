@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import jnome.core.language.Java;
+import jnome.core.language.JavaLanguageFactory;
 import jnome.core.type.ArrayType;
 import jnome.input.JavaFactory;
 import jnome.input.JavaModelFactory;
@@ -17,6 +18,7 @@ import chameleon.core.Config;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.Namespace;
+import chameleon.core.namespace.RootNamespace;
 import chameleon.core.reference.CrossReference;
 import chameleon.core.validation.BasicProblem;
 import chameleon.core.validation.Valid;
@@ -30,6 +32,7 @@ import chameleon.oo.variable.MemberVariable;
 import chameleon.support.statement.ReturnStatement;
 import chameleon.support.tool.ModelBuilder;
 import chameleon.test.provider.BasicDescendantProvider;
+import chameleon.test.provider.DirectoryProjectBuilder;
 import chameleon.test.provider.ElementProvider;
 import chameleon.workspace.Project;
 
@@ -125,8 +128,10 @@ public class DesignAnalyzer {
     BasicConfigurator.configure();
     Logger.getRootLogger().setLevel(Level.FATAL);
     Config.setCaching(true);
-    ModelBuilder provider = new ModelBuilder(new JavaModelFactory(),args,".java",true,true);
-    File outputDir = provider.outputDir();
+		Java lang = new JavaLanguageFactory().create();
+		Project project = new Project("test", new RootNamespace(), lang);
+
+    ModelBuilder provider = new ModelBuilder(project,args,".java",true,true);
     long start = System.currentTimeMillis();
     VerificationResult result = new DesignAnalyzer(provider.project(), provider.namespaceProvider()).analyze();
     System.out.println(result.message());

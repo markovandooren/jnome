@@ -4,11 +4,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import jnome.core.language.Java;
+import jnome.core.language.JavaLanguageFactory;
 import jnome.input.JavaModelFactory;
 import chameleon.core.lookup.LookupException;
+import chameleon.core.namespace.RootNamespace;
 import chameleon.input.ParseException;
 import chameleon.support.tool.ArgumentParser;
 import chameleon.support.tool.Arguments;
+import chameleon.test.provider.DirectoryProjectBuilder;
+import chameleon.workspace.Project;
 
 /**
  * @author Tim Laeremans
@@ -32,8 +37,10 @@ public class Copy {
     if(args.length < 2) {
       System.out.println("Usage: java .... Copy outputDir inputDir* @recursivePackageFQN* #packageFQN*");
     }
-    
-    Arguments arguments = new ArgumentParser(new JavaModelFactory()).parse(args,".java");
+    String ext = ".java";
+		Java language = new JavaLanguageFactory().create();
+		DirectoryProjectBuilder builder = new DirectoryProjectBuilder(new Project("copy test",new RootNamespace(),language),ext);
+    Arguments arguments = new ArgumentParser(builder).parse(args,ext);
     
     JavaCodeWriter.writeCode(arguments);
   }

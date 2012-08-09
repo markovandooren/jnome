@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 import jnome.core.language.Java;
+import jnome.core.type.NullType;
 import jnome.core.type.RegularJavaType;
 import jnome.input.parser.JavaLexer;
 import jnome.input.parser.JavaParser;
@@ -71,11 +72,26 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 	public JavaModelFactory() {
 	}
 	
+	private boolean INITIALIZED = false;
+	
 	@Override
 	public void initializePredefinedElements(RootNamespace root) {
+		if(! INITIALIZED) {
+			INITIALIZED = true;
 	  addPrimitives(root);
 	  addInfixOperators(root);
+	  addNullType(root);
+		} else {
+			System.out.println("debug");
+		}
 	}
+
+	private void addNullType(RootNamespace root) {
+		NamespaceDeclaration pp = new NamespaceDeclaration(root);
+		pp.add(new NullType(java()));
+		new Document(pp);
+	}
+
 
 
 	public void addPrimitives(Namespace root) {

@@ -32,7 +32,7 @@ public abstract class JavaTest extends CompositeTest {
 	 */
 	@Test
 	public void testExpressions() throws Exception {
-		new ExpressionTest(projectBuilder(), typeProvider()).testExpressionTypes();
+		new ExpressionTest(project(), typeProvider()).testExpressionTypes();
 	}
 
 	public ElementProvider<Type> typeProvider() {

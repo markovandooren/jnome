@@ -38,7 +38,7 @@ public class Bootstrapper extends EclipseBootstrapper {
 		String extension = ".java";
 		Java result = new JavaLanguageFactory().create();
 		Project project = new Project("x", new RootNamespace(new SimpleNameSignature("")), result);
-		ProjectBuilder builder = new DirectoryProjectBuilder(project, extension);
+		DirectoryProjectBuilder builder = new DirectoryProjectBuilder(project, extension);
 		try {
 			FilenameFilter filter = LanguageMgt.fileNameFilter(extension);
 			URL directory = LanguageMgt.pluginURL(PLUGIN_ID, "api/");

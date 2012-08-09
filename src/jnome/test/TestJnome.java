@@ -12,6 +12,7 @@ import chameleon.test.provider.BasicNamespaceProvider;
 import chameleon.test.provider.DirectoryProjectBuilder;
 import chameleon.workspace.Project;
 import chameleon.workspace.ProjectBuilder;
+import chameleon.workspace.ProjectException;
 
 /**
  * @author Marko van Dooren
@@ -22,7 +23,7 @@ public class TestJnome extends JavaTest {
 		return new BasicNamespaceProvider("org.jnome");
 	}
 	
-	public ProjectBuilder projectBuilder() {
+	public ProjectBuilder projectBuilder() throws ProjectException {
 		Java lang = new JavaLanguageFactory().create();
 		DirectoryProjectBuilder provider = new DirectoryProjectBuilder(new Project("test", new RootNamespace(), lang), ".java");
 		provider.includeBase("testsource"+provider.separator()+"gen"+provider.separator());

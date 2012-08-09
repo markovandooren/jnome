@@ -14,6 +14,7 @@ import chameleon.support.tool.ArgumentParser;
 import chameleon.support.tool.Arguments;
 import chameleon.test.provider.DirectoryProjectBuilder;
 import chameleon.workspace.Project;
+import chameleon.workspace.ProjectException;
 
 /**
  * @author Tim Laeremans
@@ -32,8 +33,11 @@ public class Copy {
    * Example 
    * java Copy c:\output\ c:\input1\ c:\input2\ @javax.swing @java.lang #java #java.security 
    * @throws LookupException 
+   * @throws ProjectException 
+   * @throws IOException 
+   * @throws ParseException 
    */
-  public static void main(String[] args) throws ParseException, MalformedURLException, FileNotFoundException, IOException, LookupException {
+  public static void main(String[] args) throws LookupException, ProjectException, IOException, ParseException {
     if(args.length < 2) {
       System.out.println("Usage: java .... Copy outputDir inputDir* @recursivePackageFQN* #packageFQN*");
     }

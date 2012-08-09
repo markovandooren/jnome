@@ -35,6 +35,7 @@ import chameleon.test.provider.BasicDescendantProvider;
 import chameleon.test.provider.DirectoryProjectBuilder;
 import chameleon.test.provider.ElementProvider;
 import chameleon.workspace.Project;
+import chameleon.workspace.ProjectException;
 
 
 public class DesignAnalyzer {
@@ -121,7 +122,7 @@ public class DesignAnalyzer {
 		}
 	}
 
-	public static void main(String[] args) throws ParseException, IOException {
+	public static void main(String[] args) throws ParseException, IOException, ProjectException {
     if(args.length < 2) {
       System.out.println("Usage: java .... JavaTranslator outputDir apiDir inputDir* @recursivePackageFQN* #packageFQN* $typeFQN*");
     }

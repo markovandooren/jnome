@@ -24,10 +24,11 @@ import chameleon.input.ModelFactory;
 import chameleon.input.ParseException;
 import chameleon.support.tool.ModelBuilder;
 import chameleon.workspace.Project;
+import chameleon.workspace.ProjectException;
 
 public abstract class Tool {
 
-	public Tool(String[] args, ModelFactory factory, boolean output) throws MalformedURLException, FileNotFoundException, LookupException, ParseException, IOException {
+	public Tool(String[] args, ModelFactory factory, boolean output) throws MalformedURLException, FileNotFoundException, LookupException, ParseException, IOException, ProjectException {
     if(args.length < 2) {
       System.out.println("Usage: java packageName.ToolName "+(output ? "outputDir " : "")+"inputDir* @recursivePackageFQN* #packageFQN* $typeFQN*");
     }

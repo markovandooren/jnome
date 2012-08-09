@@ -102,20 +102,15 @@ import chameleon.workspace.Project;
  */
 public class Java extends ObjectOrientedLanguage {
 
-	@Override
-	public void setProject(Project project) {
-		super.setProject(project);
-		// FIXME This should be done when initializing the predefined elements.
-		if(project != null) {
-			NamespaceDeclaration pp = new NamespaceDeclaration(project.namespace());
-			pp.add(getNullType());
-			new Document(pp);
-		}
-	}
+//	@Override
+//	public void setProject(Project project) {
+//		super.setProject(project);
+//		// FIXME This should be done when initializing the predefined elements.
+//	}
 	
 	protected Java(String name) {
 		super(name, new JavaLookupFactory());
-		_nullType = new NullType(this);
+//		_nullType = new NullType(this);
 		STRICTFP = new StaticChameleonProperty("strictfp", this, Declaration.class);
 		SYNCHRONIZED = new StaticChameleonProperty("synchronized", this, Method.class);
 		TRANSIENT = new StaticChameleonProperty("transient", this, MemberVariable.class);
@@ -289,7 +284,8 @@ public class Java extends ObjectOrientedLanguage {
 		}
 	}
 
-	protected NullType _nullType;
+	protected Type _nullType;
+	
 	// Adding properties. Note that 'this' is a PropertyUniverse.
 	public final ChameleonProperty STRICTFP;
 	public final ChameleonProperty SYNCHRONIZED;
@@ -306,7 +302,14 @@ public class Java extends ObjectOrientedLanguage {
 	public final ChameleonProperty UNBOXABLE_TYPE;
 	public final ChameleonProperty ANNOTATION_TYPE;
 	
-	public Type getNullType(){
+	public Type getNullType() {
+		if(_nullType == null) {
+			try {
+				_nullType = findType("null type");
+			} catch (LookupException e) {
+				throw new ChameleonProgrammerException(e);
+			}
+		}
 		return _nullType;
 	}
 	

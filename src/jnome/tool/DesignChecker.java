@@ -17,6 +17,7 @@ import chameleon.oo.variable.MemberVariable;
 import chameleon.oo.variable.Variable;
 import chameleon.support.expression.AssignmentExpression;
 import chameleon.support.statement.ReturnStatement;
+import chameleon.workspace.ProjectException;
 
 // TODO
 //   1) Check for use of x/all subclasses of a given application class or interface within a single class or method.
@@ -29,7 +30,7 @@ import chameleon.support.statement.ReturnStatement;
 public class DesignChecker extends Tool {
 
 	public DesignChecker(String[] args, ModelFactory factory) throws MalformedURLException, FileNotFoundException, LookupException,
-			ParseException, IOException {
+			ParseException, IOException, ProjectException {
 		super(args, factory,false);
 	}
 

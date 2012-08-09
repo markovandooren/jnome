@@ -30,7 +30,7 @@ public class TestExceptions extends JavaTest {
 
 	public static class CustomGenericsTest extends ModelTest {
 
-		public CustomGenericsTest(ProjectBuilder provider) throws ProjectException {
+		public CustomGenericsTest(Project provider) throws ProjectException {
 			super(provider);
 		}
 
@@ -49,7 +49,7 @@ public class TestExceptions extends JavaTest {
 
 	@Test
 	public void testGenerics() throws LookupException, ProjectException {
-		new CustomGenericsTest(projectBuilder()).testExceptions();
+		new CustomGenericsTest(project()).testExceptions();
 	}
 
 
@@ -60,7 +60,7 @@ public class TestExceptions extends JavaTest {
 	}
 
 	@Override
-	public ProjectBuilder projectBuilder() {
+	public ProjectBuilder projectBuilder() throws ProjectException {
 		Java lang = new JavaLanguageFactory().create();
 		DirectoryProjectBuilder provider = new DirectoryProjectBuilder(new Project("test", new RootNamespace(), lang), ".java");
 		provider.includeBase("testsource"+provider.separator()+"gen"+provider.separator());

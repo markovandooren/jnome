@@ -7,6 +7,7 @@ import chameleon.test.provider.BasicNamespaceProvider;
 import chameleon.test.provider.DirectoryProjectBuilder;
 import chameleon.workspace.Project;
 import chameleon.workspace.ProjectBuilder;
+import chameleon.workspace.ProjectException;
 
 /**
  * @author Marko van Dooren
@@ -14,7 +15,7 @@ import chameleon.workspace.ProjectBuilder;
 public class TestAntlr extends JavaTest {
 
 	@Override
-	public ProjectBuilder projectBuilder() {
+	public ProjectBuilder projectBuilder() throws ProjectException {
 		Java language = new JavaLanguageFactory().create();
 		DirectoryProjectBuilder provider = new DirectoryProjectBuilder(new Project("test",new RootNamespace(), language), ".java");
 		provider.includeBase("testsource"+provider.separator()+"gen"+provider.separator());

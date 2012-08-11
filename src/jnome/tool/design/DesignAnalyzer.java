@@ -129,10 +129,11 @@ public class DesignAnalyzer {
     BasicConfigurator.configure();
     Logger.getRootLogger().setLevel(Level.FATAL);
     Config.setCaching(true);
+    String extension = ".java";
 		Java lang = new JavaLanguageFactory().create();
 		Project project = new Project("test", new RootNamespace(), lang);
-
-    ModelBuilder provider = new ModelBuilder(project,args,".java",true,true);
+		DirectoryProjectBuilder builder = new DirectoryProjectBuilder(project,extension);
+		ModelBuilder provider = new ModelBuilder(builder,args,extension,true,true);
     long start = System.currentTimeMillis();
     VerificationResult result = new DesignAnalyzer(provider.project(), provider.namespaceProvider()).analyze();
     System.out.println(result.message());

@@ -1,7 +1,5 @@
 package jnome.output;
 
-import java.io.File;
-
 import chameleon.core.document.Document;
 import chameleon.core.lookup.LookupException;
 import chameleon.exception.ModelException;
@@ -12,8 +10,8 @@ import chameleon.plugin.build.CompilationUnitWriter;
 public class JavaCompilationUnitWriter extends CompilationUnitWriter {
 
 
-	public JavaCompilationUnitWriter(File outputDir, String extension) {
-		super(outputDir,extension);
+	public JavaCompilationUnitWriter(String extension) {
+		super(extension);
 	}
 
 	public String fileName(Document compilationUnit) throws LookupException, ModelException {
@@ -38,6 +36,6 @@ public class JavaCompilationUnitWriter extends CompilationUnitWriter {
 
 	@Override
 	public Plugin clone() {
-		return new JavaCompilationUnitWriter(outputDir(), extension());
+		return new JavaCompilationUnitWriter(extension());
 	}
 }

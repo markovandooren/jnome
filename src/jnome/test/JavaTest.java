@@ -21,6 +21,11 @@ public abstract class JavaTest extends CompositeTest {
 //		Logger.getLogger("chameleon.test.expression").setLevel(Level.FATAL);
 	}
 	
+	@Before
+	public void setMultiThreading() {
+		Config.setSingleThreaded(false);
+	}
+	
 //	@Override
 //	public void setCaching() {
 //	  Config.setCaching(false);

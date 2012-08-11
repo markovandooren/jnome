@@ -23,6 +23,7 @@ import chameleon.core.namespace.RootNamespace;
 import chameleon.input.ModelFactory;
 import chameleon.input.ParseException;
 import chameleon.support.tool.ModelBuilder;
+import chameleon.test.provider.DirectoryProjectBuilder;
 import chameleon.workspace.Project;
 import chameleon.workspace.ProjectException;
 
@@ -36,9 +37,10 @@ public abstract class Tool {
     BasicConfigurator.configure();
 //    ((JavaModelFactory)factory).setDebug(true);
 		Java lang = new JavaLanguageFactory().create();
+		String extension = ".java";
 		Project project = new Project("test", new RootNamespace(), lang);
-
-    _provider = new ModelBuilder(project,args,".java",output,true);
+		DirectoryProjectBuilder builder = new DirectoryProjectBuilder(project,extension);
+		_provider = new ModelBuilder(builder,args,extension,output,true);
     
 	  _project = _provider.project();
 	}

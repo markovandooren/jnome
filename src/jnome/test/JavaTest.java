@@ -23,7 +23,7 @@ public abstract class JavaTest extends CompositeTest {
 	
 	@Before
 	public void setMultiThreading() {
-		Config.setSingleThreaded(false);
+		Config.setSingleThreaded(true);
 	}
 	
 //	@Override

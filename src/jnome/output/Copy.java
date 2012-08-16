@@ -6,13 +6,15 @@ import java.net.MalformedURLException;
 
 import jnome.core.language.Java;
 import jnome.core.language.JavaLanguageFactory;
+import jnome.input.JavaFileInputSourceFactory;
 import jnome.input.JavaModelFactory;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.RootNamespace;
+import chameleon.input.ModelFactory;
 import chameleon.input.ParseException;
 import chameleon.support.tool.ArgumentParser;
 import chameleon.support.tool.Arguments;
-import chameleon.test.provider.DirectoryProjectBuilder;
+import chameleon.workspace.DirectoryProjectBuilder;
 import chameleon.workspace.Project;
 import chameleon.workspace.ProjectException;
 
@@ -43,7 +45,7 @@ public class Copy {
     }
     String ext = ".java";
 		Java language = new JavaLanguageFactory().create();
-		DirectoryProjectBuilder builder = new DirectoryProjectBuilder(new Project("copy test",new RootNamespace(),language),ext);
+		DirectoryProjectBuilder builder = new DirectoryProjectBuilder(new Project("copy test",new RootNamespace(),language),ext,null, new JavaFileInputSourceFactory(language.plugin(ModelFactory.class)));
     Arguments arguments = new ArgumentParser(builder).parse(args,ext);
     
     JavaCodeWriter.writeCode(arguments);

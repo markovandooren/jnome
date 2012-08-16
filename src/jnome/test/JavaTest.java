@@ -1,14 +1,23 @@
 package jnome.test;
 
+import jnome.core.language.Java;
+import jnome.core.language.JavaLanguageFactory;
+import jnome.input.JavaFileInputSourceFactory;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import chameleon.core.Config;
+import chameleon.core.namespace.RootNamespace;
+import chameleon.input.ModelFactory;
 import chameleon.oo.type.Type;
 import chameleon.support.test.ExpressionTest;
 import chameleon.test.CompositeTest;
 import chameleon.test.provider.BasicDescendantProvider;
 import chameleon.test.provider.ElementProvider;
+import chameleon.workspace.DirectoryProjectBuilder;
+import chameleon.workspace.Project;
+import chameleon.workspace.ProjectException;
 
 public abstract class JavaTest extends CompositeTest {
 	
@@ -50,6 +59,19 @@ public abstract class JavaTest extends CompositeTest {
 	@Test @Override
 	public void testVerification() throws Exception {
 	}
+
+	protected DirectoryProjectBuilder createBuilder() {
+		Java language = new JavaLanguageFactory().create();
+		DirectoryProjectBuilder provider = new DirectoryProjectBuilder(new Project("test",new RootNamespace(), language), ".java",null, new JavaFileInputSourceFactory(language.plugin(ModelFactory.class)));
+		return provider;
+	}
+
+	protected void includeBase(DirectoryProjectBuilder provider, String dirName) throws ProjectException {
+		provider.includeCustom(dirName);
+		provider.project().language().plugin(ModelFactory.class).initializePredefinedElements();
+	}
+
+
 
 //	@Test @Override
 //	public void testClone() throws Exception {

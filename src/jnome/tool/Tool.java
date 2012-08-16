@@ -9,6 +9,7 @@ import java.util.List;
 
 import jnome.core.language.Java;
 import jnome.core.language.JavaLanguageFactory;
+import jnome.input.JavaFileInputSourceFactory;
 
 import org.apache.log4j.BasicConfigurator;
 import org.rejuse.predicate.SafePredicate;
@@ -23,7 +24,7 @@ import chameleon.core.namespace.RootNamespace;
 import chameleon.input.ModelFactory;
 import chameleon.input.ParseException;
 import chameleon.support.tool.ModelBuilder;
-import chameleon.test.provider.DirectoryProjectBuilder;
+import chameleon.workspace.DirectoryProjectBuilder;
 import chameleon.workspace.Project;
 import chameleon.workspace.ProjectException;
 
@@ -39,7 +40,7 @@ public abstract class Tool {
 		Java lang = new JavaLanguageFactory().create();
 		String extension = ".java";
 		Project project = new Project("test", new RootNamespace(), lang);
-		DirectoryProjectBuilder builder = new DirectoryProjectBuilder(project,extension);
+		DirectoryProjectBuilder builder = new DirectoryProjectBuilder(project,extension,null, new JavaFileInputSourceFactory(lang.plugin(ModelFactory.class)));
 		_provider = new ModelBuilder(builder,args,extension,output,true);
     
 	  _project = _provider.project();

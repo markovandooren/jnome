@@ -1,7 +1,7 @@
 package jnome.test;
 
-import chameleon.test.provider.DirectoryProjectBuilder;
 import chameleon.test.provider.BasicNamespaceProvider;
+import chameleon.workspace.DirectoryProjectBuilder;
 import chameleon.workspace.ProjectException;
 
 public class TestChameleonSupport extends TestChameleon {

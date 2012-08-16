@@ -7,6 +7,7 @@ import jnome.core.language.Java;
 import jnome.core.language.JavaLanguageFactory;
 import jnome.core.type.ArrayType;
 import jnome.input.JavaFactory;
+import jnome.input.JavaFileInputSourceFactory;
 import jnome.input.JavaModelFactory;
 
 import org.apache.log4j.BasicConfigurator;
@@ -23,6 +24,7 @@ import chameleon.core.reference.CrossReference;
 import chameleon.core.validation.BasicProblem;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
+import chameleon.input.ModelFactory;
 import chameleon.input.ParseException;
 import chameleon.oo.expression.Expression;
 import chameleon.oo.method.Method;
@@ -32,8 +34,8 @@ import chameleon.oo.variable.MemberVariable;
 import chameleon.support.statement.ReturnStatement;
 import chameleon.support.tool.ModelBuilder;
 import chameleon.test.provider.BasicDescendantProvider;
-import chameleon.test.provider.DirectoryProjectBuilder;
 import chameleon.test.provider.ElementProvider;
+import chameleon.workspace.DirectoryProjectBuilder;
 import chameleon.workspace.Project;
 import chameleon.workspace.ProjectException;
 
@@ -132,7 +134,7 @@ public class DesignAnalyzer {
     String extension = ".java";
 		Java lang = new JavaLanguageFactory().create();
 		Project project = new Project("test", new RootNamespace(), lang);
-		DirectoryProjectBuilder builder = new DirectoryProjectBuilder(project,extension);
+		DirectoryProjectBuilder builder = new DirectoryProjectBuilder(project,extension,null, new JavaFileInputSourceFactory(lang.plugin(ModelFactory.class)));
 		ModelBuilder provider = new ModelBuilder(builder,args,extension,true,true);
     long start = System.currentTimeMillis();
     VerificationResult result = new DesignAnalyzer(provider.project(), provider.namespaceProvider()).analyze();

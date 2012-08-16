@@ -4,6 +4,7 @@ import java.util.Set;
 
 import jnome.core.language.Java;
 import jnome.core.language.JavaLanguageFactory;
+import jnome.input.JavaFileInputSourceFactory;
 import jnome.input.JavaModelFactory;
 
 import org.apache.log4j.BasicConfigurator;
@@ -14,7 +15,7 @@ import chameleon.input.ModelFactory;
 import chameleon.oo.type.Type;
 import chameleon.support.tool.ArgumentParser;
 import chameleon.support.tool.Arguments;
-import chameleon.test.provider.DirectoryProjectBuilder;
+import chameleon.workspace.DirectoryProjectBuilder;
 import chameleon.workspace.Project;
 
 public class DependencyAnalyzer {
@@ -38,7 +39,7 @@ public class DependencyAnalyzer {
     BasicConfigurator.configure();
 		Java language = new JavaLanguageFactory().create();
 		String extension = ".java";
-		DirectoryProjectBuilder builder = new DirectoryProjectBuilder(new Project("copy test",new RootNamespace(),language),extension);
+		DirectoryProjectBuilder builder = new DirectoryProjectBuilder(new Project("copy test",new RootNamespace(),language),extension,null, new JavaFileInputSourceFactory(language.plugin(ModelFactory.class)));
 		Arguments arguments = new ArgumentParser(builder,false).parse(args,extension);
 	  chameleon.tool.analysis.DependencyAnalyzer analyzer = new chameleon.tool.analysis.DependencyAnalyzer();
 	  Set<Declaration> deps = analyzer.dependenciesOfAll(arguments.getTypes());

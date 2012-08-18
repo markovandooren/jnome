@@ -20,28 +20,27 @@ import chameleon.core.element.Element;
 import chameleon.core.language.Language;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.Namespace;
+import chameleon.core.namespace.RegularNamespaceFactory;
 import chameleon.core.namespace.RootNamespace;
 import chameleon.input.ModelFactory;
 import chameleon.input.ParseException;
 import chameleon.support.tool.ModelBuilder;
-import chameleon.workspace.DirectoryProjectBuilder;
 import chameleon.workspace.Project;
 import chameleon.workspace.ProjectException;
 
 public abstract class Tool {
 
-	public Tool(String[] args, ModelFactory factory, boolean output) throws MalformedURLException, FileNotFoundException, LookupException, ParseException, IOException, ProjectException {
+	public Tool(String[] args, ModelFactory modelFactory, boolean output) throws MalformedURLException, FileNotFoundException, LookupException, ParseException, IOException, ProjectException {
     if(args.length < 2) {
       System.out.println("Usage: java packageName.ToolName "+(output ? "outputDir " : "")+"inputDir* @recursivePackageFQN* #packageFQN* $typeFQN*");
     }
     Config.setCaching(true);
     BasicConfigurator.configure();
-//    ((JavaModelFactory)factory).setDebug(true);
 		Java lang = new JavaLanguageFactory().create();
 		String extension = ".java";
-		Project project = new Project("test", new RootNamespace(), lang);
-		DirectoryProjectBuilder builder = new DirectoryProjectBuilder(project,extension,null, new JavaFileInputSourceFactory(lang.plugin(ModelFactory.class)));
-		_provider = new ModelBuilder(builder,args,extension,output,true);
+		Project project = new Project("test", new RootNamespace(new RegularNamespaceFactory()), lang);
+		JavaFileInputSourceFactory inputSourceFactory = new JavaFileInputSourceFactory(lang.plugin(ModelFactory.class));
+		_provider = new ModelBuilder(project,args,extension,output,true,inputSourceFactory);
     
 	  _project = _provider.project();
 	}

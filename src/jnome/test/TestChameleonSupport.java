@@ -1,17 +1,17 @@
 package jnome.test;
 
 import chameleon.test.provider.BasicNamespaceProvider;
-import chameleon.workspace.DirectoryProjectBuilder;
+import chameleon.workspace.Project;
 import chameleon.workspace.ProjectException;
 
 public class TestChameleonSupport extends TestChameleon {
 
 	@Override
-	public DirectoryProjectBuilder projectBuilder() throws ProjectException {
-		DirectoryProjectBuilder provider = (DirectoryProjectBuilder) super.projectBuilder();
-		provider.includeCustom("testsource"+provider.separator()+"chameleon-support"+provider.separator()+"src"+provider.separator());
-		provider.includeCustom("testsource"+provider.separator()+"antlr-3.2"+provider.separator()+"src"+provider.separator());
-		return provider;
+	public Project makeProject() throws ProjectException {
+		Project project = super.makeProject();
+		includeCustom(project,"testsource"+separator()+"chameleon-support"+separator()+"src"+separator());
+		includeCustom(project,"testsource"+separator()+"antlr-3.2"+separator()+"src"+separator());
+		return project;
 	}
 
 //	@Override

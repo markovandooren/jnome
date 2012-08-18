@@ -1,9 +1,7 @@
 package jnome.test;
 
-import chameleon.input.ModelFactory;
 import chameleon.test.provider.BasicNamespaceProvider;
-import chameleon.workspace.DirectoryProjectBuilder;
-import chameleon.workspace.ProjectBuilder;
+import chameleon.workspace.Project;
 import chameleon.workspace.ProjectException;
 
 /**
@@ -12,11 +10,11 @@ import chameleon.workspace.ProjectException;
 public class TestAntlr extends JavaTest {
 
 	@Override
-	public ProjectBuilder projectBuilder() throws ProjectException {
-		DirectoryProjectBuilder provider = createBuilder();
-		includeBase(provider, "testsource"+provider.separator()+"gen"+provider.separator());
-		provider.includeCustom("testsource"+provider.separator()+"antlr-2.7.2"+provider.separator()+"antlr"+provider.separator());
-		return provider;
+	public Project makeProject() throws ProjectException {
+		Project project = createProject();
+		includeBase(project, "testsource"+separator()+"gen"+separator());
+		includeCustom(project,"testsource"+separator()+"antlr-2.7.2"+separator()+"antlr"+separator());
+		return project;
 	}
 
 	@Override

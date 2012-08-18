@@ -13,9 +13,7 @@ import chameleon.core.lookup.LookupException;
 import chameleon.oo.type.Type;
 import chameleon.test.ModelTest;
 import chameleon.test.provider.BasicNamespaceProvider;
-import chameleon.workspace.DirectoryProjectBuilder;
 import chameleon.workspace.Project;
-import chameleon.workspace.ProjectBuilder;
 import chameleon.workspace.ProjectException;
 
 /**
@@ -109,11 +107,11 @@ public class TestGenerics extends JavaTest {
 	}
 
 	@Override
-	public ProjectBuilder projectBuilder() throws ProjectException {
-		DirectoryProjectBuilder provider = createBuilder();
-		includeBase(provider,"testsource"+provider.separator()+"gen"+provider.separator());
-		provider.includeCustom("testsource"+provider.separator()+"generics"+provider.separator());
-		return provider;
+	public Project makeProject() throws ProjectException {
+		Project project = createProject();
+		includeBase(project,"testsource"+separator()+"gen"+separator());
+		includeCustom(project,"testsource"+separator()+"generics"+separator());
+		return project;
 	}
 
 //	@Override @Test

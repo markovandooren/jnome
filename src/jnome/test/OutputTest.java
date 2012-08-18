@@ -14,12 +14,13 @@ import jnome.input.JavaFileInputSourceFactory;
 import org.junit.Before;
 import org.junit.Test;
 
+import chameleon.core.namespace.RegularNamespaceFactory;
 import chameleon.core.namespace.RootNamespace;
 import chameleon.input.ModelFactory;
 import chameleon.input.ParseException;
 import chameleon.support.tool.ArgumentParser;
 import chameleon.support.tool.Arguments;
-import chameleon.workspace.DirectoryProjectBuilder;
+import chameleon.workspace.DirectoryLoader;
 import chameleon.workspace.Project;
 
 /**
@@ -87,8 +88,9 @@ public abstract class OutputTest {
 	public void setUp() throws MalformedURLException, FileNotFoundException, ParseException, IOException, Exception {
 		addTestFiles();
 		Java language = new JavaLanguageFactory().create();
-		DirectoryProjectBuilder builder = new DirectoryProjectBuilder(new Project("output test",new RootNamespace(),language) ,_extension,null, new JavaFileInputSourceFactory(language.plugin(ModelFactory.class)));
-		_args = new ArgumentParser(builder,true).parse(arguments(), _extension);
+		Project project = new Project("output test",new RootNamespace(new RegularNamespaceFactory()),language);
+		JavaFileInputSourceFactory inputSourceFactory = new JavaFileInputSourceFactory(language.plugin(ModelFactory.class));
+		_args = new ArgumentParser(project,true).parse(arguments(), _extension,inputSourceFactory);
 	}
 
 	@Test

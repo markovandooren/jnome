@@ -1,16 +1,10 @@
 package jnome.test;
 
-import jnome.core.language.Java;
-import jnome.core.language.JavaLanguageFactory;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import chameleon.core.namespace.RootNamespace;
 import chameleon.test.provider.BasicNamespaceProvider;
-import chameleon.workspace.DirectoryProjectBuilder;
 import chameleon.workspace.Project;
-import chameleon.workspace.ProjectBuilder;
 import chameleon.workspace.ProjectException;
 
 /**
@@ -26,16 +20,16 @@ public class TestChameleon extends JavaTest {
 	}
 
 	@Override
-	public ProjectBuilder projectBuilder() throws ProjectException {
-		DirectoryProjectBuilder provider = createBuilder();
-		includeBase(provider,"testsource"+provider.separator()+"gen"+provider.separator());
-		provider.includeCustom("testsource"+provider.separator()+"jregex"+provider.separator());
-		provider.includeCustom("testsource"+provider.separator()+"rejuse"+provider.separator()+"src"+provider.separator());
-		provider.includeCustom("testsource"+provider.separator()+"hamcrest-1.2"+provider.separator()+"src"+provider.separator());
-		provider.includeCustom("testsource"+provider.separator()+"junit4.7"+provider.separator());
-		provider.includeCustom("testsource"+provider.separator()+"chameleon"+provider.separator()+"src"+provider.separator());
-		provider.includeCustom("testsource"+provider.separator()+"apache-log4j-1.2.15"+provider.separator()+"src"+provider.separator()+"main"+provider.separator()+"java"+provider.separator());
-		return provider;
+	public Project makeProject() throws ProjectException {
+		Project project = createProject();
+		includeBase(project,"testsource"+separator()+"gen"+separator());
+		includeCustom(project,"testsource"+separator()+"jregex"+separator());
+		includeCustom(project,"testsource"+separator()+"rejuse"+separator()+"src"+separator());
+		includeCustom(project,"testsource"+separator()+"hamcrest-1.2"+separator()+"src"+separator());
+		includeCustom(project,"testsource"+separator()+"junit4.7"+separator());
+		includeCustom(project,"testsource"+separator()+"chameleon"+separator()+"src"+separator());
+		includeCustom(project,"testsource"+separator()+"apache-log4j-1.2.15"+separator()+"src"+separator()+"main"+separator()+"java"+separator());
+		return project;
 	}
 
 	@Override

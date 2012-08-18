@@ -4,8 +4,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import chameleon.test.provider.BasicNamespaceProvider;
-import chameleon.workspace.DirectoryProjectBuilder;
-import chameleon.workspace.ProjectBuilder;
+import chameleon.workspace.Project;
 import chameleon.workspace.ProjectException;
 
 /**
@@ -21,13 +20,13 @@ public class TestGenericRejuse extends JavaTest {
 	}
 
 	@Override
-	public ProjectBuilder projectBuilder() throws ProjectException {
-		DirectoryProjectBuilder provider = createBuilder();
-		includeBase(provider,"testsource"+provider.separator()+"gen"+provider.separator());
-		provider.includeCustom("testsource"+provider.separator()+"jregex"+provider.separator());
-		provider.includeCustom("testsource"+provider.separator()+"rejuse"+provider.separator()+"src"+provider.separator());
-		provider.includeCustom("testsource"+provider.separator()+"junit4.7"+provider.separator());
-		return provider;
+	public Project makeProject() throws ProjectException {
+		Project project = createProject();
+		includeBase(project,"testsource"+separator()+"gen"+separator());
+		includeCustom(project,"testsource"+separator()+"jregex"+separator());
+		includeCustom(project,"testsource"+separator()+"rejuse"+separator()+"src"+separator());
+		includeCustom(project,"testsource"+separator()+"junit4.7"+separator());
+		return project;
 	}
 
 	@Override

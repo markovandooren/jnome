@@ -9,12 +9,13 @@ import jnome.core.language.JavaLanguageFactory;
 import jnome.input.JavaFileInputSourceFactory;
 import jnome.input.JavaModelFactory;
 import chameleon.core.lookup.LookupException;
+import chameleon.core.namespace.RegularNamespaceFactory;
 import chameleon.core.namespace.RootNamespace;
 import chameleon.input.ModelFactory;
 import chameleon.input.ParseException;
 import chameleon.support.tool.ArgumentParser;
 import chameleon.support.tool.Arguments;
-import chameleon.workspace.DirectoryProjectBuilder;
+import chameleon.workspace.DirectoryLoader;
 import chameleon.workspace.Project;
 import chameleon.workspace.ProjectException;
 
@@ -45,8 +46,9 @@ public class Copy {
     }
     String ext = ".java";
 		Java language = new JavaLanguageFactory().create();
-		DirectoryProjectBuilder builder = new DirectoryProjectBuilder(new Project("copy test",new RootNamespace(),language),ext,null, new JavaFileInputSourceFactory(language.plugin(ModelFactory.class)));
-    Arguments arguments = new ArgumentParser(builder).parse(args,ext);
+		JavaFileInputSourceFactory factory = new JavaFileInputSourceFactory(language.plugin(ModelFactory.class));
+		Project project = new Project("copy test",new RootNamespace(new RegularNamespaceFactory()),language);
+    Arguments arguments = new ArgumentParser(project).parse(args,ext, factory);
     
     JavaCodeWriter.writeCode(arguments);
   }

@@ -13,6 +13,7 @@ import org.junit.Test;
 import chameleon.core.Config;
 import chameleon.core.language.Language;
 import chameleon.core.namespace.LazyNamespaceFactory;
+import chameleon.core.namespace.LazyRootNamespace;
 import chameleon.core.namespace.NamespaceFactory;
 import chameleon.core.namespace.RegularNamespaceFactory;
 import chameleon.core.namespace.RootNamespace;
@@ -40,7 +41,7 @@ public abstract class JavaTest extends CompositeTest {
 	
 	@Before
 	public void setMultiThreading() {
-		Config.setSingleThreaded(true);
+		Config.setSingleThreaded(false);
 	}
 	
 //	@Override
@@ -70,10 +71,7 @@ public abstract class JavaTest extends CompositeTest {
 
 	protected Project createProject() {
 		Java language = new JavaLanguageFactory().create();
-		
-		NamespaceFactory nsFactory = createNamespaceFactory();
-
-		Project project = new Project("test",new RootNamespace(nsFactory), language);
+		Project project = new Project("test",createRootNamespace(), language);
 		
 //
 //		
@@ -93,14 +91,30 @@ public abstract class JavaTest extends CompositeTest {
 		return ".java";
 	}
 	
+	private boolean _lazyLoading = true;
+	
 	protected FileInputSourceFactory createFactory(Language language) {
+		if(_lazyLoading) {
+			return new LazyJavaFileInputSourceFactory(language.plugin(ModelFactory.class));
+		} else {
 		return new JavaFileInputSourceFactory(language.plugin(ModelFactory.class));
-//		return new LazyJavaFileInputSourceFactory(language.plugin(ModelFactory.class));
+		}
 	}
 
+	private RootNamespace createRootNamespace() {
+		if(_lazyLoading) {
+			return new LazyRootNamespace();
+		} else {
+			return new RootNamespace(createNamespaceFactory());
+		}
+	}
+	
 	private NamespaceFactory createNamespaceFactory() {
-	return new RegularNamespaceFactory();
-//  return new LazyNamespaceFactory();
+		if(_lazyLoading) {
+			return new LazyNamespaceFactory();
+		} else {
+			return new RegularNamespaceFactory();
+		}
 }
 
 

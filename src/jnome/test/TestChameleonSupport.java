@@ -10,7 +10,7 @@ public class TestChameleonSupport extends TestChameleon {
 	public Project makeProject() throws ProjectException {
 		Project project = super.makeProject();
 		includeCustom(project,"testsource"+separator()+"chameleon-support"+separator()+"src"+separator());
-		includeCustom(project,"testsource"+separator()+"antlr-3.2"+separator()+"src"+separator());
+		includeCustom(project,"testsource"+separator()+"antlr-3.2"+separator()+"src"+separator()+"main"+separator()+"java");
 		return project;
 	}
 

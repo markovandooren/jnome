@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import chameleon.core.lookup.LookupException;
-import chameleon.core.namespace.LazyNamespace;
+import chameleon.core.namespace.InputSourceNamespace;
 import chameleon.core.namespace.Namespace;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.input.ModelFactory;
@@ -41,7 +41,7 @@ public class LazyJavaFileInputSourceFactory implements FileInputSourceFactory {
 	
 	@Override
 	public InputSource create(File file) throws IOException, ParseException {
-		return new LazyJavaFileInputSource(file, modelFactory(), (LazyNamespace) currentNamespace());
+		return new LazyJavaFileInputSource(file, modelFactory(), (InputSourceNamespace) currentNamespace());
 	}
 	
 	public ModelFactory modelFactory() {

@@ -1,14 +1,19 @@
 package jnome.core.type;
 
+import java.util.List;
+
 import jnome.core.language.Java;
 import chameleon.core.declaration.SimpleNameSignature;
+import chameleon.core.lookup.LookupException;
 import chameleon.oo.method.SimpleNameMethodHeader;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
+import chameleon.oo.type.generics.TypeParameter;
 import chameleon.oo.variable.FormalParameter;
 import chameleon.support.member.simplename.operator.infix.InfixOperator;
 import chameleon.support.modifier.Native;
 import chameleon.support.modifier.Public;
+import chameleon.util.Pair;
 
 /**
  * @author Marko van Dooren
@@ -39,6 +44,16 @@ public class NullType extends RegularType {
 
   protected NullType cloneThis() {
     return new NullType((Java) language());
+  }
+  
+  @Override
+  public boolean upperBoundNotHigherThan(Type other, List<Pair<Type, TypeParameter>> trace) throws LookupException {
+  	return true;
+  }
+  
+  @Override
+  public boolean auxSubTypeOf(Type other) throws LookupException {
+  	return true;
   }
 
 //	/**

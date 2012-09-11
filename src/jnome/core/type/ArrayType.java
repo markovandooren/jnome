@@ -1,6 +1,8 @@
 package jnome.core.type;
 
 
+import org.rejuse.logic.ternary.Ternary;
+
 import jnome.core.language.Java;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
@@ -134,8 +136,27 @@ public class ArrayType extends RegularType {
     return new ArrayType(elementType());
   }
 
-//	public Type erasure() {
-//		return new ArrayType(((JavaType)elementType()).erasure());
-//	}
+//  @Override
+//  public boolean auxSubTypeOf(Type second) throws LookupException {
+//  	boolean result = false;
+//  	if (second instanceof ArrayType && this.is(language(Java.class).REFERENCE_TYPE) == Ternary.TRUE) {
+//  		ArrayType second2 = (ArrayType)second;
+//  		result = elementType().subTypeOf(second2.elementType());
+//  	} 
+//  	return result;
+//  }
+  
+  @Override
+  	public boolean auxSubTypeOf(Type second) throws LookupException {
+  	 boolean result = false;
+  	 if (second instanceof ArrayType && is(language(Java.class).REFERENCE_TYPE) == Ternary.TRUE) {
+  		 ArrayType second2 = (ArrayType)second;
+  		 result = elementType().subTypeOf(second2.elementType());
+  	 }
+  	 if(! result) {
+  		 result = super.auxSubTypeOf(second);
+  	 }
+  	 return result;
+  	}
   
 }

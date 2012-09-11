@@ -54,9 +54,9 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	public boolean upperBoundNotHigherThan(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
 		List<Pair<Type, TypeParameter>> slowTrace = trace;
 	boolean result = false;
-		if(first instanceof NullType) {
-			result = true;
-		} else {
+//		if(first instanceof NullType) {
+//			result = true;
+//		} else {
 			if(
 				(second instanceof LazyInstantiatedAlias)) {
 					TypeParameter secondParam = ((LazyInstantiatedAlias)second).parameter();
@@ -84,7 +84,13 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 						return true;
 					}
 				}
+				if(first.sameAs(second)) {
+					return true;
+				}
 				slowTrace.add(new Pair<Type, TypeParameter>(first, secondParam));
+//				result = upperBoundNotHigherThan(first, ((InstantiatedParameterType) second).aliasedType(), slowTrace);
+				result = first.upperBoundNotHigherThan(((InstantiatedParameterType) second).aliasedType(), slowTrace);
+				return result;
 			}
 			if(first instanceof InstantiatedParameterType) {
 				TypeParameter firstParam = ((InstantiatedParameterType)first).parameter();
@@ -94,54 +100,71 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 						return true;
 					}
 				}
+				if(first.sameAs(second)) {
+					return true;
+				}
 				slowTrace.add(new Pair<Type, TypeParameter>(second, firstParam));
+//				result = upperBoundNotHigherThan(((InstantiatedParameterType) first).aliasedType(), second, slowTrace);
+				result = ((InstantiatedParameterType) first).aliasedType().upperBoundNotHigherThan(second, slowTrace);
+				return result;
 			}
 			if(first.sameAs(second)) {
 				result = true;
-			} else if(first instanceof InstantiatedParameterType) {
-				result = upperBoundNotHigherThan(((InstantiatedParameterType) first).aliasedType(), second, slowTrace);
-			} else if(second instanceof InstantiatedParameterType) {
-				result = upperBoundNotHigherThan(first, ((InstantiatedParameterType) second).aliasedType(), slowTrace);
-			}	else if (first.equals(first.language(ObjectOrientedLanguage.class).getNullType())) {
-				result = true;
-			} else if (first instanceof WildCardType) {
-				result = upperBoundNotHigherThan(((WildCardType)first).upperBound(), second,slowTrace);
+			} 
+//			else if(first instanceof InstantiatedParameterType) {
+//				result = upperBoundNotHigherThan(((InstantiatedParameterType) first).aliasedType(), second, slowTrace);
+//			} 
+//			else if(second instanceof InstantiatedParameterType) {
+//				result = upperBoundNotHigherThan(first, ((InstantiatedParameterType) second).aliasedType(), slowTrace);
+//			}	
+//			else if (first.equals(first.language(ObjectOrientedLanguage.class).getNullType())) {
+//				result = true;
+//			} 
+			else if (first instanceof WildCardType) {
+//				result = upperBoundNotHigherThan(((WildCardType)first).upperBound(), second,slowTrace);
+				result = ((WildCardType)first).upperBound().upperBoundNotHigherThan(second,slowTrace);
 			} else if (second instanceof WildCardType) {
-				result = upperBoundNotHigherThan(first, ((WildCardType)second).lowerBound(),slowTrace);
+//				result = upperBoundNotHigherThan(first, ((WildCardType)second).lowerBound(),slowTrace);
+				result = first.upperBoundNotHigherThan(((WildCardType)second).lowerBound(),slowTrace);
 			}
 			// The relations between arrays and object are covered by the subtyping relations
 			// that are added to ArrayType objects.
 			else if (first instanceof ArrayType && second instanceof ArrayType && first.is(first.language(Java.class).REFERENCE_TYPE) == Ternary.TRUE) {
 				ArrayType first2 = (ArrayType)first;
 				ArrayType second2 = (ArrayType)second;
-				result = upperBoundNotHigherThan(first2.elementType(), second2.elementType(),slowTrace);
+//				result = upperBoundNotHigherThan(first2.elementType(), second2.elementType(),slowTrace);
+				result = first2.elementType().upperBoundNotHigherThan(second2.elementType(),slowTrace);
 			} else if(second instanceof IntersectionType) {
 				List<Type> types = ((IntersectionType)second).types();
 				int size = types.size();
 				result = size > 0;
 				for(int i=0; result && i<size;i++) {
-					result = upperBoundNotHigherThan(first,types.get(i),slowTrace);
+//					result = upperBoundNotHigherThan(first,types.get(i),slowTrace);
+					result = first.upperBoundNotHigherThan(types.get(i),slowTrace);
 				}
 			} else if(first instanceof IntersectionType) {
 				List<Type> types = ((IntersectionType)first).types();
 				int size = types.size();
 				result = false;
 				for(int i=0; (!result) && i<size;i++) {
-					result = upperBoundNotHigherThan(types.get(i),second,slowTrace);
+//					result = upperBoundNotHigherThan(types.get(i),second,slowTrace);
+					result = types.get(i).upperBoundNotHigherThan(second,slowTrace);
 				}
 			} else if(second instanceof UnionType) {
 				List<Type> types = ((UnionType)second).types();
 				int size = types.size();
 				result = false;
 				for(int i=0; (!result) && i<size;i++) {
-					result = upperBoundNotHigherThan(first,types.get(i),slowTrace);
+//					result = upperBoundNotHigherThan(first,types.get(i),slowTrace);
+					result = first.upperBoundNotHigherThan(types.get(i),slowTrace);
 				}
 			} else if(first instanceof UnionType) {
 				List<Type> types = ((UnionType)first).types();
 				int size = types.size();
 				result = size > 0;
 				for(int i=0; result && i<size;i++) {
-					result = upperBoundNotHigherThan(types.get(i),second,slowTrace);
+//					result = upperBoundNotHigherThan(types.get(i),second,slowTrace);
+					result = types.get(i).upperBoundNotHigherThan(second, slowTrace);
 				}
 			} else if(second instanceof RawType) {
 				Set<Type> supers = first.getAllSuperTypes();
@@ -163,8 +186,6 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 					result = (snd instanceof RawType && second.baseType().sameAs(current.baseType())) || sameBaseTypeWithCompatibleParameters(current, snd, slowTrace);
 				}
 			}
-		}
-//		System.out.println("Match: "+result);
 		return result;
 	}
 	
@@ -188,6 +209,9 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		synchronized (this) {
 			try {
 			zuppas = _cache.get(first);
+			// The following code is meant to tunnel a LookupException through the equals method, which is used
+			// by the code in java.util.Set. The exception is first wrapped in a ChameleonProgrammerException,
+			// and unwrapped when it arrives here.
 			} catch(ChameleonProgrammerException exc) {
 				Throwable cause = exc.getCause();
 				if(cause instanceof LookupException) {
@@ -202,68 +226,6 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		}
 //		System.out.println(first.getFullyQualifiedName() +" <: "+second.getFullyQualifiedName());
 		boolean result = false;
-		if(first instanceof NullType) {
-			result = true;
-		} else {
-			if(first.sameAs(second)) {
-				result = true;
-			}
-			else if(first instanceof InstantiatedParameterType) {
-				result = contains(((InstantiatedParameterType) first).aliasedType(),second);
-			} else if(second instanceof InstantiatedParameterType) {
-				result = contains(first,((InstantiatedParameterType) second).aliasedType());
-			}
-			 else if (first.equals(first.language(ObjectOrientedLanguage.class).getNullType())) {
-				result = true;
-			} else if (first instanceof WildCardType) {
-				result = contains(((WildCardType)first).upperBound(), second);
-			} else if (second instanceof WildCardType) {
-				result = contains(first, ((WildCardType)second).lowerBound());
-			}
-			// The relations between arrays and object are covered by the subtyping relations
-			// that are added to ArrayType objects.
-			else if (first instanceof ArrayType && second instanceof ArrayType && first.is(first.language(Java.class).REFERENCE_TYPE) == Ternary.TRUE) {
-				ArrayType first2 = (ArrayType)first;
-				ArrayType second2 = (ArrayType)second;
-				result = contains(first2.elementType(), second2.elementType());
-			} else if(second instanceof IntersectionType) {
-				List<Type> types = ((IntersectionType)second).types();
-				int size = types.size();
-				result = size > 0;
-				for(int i=0; result && i<size;i++) {
-					result = contains(first,types.get(i));
-				}
-			} else if(first instanceof IntersectionType) {
-				List<Type> types = ((IntersectionType)first).types();
-				int size = types.size();
-				result = false;
-				for(int i=0; (!result) && i<size;i++) {
-					result = contains(types.get(i),second);
-				}
-			} else if(second instanceof UnionType) {
-				List<Type> types = ((UnionType)first).types();
-				int size = types.size();
-				result = false;
-				for(int i=0; (!result) && i<size;i++) {
-					result = contains(first,types.get(i));
-				}
-			} else if(first instanceof UnionType) {
-				List<Type> types = ((UnionType)second).types();
-				int size = types.size();
-				result = size > 0;
-				for(int i=0; result && i<size;i++) {
-					result = contains(types.get(i),second);
-				}
-			} else if(second instanceof RawType) {
-				Set<Type> supers = first.getAllSuperTypes();
-				supers.add(first);
-				Iterator<Type> typeIterator = supers.iterator();
-				while((!result) && typeIterator.hasNext()) {
-					Type current = typeIterator.next();
-					result = second.baseType().sameAs(current.baseType());
-				}
-			}
-			else {
 					//SPEED iterate over the supertype graph 
 					Set<Type> supers = getAllSuperTypesView(first);
 					Type snd = captureConversion(second);
@@ -273,20 +235,12 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 						Type current = typeIterator.next();
 						result = (snd instanceof RawType && second.baseType().sameAs(current.baseType())) || sameBaseTypeWithCompatibleParameters(current, snd, new ArrayList());
 					}
-			}
-		}
+//		} end if instanceof NullType
 		if(result) {
 			synchronized(this) {
 				zuppas = _cache.get(first);
 				if(zuppas == null) {
 					zuppas = new HashSet<Type>();
-//					if(first.signature().name().equals("MultiProperty")) {
-//						Config.debug();
-//						if(Config.debug()) {
-//							List<TypeParameter> params = first.parameters(TypeParameter.class);
-//							((InstantiatedTypeParameter)params.get(0)).argument().parentLink().lock();
-//						}
-//					}
 					_cache.put(first, zuppas);
 				}
 				zuppas.add(second);

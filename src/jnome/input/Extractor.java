@@ -47,8 +47,15 @@ public class Extractor {
 	
 	public void setJar(String pathName) throws MalformedURLException {
 		_url = new File(pathName).toURI().toURL();
+		_loader = URLClassLoader.newInstance(
+		    new URL[] {_url},
+		    getClass().getClassLoader()
+		);
+
 	}
 
+	private ClassLoader _loader;
+	
   public String getCompilationUnit(String fqn) throws ClassNotFoundException {
     Class clazz = getClass(fqn);
     final StringBuffer result = new StringBuffer();
@@ -68,11 +75,7 @@ public class Extractor {
 	}
 	
 	private Class<?> loadFromJar(String fqn) throws ClassNotFoundException {
-		ClassLoader loader = URLClassLoader.newInstance(
-		    new URL[] {_url},
-		    getClass().getClassLoader()
-		);
-		return Class.forName(fqn, true, loader);
+		return Class.forName(fqn, true, _loader);
 	}
   
   public String toString(TypeVariable var) {
@@ -211,9 +214,7 @@ public class Extractor {
      
      toCodeMethods(clazz, indent, result);
      
-    Field[] vars = clazz.getDeclaredFields();
-    
-    toCodeFields(indent, result, vars);
+    toCodeFields(indent, result, clazz.getDeclaredFields());
     
     toCodeInnerClasses(clazz, indent, result);
     
@@ -530,7 +531,7 @@ public class Extractor {
     System.out.println("Done");
   }
   
-  public static List readClassNamesFromJar(JarFile file) throws IOException {
+  public static List<String> readClassNamesFromJar(JarFile file) throws IOException {
   	Enumeration<JarEntry> entries = file.entries();
   	List<String> result = new ArrayList<String>();
 		while(entries.hasMoreElements()) {

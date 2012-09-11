@@ -3,7 +3,9 @@ package jnome.core.type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import jnome.core.language.Java;
 
@@ -282,4 +284,18 @@ public class RawType extends ClassWithBody {
 		return uniSameAs(aliasedType);
 	}
 
+	@Override
+	public boolean auxSuperTypeOf(Type type) throws LookupException {
+		//FIXME: this can be made more efficient i think by storing the cache in 'type' ? but then that object's cache
+		// must be cleared when this is garbage collected (or prevents it from being garbage collected).
+		boolean result = false;
+		Set<Type> supers = type.getAllSuperTypes();
+		supers.add(type);
+		Iterator<Type> typeIterator = supers.iterator();
+		while((!result) && typeIterator.hasNext()) {
+			Type current = typeIterator.next();
+			result = baseType().sameAs(current.baseType());
+		}
+		return result;
+	}
 }

@@ -17,10 +17,12 @@ import chameleon.core.namespace.LazyRootNamespace;
 import chameleon.core.namespace.NamespaceFactory;
 import chameleon.core.namespace.RegularNamespaceFactory;
 import chameleon.core.namespace.RootNamespace;
+import chameleon.core.reference.CrossReference;
 import chameleon.input.ModelFactory;
 import chameleon.oo.type.Type;
 import chameleon.support.test.ExpressionTest;
 import chameleon.test.CompositeTest;
+import chameleon.test.CrossReferenceTest;
 import chameleon.test.provider.BasicDescendantProvider;
 import chameleon.test.provider.ElementProvider;
 import chameleon.workspace.DirectoryLoader;
@@ -41,7 +43,7 @@ public abstract class JavaTest extends CompositeTest {
 	
 	@Before
 	public void setMultiThreading() {
-		Config.setSingleThreaded(false);
+		Config.setSingleThreaded(true);
 	}
 	
 //	@Override
@@ -49,13 +51,13 @@ public abstract class JavaTest extends CompositeTest {
 //	  Config.setCaching(false);
 //	}
 	
-	/**
-	 * Test getType expressions in the namespaces provided
-	 * by the namespace provider.
-	 */
+	@Override
 	@Test
-	public void testExpressions() throws Exception {
-		new ExpressionTest(project(), typeProvider()).testExpressionTypes();
+	public void testCrossReferences() throws Exception {
+		Project project = project();
+		ElementProvider<Type> typeProvider = typeProvider();
+		new ExpressionTest(project, typeProvider).testExpressionTypes();
+		new CrossReferenceTest(project, new BasicDescendantProvider<CrossReference>(namespaceProvider(), CrossReference.class)).testCrossReferences();
 	}
 
 	public ElementProvider<Type> typeProvider() {

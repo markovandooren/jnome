@@ -1,5 +1,7 @@
+java.lang.ReflectiveOperationException
 java.util.NavigableSet
 java.util.NavigableMap
+java.lang.AutoCloseable
 java.lang.AbstractStringBuilder
 javax.swing.AbstractAction
 javax.swing.border.AbstractBorder

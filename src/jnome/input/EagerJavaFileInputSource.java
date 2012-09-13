@@ -1,14 +1,13 @@
 package jnome.input;
 
 import java.io.File;
-import java.io.IOException;
 
 import chameleon.input.ModelFactory;
-import chameleon.input.ParseException;
+import chameleon.workspace.InputException;
 
 public class EagerJavaFileInputSource extends JavaFileInputSource {
 
-	public EagerJavaFileInputSource(File file, ModelFactory factory) throws IOException, ParseException {
+	public EagerJavaFileInputSource(File file, ModelFactory factory) throws InputException {
 		super(file, factory);
 		load();
 	}

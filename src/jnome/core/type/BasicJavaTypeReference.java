@@ -44,6 +44,9 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
   
   public BasicJavaTypeReference(String fqn) {
   	super(fqn);
+  	if(fqn.contains("[")) {
+  		System.out.println("debug");
+  	}
   }
   
   public List<ActualTypeArgument> typeArguments() {

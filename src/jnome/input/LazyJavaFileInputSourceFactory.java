@@ -1,15 +1,14 @@
 package jnome.input;
 
 import java.io.File;
-import java.io.IOException;
 
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.InputSourceNamespace;
 import chameleon.core.namespace.Namespace;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.input.ModelFactory;
-import chameleon.input.ParseException;
 import chameleon.workspace.FileInputSourceFactory;
+import chameleon.workspace.InputException;
 import chameleon.workspace.InputSource;
 
 public class LazyJavaFileInputSourceFactory implements FileInputSourceFactory {
@@ -40,7 +39,7 @@ public class LazyJavaFileInputSourceFactory implements FileInputSourceFactory {
 	}
 	
 	@Override
-	public InputSource create(File file) throws IOException, ParseException {
+	public InputSource create(File file) {
 		return new LazyJavaFileInputSource(file, modelFactory(), (InputSourceNamespace) currentNamespace());
 	}
 	

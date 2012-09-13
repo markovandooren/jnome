@@ -1,6 +1,7 @@
 package jnome.input;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
@@ -23,11 +24,11 @@ import chameleon.core.document.Document;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.RootNamespace;
 import chameleon.core.namespacedeclaration.NamespaceDeclaration;
-import chameleon.oo.member.Member;
 import chameleon.oo.method.Method;
 import chameleon.oo.method.SimpleNameMethodHeader;
 import chameleon.oo.method.exception.ExceptionClause;
 import chameleon.oo.method.exception.TypeExceptionDeclaration;
+import chameleon.oo.plugin.ObjectOrientedFactory;
 import chameleon.oo.type.IntersectionTypeReference;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
@@ -38,8 +39,12 @@ import chameleon.oo.type.generics.ExtendsWildcard;
 import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.SuperWildcard;
 import chameleon.oo.type.generics.TypeParameter;
+import chameleon.oo.type.inheritance.InheritanceRelation;
+import chameleon.oo.type.inheritance.SubtypeRelation;
 import chameleon.oo.variable.FormalParameter;
+import chameleon.oo.variable.VariableDeclaration;
 import chameleon.support.member.simplename.method.NormalMethod;
+import chameleon.support.member.simplename.variable.MemberVariableDeclarator;
 import chameleon.support.modifier.Abstract;
 import chameleon.support.modifier.Final;
 import chameleon.support.modifier.Interface;
@@ -50,32 +55,39 @@ import chameleon.support.modifier.Public;
 import chameleon.support.modifier.Static;
 import chameleon.util.Util;
 
-public class ReflectiveClassParser {
+public class ReflectiveClassParser implements BytecodeClassParser {
 
-	private JavaFactory _factory;
+	private ObjectOrientedFactory _factory;
 	
 	private Java _language;
 	
-	public Java language() {
+	protected Java language() {
 		return _language;
 	}
 
 	public ReflectiveClassParser(Java language) {
 		_language = language;
-		_factory = language.plugin(JavaFactory.class); 
+		_factory = language.plugin(ObjectOrientedFactory.class); 
 	}
 	
-	public Document read(Class clazz, RootNamespace root) throws LookupException {
-		Document doc = new Document();
+	@Override
+	public Document read(Class clazz, RootNamespace root, Document doc) throws LookupException {
 		String packageName = clazz.getPackage().getName();
 		NamespaceDeclaration nsd = new NamespaceDeclaration(root.getOrCreateNamespace(packageName));
 		doc.add(nsd);
-		Java language = language();
+		
+		Type type = createType(clazz);
+		
+    nsd.add(type);
+		return doc;
+	}
+
+	private Type createType(Class clazz) {
 		Type type = _factory.createRegularType(new SimpleNameSignature(clazz.getSimpleName()));
-		nsd.add(type);
 		
 		determineInterface(clazz,type);
-		
+		type.addAllInheritanceRelations(getInheritanceRelations(clazz));
+		type.addAllParameters(TypeParameter.class, getTypeParameters(clazz.getTypeParameters()));
 		type.addModifiers(getModifiers(clazz));
 		
 		processConstructors(clazz,type);
@@ -86,15 +98,47 @@ public class ReflectiveClassParser {
     processFields(clazz, type);
    
     processInnerClasses(clazz, type);
-		
-		return doc;
+		return type;
+	}
+	
+	protected List<InheritanceRelation> getInheritanceRelations(Class clazz) {
+		List<InheritanceRelation> result = new ArrayList<InheritanceRelation>();
+		Class zuppa = clazz.getSuperclass();
+		if(zuppa != null) {
+			result.add(new SubtypeRelation(toRef(zuppa)));
+		}
+		for(java.lang.reflect.Type type : clazz.getGenericInterfaces()) {
+			result.add(new SubtypeRelation(toRef(type)));
+		}
+		return result;
+	}
+	
+	protected void processInnerClasses(Class clazz, Type type) {
+		for(Class inner: clazz.getDeclaredClasses()) {
+			if(inner.getCanonicalName() != null) {
+				Type innerType = createType(inner);
+				type.add(innerType);
+			}
+		}
+	
+	}
+	protected void processFields(Class clazz, Type type) {
+		for(Field field: clazz.getDeclaredFields()) {
+			TypeReference tref = toRef(field.getType());
+			MemberVariableDeclarator decl = new MemberVariableDeclarator(tref);
+			decl.add(new VariableDeclaration(field.getName()));
+			for(chameleon.core.modifier.Modifier mod: getModifiers(field.getModifiers())) {
+				decl.addModifier(mod);
+			}
+			type.add(decl);
+		}
 	}
 	
 	protected List<chameleon.core.modifier.Modifier> getModifiers(Class clazz) {
 		return getModifiers(clazz.getModifiers());
 	}
 
-  public List<chameleon.core.modifier.Modifier> getModifiers(int modifiers) {
+  protected List<chameleon.core.modifier.Modifier> getModifiers(int modifiers) {
   	List<chameleon.core.modifier.Modifier> result = new ArrayList<chameleon.core.modifier.Modifier>();
     if(Modifier.isPublic(modifiers)) {
       result.add(new Public()); 
@@ -154,14 +198,10 @@ public class ReflectiveClassParser {
   	abstract java.lang.reflect.Type[] getGenericParameterTypes(T t);
   	
   	abstract java.lang.reflect.Type[] getGenericExceptionTypes(T t);
-  	
-  	abstract String getName(T t);
-  	
-  	void createMember(T t, Type type) {
+  	  	
+  	void createMember(T t, Type type, String methodName, TypeReference returnType) {
   		if(! isPrivate(t)) {
   			// Both the name and the return type of a constructor are equal to the class name.
-  			String methodName = Util.getLastPart(getClassName(getName(t)));
-  			BasicJavaTypeReference returnType = language().createTypeReference(methodName);
 
   			// Create the method
   			SimpleNameMethodHeader header = new SimpleNameMethodHeader(methodName, returnType);
@@ -206,11 +246,6 @@ public class ReflectiveClassParser {
   protected class ConstructorBridge extends MemberFactory<Constructor> {
 
 		@Override
-		public String getName(Constructor constructor) {
-			return constructor.getName();
-		}
-
-		@Override
 		public int getModifiers(Constructor constructor) {
 			return constructor.getModifiers();
 		}
@@ -235,16 +270,12 @@ public class ReflectiveClassParser {
 	protected void processConstructors(final Class clazz, Type output) {
 		ConstructorBridge constructorBridge = new ConstructorBridge();
 		for(Constructor constructor: clazz.getDeclaredConstructors()) {
-			constructorBridge.createMember(constructor,output);
+			String cname = Util.getLastPart(getClassName(constructor.getName()));
+			constructorBridge.createMember(constructor,output,cname,correctType(cname));
 		}
 	}
 
   protected class MethodBridge extends MemberFactory<java.lang.reflect.Method> {
-
-		@Override
-		public String getName(java.lang.reflect.Method constructor) {
-			return constructor.getName();
-		}
 
 		@Override
 		public int getModifiers(java.lang.reflect.Method constructor) {
@@ -271,7 +302,7 @@ public class ReflectiveClassParser {
 	protected void processMethods(final Class clazz, Type output) {
 		MethodBridge methodBridge = new MethodBridge();
 		for(java.lang.reflect.Method method: clazz.getDeclaredMethods()) {
-			methodBridge.createMember(method,output);
+			methodBridge.createMember(method,output,method.getName(),toRef(method.getReturnType()));
 		}
 	}
 
@@ -297,13 +328,13 @@ public class ReflectiveClassParser {
 
 
 	protected String getClassName(String string) {
-    return correctType(string.replace('$','.')); 
+    return string.replace('$','.'); 
   }
 
 	private JavaTypeReference toRef(java.lang.reflect.Type type) {
 		JavaTypeReference result;
 		if(type instanceof Class) {
-  		result = language().createTypeReference(((Class)type).getName());
+  		result = correctType(((Class)type).getName());
   	} else if (type instanceof ParameterizedType) {
   		ParameterizedType parameterizedType = (ParameterizedType)type;
   		
@@ -315,7 +346,7 @@ public class ReflectiveClassParser {
   			}
   		}
   	} else if (type instanceof TypeVariable) {
-  		result = language().createTypeReference(((Class)type).getName());
+  		result = language().createTypeReference(((TypeVariable)type).getName());
   	} else if (type instanceof GenericArrayType) {
   		GenericArrayType arrayType = (GenericArrayType) type;
   		result = toRef(arrayType.getGenericComponentType());
@@ -373,51 +404,43 @@ public class ReflectiveClassParser {
   /**
    * Replaces $ with . and parses those ugly array names
    */
-  private String correctType(String name){
+  private JavaTypeReference correctType(String name){
     // $ -> .
     String newName=name.replace('$','.');
     //correct array representation
+    String temp=name;
+    int nb = 0;
     if((name.length()>0)&&(name.substring(0,1).equals("["))) {
-      String temp="";
-      int nb = 1;
+    	nb = 1;
       while(name.substring(nb,nb+1).equals("[")){
         nb++;
       }
       int count=nb;
-      while(count > 0) {
-        temp+="[]";
-        count--;
-      }
       if(name.substring(nb,nb+1).equals("B")){
-        temp="byte"+temp;
+        temp="byte";
+      } else if(name.substring(nb,nb+1).equals("C")){
+        temp="char";
+      } else if(name.substring(nb,nb+1).equals("D")){
+        temp="double";
+      } else if(name.substring(nb,nb+1).equals("F")){
+        temp="float";
+      } else if(name.substring(nb,nb+1).equals("I")){
+        temp="int";
+      } else if(name.substring(nb,nb+1).equals("J")){
+        temp="long";
+      } else if(name.substring(nb,nb+1).equals("S")){
+        temp="short";
+      } else if(name.substring(nb,nb+1).equals("Z")){
+        temp="boolean";
+      } else if(name.substring(nb,nb+1).equals("L")){
+        temp=name.substring(nb+1,name.length()-1);
       }
-      if(name.substring(nb,nb+1).equals("C")){
-        temp="char"+temp;
-      }
-      if(name.substring(nb,nb+1).equals("D")){
-        temp="double"+temp;
-      }
-      if(name.substring(nb,nb+1).equals("F")){
-        temp="float"+temp;
-      }
-      if(name.substring(nb,nb+1).equals("I")){
-        temp="int"+temp;
-      }
-      if(name.substring(nb,nb+1).equals("J")){
-        temp="long"+temp;
-      }
-      if(name.substring(nb,nb+1).equals("S")){
-        temp="short"+temp;
-      }
-      if(name.substring(nb,nb+1).equals("Z")){
-        temp="boolean"+temp;
-      }
-      if(name.substring(nb,nb+1).equals("L")){
-        temp=name.substring(nb+1,name.length()-1)+temp;
-      }
-
-      newName=temp;
+      
     }
-    return newName;
+    JavaTypeReference result = language().createTypeReference(temp);
+    if(nb > 0) {
+    	result = new ArrayTypeReference(result,nb);
+    }
+    return result;
   }
 }

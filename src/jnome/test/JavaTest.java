@@ -6,6 +6,7 @@ import jnome.core.language.Java;
 import jnome.core.language.JavaLanguageFactory;
 import jnome.input.JavaFileInputSourceFactory;
 import jnome.input.LazyJavaFileInputSourceFactory;
+import jnome.workspace.JarLoader;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -89,6 +90,11 @@ public abstract class JavaTest extends CompositeTest {
 		DirectoryLoader provider = new DirectoryLoader(project, fileExtension(), root, factory);
 	}
 	
+	protected void includeJar(Project project, String jarPath) throws ProjectException {
+		new JarLoader(project, jarPath);
+	}
+	
+	
 	public String fileExtension() {
 		return ".java";
 	}
@@ -122,6 +128,11 @@ public abstract class JavaTest extends CompositeTest {
 
 	protected void includeBase(Project project, String rootDirectory) throws ProjectException {
 		includeCustom(project, rootDirectory);
+		project.language().plugin(ModelFactory.class).initializePredefinedElements();
+	}
+	
+	protected void includeBaseJar(Project project, String jarPath) throws ProjectException {
+		includeJar(project, jarPath);
 		project.language().plugin(ModelFactory.class).initializePredefinedElements();
 	}
 

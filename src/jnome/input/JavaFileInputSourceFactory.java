@@ -1,12 +1,10 @@
 package jnome.input;
 
 import java.io.File;
-import java.io.IOException;
 
-import chameleon.core.lookup.LookupException;
 import chameleon.input.ModelFactory;
-import chameleon.input.ParseException;
 import chameleon.workspace.FileInputSourceFactory;
+import chameleon.workspace.InputException;
 import chameleon.workspace.InputSource;
 
 public class JavaFileInputSourceFactory implements FileInputSourceFactory {
@@ -22,7 +20,7 @@ public class JavaFileInputSourceFactory implements FileInputSourceFactory {
 	}
 	
 	@Override
-	public InputSource create(File file) throws IOException, ParseException {
+	public InputSource create(File file) throws InputException {
 		return new EagerJavaFileInputSource(file, modelFactory());
 	}
 	

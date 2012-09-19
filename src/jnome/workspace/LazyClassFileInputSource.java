@@ -7,6 +7,7 @@ import java.util.List;
 import jnome.input.parser.ASMClassParser;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.lookup.LookupException;
+import chameleon.core.namespace.InputSourceNamespace;
 import chameleon.core.namespace.Namespace;
 import chameleon.oo.type.Type;
 import chameleon.util.Util;
@@ -17,8 +18,9 @@ public class LazyClassFileInputSource implements InputSource {
 
 	private ASMClassParser _parser;
 	
-	public LazyClassFileInputSource(ASMClassParser parser) {
+	public LazyClassFileInputSource(ASMClassParser parser) throws LookupException {
 		this._parser = parser;
+		((InputSourceNamespace)parser.namespace()).addInputSource(this);
 	}
 
 	@Override

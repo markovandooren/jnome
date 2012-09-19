@@ -92,6 +92,9 @@ public class ASMClassParser {
 		_lang = lang;
 		_jarFile = file;
 		_entry = entry;
+		if(className == null) {
+			throw new ChameleonProgrammerException();
+		}
 		_name = className;
 		_packageFQN = packageFQN;
 	}
@@ -116,7 +119,10 @@ public class ASMClassParser {
 		if(next == null) {
 			_children.put(qn,child);
 		} else {
-			ASMClassParser c = _children.get(qn);
+			ASMClassParser c = _children.get(Util.getFirstPart(qn));
+			if(c == null) {
+				System.out.println("debug");
+			}
 			c.add(child, next);
 		}
 	}
@@ -135,12 +141,19 @@ public class ASMClassParser {
 		
 	public Type load() throws FileNotFoundException, IOException, LookupException {
 		Type t = read();
+		if(t.name().equals("ArrayList")) {
+			System.out.println("debug");
+		}
 		Document doc = new Document();
-		Namespace ns = language().defaultNamespace().getOrCreateNamespace(_packageFQN);
+		Namespace ns = namespace();
 		NamespaceDeclaration decl = new NamespaceDeclaration(ns);
 		doc.add(decl);
 		decl.add(t);
 		return t;
+	}
+
+	public Namespace namespace() throws LookupException {
+		return language().defaultNamespace().getOrCreateNamespace(_packageFQN);
 	}
 	
 	protected Type read() throws FileNotFoundException, IOException {
@@ -199,8 +212,11 @@ public class ASMClassParser {
 				if(signature != null) {
 					new SignatureReader(signature).accept(new ClassSignatureExtractor(type));
 				} else {
-					TypeReference zuppaKlass = toRef(superName);
-					type.addInheritanceRelation(new SubtypeRelation(zuppaKlass));
+					// Object has null as its super name
+					if(superName != null) {
+						TypeReference zuppaKlass = toRef(superName);
+						type.addInheritanceRelation(new SubtypeRelation(zuppaKlass));
+					}
 					if(interfaces != null) {
 						for(String iface: interfaces) {
 							type.addInheritanceRelation(new SubtypeRelation(toRef(iface)));
@@ -608,7 +624,8 @@ public class ASMClassParser {
 	
 	
   public static void main(String[] args) throws IOException, Exception {
-  	JarFile jar = new JarFile(args[0]);
+  	String jarPath = args[0];
+		JarFile jar = new JarFile(jarPath);
   	Java lang = new JavaLanguageFactory().create();
   	Project project = new Project("test", new LazyRootNamespace(), lang);
   	Enumeration<JarEntry> entries = jar.entries();

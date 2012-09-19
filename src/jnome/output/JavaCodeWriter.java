@@ -806,6 +806,7 @@ public class JavaCodeWriter extends Syntax {
 	      }
 	    
 	    result.append(((SimpleNameDeclarationWithParametersSignature)method.signature()).name());
+//	    result.append(method.name());
 	    result.append("(");
 	    Iterator iter = method.formalParameters().iterator();
 	    while(iter.hasNext()) {

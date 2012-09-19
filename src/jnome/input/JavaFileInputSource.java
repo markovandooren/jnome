@@ -28,7 +28,6 @@ public abstract class JavaFileInputSource extends FileInputSource {
 		} catch (InputException e) {
 			throw new LookupException("Error opening file",e);
 		}
-		//FIXME this also returns types with the wrong names.
 		List<Type> children = (List)document().children(NamespaceDeclaration.class).get(0).children(Type.class);
 		List<Declaration> result = new ArrayList<Declaration>(1);
 		for(Type t: children) {

@@ -20,6 +20,7 @@ import jnome.core.language.Java;
 import jnome.core.modifier.Default;
 import jnome.core.modifier.StrictFP;
 import jnome.core.modifier.Synchronized;
+import jnome.core.modifier.Volatile;
 import jnome.core.type.ArrayType;
 import jnome.core.type.ArrayTypeReference;
 import jnome.core.type.BasicJavaTypeReference;
@@ -133,6 +134,7 @@ import chameleon.support.tool.Arguments;
 import chameleon.support.type.EmptyTypeElement;
 import chameleon.support.type.StaticInitializer;
 import chameleon.support.variable.LocalVariableDeclarator;
+import chameleon.support.modifier.Enum;
 
 /**
  * @author Marko van Dooren
@@ -575,6 +577,10 @@ public class JavaCodeWriter extends Syntax {
     	return "";
     } else if(element instanceof AnnotationModifier) {
     	return "@" + ((AnnotationModifier) element).name();
+    } else if(element instanceof Volatile) {
+    	return "volatile";
+    } else if(element instanceof Enum) {
+    	return "enum";
     }
     else {
       throw new IllegalArgumentException("The given element is not know by the Java syntax: "+element.getClass().getName());

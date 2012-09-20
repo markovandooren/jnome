@@ -22,7 +22,6 @@ public class TestGenericRejuse extends JavaTest {
 	@Override
 	public Project makeProject() throws ProjectException {
 		Project project = createProject();
-		includeBase(project,"testsource"+separator()+"gen"+separator());
 		includeCustom(project,"testsource"+separator()+"jregex"+separator());
 		includeCustom(project,"testsource"+separator()+"rejuse"+separator()+"src"+separator());
 		includeCustom(project,"testsource"+separator()+"junit4.7"+separator());

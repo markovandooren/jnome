@@ -1,6 +1,10 @@
 package jnome.test;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 import jnome.core.language.Java;
 import jnome.core.language.JavaLanguageFactory;
@@ -32,6 +36,23 @@ import chameleon.workspace.Project;
 import chameleon.workspace.ProjectException;
 
 public abstract class JavaTest extends CompositeTest {
+	
+	@Before
+	public void loadProperties() {
+		try {
+		Properties properties = new Properties();
+			properties.load(new BufferedInputStream(new FileInputStream(new File("test.properties"))));
+			_javaBaseJarPath = properties.getProperty("api");
+		} catch (IOException e) {
+			throw new RuntimeException("need file test.properties with property 'api' set to the location of the jar with the Java base library.");
+		}
+	}
+	
+	private String _javaBaseJarPath;
+	
+	public String javaBarJarPath() {
+		return _javaBaseJarPath;
+	}
 	
 	/**
 	 * Set the log levels of Log4j. By default, nothing is changed.
@@ -72,15 +93,11 @@ public abstract class JavaTest extends CompositeTest {
 	public void testVerification() throws Exception {
 	}
 
-	protected Project createProject() {
+	protected Project createProject() throws ProjectException {
 		Java language = new JavaLanguageFactory().create();
 		Project project = new Project("test",createRootNamespace(), language);
-		
-//
-//		
-//		String fileExtension = ".java";
-//		DirectoryProjectBuilder provider = new DirectoryProjectBuilder(project, fileExtension,null, factory);
-//		return provider;
+		includeBaseJar(project,javaBarJarPath());
+//		includeBase(project,"testsource"+separator()+"gen"+separator());
 		return project;
 	}
 	

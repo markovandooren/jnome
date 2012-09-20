@@ -2,6 +2,7 @@ package jnome.input;
 
 import jnome.core.expression.invocation.JavaMethodInvocation;
 import jnome.core.method.JavaNormalMethod;
+import jnome.core.modifier.JavaConstructor;
 import jnome.core.namespacedeclaration.JavaNamespaceDeclaration;
 import jnome.core.type.RegularJavaType;
 import chameleon.aspect.oo.weave.factory.OOFactory;
@@ -11,6 +12,8 @@ import chameleon.core.namespacedeclaration.NamespaceDeclaration;
 import chameleon.core.reference.CrossReferenceTarget;
 import chameleon.oo.expression.Expression;
 import chameleon.oo.expression.MethodInvocation;
+import chameleon.oo.language.ObjectOrientedLanguage;
+import chameleon.oo.method.Method;
 import chameleon.oo.method.MethodHeader;
 import chameleon.oo.plugin.ObjectOrientedFactory;
 import chameleon.oo.statement.Statement;
@@ -31,6 +34,13 @@ public class JavaFactory extends ObjectOrientedFactory implements OOFactory {
 		return new RegularJavaType(signature);
 	}
 	
+	@Override
+	public Method transformToConstructor(Method m) {
+		m.addModifier(new JavaConstructor());
+		return m;
+	}
+	
+	@Override
 	public NormalMethod createNormalMethod(MethodHeader header) {
 		return new JavaNormalMethod(header);
 	}

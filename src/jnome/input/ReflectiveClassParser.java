@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jnome.core.language.Java;
+import jnome.core.method.JavaNormalMethod;
 import jnome.core.modifier.StrictFP;
 import jnome.core.modifier.Synchronized;
 import jnome.core.modifier.Transient;
@@ -43,7 +44,6 @@ import chameleon.oo.type.inheritance.InheritanceRelation;
 import chameleon.oo.type.inheritance.SubtypeRelation;
 import chameleon.oo.variable.FormalParameter;
 import chameleon.oo.variable.VariableDeclaration;
-import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.member.simplename.variable.MemberVariableDeclarator;
 import chameleon.support.modifier.Abstract;
 import chameleon.support.modifier.Final;
@@ -205,7 +205,7 @@ public class ReflectiveClassParser implements BytecodeClassParser {
 
   			// Create the method
   			SimpleNameMethodHeader header = new SimpleNameMethodHeader(methodName, returnType);
-  			Method method = new NormalMethod(header);
+  			Method method = new JavaNormalMethod(header);
 
   			// Process the modifiers
   			method.addModifiers(ReflectiveClassParser.this.getModifiers(getModifiers(t)));

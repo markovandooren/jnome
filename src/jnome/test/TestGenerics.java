@@ -109,7 +109,6 @@ public class TestGenerics extends JavaTest {
 	@Override
 	public Project makeProject() throws ProjectException {
 		Project project = createProject();
-		includeBase(project,"testsource"+separator()+"gen"+separator());
 		includeCustom(project,"testsource"+separator()+"generics"+separator());
 		return project;
 	}

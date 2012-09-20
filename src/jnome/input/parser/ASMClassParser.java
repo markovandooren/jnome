@@ -30,10 +30,16 @@ import jnome.core.language.JavaLanguageFactory;
 import jnome.core.modifier.StrictFP;
 import jnome.core.modifier.Synchronized;
 import jnome.core.modifier.Volatile;
+import jnome.core.namespacedeclaration.JavaNamespaceDeclaration;
 import jnome.core.type.ArrayTypeReference;
 import jnome.core.type.BasicJavaTypeReference;
+import jnome.core.type.JavaBasicTypeArgument;
+import jnome.core.type.JavaExtendsWildcard;
+import jnome.core.type.JavaPureWildcard;
+import jnome.core.type.JavaSuperWildcard;
 import jnome.core.type.JavaTypeReference;
-import jnome.core.type.PureWildcard;
+import jnome.core.variable.JavaVariableDeclaration;
+import jnome.core.variable.MultiFormalParameter;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
@@ -46,6 +52,7 @@ import org.rejuse.association.SingleAssociation;
 
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.document.Document;
+import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.modifier.Modifier;
 import chameleon.core.namespace.LazyRootNamespace;
@@ -53,27 +60,22 @@ import chameleon.core.namespace.Namespace;
 import chameleon.core.namespacedeclaration.NamespaceDeclaration;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.method.Method;
-import chameleon.oo.method.SimpleNameMethodHeader;
+import chameleon.oo.method.MethodHeader;
 import chameleon.oo.method.exception.ExceptionClause;
 import chameleon.oo.method.exception.TypeExceptionDeclaration;
 import chameleon.oo.plugin.ObjectOrientedFactory;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
-import chameleon.oo.type.generics.BasicTypeArgument;
 import chameleon.oo.type.generics.ExtendsConstraint;
-import chameleon.oo.type.generics.ExtendsWildcard;
 import chameleon.oo.type.generics.FormalTypeParameter;
-import chameleon.oo.type.generics.SuperWildcard;
 import chameleon.oo.type.generics.TypeParameter;
 import chameleon.oo.type.inheritance.SubtypeRelation;
 import chameleon.oo.variable.FormalParameter;
 import chameleon.oo.variable.VariableDeclaration;
 import chameleon.plugin.output.Syntax;
-import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.member.simplename.variable.MemberVariableDeclarator;
 import chameleon.support.modifier.Abstract;
-import chameleon.support.modifier.Constructor;
 import chameleon.support.modifier.Enum;
 import chameleon.support.modifier.Final;
 import chameleon.support.modifier.Interface;
@@ -120,9 +122,6 @@ public class ASMClassParser {
 			_children.put(qn,child);
 		} else {
 			ASMClassParser c = _children.get(Util.getFirstPart(qn));
-			if(c == null) {
-				System.out.println("debug");
-			}
 			c.add(child, next);
 		}
 	}
@@ -141,12 +140,9 @@ public class ASMClassParser {
 		
 	public Type load() throws FileNotFoundException, IOException, LookupException {
 		Type t = read();
-		if(t.name().equals("ArrayList")) {
-			System.out.println("debug");
-		}
 		Document doc = new Document();
 		Namespace ns = namespace();
-		NamespaceDeclaration decl = new NamespaceDeclaration(ns);
+		NamespaceDeclaration decl = new JavaNamespaceDeclaration(ns);
 		doc.add(decl);
 		decl.add(t);
 		return t;
@@ -233,7 +229,7 @@ public class ASMClassParser {
 			if(! isSynthetic(access)) {
 				MemberVariableDeclarator decl = new MemberVariableDeclarator();
 				decl.addModifiers(accessToFieldModifier(access));
-				VariableDeclaration declaration = new VariableDeclaration(name);
+				VariableDeclaration declaration = new JavaVariableDeclaration(name);
 				decl.add(declaration);
 				if(signature != null) {
 					new SignatureReader(signature).accept(new FieldSignatureExtractor(decl));
@@ -255,12 +251,11 @@ public class ASMClassParser {
 		@Override
 		public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 			if(! isSynthetic(access)) {
-				Method m;
-				m = new NormalMethod(new SimpleNameMethodHeader(name, null));
+				Method m = factory().createNormalMethod(name,null);
 				if(name.equals("<init>")) {
 					name = _type.name();
 					m.setName(name);
-					m.addModifier(new Constructor());
+					factory().transformToConstructor(m);
 					m.setReturnTypeReference(language().createTypeReference(name));
 				}
 				_type.add(m);
@@ -270,6 +265,15 @@ public class ASMClassParser {
 					new SignatureReader(signature).accept(new MethodExtractor(m));
 				} else {
 					new SignatureReader(desc).accept(new MethodExtractor(m));
+				}
+				MethodHeader h = m.header();
+				if(isVarargs(access)) {
+					FormalParameter param = m.lastFormalParameter();
+					MultiFormalParameter multi = new MultiFormalParameter(param.signature(), ((ArrayTypeReference) param.getTypeReference()).elementTypeReference());
+//					h.remove(param);
+//					h.add(multi);
+					SingleAssociation<Element, Element> parentLink = param.parentLink();
+					parentLink.getOtherRelation().replace(parentLink, multi.parentLink());
 				}
 				
 				ExceptionClause clause = new ExceptionClause();
@@ -584,7 +588,7 @@ public class ASMClassParser {
 		
 		@Override
 		public void visitTypeArgument() {
-			((BasicJavaTypeReference)typeReference()).addArgument(new PureWildcard());
+			((BasicJavaTypeReference)typeReference()).addArgument(new JavaPureWildcard());
 		}
 		
 		@Override
@@ -592,11 +596,11 @@ public class ASMClassParser {
 			// create visitor with 'this' as its parent.
 			final ActualTypeArgumentWithTypeReference arg;
 			if(kind == SignatureVisitor.INSTANCEOF) {
-				arg = new BasicTypeArgument(null);
+				arg = new JavaBasicTypeArgument(null);
 			} else if(kind == SignatureVisitor.EXTENDS) {
-				arg = new ExtendsWildcard(null);
+				arg = new JavaExtendsWildcard(null);
 			} else if(kind == SignatureVisitor.SUPER) {
-				arg = new SuperWildcard(null);
+				arg = new JavaSuperWildcard(null);
 			} else {
 				throw new ChameleonProgrammerException();
 			}
@@ -611,7 +615,7 @@ public class ASMClassParser {
 				public void visitEnd() {
 					if(this.typeReference() == null) {
 						SingleAssociation parentLink = arg.parentLink();
-						parentLink.getOtherRelation().replace(parentLink, new PureWildcard().parentLink());
+						parentLink.getOtherRelation().replace(parentLink, new JavaPureWildcard().parentLink());
 					}
 				}
 				protected void connect(TypeReference tref) {
@@ -628,54 +632,64 @@ public class ASMClassParser {
 		JarFile jar = new JarFile(jarPath);
   	Java lang = new JavaLanguageFactory().create();
   	Project project = new Project("test", new LazyRootNamespace(), lang);
+
+
   	Enumeration<JarEntry> entries = jar.entries();
-  	List<Pair<String, JarEntry>> names = new ArrayList<>();
+  	List<Pair<Pair<String,String>, JarEntry>> names = new ArrayList<>();
   	while(entries.hasMoreElements()) {
   		JarEntry entry = entries.nextElement();
   		String name = entry.getName();
   		if(name.endsWith(".class")) {
-  			String tmp = Util.getLastPart(Util.getAllButLastPart(name).replace('/', '.')).replace('$', '.');
-  			String shortName = Util.getLastPart(tmp);
-  			if(! shortName.substring(0,1).matches("[0-9]")) {
-  				names.add(new Pair<String, JarEntry>(tmp, entry));
+  			String tmp = Util.getAllButLastPart(name).replace('/', '.').replace('$', '.');
+  			if(! tmp.matches(".*\\.[0-9].*")) {
+  				names.add(new Pair<Pair<String,String>, JarEntry>(new Pair<String,String>(tmp,Util.getLastPart(Util.getAllButLastPart(name).replace('/', '.')).replace('$', '.')), entry));
   			}
   		}
   	}
-  	Collections.sort(names, new Comparator<Pair<String,JarEntry>>(){
+  	Collections.sort(names, new Comparator<Pair<Pair<String,String>,JarEntry>>(){
 			@Override
-			public int compare(Pair<String, JarEntry> o1, Pair<String, JarEntry> o2) {
-				int first = o1.first().length();
-				int second = o2.first().length();
+			public int compare(Pair<Pair<String,String>, JarEntry> o1, Pair<Pair<String,String>, JarEntry> o2) {
+				int first = o1.first().first().length();
+				int second = o2.first().first().length();
 				return first - second;
 			}
   	});
-  	Map<String, ASMClassParser> map = new HashMap<>();
   	List<ASMClassParser> parsers = new ArrayList<>();
-  	for(Pair<String,JarEntry> pair: names) {
-  		String fqn = pair.first();
-			String name = Util.getFirstPart(fqn);
-			JarEntry entry = pair.second();
-			ASMClassParser parser = new ASMClassParser(jar,entry, lang, name,packageFQN(entry.getName()));
-			String second = Util.getAllButFirstPart(fqn);
+  	Map<String, ASMClassParser> map = new HashMap<>();
+  	for(Pair<Pair<String,String>,JarEntry> pair: names) {
+  		JarEntry entry = pair.second();
+  		String qn = pair.first().second();
+			String name = Util.getLastPart(qn);
+			String packageFQN = packageFQN(entry.getName());
+			ASMClassParser parser = new ASMClassParser(jar,entry, lang, name, packageFQN);
+			String second = Util.getAllButFirstPart(qn);
+			String key = (packageFQN == null ? name : packageFQN+"."+Util.getFirstPart(qn));
 			if(second != null) {
-				map.get(name).add(parser, second);
+				ASMClassParser asmClassParser = map.get(key);
+				// Deal with bad jars that contain class files of inner classes but not the outer class
+				// e.g. the OS X rt.jar.
+				if(asmClassParser != null) {
+					asmClassParser.add(parser, second);
+				}
 			} else {
-				map.put(name, parser);
+				map.put(key, parser);
 				parsers.add(parser);
 			}
   	}
+  	
   	Syntax syntax = lang.plugin(Syntax.class);
-  	for(ASMClassParser parser: parsers) {
-  		Type t = parser.load();
-  		System.out.println("<<<<<<<<<<<<<<<");
-  		System.out.println(syntax.toCode(t));
-  		System.out.println(">>>>>>>>>>>>>>>");
-  	}
+//  	for(ASMClassParser parser: parsers) {
+//  		Type t = parser.load();
+//  		System.out.println("<<<<<<<<<<<<<<<");
+//  		System.out.println(syntax.toCode(t));
+//  		System.out.println(">>>>>>>>>>>>>>>");
+//  	}
+  	System.out.println(syntax.toCode(map.get("java.util.Set").load()));
+  	System.out.println(syntax.toCode(map.get("java.util.Collection").load()));
   	jar.close();
   }
 
 	private static String packageFQN(String entryName) {
-		String semiFQN = Util.getLastPart(Util.getAllButLastPart(entryName).replace('/', '.'));
-		return semiFQN;
+		return Util.getAllButLastPart(Util.getAllButLastPart(entryName).replace('/', '.'));
 	}
 }

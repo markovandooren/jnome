@@ -62,7 +62,6 @@ public class TestExceptions extends JavaTest {
 	@Override
 	public Project makeProject() throws ProjectException {
 		Project project = createProject();
-		includeBase(project,"testsource"+separator()+"gen"+separator());
 		includeCustom(project,"testsource"+separator()+"exceptions"+separator());
 		return project;
 	}

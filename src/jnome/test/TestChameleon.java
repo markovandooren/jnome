@@ -22,7 +22,6 @@ public class TestChameleon extends JavaTest {
 	@Override
 	public Project makeProject() throws ProjectException {
 		Project project = createProject();
-		includeBase(project,"testsource"+separator()+"gen"+separator());
 		includeCustom(project,"testsource"+separator()+"jregex"+separator());
 		includeCustom(project,"testsource"+separator()+"rejuse"+separator()+"src"+separator());
 		includeCustom(project,"testsource"+separator()+"hamcrest-1.2"+separator()+"src"+separator());

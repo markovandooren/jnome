@@ -40,7 +40,6 @@ public class JarLoader extends AbstractJarLoader {
   		String name = entry.getName();
   		if(name.endsWith(".class")) {
   			String tmp = Util.getAllButLastPart(name).replace('/', '.').replace('$', '.');
-//  			String shortName = Util.getLastPart(tmp);
   			if(! tmp.matches(".*\\.[0-9].*")) {
   				names.add(new Pair<Pair<String,String>, JarEntry>(new Pair<String,String>(tmp,Util.getLastPart(Util.getAllButLastPart(name).replace('/', '.')).replace('$', '.')), entry));
   			}
@@ -54,20 +53,10 @@ public class JarLoader extends AbstractJarLoader {
 				return first - second;
 			}
   	});
-//  	List<String> pok = new ArrayList<>();
-//  	for(Pair<Pair<String,String>,JarEntry> pair: names) {
-//  		String second = pair.first().second();
-//  		if(second.contains("CUP")) {
-//  			pok.add(second);
-//  		}
-//  	}
   	Map<String, ASMClassParser> map = new HashMap<>();
   	for(Pair<Pair<String,String>,JarEntry> pair: names) {
   		JarEntry entry = pair.second();
   		String qn = pair.first().second();
-//  		if(qn.contains("CUP")) {
-//  			System.out.println("debug");
-//  		}
 			String name = Util.getLastPart(qn);
 			String packageFQN = packageFQN(entry.getName());
 			ASMClassParser parser = new ASMClassParser(jar,entry, lang, name, packageFQN);
@@ -88,7 +77,6 @@ public class JarLoader extends AbstractJarLoader {
 	}
 	
 	private String packageFQN(String entryName) {
-		String semiFQN = Util.getAllButLastPart(Util.getAllButLastPart(entryName).replace('/', '.'));
-		return semiFQN;
+		return Util.getAllButLastPart(Util.getAllButLastPart(entryName).replace('/', '.'));
 	}
 }

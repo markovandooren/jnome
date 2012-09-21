@@ -32,7 +32,7 @@ public class Bootstrapper extends EclipseBootstrapper {
 	public Language createLanguage() throws IOException, ParseException, ProjectException {
 		String extension = ".java";
 		Java result = new JavaLanguageFactory().create();
-		Project project = new Project("x", new RootNamespace(new RegularNamespaceFactory()), result);
+		Project project = new Project("Chameleon Eclipse project", new RootNamespace(new RegularNamespaceFactory()), result);
 		JavaFileInputSourceFactory factory = new JavaFileInputSourceFactory(result.plugin(ModelFactory.class));
 		DirectoryLoader builder = new DirectoryLoader(project, extension,null, factory);
 		try {

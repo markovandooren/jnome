@@ -15,9 +15,7 @@ import java.util.Set;
 import jnome.core.expression.invocation.NonLocalJavaTypeReference;
 import jnome.core.type.ArrayType;
 import jnome.core.type.BasicJavaTypeReference;
-import jnome.core.type.CapturedType;
 import jnome.core.type.JavaTypeReference;
-import jnome.core.type.NullType;
 import jnome.core.type.RawType;
 
 import org.apache.log4j.Logger;
@@ -25,21 +23,19 @@ import org.rejuse.association.SingleAssociation;
 import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.predicate.UnsafePredicate;
 
-import chameleon.core.Config;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.relation.WeakPartialOrder;
 import chameleon.exception.ChameleonProgrammerException;
-import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.DerivedType;
 import chameleon.oo.type.IntersectionType;
 import chameleon.oo.type.ParameterSubstitution;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.UnionType;
-import chameleon.oo.type.generics.InstantiatedParameterType;
 import chameleon.oo.type.generics.CapturedTypeParameter;
 import chameleon.oo.type.generics.FormalTypeParameter;
+import chameleon.oo.type.generics.InstantiatedParameterType;
 import chameleon.oo.type.generics.InstantiatedTypeParameter;
 import chameleon.oo.type.generics.LazyInstantiatedAlias;
 import chameleon.oo.type.generics.TypeConstraint;
@@ -54,9 +50,6 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	public boolean upperBoundNotHigherThan(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
 		List<Pair<Type, TypeParameter>> slowTrace = trace;
 	boolean result = false;
-//		if(first instanceof NullType) {
-//			result = true;
-//		} else {
 			if(
 				(second instanceof LazyInstantiatedAlias)) {
 					TypeParameter secondParam = ((LazyInstantiatedAlias)second).parameter();
@@ -88,7 +81,6 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 					return true;
 				}
 				slowTrace.add(new Pair<Type, TypeParameter>(first, secondParam));
-//				result = upperBoundNotHigherThan(first, ((InstantiatedParameterType) second).aliasedType(), slowTrace);
 				result = first.upperBoundNotHigherThan(((InstantiatedParameterType) second).aliasedType(), slowTrace);
 				return result;
 			}
@@ -104,42 +96,30 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 					return true;
 				}
 				slowTrace.add(new Pair<Type, TypeParameter>(second, firstParam));
-//				result = upperBoundNotHigherThan(((InstantiatedParameterType) first).aliasedType(), second, slowTrace);
 				result = ((InstantiatedParameterType) first).aliasedType().upperBoundNotHigherThan(second, slowTrace);
 				return result;
 			}
 			if(first.sameAs(second)) {
 				result = true;
 			} 
-//			else if(first instanceof InstantiatedParameterType) {
-//				result = upperBoundNotHigherThan(((InstantiatedParameterType) first).aliasedType(), second, slowTrace);
-//			} 
-//			else if(second instanceof InstantiatedParameterType) {
-//				result = upperBoundNotHigherThan(first, ((InstantiatedParameterType) second).aliasedType(), slowTrace);
-//			}	
-//			else if (first.equals(first.language(ObjectOrientedLanguage.class).getNullType())) {
-//				result = true;
-//			} 
 			else if (first instanceof WildCardType) {
-//				result = upperBoundNotHigherThan(((WildCardType)first).upperBound(), second,slowTrace);
 				result = ((WildCardType)first).upperBound().upperBoundNotHigherThan(second,slowTrace);
 			} else if (second instanceof WildCardType) {
-//				result = upperBoundNotHigherThan(first, ((WildCardType)second).lowerBound(),slowTrace);
-				result = first.upperBoundNotHigherThan(((WildCardType)second).lowerBound(),slowTrace);
+				//TODO Both lines make the tests succeed, but the first line makes no sense.
+//				result = first.upperBoundNotHigherThan(((WildCardType)second).lowerBound(),slowTrace);
+				result = first.upperBoundNotHigherThan(((WildCardType)second).upperBound(),slowTrace);
 			}
 			// The relations between arrays and object are covered by the subtyping relations
 			// that are added to ArrayType objects.
 			else if (first instanceof ArrayType && second instanceof ArrayType && first.is(first.language(Java.class).REFERENCE_TYPE) == Ternary.TRUE) {
 				ArrayType first2 = (ArrayType)first;
 				ArrayType second2 = (ArrayType)second;
-//				result = upperBoundNotHigherThan(first2.elementType(), second2.elementType(),slowTrace);
 				result = first2.elementType().upperBoundNotHigherThan(second2.elementType(),slowTrace);
 			} else if(second instanceof IntersectionType) {
 				List<Type> types = ((IntersectionType)second).types();
 				int size = types.size();
 				result = size > 0;
 				for(int i=0; result && i<size;i++) {
-//					result = upperBoundNotHigherThan(first,types.get(i),slowTrace);
 					result = first.upperBoundNotHigherThan(types.get(i),slowTrace);
 				}
 			} else if(first instanceof IntersectionType) {
@@ -147,7 +127,6 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 				int size = types.size();
 				result = false;
 				for(int i=0; (!result) && i<size;i++) {
-//					result = upperBoundNotHigherThan(types.get(i),second,slowTrace);
 					result = types.get(i).upperBoundNotHigherThan(second,slowTrace);
 				}
 			} else if(second instanceof UnionType) {
@@ -155,7 +134,6 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 				int size = types.size();
 				result = false;
 				for(int i=0; (!result) && i<size;i++) {
-//					result = upperBoundNotHigherThan(first,types.get(i),slowTrace);
 					result = first.upperBoundNotHigherThan(types.get(i),slowTrace);
 				}
 			} else if(first instanceof UnionType) {
@@ -163,7 +141,6 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 				int size = types.size();
 				result = size > 0;
 				for(int i=0; result && i<size;i++) {
-//					result = upperBoundNotHigherThan(types.get(i),second,slowTrace);
 					result = types.get(i).upperBoundNotHigherThan(second, slowTrace);
 				}
 			} else if(second instanceof RawType) {

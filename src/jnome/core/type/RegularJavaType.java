@@ -36,8 +36,7 @@ public class RegularJavaType extends RegularType {
 	}
 
 	public RegularJavaType(String name) {
-		super(name);
-		setDefaultDefaultConstructor();
+		this(new SimpleNameSignature(name));
 	}
 	
 	protected RegularType cloneThis() {

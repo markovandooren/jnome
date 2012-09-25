@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import org.rejuse.association.SingleAssociation;
+
 import jnome.core.language.Java;
 import jnome.input.parser.ASMClassParser;
 import chameleon.core.lookup.LookupException;
@@ -29,7 +31,7 @@ public class JarLoader extends AbstractJarLoader {
 			throw new ProjectException(e);
 		}
 	}
-
+	
 	private void process() throws IOException, LookupException {
 		JarFile jar = createJarFile();
   	Java lang = (Java) project().language();

@@ -168,7 +168,6 @@ public class Java extends ObjectOrientedLanguage {
   			result = original;
   		}
   		} catch(NullPointerException exc) {
-  			System.out.println("debug");
   			return null;
   		}
   	}

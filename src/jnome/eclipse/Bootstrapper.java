@@ -26,7 +26,7 @@ public class Bootstrapper extends EclipseBootstrapper {
 	public final static String PLUGIN_ID = "be.chameleon.eclipse.java";
 	
 	public Bootstrapper() {
-		super("Java","1.5","java");
+		super("Java","1.5","java",PLUGIN_ID);
 	}
 	
 	public Language createLanguage() throws IOException, ParseException, ProjectException {
@@ -34,7 +34,7 @@ public class Bootstrapper extends EclipseBootstrapper {
 		Java result = new JavaLanguageFactory().create();
 		Project project = new Project("Chameleon Eclipse project", new RootNamespace(new RegularNamespaceFactory()), result);
 		JavaFileInputSourceFactory factory = new JavaFileInputSourceFactory(result.plugin(ModelFactory.class));
-		DirectoryLoader builder = new DirectoryLoader(project, extension,null, factory);
+		project.addSource(new DirectoryLoader(extension,null, factory));
 		try {
 		  loadAPIFiles(extension, PLUGIN_ID, project, factory);
 		} catch(ChameleonProgrammerException exc) {

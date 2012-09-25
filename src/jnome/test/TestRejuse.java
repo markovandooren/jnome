@@ -1,5 +1,7 @@
 package jnome.test;
 
+import java.io.File;
+
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -24,17 +26,22 @@ public class TestRejuse extends JavaTest {
 	@Override
 	public Project makeProject() throws ProjectException {
 		Project project = createProject();
-		includeCustom(project,"testsource"+separator()+"jregex"+separator());
-		includeCustom(project,"testsource"+separator()+"jutil"+separator()+"src"+separator());
-		includeCustom(project,"testsource"+separator()+"junit3.8.1"+separator()+"src"+separator());
+//		includeCustom(project,"testsource"+separator()+"jregex"+separator());
+//		includeCustom(project,"testsource"+separator()+"jutil"+separator()+"src"+separator());
+//		includeCustom(project,"testsource"+separator()+"junit3.8.1"+separator()+"src"+separator());
 		return project;
+	}
+	
+	@Override
+	protected File projectFile() {
+		return new File("testsource/testrejuse.xml");
 	}
 
 	@Override
 	public BasicNamespaceProvider namespaceProvider() {
 		return new BasicNamespaceProvider("org.jutil");
 	}
-	
+
 //public ElementProvider<Type> typeProvider() {
 //return new ElementProvider<Type>() {
 //

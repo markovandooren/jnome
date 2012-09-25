@@ -10,7 +10,9 @@ import jnome.core.language.Java;
 import jnome.core.language.JavaLanguageFactory;
 import jnome.input.JavaFileInputSourceFactory;
 import jnome.input.LazyJavaFileInputSourceFactory;
+import jnome.workspace.ConfigException;
 import jnome.workspace.JarLoader;
+import jnome.workspace.JavaProjectFactory;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -47,6 +49,11 @@ public abstract class JavaTest extends CompositeTest {
 			throw new RuntimeException("need file test.properties with property 'api' set to the location of the jar with the Java base library.");
 		}
 	}
+	
+	protected File projectFile() {
+		throw new IllegalArgumentException();
+	}
+	
 	
 	private String _javaBaseJarPath;
 	
@@ -94,17 +101,23 @@ public abstract class JavaTest extends CompositeTest {
 	}
 
 	protected Project createProject() throws ProjectException {
-		Java language = new JavaLanguageFactory().create();
-		Project project = new Project("test",createRootNamespace(), language);
-		includeBaseJar(project,javaBarJarPath());
-//		includeBase(project,"testsource"+separator()+"gen"+separator());
-		return project;
+		Project project;
+		try {
+			project = new JavaProjectFactory().createProject(projectFile());
+//		Java language = new JavaLanguageFactory().create();
+//		Project project = new Project("test",createRootNamespace(), language,root());
+			includeBaseJar(project,javaBarJarPath());
+			return project;
+		} catch (ConfigException e) {
+			throw new ProjectException(e);
+		}
+		
 	}
 	
 	protected void includeCustom(Project project, String rootDirectory) throws ProjectException {
 		FileInputSourceFactory factory = createFactory(project.language());
 		File root = new File(rootDirectory);
-		DirectoryLoader provider = new DirectoryLoader(project, fileExtension(), root, factory);
+		project.addSource(new DirectoryLoader(fileExtension(), root, factory));
 	}
 	
 	protected void includeJar(Project project, String jarPath) throws ProjectException {

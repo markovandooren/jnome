@@ -1,13 +1,11 @@
 package jnome.output;
 
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import jnome.core.language.Java;
 import jnome.core.language.JavaLanguageFactory;
 import jnome.input.JavaFileInputSourceFactory;
-import jnome.input.JavaModelFactory;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.RegularNamespaceFactory;
 import chameleon.core.namespace.RootNamespace;
@@ -15,7 +13,6 @@ import chameleon.input.ModelFactory;
 import chameleon.input.ParseException;
 import chameleon.support.tool.ArgumentParser;
 import chameleon.support.tool.Arguments;
-import chameleon.workspace.DirectoryLoader;
 import chameleon.workspace.Project;
 import chameleon.workspace.ProjectException;
 
@@ -47,7 +44,7 @@ public class Copy {
     String ext = ".java";
 		Java language = new JavaLanguageFactory().create();
 		JavaFileInputSourceFactory factory = new JavaFileInputSourceFactory(language.plugin(ModelFactory.class));
-		Project project = new Project("copy test",new RootNamespace(new RegularNamespaceFactory()),language);
+		Project project = new Project("copy test",new RootNamespace(new RegularNamespaceFactory()),language, new File("."));
     Arguments arguments = new ArgumentParser(project).parse(args,ext, factory);
     
     JavaCodeWriter.writeCode(arguments);

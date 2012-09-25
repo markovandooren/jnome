@@ -1,29 +1,19 @@
 package jnome.test;
 
+import java.io.File;
+
 import chameleon.test.provider.BasicNamespaceProvider;
-import chameleon.workspace.Project;
-import chameleon.workspace.ProjectException;
 
 public class TestChameleonSupport extends TestChameleon {
 
 	@Override
-	public Project makeProject() throws ProjectException {
-		Project project = super.makeProject();
-		includeCustom(project,"testsource"+separator()+"chameleon-support"+separator()+"src"+separator());
-		includeCustom(project,"testsource"+separator()+"antlr-3.2"+separator()+"src"+separator()+"main"+separator()+"java");
-		return project;
-	}
-
-//	@Override
-//	public void testExpressions() throws Exception {
-//		List l = modelProvider().model().defaultNamespace().descendants(ActualArgument.class);
-//		System.out.println("Actual arguments: "+l.size());
-//		l = modelProvider().model().defaultNamespace().descendants(ActualArgumentList.class);
-//		System.out.println("Actual argument lists: "+l.size());
-//	}
-	@Override
 	public BasicNamespaceProvider namespaceProvider() {
 		return new BasicNamespaceProvider("chameleon.support");
+	}
+
+	@Override
+	protected File projectFile() {
+		return new File("testsource/testchameleonsupport.xml");
 	}
 
 //	public ElementProvider<Type> typeProvider() {

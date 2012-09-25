@@ -43,11 +43,7 @@ class ProjectConfig extends ConfigElement {
 		public class Source extends ProjectConfig.Source {
 			protected void $after() throws ConfigException {
 				try {
-					File root = new File(_path);
-					if(!root.isAbsolute()) {
-						root = new File(_project.root().getAbsolutePath()+File.separator+_path);
-					}
-					_project.addSource(new DirectoryLoader(_extension, root, new LazyJavaFileInputSourceFactory(_project.language().plugin(ModelFactory.class))));
+					_project.addSource(new DirectoryLoader(_extension, file(_path), new LazyJavaFileInputSourceFactory(_project.language().plugin(ModelFactory.class))));
 				} catch (ProjectException e) {
 					throw new ConfigException(e);
 				}
@@ -55,31 +51,25 @@ class ProjectConfig extends ConfigElement {
 		}
 	}
 	
+	
 	public class BinaryPath  extends ConfigElement {
 		// Duplicate for now, but that will change when proper support for "binary" modules is added.
 		public class Source extends ProjectConfig.Source {
 			protected void $after() throws ConfigException {
 				try {
-					File root = new File(_path);
-					if(!root.isAbsolute()) {
-						root = new File(_project.root().getAbsolutePath()+File.separator+_path);
-					}
-					_project.addSource(new DirectoryLoader(_extension, root, new LazyJavaFileInputSourceFactory(_project.language().plugin(ModelFactory.class))));
+					_project.addSource(new DirectoryLoader(_extension, file(_path), new LazyJavaFileInputSourceFactory(_project.language().plugin(ModelFactory.class))));
 				} catch (ProjectException e) {
 					throw new ConfigException(e);
 				}
 			}
+
+			
 		}
 		
 		public class Jar extends ConfigElement {
 	  	public void setFile(String path) throws ConfigException {
 				try {
-//					File file = new File(path);
-//					if(! file.isAbsolute()) {
-//						file = new File(root().getPath()+File.separator+path);
-//					}
-//
-					_project.addSource(new JarLoader(_project, path));
+					_project.addSource(new JarLoader(_project, file(path)));
 				} catch (ProjectException e) {
 					throw new ConfigException(e);
 				}
@@ -87,7 +77,17 @@ class ProjectConfig extends ConfigElement {
 	  }
 	}
 	
+	protected File file(String path) {
+		File root = new File(path);
+		if(!root.isAbsolute()) {
+			root = new File(_project.root().getAbsolutePath()+File.separator+path);
+		}
+		return root;
+	}
+	
+	
 	public static class Source extends ConfigElement {
+		
 		
 		protected String _path;
 		

@@ -134,7 +134,7 @@ public class DesignAnalyzer {
     Config.setCaching(true);
     String extension = ".java";
 		Java lang = new JavaLanguageFactory().create();
-		Project project = new Project("test", new RootNamespace(new RegularNamespaceFactory()), lang);
+		Project project = new Project("test", new RootNamespace(new RegularNamespaceFactory()), lang, new File("."));
 		JavaFileInputSourceFactory factory = new JavaFileInputSourceFactory(lang.plugin(ModelFactory.class));
 		ModelBuilder provider = new ModelBuilder(project,args,extension,true,true, factory);
     long start = System.currentTimeMillis();

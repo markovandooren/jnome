@@ -1,5 +1,6 @@
 package jnome.workspace;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,8 +12,6 @@ import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import org.rejuse.association.SingleAssociation;
-
 import jnome.core.language.Java;
 import jnome.input.parser.ASMClassParser;
 import chameleon.core.lookup.LookupException;
@@ -23,8 +22,8 @@ import chameleon.workspace.ProjectException;
 
 public class JarLoader extends AbstractJarLoader {
 
-	public JarLoader(Project project, String path) throws ProjectException {
-		super(project, path);
+	public JarLoader(Project project, File file) throws ProjectException {
+		super(project, file);
 		try {
 			process();
 		} catch (LookupException | IOException e) {

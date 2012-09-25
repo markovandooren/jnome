@@ -1,0 +1,6 @@
+<project name="testantlr">
+	<language>java</language>
+	<sourcepath>
+      <source root="antlr-2.7.2/antlr" extension=".java"/>
+	</sourcepath>
+</project>

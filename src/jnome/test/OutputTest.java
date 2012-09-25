@@ -20,7 +20,6 @@ import chameleon.input.ModelFactory;
 import chameleon.input.ParseException;
 import chameleon.support.tool.ArgumentParser;
 import chameleon.support.tool.Arguments;
-import chameleon.workspace.DirectoryLoader;
 import chameleon.workspace.Project;
 
 /**
@@ -88,7 +87,7 @@ public abstract class OutputTest {
 	public void setUp() throws MalformedURLException, FileNotFoundException, ParseException, IOException, Exception {
 		addTestFiles();
 		Java language = new JavaLanguageFactory().create();
-		Project project = new Project("output test",new RootNamespace(new RegularNamespaceFactory()),language);
+		Project project = new Project("output test",new RootNamespace(new RegularNamespaceFactory()),language, new File("."));
 		JavaFileInputSourceFactory inputSourceFactory = new JavaFileInputSourceFactory(language.plugin(ModelFactory.class));
 		_args = new ArgumentParser(project,true).parse(arguments(), _extension,inputSourceFactory);
 	}

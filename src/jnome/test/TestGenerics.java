@@ -2,6 +2,9 @@ package jnome.test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+
 import jnome.core.language.Java;
 import jnome.core.type.BasicJavaTypeReference;
 
@@ -107,10 +110,8 @@ public class TestGenerics extends JavaTest {
 	}
 
 	@Override
-	public Project makeProject() throws ProjectException {
-		Project project = createProject();
-		includeCustom(project,"testsource"+separator()+"generics"+separator());
-		return project;
+	protected File projectFile() {
+		return new File("testsource/testgenerics.xml");
 	}
 
 //	@Override @Test

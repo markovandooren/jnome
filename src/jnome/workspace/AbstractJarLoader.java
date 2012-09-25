@@ -11,16 +11,16 @@ import chameleon.workspace.ProjectLoader;
 
 public abstract class AbstractJarLoader implements ProjectLoader {
 
-	public AbstractJarLoader(Project project, String path) {
+	public AbstractJarLoader(Project project, File file) {
 		_project = project;
-		_path = path;
+		_file = file;
 		_project.addSource(this);
 	}
 	
-	private String _path;
+	private File _file;
 	
-	public String path() {
-		return _path;
+	public File file() {
+		return _file;
 	}
 	
 	private Project _project;
@@ -30,15 +30,7 @@ public abstract class AbstractJarLoader implements ProjectLoader {
 	}
 
 	protected JarFile createJarFile() throws IOException {
-		JarFile result;
-		String path = path();
-		File file = new File(path);
-		if(file.isAbsolute()) {
-			result = new JarFile(path);
-		} else {
-			result = new JarFile(project().root().getPath()+File.separator+path);
-		}
-		return result;
+		return new JarFile(_file);
 	}
 
 	private SingleAssociation<AbstractJarLoader, Project> _projectLink = new SingleAssociation<AbstractJarLoader, Project>(this);

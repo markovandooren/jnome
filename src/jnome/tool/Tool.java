@@ -1,5 +1,6 @@
 package jnome.tool;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -38,7 +39,7 @@ public abstract class Tool {
     BasicConfigurator.configure();
 		Java lang = new JavaLanguageFactory().create();
 		String extension = ".java";
-		Project project = new Project("test", new RootNamespace(new RegularNamespaceFactory()), lang);
+		Project project = new Project("test", new RootNamespace(new RegularNamespaceFactory()), lang, new File("."));
 		JavaFileInputSourceFactory inputSourceFactory = new JavaFileInputSourceFactory(lang.plugin(ModelFactory.class));
 		_provider = new ModelBuilder(project,args,extension,output,true,inputSourceFactory);
     

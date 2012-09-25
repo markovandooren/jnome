@@ -50,10 +50,7 @@ public abstract class JavaTest extends CompositeTest {
 		}
 	}
 	
-	protected File projectFile() {
-		throw new IllegalArgumentException();
-	}
-	
+	protected abstract File projectFile();	
 	
 	private String _javaBaseJarPath;
 	
@@ -100,12 +97,10 @@ public abstract class JavaTest extends CompositeTest {
 	public void testVerification() throws Exception {
 	}
 
-	protected Project createProject() throws ProjectException {
+	protected final Project makeProject() throws ProjectException {
 		Project project;
 		try {
 			project = new JavaProjectFactory().createProject(projectFile());
-//		Java language = new JavaLanguageFactory().create();
-//		Project project = new Project("test",createRootNamespace(), language,root());
 			includeBaseJar(project,javaBarJarPath());
 			return project;
 		} catch (ConfigException e) {
@@ -120,8 +115,8 @@ public abstract class JavaTest extends CompositeTest {
 		project.addSource(new DirectoryLoader(fileExtension(), root, factory));
 	}
 	
-	protected void includeJar(Project project, String jarPath) throws ProjectException {
-		new JarLoader(project, jarPath);
+	protected void includeJar(Project project, String absoluteJarPath) throws ProjectException {
+		new JarLoader(project, new File(absoluteJarPath));
 	}
 	
 	

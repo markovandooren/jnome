@@ -1,5 +1,6 @@
 package jnome.eclipse;
 
+import java.io.File;
 import java.io.IOException;
 
 import jnome.core.language.Java;
@@ -32,7 +33,7 @@ public class Bootstrapper extends EclipseBootstrapper {
 	public Language createLanguage() throws IOException, ParseException, ProjectException {
 		String extension = ".java";
 		Java result = new JavaLanguageFactory().create();
-		Project project = new Project("Chameleon Eclipse project", new RootNamespace(new RegularNamespaceFactory()), result);
+		Project project = new Project("Chameleon Eclipse project", new RootNamespace(new RegularNamespaceFactory()), result, new File("."));
 		JavaFileInputSourceFactory factory = new JavaFileInputSourceFactory(result.plugin(ModelFactory.class));
 		project.addSource(new DirectoryLoader(extension,null, factory));
 		try {

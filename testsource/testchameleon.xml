@@ -1,0 +1,13 @@
+<project name="testchameleon">
+	<language>java</language>
+	<sourcepath>
+      <source root="jregex" extension=".java"/> 
+      <source root="rejuse/src" extension=".java"/>
+      <source root="hamcrest-1.2/src" extension=".java"/>
+      <source root="chameleon/src" extension=".java"/>
+	</sourcepath>
+    <binarypath>
+        <jar file="lib/junit-4.10.jar" />
+        <jar file="lib/log4j-1.2.16.jar" />
+    </binarypath>
+</project>

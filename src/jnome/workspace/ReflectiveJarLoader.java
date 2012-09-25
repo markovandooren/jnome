@@ -20,15 +20,15 @@ import chameleon.workspace.ProjectLoader;
 
 public class ReflectiveJarLoader extends AbstractJarLoader implements ProjectLoader {
 
-	public ReflectiveJarLoader(Project project, String path) throws ProjectException {
-		super(project, path);
-		_loader = createLoader(path);
+	public ReflectiveJarLoader(Project project, File file) throws ProjectException {
+		super(project, file);
+		_loader = createLoader(file);
 		process();
 	}
 	
-	private static ClassLoader createLoader(String path) throws ProjectException {
+	private static ClassLoader createLoader(File file) throws ProjectException {
 		try {
-			return URLClassLoader.newInstance(new URL[] {new File(path).toURI().toURL()}, null);
+			return URLClassLoader.newInstance(new URL[] {file.toURI().toURL()}, null);
 		} catch (MalformedURLException e) {
 			throw new ProjectException(e);
 		}

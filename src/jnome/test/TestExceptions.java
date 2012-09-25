@@ -2,6 +2,7 @@ package jnome.test;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.IOException;
 
 import jnome.core.language.Java;
@@ -42,28 +43,20 @@ public class TestExceptions extends JavaTest {
 		}
 	}
 
-	//	@Override
-	//	public void setCaching() {
-	//    Config.setCaching(true);
-	//	}
-
 	@Test
 	public void testGenerics() throws LookupException, ProjectException {
 		new CustomGenericsTest(project()).testExceptions();
 	}
 
+	@Override
+	protected File projectFile() {
+		return new File("testsource/testexceptions.xml");
+	}
 
 	@Override
 	public void setLogLevels() {
 		Logger.getLogger("chameleon.caching").setLevel(Level.DEBUG);
 		Logger.getRootLogger().setLevel(Level.FATAL);
-	}
-
-	@Override
-	public Project makeProject() throws ProjectException {
-		Project project = createProject();
-		includeCustom(project,"testsource"+separator()+"exceptions"+separator());
-		return project;
 	}
 
 	//	@Override @Test

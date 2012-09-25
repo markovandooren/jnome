@@ -24,15 +24,6 @@ public class TestRejuse extends JavaTest {
 	}
 
 	@Override
-	public Project makeProject() throws ProjectException {
-		Project project = createProject();
-//		includeCustom(project,"testsource"+separator()+"jregex"+separator());
-//		includeCustom(project,"testsource"+separator()+"jutil"+separator()+"src"+separator());
-//		includeCustom(project,"testsource"+separator()+"junit3.8.1"+separator()+"src"+separator());
-		return project;
-	}
-	
-	@Override
 	protected File projectFile() {
 		return new File("testsource/testrejuse.xml");
 	}

@@ -12,6 +12,7 @@ import static org.objectweb.asm.Opcodes.ACC_SUPER;
 import static org.objectweb.asm.Opcodes.ACC_SYNTHETIC;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -631,7 +632,7 @@ public class ASMClassParser {
   	String jarPath = args[0];
 		JarFile jar = new JarFile(jarPath);
   	Java lang = new JavaLanguageFactory().create();
-  	Project project = new Project("test", new LazyRootNamespace(), lang);
+  	Project project = new Project("test", new LazyRootNamespace(), lang, new File("."));
 
 
   	Enumeration<JarEntry> entries = jar.entries();

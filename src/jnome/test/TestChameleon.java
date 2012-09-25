@@ -1,5 +1,7 @@
 package jnome.test;
 
+import java.io.File;
+
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -20,17 +22,10 @@ public class TestChameleon extends JavaTest {
 	}
 
 	@Override
-	public Project makeProject() throws ProjectException {
-		Project project = createProject();
-		includeCustom(project,"testsource"+separator()+"jregex"+separator());
-		includeCustom(project,"testsource"+separator()+"rejuse"+separator()+"src"+separator());
-		includeCustom(project,"testsource"+separator()+"hamcrest-1.2"+separator()+"src"+separator());
-		includeCustom(project,"testsource"+separator()+"junit4.7"+separator());
-		includeCustom(project,"testsource"+separator()+"chameleon"+separator()+"src"+separator());
-		includeCustom(project,"testsource"+separator()+"apache-log4j-1.2.15"+separator()+"src"+separator()+"main"+separator()+"java"+separator());
-		return project;
+	protected File projectFile() {
+		return new File("testsource/testchameleon.xml");
 	}
-
+	
 	@Override
 	public BasicNamespaceProvider namespaceProvider() {
 		return new BasicNamespaceProvider("chameleon");

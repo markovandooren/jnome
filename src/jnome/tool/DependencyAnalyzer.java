@@ -1,5 +1,6 @@
 package jnome.tool;
 
+import java.io.File;
 import java.util.Set;
 
 import jnome.core.language.Java;
@@ -16,7 +17,6 @@ import chameleon.input.ModelFactory;
 import chameleon.oo.type.Type;
 import chameleon.support.tool.ArgumentParser;
 import chameleon.support.tool.Arguments;
-import chameleon.workspace.DirectoryLoader;
 import chameleon.workspace.Project;
 
 public class DependencyAnalyzer {
@@ -40,7 +40,7 @@ public class DependencyAnalyzer {
     BasicConfigurator.configure();
 		Java language = new JavaLanguageFactory().create();
 		String extension = ".java";
-		Project project = new Project("copy test",new RootNamespace(new RegularNamespaceFactory()),language);
+		Project project = new Project("copy test",new RootNamespace(new RegularNamespaceFactory()),language, new File("."));
 		JavaFileInputSourceFactory inputSourceFactory = new JavaFileInputSourceFactory(language.plugin(ModelFactory.class));
 		Arguments arguments = new ArgumentParser(project,false).parse(args,extension,inputSourceFactory);
 	  chameleon.tool.analysis.DependencyAnalyzer analyzer = new chameleon.tool.analysis.DependencyAnalyzer();

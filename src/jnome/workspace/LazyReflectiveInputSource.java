@@ -24,7 +24,6 @@ public class LazyReflectiveInputSource extends InputSourceImpl {
 		_name = Util.getLastPart(fqn);
 		_root = (RootNamespace) ns.defaultNamespace();
 		_loader = loader;
-		_document = new Document();
 		setNamespace(ns);
 	}
 	
@@ -69,6 +68,7 @@ public class LazyReflectiveInputSource extends InputSourceImpl {
 		Class clazz;
 		try {
 //			clazz = Class.forName(_fqn, true, _loader);
+			setDocument(new Document());
 			clazz = _loader.loadClass(_fqn);
 			parser().read(clazz, _root, document());
 		} catch (ClassNotFoundException | LookupException e) {
@@ -76,12 +76,6 @@ public class LazyReflectiveInputSource extends InputSourceImpl {
 		}
 	}
 
-	public Document document() {
-		return _document;
-	}
-	
-	private Document _document;
-	
 	private ClassLoader _loader;
 	
 }

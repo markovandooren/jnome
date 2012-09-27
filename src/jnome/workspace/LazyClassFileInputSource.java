@@ -1,17 +1,17 @@
 package jnome.workspace;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import jnome.core.language.Java;
 import jnome.input.parser.ASMClassParser;
 import chameleon.core.declaration.Declaration;
+import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.InputSourceNamespace;
 import chameleon.core.namespace.Namespace;
-import chameleon.oo.type.Type;
-import chameleon.util.Util;
 import chameleon.workspace.InputException;
 import chameleon.workspace.InputSourceImpl;
 
@@ -42,23 +42,31 @@ public class LazyClassFileInputSource extends InputSourceImpl {
 		} catch (InputException e) {
 			throw new LookupException("Error opening file",e);
 		}
-		return Util.createNonNullList(_type);
-
+		List<Element> list = (List)document().namespaceParts().get(0).children();
+		List<Declaration> result = new ArrayList<>();
+		for(Element e: list) {
+			if(e instanceof Element) {
+				Declaration decl = (Declaration) e;
+				if(decl.name().equals(name)) {
+					result.add(decl);
+				}
+			}
+		}
+		return result;
 	}
 
 	@Override
 	public void load() throws InputException {
-		if(_type == null) {
+		if(! isLoaded()) {
 			try {
 				Namespace ns = namespace();
-				_type = _parser.load((Java) ns.language());
+				setDocument(_parser.load((Java) ns.language()));
 			} catch (LookupException | IOException e) {
 				throw new InputException(e);
 			}
 		}
 	}
 	
-	private Type _type;
 	
 	public ASMClassParser parser() {
 		return _parser;

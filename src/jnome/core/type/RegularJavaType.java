@@ -33,9 +33,6 @@ public class RegularJavaType extends RegularType {
 	public RegularJavaType(SimpleNameSignature sig) {
 		super(sig);
 		setDefaultDefaultConstructor();
-		if(name().equals("Object")) {
-			System.out.println("debug");
-		}
 	}
 
 	public RegularJavaType(String name) {

@@ -133,14 +133,14 @@ public class ASMClassParser {
 	
 	private JarEntry _entry;
 		
-	public Type load(Java language) throws FileNotFoundException, IOException, LookupException {
+	public Document load(Java language) throws FileNotFoundException, IOException, LookupException {
 		Type t = read(language);
 		Document doc = new Document();
 		Namespace ns = namespace(language);
 		NamespaceDeclaration decl = new JavaNamespaceDeclaration(ns);
 		doc.add(decl);
 		decl.add(t);
-		return t;
+		return doc;
 	}
 
 	public Namespace namespace(Language lang) throws LookupException {

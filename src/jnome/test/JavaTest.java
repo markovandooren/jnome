@@ -19,6 +19,7 @@ import org.junit.Test;
 
 import chameleon.core.Config;
 import chameleon.core.language.Language;
+import chameleon.core.namespace.InputSourceNamespace;
 import chameleon.core.namespace.LazyNamespaceFactory;
 import chameleon.core.namespace.LazyRootNamespace;
 import chameleon.core.namespace.NamespaceFactory;
@@ -128,9 +129,9 @@ public abstract class JavaTest extends CompositeTest {
 	
 	protected FileInputSourceFactory createFactory(Language language) {
 		if(_lazyLoading) {
-			return new LazyJavaFileInputSourceFactory(language.plugin(ModelFactory.class));
+			return new LazyJavaFileInputSourceFactory((InputSourceNamespace) language.defaultNamespace());
 		} else {
-		return new JavaFileInputSourceFactory(language.plugin(ModelFactory.class));
+		return new JavaFileInputSourceFactory(language.defaultNamespace());
 		}
 	}
 

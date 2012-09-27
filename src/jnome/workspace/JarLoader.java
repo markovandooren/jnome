@@ -15,6 +15,7 @@ import java.util.jar.JarFile;
 import jnome.core.language.Java;
 import jnome.input.parser.ASMClassParser;
 import chameleon.core.lookup.LookupException;
+import chameleon.core.namespace.InputSourceNamespace;
 import chameleon.util.Pair;
 import chameleon.util.Util;
 import chameleon.workspace.Project;
@@ -60,7 +61,7 @@ public class JarLoader extends AbstractJarLoader {
   		String qn = pair.first().second();
 			String name = Util.getLastPart(qn);
 			String packageFQN = packageFQN(entry.getName());
-			ASMClassParser parser = new ASMClassParser(jar,entry, lang, name, packageFQN);
+			ASMClassParser parser = new ASMClassParser(jar,entry, name, packageFQN);
 			String second = Util.getAllButFirstPart(qn);
 			String key = (packageFQN == null ? name : packageFQN+"."+Util.getFirstPart(qn));
 			if(second != null) {
@@ -72,7 +73,8 @@ public class JarLoader extends AbstractJarLoader {
 				}
 			} else {
 				map.put(key, parser);
-				new LazyClassFileInputSource(parser);
+				InputSourceNamespace ns = (InputSourceNamespace) lang.defaultNamespace().getOrCreateNamespace(packageFQN);
+				LazyClassFileInputSource source = new LazyClassFileInputSource(parser,ns);
 			}
   	}
 	}

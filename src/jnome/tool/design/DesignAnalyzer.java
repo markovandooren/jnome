@@ -135,7 +135,7 @@ public class DesignAnalyzer {
     String extension = ".java";
 		Java lang = new JavaLanguageFactory().create();
 		Project project = new Project("test", new RootNamespace(new RegularNamespaceFactory()), lang, new File("."));
-		JavaFileInputSourceFactory factory = new JavaFileInputSourceFactory(lang.plugin(ModelFactory.class));
+		JavaFileInputSourceFactory factory = new JavaFileInputSourceFactory(lang.defaultNamespace());
 		ModelBuilder provider = new ModelBuilder(project,args,extension,true,true, factory);
     long start = System.currentTimeMillis();
     VerificationResult result = new DesignAnalyzer(provider.project(), provider.namespaceProvider()).analyze();

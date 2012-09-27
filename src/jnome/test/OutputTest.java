@@ -88,7 +88,7 @@ public abstract class OutputTest {
 		addTestFiles();
 		Java language = new JavaLanguageFactory().create();
 		Project project = new Project("output test",new RootNamespace(new RegularNamespaceFactory()),language, new File("."));
-		JavaFileInputSourceFactory inputSourceFactory = new JavaFileInputSourceFactory(language.plugin(ModelFactory.class));
+		JavaFileInputSourceFactory inputSourceFactory = new JavaFileInputSourceFactory(language.defaultNamespace());
 		_args = new ArgumentParser(project,true).parse(arguments(), _extension,inputSourceFactory);
 	}
 

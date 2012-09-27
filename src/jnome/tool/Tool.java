@@ -40,7 +40,7 @@ public abstract class Tool {
 		Java lang = new JavaLanguageFactory().create();
 		String extension = ".java";
 		Project project = new Project("test", new RootNamespace(new RegularNamespaceFactory()), lang, new File("."));
-		JavaFileInputSourceFactory inputSourceFactory = new JavaFileInputSourceFactory(lang.plugin(ModelFactory.class));
+		JavaFileInputSourceFactory inputSourceFactory = new JavaFileInputSourceFactory(lang.defaultNamespace());
 		_provider = new ModelBuilder(project,args,extension,output,true,inputSourceFactory);
     
 	  _project = _provider.project();

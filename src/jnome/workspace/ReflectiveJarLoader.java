@@ -60,7 +60,7 @@ public class ReflectiveJarLoader extends AbstractJarLoader implements ProjectLoa
   				try {
 						LazyNamespace ns = (LazyNamespace) root.getOrCreateNamespace(packageName);
 						new LazyReflectiveInputSource(_loader, parser, className, ns);
-					} catch (LookupException | MalformedURLException e) {
+					} catch (LookupException e) {
 						throw new ProjectException(e);
 					}
   			}

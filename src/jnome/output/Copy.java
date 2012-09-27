@@ -43,7 +43,7 @@ public class Copy {
     }
     String ext = ".java";
 		Java language = new JavaLanguageFactory().create();
-		JavaFileInputSourceFactory factory = new JavaFileInputSourceFactory(language.plugin(ModelFactory.class));
+		JavaFileInputSourceFactory factory = new JavaFileInputSourceFactory(language.defaultNamespace());
 		Project project = new Project("copy test",new RootNamespace(new RegularNamespaceFactory()),language, new File("."));
     Arguments arguments = new ArgumentParser(project).parse(args,ext, factory);
     

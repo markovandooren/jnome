@@ -34,7 +34,7 @@ public class Bootstrapper extends EclipseBootstrapper {
 		String extension = ".java";
 		Java result = new JavaLanguageFactory().create();
 		Project project = new Project("Chameleon Eclipse project", new RootNamespace(new RegularNamespaceFactory()), result, new File("."));
-		JavaFileInputSourceFactory factory = new JavaFileInputSourceFactory(result.plugin(ModelFactory.class));
+		JavaFileInputSourceFactory factory = new JavaFileInputSourceFactory(result.defaultNamespace());
 		project.addSource(new DirectoryLoader(extension,null, factory));
 		try {
 		  loadAPIFiles(extension, PLUGIN_ID, project, factory);

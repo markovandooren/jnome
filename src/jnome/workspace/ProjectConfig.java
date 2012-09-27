@@ -4,6 +4,7 @@ import java.io.File;
 
 import jnome.core.language.JavaLanguageFactory;
 import jnome.input.LazyJavaFileInputSourceFactory;
+import chameleon.core.namespace.InputSourceNamespace;
 import chameleon.core.namespace.LazyRootNamespace;
 import chameleon.input.ModelFactory;
 import chameleon.workspace.DirectoryLoader;
@@ -43,7 +44,7 @@ class ProjectConfig extends ConfigElement {
 		public class Source extends ProjectConfig.Source {
 			protected void $after() throws ConfigException {
 				try {
-					_project.addSource(new DirectoryLoader(_extension, file(_path), new LazyJavaFileInputSourceFactory(_project.language().plugin(ModelFactory.class))));
+					_project.addSource(new DirectoryLoader(_extension, file(_path), new LazyJavaFileInputSourceFactory((InputSourceNamespace) _project.language().defaultNamespace())));
 				} catch (ProjectException e) {
 					throw new ConfigException(e);
 				}
@@ -57,7 +58,7 @@ class ProjectConfig extends ConfigElement {
 		public class Source extends ProjectConfig.Source {
 			protected void $after() throws ConfigException {
 				try {
-					_project.addSource(new DirectoryLoader(_extension, file(_path), new LazyJavaFileInputSourceFactory(_project.language().plugin(ModelFactory.class))));
+					_project.addSource(new DirectoryLoader(_extension, file(_path), new LazyJavaFileInputSourceFactory((InputSourceNamespace) _project.language().defaultNamespace())));
 				} catch (ProjectException e) {
 					throw new ConfigException(e);
 				}

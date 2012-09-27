@@ -17,8 +17,8 @@ import chameleon.workspace.InputException;
 
 public abstract class JavaFileInputSource extends FileInputSource {
 
-	public JavaFileInputSource(File file, ModelFactory factory) {
-		super(file, factory);
+	public JavaFileInputSource(File file) {
+		super(file);
 	}
 	
 	@Override

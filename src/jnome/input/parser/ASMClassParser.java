@@ -54,6 +54,7 @@ import org.rejuse.association.SingleAssociation;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.document.Document;
 import chameleon.core.element.Element;
+import chameleon.core.language.Language;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.modifier.Modifier;
 import chameleon.core.namespace.LazyRootNamespace;
@@ -91,8 +92,7 @@ import chameleon.workspace.Project;
 
 public class ASMClassParser {
 
-	public ASMClassParser(JarFile file, JarEntry entry, Java lang, String className, String packageFQN) {
-		_lang = lang;
+	public ASMClassParser(JarFile file, JarEntry entry, String className, String packageFQN) {
 		_jarFile = file;
 		_entry = entry;
 		if(className == null) {
@@ -129,67 +129,64 @@ public class ASMClassParser {
 	
 	private Map<String,ASMClassParser> _children;
 	
-	public Java language() {
-		return _lang;
-	}
-	
 	private JarFile _jarFile;
-	
-	private Java _lang;
 	
 	private JarEntry _entry;
 		
-	public Type load() throws FileNotFoundException, IOException, LookupException {
-		Type t = read();
+	public Type load(Java language) throws FileNotFoundException, IOException, LookupException {
+		Type t = read(language);
 		Document doc = new Document();
-		Namespace ns = namespace();
+		Namespace ns = namespace(language);
 		NamespaceDeclaration decl = new JavaNamespaceDeclaration(ns);
 		doc.add(decl);
 		decl.add(t);
 		return t;
 	}
 
-	public Namespace namespace() throws LookupException {
-		return language().defaultNamespace().getOrCreateNamespace(_packageFQN);
+	public Namespace namespace(Language lang) throws LookupException {
+		return lang.defaultNamespace().getOrCreateNamespace(_packageFQN);
 	}
 	
-	protected Type read() throws FileNotFoundException, IOException {
+	protected Type read(Java language) throws FileNotFoundException, IOException {
 		InputStream inputStream = new BufferedInputStream(_jarFile.getInputStream(_entry));
 		ClassReader reader = new ClassReader(inputStream);
-		ClassExtractor extractor = new ClassExtractor();
+		ClassExtractor extractor = new ClassExtractor(language);
 		reader.accept(extractor, Opcodes.ASM4);
 		inputStream.close();
 		Type result = extractor.type();
 		if(_children != null) {
 			for(ASMClassParser child: _children.values()) {
-				result.add(child.read());
+				result.add(child.read(language));
 			}
 		}
 		return result;
 	}
 	
-	protected JavaTypeReference toRef(String tref) {
-		return language().createTypeReference(toDots(tref));
+	protected JavaTypeReference toRef(String tref, Java language) {
+		return language.createTypeReference(toDots(tref));
 	}
 
 	private String toDots(String name) {
 		return name.replace('/', '.').replace('$', '.');
 	}
 	
-	protected ObjectOrientedFactory factory() {
-		return language().plugin(ObjectOrientedFactory.class);
+	protected ObjectOrientedFactory factory(Language language) {
+		return language.plugin(ObjectOrientedFactory.class);
 	}
 	
 	protected class ClassExtractor extends ClassVisitor {
 
+		private Java _language;
+		
 		private Type _type;
 		
 		public Type type() {
 			return _type;
 		}
 		
-		public ClassExtractor() {
+		public ClassExtractor(Java language) {
 			super(Opcodes.ASM4);
+			_language = language;
 			initMethodAccessMap();
 			initClassAccessMap();
 			initFieldAccessMap();
@@ -202,21 +199,21 @@ public class ASMClassParser {
 		public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
 			if(! isSynthetic(access)) {
 				String n = Util.getLastPart(toDots(name));
-				Type type = factory().createRegularType(new SimpleNameSignature(n));
+				Type type = factory(_language).createRegularType(new SimpleNameSignature(n));
 				// OK, so ASM only creates a signature when there are generic parameters.
 				// otherwise you only get superName and interfaces (you'll get them as well with generics though).
 				// What a bad design. You're forcing me to write crap code.
 				if(signature != null) {
-					new SignatureReader(signature).accept(new ClassSignatureExtractor(type));
+					new SignatureReader(signature).accept(new ClassSignatureExtractor(type,language()));
 				} else {
 					// Object has null as its super name
 					if(superName != null) {
-						TypeReference zuppaKlass = toRef(superName);
+						TypeReference zuppaKlass = toRef(superName,_language);
 						type.addInheritanceRelation(new SubtypeRelation(zuppaKlass));
 					}
 					if(interfaces != null) {
 						for(String iface: interfaces) {
-							type.addInheritanceRelation(new SubtypeRelation(toRef(iface)));
+							type.addInheritanceRelation(new SubtypeRelation(toRef(iface,_language)));
 						}
 					}
 				}
@@ -233,9 +230,9 @@ public class ASMClassParser {
 				VariableDeclaration declaration = new JavaVariableDeclaration(name);
 				decl.add(declaration);
 				if(signature != null) {
-					new SignatureReader(signature).accept(new FieldSignatureExtractor(decl));
+					new SignatureReader(signature).accept(new FieldSignatureExtractor(decl,language()));
 				} else {
-					new SignatureReader(desc).accept(new FieldSignatureExtractor(decl));
+					new SignatureReader(desc).accept(new FieldSignatureExtractor(decl,language()));
 				}
 				_type.add(decl);
 			}
@@ -249,23 +246,27 @@ public class ASMClassParser {
 			}
 		}
 		
+		public Java language() {
+			return _language;
+		}
+		
 		@Override
 		public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 			if(! isSynthetic(access)) {
-				Method m = factory().createNormalMethod(name,null);
+				Method m = factory(_language).createNormalMethod(name,null);
 				if(name.equals("<init>")) {
 					name = _type.name();
 					m.setName(name);
-					factory().transformToConstructor(m);
-					m.setReturnTypeReference(language().createTypeReference(name));
+					factory(_language).transformToConstructor(m);
+					m.setReturnTypeReference(_language.createTypeReference(name));
 				}
 				_type.add(m);
 				List<Modifier> mods = accessToMethodModifier(access);
 				m.addModifiers(mods);
 				if(signature != null) {
-					new SignatureReader(signature).accept(new MethodExtractor(m));
+					new SignatureReader(signature).accept(new MethodExtractor(m,language()));
 				} else {
-					new SignatureReader(desc).accept(new MethodExtractor(m));
+					new SignatureReader(desc).accept(new MethodExtractor(m,language()));
 				}
 				MethodHeader h = m.header();
 				if(isVarargs(access)) {
@@ -281,7 +282,7 @@ public class ASMClassParser {
 				m.setExceptionClause(clause);
 				if(exceptions != null) {
 					for(String ex:exceptions) {
-						clause.add(new TypeExceptionDeclaration(toRef(ex)));
+						clause.add(new TypeExceptionDeclaration(toRef(ex,_language)));
 					}
 				}
 			}
@@ -386,7 +387,8 @@ public class ASMClassParser {
 	
 	protected class FieldSignatureExtractor extends TypeReferenceExtractor {
 
-		public FieldSignatureExtractor(MemberVariableDeclarator var) {
+		public FieldSignatureExtractor(MemberVariableDeclarator var, Java language) {
+			super(language);
 			_var = var;
 		}
 
@@ -402,10 +404,17 @@ public class ASMClassParser {
 	
 	protected class MethodExtractor extends SignatureVisitor {
 
-		public MethodExtractor(Method method) {
+		public MethodExtractor(Method method, Java language) {
 			super(Opcodes.ASM4);
 			_method = method;
+			_language = language;
 		}
+		
+		public Java language() {
+			return _language;
+		}
+		
+		private Java _language;
 		
 		private Method _method;
 		
@@ -421,17 +430,17 @@ public class ASMClassParser {
 		
 		@Override
 		public SignatureVisitor visitClassBound() {
-			return new TypeParameterBoundExtractor(_currentTypeParameter);
+			return new TypeParameterBoundExtractor(_currentTypeParameter,language());
 		}
 		
 		@Override
 		public SignatureVisitor visitInterfaceBound() {
-			return new TypeParameterBoundExtractor(_currentTypeParameter);
+			return new TypeParameterBoundExtractor(_currentTypeParameter,language());
 		}
 		
 		@Override
 		public SignatureVisitor visitParameterType() {
-			return new TypeReferenceExtractor() {
+			return new TypeReferenceExtractor(language()) {
 				@Override
 				protected void connect(TypeReference tref) {
 					String name = "arg" + _nbArgs++;
@@ -442,7 +451,7 @@ public class ASMClassParser {
 		
 		@Override
 		public SignatureVisitor visitReturnType() {
-			return new TypeReferenceExtractor() {
+			return new TypeReferenceExtractor(_language) {
 				@Override
 				protected void connect(TypeReference tref) {
 					_method.setReturnTypeReference(tref);
@@ -456,7 +465,8 @@ public class ASMClassParser {
 		
 		private FormalTypeParameter _param;
 		
-		public TypeParameterBoundExtractor(FormalTypeParameter param) {
+		public TypeParameterBoundExtractor(FormalTypeParameter param, Java language) {
+			super(language);
 			_param = param;
 		}
 		
@@ -470,10 +480,15 @@ public class ASMClassParser {
 	
 	protected class ClassSignatureExtractor extends SignatureVisitor {
 
+		private Java _language;
 		
+		public Java language() {
+			return _language;
+		}
 
 		private class InheritanceExtractor extends TypeReferenceExtractor {
-			private InheritanceExtractor() {
+			private InheritanceExtractor(Java language) {
+				super(language);
 			}
 
 			@Override
@@ -482,21 +497,22 @@ public class ASMClassParser {
 			}
 		}
 
-		public ClassSignatureExtractor(Type type) {
+		public ClassSignatureExtractor(Type type, Java language) {
 			super(Opcodes.ASM4);
 			_type = type;
+			_language = language;
 		}
 		
 		private Type _type;
 		
 		@Override
 		public SignatureVisitor visitSuperclass() {
-			return new InheritanceExtractor();
+			return new InheritanceExtractor(language());
 		}
 		
 		@Override
 		public SignatureVisitor visitInterface() {
-			return new InheritanceExtractor();
+			return new InheritanceExtractor(language());
 		}
 		
 //		@Override
@@ -513,20 +529,27 @@ public class ASMClassParser {
 		
 		@Override
 		public SignatureVisitor visitClassBound() {
-			return new TypeParameterBoundExtractor(_param);
+			return new TypeParameterBoundExtractor(_param,language());
 		}
 		
 		@Override
 		public SignatureVisitor visitInterfaceBound() {
-			return new TypeParameterBoundExtractor(_param);
+			return new TypeParameterBoundExtractor(_param,language());
 		}
 	}
 	
 	protected class TypeReferenceExtractor extends SignatureVisitor {
 
-		public TypeReferenceExtractor() {
+		public TypeReferenceExtractor(Java language) {
 			super(Opcodes.ASM4);
+			_language = language;
 			initPrimitiveMap();
+		}
+		
+		private Java _language;
+		
+		public Java language() {
+			return _language;
 		}
 		
 		private void initPrimitiveMap() {
@@ -556,19 +579,19 @@ public class ASMClassParser {
 		
 		@Override
 		public void visitBaseType(char t) {
-			_tref = language().createTypeReference(getPrimitiveTypeName(t));
+			_tref = _language.createTypeReference(getPrimitiveTypeName(t));
 			connect(_tref);
 		}
 		
 		@Override
 		public void visitTypeVariable(String name) {
-			_tref = language().createTypeReference(name);
+			_tref = _language.createTypeReference(name);
 			connect(_tref);
 		}
 		
 		@Override
 		public void visitClassType(String fqn) {
-			_tref = toRef(fqn);
+			_tref = toRef(fqn,_language);
 			connect(_tref);
 		}
 		
@@ -578,7 +601,7 @@ public class ASMClassParser {
 		
 		@Override
 		public SignatureVisitor visitArrayType() {
-			return new TypeReferenceExtractor() {
+			return new TypeReferenceExtractor(language()) {
 				@Override
 				protected void connect(TypeReference tref) {
 					_tref = new ArrayTypeReference((JavaTypeReference) tref);
@@ -606,7 +629,7 @@ public class ASMClassParser {
 				throw new ChameleonProgrammerException();
 			}
 			((BasicJavaTypeReference)typeReference()).addArgument(arg);
-			return new TypeReferenceExtractor() {
+			return new TypeReferenceExtractor(language()) {
 				/**
 				 * If there is no bound, we replace the type argument with a pure wildcard.
 				 * I GUESS that ? is modeled as an EXTENDS bound without a type reference.
@@ -662,7 +685,7 @@ public class ASMClassParser {
   		String qn = pair.first().second();
 			String name = Util.getLastPart(qn);
 			String packageFQN = packageFQN(entry.getName());
-			ASMClassParser parser = new ASMClassParser(jar,entry, lang, name, packageFQN);
+			ASMClassParser parser = new ASMClassParser(jar,entry, name, packageFQN);
 			String second = Util.getAllButFirstPart(qn);
 			String key = (packageFQN == null ? name : packageFQN+"."+Util.getFirstPart(qn));
 			if(second != null) {
@@ -685,8 +708,8 @@ public class ASMClassParser {
 //  		System.out.println(syntax.toCode(t));
 //  		System.out.println(">>>>>>>>>>>>>>>");
 //  	}
-  	System.out.println(syntax.toCode(map.get("java.util.Set").load()));
-  	System.out.println(syntax.toCode(map.get("java.util.Collection").load()));
+  	System.out.println(syntax.toCode(map.get("java.util.Set").load(lang)));
+  	System.out.println(syntax.toCode(map.get("java.util.Collection").load(lang)));
   	jar.close();
   }
 

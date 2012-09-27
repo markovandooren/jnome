@@ -41,7 +41,7 @@ public class DependencyAnalyzer {
 		Java language = new JavaLanguageFactory().create();
 		String extension = ".java";
 		Project project = new Project("copy test",new RootNamespace(new RegularNamespaceFactory()),language, new File("."));
-		JavaFileInputSourceFactory inputSourceFactory = new JavaFileInputSourceFactory(language.plugin(ModelFactory.class));
+		JavaFileInputSourceFactory inputSourceFactory = new JavaFileInputSourceFactory(language.defaultNamespace());
 		Arguments arguments = new ArgumentParser(project,false).parse(args,extension,inputSourceFactory);
 	  chameleon.tool.analysis.DependencyAnalyzer analyzer = new chameleon.tool.analysis.DependencyAnalyzer();
 	  Set<Declaration> deps = analyzer.dependenciesOfAll(arguments.getTypes());

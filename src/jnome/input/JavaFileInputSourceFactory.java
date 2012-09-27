@@ -2,15 +2,14 @@ package jnome.input;
 
 import java.io.File;
 
-import chameleon.input.ModelFactory;
-import chameleon.workspace.FileInputSourceFactory;
+import chameleon.core.namespace.Namespace;
 import chameleon.workspace.InputException;
 import chameleon.workspace.InputSource;
 
-public class JavaFileInputSourceFactory implements FileInputSourceFactory {
+public class JavaFileInputSourceFactory extends JavaFileInputFactory {
 
-	public JavaFileInputSourceFactory(ModelFactory modelFactory) {
-		_modelFactory = modelFactory;
+	public JavaFileInputSourceFactory(Namespace root) {
+		super(root);
 	}
 	
 	public void pushDirectory(String name) {
@@ -21,12 +20,9 @@ public class JavaFileInputSourceFactory implements FileInputSourceFactory {
 	
 	@Override
 	public InputSource create(File file) throws InputException {
-		return new EagerJavaFileInputSource(file, modelFactory());
+		EagerJavaFileInputSource eagerJavaFileInputSource = new EagerJavaFileInputSource(file,currentNamespace());
+		eagerJavaFileInputSource.load();
+		return eagerJavaFileInputSource;
 	}
 	
-	public ModelFactory modelFactory() {
-		return _modelFactory;
-	}
-
-	private ModelFactory _modelFactory;
 }

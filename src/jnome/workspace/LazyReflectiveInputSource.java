@@ -1,8 +1,5 @@
 package jnome.workspace;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,27 +14,23 @@ import chameleon.core.namespacedeclaration.NamespaceDeclaration;
 import chameleon.oo.type.Type;
 import chameleon.util.Util;
 import chameleon.workspace.InputException;
-import chameleon.workspace.InputSource;
+import chameleon.workspace.InputSourceImpl;
 
-public class LazyReflectiveInputSource implements InputSource {
+public class LazyReflectiveInputSource extends InputSourceImpl {
 
-//	public LazyReflectiveInputSource(URL jarURL, ReflectiveClassParser parser, String fqn, LazyNamespace ns) throws MalformedURLException {
-//		_parser = parser;
-//		_fqn = fqn;
-//		_name = Util.getLastPart(fqn);
-//		_root = (RootNamespace) ns.defaultNamespace();
-//		
-//		ns.addInputSource(this);
-//	}
-	
-	public LazyReflectiveInputSource(ClassLoader loader, ReflectiveClassParser parser, String fqn, LazyNamespace ns) throws MalformedURLException {
+	public LazyReflectiveInputSource(ClassLoader loader, ReflectiveClassParser parser, String fqn, LazyNamespace ns) {
 		_parser = parser;
 		_fqn = fqn;
 		_name = Util.getLastPart(fqn);
 		_root = (RootNamespace) ns.defaultNamespace();
 		_loader = loader;
 		_document = new Document();
-		ns.addInputSource(this);
+		setNamespace(ns);
+	}
+	
+	@Override
+	public InputSourceImpl clone() {
+		return new LazyReflectiveInputSource(_loader, _parser, _fqn, null);
 	}
 	
 	private RootNamespace _root;

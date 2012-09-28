@@ -329,7 +329,7 @@ scope TargetScope {
     return ((Java)language()).createTypeReference(target);
   }
   
-  public NamespaceDeclaration createNamespaceDeclaration(Namespace ns) {
+  public NamespaceDeclaration createNamespaceDeclaration(String ns) {
     return ((Java)language()).plugin(ObjectOrientedFactory.class).createNamespaceDeclaration(ns);
   }
   
@@ -364,7 +364,7 @@ retval.element = getDocument();
                 }
             )*
         |   cd=classOrInterfaceDeclaration
-               {npp = createNamespaceDeclaration(language().defaultNamespace());
+               {npp = createNamespaceDeclaration("");
                 retval.element.add(npp);
                 processType(npp,cd.element);
                } 
@@ -380,7 +380,7 @@ retval.element = getDocument();
          )?
         {
          if(npp == null) {
-           npp = createNamespaceDeclaration(language().defaultNamespace());
+           npp = createNamespaceDeclaration("");
          }
          retval.element.add(npp);
         }
@@ -390,14 +390,9 @@ retval.element = getDocument();
 
 packageDeclaration returns [NamespaceDeclaration element]
     :   pkgkw='package' qn=qualifiedName ';'
-         {try{
-           retval.element = createNamespaceDeclaration(getDefaultNamespace().getOrCreateNamespace($qn.text));
+         {
+           retval.element = createNamespaceDeclaration($qn.text);
            setKeyword(retval.element,pkgkw);
-         }
-         catch(ModelException exc) {
-           //this should not happen, something is wrong with the parser
-           throw new ChameleonProgrammerException(exc);
-         }
         }
     ;
     

@@ -23,8 +23,12 @@ import chameleon.workspace.ProjectException;
 
 public class JarLoader extends AbstractJarLoader {
 
-	public JarLoader(Project project, File file) throws ProjectException {
-		super(project, file);
+	public JarLoader(File file) {
+		super(file);
+	}
+	
+	@Override
+	protected void notifyProjectAdded(Project project) throws ProjectException {
 		try {
 			process();
 		} catch (LookupException | IOException e) {
@@ -75,6 +79,7 @@ public class JarLoader extends AbstractJarLoader {
 				map.put(key, parser);
 				InputSourceNamespace ns = (InputSourceNamespace) lang.defaultNamespace().getOrCreateNamespace(packageFQN);
 				LazyClassFileInputSource source = new LazyClassFileInputSource(parser,ns);
+				addInputSource(source);
 			}
   	}
 	}

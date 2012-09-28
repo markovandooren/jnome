@@ -8,10 +8,11 @@ import java.util.List;
 import jnome.core.language.Java;
 import jnome.input.parser.ASMClassParser;
 import chameleon.core.declaration.Declaration;
-import chameleon.core.element.Element;
+import chameleon.core.document.Document;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.InputSourceNamespace;
 import chameleon.core.namespace.Namespace;
+import chameleon.core.namespacedeclaration.NamespaceDeclaration;
 import chameleon.workspace.InputException;
 import chameleon.workspace.InputSourceImpl;
 
@@ -42,21 +43,18 @@ public class LazyClassFileInputSource extends InputSourceImpl {
 		} catch (InputException e) {
 			throw new LookupException("Error opening file",e);
 		}
-		List<Element> list = (List)document().namespaceParts().get(0).children();
+		List<Declaration> list = (List)document().namespaceParts().get(0).declarations();
 		List<Declaration> result = new ArrayList<>();
-		for(Element e: list) {
-			if(e instanceof Element) {
-				Declaration decl = (Declaration) e;
+		for(Declaration decl: list) {
 				if(decl.name().equals(name)) {
 					result.add(decl);
 				}
-			}
 		}
 		return result;
 	}
 
 	@Override
-	public void load() throws InputException {
+	public void doLoad() throws InputException {
 		if(! isLoaded()) {
 			try {
 				Namespace ns = namespace();

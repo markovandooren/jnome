@@ -46,8 +46,8 @@ public class JavaFactory extends ObjectOrientedFactory implements OOFactory {
 	}
 	
 	@Override
-	public NamespaceDeclaration createNamespaceDeclaration(Namespace ns) {
-		return new JavaNamespaceDeclaration(ns);
+	public NamespaceDeclaration createNamespaceDeclaration(String fqn) {
+		return new JavaNamespaceDeclaration(fqn);
 	}
 
 	@Override

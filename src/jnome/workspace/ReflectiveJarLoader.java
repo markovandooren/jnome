@@ -14,14 +14,13 @@ import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.LazyNamespace;
 import chameleon.core.namespace.RootNamespace;
 import chameleon.util.Util;
-import chameleon.workspace.Project;
 import chameleon.workspace.ProjectException;
 import chameleon.workspace.ProjectLoader;
 
 public class ReflectiveJarLoader extends AbstractJarLoader implements ProjectLoader {
 
-	public ReflectiveJarLoader(Project project, File file) throws ProjectException {
-		super(project, file);
+	public ReflectiveJarLoader(File file) throws ProjectException {
+		super(file);
 		_loader = createLoader(file);
 		process();
 	}
@@ -57,12 +56,8 @@ public class ReflectiveJarLoader extends AbstractJarLoader implements ProjectLoa
   			}
   			if(validClassName) {
   				String packageName = Util.getAllButLastPart(className);
-  				try {
 						LazyNamespace ns = (LazyNamespace) root.getOrCreateNamespace(packageName);
 						new LazyReflectiveInputSource(_loader, parser, className, ns);
-					} catch (LookupException e) {
-						throw new ProjectException(e);
-					}
   			}
   		}
   	}

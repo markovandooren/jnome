@@ -3,29 +3,32 @@ package jnome.input;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import jnome.core.language.Java;
+import jnome.core.namespacedeclaration.JavaNamespaceDeclaration;
 import jnome.core.type.NullType;
 import jnome.core.type.RegularJavaType;
 import jnome.input.parser.JavaLexer;
 import jnome.input.parser.JavaParser;
-import jnome.output.JavaCodeWriter;
 
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 
+import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.document.Document;
 import chameleon.core.element.Element;
+import chameleon.core.language.Language;
 import chameleon.core.lookup.LookupException;
+import chameleon.core.namespace.InputSourceNamespace;
 import chameleon.core.namespace.Namespace;
 import chameleon.core.namespace.RootNamespace;
 import chameleon.core.namespacedeclaration.NamespaceDeclaration;
 import chameleon.exception.ChameleonProgrammerException;
-import chameleon.input.ModelFactory;
 import chameleon.input.ParseException;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.member.Member;
@@ -36,7 +39,6 @@ import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.inheritance.InheritanceRelation;
 import chameleon.oo.type.inheritance.SubtypeRelation;
 import chameleon.oo.variable.FormalParameter;
-import chameleon.plugin.output.Syntax;
 import chameleon.support.input.ChameleonParser;
 import chameleon.support.input.ModelFactoryUsingANTLR;
 import chameleon.support.member.simplename.operator.infix.InfixOperator;
@@ -45,6 +47,10 @@ import chameleon.support.member.simplename.operator.prefix.PrefixOperator;
 import chameleon.support.modifier.Native;
 import chameleon.support.modifier.Public;
 import chameleon.support.modifier.ValueType;
+import chameleon.workspace.InputException;
+import chameleon.workspace.InputSourceImpl;
+import chameleon.workspace.ProjectException;
+import chameleon.workspace.ProjectLoaderImpl;
 
 /**
  * @author Marko van Dooren
@@ -75,29 +81,34 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 	@Override
 	public void initializePredefinedElements() {
 		RootNamespace root = language().defaultNamespace();
-		addPrimitives(root);
+		SyntheticProjectLoader loader = new SyntheticProjectLoader();
+		try {
+			language().project().addSource(loader);
+		} catch (ProjectException e) {
+			// Since it is synthetic, nothing _should_ go wrong here.
+			throw new ChameleonProgrammerException(e);
+		}
+		addPrimitives("",loader);
 	  addInfixOperators(root);
-	  addNullType(root);
+	  addNullType(root,loader);
 	}
 
-	private void addNullType(RootNamespace root) {
-		NamespaceDeclaration pp = new NamespaceDeclaration(root);
-		pp.add(new NullType(java()));
-		new Document(pp);
+	private void addNullType(RootNamespace root, SyntheticProjectLoader loader) {
+    loader.addInputSource(new SyntheticInputSource(new NullType(java()),"",language()));
 	}
 
 
 
-	public void addPrimitives(Namespace root) {
-        addVoid(root);
-        addDouble(root);
-        addFloat(root);
-        addLong(root);
-        addInt(root);
-        addShort(root);
-        addChar(root);
-        addByte(root);
-        addBoolean(root);
+	public void addPrimitives(String root, SyntheticProjectLoader loader) {
+        addVoid(root,loader);
+        addDouble(root,loader);
+        addFloat(root,loader);
+        addLong(root,loader);
+        addInt(root,loader);
+        addShort(root,loader);
+        addChar(root,loader);
+        addByte(root,loader);
+        addBoolean(root,loader);
     }
 
 	  private Type findType(Namespace defaultNamespace, String fqn) throws LookupException {
@@ -234,19 +245,57 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         op.addModifier(new Native());
         type.add(op);
     }
+    
+    protected static class SyntheticProjectLoader extends ProjectLoaderImpl {
+    	
+    }
+    
+    protected static class SyntheticInputSource extends InputSourceImpl {
 
-    protected NamespaceDeclaration getNamespacePart(Namespace pack) {
-        // Namespace javaLang = (Namespace)pack.getOrCreatePackage("java.lang");
+    	public SyntheticInputSource(Type type, String namespaceFQN, Language lang) {
+    		_type = type;
+    		InputSourceNamespace ns = (InputSourceNamespace) lang.defaultNamespace().getOrCreateNamespace(namespaceFQN);
+    		setNamespace(ns);
+    		NamespaceDeclaration nsd = lang.plugin(ObjectOrientedFactory.class).createNamespaceDeclaration(namespaceFQN);
+    		nsd.add(type);
+    		Document doc = new Document();
+    		doc.add(nsd);
+    		setDocument(doc);
+    		doc.namespace();
+    	}
+    	
+    	private Type _type;
+    	
+    	public Type type() {
+    		return _type;
+    	}
+    	
+			@Override
+			public List<String> targetDeclarationNames(Namespace ns) {
+				return Collections.singletonList(type().name());
+			}
 
-        NamespaceDeclaration pp = pack.language().plugin(ObjectOrientedFactory.class).createNamespaceDeclaration(pack);
-        new Document(pp);
-        //pp.addImport(new DemandImport(new NamespaceReference(
-          //      new NamespaceReference("java"), "lang")));
-        return pp;
+			@Override
+			public List<Declaration> targetDeclarations(String name) throws LookupException {
+				Type type = type();
+				List<Declaration> result;
+				if(type.name().equals(name)) {
+					result = new ArrayList<>(1);
+					result.add(type);
+				} else {
+					result = Collections.EMPTY_LIST;
+				}
+				return result;
+			}
+
+			@Override
+			protected void doLoad() throws InputException {
+				// there is nothing to load, as the element has already been defined.
+			}
+    	
     }
 
-    public void addVoid(Namespace mm) {
-        NamespaceDeclaration cu = getNamespacePart(mm);
+    public void addVoid(String mm, SyntheticProjectLoader loader) {
         Public pub = new Public();
         Type voidT = new PrimitiveType("void") {
 
@@ -255,19 +304,18 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
             }
 
         }; // toevoeging gebeurt door de constructor
+        loader.addInputSource(new SyntheticInputSource(voidT,mm,language()));
         voidT.addModifier(pub);
 
-        cu.add(voidT);
         voidT.addModifier(new ValueType());
-        mm.language(Java.class).storePrimitiveType("void",voidT);
+        ((Java)language()).storePrimitiveType("void",voidT);
     }
     
     public Java java() {
     	return (Java) language();
     }
 
-    public void addByte(Namespace mm) {
-        NamespaceDeclaration cu = getNamespacePart(mm);
+    protected void addByte(String mm, SyntheticProjectLoader loader) {
         Public pub = new Public();
         Type byteT = new PrimitiveType("byte") {
             public boolean assignableTo(Type other) {
@@ -280,20 +328,19 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
                         || other.getFullyQualifiedName().equals("double");
             }
         };
+        loader.addInputSource(new SyntheticInputSource(byteT,mm,language()));
         byteT.addInheritanceRelation(new SubtypeRelation(java().createTypeReference("short")));
         byteT.addModifier(pub);
 
-        cu.add(byteT);
         byteT.addModifier(new ValueType());
 
         addUniPromIntegral(byteT);
 
         addBinNumOpsIntegral(byteT);
-        mm.language(Java.class).storePrimitiveType("byte",byteT);
+        ((Java)language()).storePrimitiveType("byte",byteT);
     }
 
-    public void addShort(Namespace mm) {
-        NamespaceDeclaration cu = getNamespacePart(mm);
+    protected void addShort(String mm, SyntheticProjectLoader loader) {
         Public pub = new Public();
         Type shortT = new PrimitiveType("short") {
             public boolean assignableTo(Type other) {
@@ -305,20 +352,19 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
                         || other.getFullyQualifiedName().equals("double");
             }
         };
+        loader.addInputSource(new SyntheticInputSource(shortT,mm,language()));
         shortT.addInheritanceRelation(new SubtypeRelation(java().createTypeReference("int")));
         shortT.addModifier(pub);
-        cu.add(shortT);
         shortT.addModifier(new ValueType());
 
 
         addUniPromIntegral(shortT);
 
         addBinNumOpsIntegral(shortT);
-        mm.language(Java.class).storePrimitiveType("short",shortT);
+        ((Java)language()).storePrimitiveType("short",shortT);
     }
 
-    public void addChar(Namespace mm) {
-        NamespaceDeclaration cu = getNamespacePart(mm);
+    protected void addChar(String mm, SyntheticProjectLoader loader) {
         Public pub = new Public();
 
         Type charT = new PrimitiveType("char") {
@@ -330,19 +376,18 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
                         || other.getFullyQualifiedName().equals("double");
             }
         };
+        loader.addInputSource(new SyntheticInputSource(charT,mm,language()));
         charT.addInheritanceRelation(new SubtypeRelation(java().createTypeReference("int")));
         charT.addModifier(pub);
-        cu.add(charT);
         charT.addModifier(new ValueType());
 
         addUniPromIntegral(charT);
 
         addBinNumOpsIntegral(charT);
-        mm.language(Java.class).storePrimitiveType("char",charT);
+        ((Java)language()).storePrimitiveType("char",charT);
     }
 
-    public void addInt(Namespace mm) {
-        NamespaceDeclaration cu = getNamespacePart(mm);
+    public void addInt(String mm, SyntheticProjectLoader loader) {
         Public pub = new Public();
 
         Type intT = new PrimitiveType("int") {
@@ -353,19 +398,18 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
                         || other.getFullyQualifiedName().equals("double");
             }
         };
+        loader.addInputSource(new SyntheticInputSource(intT,mm,language()));
         intT.addInheritanceRelation(new SubtypeRelation(java().createTypeReference("long")));
         intT.addModifier(pub);
-        cu.add(intT);
         intT.addModifier(new ValueType());
 
         addUniPromIntegral(intT);
 
         addBinNumOpsIntegral(intT);
-        mm.language(Java.class).storePrimitiveType("int",intT);
+        ((Java)language()).storePrimitiveType("int",intT);
     }
 
-    public void addLong(Namespace mm) {
-        NamespaceDeclaration cu = getNamespacePart(mm);
+    public void addLong(String mm, SyntheticProjectLoader loader) {
         Public pub = new Public();
 
         Type longT = new PrimitiveType("long") {
@@ -375,19 +419,18 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
                         || other.getFullyQualifiedName().equals("double");
             }
         };
+        loader.addInputSource(new SyntheticInputSource(longT,mm,language()));
         longT.addInheritanceRelation(new SubtypeRelation(java().createTypeReference("float")));
         longT.addModifier(pub);
-        cu.add(longT);
         longT.addModifier(new ValueType());
 
         addUniPromIntegral(longT);
 
         addBinNumOpsIntegral(longT);
-        mm.language(Java.class).storePrimitiveType("long",longT);
+        ((Java)language()).storePrimitiveType("long",longT);
  }
 
-    public void addFloat(Namespace mm) {
-        NamespaceDeclaration cu = getNamespacePart(mm);
+    public void addFloat(String mm, SyntheticProjectLoader loader) {
         Public pub = new Public();
 
         Type floatT = new PrimitiveType("float") {
@@ -396,15 +439,15 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
                         || other.getFullyQualifiedName().equals("double");
             }
         };
+        loader.addInputSource(new SyntheticInputSource(floatT,mm,language()));
         floatT.addInheritanceRelation(new SubtypeRelation(java().createTypeReference("double")));
         floatT.addModifier(pub);
-        cu.add(floatT);
         floatT.addModifier(new ValueType());
 
         addUniProm(floatT);
 
         addBinNumOps(floatT);
-        mm.language(Java.class).storePrimitiveType("float",floatT);
+        ((Java)language()).storePrimitiveType("float",floatT);
     }
     
     private static class PrimitiveType extends RegularJavaType {
@@ -422,21 +465,20 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     	}
     }
 
-    public void addDouble(Namespace mm) {
-        NamespaceDeclaration cu = getNamespacePart(mm);
+    protected void addDouble(String mm, SyntheticProjectLoader loader) {
         Public pub = new Public();
-
         Type doubleT = new PrimitiveType("double");
+        loader.addInputSource(new SyntheticInputSource(doubleT,mm,language()));
+        
         doubleT.addModifier(pub);
-        cu.add(doubleT);
         doubleT.addModifier(new ValueType());
 
         addUniProm(doubleT);
         addBinNumOps(doubleT);
-        mm.language(Java.class).storePrimitiveType("double",doubleT);
+        ((Java)language()).storePrimitiveType("double",doubleT);
     }
 
-    public void addBinNumOpsIntegral(Type type) {
+    protected void addBinNumOpsIntegral(Type type) {
         addBinPromIntegral(type, "&");
         addBinPromIntegral(type, "^");
         addBinPromIntegral(type, "|");
@@ -449,7 +491,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         addCompoundAssignment(type, "^=");
     }
 
-    public void addBinNumOps(Type type) {
+    protected void addBinNumOps(Type type) {
         addBinProm(type, "+");
         addBinProm(type, "-");
         addBinProm(type, "*");
@@ -473,7 +515,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 			addInfixOperator(type, "String", "+", "String");
 		}
 
-    public void addBinComp(Type type, String operator) {
+    protected void addBinComp(Type type, String operator) {
         addInfixOperator(type, "boolean", operator, "char");
         addInfixOperator(type, "boolean", operator, "byte");
         addInfixOperator(type, "boolean", operator, "short");
@@ -483,7 +525,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         addInfixOperator(type, "boolean", operator, "double");
     }
 
-    public void addBinProm(Type type, String operator) {
+    protected void addBinProm(Type type, String operator) {
         addInfixOperator(type, getBinProm("double", type.name()), operator,
                 "double");
         addInfixOperator(type, getBinProm("float", type.name()), operator,
@@ -491,7 +533,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         addBinPromIntegral(type, operator);
     }
 
-    public void addBinPromIntegral(Type type, String operator) {
+    protected void addBinPromIntegral(Type type, String operator) {
         addInfixOperator(type, getBinProm("long", type.name()), operator,
                 "long");
         addInfixOperator(type, getBinProm("int", type.name()), operator,
@@ -505,7 +547,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 
     }
 
-    public void addUniPromIntegral(Type type) {
+    protected void addUniPromIntegral(Type type) {
         addPrefixOperator(type, getUniProm(type.name()), "~");
         addShift(type, "<<");
         addShift(type, ">>");
@@ -513,7 +555,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         addUniProm(type);
     }
 
-    public void addUniProm(Type type) {
+    protected void addUniProm(Type type) {
         addPrefixOperator(type, getUniProm(type.name()), "-");
         addPrefixOperator(type, getUniProm(type.name()), "+");
         addPrefixOperator(type, type.name(), "--");
@@ -522,7 +564,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         addPostfixOperator(type, type.name(), "++");
     }
 
-    public void addShift(Type type, String operator) {
+    protected void addShift(Type type, String operator) {
         addInfixOperator(type, getUniProm(type.name()), operator, "char");
         addInfixOperator(type, getUniProm(type.name()), operator, "byte");
         addInfixOperator(type, getUniProm(type.name()), operator, "short");
@@ -530,7 +572,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         addInfixOperator(type, getUniProm(type.name()), operator, "long");
     }
 
-    public void addCompoundAssignment(Type type, String operator) {
+    protected void addCompoundAssignment(Type type, String operator) {
         addInfixOperator(type, type.name(), operator, "double");
         addInfixOperator(type, type.name(), operator, "float");
         addInfixOperator(type, type.name(), operator, "long");
@@ -540,11 +582,11 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         addInfixOperator(type, type.name(), operator, "byte");
     }
 
-    public void addBoolean(Namespace mm) {
+    protected void addBoolean(String mm, SyntheticProjectLoader loader) {
         Public pub = new Public();
         Type booleanT = new PrimitiveType("boolean");
         booleanT.addModifier(pub);
-        getNamespacePart(mm).add(booleanT);
+        loader.addInputSource(new SyntheticInputSource(booleanT,mm,language()));
         addPrefixOperator(booleanT, "boolean", "!");
         addInfixOperator(booleanT, "boolean", equality(), "boolean");
         addInfixOperator(booleanT, "boolean", "!=", "boolean");
@@ -556,7 +598,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         addInfixOperator(booleanT, "boolean", "&=", "boolean");
         addInfixOperator(booleanT, "boolean", "|=", "boolean");
         addInfixOperator(booleanT, "boolean", "^=", "boolean");
-        mm.language(Java.class).storePrimitiveType("boolean",booleanT);
+        ((Java)language()).storePrimitiveType("boolean",booleanT);
     }
 
     public String getBinProm(String first, String second) {

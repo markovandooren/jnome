@@ -16,6 +16,7 @@ import jnome.core.modifier.StrictFP;
 import jnome.core.modifier.Synchronized;
 import jnome.core.modifier.Transient;
 import jnome.core.modifier.Volatile;
+import jnome.core.namespacedeclaration.JavaNamespaceDeclaration;
 import jnome.core.type.ArrayTypeReference;
 import jnome.core.type.BasicJavaTypeReference;
 import jnome.core.type.JavaTypeReference;
@@ -73,7 +74,7 @@ public class ReflectiveClassParser implements BytecodeClassParser {
 	@Override
 	public Document read(Class clazz, RootNamespace root, Document doc) throws LookupException {
 		String packageName = clazz.getPackage().getName();
-		NamespaceDeclaration nsd = new NamespaceDeclaration(root.getOrCreateNamespace(packageName));
+		NamespaceDeclaration nsd = new JavaNamespaceDeclaration(packageName);
 		doc.add(nsd);
 		
 		Type type = createType(clazz);

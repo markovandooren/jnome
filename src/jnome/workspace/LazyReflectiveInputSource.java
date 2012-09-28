@@ -64,7 +64,7 @@ public class LazyReflectiveInputSource extends InputSourceImpl {
 	}
 
 	@Override
-	public void load() throws InputException {
+	protected void doLoad() throws InputException {
 		Class clazz;
 		try {
 //			clazz = Class.forName(_fqn, true, _loader);

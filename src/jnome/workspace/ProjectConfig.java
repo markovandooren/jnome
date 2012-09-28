@@ -70,7 +70,7 @@ class ProjectConfig extends ConfigElement {
 		public class Jar extends ConfigElement {
 	  	public void setFile(String path) throws ConfigException {
 				try {
-					_project.addSource(new JarLoader(_project, file(path)));
+					_project.addSource(new JarLoader(file(path)));
 				} catch (ProjectException e) {
 					throw new ConfigException(e);
 				}

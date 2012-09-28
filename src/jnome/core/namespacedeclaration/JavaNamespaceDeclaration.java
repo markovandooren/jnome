@@ -8,6 +8,7 @@ import chameleon.core.namespace.NamespaceReference;
 import chameleon.core.namespacedeclaration.DemandImport;
 import chameleon.core.namespacedeclaration.Import;
 import chameleon.core.namespacedeclaration.NamespaceDeclaration;
+import chameleon.core.reference.SimpleReference;
 import chameleon.util.association.Single;
 
 public class JavaNamespaceDeclaration extends NamespaceDeclaration {
@@ -16,14 +17,18 @@ public class JavaNamespaceDeclaration extends NamespaceDeclaration {
     excludeFieldName(JavaNamespaceDeclaration.class,"_defaultImport");
   }
 
-	public JavaNamespaceDeclaration(Namespace namespace) {
-		super(namespace);
+  public JavaNamespaceDeclaration(String fqn) {
+  	this(new SimpleReference<>(fqn, Namespace.class));
+  }
+  
+	public JavaNamespaceDeclaration(SimpleReference<Namespace> ref) {
+		super(ref);
 		set(_defaultImport,new DemandImport(new NamespaceReference("java.lang")));
 	}
 	
 	@Override
 	public NamespaceDeclaration cloneThis() {
-		return new JavaNamespaceDeclaration(null);
+		return new JavaNamespaceDeclaration(namespaceReference().clone());
 	}
 	
 	@Override

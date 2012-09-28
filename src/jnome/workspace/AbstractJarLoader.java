@@ -4,17 +4,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.jar.JarFile;
 
+import org.rejuse.association.AssociationListener;
 import org.rejuse.association.SingleAssociation;
 
 import chameleon.workspace.Project;
 import chameleon.workspace.ProjectLoader;
+import chameleon.workspace.ProjectLoaderImpl;
 
-public abstract class AbstractJarLoader implements ProjectLoader {
+public abstract class AbstractJarLoader extends ProjectLoaderImpl {
 
-	public AbstractJarLoader(Project project, File file) {
-		_project = project;
+	public AbstractJarLoader(File file) {
 		_file = file;
-		_project.addSource(this);
 	}
 	
 	private File _file;
@@ -23,21 +23,8 @@ public abstract class AbstractJarLoader implements ProjectLoader {
 		return _file;
 	}
 	
-	private Project _project;
-
-	public Project project() {
-		return _project;
-	}
-
 	protected JarFile createJarFile() throws IOException {
 		return new JarFile(_file);
 	}
-
-	private SingleAssociation<AbstractJarLoader, Project> _projectLink = new SingleAssociation<AbstractJarLoader, Project>(this);
-	
-	public SingleAssociation<AbstractJarLoader, Project> projectLink() {
-		return _projectLink;
-	}
-
 
 }

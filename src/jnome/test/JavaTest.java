@@ -117,7 +117,7 @@ public abstract class JavaTest extends CompositeTest {
 	}
 	
 	protected void includeJar(Project project, String absoluteJarPath) throws ProjectException {
-		new JarLoader(project, new File(absoluteJarPath));
+		project.addSource(new JarLoader(new File(absoluteJarPath)));
 	}
 	
 	

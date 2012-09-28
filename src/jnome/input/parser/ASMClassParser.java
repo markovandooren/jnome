@@ -58,7 +58,6 @@ import chameleon.core.language.Language;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.modifier.Modifier;
 import chameleon.core.namespace.LazyRootNamespace;
-import chameleon.core.namespace.Namespace;
 import chameleon.core.namespacedeclaration.NamespaceDeclaration;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.method.Method;
@@ -88,6 +87,7 @@ import chameleon.support.modifier.Public;
 import chameleon.support.modifier.Static;
 import chameleon.util.Pair;
 import chameleon.util.Util;
+import chameleon.workspace.InputSource;
 import chameleon.workspace.Project;
 
 public class ASMClassParser {
@@ -136,16 +136,16 @@ public class ASMClassParser {
 	public Document load(Java language) throws FileNotFoundException, IOException, LookupException {
 		Type t = read(language);
 		Document doc = new Document();
-		Namespace ns = namespace(language);
-		NamespaceDeclaration decl = new JavaNamespaceDeclaration(ns);
+//		Namespace ns = namespace(language);
+		NamespaceDeclaration decl = new JavaNamespaceDeclaration(_packageFQN);
 		doc.add(decl);
 		decl.add(t);
 		return doc;
 	}
 
-	public Namespace namespace(Language lang) throws LookupException {
-		return lang.defaultNamespace().getOrCreateNamespace(_packageFQN);
-	}
+//	public Namespace namespace(Language lang) throws LookupException {
+//		return lang.defaultNamespace().getOrCreateNamespace(_packageFQN);
+//	}
 	
 	protected Type read(Java language) throws FileNotFoundException, IOException {
 		InputStream inputStream = new BufferedInputStream(_jarFile.getInputStream(_entry));

@@ -3,7 +3,6 @@ package jnome.input;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,22 +17,17 @@ import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 
-import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.document.Document;
 import chameleon.core.element.Element;
-import chameleon.core.language.Language;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.namespace.InputSourceNamespace;
 import chameleon.core.namespace.Namespace;
 import chameleon.core.namespace.RootNamespace;
-import chameleon.core.namespacedeclaration.NamespaceDeclaration;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.input.ParseException;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.member.Member;
 import chameleon.oo.method.SimpleNameMethodHeader;
-import chameleon.oo.plugin.ObjectOrientedFactory;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
 import chameleon.oo.type.inheritance.InheritanceRelation;
@@ -47,10 +41,9 @@ import chameleon.support.member.simplename.operator.prefix.PrefixOperator;
 import chameleon.support.modifier.Native;
 import chameleon.support.modifier.Public;
 import chameleon.support.modifier.ValueType;
-import chameleon.workspace.InputException;
-import chameleon.workspace.InputSourceImpl;
 import chameleon.workspace.ProjectException;
-import chameleon.workspace.ProjectLoaderImpl;
+import chameleon.workspace.SyntheticInputSource;
+import chameleon.workspace.SyntheticProjectLoader;
 
 /**
  * @author Marko van Dooren
@@ -246,55 +239,6 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         type.add(op);
     }
     
-    protected static class SyntheticProjectLoader extends ProjectLoaderImpl {
-    	
-    }
-    
-    protected static class SyntheticInputSource extends InputSourceImpl {
-
-    	public SyntheticInputSource(Type type, String namespaceFQN, Language lang) {
-    		_type = type;
-    		InputSourceNamespace ns = (InputSourceNamespace) lang.defaultNamespace().getOrCreateNamespace(namespaceFQN);
-    		setNamespace(ns);
-    		NamespaceDeclaration nsd = lang.plugin(ObjectOrientedFactory.class).createNamespaceDeclaration(namespaceFQN);
-    		nsd.add(type);
-    		Document doc = new Document();
-    		doc.add(nsd);
-    		setDocument(doc);
-    		doc.namespace();
-    	}
-    	
-    	private Type _type;
-    	
-    	public Type type() {
-    		return _type;
-    	}
-    	
-			@Override
-			public List<String> targetDeclarationNames(Namespace ns) {
-				return Collections.singletonList(type().name());
-			}
-
-			@Override
-			public List<Declaration> targetDeclarations(String name) throws LookupException {
-				Type type = type();
-				List<Declaration> result;
-				if(type.name().equals(name)) {
-					result = new ArrayList<>(1);
-					result.add(type);
-				} else {
-					result = Collections.EMPTY_LIST;
-				}
-				return result;
-			}
-
-			@Override
-			protected void doLoad() throws InputException {
-				// there is nothing to load, as the element has already been defined.
-			}
-    	
-    }
-
     public void addVoid(String mm, SyntheticProjectLoader loader) {
         Public pub = new Public();
         Type voidT = new PrimitiveType("void") {

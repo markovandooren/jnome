@@ -74,7 +74,12 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 	@Override
 	public void initializePredefinedElements() {
 		RootNamespace root = language().defaultNamespace();
-		SyntheticProjectLoader loader = new SyntheticProjectLoader();
+		SyntheticProjectLoader loader = new SyntheticProjectLoader(){
+			@Override
+			protected void activate() {
+				
+			}
+		};
 		try {
 			language().project().addSource(loader);
 		} catch (ProjectException e) {
@@ -92,7 +97,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 
 
 
-	public void addPrimitives(String root, SyntheticProjectLoader loader) {
+	protected void addPrimitives(String root, SyntheticProjectLoader loader) {
         addVoid(root,loader);
         addDouble(root,loader);
         addFloat(root,loader);
@@ -113,7 +118,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 			return "==";
 		}
 	  
-    public void addInfixOperators(Namespace defaultPackage) {
+	  protected void addInfixOperators(Namespace defaultPackage) {
         try {
             Type obj = findType(defaultPackage, "java.lang.Object");
             if (obj != null) {
@@ -152,13 +157,13 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
     }
 
 
-    public void removeElement(Element element) {
+	  protected void removeElement(Element element) {
       element.parentLink().connectTo(null);
     }
 
 
     @Override
-    public ChameleonParser getParser(InputStream inputStream) throws IOException {
+    protected ChameleonParser getParser(InputStream inputStream) throws IOException {
         ANTLRInputStream input = new ANTLRInputStream(inputStream);
         JavaLexer lexer = new JavaLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -167,13 +172,13 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         return parser;
     }
 
-    /**
-     * @param parser
-     * @throws RecognitionException 
-     */
-    public void parse(JavaParser parser) throws RecognitionException  {
-        parser.compilationUnit();
-    }
+//    /**
+//     * @param parser
+//     * @throws RecognitionException 
+//     */
+//    public void parse(JavaParser parser) throws RecognitionException  {
+//        parser.compilationUnit();
+//    }
     
   	protected <P extends Element> Element parse(Element element, String text) throws ParseException {
   		try {
@@ -207,7 +212,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 //        }
 //    }
 
-    public void addPrefixOperator(Type type, String returnType, String symbol) {
+  	protected void addPrefixOperator(Type type, String returnType, String symbol) {
         TypeReference tr = ((Java)language()).createTypeReference(null, returnType);
         Public pub = new Public();
         PrefixOperator op = new PrefixOperator(new SimpleNameMethodHeader(symbol, tr));
@@ -216,7 +221,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         type.add(op);
     }
 
-    public void addPostfixOperator(Type type, String returnType, String symbol) {
+    protected void addPostfixOperator(Type type, String returnType, String symbol) {
         TypeReference tr = ((Java)language()).createTypeReference(null, returnType);
         Public pub = new Public();
         PostfixOperator op = new PostfixOperator(new SimpleNameMethodHeader(symbol, tr));
@@ -225,7 +230,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         type.add(op);
     }
 
-    public void addInfixOperator(Type type, String returnType, String symbol, String argType) {
+    protected void addInfixOperator(Type type, String returnType, String symbol, String argType) {
         TypeReference tr = ((Java)language()).createTypeReference(returnType);
         Public pub = new Public();
         SimpleNameMethodHeader sig =  new SimpleNameMethodHeader(symbol,tr);
@@ -239,7 +244,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         type.add(op);
     }
     
-    public void addVoid(String mm, SyntheticProjectLoader loader) {
+    protected void addVoid(String mm, SyntheticProjectLoader loader) {
         Public pub = new Public();
         Type voidT = new PrimitiveType("void") {
 
@@ -255,7 +260,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         ((Java)language()).storePrimitiveType("void",voidT);
     }
     
-    public Java java() {
+    protected Java java() {
     	return (Java) language();
     }
 
@@ -331,7 +336,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         ((Java)language()).storePrimitiveType("char",charT);
     }
 
-    public void addInt(String mm, SyntheticProjectLoader loader) {
+    protected void addInt(String mm, SyntheticProjectLoader loader) {
         Public pub = new Public();
 
         Type intT = new PrimitiveType("int") {
@@ -353,7 +358,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         ((Java)language()).storePrimitiveType("int",intT);
     }
 
-    public void addLong(String mm, SyntheticProjectLoader loader) {
+    protected void addLong(String mm, SyntheticProjectLoader loader) {
         Public pub = new Public();
 
         Type longT = new PrimitiveType("long") {
@@ -374,7 +379,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         ((Java)language()).storePrimitiveType("long",longT);
  }
 
-    public void addFloat(String mm, SyntheticProjectLoader loader) {
+    protected void addFloat(String mm, SyntheticProjectLoader loader) {
         Public pub = new Public();
 
         Type floatT = new PrimitiveType("float") {
@@ -545,7 +550,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
         ((Java)language()).storePrimitiveType("boolean",booleanT);
     }
 
-    public String getBinProm(String first, String second) {
+    protected String getBinProm(String first, String second) {
         if ((first.equals("double")) || (second.equals("double"))) {
             return "double";
         }
@@ -557,7 +562,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
             return "int";
     }
 
-    public String getUniProm(String type) {
+    protected String getUniProm(String type) {
         if (type.equals("double") || type.equals("float")
                 || type.equals("long")) {
             return type;
@@ -566,12 +571,6 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
             return "int";
         }
     }
-
-//    public Set loadFiles(String path, String extension, boolean recursive){
-//        return load(path,extension,recursive);
-//    }
-
-//	LOAD FILES
 
     @Override
 		public ModelFactoryUsingANTLR clone() {

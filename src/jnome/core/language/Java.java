@@ -151,6 +151,10 @@ public class Java extends ObjectOrientedLanguage {
 		this("Java");
 	}
 	
+	public Java clone() {
+		return new Java();
+	}
+	
   public Type erasure(Type original) throws LookupException {
   	Type result;
   	if(original instanceof ArrayType) {

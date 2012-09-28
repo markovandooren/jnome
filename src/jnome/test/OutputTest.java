@@ -16,9 +16,7 @@ import org.junit.Test;
 
 import chameleon.core.namespace.RegularNamespaceFactory;
 import chameleon.core.namespace.RootNamespace;
-import chameleon.input.ModelFactory;
 import chameleon.input.ParseException;
-import chameleon.support.tool.ArgumentParser;
 import chameleon.support.tool.Arguments;
 import chameleon.workspace.Project;
 
@@ -89,7 +87,8 @@ public abstract class OutputTest {
 		Java language = new JavaLanguageFactory().create();
 		Project project = new Project("output test",new RootNamespace(new RegularNamespaceFactory()),language, new File("."));
 		JavaFileInputSourceFactory inputSourceFactory = new JavaFileInputSourceFactory(language.defaultNamespace());
-		_args = new ArgumentParser(project,true).parse(arguments(), _extension,inputSourceFactory);
+		throw new Error();
+//		_args = new ArgumentParser(project,true).parse(arguments(), _extension,inputSourceFactory);
 	}
 
 	@Test

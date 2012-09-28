@@ -4,20 +4,13 @@ import java.util.List;
 
 import jnome.core.language.Java;
 import jnome.input.JavaModelFactory;
-
-import org.apache.log4j.BasicConfigurator;
-
-import chameleon.core.language.Language;
 import chameleon.input.ModelFactory;
-import chameleon.oo.expression.NamedTarget;
 import chameleon.oo.expression.NamedTargetExpression;
 import chameleon.oo.method.Method;
 import chameleon.oo.type.Type;
 import chameleon.support.expression.AssignmentExpression;
-import chameleon.support.tool.ArgumentParser;
-import chameleon.support.tool.Arguments;
 
-public class PropertyFinder extends Tool {
+public class PropertyFinder extends CommandLineTool {
 
 	  /**
 	   * args[0] = path for the directory to write output
@@ -31,8 +24,8 @@ public class PropertyFinder extends Tool {
 	   * Example 
 	   * java Copy c:\output\ c:\input1\ c:\input2\ @javax.swing @java.lang #java #java.security 
 	   */
-	  public PropertyFinder(String[] args, ModelFactory factory) throws Exception {
-	  	super(args,factory,false);
+	  public PropertyFinder(String[] args) throws Exception {
+	  	super(args);
 		  List<Type> types = language().defaultNamespace().descendants(Type.class);
 		  findProperties(types,"set","get");
 		  findPairs(types,"set","get");
@@ -174,9 +167,7 @@ public class PropertyFinder extends Tool {
 		}
 
 		public static void main(String[] args) throws Exception {
-	  	JavaModelFactory factory = new JavaModelFactory();
-	  	
-			new PropertyFinder(args, factory);
+			new PropertyFinder(args);
 	  }
 
 }

@@ -8,9 +8,9 @@ import java.util.Properties;
 
 import jnome.core.language.Java;
 import jnome.core.language.JavaLanguageFactory;
+import jnome.input.BaseJavaProjectLoader;
 import jnome.input.JavaFileInputSourceFactory;
 import jnome.input.LazyJavaFileInputSourceFactory;
-import jnome.workspace.ConfigException;
 import jnome.workspace.JarLoader;
 import jnome.workspace.JavaProjectFactory;
 
@@ -33,6 +33,7 @@ import chameleon.test.CompositeTest;
 import chameleon.test.CrossReferenceTest;
 import chameleon.test.provider.BasicDescendantProvider;
 import chameleon.test.provider.ElementProvider;
+import chameleon.workspace.ConfigException;
 import chameleon.workspace.DirectoryLoader;
 import chameleon.workspace.FileInputSourceFactory;
 import chameleon.workspace.Project;
@@ -152,14 +153,13 @@ public abstract class JavaTest extends CompositeTest {
 }
 
 
-	protected void includeBase(Project project, String rootDirectory) throws ProjectException {
-		includeCustom(project, rootDirectory);
-		project.language().plugin(ModelFactory.class).initializePredefinedElements();
-	}
+//	protected void includeBase(Project project, String rootDirectory) throws ProjectException {
+//		includeCustom(project, rootDirectory);
+//		project.language().plugin(ModelFactory.class).initializePredefinedElements();
+//	}
 	
 	protected void includeBaseJar(Project project, String jarPath) throws ProjectException {
-		includeJar(project, jarPath);
-		project.language().plugin(ModelFactory.class).initializePredefinedElements();
+		project.addSource(new BaseJavaProjectLoader(new File(jarPath)));
 	}
 
 //	@Test @Override

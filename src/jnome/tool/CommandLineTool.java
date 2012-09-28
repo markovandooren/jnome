@@ -1,47 +1,31 @@
 package jnome.tool;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import jnome.core.language.Java;
-import jnome.core.language.JavaLanguageFactory;
-import jnome.input.JavaFileInputSourceFactory;
+import jnome.workspace.JavaProjectFactory;
 
-import org.apache.log4j.BasicConfigurator;
 import org.rejuse.predicate.SafePredicate;
 import org.rejuse.predicate.UnsafePredicate;
 
 import chameleon.core.Config;
 import chameleon.core.element.Element;
 import chameleon.core.language.Language;
-import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.Namespace;
-import chameleon.core.namespace.RegularNamespaceFactory;
-import chameleon.core.namespace.RootNamespace;
 import chameleon.input.ModelFactory;
-import chameleon.input.ParseException;
 import chameleon.support.tool.ModelBuilder;
+import chameleon.workspace.ConfigException;
 import chameleon.workspace.Project;
-import chameleon.workspace.ProjectException;
 
-public abstract class Tool {
+public abstract class CommandLineTool {
 
-	public Tool(String[] args, ModelFactory modelFactory, boolean output) throws MalformedURLException, FileNotFoundException, LookupException, ParseException, IOException, ProjectException {
+	public CommandLineTool(String[] args) throws ConfigException {
     if(args.length < 2) {
-      System.out.println("Usage: java packageName.ToolName "+(output ? "outputDir " : "")+"inputDir* @recursivePackageFQN* #packageFQN* $typeFQN*");
+      System.out.println("Usage: java packageName.ToolName "+"xmlConfigFile @recursivePackageFQN* #packageFQN* $typeFQN*");
     }
     Config.setCaching(true);
-    BasicConfigurator.configure();
-		Java lang = new JavaLanguageFactory().create();
-		String extension = ".java";
-		Project project = new Project("test", new RootNamespace(new RegularNamespaceFactory()), lang, new File("."));
-		JavaFileInputSourceFactory inputSourceFactory = new JavaFileInputSourceFactory(lang.defaultNamespace());
-		_provider = new ModelBuilder(project,args,extension,output,true,inputSourceFactory);
+		_provider = new ModelBuilder(new JavaProjectFactory(),args);
     
 	  _project = _provider.project();
 	}

@@ -21,6 +21,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import chameleon.support.modifier.Constructor;
+import chameleon.workspace.ConfigException;
 
 public abstract class ConfigElement {
 

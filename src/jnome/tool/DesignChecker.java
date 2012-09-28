@@ -17,6 +17,7 @@ import chameleon.oo.variable.MemberVariable;
 import chameleon.oo.variable.Variable;
 import chameleon.support.expression.AssignmentExpression;
 import chameleon.support.statement.ReturnStatement;
+import chameleon.workspace.ConfigException;
 import chameleon.workspace.ProjectException;
 
 // TODO
@@ -27,11 +28,10 @@ import chameleon.workspace.ProjectException;
 //      a) list which methods are state dependent and which are not
 //      b) check for encapsulation
 
-public class DesignChecker extends Tool {
+public class DesignChecker extends CommandLineTool {
 
-	public DesignChecker(String[] args, ModelFactory factory) throws MalformedURLException, FileNotFoundException, LookupException,
-			ParseException, IOException, ProjectException {
-		super(args, factory,false);
+	public DesignChecker(String[] args) throws ConfigException {
+		super(args);
 	}
 
 	public void findIncomingViolations() throws LookupException {
@@ -73,8 +73,7 @@ public class DesignChecker extends Tool {
 	}
 	
 	public static void main(String[] args) throws Exception {
-  	JavaModelFactory factory = new JavaModelFactory();
-		DesignChecker checker = new DesignChecker(args, factory);
+		DesignChecker checker = new DesignChecker(args);
 		checker.findIncomingViolations();
 		checker.findOutgoingViolations();
 		checker.findNonDefensiveFieldAssignments();

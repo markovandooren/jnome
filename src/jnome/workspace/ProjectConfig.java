@@ -7,6 +7,7 @@ import jnome.input.LazyJavaFileInputSourceFactory;
 import chameleon.core.namespace.InputSourceNamespace;
 import chameleon.core.namespace.LazyRootNamespace;
 import chameleon.input.ModelFactory;
+import chameleon.workspace.ConfigException;
 import chameleon.workspace.DirectoryLoader;
 import chameleon.workspace.ProjectException;
 

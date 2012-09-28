@@ -14,6 +14,7 @@ import java.util.jar.JarFile;
 
 import jnome.core.language.Java;
 import jnome.input.parser.ASMClassParser;
+import chameleon.core.language.Language;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.InputSourceNamespace;
 import chameleon.util.Pair;
@@ -30,15 +31,15 @@ public class JarLoader extends AbstractJarLoader {
 	@Override
 	protected void notifyProjectAdded(Project project) throws ProjectException {
 		try {
-			process();
+			createInputSources();
 		} catch (LookupException | IOException e) {
 			throw new ProjectException(e);
 		}
 	}
 	
-	private void process() throws IOException, LookupException {
+	protected void createInputSources() throws IOException, LookupException {
 		JarFile jar = createJarFile();
-  	Java lang = (Java) project().language();
+  	Java lang = (Java) language();
   	Enumeration<JarEntry> entries = jar.entries();
   	List<Pair<Pair<String,String>, JarEntry>> names = new ArrayList<>();
   	while(entries.hasMoreElements()) {
@@ -82,6 +83,10 @@ public class JarLoader extends AbstractJarLoader {
 				addInputSource(source);
 			}
   	}
+	}
+
+	protected Language language() {
+		return project().language();
 	}
 	
 	private String packageFQN(String entryName) {

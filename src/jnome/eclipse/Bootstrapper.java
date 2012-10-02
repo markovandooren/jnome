@@ -14,13 +14,13 @@ import chameleon.core.namespace.RootNamespace;
 import chameleon.eclipse.connector.EclipseBootstrapper;
 import chameleon.eclipse.connector.EclipseEditorExtension;
 import chameleon.exception.ChameleonProgrammerException;
-import chameleon.input.ModelFactory;
 import chameleon.input.ParseException;
 import chameleon.oo.plugin.ObjectOrientedFactory;
 import chameleon.plugin.output.Syntax;
 import chameleon.workspace.DirectoryLoader;
 import chameleon.workspace.Project;
 import chameleon.workspace.ProjectException;
+import chameleon.workspace.View;
 
 public class Bootstrapper extends EclipseBootstrapper {
 
@@ -33,11 +33,12 @@ public class Bootstrapper extends EclipseBootstrapper {
 	public Language createLanguage() throws IOException, ParseException, ProjectException {
 		String extension = ".java";
 		Java result = new JavaLanguageFactory().create();
-		Project project = new Project("Chameleon Eclipse project", new RootNamespace(new RegularNamespaceFactory()), result, new File("."));
-		JavaFileInputSourceFactory factory = new JavaFileInputSourceFactory(result.defaultNamespace());
-		project.addSource(new DirectoryLoader(extension,null, factory));
+		View view = new View(new RootNamespace(new RegularNamespaceFactory()), result);
+		Project project = new Project("Chameleon Eclipse project", view, new File("."));
+		JavaFileInputSourceFactory factory = new JavaFileInputSourceFactory();
+		view.addSource(new DirectoryLoader(extension,null, factory));
 		try {
-		  loadAPIFiles(extension, PLUGIN_ID, project, factory);
+		  loadAPIFiles(extension, PLUGIN_ID, view, factory);
 		} catch(ChameleonProgrammerException exc) {
 			// Object and String may not be present yet.
 		}

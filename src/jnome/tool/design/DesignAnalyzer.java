@@ -1,7 +1,5 @@
 package jnome.tool.design;
 
-import java.io.IOException;
-
 import jnome.core.language.Java;
 import jnome.core.type.ArrayType;
 import jnome.input.JavaFactory;
@@ -17,7 +15,6 @@ import chameleon.core.reference.CrossReference;
 import chameleon.core.validation.BasicProblem;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;
-import chameleon.input.ParseException;
 import chameleon.oo.expression.Expression;
 import chameleon.oo.method.Method;
 import chameleon.oo.plugin.ObjectOrientedFactory;
@@ -29,19 +26,20 @@ import chameleon.test.provider.BasicDescendantProvider;
 import chameleon.test.provider.ElementProvider;
 import chameleon.workspace.ConfigException;
 import chameleon.workspace.Project;
+import chameleon.workspace.View;
 
 
 public class DesignAnalyzer {
 	
-	public DesignAnalyzer(Project project, ElementProvider<Namespace> namespaceProvider) {
-		_sourceProject = project;
+	public DesignAnalyzer(View view, ElementProvider<Namespace> namespaceProvider) {
+		_sourceProject = view;
 		_sourceProject.language().setPlugin(ObjectOrientedFactory.class, new JavaFactory());
 		_typeProvider = new BasicDescendantProvider<Type>(namespaceProvider, Type.class);
 	}
 	
-	private Project _sourceProject;
+	private View _sourceProject;
 	
-	public Project sourceProject() {
+	public View sourceProject() {
 		return _sourceProject;
 	}
 
@@ -122,7 +120,7 @@ public class DesignAnalyzer {
     Config.setCaching(true);
 		ModelBuilder provider = new ModelBuilder(new JavaProjectFactory(),args);
     long start = System.currentTimeMillis();
-    VerificationResult result = new DesignAnalyzer(provider.project(), provider.namespaceProvider()).analyze();
+    VerificationResult result = new DesignAnalyzer(provider.project().views().get(0), provider.namespaceProvider()).analyze();
     System.out.println(result.message());
     long stop = System.currentTimeMillis();
     System.out.println("Translation took "+(stop - start) + " milliseconds.");

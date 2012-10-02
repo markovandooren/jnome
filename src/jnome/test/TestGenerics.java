@@ -32,7 +32,7 @@ public class TestGenerics extends JavaTest {
 
 	@Test
 	public void testSubtyping() throws LookupException {
-		Java language = (Java)project().language();
+		Java language = (Java)view().language();
 		BasicJavaTypeReference tref1 = (BasicJavaTypeReference) language.createTypeReference("generics.List");
 		tref1.addArgument(language.createBasicTypeArgument(language.createTypeReference("java.lang.String")));
 		tref1.setUniParent(language.defaultNamespace());

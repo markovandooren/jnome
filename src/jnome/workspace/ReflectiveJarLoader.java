@@ -15,9 +15,9 @@ import chameleon.core.namespace.LazyNamespace;
 import chameleon.core.namespace.RootNamespace;
 import chameleon.util.Util;
 import chameleon.workspace.ProjectException;
-import chameleon.workspace.ProjectLoader;
+import chameleon.workspace.DocumentLoader;
 
-public class ReflectiveJarLoader extends AbstractJarLoader implements ProjectLoader {
+public class ReflectiveJarLoader extends AbstractJarLoader implements DocumentLoader {
 
 	public ReflectiveJarLoader(File file) throws ProjectException {
 		super(file);
@@ -38,8 +38,8 @@ public class ReflectiveJarLoader extends AbstractJarLoader implements ProjectLoa
 	private void process() throws ProjectException {
   	try {
   	Enumeration<JarEntry> entries = createJarFile().entries();
-  	RootNamespace root = project().namespace();
-  	ReflectiveClassParser parser = new ReflectiveClassParser((Java)project().language());
+  	RootNamespace root = view().namespace();
+  	ReflectiveClassParser parser = new ReflectiveClassParser((Java)view().language());
 		while(entries.hasMoreElements()) {
   		JarEntry entry = entries.nextElement();
   		String name = entry.getName();

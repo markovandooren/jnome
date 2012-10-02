@@ -13,10 +13,10 @@ import chameleon.core.Config;
 import chameleon.core.element.Element;
 import chameleon.core.language.Language;
 import chameleon.core.namespace.Namespace;
-import chameleon.input.ModelFactory;
 import chameleon.support.tool.ModelBuilder;
 import chameleon.workspace.ConfigException;
 import chameleon.workspace.Project;
+import chameleon.workspace.View;
 
 public abstract class CommandLineTool {
 
@@ -33,15 +33,19 @@ public abstract class CommandLineTool {
 	ModelBuilder _provider;
 	
 	public Language language() {
-		return project().language();
+		return view().language();
 	}
 	
 	public Project project() {
 		return _project;
 	}
 	
+	public View view() {
+		return project().views().get(0);
+	}
+	
 	public Collection<Namespace> namespaces() {
-		return _provider.namespaceProvider().elements(project());
+		return _provider.namespaceProvider().elements(view());
 	}
 	
 	private Project _project;

@@ -6,8 +6,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import jnome.core.language.Java;
-import jnome.core.language.JavaLanguageFactory;
 import jnome.input.BaseJavaProjectLoader;
 import jnome.input.JavaFileInputSourceFactory;
 import jnome.input.LazyJavaFileInputSourceFactory;
@@ -19,14 +17,12 @@ import org.junit.Test;
 
 import chameleon.core.Config;
 import chameleon.core.language.Language;
-import chameleon.core.namespace.InputSourceNamespace;
 import chameleon.core.namespace.LazyNamespaceFactory;
 import chameleon.core.namespace.LazyRootNamespace;
 import chameleon.core.namespace.NamespaceFactory;
 import chameleon.core.namespace.RegularNamespaceFactory;
 import chameleon.core.namespace.RootNamespace;
 import chameleon.core.reference.CrossReference;
-import chameleon.input.ModelFactory;
 import chameleon.oo.type.Type;
 import chameleon.support.test.ExpressionTest;
 import chameleon.test.CompositeTest;
@@ -38,6 +34,7 @@ import chameleon.workspace.DirectoryLoader;
 import chameleon.workspace.FileInputSourceFactory;
 import chameleon.workspace.Project;
 import chameleon.workspace.ProjectException;
+import chameleon.workspace.View;
 
 public abstract class JavaTest extends CompositeTest {
 	
@@ -103,7 +100,8 @@ public abstract class JavaTest extends CompositeTest {
 		Project project;
 		try {
 			project = new JavaProjectFactory().createProject(projectFile());
-			includeBaseJar(project,javaBarJarPath());
+			View view = project.views().get(0);
+			includeBaseJar(view,javaBarJarPath());
 			return project;
 		} catch (ConfigException e) {
 			throw new ProjectException(e);
@@ -111,14 +109,14 @@ public abstract class JavaTest extends CompositeTest {
 		
 	}
 	
-	protected void includeCustom(Project project, String rootDirectory) throws ProjectException {
-		FileInputSourceFactory factory = createFactory(project.language());
+	protected void includeCustom(View view, String rootDirectory) throws ProjectException {
+		FileInputSourceFactory factory = createFactory(view.language());
 		File root = new File(rootDirectory);
-		project.addSource(new DirectoryLoader(fileExtension(), root, factory));
+		view.addSource(new DirectoryLoader(fileExtension(), root, factory));
 	}
 	
-	protected void includeJar(Project project, String absoluteJarPath) throws ProjectException {
-		project.addSource(new JarLoader(new File(absoluteJarPath)));
+	protected void includeJar(View view, String absoluteJarPath) throws ProjectException {
+		view.addBinary(new JarLoader(new File(absoluteJarPath)));
 	}
 	
 	
@@ -130,9 +128,9 @@ public abstract class JavaTest extends CompositeTest {
 	
 	protected FileInputSourceFactory createFactory(Language language) {
 		if(_lazyLoading) {
-			return new LazyJavaFileInputSourceFactory((InputSourceNamespace) language.defaultNamespace());
+			return new LazyJavaFileInputSourceFactory();
 		} else {
-		return new JavaFileInputSourceFactory(language.defaultNamespace());
+		return new JavaFileInputSourceFactory();
 		}
 	}
 
@@ -158,8 +156,8 @@ public abstract class JavaTest extends CompositeTest {
 //		project.language().plugin(ModelFactory.class).initializePredefinedElements();
 //	}
 	
-	protected void includeBaseJar(Project project, String jarPath) throws ProjectException {
-		project.addSource(new BaseJavaProjectLoader(new File(jarPath)));
+	protected void includeBaseJar(View view, String jarPath) throws ProjectException {
+		view.addBinary(new BaseJavaProjectLoader(new File(jarPath)));
 	}
 
 //	@Test @Override

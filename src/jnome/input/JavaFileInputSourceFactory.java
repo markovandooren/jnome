@@ -8,8 +8,8 @@ import chameleon.workspace.InputSource;
 
 public class JavaFileInputSourceFactory extends JavaFileInputFactory {
 
-	public JavaFileInputSourceFactory(Namespace root) {
-		super(root);
+	public JavaFileInputSourceFactory() {
+		super();
 	}
 	
 	public void pushDirectory(String name) {

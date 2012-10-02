@@ -3,25 +3,18 @@ package jnome.test;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.IOException;
 
 import jnome.core.language.Java;
-import jnome.core.language.JavaLanguageFactory;
-import jnome.input.JavaModelFactory;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import chameleon.core.lookup.LookupException;
-import chameleon.core.namespace.RootNamespace;
-import chameleon.input.ParseException;
 import chameleon.oo.type.Type;
 import chameleon.test.ModelTest;
 import chameleon.test.provider.BasicNamespaceProvider;
-import chameleon.workspace.DirectoryLoader;
 import chameleon.workspace.Project;
-import chameleon.workspace.ProjectLoader;
 import chameleon.workspace.ProjectException;
 
 /**
@@ -37,7 +30,7 @@ public class TestExceptions extends JavaTest {
 
 		@Test
 		public void testExceptions() throws LookupException {
-				Java java = (Java) project().language();
+				Java java = (Java) view().language();
 				Type exception = java.findType("exception.MyException");
 				assertTrue(java.isCheckedException(exception));
 		}

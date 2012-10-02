@@ -19,6 +19,7 @@ import chameleon.core.namespace.RootNamespace;
 import chameleon.input.ParseException;
 import chameleon.support.tool.Arguments;
 import chameleon.workspace.Project;
+import chameleon.workspace.View;
 
 /**
  * This is an abstract class to facilitate testing of both the output and the input. These tests output a model,
@@ -85,8 +86,9 @@ public abstract class OutputTest {
 	public void setUp() throws MalformedURLException, FileNotFoundException, ParseException, IOException, Exception {
 		addTestFiles();
 		Java language = new JavaLanguageFactory().create();
-		Project project = new Project("output test",new RootNamespace(new RegularNamespaceFactory()),language, new File("."));
-		JavaFileInputSourceFactory inputSourceFactory = new JavaFileInputSourceFactory(language.defaultNamespace());
+		Project project = new Project("output test", new View(new RootNamespace(new RegularNamespaceFactory()),language), new File("."));
+		JavaFileInputSourceFactory inputSourceFactory = new JavaFileInputSourceFactory();
+		//FIXME I think this entire test class has to be deleted.
 		throw new Error();
 //		_args = new ArgumentParser(project,true).parse(arguments(), _extension,inputSourceFactory);
 	}

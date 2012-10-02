@@ -2,7 +2,9 @@ package jnome.workspace;
 
 import java.io.File;
 
+import jnome.input.LazyJavaFileInputSourceFactory;
 import chameleon.workspace.ConfigException;
+import chameleon.workspace.ProjectConfig;
 import chameleon.workspace.ProjectFactory;
 
 
@@ -15,7 +17,7 @@ public class JavaProjectFactory extends ProjectFactory {
 
 	@Override
 	public chameleon.workspace.Project createProject(File xmlFile) throws ConfigException {
-		ProjectConfig pc = new ProjectConfig(xmlFile.getParentFile());
+		ProjectConfig pc = new JavaProjectConfig(xmlFile.getParentFile(),new LazyJavaFileInputSourceFactory());
 		pc.readFromXML(xmlFile);
 		return pc.project();
 	}

@@ -9,8 +9,7 @@ import chameleon.workspace.InputSource;
 
 public class LazyJavaFileInputSourceFactory extends JavaFileInputFactory implements FileInputSourceFactory {
 
-	public LazyJavaFileInputSourceFactory(InputSourceNamespace root) {
-		super(root);
+	public LazyJavaFileInputSourceFactory() {
 	}
 
 	@Override

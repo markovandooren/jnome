@@ -5,10 +5,12 @@ import chameleon.workspace.FileInputSourceFactory;
 
 public abstract class JavaFileInputFactory implements FileInputSourceFactory {
 
-	public JavaFileInputFactory(Namespace root) {
+	public JavaFileInputFactory() {
+	}
+
+	public void initialize(Namespace root) {
 		_currentNamespace = root;
 	}
-	
 	private Namespace _currentNamespace;
 
 	public void pushDirectory(String name) {

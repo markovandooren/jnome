@@ -8,10 +8,10 @@ import org.rejuse.association.AssociationListener;
 import org.rejuse.association.SingleAssociation;
 
 import chameleon.workspace.Project;
-import chameleon.workspace.ProjectLoader;
-import chameleon.workspace.ProjectLoaderImpl;
+import chameleon.workspace.DocumentLoader;
+import chameleon.workspace.DocumentLoaderImpl;
 
-public abstract class AbstractJarLoader extends ProjectLoaderImpl {
+public abstract class AbstractJarLoader extends DocumentLoaderImpl {
 
 	public AbstractJarLoader(File file) {
 		_file = file;

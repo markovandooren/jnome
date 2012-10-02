@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import chameleon.test.provider.BasicNamespaceProvider;
 import chameleon.workspace.DirectoryLoader;
 import chameleon.workspace.Project;
-import chameleon.workspace.ProjectLoader;
+import chameleon.workspace.DocumentLoader;
 import chameleon.workspace.ProjectException;
 
 /**

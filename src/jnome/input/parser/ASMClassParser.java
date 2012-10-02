@@ -87,8 +87,8 @@ import chameleon.support.modifier.Public;
 import chameleon.support.modifier.Static;
 import chameleon.util.Pair;
 import chameleon.util.Util;
-import chameleon.workspace.InputSource;
 import chameleon.workspace.Project;
+import chameleon.workspace.View;
 
 public class ASMClassParser {
 
@@ -655,7 +655,7 @@ public class ASMClassParser {
   	String jarPath = args[0];
 		JarFile jar = new JarFile(jarPath);
   	Java lang = new JavaLanguageFactory().create();
-  	Project project = new Project("test", new LazyRootNamespace(), lang, new File("."));
+  	Project project = new Project("test", new View(new LazyRootNamespace(), lang), new File("."));
 
 
   	Enumeration<JarEntry> entries = jar.entries();

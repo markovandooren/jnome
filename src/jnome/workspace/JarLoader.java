@@ -19,8 +19,8 @@ import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.InputSourceNamespace;
 import chameleon.util.Pair;
 import chameleon.util.Util;
-import chameleon.workspace.Project;
 import chameleon.workspace.ProjectException;
+import chameleon.workspace.View;
 
 public class JarLoader extends AbstractJarLoader {
 
@@ -29,7 +29,7 @@ public class JarLoader extends AbstractJarLoader {
 	}
 	
 	@Override
-	protected void notifyProjectAdded(Project project) throws ProjectException {
+	protected void notifyProjectAdded(View view) throws ProjectException {
 		try {
 			createInputSources();
 		} catch (LookupException | IOException e) {
@@ -86,7 +86,7 @@ public class JarLoader extends AbstractJarLoader {
 	}
 
 	protected Language language() {
-		return project().language();
+		return view().language();
 	}
 	
 	private String packageFQN(String entryName) {

@@ -20,6 +20,7 @@ import chameleon.core.declaration.Signature;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
+import chameleon.core.namespace.Namespace;
 import chameleon.core.relation.WeakPartialOrder;
 import chameleon.oo.expression.Expression;
 import chameleon.oo.expression.MethodInvocation;
@@ -32,6 +33,7 @@ import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.InstantiatedTypeParameter;
 import chameleon.oo.type.generics.TypeParameter;
 import chameleon.support.member.simplename.method.NormalMethod;
+import chameleon.workspace.View;
 
 public abstract class AbstractJavaMethodSelector extends DeclarationSelector<NormalMethod> {
 
@@ -314,20 +316,22 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 
 	public Collection<Type> primitiveWideningConversionCandidates(Type type) throws LookupException {
 		Collection<Type> result = new ArrayList<Type>();
-		Java language = type.language(Java.class);
+		View view = type.view();
+		Java language = view.language(Java.class);
 		String name = type.getFullyQualifiedName();
+		Namespace ns = view.namespace();
 		if(type.is(language.NUMERIC_TYPE) == Ternary.TRUE) {
 			if(! name.equals("double")) {
-				result.add(language.findType("double"));
+				result.add(language.findType("double",ns));
 				if(! name.equals("float")) {
-					result.add(language.findType("float"));
+					result.add(language.findType("float",ns));
 					if(! name.equals("long")) {
-						result.add(language.findType("long"));
+						result.add(language.findType("long",ns));
 						if(! name.equals("int")) {
-							result.add(language.findType("int"));
+							result.add(language.findType("int",ns));
 							// char and short do not convert to short via widening.
 							if(name.equals("byte")) {
-								result.add(language.findType("short"));
+								result.add(language.findType("short",ns));
 							}
 						}
 					}

@@ -8,11 +8,10 @@ import java.util.List;
 import jnome.core.language.Java;
 import jnome.input.parser.ASMClassParser;
 import chameleon.core.declaration.Declaration;
-import chameleon.core.document.Document;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.InputSourceNamespace;
 import chameleon.core.namespace.Namespace;
-import chameleon.core.namespacedeclaration.NamespaceDeclaration;
+import chameleon.exception.ChameleonProgrammerException;
 import chameleon.workspace.InputException;
 import chameleon.workspace.InputSourceImpl;
 
@@ -20,7 +19,7 @@ public class LazyClassFileInputSource extends InputSourceImpl {
 
 	private ASMClassParser _parser;
 	
-	public LazyClassFileInputSource(ASMClassParser parser, InputSourceNamespace ns) {
+	public LazyClassFileInputSource(ASMClassParser parser, InputSourceNamespace ns) throws InputException {
 		if(parser == null) {
 			throw new IllegalArgumentException();
 		}
@@ -72,8 +71,12 @@ public class LazyClassFileInputSource extends InputSourceImpl {
 
 	@Override
 	public LazyClassFileInputSource clone() {
-		LazyClassFileInputSource result = new LazyClassFileInputSource(parser(),null);
-		return result;
+		try {
+			return new LazyClassFileInputSource(parser(),null);
+		} catch (InputException e) {
+			// Won't be connected, so no exception
+			throw new ChameleonProgrammerException(e);
+		}
 	}
 
 }

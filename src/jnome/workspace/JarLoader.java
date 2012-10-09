@@ -19,6 +19,7 @@ import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.InputSourceNamespace;
 import chameleon.util.Pair;
 import chameleon.util.Util;
+import chameleon.workspace.InputException;
 import chameleon.workspace.ProjectException;
 import chameleon.workspace.View;
 
@@ -32,14 +33,13 @@ public class JarLoader extends AbstractJarLoader {
 	protected void notifyProjectAdded(View view) throws ProjectException {
 		try {
 			createInputSources();
-		} catch (LookupException | IOException e) {
+		} catch (LookupException | IOException | InputException e) {
 			throw new ProjectException(e);
 		}
 	}
 	
-	protected void createInputSources() throws IOException, LookupException {
+	protected void createInputSources() throws IOException, LookupException, InputException {
 		JarFile jar = createJarFile();
-  	Java lang = (Java) language();
   	Enumeration<JarEntry> entries = jar.entries();
   	List<Pair<Pair<String,String>, JarEntry>> names = new ArrayList<>();
   	while(entries.hasMoreElements()) {
@@ -78,7 +78,7 @@ public class JarLoader extends AbstractJarLoader {
 				}
 			} else {
 				map.put(key, parser);
-				InputSourceNamespace ns = (InputSourceNamespace) lang.defaultNamespace().getOrCreateNamespace(packageFQN);
+				InputSourceNamespace ns = (InputSourceNamespace) view().namespace().getOrCreateNamespace(packageFQN);
 				LazyClassFileInputSource source = new LazyClassFileInputSource(parser,ns);
 				addInputSource(source);
 			}

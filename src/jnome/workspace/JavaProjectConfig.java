@@ -2,21 +2,26 @@ package jnome.workspace;
 
 import java.io.File;
 
-import jnome.core.language.JavaLanguageFactory;
-
+import jnome.input.BaseJavaProjectLoader;
 import chameleon.workspace.ConfigElement;
 import chameleon.workspace.ConfigException;
 import chameleon.workspace.FileInputSourceFactory;
-import chameleon.workspace.ProjectConfig;
+import chameleon.workspace.PConfig;
 import chameleon.workspace.ProjectException;
+import chameleon.workspace.View;
 
-public class JavaProjectConfig extends ProjectConfig {
+public class JavaProjectConfig extends PConfig {
 
-	public JavaProjectConfig(File root, FileInputSourceFactory inputSourceFactory) {
-		super(root, new JavaLanguageFactory(),inputSourceFactory);
+	public JavaProjectConfig(View view, FileInputSourceFactory inputSourceFactory, String projectName, File root, String baseJarPath) throws ConfigException {
+		super(view,inputSourceFactory,projectName, root);
+		try {
+			view.addBinary(new BaseJavaProjectLoader(new File(baseJarPath)));
+		} catch (ProjectException e) {
+			throw new ConfigException(e);
+		}
 	}
-
-	public class BinaryPath extends ProjectConfig.BinaryPath {
+	
+	public class BinaryPath extends PConfig.BinaryPath {
 		public class Jar extends ConfigElement {
 	  	public void setFile(String path) throws ConfigException {
 				try {
@@ -27,4 +32,5 @@ public class JavaProjectConfig extends ProjectConfig {
 			}
 	  }
 	}
+	
 }

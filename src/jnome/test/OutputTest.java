@@ -9,7 +9,7 @@ import java.util.List;
 
 import jnome.core.language.Java;
 import jnome.core.language.JavaLanguageFactory;
-import jnome.input.JavaFileInputSourceFactory;
+import jnome.input.EagerJavaFileInputSourceFactory;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -87,7 +87,7 @@ public abstract class OutputTest {
 		addTestFiles();
 		Java language = new JavaLanguageFactory().create();
 		Project project = new Project("output test", new View(new RootNamespace(new RegularNamespaceFactory()),language), new File("."));
-		JavaFileInputSourceFactory inputSourceFactory = new JavaFileInputSourceFactory();
+		EagerJavaFileInputSourceFactory inputSourceFactory = new EagerJavaFileInputSourceFactory();
 		//FIXME I think this entire test class has to be deleted.
 		throw new Error();
 //		_args = new ArgumentParser(project,true).parse(arguments(), _extension,inputSourceFactory);

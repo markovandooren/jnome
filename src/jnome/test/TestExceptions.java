@@ -14,6 +14,7 @@ import chameleon.core.lookup.LookupException;
 import chameleon.oo.type.Type;
 import chameleon.test.ModelTest;
 import chameleon.test.provider.BasicNamespaceProvider;
+import chameleon.workspace.ConfigException;
 import chameleon.workspace.Project;
 import chameleon.workspace.ProjectException;
 
@@ -31,13 +32,13 @@ public class TestExceptions extends JavaTest {
 		@Test
 		public void testExceptions() throws LookupException {
 				Java java = (Java) view().language();
-				Type exception = java.findType("exception.MyException");
+				Type exception = java.findType("exception.MyException",view().namespace());
 				assertTrue(java.isCheckedException(exception));
 		}
 	}
 
 	@Test
-	public void testGenerics() throws LookupException, ProjectException {
+	public void testGenerics() throws ConfigException, LookupException, ProjectException {
 		new CustomGenericsTest(project()).testExceptions();
 	}
 

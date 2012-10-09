@@ -1,9 +1,9 @@
 package jnome.tool.design;
 
 import jnome.core.language.Java;
+import jnome.core.language.JavaLanguageFactory;
 import jnome.core.type.ArrayType;
 import jnome.input.JavaFactory;
-import jnome.workspace.JavaProjectFactory;
 
 import org.rejuse.predicate.SafePredicate;
 
@@ -25,7 +25,7 @@ import chameleon.support.tool.ModelBuilder;
 import chameleon.test.provider.BasicDescendantProvider;
 import chameleon.test.provider.ElementProvider;
 import chameleon.workspace.ConfigException;
-import chameleon.workspace.Project;
+import chameleon.workspace.LanguageRepository;
 import chameleon.workspace.View;
 
 
@@ -73,7 +73,7 @@ public class DesignAnalyzer {
 	
 	public boolean mutableCollectionType(Type type) throws LookupException {
 		Java lang = type.language(Java.class);
-		Type coll = lang.findType("java.util.Collection");
+		Type coll = lang.findType("java.util.Collection",type.view().namespace());
 		
 		return (type.subTypeOf(coll) || (type instanceof ArrayType));
 	}
@@ -118,7 +118,9 @@ public class DesignAnalyzer {
       System.out.println("Usage: java .... JavaTranslator xmlConfigFile @recursivePackageFQN* #packageFQN* $typeFQN*");
     }
     Config.setCaching(true);
-		ModelBuilder provider = new ModelBuilder(new JavaProjectFactory(),args);
+    LanguageRepository repo = new LanguageRepository();
+    repo.add(new JavaLanguageFactory().create());
+		ModelBuilder provider = new ModelBuilder(args, repo);
     long start = System.currentTimeMillis();
     VerificationResult result = new DesignAnalyzer(provider.project().views().get(0), provider.namespaceProvider()).analyze();
     System.out.println(result.message());

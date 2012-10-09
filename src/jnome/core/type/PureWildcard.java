@@ -13,6 +13,7 @@ import chameleon.oo.type.generics.CapturedTypeParameter;
 import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.TypeConstraint;
 import chameleon.oo.type.generics.TypeParameter;
+import chameleon.workspace.View;
 
 public class PureWildcard extends ActualTypeArgument {
 
@@ -41,7 +42,9 @@ public class PureWildcard extends ActualTypeArgument {
 	// verplaatst worden. NOPE, niet altijd eerst capturen.
 	@Override
 	public Type lowerBound() throws LookupException {
-		return language(ObjectOrientedLanguage.class).getNullType();
+		View view = view();
+		ObjectOrientedLanguage l = view.language(ObjectOrientedLanguage.class);
+		return l.getNullType(view.namespace());
 	}
 
 	@Override

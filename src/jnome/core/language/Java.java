@@ -23,12 +23,13 @@ import jnome.core.type.JavaPureWildcard;
 import jnome.core.type.JavaSuperWildcard;
 import jnome.core.type.JavaTypeReference;
 import jnome.core.type.JavaUnionTypeReference;
-import jnome.core.type.NullType;
 import jnome.core.type.PureWildCardType;
 import jnome.core.type.PureWildcard;
 import jnome.core.type.RawType;
 import jnome.core.type.RegularJavaType;
 
+import org.rejuse.junit.BasicRevision;
+import org.rejuse.junit.Revision;
 import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.property.PropertyUniverse;
 
@@ -36,11 +37,10 @@ import chameleon.core.Config;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.declaration.TargetDeclaration;
-import chameleon.core.document.Document;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.namespacedeclaration.NamespaceDeclaration;
+import chameleon.core.namespace.Namespace;
 import chameleon.core.property.ChameleonProperty;
 import chameleon.core.property.DynamicChameleonProperty;
 import chameleon.core.property.PropertyRule;
@@ -95,7 +95,6 @@ import chameleon.support.rule.member.MemberInstanceByDefault;
 import chameleon.support.rule.member.MemberOverridableByDefault;
 import chameleon.support.rule.member.TypeExtensibleByDefault;
 import chameleon.util.Pair;
-import chameleon.workspace.Project;
 
 /**
  * @author Marko van Dooren
@@ -108,8 +107,8 @@ public class Java extends ObjectOrientedLanguage {
 //		// FIXME This should be done when initializing the predefined elements.
 //	}
 	
-	protected Java(String name) {
-		super(name, new JavaLookupFactory());
+	protected Java(String name, Revision version) {
+		super(name, new JavaLookupFactory(), version);
 //		_nullType = new NullType(this);
 		STRICTFP = new StaticChameleonProperty("strictfp", this, Declaration.class);
 		SYNCHRONIZED = new StaticChameleonProperty("synchronized", this, Method.class);
@@ -148,7 +147,7 @@ public class Java extends ObjectOrientedLanguage {
 	}
 	
 	public Java() {
-		this("Java");
+		this("Java", new BasicRevision(1,6,0));
 	}
 	
 	public Java clone() {
@@ -305,10 +304,10 @@ public class Java extends ObjectOrientedLanguage {
 	public final ChameleonProperty UNBOXABLE_TYPE;
 	public final ChameleonProperty ANNOTATION_TYPE;
 	
-	public Type getNullType() {
+	public Type getNullType(Namespace ns) {
 		if(_nullType == null) {
 			try {
-				_nullType = findType("null type");
+				_nullType = findType("null type",ns);
 			} catch (LookupException e) {
 				throw new ChameleonProgrammerException(e);
 			}
@@ -321,8 +320,8 @@ public class Java extends ObjectOrientedLanguage {
    @
    @ post \result.equals(getDefaultPackage().findType("java.lang.NullPointerException")); 
    @*/
-  public Type getNullInvocationException() throws LookupException {
-    return findType("java.lang.NullPointerException");
+  public Type getNullInvocationException(Namespace ns) throws LookupException {
+    return findType("java.lang.NullPointerException",ns);
   }
   
   protected void initializePropertyRules() {
@@ -349,22 +348,24 @@ public class Java extends ObjectOrientedLanguage {
    @
    @ post \result.equals(getDefaultPackage().findType("java.lang.RuntimeException")); 
    @*/
-  public Type getUncheckedException() throws LookupException {
-    return findType("java.lang.RuntimeException");
+  @Override
+  public Type getUncheckedException(Namespace ns) throws LookupException {
+    return findType("java.lang.RuntimeException",ns);
   }
   
-  public Type getTopCheckedException() throws LookupException {
-    return findType("java.lang.Throwable");
+  public Type getTopCheckedException(Namespace ns) throws LookupException {
+    return findType("java.lang.Throwable",ns);
   }
 
   public boolean isCheckedException(Type type) throws LookupException{
-    Type error = findType("java.lang.Error");
-    Type runtimeExc = findType("java.lang.RuntimeException");
+  	Namespace ns = type.view().namespace();
+    Type error = findType("java.lang.Error",ns);
+    Type runtimeExc = findType("java.lang.RuntimeException",ns);
     return isException(type) && (! type.assignableTo(error)) && (! type.assignableTo(runtimeExc));
   }
 
   public boolean isException(Type type) throws LookupException {
-    return type.assignableTo(findType("java.lang.Throwable"));
+    return type.assignableTo(findType("java.lang.Throwable",type.view().namespace()));
   }
   
 	  public String getDefaultSuperClassFQN() {
@@ -372,13 +373,13 @@ public class Java extends ObjectOrientedLanguage {
 	  }
 	  
     @Override
-		public Type booleanType() throws LookupException {
-			return findType("boolean");
+		public Type booleanType(Namespace ns) throws LookupException {
+			return findType("boolean",ns);
 		}
 
 		@Override
-		public Type classCastException() throws LookupException {
-			return findType("java.lang.ClassCastException");
+		public Type classCastException(Namespace ns) throws LookupException {
+			return findType("java.lang.ClassCastException",ns);
 		}
 
 //		@Override
@@ -395,8 +396,8 @@ public class Java extends ObjectOrientedLanguage {
 		private JavaImplementsRelation _implementsRelation = new JavaImplementsRelation();
 
 		@Override
-		public Type voidType() throws LookupException {
-			return findType("void");
+		public Type voidType(Namespace root) throws LookupException {
+			return findType("void",root);
 		}
 
 		@Override
@@ -411,14 +412,14 @@ public class Java extends ObjectOrientedLanguage {
 			return _subtypingRelation;
 		}
 		
-		public Type getDefaultSuperClass() throws LookupException {
-			  TypeReference typeRef = createTypeReferenceInDefaultNamespace(getDefaultSuperClassFQN());
-		    Type result = typeRef.getType();
-		    if (result==null) {
-		        throw new LookupException("Default super class "+getDefaultSuperClassFQN()+" not found.");
-		    }
-		    return result;
-		}
+//		public Type getDefaultSuperClass(Namespace root) throws LookupException {
+//			  TypeReference typeRef = createTypeReferenceInNamespace(getDefaultSuperClassFQN(),root);
+//		    Type result = typeRef.getType();
+//		    if (result==null) {
+//		        throw new LookupException("Default super class "+getDefaultSuperClassFQN()+" not found.");
+//		    }
+//		    return result;
+//		}
 
 		private JavaSubtypingRelation _subtypingRelation = new JavaSubtypingRelation();
 		  
@@ -463,7 +464,7 @@ public class Java extends ObjectOrientedLanguage {
 			} else {
 				throw new LookupException("Type "+fqn+" cannot be converted through boxing.");
 			}
-			return findType(newFqn);
+			return findType(newFqn,type.view().namespace());
 		}
 
 		public Type unbox(Type type) throws LookupException {
@@ -488,10 +489,10 @@ public class Java extends ObjectOrientedLanguage {
 			} else {
 				throw new LookupException("Type "+fqn+" cannot be converted through unboxing.");
 			}
-			return findType(newFqn);
+			return findType(newFqn,type.view().namespace());
 		}
 
-		public JavaTypeReference box(JavaTypeReference aRef) throws LookupException {
+		public JavaTypeReference box(JavaTypeReference aRef, Namespace root) throws LookupException {
 			String fqn = aRef.getElement().getFullyQualifiedName();
 			String newFqn;
 			if(fqn.equals("boolean")) {
@@ -514,7 +515,7 @@ public class Java extends ObjectOrientedLanguage {
 				throw new LookupException("Type "+fqn+" cannot be converted through boxing.");
 			}
 			JavaTypeReference result = createTypeReference(newFqn);
-			result.setUniParent(defaultNamespace());
+			result.setUniParent(root);
 			return result;
 		}
 
@@ -604,10 +605,11 @@ public class Java extends ObjectOrientedLanguage {
 		
 		public JavaTypeReference reference(Type type) throws LookupException {
 			JavaTypeReference result;
+			Namespace rootNamespace = type.view().namespace();
 			if(type instanceof IntersectionType) {
 				IntersectionType intersection = (IntersectionType) type;
 				result = new JavaIntersectionTypeReference();
-				result.setUniParent(defaultNamespace());
+				result.setUniParent(rootNamespace);
 				for(Type t: ((IntersectionType)type).types()) {
 					JavaTypeReference reference = reference(t);
 					Element oldParent = reference.parent();
@@ -619,7 +621,7 @@ public class Java extends ObjectOrientedLanguage {
 			} else if(type instanceof UnionType) {
 				UnionType intersection = (UnionType) type;
 				result = new JavaUnionTypeReference();
-				result.setUniParent(defaultNamespace());
+				result.setUniParent(rootNamespace);
 				for(Type t: ((UnionType)type).types()) {
 					JavaTypeReference reference = reference(t);
 					Element oldParent = reference.parent();
@@ -655,10 +657,10 @@ public class Java extends ObjectOrientedLanguage {
 				result.setUniParent(((InstantiatedParameterType)type).parameter().parent());
 			} else if (type instanceof AnonymousInnerClass) {
 				String fqn = ((AnonymousInnerClass)type).invocation().getTypeReference().getElement().getFullyQualifiedName();
-				result = (JavaTypeReference) createTypeReferenceInDefaultNamespace(fqn);
+				result = (JavaTypeReference) createTypeReferenceInNamespace(fqn,rootNamespace);
 			} else if (type instanceof RegularType) {
 				// for now, if this code is invoked, there are no generic parameters.
-				result = (JavaTypeReference) createTypeReferenceInDefaultNamespace(type.getFullyQualifiedName());
+				result = (JavaTypeReference) createTypeReferenceInNamespace(type.getFullyQualifiedName(),rootNamespace);
 				if(type.nbTypeParameters(TypeParameter.class) > 0) {
 //					throw new ChameleonProgrammerException("requesting reference of RegularType with type parameters");
 					for(TypeParameter tpar: type.parameters(TypeParameter.class)) {
@@ -669,7 +671,7 @@ public class Java extends ObjectOrientedLanguage {
 					}
 				}
 			} else if (type instanceof RawType) {
-				result = (JavaTypeReference) createTypeReferenceInDefaultNamespace(type.getFullyQualifiedName());
+				result = (JavaTypeReference) createTypeReferenceInNamespace(type.getFullyQualifiedName(),rootNamespace);
 			} else if (type instanceof ExtendsWildcardType) {
 				JavaTypeReference reference = reference(((ExtendsWildcardType)type).bound());
 				Element parent = reference.parent();
@@ -844,13 +846,14 @@ public class Java extends ObjectOrientedLanguage {
 //		}
 //		private Type _int;
 
-		public Type objectType() throws LookupException {
-			Type result = _object;
-			if(result == null) {
-				result = findType("java.lang.Object");
-				_object = result;
-			}
-			return result;
-		}
+//		public Type objectType() throws LookupException {
+//			Type result = _object;
+//			if(result == null) {
+//				result = findType("java.lang.Object",root);
+//				_object = result;
+//			}
+//			return result;
+//		}
+		
 		private Type _object;
 }

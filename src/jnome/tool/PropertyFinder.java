@@ -3,8 +3,6 @@ package jnome.tool;
 import java.util.List;
 
 import jnome.core.language.Java;
-import jnome.input.JavaModelFactory;
-import chameleon.input.ModelFactory;
 import chameleon.oo.expression.NamedTargetExpression;
 import chameleon.oo.method.Method;
 import chameleon.oo.type.Type;
@@ -26,7 +24,7 @@ public class PropertyFinder extends CommandLineTool {
 	   */
 	  public PropertyFinder(String[] args) throws Exception {
 	  	super(args);
-		  List<Type> types = language().defaultNamespace().descendants(Type.class);
+		  List<Type> types = view().namespace().descendants(Type.class);
 		  findProperties(types,"set","get");
 		  findPairs(types,"set","get");
 		  findPairs(types,"add","remove");

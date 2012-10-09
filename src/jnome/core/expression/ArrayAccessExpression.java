@@ -20,6 +20,7 @@ import chameleon.support.expression.ArrayIndex;
 import chameleon.util.Util;
 import chameleon.util.association.Multi;
 import chameleon.util.association.Single;
+import chameleon.workspace.View;
 
 /**
  * @author Marko van Dooren
@@ -88,7 +89,9 @@ public class ArrayAccessExpression extends Expression implements Assignable {
   }
 
   public Set getDirectExceptions() throws LookupException {
-    return Util.createNonNullSet(language(ObjectOrientedLanguage.class).getNullInvocationException());
+  	View view = view();
+    ObjectOrientedLanguage language = view.language(ObjectOrientedLanguage.class);
+		return Util.createNonNullSet(language.getNullInvocationException(view.namespace()));
   }
 
 	@Override

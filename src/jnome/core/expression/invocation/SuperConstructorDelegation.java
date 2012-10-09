@@ -11,6 +11,7 @@ import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.Type;
 import chameleon.support.member.simplename.method.NormalMethod;
+import chameleon.workspace.View;
 
 /**
  * @author Marko van Dooren
@@ -22,7 +23,8 @@ public class SuperConstructorDelegation extends ConstructorDelegation {
   }
 
   protected Type actualType() throws LookupException {
-    return language(ObjectOrientedLanguage.class).voidType();
+    View view = view();
+		return view.language(ObjectOrientedLanguage.class).voidType(view.namespace());
   }
   
   // @FIXME: does not work with multiple inheritance. Call is ambiguous.

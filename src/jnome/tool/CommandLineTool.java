@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import jnome.workspace.JavaProjectFactory;
+import jnome.core.language.JavaLanguageFactory;
 
 import org.rejuse.predicate.SafePredicate;
 import org.rejuse.predicate.UnsafePredicate;
@@ -15,6 +15,7 @@ import chameleon.core.language.Language;
 import chameleon.core.namespace.Namespace;
 import chameleon.support.tool.ModelBuilder;
 import chameleon.workspace.ConfigException;
+import chameleon.workspace.LanguageRepository;
 import chameleon.workspace.Project;
 import chameleon.workspace.View;
 
@@ -25,7 +26,9 @@ public abstract class CommandLineTool {
       System.out.println("Usage: java packageName.ToolName "+"xmlConfigFile @recursivePackageFQN* #packageFQN* $typeFQN*");
     }
     Config.setCaching(true);
-		_provider = new ModelBuilder(new JavaProjectFactory(),args);
+    LanguageRepository repo = new LanguageRepository();
+    repo.add(new JavaLanguageFactory().create());
+		_provider = new ModelBuilder(args, repo);
     
 	  _project = _provider.project();
 	}

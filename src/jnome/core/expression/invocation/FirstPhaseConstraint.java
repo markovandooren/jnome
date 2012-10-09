@@ -27,6 +27,7 @@ import chameleon.oo.type.generics.InstantiatedTypeParameter;
 import chameleon.oo.type.generics.SuperWildcard;
 import chameleon.oo.type.generics.TypeConstraint;
 import chameleon.oo.type.generics.TypeParameter;
+import chameleon.workspace.View;
 
 /**
  * A = type()
@@ -71,8 +72,11 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 	public List<SecondPhaseConstraint> process() throws LookupException {
 		List<SecondPhaseConstraint> result = new ArrayList<SecondPhaseConstraint>();
 		// If A is the type of null, no constraint is implied on Tj.
-		if(! A().equals(A().language(ObjectOrientedLanguage.class).getNullType())) {
-			
+		Type A = A();
+		View view = A.view();
+    ObjectOrientedLanguage l = view.language(ObjectOrientedLanguage.class);
+		
+		if(! A.equals(l.getNullType(view.namespace()))) {
 			result.addAll(processFirstLevel());
 		}
 		return result;
@@ -219,6 +223,10 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 
 	public Java language() throws LookupException {
 		return A().language(Java.class);
+	}
+	
+	public View view() throws LookupException {
+		return A().view();
 	}
 	
   protected Type typeWithSameBaseTypeAs(Type example, Collection<Type> toBeSearched) {

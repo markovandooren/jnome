@@ -1,5 +1,5 @@
 <project name="testchameleon">
-	<language>java</language>
+  <language name="java"/>
 	<sourcepath>
       <source root="jregex" extension=".java"/> 
       <source root="rejuse/src" extension=".java"/>

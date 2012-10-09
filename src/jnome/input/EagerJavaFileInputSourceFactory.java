@@ -8,13 +8,14 @@ import chameleon.workspace.FileInputSourceFactory;
 import chameleon.workspace.InputException;
 import chameleon.workspace.InputSource;
 
-public class LazyJavaFileInputSourceFactory extends FileInputSourceFactory {
+public class EagerJavaFileInputSourceFactory extends FileInputSourceFactory {
 
 	@Override
 	public InputSource create(File file, DirectoryLoader loader) throws InputException {
-		JavaFileInputSource javaFileInputSource = new JavaFileInputSource(file, (InputSourceNamespace) currentNamespace());
-		loader.addInputSource(javaFileInputSource);
-		return javaFileInputSource;
+		JavaFileInputSource eagerJavaFileInputSource = new JavaFileInputSource(file,(InputSourceNamespace) currentNamespace());
+		loader.addInputSource(eagerJavaFileInputSource);
+		eagerJavaFileInputSource.load();
+		return eagerJavaFileInputSource;
 	}
 	
 }

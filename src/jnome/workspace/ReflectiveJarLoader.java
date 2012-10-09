@@ -10,16 +10,16 @@ import java.util.jar.JarEntry;
 
 import jnome.core.language.Java;
 import jnome.input.ReflectiveClassParser;
-import chameleon.core.lookup.LookupException;
 import chameleon.core.namespace.LazyNamespace;
 import chameleon.core.namespace.RootNamespace;
 import chameleon.util.Util;
-import chameleon.workspace.ProjectException;
 import chameleon.workspace.DocumentLoader;
+import chameleon.workspace.InputException;
+import chameleon.workspace.ProjectException;
 
 public class ReflectiveJarLoader extends AbstractJarLoader implements DocumentLoader {
 
-	public ReflectiveJarLoader(File file) throws ProjectException {
+	public ReflectiveJarLoader(File file) throws ProjectException, InputException {
 		super(file);
 		_loader = createLoader(file);
 		process();
@@ -35,7 +35,7 @@ public class ReflectiveJarLoader extends AbstractJarLoader implements DocumentLo
 	
 	private ClassLoader _loader;
 
-	private void process() throws ProjectException {
+	private void process() throws ProjectException, InputException {
   	try {
   	Enumeration<JarEntry> entries = createJarFile().entries();
   	RootNamespace root = view().namespace();

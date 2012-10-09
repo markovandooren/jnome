@@ -1,9 +1,10 @@
 package jnome.core.type;
 
 
+import jnome.core.language.Java;
+
 import org.rejuse.logic.ternary.Ternary;
 
-import jnome.core.language.Java;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
@@ -13,6 +14,7 @@ import chameleon.oo.type.Type;
 import chameleon.oo.type.inheritance.SubtypeRelation;
 import chameleon.oo.variable.RegularMemberVariable;
 import chameleon.support.modifier.Final;
+import chameleon.workspace.View;
 
 /**
  * @author Marko van Dooren
@@ -118,7 +120,9 @@ public class ArrayType extends RegularType {
   }
   
   public boolean assignableTo(Type other) throws LookupException {
-  	Type objType = language(ObjectOrientedLanguage.class).getDefaultSuperClass();
+  	View view = view();
+  	ObjectOrientedLanguage language = view.language(ObjectOrientedLanguage.class);
+		Type objType = language.getDefaultSuperClass(view.namespace());
     return super.assignableTo(other) ||
            ( // Reference type
              elementType().subTypeOf(objType) &&

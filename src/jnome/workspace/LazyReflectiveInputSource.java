@@ -11,6 +11,7 @@ import chameleon.core.namespace.LazyNamespace;
 import chameleon.core.namespace.Namespace;
 import chameleon.core.namespace.RootNamespace;
 import chameleon.core.namespacedeclaration.NamespaceDeclaration;
+import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.type.Type;
 import chameleon.util.Util;
 import chameleon.workspace.InputException;
@@ -18,7 +19,7 @@ import chameleon.workspace.InputSourceImpl;
 
 public class LazyReflectiveInputSource extends InputSourceImpl {
 
-	public LazyReflectiveInputSource(ClassLoader loader, ReflectiveClassParser parser, String fqn, LazyNamespace ns) {
+	public LazyReflectiveInputSource(ClassLoader loader, ReflectiveClassParser parser, String fqn, LazyNamespace ns) throws InputException {
 		_parser = parser;
 		_fqn = fqn;
 		_name = Util.getLastPart(fqn);
@@ -29,7 +30,11 @@ public class LazyReflectiveInputSource extends InputSourceImpl {
 	
 	@Override
 	public InputSourceImpl clone() {
-		return new LazyReflectiveInputSource(_loader, _parser, _fqn, null);
+		try {
+			return new LazyReflectiveInputSource(_loader, _parser, _fqn, null);
+		} catch (InputException e) {
+			throw new ChameleonProgrammerException(e);
+		}
 	}
 	
 	private RootNamespace _root;

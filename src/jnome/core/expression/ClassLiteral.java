@@ -22,7 +22,7 @@ public class ClassLiteral extends Expression {
   }
 
   protected Type actualType() throws LookupException {
-  	BasicJavaTypeReference tref = (BasicJavaTypeReference) language(ObjectOrientedLanguage.class).createTypeReferenceInDefaultNamespace("java.lang.Class");
+  	BasicJavaTypeReference tref = (BasicJavaTypeReference) language(ObjectOrientedLanguage.class).createTypeReferenceInNamespace("java.lang.Class", view().namespace());
   	tref.addArgument(new BasicTypeArgument(target().clone()));
   	tref.setUniParent(this);
   	return tref.getElement();

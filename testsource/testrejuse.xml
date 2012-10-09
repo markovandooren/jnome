@@ -1,5 +1,5 @@
 <project name="testrejuse">
-	<language>java</language>
+	<language name="java"/>
 	<sourcepath>
       <source root="jregex" extension=".java"/> 
       <source root="jutil/src" extension=".java"/>

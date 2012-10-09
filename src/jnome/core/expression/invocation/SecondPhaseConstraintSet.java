@@ -26,6 +26,7 @@ import chameleon.oo.type.generics.InstantiatedTypeParameter;
 import chameleon.oo.type.generics.SuperWildcard;
 import chameleon.oo.type.generics.TypeParameter;
 import chameleon.support.expression.AssignmentExpression;
+import chameleon.workspace.View;
 
 public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstraint> {
 
@@ -336,8 +337,10 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
   		processUnresolved(S());
   	} else {
   		if(! typeParameters().isEmpty()) {
-  			ObjectOrientedLanguage language = (ObjectOrientedLanguage) typeParameters().get(0).language(ObjectOrientedLanguage.class);
-  			processUnresolved((JavaTypeReference) language.createTypeReferenceInDefaultNamespace(language.getDefaultSuperClassFQN()));
+  			TypeParameter typeParameter = typeParameters().get(0);
+  			View view = typeParameter.view();
+				ObjectOrientedLanguage language = (ObjectOrientedLanguage) view.language();
+  			processUnresolved((JavaTypeReference) language.createTypeReferenceInNamespace(language.getDefaultSuperClassFQN(),view.namespace()));
   		}
   	}
   }
@@ -345,8 +348,9 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	private void processUnresolved(JavaTypeReference S) throws LookupException {
 		JavaTypeReference RRef = (JavaTypeReference) invokedGenericMethod().returnTypeReference();
 		FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(invocation(), invokedGenericMethod());
-		Java java = RRef.language(Java.class);
-		if(! RRef.getElement().sameAs(java.voidType())) {
+		View view = RRef.view();
+		Java java = view.language(Java.class);
+		if(! RRef.getElement().sameAs(java.voidType(RRef.view().namespace()))) {
 		  // the constraint S >> R', provided R is not void	
 			JavaTypeReference RprimeRef = substitutedReference(RRef);
 			constraints.add(new GGConstraint(S, RprimeRef.getType()));
@@ -371,8 +375,12 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		SecondPhaseConstraintSet seconds = constraints.secondPhase();
 		seconds.processEqualityConstraints();
 		seconds.processSubtypeConstraints();
+		// SPEED why not use the 'java' var and view from above? 
+		// not going to change this during the refactoring, too risky
 		for(TypeParameter param: seconds.unresolvedParameters()) {
-			seconds.add(new ActualTypeAssignment(param, param.language(ObjectOrientedLanguage.class).getDefaultSuperClass()));
+			View v = param.view();
+			ObjectOrientedLanguage l = v.language(ObjectOrientedLanguage.class);
+			seconds.add(new ActualTypeAssignment(param, l.getDefaultSuperClass(v.namespace())));
 		}
 		for(TypeParameter param: unresolvedParameters()) {
 			add(seconds.assignments().assignment(param));

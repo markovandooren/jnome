@@ -6,11 +6,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import jnome.core.language.Java;
+import jnome.core.language.JavaLanguageFactory;
 import jnome.input.BaseJavaProjectLoader;
-import jnome.input.JavaFileInputSourceFactory;
+import jnome.input.EagerJavaFileInputSourceFactory;
 import jnome.input.LazyJavaFileInputSourceFactory;
 import jnome.workspace.JarLoader;
-import jnome.workspace.JavaProjectFactory;
+import jnome.workspace.JavaConfigLoader;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,9 +31,12 @@ import chameleon.test.CompositeTest;
 import chameleon.test.CrossReferenceTest;
 import chameleon.test.provider.BasicDescendantProvider;
 import chameleon.test.provider.ElementProvider;
+import chameleon.workspace.BootstrapProjectConfig;
 import chameleon.workspace.ConfigException;
+import chameleon.workspace.ConfigLoader;
 import chameleon.workspace.DirectoryLoader;
 import chameleon.workspace.FileInputSourceFactory;
+import chameleon.workspace.LanguageRepository;
 import chameleon.workspace.Project;
 import chameleon.workspace.ProjectException;
 import chameleon.workspace.View;
@@ -53,7 +58,7 @@ public abstract class JavaTest extends CompositeTest {
 	
 	private String _javaBaseJarPath;
 	
-	public String javaBarJarPath() {
+	public String javaBaseJarPath() {
 		return _javaBaseJarPath;
 	}
 	
@@ -96,77 +101,17 @@ public abstract class JavaTest extends CompositeTest {
 	public void testVerification() throws Exception {
 	}
 
-	protected final Project makeProject() throws ProjectException {
+	protected final Project makeProject() throws ConfigException {
 		Project project;
-		try {
-			project = new JavaProjectFactory().createProject(projectFile());
-			View view = project.views().get(0);
-			includeBaseJar(view,javaBarJarPath());
-			return project;
-		} catch (ConfigException e) {
-			throw new ProjectException(e);
-		}
-		
+		LanguageRepository repo = new LanguageRepository();
+		Java java = new JavaLanguageFactory().create();
+		repo.add(java);
+		java.setPlugin(ConfigLoader.class, new JavaConfigLoader(javaBaseJarPath()));
+		BootstrapProjectConfig config = new BootstrapProjectConfig(projectFile().getParentFile(), repo);
+		config.readFromXML(projectFile());
+		project = config.project();
+//		View view = project.views().get(0);
+		return project;
 	}
 	
-	protected void includeCustom(View view, String rootDirectory) throws ProjectException {
-		FileInputSourceFactory factory = createFactory(view.language());
-		File root = new File(rootDirectory);
-		view.addSource(new DirectoryLoader(fileExtension(), root, factory));
-	}
-	
-	protected void includeJar(View view, String absoluteJarPath) throws ProjectException {
-		view.addBinary(new JarLoader(new File(absoluteJarPath)));
-	}
-	
-	
-	public String fileExtension() {
-		return ".java";
-	}
-	
-	private boolean _lazyLoading = true;
-	
-	protected FileInputSourceFactory createFactory(Language language) {
-		if(_lazyLoading) {
-			return new LazyJavaFileInputSourceFactory();
-		} else {
-		return new JavaFileInputSourceFactory();
-		}
-	}
-
-	private RootNamespace createRootNamespace() {
-		if(_lazyLoading) {
-			return new LazyRootNamespace();
-		} else {
-			return new RootNamespace(createNamespaceFactory());
-		}
-	}
-	
-	private NamespaceFactory createNamespaceFactory() {
-		if(_lazyLoading) {
-			return new LazyNamespaceFactory();
-		} else {
-			return new RegularNamespaceFactory();
-		}
-}
-
-
-//	protected void includeBase(Project project, String rootDirectory) throws ProjectException {
-//		includeCustom(project, rootDirectory);
-//		project.language().plugin(ModelFactory.class).initializePredefinedElements();
-//	}
-	
-	protected void includeBaseJar(View view, String jarPath) throws ProjectException {
-		view.addBinary(new BaseJavaProjectLoader(new File(jarPath)));
-	}
-
-//	@Test @Override
-//	public void testClone() throws Exception {
-//	}
-//	@Test @Override
-//	public void testChildren() throws Exception {
-//	}
-//	@Test @Override
-//	public void testCrossReferences() throws Exception {
-//	}
 }

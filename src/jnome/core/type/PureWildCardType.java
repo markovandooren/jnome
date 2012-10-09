@@ -12,7 +12,7 @@ import chameleon.oo.type.inheritance.InheritanceRelation;
 public class PureWildCardType extends WildCardType {
 
 	public PureWildCardType(Type type) throws LookupException {
-		super(new SimpleNameSignature("?"),type ,type.language(ObjectOrientedLanguage.class).getNullType());
+		super(new SimpleNameSignature("?"),type ,type.language(ObjectOrientedLanguage.class).getNullType(type.view().namespace()));
 	}
 
 	@Override

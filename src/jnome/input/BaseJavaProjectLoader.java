@@ -14,7 +14,7 @@ import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.type.Type;
 import chameleon.workspace.DocumentLoaderImpl;
 import chameleon.workspace.InputException;
-import chameleon.workspace.SyntheticInputSource;
+import chameleon.workspace.DirectInputSource;
 import chameleon.workspace.View;
 
 public class BaseJavaProjectLoader extends JarLoader {
@@ -48,7 +48,7 @@ public class BaseJavaProjectLoader extends JarLoader {
 
 	private void addNullType(DocumentLoaderImpl loader) {
     try {
-			loader.addInputSource(new SyntheticInputSource(new NullType(java()),"",view()));
+			loader.addInputSource(new DirectInputSource(new NullType(java()),"",view()));
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}

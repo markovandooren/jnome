@@ -20,10 +20,18 @@ public class JavaConfigLoader extends PluginImpl implements ConfigLoader {
 	
 	private String _basePath;
 	
+	public String baseJarPath() {
+		return _basePath;
+	}
+	
 	@Override
 	public ConfigElement createConfigElement(Language language, String projectName, File root) throws ConfigException {
 		View view = new View(new LazyRootNamespace(), language);
-		return new JavaProjectConfig(view, new LazyJavaFileInputSourceFactory(), projectName, root, _basePath);
+		return createProjectConfig(projectName, root, view);
+	}
+
+	protected JavaProjectConfig createProjectConfig(String projectName, File root, View view) throws ConfigException {
+		return new JavaProjectConfig(view, new LazyJavaFileInputSourceFactory(), projectName, root, baseJarPath());
 	}
 
 	@Override

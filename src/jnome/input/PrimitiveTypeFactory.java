@@ -21,7 +21,7 @@ import chameleon.support.modifier.Public;
 import chameleon.support.modifier.ValueType;
 import chameleon.workspace.DocumentLoaderImpl;
 import chameleon.workspace.InputException;
-import chameleon.workspace.SyntheticInputSource;
+import chameleon.workspace.DirectInputSource;
 import chameleon.workspace.View;
 
 public class PrimitiveTypeFactory {
@@ -57,7 +57,7 @@ public class PrimitiveTypeFactory {
 		Type booleanT = new PrimitiveType("boolean");
 		booleanT.addModifier(pub);
 		try {
-			loader.addInputSource(new SyntheticInputSource(booleanT,mm,view()));
+			loader.addInputSource(new DirectInputSource(booleanT,mm,view()));
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -201,7 +201,7 @@ public class PrimitiveTypeFactory {
 		Public pub = new Public();
 		Type doubleT = new PrimitiveType("double");
 		try {
-			loader.addInputSource(new SyntheticInputSource(doubleT,mm,view()));
+			loader.addInputSource(new DirectInputSource(doubleT,mm,view()));
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -225,7 +225,7 @@ public class PrimitiveTypeFactory {
 			}
 		};
 		try {
-			loader.addInputSource(new SyntheticInputSource(longT,mm,view()));
+			loader.addInputSource(new DirectInputSource(longT,mm,view()));
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -249,7 +249,7 @@ public class PrimitiveTypeFactory {
 			}
 		};
 		try {
-			loader.addInputSource(new SyntheticInputSource(floatT,mm,view()));
+			loader.addInputSource(new DirectInputSource(floatT,mm,view()));
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -291,7 +291,7 @@ public class PrimitiveTypeFactory {
 			}
 		};
 		try {
-			loader.addInputSource(new SyntheticInputSource(intT,mm,view()));
+			loader.addInputSource(new DirectInputSource(intT,mm,view()));
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -319,7 +319,7 @@ public class PrimitiveTypeFactory {
 			}
 		};
 		try {
-			loader.addInputSource(new SyntheticInputSource(byteT,mm,view()));
+			loader.addInputSource(new DirectInputSource(byteT,mm,view()));
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -347,7 +347,7 @@ public class PrimitiveTypeFactory {
 			}
 		};
 		try {
-			loader.addInputSource(new SyntheticInputSource(shortT,mm,view()));
+			loader.addInputSource(new DirectInputSource(shortT,mm,view()));
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -375,7 +375,7 @@ public class PrimitiveTypeFactory {
 			}
 		};
 		try {
-			loader.addInputSource(new SyntheticInputSource(charT,mm,view()));
+			loader.addInputSource(new DirectInputSource(charT,mm,view()));
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -399,7 +399,7 @@ public class PrimitiveTypeFactory {
 
 		}; // toevoeging gebeurt door de constructor
 		try {
-			loader.addInputSource(new SyntheticInputSource(voidT,mm,view()));
+			loader.addInputSource(new DirectInputSource(voidT,mm,view()));
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}

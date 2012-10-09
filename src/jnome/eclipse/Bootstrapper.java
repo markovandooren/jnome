@@ -16,8 +16,9 @@ public class Bootstrapper extends EclipseBootstrapper {
 	}
 	
 	public Language createLanguage() throws ProjectException {
-		String extension = ".java";
 		Java result = new JavaLanguageFactory().create();
+		// add the config loader
+		
 		
 //		JavaFileInputSourceFactory factory = new JavaFileInputSourceFactory();
 //		View view = new View(new RootNamespace(new RegularNamespaceFactory()), result);

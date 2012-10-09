@@ -42,7 +42,7 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 	}
 	
 	@Override
-	public boolean canBeCached() {
+	public boolean isGreedy() {
 		return false;
 	}
 

@@ -5,14 +5,13 @@ import java.io.File;
 import jnome.input.LazyJavaFileInputSourceFactory;
 import chameleon.core.language.Language;
 import chameleon.core.namespace.LazyRootNamespace;
-import chameleon.plugin.Plugin;
-import chameleon.plugin.PluginImpl;
+import chameleon.plugin.LanguagePluginImpl;
 import chameleon.workspace.ConfigElement;
 import chameleon.workspace.ConfigException;
 import chameleon.workspace.ConfigLoader;
 import chameleon.workspace.View;
 
-public class JavaConfigLoader extends PluginImpl implements ConfigLoader {
+public class JavaConfigLoader extends LanguagePluginImpl implements ConfigLoader {
 
 	public JavaConfigLoader(String javaBaseJarPath) {
 		_basePath = javaBaseJarPath;
@@ -35,7 +34,7 @@ public class JavaConfigLoader extends PluginImpl implements ConfigLoader {
 	}
 
 	@Override
-	public Plugin clone() {
+	public JavaConfigLoader clone() {
 		return new JavaConfigLoader(_basePath);
 	}
 

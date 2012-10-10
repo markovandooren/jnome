@@ -12,24 +12,11 @@ public class Bootstrapper extends EclipseBootstrapper {
 	public final static String PLUGIN_ID = "be.chameleon.eclipse.java";
 	
 	public Bootstrapper() {
-		super("Java","1.5","java",PLUGIN_ID);
+		super("Java","1.6",PLUGIN_ID);
 	}
 	
 	public Language createLanguage() throws ProjectException {
 		Java result = new JavaLanguageFactory().create();
-		// add the config loader
-		
-		
-//		JavaFileInputSourceFactory factory = new JavaFileInputSourceFactory();
-//		View view = new View(new RootNamespace(new RegularNamespaceFactory()), result);
-//		Project project = new Project("Chameleon Eclipse project", view, new File("."));
-//		view.addSource(new DirectoryLoader(extension,null, factory));
-//		try {
-//		  loadAPIFiles(extension, PLUGIN_ID, view, factory);
-//		} catch(ChameleonProgrammerException exc) {
-//			// Object and String may not be present yet.
-//		}
-		
 		result.setPlugin(EclipseEditorExtension.class, new JavaEditorExtension(getLanguageName()));
 		return result;
 	}

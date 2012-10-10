@@ -78,7 +78,6 @@ import chameleon.oo.type.inheritance.SubtypeRelation;
 import chameleon.oo.variable.FormalParameter;
 import chameleon.oo.variable.VariableDeclaration;
 import chameleon.oo.variable.VariableDeclarator;
-import chameleon.plugin.Plugin;
 import chameleon.plugin.output.Syntax;
 import chameleon.support.expression.ArrayIndex;
 import chameleon.support.expression.AssignmentExpression;
@@ -98,6 +97,7 @@ import chameleon.support.member.simplename.operator.prefix.PrefixOperatorInvocat
 import chameleon.support.member.simplename.variable.MemberVariableDeclarator;
 import chameleon.support.modifier.Abstract;
 import chameleon.support.modifier.Constructor;
+import chameleon.support.modifier.Enum;
 import chameleon.support.modifier.Final;
 import chameleon.support.modifier.Interface;
 import chameleon.support.modifier.Native;
@@ -134,7 +134,6 @@ import chameleon.support.tool.Arguments;
 import chameleon.support.type.EmptyTypeElement;
 import chameleon.support.type.StaticInitializer;
 import chameleon.support.variable.LocalVariableDeclarator;
-import chameleon.support.modifier.Enum;
 
 /**
  * @author Marko van Dooren
@@ -1652,7 +1651,7 @@ public class JavaCodeWriter extends Syntax {
   }
 
 	@Override
-	public Plugin clone() {
+	public JavaCodeWriter clone() {
 		return new JavaCodeWriter(_tabSize);
 	}
 }

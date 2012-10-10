@@ -7,18 +7,15 @@ import jnome.core.namespacedeclaration.JavaNamespaceDeclaration;
 import jnome.core.type.RegularJavaType;
 import chameleon.aspect.oo.weave.factory.OOFactory;
 import chameleon.core.declaration.SimpleNameSignature;
-import chameleon.core.namespace.Namespace;
 import chameleon.core.namespacedeclaration.NamespaceDeclaration;
 import chameleon.core.reference.CrossReferenceTarget;
 import chameleon.oo.expression.Expression;
 import chameleon.oo.expression.MethodInvocation;
-import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.method.Method;
 import chameleon.oo.method.MethodHeader;
 import chameleon.oo.plugin.ObjectOrientedFactory;
 import chameleon.oo.statement.Statement;
 import chameleon.oo.type.RegularType;
-import chameleon.plugin.Plugin;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.statement.FinallyClause;
 import chameleon.support.statement.ReturnStatement;
@@ -51,7 +48,7 @@ public class JavaFactory extends ObjectOrientedFactory implements OOFactory {
 	}
 
 	@Override
-	public Plugin clone() {
+	public JavaFactory clone() {
 		return new JavaFactory();
 	}
 

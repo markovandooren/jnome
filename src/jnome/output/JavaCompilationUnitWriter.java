@@ -4,7 +4,6 @@ import chameleon.core.document.Document;
 import chameleon.core.lookup.LookupException;
 import chameleon.exception.ModelException;
 import chameleon.oo.type.Type;
-import chameleon.plugin.Plugin;
 import chameleon.plugin.build.CompilationUnitWriter;
 
 public class JavaCompilationUnitWriter extends CompilationUnitWriter {
@@ -35,7 +34,7 @@ public class JavaCompilationUnitWriter extends CompilationUnitWriter {
 	}
 
 	@Override
-	public Plugin clone() {
+	public JavaCompilationUnitWriter clone() {
 		return new JavaCompilationUnitWriter(extension());
 	}
 }

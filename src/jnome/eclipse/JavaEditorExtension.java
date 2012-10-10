@@ -17,7 +17,6 @@ import chameleon.oo.member.Member;
 import chameleon.oo.method.Method;
 import chameleon.oo.variable.FormalParameter;
 import chameleon.oo.variable.MemberVariable;
-import chameleon.plugin.Plugin;
 import chameleon.plugin.output.Syntax;
 import chameleon.support.modifier.Abstract;
 import chameleon.support.modifier.Constructor;
@@ -47,7 +46,7 @@ public class JavaEditorExtension extends EclipseEditorExtension {
 		return Bootstrapper.PLUGIN_ID;
 	}
 
-	public Plugin clone() {
+	public JavaEditorExtension clone() {
 		return new JavaEditorExtension(languageName());
 	}
 

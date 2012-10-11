@@ -36,8 +36,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	}
 
 	public Set<Type> ST(JavaTypeReference U) throws LookupException {
-//		Set<Type> result = U.getElement().getAllSuperTypes();
-		Set<Type> result = U.language(Java.class).subtypeRelation().getAllSuperTypes(U.getElement());
+		Set<Type> result = U.getElement().getAllSuperTypes();
 		result.add(U.getElement());
 		return result;
 	}

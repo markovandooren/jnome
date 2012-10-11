@@ -9,7 +9,7 @@ import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.ActualTypeArgument;
 
 
-public class CapturedType extends DerivedType {
+public class CapturedType extends JavaDerivedType {
 
 	public CapturedType(ParameterSubstitution substitution, Type baseType) {
 		super(substitution, baseType);

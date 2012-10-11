@@ -154,7 +154,7 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 			}
 			else {
 				//SPEED iterate over the supertype graph 
-				Set<Type> supers = getAllSuperTypesView(first);
+				Set<Type> supers = first.getSelfAndAllSuperTypesView();
 				Type snd = captureConversion(second);
 
 				Iterator<Type> typeIterator = supers.iterator();
@@ -173,56 +173,53 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	}
 	
 	public void flushCache() {
-		_cache = new HashMap<Type,Set<Type>>();
-		_superTypeCache = new HashMap<Type, Set<Type>>();
+//		_cache = new HashMap<Type,Set<Type>>();
 	}
 
 	// Can't use set for now because hashCode is not OK.
-	private Map<Type, Set<Type>> _cache = new HashMap<Type,Set<Type>>();
+//	private Map<Type, Set<Type>> _cache = new HashMap<Type,Set<Type>>();
 	
 	@Override
 	public boolean contains(Type first, Type second) throws LookupException {
-		Set<Type> zuppas;
-		synchronized (this) {
-			try {
-			zuppas = _cache.get(first);
-			// The following code is meant to tunnel a LookupException through the equals method, which is used
-			// by the code in java.util.Set. The exception is first wrapped in a ChameleonProgrammerException,
-			// and unwrapped when it arrives here.
-			} catch(ChameleonProgrammerException exc) {
-				Throwable cause = exc.getCause();
-				if(cause instanceof LookupException) {
-				  throw (LookupException)cause;
-				} else {
-					throw exc;
-				}
-			}
-		}
-		if(zuppas != null && zuppas.contains(second)) {
-			return true;
-		}
-//		System.out.println(first.getFullyQualifiedName() +" <: "+second.getFullyQualifiedName());
+//		Set<Type> zuppas;
+//		synchronized (this) {
+//			try {
+//				zuppas = _cache.get(first);
+//				// The following code is meant to tunnel a LookupException through the equals method, which is used
+//				// by the code in java.util.Set. The exception is first wrapped in a ChameleonProgrammerException,
+//				// and unwrapped when it arrives here.
+//			} catch(ChameleonProgrammerException exc) {
+//				Throwable cause = exc.getCause();
+//				if(cause instanceof LookupException) {
+//					throw (LookupException)cause;
+//				} else {
+//					throw exc;
+//				}
+//			}
+//		}
+//		if(zuppas != null && zuppas.contains(second)) {
+//			return true;
+//		}
 		boolean result = false;
-					//SPEED iterate over the supertype graph 
-					Set<Type> supers = getAllSuperTypesView(first);
-					Type snd = captureConversion(second);
+		//SPEED iterate over the supertype graph 
+		Set<Type> supers = first.getSelfAndAllSuperTypesView();
+		Type snd = captureConversion(second);
 
-					Iterator<Type> typeIterator = supers.iterator();
-					while((!result) && typeIterator.hasNext()) {
-						Type current = typeIterator.next();
-						result = (snd instanceof RawType && second.baseType().sameAs(current.baseType())) || sameBaseTypeWithCompatibleParameters(current, snd, new ArrayList());
-					}
-//		} end if instanceof NullType
-		if(result) {
-			synchronized(this) {
-				zuppas = _cache.get(first);
-				if(zuppas == null) {
-					zuppas = new HashSet<Type>();
-					_cache.put(first, zuppas);
-				}
-				zuppas.add(second);
-			}
+		Iterator<Type> typeIterator = supers.iterator();
+		while((!result) && typeIterator.hasNext()) {
+			Type current = typeIterator.next();
+			result = (snd instanceof RawType && second.baseType().sameAs(current.baseType())) || sameBaseTypeWithCompatibleParameters(current, snd, new ArrayList());
 		}
+//		if(result) {
+//			synchronized(this) {
+//				zuppas = _cache.get(first);
+//				if(zuppas == null) {
+//					zuppas = new HashSet<Type>();
+//					_cache.put(first, zuppas);
+//				}
+//				zuppas.add(second);
+//			}
+//		}
 		return result;
 	}
 	
@@ -369,47 +366,36 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		return result;
 	}
 	
-	public synchronized Set<Type> getAllSuperTypes(Type type) throws LookupException {
-		Set<Type> result = _superTypeCache.get(type);
-		if(result == null) {
-			result = new HashSet<Type>();
-			accumulateAllSuperTypes(type, result);
-			_superTypeCache.put(type, result);
-		}
-		result = new HashSet<Type>(result);
-		return result;
-	}
-
-	public synchronized Set<Type> getAllSuperTypesView(Type type) throws LookupException {
-		try {
-			Set<Type> result = _superTypeCache.get(type);
-			if(result == null) {
-				result = new HashSet<Type>();
-				accumulateAllSuperTypes(type, result);
-				_superTypeCache.put(type, result);
-			}
-			result = Collections.unmodifiableSet(result);
-			return result;
-		} catch(ChameleonProgrammerException exc) {
-			if(exc.getCause() instanceof LookupException) {
-				throw (LookupException) exc.getCause();
-			} else {
-				throw exc;
-			}
-		}
-	}
+//	public synchronized Set<Type> getAllSuperTypesView(Type type) throws LookupException {
+//		try {
+//			Set<Type> result = _superTypeCache.get(type);
+//			if(result == null) {
+//				result = new HashSet<Type>();
+////				accumulateAllSuperTypes(type, result);
+//				type.newAccumulateSelfAndAllSuperTypes(result);
+//				_superTypeCache.put(type, result);
+//			}
+//			result = Collections.unmodifiableSet(result);
+//			return result;
+//		} catch(ChameleonProgrammerException exc) {
+//			if(exc.getCause() instanceof LookupException) {
+//				throw (LookupException) exc.getCause();
+//			} else {
+//				throw exc;
+//			}
+//		}
+//	}
 	
-  private Map<Type,Set<Type>> _superTypeCache = new HashMap<Type, Set<Type>>();
-
-  private void accumulateAllSuperTypes(Type t, Set<Type> acc) throws LookupException {
+//  private void accumulateAllSuperTypes(Type t, Set<Type> acc) throws LookupException {
 //  	if(t instanceof DerivedType) {
-  		t = captureConversion(t);
+//  		t = captureConversion(t);
 //  	}
-  	acc.add(t);
-  	List<Type> temp = t.getDirectSuperTypes();
-  	for(Type type:temp) {
-  		  accumulateAllSuperTypes(type,acc);
-  	}
-  }
-  
+//  	acc.add(t);
+//
+//  	List<Type> temp = t.getDirectSuperTypes();
+//  	for(Type type:temp) {
+//  		accumulateAllSuperTypes(type,acc);
+//  	}
+//  }
+
 }

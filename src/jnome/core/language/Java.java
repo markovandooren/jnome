@@ -17,6 +17,7 @@ import jnome.core.type.ArrayTypeReference;
 import jnome.core.type.BasicJavaTypeReference;
 import jnome.core.type.CapturedType;
 import jnome.core.type.JavaBasicTypeArgument;
+import jnome.core.type.JavaDerivedType;
 import jnome.core.type.JavaExtendsWildcard;
 import jnome.core.type.JavaIntersectionTypeReference;
 import jnome.core.type.JavaPureWildcard;
@@ -580,11 +581,11 @@ public class Java extends ObjectOrientedLanguage {
 		}
 
 		public <P extends Parameter> DerivedType createDerivedType(Class<P> kind, List<P> parameters, Type baseType) {
-			return new DerivedType(kind, parameters, baseType);
+			return new JavaDerivedType(kind, parameters, baseType);
 		}
 		
 		public DerivedType createDerivedType(Type baseType, List<ActualTypeArgument> typeArguments) throws LookupException {
-			return new DerivedType(baseType,typeArguments);
+			return new JavaDerivedType(baseType,typeArguments);
 		}
 		
 		public NormalMethod createNormalMethod(MethodHeader header) {

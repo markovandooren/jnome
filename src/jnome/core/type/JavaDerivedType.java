@@ -7,7 +7,6 @@ import java.util.Set;
 
 import jnome.core.expression.invocation.NonLocalJavaTypeReference;
 import jnome.core.language.Java;
-
 import chameleon.core.lookup.LookupException;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.type.DerivedType;
@@ -108,4 +107,11 @@ public class JavaDerivedType extends DerivedType implements JavaType {
 		}
 		return result;
 	}
+	
+	public JavaDerivedType clone() {
+		List<ParameterSubstitution> args = clonedParameters();
+		return new JavaDerivedType(args,baseType());
+	}
+
+
 }

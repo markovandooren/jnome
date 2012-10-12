@@ -105,7 +105,7 @@ public class RawType extends ClassWithBody implements JavaType {
 	 * Create a new raw type. The type parameters, super class and interface references, 
 	 * and all members will be erased according to the definitions in the JLS.
 	 */
-	RawType(Type original) {
+	public RawType(Type original) {
 		// first copy everything
 		super((SimpleNameSignature) original.signature().clone());
 		copyContents(original, true);

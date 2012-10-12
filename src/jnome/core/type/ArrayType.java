@@ -33,6 +33,8 @@ public class ArrayType extends RegularType {
     var.addModifier(new Final());
     add(var);
     // JLS3 4.10.3 p.64
+    // FIXME May these should be implicit inheritance relations. Not that important, though, as
+    //       these cannot be manipulated by programmers anyway.
     addInheritanceRelation(new SubtypeRelation(language.createTypeReference("java.lang.Object")));
     addInheritanceRelation(new SubtypeRelation(language.createTypeReference("java.lang.Cloneable")));
     addInheritanceRelation(new SubtypeRelation(language.createTypeReference("java.io.Serializable")));
@@ -53,13 +55,6 @@ public class ArrayType extends RegularType {
   	}
   }
   
-//	@Override
-//	public ArrayType clone() {
-//		ArrayType result = cloneThis();
-//		result.copyContents(this);
-//		return result;
-//	}
-
   /**
 	 * @param string
 	 * @param dimension
@@ -83,20 +78,7 @@ public class ArrayType extends RegularType {
   public Type elementType() {
     return _type; 
   }
-  
-//	public boolean accessibleFrom(Element other) throws NotResolvedException {
-//    return getComponentType().accessibleFrom(other);
-//	}
-  
-//  public Type getElementType() {
-//    if(dimension() == 1) {
-//      return elementType(); 
-//    }
-//    else {
-//      return new ArrayType(elementType(), dimension() - 1);
-//    }
-//  }
-  
+    
   public int dimension() {
     Type elementType = elementType();
 		if(elementType instanceof ArrayType) {
@@ -105,8 +87,6 @@ public class ArrayType extends RegularType {
 			return 1;
 		}
   }
-//  
-//  private int _arrayDimension;
   
   @Override
   public boolean uniSameAs(Element o) throws LookupException {
@@ -140,16 +120,6 @@ public class ArrayType extends RegularType {
     return new ArrayType(elementType());
   }
 
-//  @Override
-//  public boolean auxSubTypeOf(Type second) throws LookupException {
-//  	boolean result = false;
-//  	if (second instanceof ArrayType && this.is(language(Java.class).REFERENCE_TYPE) == Ternary.TRUE) {
-//  		ArrayType second2 = (ArrayType)second;
-//  		result = elementType().subTypeOf(second2.elementType());
-//  	} 
-//  	return result;
-//  }
-  
   @Override
   	public boolean auxSubTypeOf(Type second) throws LookupException {
   	 boolean result = false;

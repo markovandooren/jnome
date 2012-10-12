@@ -4,14 +4,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.rejuse.logic.ternary.Ternary;
+
 import jnome.core.expression.invocation.SuperConstructorDelegation;
+import jnome.core.language.Java;
 import jnome.core.method.JavaNormalMethod;
 import jnome.core.modifier.JavaConstructor;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.modifier.Modifier;
+import chameleon.core.reference.SimpleReference;
 import chameleon.core.tag.TagImpl;
+import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.expression.NamedTarget;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.member.Member;
@@ -19,6 +24,7 @@ import chameleon.oo.method.RegularImplementation;
 import chameleon.oo.method.SimpleNameMethodHeader;
 import chameleon.oo.statement.Block;
 import chameleon.oo.type.RegularType;
+import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeElement;
 import chameleon.oo.type.inheritance.InheritanceRelation;
 import chameleon.oo.type.inheritance.SubtypeRelation;
@@ -28,7 +34,7 @@ import chameleon.support.modifier.Public;
 import chameleon.support.statement.StatementExpression;
 import chameleon.util.Util;
 
-public class RegularJavaType extends RegularType {
+public class RegularJavaType extends RegularType implements JavaType {
 
 	public RegularJavaType(SimpleNameSignature sig) {
 		super(sig);
@@ -84,6 +90,9 @@ public class RegularJavaType extends RegularType {
   }
 
 	private boolean isConstructor(Element element) {
+		//FIXME element.isTrue(language(Java.class).CONSTRUCTOR) doesn't work since the type
+		//      and the constructor aren't connected to the model during parsing.
+		// The suck is strong in this one
 		List<Modifier> mods = ((TypeElement) element).modifiers();
 		for(Modifier mod:mods) {
 			if(mod instanceof JavaConstructor) {
@@ -93,6 +102,11 @@ public class RegularJavaType extends RegularType {
 		return false;
 	}
 
+	/**
+	 * If an element is removed, we check whether it is the
+	 * last remaining constructor. If it is, we add the
+	 * default default constructor.
+	 */
   public void reactOnDescendantRemoved(Element element) {
   	if(isConstructor(element)) {
   		List<TypeElement> elements = body().elements();
@@ -141,5 +155,53 @@ public class RegularJavaType extends RegularType {
   }
   
   public final static String IMPLICIT_CHILD = "IMPLICIT CHILD";
+
+	@Override
+	public Type erasure() {
+		Java language = language(Java.class);
+		RawType result = _rawTypeCache;
+		if(result == null) {
+				if(is(language.INSTANCE) == Ternary.TRUE) {
+					Type outmostType = farthestAncestor(chameleon.oo.type.Type.class);
+					if(outmostType == null) {
+						outmostType = this;
+					}
+					RawType outer;
+					if(outmostType instanceof RawType) {
+						outer = (RawType) outmostType;
+					} else {
+						outer = new RawType(outmostType);
+					}
+					RawType current = outer;
+					List<Type> outerTypes = ancestors(Type.class);
+					outerTypes.add(0, this);
+
+					int size = outerTypes.size();
+					for(int i = size - 2; i>=0;i--) {
+						SimpleReference<RawType> simpleRef = new SimpleReference<RawType>(outerTypes.get(i).signature().name(), RawType.class);
+						simpleRef.setUniParent(current);
+						try {
+							current = simpleRef.getElement();
+						} catch (LookupException e) {
+							e.printStackTrace();
+							throw new ChameleonProgrammerException("An inner type of a newly created outer raw type cannot be found",e);
+						}
+					}
+					result = current;
+				} else {
+					// static
+					result = new RawType(this);
+				}
+				_rawTypeCache = result;
+			}
+		  return result;	
+		}
+
+	private RawType _rawTypeCache;
+	
+	@Override
+	public synchronized void flushLocalCache() {
+		_rawTypeCache = null;
+	}
 
 }

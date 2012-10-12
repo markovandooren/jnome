@@ -1,13 +1,10 @@
 package jnome.core.type;
 
-import java.util.List;
-
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.lookup.LookupException;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.WildCardType;
-import chameleon.oo.type.inheritance.InheritanceRelation;
 
 public class PureWildCardType extends WildCardType {
 

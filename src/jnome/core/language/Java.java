@@ -3,8 +3,10 @@ package jnome.core.language;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import jnome.core.expression.invocation.JavaExtendsReference;
 import jnome.core.expression.invocation.JavaSuperReference;
@@ -22,6 +24,7 @@ import jnome.core.type.JavaExtendsWildcard;
 import jnome.core.type.JavaIntersectionTypeReference;
 import jnome.core.type.JavaPureWildcard;
 import jnome.core.type.JavaSuperWildcard;
+import jnome.core.type.JavaType;
 import jnome.core.type.JavaTypeReference;
 import jnome.core.type.JavaUnionTypeReference;
 import jnome.core.type.PureWildCardType;
@@ -34,7 +37,6 @@ import org.rejuse.junit.Revision;
 import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.property.PropertyUniverse;
 
-import chameleon.core.Config;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.declaration.TargetDeclaration;
@@ -101,13 +103,41 @@ import chameleon.util.Pair;
  * @author Marko van Dooren
  */
 public class Java extends ObjectOrientedLanguage {
-
-//	@Override
-//	public void setProject(Project project) {
-//		super.setProject(project);
-//		// FIXME This should be done when initializing the predefined elements.
-//	}
 	
+	protected static final String JAVA_LANG_SHORT = "java.lang.Short";
+
+	protected static final String JAVA_LANG_CHARACTER = "java.lang.Character";
+
+	protected static final String JAVA_LANG_BYTE = "java.lang.Byte";
+
+	protected static final String JAVA_LANG_BOOLEAN = "java.lang.Boolean";
+
+	protected static final String JAVA_LANG_DOUBLE = "java.lang.Double";
+
+	protected static final String JAVA_LANG_FLOAT = "java.lang.Float";
+
+	protected static final String JAVA_LANG_LONG = "java.lang.Long";
+
+	protected static final String JAVA_LANG_INTEGER = "java.lang.Integer";
+
+	private static final String BOOLEAN = "boolean";
+
+	protected static final String VOID = "void";
+
+	protected static final String INT = "int";
+
+	protected static final String LONG = "long";
+
+	private static final String FLOAT = "float";
+
+	protected static final String DOUBLE = "double";
+
+	protected static final String BYTE = "byte";
+
+	protected static final String CHAR = "char";
+
+	protected static final String SHORT = "short";
+
 	protected Java(String name, Revision version) {
 		super(name, new JavaLookupFactory(), version);
 //		_nullType = new NullType(this);
@@ -145,8 +175,10 @@ public class Java extends ObjectOrientedLanguage {
   	for(String string: new String[]{"==","!=","+","++","-","--","*","/","+=","-=","*=","/=","&","&&","|","||","^","!","&=","|=","^=","<<=",">>=",">>>+","%","<",">","<=",">=","%=","<<",">>",">>>"}) {
   		_operatorNames.add(string);
   	}
+  	initNameMaps();
+  	
 	}
-	
+		
 	public Java() {
 		this("Java", new BasicRevision(1,6,0));
 	}
@@ -166,8 +198,9 @@ public class Java extends ObjectOrientedLanguage {
   	} 
   	else {
   		try {
-			if(original.nbTypeParameters(TypeParameter.class) > 0 && (original.parameter(TypeParameter.class,1) instanceof FormalTypeParameter)) {
-				result = RawType.create(original);
+  			if(original.nbTypeParameters(TypeParameter.class) > 0 && (original.parameter(TypeParameter.class,1) instanceof FormalTypeParameter)) {
+//				result = RawType.create(original);
+  				result = ((JavaType)original).erasure();
 			} else {
   			result = original;
   		}
@@ -221,8 +254,8 @@ public class Java extends ObjectOrientedLanguage {
 		}
 		return result;
 	}
-
-	private static class NumericTypeProperty extends DynamicChameleonProperty {
+	
+	private class NumericTypeProperty extends DynamicChameleonProperty {
 		private NumericTypeProperty(String name, PropertyUniverse<ChameleonProperty> universe) {
 			super(name, universe, Type.class);
 		}
@@ -230,11 +263,9 @@ public class Java extends ObjectOrientedLanguage {
 		@Override
 		public Ternary selfAppliesTo(Element element) {
 			Ternary result = Ternary.FALSE;
-			Java language = (Java) element.language(Java.class);
 			if(element instanceof Type) {
 				String fqn = ((Type)element).getFullyQualifiedName();
-				if(fqn.equals("int") || fqn.equals("long")|| fqn.equals("float")|| fqn.equals("double")
-						|| fqn.equals("byte")|| fqn.equals("char") || fqn.equals("short")) {
+				if(_numericPrimitives.contains(fqn)) {
 					result = Ternary.TRUE;
 				}
 			}
@@ -242,7 +273,7 @@ public class Java extends ObjectOrientedLanguage {
 		}
 	}
 	
-	private static class UnboxableTypeProperty extends DynamicChameleonProperty {
+	private class UnboxableTypeProperty extends DynamicChameleonProperty {
 		private UnboxableTypeProperty(String name, PropertyUniverse<ChameleonProperty> universe) {
 			super(name, universe, Type.class);
 		}
@@ -252,8 +283,7 @@ public class Java extends ObjectOrientedLanguage {
 			Ternary result = Ternary.FALSE;
 			if(element instanceof Type) {
 				String fqn = ((Type)element).getFullyQualifiedName();
-				if(fqn.equals("java.lang.Integer") || fqn.equals("java.lang.Long")|| fqn.equals("java.lang.Float")|| fqn.equals("java.lang.Double")
-						|| fqn.equals("java.lang.Boolean")|| fqn.equals("java.lang.Byte")|| fqn.equals("java.lang.Character") || fqn.equals("java.lang.Short")) {
+				if(_unboxables.contains(fqn)) {
 					result = Ternary.TRUE;
 				}
 			}
@@ -261,7 +291,7 @@ public class Java extends ObjectOrientedLanguage {
 		}
 	}
 
-	private static class PrimitiveTypeProperty extends DynamicChameleonProperty {
+	private class PrimitiveTypeProperty extends DynamicChameleonProperty {
 		private PrimitiveTypeProperty(String name, PropertyUniverse<ChameleonProperty> universe) {
 			super(name, universe, Type.class);
 		}
@@ -271,8 +301,7 @@ public class Java extends ObjectOrientedLanguage {
 			Ternary result = Ternary.FALSE;
 			if(element instanceof RegularJavaType) {
 				String fqn = ((RegularJavaType)element).getFullyQualifiedName();
-				if(fqn.equals("void") || fqn.equals("int") || fqn.equals("long")|| fqn.equals("float")|| fqn.equals("double")
-						|| fqn.equals("boolean")|| fqn.equals("byte")|| fqn.equals("char") || fqn.equals("short")) {
+				if(_primitives.contains(fqn)) {
 					result = Ternary.TRUE;
 				}
 			}
@@ -375,7 +404,7 @@ public class Java extends ObjectOrientedLanguage {
 	  
     @Override
 		public Type booleanType(Namespace ns) throws LookupException {
-			return findType("boolean",ns);
+			return findType(BOOLEAN,ns);
 		}
 
 		@Override
@@ -398,7 +427,7 @@ public class Java extends ObjectOrientedLanguage {
 
 		@Override
 		public Type voidType(Namespace root) throws LookupException {
-			return findType("void",root);
+			return findType(VOID,root);
 		}
 
 		@Override
@@ -443,76 +472,85 @@ public class Java extends ObjectOrientedLanguage {
 //			return new Java(null);
 //		}
 
+		protected void initNameMaps() {
+		  _boxMap = new HashMap<String,String>();
+		  _boxMap.put(BOOLEAN, JAVA_LANG_BOOLEAN);
+		  _boxMap.put(INT, JAVA_LANG_INTEGER);
+		  _boxMap.put(LONG, JAVA_LANG_LONG);
+		  _boxMap.put(FLOAT, JAVA_LANG_FLOAT);
+		  _boxMap.put(DOUBLE, JAVA_LANG_DOUBLE);
+		  _boxMap.put(BYTE, JAVA_LANG_BYTE);
+		  _boxMap.put(CHAR, JAVA_LANG_CHARACTER);
+		  _boxMap.put(SHORT, JAVA_LANG_SHORT);
+		  
+		  _unboxMap = new HashMap<String,String>();
+		  _unboxMap.put(JAVA_LANG_BOOLEAN, BOOLEAN);
+		  _unboxMap.put(JAVA_LANG_INTEGER, INT);
+		  _unboxMap.put(JAVA_LANG_LONG, LONG);
+		  _unboxMap.put(JAVA_LANG_FLOAT, FLOAT);
+		  _unboxMap.put(JAVA_LANG_DOUBLE, DOUBLE);
+		  _unboxMap.put(JAVA_LANG_BYTE, BYTE);
+		  _unboxMap.put(JAVA_LANG_CHARACTER, CHAR);
+		  _unboxMap.put(JAVA_LANG_SHORT, SHORT);
+		  
+		  _numericPrimitives = new HashSet<String>();
+		  _numericPrimitives.add(INT);
+		  _numericPrimitives.add(LONG);
+		  _numericPrimitives.add(FLOAT);
+		  _numericPrimitives.add(DOUBLE);
+		  _numericPrimitives.add(BYTE);
+		  _numericPrimitives.add(CHAR);
+		  _numericPrimitives.add(SHORT);
+		  
+		  _primitives = new HashSet<String>(_numericPrimitives);
+		  _primitives.add(BOOLEAN);
+		  _primitives.add(VOID);
+		  
+		  _unboxables = new HashSet<String>();
+		  _unboxables.add(JAVA_LANG_INTEGER);
+		  _unboxables.add(JAVA_LANG_LONG);
+		  _unboxables.add(JAVA_LANG_FLOAT);
+		  _unboxables.add(JAVA_LANG_DOUBLE);
+		  _unboxables.add(JAVA_LANG_BOOLEAN);
+		  _unboxables.add(JAVA_LANG_BYTE);
+		  _unboxables.add(JAVA_LANG_CHARACTER);
+		  _unboxables.add(JAVA_LANG_SHORT);
+		}
+		
+		private Map<String,String> _boxMap;
+
+		private Map<String,String> _unboxMap;
+
+		private Set<String> _numericPrimitives;
+		
+		private Set<String> _primitives;
+
+		private Set<String> _unboxables;
+
 		public Type box(Type type) throws LookupException {
 			String fqn = type.getFullyQualifiedName();
-			String newFqn;
-			if(fqn.equals("boolean")) {
-				newFqn = "java.lang.Boolean";
-			} else if (fqn.equals("byte")) {
-				newFqn = "java.lang.Byte";
-			} else if (fqn.equals("char")) {
-				newFqn = "java.lang.Character";
-			} else if (fqn.equals("short")) {
-				newFqn = "java.lang.Short";
-			} else if (fqn.equals("int")) {
-				newFqn = "java.lang.Integer";
-			} else if (fqn.equals("long")) {
-				newFqn = "java.lang.Long";
-			} else if (fqn.equals("float")) {
-				newFqn = "java.lang.Float";
-			} else if (fqn.equals("double")) {
-				newFqn = "java.lang.Double";
-			} else {
+			String newFqn = _boxMap.get(fqn);
+			if(newFqn == null) {
 				throw new LookupException("Type "+fqn+" cannot be converted through boxing.");
 			}
 			return findType(newFqn,type.view().namespace());
 		}
 
 		public Type unbox(Type type) throws LookupException {
+			//SPEED this is horrible
 			String fqn = type.getFullyQualifiedName();
-			String newFqn;
-			if(fqn.equals("java.lang.Boolean")) {
-				newFqn = "boolean";
-			} else if (fqn.equals("java.lang.Byte")) {
-				newFqn = "byte";
-			} else if (fqn.equals("java.lang.Character")) {
-				newFqn = "char";
-			} else if (fqn.equals("java.lang.Short")) {
-				newFqn = "short";
-			} else if (fqn.equals("java.lang.Integer")) {
-				newFqn = "int";
-			} else if (fqn.equals("java.lang.Long")) {
-				newFqn = "long";
-			} else if (fqn.equals("java.lang.Float")) {
-				newFqn = "float";
-			} else if (fqn.equals("java.lang.Double")) {
-				newFqn = "double";
-			} else {
+			String newFqn = _unboxMap.get(fqn);
+			if(newFqn == null) {
 				throw new LookupException("Type "+fqn+" cannot be converted through unboxing.");
 			}
 			return findType(newFqn,type.view().namespace());
 		}
 
 		public JavaTypeReference box(JavaTypeReference aRef, Namespace root) throws LookupException {
+			//SPEED this is horrible
 			String fqn = aRef.getElement().getFullyQualifiedName();
-			String newFqn;
-			if(fqn.equals("boolean")) {
-				newFqn = "java.lang.Boolean";
-			} else if (fqn.equals("byte")) {
-				newFqn = "java.lang.Byte";
-			} else if (fqn.equals("char")) {
-				newFqn = "java.lang.Character";
-			} else if (fqn.equals("short")) {
-				newFqn = "java.lang.Short";
-			} else if (fqn.equals("int")) {
-				newFqn = "java.lang.Integer";
-			} else if (fqn.equals("long")) {
-				newFqn = "java.lang.Long";
-			} else if (fqn.equals("float")) {
-				newFqn = "java.lang.Float";
-			} else if (fqn.equals("double")) {
-				newFqn = "java.lang.Double";
-			} else {
+			String newFqn = _boxMap.get(fqn);
+			if(newFqn == null) {
 				throw new LookupException("Type "+fqn+" cannot be converted through boxing.");
 			}
 			JavaTypeReference result = createTypeReference(newFqn);
@@ -789,19 +827,19 @@ public class Java extends ObjectOrientedLanguage {
 			return new JavaPureWildcard();
 		}
 		
-		private Map<Type, RawType> _rawCache = new HashMap<Type, RawType>();
+//		private Map<Type, RawType> _rawCache = new HashMap<Type, RawType>();
 		
-		public synchronized void putRawCache(Type type, RawType raw) {
-			if(Config.cacheDeclarations()) {
-			  _rawCache.put(type, raw);
-			} else {
-				_rawCache.clear();
-			}
-		}
+//		public synchronized void putRawCache(Type type, RawType raw) {
+//			if(Config.cacheDeclarations()) {
+//			  _rawCache.put(type, raw);
+//			} else {
+//				_rawCache.clear();
+//			}
+//		}
 		
-		public synchronized RawType getRawCache(Type original) {
-			return _rawCache.get(original);
-		}
+//		public synchronized RawType getRawCache(Type original) {
+//			return _rawCache.get(original);
+//		}
 
 		@Override
 		public boolean upperBoundNotHigherThan(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
@@ -811,8 +849,8 @@ public class Java extends ObjectOrientedLanguage {
 
 		@Override
 		public synchronized void flushCache() {
-		  _rawCache = new HashMap<Type, RawType>();
-		  subtypeRelation().flushCache();
+//		  _rawCache = new HashMap<Type, RawType>();
+//		  subtypeRelation().flushCache();
 		}
 
 		public Type createdCapturedType(ParameterSubstitution parameterSubstitution, Type base) {

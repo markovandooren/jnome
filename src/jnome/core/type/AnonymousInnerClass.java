@@ -9,11 +9,8 @@ import chameleon.core.lookup.LookupException;
 import chameleon.core.lookup.LookupStrategy;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
-import chameleon.oo.type.generics.TypeParameter;
-import chameleon.oo.type.inheritance.AbstractInheritanceRelation;
 import chameleon.oo.type.inheritance.InheritanceRelation;
 import chameleon.oo.type.inheritance.SubtypeRelation;
-import chameleon.util.Util;
 
 public class AnonymousInnerClass extends AnonymousType {
 
@@ -32,6 +29,11 @@ public class AnonymousInnerClass extends AnonymousType {
 		return nearestAncestor(ConstructorInvocation.class).getTypeReference();
 	}
 
+	@Override
+	public Type erasure() {
+		return this;
+	}
+	
 	@Override
 	public List<InheritanceRelation> inheritanceRelations() {
 		List<InheritanceRelation> result = new ArrayList<InheritanceRelation>();

@@ -21,7 +21,7 @@ import chameleon.oo.type.generics.InstantiatedTypeParameter;
 import chameleon.oo.type.generics.TypeConstraint;
 import chameleon.oo.type.generics.TypeParameter;
 
-public class JavaDerivedType extends DerivedType {
+public class JavaDerivedType extends DerivedType implements JavaType {
 
 	public <P extends Parameter> JavaDerivedType(Class<P> kind, List<P> parameters, Type baseType) {
 		super(kind,parameters,baseType);
@@ -57,6 +57,11 @@ public class JavaDerivedType extends DerivedType {
 		} else {
 			super.newAccumulateSelfAndAllSuperTypes(acc);
 		}
+	}
+	
+	@Override
+	public Type erasure() {
+		return ((JavaType)origin()).erasure();
 	}
 	
 	public Type captureConversion() throws LookupException {

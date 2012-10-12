@@ -20,7 +20,7 @@ import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.modifier.Constructor;
 import chameleon.support.modifier.Public;
 
-public abstract class AnonymousType extends RegularType {
+public abstract class AnonymousType extends RegularType implements JavaType {
 
 	public AnonymousType(SimpleNameSignature sig) {
 		super(sig);

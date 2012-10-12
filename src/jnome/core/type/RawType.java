@@ -3,8 +3,10 @@ package jnome.core.type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import jnome.core.language.Java;
@@ -23,9 +25,9 @@ import chameleon.oo.expression.NamedTarget;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.member.Member;
 import chameleon.oo.method.Method;
+import chameleon.oo.type.ClassWithBody;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeElement;
-import chameleon.oo.type.ClassWithBody;
 import chameleon.oo.type.generics.BasicTypeArgument;
 import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.TypeParameter;
@@ -34,54 +36,58 @@ import chameleon.oo.type.inheritance.SubtypeRelation;
 import chameleon.oo.variable.FormalParameter;
 import chameleon.util.Pair;
 
-public class RawType extends ClassWithBody {
+public class RawType extends ClassWithBody implements JavaType {
 
-	public static RawType create(Type original) {
-		while(original != original.origin()) {
-			original = (Type) original.origin();
-		}
-		Java language = original.language(Java.class);
-		RawType result = language.getRawCache(original);
-		if(result == null) {
-			if(original instanceof RawType) {
-				result = (RawType) original;
-			} else {
-				if(original.is(language.INSTANCE) == Ternary.TRUE) {
-					Type outmostType = original.farthestAncestor(chameleon.oo.type.Type.class);
-					if(outmostType == null) {
-						outmostType = original;
-					}
-					RawType outer;
-					if(outmostType instanceof RawType) {
-						outer = (RawType) outmostType;
-					} else {
-						outer = new RawType(outmostType);
-					}
-					RawType current = outer;
-					List<Type> outerTypes = original.ancestors(Type.class);
-					outerTypes.add(0, original);
-
-					int size = outerTypes.size();
-					for(int i = size - 2; i>=0;i--) {
-						SimpleReference<RawType> simpleRef = new SimpleReference<RawType>(outerTypes.get(i).signature().name(), RawType.class);
-						simpleRef.setUniParent(current);
-						try {
-							current = simpleRef.getElement();
-						} catch (LookupException e) {
-							e.printStackTrace();
-							throw new ChameleonProgrammerException("An inner type of a newly created outer raw type cannot be found",e);
-						}
-					}
-					result = current;
-				} else {
-					// static
-					result = new RawType(original);
-				}
-			}
-			language.putRawCache(original, result);
-		}
-		return result;
-	}
+//	public static RawType create(Type original) {
+//		while(original != original.origin()) {
+//			original = (Type) original.origin();
+//		}
+//		// From here on, the type should either be an exiting RawType or 
+//		// a RegularJavaType
+//		Java language = original.language(Java.class);
+//		RawType result = _rawCache.get(original);
+//		if(result == null) {
+//			if(original instanceof RawType) {
+//				result = (RawType) original;
+//			} else {
+//				if(original.is(language.INSTANCE) == Ternary.TRUE) {
+//					Type outmostType = original.farthestAncestor(chameleon.oo.type.Type.class);
+//					if(outmostType == null) {
+//						outmostType = original;
+//					}
+//					RawType outer;
+//					if(outmostType instanceof RawType) {
+//						outer = (RawType) outmostType;
+//					} else {
+//						outer = new RawType(outmostType);
+//					}
+//					RawType current = outer;
+//					List<Type> outerTypes = original.ancestors(Type.class);
+//					outerTypes.add(0, original);
+//
+//					int size = outerTypes.size();
+//					for(int i = size - 2; i>=0;i--) {
+//						SimpleReference<RawType> simpleRef = new SimpleReference<RawType>(outerTypes.get(i).signature().name(), RawType.class);
+//						simpleRef.setUniParent(current);
+//						try {
+//							current = simpleRef.getElement();
+//						} catch (LookupException e) {
+//							e.printStackTrace();
+//							throw new ChameleonProgrammerException("An inner type of a newly created outer raw type cannot be found",e);
+//						}
+//					}
+//					result = current;
+//				} else {
+//					// static
+//					result = new RawType(original);
+//				}
+//			}
+//			_rawCache.put(original, result);
+//		}
+//		return result;
+//	}
+//	
+//	private static Map<Type,RawType> _rawCache = new HashMap<Type, RawType>();
 
 	private List<Member> _implicitMembers;
 	
@@ -99,7 +105,7 @@ public class RawType extends ClassWithBody {
 	 * Create a new raw type. The type parameters, super class and interface references, 
 	 * and all members will be erased according to the definitions in the JLS.
 	 */
-	private RawType(Type original) {
+	RawType(Type original) {
 		// first copy everything
 		super((SimpleNameSignature) original.signature().clone());
 		copyContents(original, true);
@@ -221,7 +227,8 @@ public class RawType extends ClassWithBody {
 		}
 	}
 	
-	private void eraseInheritanceRelations() {
+	protected void eraseInheritanceRelations() {
+		//FIXME Why aren't member inheritance relations such as subobjects erased?
 		for(SubtypeRelation relation: nonMemberInheritanceRelations(SubtypeRelation.class)) {
 			JavaTypeReference superClassReference = (JavaTypeReference) relation.superClassReference();
 			JavaTypeReference erasedReference = superClassReference.erasedReference();
@@ -229,7 +236,7 @@ public class RawType extends ClassWithBody {
 		}
 	}
 
-	private void eraseTypeParameters(List<TypeParameter> parameters) {
+	protected void eraseTypeParameters(List<TypeParameter> parameters) {
 		Java language = language(Java.class);
 		for(TypeParameter typeParameter: parameters) {
 			FormalTypeParameter param = (FormalTypeParameter) typeParameter;
@@ -277,7 +284,50 @@ public class RawType extends ClassWithBody {
    @ post \result == this;
    @*/
 	public Type erasure() {
-		return this;
+		Java language = language(Java.class);
+		RawType result = _rawTypeCache;
+		if(result == null) {
+				if(is(language.INSTANCE) == Ternary.TRUE) {
+					Type outmostType = farthestAncestor(chameleon.oo.type.Type.class);
+					if(outmostType == null) {
+						outmostType = this;
+					}
+					RawType outer;
+					if(outmostType instanceof RawType) {
+						outer = (RawType) outmostType;
+					} else {
+						outer = new RawType(outmostType);
+					}
+					RawType current = outer;
+					List<Type> outerTypes = ancestors(Type.class);
+					outerTypes.add(0, this);
+
+					int size = outerTypes.size();
+					for(int i = size - 2; i>=0;i--) {
+						SimpleReference<RawType> simpleRef = new SimpleReference<RawType>(outerTypes.get(i).signature().name(), RawType.class);
+						simpleRef.setUniParent(current);
+						try {
+							current = simpleRef.getElement();
+						} catch (LookupException e) {
+							e.printStackTrace();
+							throw new ChameleonProgrammerException("An inner type of a newly created outer raw type cannot be found",e);
+						}
+					}
+					result = current;
+				} else {
+					// static
+					result = new RawType(this);
+				}
+				_rawTypeCache = result;
+			}
+		  return result;	
+	}
+	
+	private RawType _rawTypeCache;
+	
+	@Override
+	public synchronized void flushLocalCache() {
+		_rawTypeCache = null;
 	}
 
 	public boolean uniSameAs(Type aliasedType, List<Pair<TypeParameter, TypeParameter>> trace) throws LookupException {

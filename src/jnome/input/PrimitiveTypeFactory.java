@@ -276,6 +276,11 @@ public class PrimitiveTypeFactory {
 		public List<InheritanceRelation> implicitNonMemberInheritanceRelations() {
 			return Collections.EMPTY_LIST;
 		}
+		
+		@Override
+		public Type erasure() {
+			return this;
+		}
 
 	}
 

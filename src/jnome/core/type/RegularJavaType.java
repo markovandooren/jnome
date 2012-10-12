@@ -201,6 +201,7 @@ public class RegularJavaType extends RegularType implements JavaType {
 	
 	@Override
 	public synchronized void flushLocalCache() {
+		super.flushLocalCache();
 		_rawTypeCache = null;
 	}
 

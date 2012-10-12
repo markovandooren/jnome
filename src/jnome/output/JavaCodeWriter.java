@@ -591,7 +591,11 @@ public class JavaCodeWriter extends Syntax {
   }
 
   public boolean isClass(Element element) {
-    return (element instanceof RegularType) && ((Type)element).is(((Java)language()).INTERFACE) != Ternary.TRUE;
+  	if (element instanceof RegularType) {
+//  		element.flushCache();
+  		return ((Type)element).is(((Java)language()).INTERFACE) != Ternary.TRUE;
+  	}
+  	return false;
   }
   
   public boolean isInterface(Element element) {

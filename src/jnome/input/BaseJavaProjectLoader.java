@@ -46,7 +46,7 @@ public class BaseJavaProjectLoader extends JarLoader {
 	  addNullType(this);
 	}
 
-	private void addNullType(DocumentLoaderImpl loader) {
+	protected void addNullType(DocumentLoaderImpl loader) {
     try {
 			loader.addInputSource(new DirectInputSource(new NullType(java()),"",view()));
 		} catch (InputException e) {

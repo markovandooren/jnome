@@ -1,7 +1,7 @@
 <ivy-module version="2.0">
   <info organisation="distrinet.cs.kuleuven.be" module="jnome"/>
   <dependencies>
-    <dependency org="distrinet.cs.kuleuven.be" name="chameleon" rev="0.8.4"/>
+    <dependency org="distrinet.cs.kuleuven.be" name="chameleon" rev="0.8.7"/>
     <dependency org="org.ow2.asm" name="asm" rev="4.0"/>
   </dependencies>
 </ivy-module>

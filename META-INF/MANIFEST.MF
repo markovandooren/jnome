@@ -5,7 +5,8 @@ Bundle-SymbolicName: be.chameleon.eclipse.java;singleton:=true
 Bundle-Version: 1.0.6
 Bundle-ClassPath: bin/.,
  .,
- lib/antlr-runtime-3.2.jar
+ lib/antlr-runtime-3.2.jar,
+ lib/asm-4.0.jar
 Bundle-Vendor: KU Leuven
 Export-Package: jnome.core.decorator,
  jnome.core.enumeration,
@@ -29,7 +30,9 @@ Export-Package: jnome.core.decorator,
  org.antlr.runtime,
  org.antlr.runtime.debug,
  org.antlr.runtime.misc,
- org.antlr.runtime.tree
+ org.antlr.runtime.tree,
+ org.objectweb.asm,
+ org.objectweb.asm.signature
 Require-Bundle: org.eclipse.swt;bundle-version="3.7.0",
  be.chameleon.eclipse;bundle-version="1.0.4",
  org.eclipse.jface;bundle-version="3.7.0"

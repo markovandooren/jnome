@@ -202,15 +202,15 @@ import java.util.ArrayList;
 }
 @members{
 
-  @Override
-  public void setLanguage(Language language) {
-    gJavaP.setLanguage(language);
-  }
+//  @Override
+//  public void setLanguage(Language language) {
+ //   gJavaP.setLanguage(language);
+ // }
   
-  @Override
-  public Language language() {
-    return gJavaP.language();
-  }
+ // @Override
+ // public Language language() {
+  //  return gJavaP.language();
+ // }
   
   public Document getDocument() {
     return gJavaP.getDocument();

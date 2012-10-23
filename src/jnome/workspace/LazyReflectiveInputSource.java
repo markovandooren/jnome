@@ -65,7 +65,7 @@ public class LazyReflectiveInputSource extends InputSourceImpl {
 		// Since we load a class file, there is only 1 top-level declaration: the class or interface defined in the class file.
 		// Other top-level classes or interface in the same source file must be package accessible and are stored in their own
 		// class files.
-		return (List<Declaration>) (List)document().children(NamespaceDeclaration.class).get(0).children(Type.class);
+		return (List<Declaration>) (List)rawDocument().children(NamespaceDeclaration.class).get(0).children(Type.class);
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class LazyReflectiveInputSource extends InputSourceImpl {
 //			clazz = Class.forName(_fqn, true, _loader);
 			setDocument(new Document());
 			clazz = _loader.loadClass(_fqn);
-			parser().read(clazz, _root, document());
+			parser().read(clazz, _root, rawDocument());
 		} catch (ClassNotFoundException | LookupException e) {
 			throw new InputException(e);
 		}

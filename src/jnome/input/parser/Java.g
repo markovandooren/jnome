@@ -9,6 +9,8 @@ import JavaL,JavaP;
 @header {
 package jnome.input.parser;
 
+import chameleon.workspace.View;
+
 import chameleon.exception.ModelException;
 import chameleon.exception.ChameleonProgrammerException;
 
@@ -211,6 +213,11 @@ import java.util.ArrayList;
  // public Language language() {
   //  return gJavaP.language();
  // }
+  
+  public void setView(View view) {
+    super.setView(view);
+    gJavaP.setView(view);
+  }
   
   public Document getDocument() {
     return gJavaP.getDocument();

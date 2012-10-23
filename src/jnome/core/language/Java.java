@@ -88,6 +88,7 @@ import chameleon.oo.type.generics.TypeParameter;
 import chameleon.oo.type.inheritance.AbstractInheritanceRelation;
 import chameleon.oo.variable.MemberVariable;
 import chameleon.oo.variable.VariableDeclarator;
+import chameleon.plugin.LanguageProcessor;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.member.simplename.variable.MemberVariableDeclarator;
 import chameleon.support.modifier.PrivateProperty;
@@ -895,4 +896,5 @@ public class Java extends ObjectOrientedLanguage {
 //		}
 		
 		private Type _object;
+
 }

@@ -108,8 +108,8 @@ public abstract class JavaTest extends CompositeTest {
 		repo.add(java);
 		java.setPlugin(ConfigLoader.class, new JavaConfigLoader(javaBaseJarPath()));
 		BootstrapProjectConfig config = new BootstrapProjectConfig(projectFile().getParentFile(), repo);
-		config.readFromXML(projectFile());
-		project = config.project();
+//		config.readFromXML();
+		project = config.project(projectFile(),null);
 //		View view = project.views().get(0);
 		return project;
 	}

@@ -72,7 +72,7 @@ public class PrimitiveTypeFactory {
 		addInfixOperator(booleanT, "boolean", "&=", "boolean");
 		addInfixOperator(booleanT, "boolean", "|=", "boolean");
 		addInfixOperator(booleanT, "boolean", "^=", "boolean");
-		((Java)language()).storePrimitiveType("boolean",booleanT);
+//		((Java)language()).storePrimitiveType("boolean",booleanT);
 	}
 
 
@@ -211,7 +211,7 @@ public class PrimitiveTypeFactory {
 
 		addUniProm(doubleT);
 		addBinNumOps(doubleT);
-		((Java)language()).storePrimitiveType("double",doubleT);
+//		((Java)language()).storePrimitiveType("double",doubleT);
 	}
 
 	protected void addLong(String mm, DocumentLoaderImpl loader) {
@@ -236,7 +236,7 @@ public class PrimitiveTypeFactory {
 		addUniPromIntegral(longT);
 
 		addBinNumOpsIntegral(longT);
-		((Java)language()).storePrimitiveType("long",longT);
+//		((Java)language()).storePrimitiveType("long",longT);
 	}
 
 	protected void addFloat(String mm, DocumentLoaderImpl loader) {
@@ -260,7 +260,7 @@ public class PrimitiveTypeFactory {
 		addUniProm(floatT);
 
 		addBinNumOps(floatT);
-		((Java)language()).storePrimitiveType("float",floatT);
+//		((Java)language()).storePrimitiveType("float",floatT);
 	}
 
 	protected static class PrimitiveType extends RegularJavaType {
@@ -307,7 +307,7 @@ public class PrimitiveTypeFactory {
 		addUniPromIntegral(intT);
 
 		addBinNumOpsIntegral(intT);
-		((Java)language()).storePrimitiveType("int",intT);
+//		((Java)language()).storePrimitiveType("int",intT);
 	}
 
 	protected void addByte(String mm, DocumentLoaderImpl loader) {
@@ -336,7 +336,7 @@ public class PrimitiveTypeFactory {
 		addUniPromIntegral(byteT);
 
 		addBinNumOpsIntegral(byteT);
-		((Java)language()).storePrimitiveType("byte",byteT);
+//		((Java)language()).storePrimitiveType("byte",byteT);
 	}
 
 	protected void addShort(String mm, DocumentLoaderImpl loader) {
@@ -364,7 +364,7 @@ public class PrimitiveTypeFactory {
 		addUniPromIntegral(shortT);
 
 		addBinNumOpsIntegral(shortT);
-		((Java)language()).storePrimitiveType("short",shortT);
+//		((Java)language()).storePrimitiveType("short",shortT);
 	}
 
 	protected void addChar(String mm, DocumentLoaderImpl loader) {
@@ -391,7 +391,7 @@ public class PrimitiveTypeFactory {
 		addUniPromIntegral(charT);
 
 		addBinNumOpsIntegral(charT);
-		((Java)language()).storePrimitiveType("char",charT);
+//		((Java)language()).storePrimitiveType("char",charT);
 	}
 
 	protected void addVoid(String mm, DocumentLoaderImpl loader) {
@@ -411,7 +411,7 @@ public class PrimitiveTypeFactory {
 		voidT.addModifier(pub);
 
 		voidT.addModifier(new ValueType());
-		((Java)language()).storePrimitiveType("void",voidT);
+//		((Java)language()).storePrimitiveType("void",voidT);
 	}
 
 	protected void addPrefixOperator(Type type, String returnType, String symbol) {

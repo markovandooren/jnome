@@ -25,7 +25,7 @@ public class JavaConfigLoader extends LanguagePluginImpl implements ConfigLoader
 	
 	@Override
 	public ConfigElement createConfigElement(String projectName, File root, ProjectInitialisationListener listener) throws ConfigException {
-		View view = new View(new LazyRootNamespace(), language());
+		View view = new JavaView(new LazyRootNamespace(), language());
 		if(listener != null) {listener.viewAdded(view);}
 		return createProjectConfig(projectName, root, view);
 	}

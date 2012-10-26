@@ -10,6 +10,7 @@ import java.util.List;
 import jnome.core.language.Java;
 import jnome.core.language.JavaLanguageFactory;
 import jnome.input.EagerJavaFileInputSourceFactory;
+import jnome.workspace.JavaView;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +20,6 @@ import chameleon.core.namespace.RootNamespace;
 import chameleon.input.ParseException;
 import chameleon.support.tool.Arguments;
 import chameleon.workspace.Project;
-import chameleon.workspace.View;
 
 /**
  * This is an abstract class to facilitate testing of both the output and the input. These tests output a model,
@@ -86,7 +86,7 @@ public abstract class OutputTest {
 	public void setUp() throws MalformedURLException, FileNotFoundException, ParseException, IOException, Exception {
 		addTestFiles();
 		Java language = new JavaLanguageFactory().create();
-		Project project = new Project("output test", new View(new RootNamespace(new RegularNamespaceFactory()),language), new File("."));
+		Project project = new Project("output test", new JavaView(new RootNamespace(new RegularNamespaceFactory()),language), new File("."));
 		EagerJavaFileInputSourceFactory inputSourceFactory = new EagerJavaFileInputSourceFactory();
 		//FIXME I think this entire test class has to be deleted.
 		throw new Error();

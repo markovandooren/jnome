@@ -41,6 +41,7 @@ import jnome.core.type.JavaSuperWildcard;
 import jnome.core.type.JavaTypeReference;
 import jnome.core.variable.JavaVariableDeclaration;
 import jnome.core.variable.MultiFormalParameter;
+import jnome.workspace.JavaView;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
@@ -88,7 +89,6 @@ import chameleon.support.modifier.Static;
 import chameleon.util.Pair;
 import chameleon.util.Util;
 import chameleon.workspace.Project;
-import chameleon.workspace.View;
 
 public class ASMClassParser {
 
@@ -655,7 +655,7 @@ public class ASMClassParser {
   	String jarPath = args[0];
 		JarFile jar = new JarFile(jarPath);
   	Java lang = new JavaLanguageFactory().create();
-  	Project project = new Project("test", new View(new LazyRootNamespace(), lang), new File("."));
+  	Project project = new Project("test", new JavaView(new LazyRootNamespace(), lang), new File("."));
 
 
   	Enumeration<JarEntry> entries = jar.entries();

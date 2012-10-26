@@ -561,12 +561,12 @@ public class Java extends ObjectOrientedLanguage {
 
 		@Override
 		public BasicJavaTypeReference createTypeReference(String fqn) {
-			Type t = _primitiveCache.get(fqn);
-			if(t != null) {
-				return new PrimitiveTypeReference(fqn,t);
-			} else {
+//			Type t = _primitiveCache.get(fqn);
+//			if(t != null) {
+//				return new PrimitiveTypeReference(fqn,t);
+//			} else {
 				return new BasicJavaTypeReference(fqn);
-			}
+//			}
 		}
 
 		@Override
@@ -870,31 +870,4 @@ public class Java extends ObjectOrientedLanguage {
 			}
 		}
 		
-		private Map<String, Type> _primitiveCache = new HashMap<String,Type>();
-		
-		public void storePrimitiveType(String name, Type type) {
-			_primitiveCache.put(name, type);
-		}
-		
-//		public Type intType() throws LookupException {
-//			Type result = _int;
-////			if(result == null) {
-////				result = findType("int");
-////				_int = result;
-////			}
-//			return result;
-//		}
-//		private Type _int;
-
-//		public Type objectType() throws LookupException {
-//			Type result = _object;
-//			if(result == null) {
-//				result = findType("java.lang.Object",root);
-//				_object = result;
-//			}
-//			return result;
-//		}
-		
-		private Type _object;
-
 }

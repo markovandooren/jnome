@@ -5,7 +5,6 @@ import java.io.File;
 import jnome.input.LazyJavaFileInputSourceFactory;
 import chameleon.core.namespace.LazyRootNamespace;
 import chameleon.plugin.LanguagePluginImpl;
-import chameleon.workspace.ConfigElement;
 import chameleon.workspace.ConfigException;
 import chameleon.workspace.ConfigLoader;
 import chameleon.workspace.ProjectInitialisationListener;
@@ -24,7 +23,7 @@ public class JavaConfigLoader extends LanguagePluginImpl implements ConfigLoader
 	}
 	
 	@Override
-	public ConfigElement createConfigElement(String projectName, File root, ProjectInitialisationListener listener) throws ConfigException {
+	public JavaProjectConfig createConfigElement(String projectName, File root, ProjectInitialisationListener listener) throws ConfigException {
 		View view = new JavaView(new LazyRootNamespace(), language());
 		if(listener != null) {listener.viewAdded(view);}
 		return createProjectConfig(projectName, root, view);

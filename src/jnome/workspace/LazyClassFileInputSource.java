@@ -29,6 +29,11 @@ public class LazyClassFileInputSource extends InputSourceImpl {
 		}
 		setNamespace(ns);
 	}
+	
+	@Override
+	public String toString() {
+		return _parser.name();
+	}
 
 	@Override
 	public List<String> targetDeclarationNames(Namespace ns) {

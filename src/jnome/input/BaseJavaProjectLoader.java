@@ -19,8 +19,8 @@ import chameleon.workspace.View;
 
 public class BaseJavaProjectLoader extends JarLoader {
 
-	public BaseJavaProjectLoader(File file) {
-		super(file);
+	public BaseJavaProjectLoader(String path) {
+		super(path);
 	}
 	
 	@Override

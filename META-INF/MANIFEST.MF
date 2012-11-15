@@ -34,6 +34,6 @@ Export-Package: jnome.core.decorator,
  org.objectweb.asm,
  org.objectweb.asm.signature
 Require-Bundle: org.eclipse.swt;bundle-version="3.7.0",
- be.chameleon.eclipse;bundle-version="1.0.4",
- org.eclipse.jface;bundle-version="3.7.0"
+ org.eclipse.jface;bundle-version="3.7.0",
+ be.chameleon.eclipse;bundle-version="1.0.6"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

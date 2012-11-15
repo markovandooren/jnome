@@ -16,13 +16,23 @@ import chameleon.util.Util;
 import chameleon.workspace.DocumentLoader;
 import chameleon.workspace.InputException;
 import chameleon.workspace.ProjectException;
+import chameleon.workspace.View;
 
 public class ReflectiveJarLoader extends AbstractJarLoader implements DocumentLoader {
 
-	public ReflectiveJarLoader(File file) throws ProjectException, InputException {
-		super(file);
-		_loader = createLoader(file);
-		process();
+	public ReflectiveJarLoader(String path) throws ProjectException, InputException {
+		super(path);
+	}
+	
+	@Override
+	protected void notifyProjectAdded(View project) throws ProjectException {
+		_loader = createLoader(file(path()));
+		try {
+			process();
+		} catch (InputException e) {
+			throw new ProjectException(e);
+		}
+
 	}
 	
 	private static ClassLoader createLoader(File file) throws ProjectException {

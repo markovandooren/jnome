@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.rejuse.logic.ternary.Ternary;
+import org.rejuse.property.PropertySet;
 
 import jnome.core.expression.invocation.SuperConstructorDelegation;
 import jnome.core.language.Java;
@@ -14,6 +15,7 @@ import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.modifier.Modifier;
+import chameleon.core.property.ChameleonProperty;
 import chameleon.core.reference.SimpleReference;
 import chameleon.core.tag.TagImpl;
 import chameleon.exception.ChameleonProgrammerException;
@@ -88,6 +90,13 @@ public class RegularJavaType extends RegularType implements JavaType {
   		}
   	}
   }
+  
+  @Override
+  public PropertySet<Element, ChameleonProperty> declaredProperties() {
+  	PropertySet<Element, ChameleonProperty> result = super.declaredProperties();
+  	result.add(language(ObjectOrientedLanguage.class).OVERRIDABLE.inverse());
+  	return result;
+  }
 
 	private boolean isConstructor(Element element) {
 		//FIXME element.isTrue(language(Java.class).CONSTRUCTOR) doesn't work since the type
@@ -117,7 +126,6 @@ public class RegularJavaType extends RegularType implements JavaType {
   		}
   		setDefaultDefaultConstructor();
   	}
-  	
   }
 
   public void reactOnDescendantReplaced(Element oldElement, Element newElement) {

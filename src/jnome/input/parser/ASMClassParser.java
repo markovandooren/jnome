@@ -63,6 +63,7 @@ import chameleon.core.namespacedeclaration.NamespaceDeclaration;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.method.Method;
 import chameleon.oo.method.MethodHeader;
+import chameleon.oo.method.NativeImplementation;
 import chameleon.oo.method.exception.ExceptionClause;
 import chameleon.oo.method.exception.TypeExceptionDeclaration;
 import chameleon.oo.plugin.ObjectOrientedFactory;
@@ -263,6 +264,7 @@ public class ASMClassParser {
 				_type.add(m);
 				List<Modifier> mods = accessToMethodModifier(access);
 				m.addModifiers(mods);
+				m.setImplementation(new NativeImplementation());
 				if(signature != null) {
 					new SignatureReader(signature).accept(new MethodExtractor(m,language()));
 				} else {

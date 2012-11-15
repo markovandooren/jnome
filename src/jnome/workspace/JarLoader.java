@@ -25,8 +25,8 @@ import chameleon.workspace.View;
 
 public class JarLoader extends AbstractJarLoader {
 
-	public JarLoader(File file) {
-		super(file);
+	public JarLoader(String path) {
+		super(path);
 	}
 	
 	@Override

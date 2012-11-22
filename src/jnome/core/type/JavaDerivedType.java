@@ -1,6 +1,7 @@
 package jnome.core.type;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -8,7 +9,10 @@ import java.util.Set;
 import jnome.core.expression.invocation.NonLocalJavaTypeReference;
 import jnome.core.language.Java;
 import chameleon.core.lookup.LookupException;
+import chameleon.core.tag.TagImpl;
 import chameleon.exception.ChameleonProgrammerException;
+import chameleon.oo.expression.NamedTarget;
+import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.DerivedType;
 import chameleon.oo.type.Parameter;
 import chameleon.oo.type.ParameterSubstitution;
@@ -19,6 +23,8 @@ import chameleon.oo.type.generics.FormalTypeParameter;
 import chameleon.oo.type.generics.InstantiatedTypeParameter;
 import chameleon.oo.type.generics.TypeConstraint;
 import chameleon.oo.type.generics.TypeParameter;
+import chameleon.oo.type.inheritance.InheritanceRelation;
+import chameleon.oo.type.inheritance.SubtypeRelation;
 
 public class JavaDerivedType extends DerivedType implements JavaType {
 
@@ -38,7 +44,36 @@ public class JavaDerivedType extends DerivedType implements JavaType {
 		super(baseType, typeArguments);
 	}
 
-	
+  @Override
+  public List<InheritanceRelation> implicitNonMemberInheritanceRelations() {
+//  	//FIXME cache and put listener on inheritance relations to remove the default one if an explicit one is added.
+//    if(explicitNonMemberInheritanceRelations().isEmpty() && (! "Object".equals(name())) && (! getFullyQualifiedName().equals("java.lang.Object"))) {
+//    	InheritanceRelation relation = new SubtypeRelation(language(ObjectOrientedLanguage.class).createTypeReference(new NamedTarget("java.lang"),"Object"));
+//    	relation.setUniParent(this);
+//    	relation.setMetadata(new TagImpl(), IMPLICIT_CHILD);
+//    	List<InheritanceRelation> result = new ArrayList<InheritanceRelation>();
+//    	result.add(relation);
+//    	return result;
+//    } else {
+//    	return Collections.EMPTY_LIST;
+//    }
+  	
+  	//FIXME speed avoid creating collection
+    String defaultSuperClassFQN = language(ObjectOrientedLanguage.class).getDefaultSuperClassFQN();
+		if(explicitNonMemberInheritanceRelations().isEmpty() && 
+    	 (! getFullyQualifiedName().equals(defaultSuperClassFQN)) //"java.lang.Object"
+    	) {
+    	InheritanceRelation relation = new SubtypeRelation(language(ObjectOrientedLanguage.class).createTypeReference(defaultSuperClassFQN));
+    	relation.setUniParent(this);
+    	relation.setMetadata(new TagImpl(), IMPLICIT_CHILD);
+    	List<InheritanceRelation> result = new ArrayList<InheritanceRelation>();
+    	result.add(relation);
+    	return result;
+    } else {
+    	return Collections.EMPTY_LIST;
+    }
+  }
+  
 	@Override
 	public void newAccumulateAllSuperTypes(Set<Type> acc) throws LookupException {
 		Type captureConversion = captureConversion();

@@ -145,8 +145,13 @@ public class RegularJavaType extends RegularType implements JavaType {
   
   @Override
   public List<InheritanceRelation> implicitNonMemberInheritanceRelations() {
-    if(explicitNonMemberInheritanceRelations().isEmpty() && (! "Object".equals(name())) && (! getFullyQualifiedName().equals("java.lang.Object"))) {
-    	InheritanceRelation relation = new SubtypeRelation(language(ObjectOrientedLanguage.class).createTypeReference(new NamedTarget("java.lang"),"Object"));
+  	//FIXME speed avoid creating collection
+    String defaultSuperClassFQN = language(ObjectOrientedLanguage.class).getDefaultSuperClassFQN();
+		if(explicitNonMemberInheritanceRelations().isEmpty() && 
+    	 (! getFullyQualifiedName().equals(defaultSuperClassFQN)) //"java.lang.Object"
+    	) {
+//    	InheritanceRelation relation = new SubtypeRelation(language(ObjectOrientedLanguage.class).createTypeReference(new NamedTarget("java.lang"),"Object"));
+    	InheritanceRelation relation = new SubtypeRelation(language(ObjectOrientedLanguage.class).createTypeReference(defaultSuperClassFQN));
     	relation.setUniParent(this);
     	relation.setMetadata(new TagImpl(), IMPLICIT_CHILD);
     	List<InheritanceRelation> result = new ArrayList<InheritanceRelation>();

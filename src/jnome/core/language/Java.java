@@ -869,5 +869,4 @@ public class Java extends ObjectOrientedLanguage {
 				return (X) _type;
 			}
 		}
-		
 }

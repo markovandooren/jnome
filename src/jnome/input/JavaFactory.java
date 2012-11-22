@@ -16,6 +16,8 @@ import chameleon.oo.method.MethodHeader;
 import chameleon.oo.plugin.ObjectOrientedFactory;
 import chameleon.oo.statement.Statement;
 import chameleon.oo.type.RegularType;
+import chameleon.oo.type.Type;
+import chameleon.oo.type.inheritance.InheritanceRelation;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.statement.FinallyClause;
 import chameleon.support.statement.ReturnStatement;
@@ -67,5 +69,10 @@ public class JavaFactory extends ObjectOrientedFactory implements OOFactory {
 	@Override
 	public MethodInvocation createInvocation(String name, CrossReferenceTarget target) {
 		return new JavaMethodInvocation(name, target);
+	}
+
+	@Override
+	public InheritanceRelation createDefaultInheritanceRelation(Type type) {
+		return null;
 	}
 }

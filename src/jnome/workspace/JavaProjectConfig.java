@@ -1,6 +1,8 @@
 package jnome.workspace;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.List;
 
 import jnome.input.BaseJavaProjectLoader;
 import chameleon.workspace.ConfigElement;
@@ -34,8 +36,23 @@ public class JavaProjectConfig extends ProjectConfig {
 			super.binaryLoaderAdded(loader);
 		}
 	}
+	@Override
+	protected List<String> sourceExtensions() {
+		return Collections.singletonList(".java");
+	}
+	
+//	public class SourcePath extends ProjectConfig.SourcePath {
+//		public class Source extends ProjectConfig.SourcePath.Source {
+//		}
+//	}
 	
 	public class BinaryPath extends ProjectConfig.BinaryPath {
+//		public class Source extends ProjectConfig.BinaryPath.Source {
+//			@Override
+//			protected List<String> sourceExtensions() {
+//				return Collections.singletonList(".java");
+//			}
+//		}
 		
 		public class Jar extends ConfigElement {
 			private String _path;
@@ -47,6 +64,10 @@ public class JavaProjectConfig extends ProjectConfig {
 					throw new ConfigException(e);
 				}
 			}
+	  	
+	  	public String getFile() {
+	  		return _path;
+	  	}
 
 			@Override
 			protected void $update() {

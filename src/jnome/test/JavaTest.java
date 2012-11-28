@@ -33,7 +33,7 @@ import chameleon.test.provider.BasicDescendantProvider;
 import chameleon.test.provider.ElementProvider;
 import chameleon.workspace.BootstrapProjectConfig;
 import chameleon.workspace.ConfigException;
-import chameleon.workspace.ConfigLoader;
+import chameleon.workspace.ProjectConfigurator;
 import chameleon.workspace.DirectoryLoader;
 import chameleon.workspace.FileInputSourceFactory;
 import chameleon.workspace.LanguageRepository;
@@ -106,7 +106,7 @@ public abstract class JavaTest extends CompositeTest {
 		LanguageRepository repo = new LanguageRepository();
 		Java java = new JavaLanguageFactory().create();
 		repo.add(java);
-		java.setPlugin(ConfigLoader.class, new JavaConfigLoader(javaBaseJarPath()));
+		java.setPlugin(ProjectConfigurator.class, new JavaConfigLoader(javaBaseJarPath()));
 		BootstrapProjectConfig config = new BootstrapProjectConfig(projectFile().getParentFile(), repo);
 //		config.readFromXML();
 		project = config.project(projectFile(),null);

@@ -10,7 +10,7 @@ import chameleon.core.language.LanguageFactory;
 import chameleon.input.ModelFactory;
 import chameleon.oo.plugin.ObjectOrientedFactory;
 import chameleon.plugin.output.Syntax;
-import chameleon.workspace.ConfigLoader;
+import chameleon.workspace.ProjectConfigurator;
 
 public class JavaLanguageFactory implements LanguageFactory {
 
@@ -22,7 +22,7 @@ public class JavaLanguageFactory implements LanguageFactory {
 		URL objectLocation = Object.class.getResource("/java/lang/Object.class");
 		String fileName = objectLocation.getFile();
 		String jarName = fileName.substring(5,fileName.indexOf('!'));
-		result.setPlugin(ConfigLoader.class, new JavaConfigLoader(jarName));
+		result.setPlugin(ProjectConfigurator.class, new JavaConfigLoader(jarName));
 		return result;
 	}
 }

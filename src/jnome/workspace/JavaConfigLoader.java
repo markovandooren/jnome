@@ -6,11 +6,11 @@ import jnome.input.LazyJavaFileInputSourceFactory;
 import chameleon.core.namespace.LazyRootNamespace;
 import chameleon.plugin.LanguagePluginImpl;
 import chameleon.workspace.ConfigException;
-import chameleon.workspace.ConfigLoader;
+import chameleon.workspace.ProjectConfigurator;
 import chameleon.workspace.ProjectInitialisationListener;
 import chameleon.workspace.View;
 
-public class JavaConfigLoader extends LanguagePluginImpl implements ConfigLoader {
+public class JavaConfigLoader extends LanguagePluginImpl implements ProjectConfigurator {
 
 	public JavaConfigLoader(String javaBaseJarPath) {
 		_basePath = javaBaseJarPath;

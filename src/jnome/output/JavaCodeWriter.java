@@ -543,7 +543,7 @@ public class JavaCodeWriter extends Syntax {
   
   public String toCodeCompilationUnit(Document cu) throws LookupException {
     StringBuffer result = new StringBuffer();
-  	for(NamespaceDeclaration part: cu.namespaceParts()) {
+  	for(NamespaceDeclaration part: cu.namespaceDeclarations()) {
   		result.append(toCodeNamespacePart(part));
   	}
   	return result.toString();

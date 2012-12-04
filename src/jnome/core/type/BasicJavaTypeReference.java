@@ -92,7 +92,7 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 	  }
 
     result = super.getElement(selector);
-    
+     
     if(realSelector) {
     	//First cast result to Type, then back to X.
     	//Because the selector is the connected selector of this Java type reference,

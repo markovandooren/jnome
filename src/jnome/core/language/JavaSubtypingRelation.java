@@ -348,14 +348,10 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 
 	private boolean compatibleParameters(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
 		List<Pair<Type, TypeParameter>> slowTrace = new ArrayList<Pair<Type, TypeParameter>>(trace);
-//		List<Pair<TypeParameter, TypeParameter>> slowTrace = trace;
 		boolean result;
 		List<TypeParameter> firstFormal= first.parameters(TypeParameter.class);
 		List<TypeParameter> secondFormal= second.parameters(TypeParameter.class);
 		result = true;
-//		if(firstFormal.size() != secondFormal.size()) {
-//			System.out.println("debug");
-//		}
 		Iterator<TypeParameter> firstIter = firstFormal.iterator();
 		Iterator<TypeParameter> secondIter = secondFormal.iterator();
 		while(result && firstIter.hasNext()) {
@@ -366,36 +362,5 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		return result;
 	}
 	
-//	public synchronized Set<Type> getAllSuperTypesView(Type type) throws LookupException {
-//		try {
-//			Set<Type> result = _superTypeCache.get(type);
-//			if(result == null) {
-//				result = new HashSet<Type>();
-////				accumulateAllSuperTypes(type, result);
-//				type.newAccumulateSelfAndAllSuperTypes(result);
-//				_superTypeCache.put(type, result);
-//			}
-//			result = Collections.unmodifiableSet(result);
-//			return result;
-//		} catch(ChameleonProgrammerException exc) {
-//			if(exc.getCause() instanceof LookupException) {
-//				throw (LookupException) exc.getCause();
-//			} else {
-//				throw exc;
-//			}
-//		}
-//	}
-	
-//  private void accumulateAllSuperTypes(Type t, Set<Type> acc) throws LookupException {
-//  	if(t instanceof DerivedType) {
-//  		t = captureConversion(t);
-//  	}
-//  	acc.add(t);
-//
-//  	List<Type> temp = t.getDirectSuperTypes();
-//  	for(Type type:temp) {
-//  		accumulateAllSuperTypes(type,acc);
-//  	}
-//  }
 
 }

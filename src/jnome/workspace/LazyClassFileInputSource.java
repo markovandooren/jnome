@@ -47,7 +47,7 @@ public class LazyClassFileInputSource extends InputSourceImpl {
 		} catch (InputException e) {
 			throw new LookupException("Error opening file",e);
 		}
-		List<Declaration> list = (List)rawDocument().namespaceParts().get(0).declarations();
+		List<Declaration> list = (List)rawDocument().namespaceDeclarations().get(0).declarations();
 		List<Declaration> result = new ArrayList<>();
 		for(Declaration decl: list) {
 				if(decl.name().equals(name)) {

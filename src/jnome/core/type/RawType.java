@@ -3,10 +3,8 @@ package jnome.core.type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import jnome.core.language.Java;
@@ -37,57 +35,6 @@ import chameleon.oo.variable.FormalParameter;
 import chameleon.util.Pair;
 
 public class RawType extends ClassWithBody implements JavaType {
-
-//	public static RawType create(Type original) {
-//		while(original != original.origin()) {
-//			original = (Type) original.origin();
-//		}
-//		// From here on, the type should either be an exiting RawType or 
-//		// a RegularJavaType
-//		Java language = original.language(Java.class);
-//		RawType result = _rawCache.get(original);
-//		if(result == null) {
-//			if(original instanceof RawType) {
-//				result = (RawType) original;
-//			} else {
-//				if(original.is(language.INSTANCE) == Ternary.TRUE) {
-//					Type outmostType = original.farthestAncestor(chameleon.oo.type.Type.class);
-//					if(outmostType == null) {
-//						outmostType = original;
-//					}
-//					RawType outer;
-//					if(outmostType instanceof RawType) {
-//						outer = (RawType) outmostType;
-//					} else {
-//						outer = new RawType(outmostType);
-//					}
-//					RawType current = outer;
-//					List<Type> outerTypes = original.ancestors(Type.class);
-//					outerTypes.add(0, original);
-//
-//					int size = outerTypes.size();
-//					for(int i = size - 2; i>=0;i--) {
-//						SimpleReference<RawType> simpleRef = new SimpleReference<RawType>(outerTypes.get(i).signature().name(), RawType.class);
-//						simpleRef.setUniParent(current);
-//						try {
-//							current = simpleRef.getElement();
-//						} catch (LookupException e) {
-//							e.printStackTrace();
-//							throw new ChameleonProgrammerException("An inner type of a newly created outer raw type cannot be found",e);
-//						}
-//					}
-//					result = current;
-//				} else {
-//					// static
-//					result = new RawType(original);
-//				}
-//			}
-//			_rawCache.put(original, result);
-//		}
-//		return result;
-//	}
-//	
-//	private static Map<Type,RawType> _rawCache = new HashMap<Type, RawType>();
 
 	private List<Member> _implicitMembers;
 	
@@ -207,18 +154,9 @@ public class RawType extends ClassWithBody implements JavaType {
 			if(element instanceof Method) {
 				Method method = (Method)element;
 				eraseTypeParameters(method.typeParameters());
-//				for(TypeParameter tp: method.typeParameters()) {
-//					if(tp instanceof FormalTypeParameter) {
-//						System.out.println("Nie zjust!");
-//					}
-//				}
 				for(FormalParameter param: method.formalParameters()) {
 					JavaTypeReference typeReference = (JavaTypeReference) param.getTypeReference();
 					JavaTypeReference erasedReference = typeReference.erasedReference();
-//					if(erasedReference == null) {
-//						System.out.println("debug");
-//						typeReference.erasedReference();
-//					}
 					param.setTypeReference(erasedReference);
 				}
 				// erase return type reference
@@ -229,6 +167,7 @@ public class RawType extends ClassWithBody implements JavaType {
 	
 	protected void eraseInheritanceRelations() {
 		//FIXME Why aren't member inheritance relations such as subobjects erased?
+		//      It probably has a reason but I was so stupid not to document it.
 		for(SubtypeRelation relation: nonMemberInheritanceRelations(SubtypeRelation.class)) {
 			JavaTypeReference superClassReference = (JavaTypeReference) relation.superClassReference();
 			JavaTypeReference erasedReference = superClassReference.erasedReference();

@@ -881,9 +881,22 @@ type returns [JavaTypeReference element]
 @after{setLocation(retval.element, retval.start, retval.stop);}
 	:	cd=classOrInterfaceType ('[' ']' {dimension++;})* 
 	        {
-	         retval.element = cd.element.toArray(dimension);
+	         if(dimension > 0) {
+	           retval.element = cd.element.toArray(dimension);
+	           cd.element.disconnect();
+	         } else {
+	           retval.element = cd.element;
+	         }
 	        }
-	|	pt=primitiveType ('[' ']'{dimension++;})* {retval.element = pt.element.toArray(dimension);}
+	|	pt=primitiveType ('[' ']'{dimension++;})* 
+	   {
+	     if(dimension > 0) {
+	       retval.element = pt.element.toArray(dimension);
+	       pt.element.disconnect();
+	     } else {
+	           retval.element = pt.element;
+	     }
+	   }
 	;
 
 classOrInterfaceType returns [JavaTypeReference element]

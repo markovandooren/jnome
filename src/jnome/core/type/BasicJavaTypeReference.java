@@ -18,6 +18,7 @@ import chameleon.oo.type.BasicTypeReference;
 import chameleon.oo.type.RegularType;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.ActualTypeArgument;
+import chameleon.util.CreationStackTrace;
 import chameleon.util.association.Multi;
 
 public class BasicJavaTypeReference extends BasicTypeReference implements JavaTypeReference, CrossReferenceWithName<Type> {
@@ -28,10 +29,12 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 	
 	public BasicJavaTypeReference(CrossReferenceTarget target, String name) {
   	super(target,name);
+  	_trace = new CreationStackTrace();
   }
   
   public BasicJavaTypeReference(CrossReferenceTarget target, SimpleNameSignature signature) {
   	super(target,signature);
+  	_trace = new CreationStackTrace();
   }
   
   /**
@@ -40,11 +43,25 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
    */
   public BasicJavaTypeReference(NamedTarget target) {
   	super(target.getTarget() == null ? null : target.getTarget(),target.name());
+  	_trace = new CreationStackTrace();
   }
   
   public BasicJavaTypeReference(String fqn) {
   	super(fqn);
+  	_trace = new CreationStackTrace();
   }
+  
+//  @Override
+//  protected void notifyParentRemoved(Element element) {
+//  	_trace = new CreationStackTrace();
+//  }
+//  
+//  @Override
+//  protected void notifyParentSet(Element element) {
+//  	_trace = new CreationStackTrace();
+//  }
+  
+  private CreationStackTrace _trace;
   
   public List<ActualTypeArgument> typeArguments() {
   	return _genericParameters.getOtherEnds();

@@ -8,8 +8,6 @@ import java.io.File;
 import jnome.core.language.Java;
 import jnome.core.type.BasicJavaTypeReference;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import chameleon.core.lookup.LookupException;
@@ -106,11 +104,11 @@ public class TestGenerics extends JavaTest {
   }
 
 
-	@Override
-	public void setLogLevels() {
-		Logger.getLogger("chameleon.caching").setLevel(Level.DEBUG);
-		Logger.getRootLogger().setLevel(Level.FATAL);
-	}
+//	@Override
+//	public void setLogLevels() {
+//		Logger.getLogger("chameleon.caching").setLevel(Level.DEBUG);
+//		Logger.getRootLogger().setLevel(Level.FATAL);
+//	}
 
 	@Override
 	protected File projectFile() {

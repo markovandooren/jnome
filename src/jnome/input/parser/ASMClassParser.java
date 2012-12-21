@@ -306,7 +306,7 @@ public class ASMClassParser {
 		}
 				
 		private void initFieldAccessMap() {
-			_fieldAccessMap = new HashMap<>();
+			_fieldAccessMap = new HashMap<Integer, Modifier>();
 			_fieldAccessMap.put(ACC_PUBLIC, new Public());
 			_fieldAccessMap.put(ACC_PRIVATE, new Private());
 			_fieldAccessMap.put(ACC_PROTECTED, new Protected());
@@ -336,7 +336,7 @@ public class ASMClassParser {
 		}
 		
 		private void initMethodAccessMap() {
-			_methodAccessMap = new HashMap<>();
+			_methodAccessMap = new HashMap<Integer, Modifier>();
 			_methodAccessMap.put(ACC_PUBLIC, new Public());
 			_methodAccessMap.put(ACC_PRIVATE, new Private());
 			_methodAccessMap.put(ACC_PROTECTED, new Protected());
@@ -368,7 +368,7 @@ public class ASMClassParser {
 		}
 		
 		private void initClassAccessMap() {
-			_classAccessMap = new HashMap<>();
+			_classAccessMap = new HashMap<Integer, Modifier>();
 			_classAccessMap.put(ACC_PUBLIC, new Public());
 			_classAccessMap.put(ACC_PRIVATE, new Private());
 			_classAccessMap.put(ACC_PROTECTED, new Protected());
@@ -555,7 +555,7 @@ public class ASMClassParser {
 		}
 		
 		private void initPrimitiveMap() {
-			_primitiveMap = new HashMap<>();
+			_primitiveMap = new HashMap<Character, String>();
 			_primitiveMap.put('C', "char");
 			_primitiveMap.put('V', "void");
 			_primitiveMap.put('Z', "boolean");
@@ -661,7 +661,7 @@ public class ASMClassParser {
 
 
   	Enumeration<JarEntry> entries = jar.entries();
-  	List<Pair<Pair<String,String>, JarEntry>> names = new ArrayList<>();
+  	List<Pair<Pair<String,String>, JarEntry>> names = new ArrayList<Pair<Pair<String,String>, JarEntry>>();
   	while(entries.hasMoreElements()) {
   		JarEntry entry = entries.nextElement();
   		String name = entry.getName();
@@ -680,8 +680,8 @@ public class ASMClassParser {
 				return first - second;
 			}
   	});
-  	List<ASMClassParser> parsers = new ArrayList<>();
-  	Map<String, ASMClassParser> map = new HashMap<>();
+  	List<ASMClassParser> parsers = new ArrayList<ASMClassParser>();
+  	Map<String, ASMClassParser> map = new HashMap<String, ASMClassParser>();
   	for(Pair<Pair<String,String>,JarEntry> pair: names) {
   		JarEntry entry = pair.second();
   		String qn = pair.first().second();

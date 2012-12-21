@@ -4,12 +4,8 @@
 package jnome.core.language;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import jnome.core.expression.invocation.NonLocalJavaTypeReference;
@@ -18,7 +14,6 @@ import jnome.core.type.BasicJavaTypeReference;
 import jnome.core.type.JavaTypeReference;
 import jnome.core.type.RawType;
 
-import org.apache.log4j.Logger;
 import org.rejuse.association.SingleAssociation;
 import org.rejuse.logic.ternary.Ternary;
 import org.rejuse.predicate.UnsafePredicate;
@@ -166,11 +161,11 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		return result;
 	}
 	
-	private static Logger _logger = Logger.getLogger("lookup.subtyping");
-	
-	public static Logger getLogger() {
-		return _logger;
-	}
+//	private static Logger _logger = Logger.getLogger("lookup.subtyping");
+//	
+//	public static Logger getLogger() {
+//		return _logger;
+//	}
 	
 //	public void flushCache() {
 //		_cache = new HashMap<Type,Set<Type>>();

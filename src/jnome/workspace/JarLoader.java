@@ -33,7 +33,7 @@ public class JarLoader extends AbstractJarLoader {
 	protected void notifyProjectAdded(View view) throws ProjectException {
 		try {
 			createInputSources();
-		} catch (LookupException | IOException | InputException e) {
+		} catch (Exception e) {
 			throw new ProjectException(e);
 		}
 	}
@@ -41,7 +41,7 @@ public class JarLoader extends AbstractJarLoader {
 	protected void createInputSources() throws IOException, LookupException, InputException {
 		JarFile jar = createJarFile();
   	Enumeration<JarEntry> entries = jar.entries();
-  	List<Pair<Pair<String,String>, JarEntry>> names = new ArrayList<>();
+  	List<Pair<Pair<String,String>, JarEntry>> names = new ArrayList<Pair<Pair<String,String>, JarEntry>>();
   	while(entries.hasMoreElements()) {
   		JarEntry entry = entries.nextElement();
   		String name = entry.getName();
@@ -60,7 +60,7 @@ public class JarLoader extends AbstractJarLoader {
 				return first - second;
 			}
   	});
-  	Map<String, ASMClassParser> map = new HashMap<>();
+  	Map<String, ASMClassParser> map = new HashMap<String, ASMClassParser>();
   	for(Pair<Pair<String,String>,JarEntry> pair: names) {
   		JarEntry entry = pair.second();
   		String qn = pair.first().second();

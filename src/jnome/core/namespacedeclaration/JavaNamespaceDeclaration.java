@@ -18,7 +18,7 @@ public class JavaNamespaceDeclaration extends NamespaceDeclaration {
   }
 
   public JavaNamespaceDeclaration(String fqn) {
-  	this(new SimpleReference<>(fqn, Namespace.class));
+  	this(new SimpleReference<Namespace>(fqn, Namespace.class));
   }
   
 	public JavaNamespaceDeclaration(SimpleReference<Namespace> ref) {

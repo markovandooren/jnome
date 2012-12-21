@@ -76,7 +76,7 @@ public class LazyReflectiveInputSource extends InputSourceImpl {
 			setDocument(new Document());
 			clazz = _loader.loadClass(_fqn);
 			parser().read(clazz, _root, rawDocument());
-		} catch (ClassNotFoundException | LookupException e) {
+		} catch (Exception e) {
 			throw new InputException(e);
 		}
 	}

@@ -18,6 +18,7 @@ public class JavaProjectConfig extends ProjectConfig {
 	public JavaProjectConfig(View view, FileInputSourceFactory inputSourceFactory, String projectName, File root, String baseJarPath) throws ConfigException {
 		super(view,inputSourceFactory,projectName, root);
 		try {
+			//Add the base loader.
 			view.addBinary(new BaseJavaProjectLoader(baseJarPath));
 		} catch (ProjectException e) {
 			throw new ConfigException(e);
@@ -41,19 +42,7 @@ public class JavaProjectConfig extends ProjectConfig {
 		return Collections.singletonList(".java");
 	}
 	
-//	public class SourcePath extends ProjectConfig.SourcePath {
-//		public class Source extends ProjectConfig.SourcePath.Source {
-//		}
-//	}
-	
 	public class BinaryPath extends ProjectConfig.BinaryPath {
-//		public class Source extends ProjectConfig.BinaryPath.Source {
-//			@Override
-//			protected List<String> sourceExtensions() {
-//				return Collections.singletonList(".java");
-//			}
-//		}
-		
 		public class Jar extends ConfigElement {
 			private String _path;
 	  	public void setFile(String path) throws ConfigException {

@@ -57,7 +57,7 @@ public class PrimitiveTypeFactory {
 		Type booleanT = new PrimitiveType("boolean");
 		booleanT.addModifier(pub);
 		try {
-			loader.addInputSource(new DirectInputSource(booleanT,mm,view()));
+			new DirectInputSource(booleanT,mm,view(), loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -201,7 +201,7 @@ public class PrimitiveTypeFactory {
 		Public pub = new Public();
 		Type doubleT = new PrimitiveType("double");
 		try {
-			loader.addInputSource(new DirectInputSource(doubleT,mm,view()));
+			new DirectInputSource(doubleT,mm,view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -225,7 +225,7 @@ public class PrimitiveTypeFactory {
 			}
 		};
 		try {
-			loader.addInputSource(new DirectInputSource(longT,mm,view()));
+			new DirectInputSource(longT,mm,view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -249,7 +249,7 @@ public class PrimitiveTypeFactory {
 			}
 		};
 		try {
-			loader.addInputSource(new DirectInputSource(floatT,mm,view()));
+			new DirectInputSource(floatT,mm,view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -296,7 +296,7 @@ public class PrimitiveTypeFactory {
 			}
 		};
 		try {
-			loader.addInputSource(new DirectInputSource(intT,mm,view()));
+			new DirectInputSource(intT,mm,view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -324,7 +324,7 @@ public class PrimitiveTypeFactory {
 			}
 		};
 		try {
-			loader.addInputSource(new DirectInputSource(byteT,mm,view()));
+			new DirectInputSource(byteT,mm,view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -352,7 +352,7 @@ public class PrimitiveTypeFactory {
 			}
 		};
 		try {
-			loader.addInputSource(new DirectInputSource(shortT,mm,view()));
+			new DirectInputSource(shortT,mm,view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -380,7 +380,7 @@ public class PrimitiveTypeFactory {
 			}
 		};
 		try {
-			loader.addInputSource(new DirectInputSource(charT,mm,view()));
+			new DirectInputSource(charT,mm,view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -404,7 +404,7 @@ public class PrimitiveTypeFactory {
 
 		}; // toevoeging gebeurt door de constructor
 		try {
-			loader.addInputSource(new DirectInputSource(voidT,mm,view()));
+			new DirectInputSource(voidT,mm,view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}

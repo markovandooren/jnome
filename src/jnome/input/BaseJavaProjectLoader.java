@@ -33,13 +33,6 @@ public class BaseJavaProjectLoader extends JarLoader {
 	
 	public void initializePredefinedElements() {
 		RootNamespace root = view().namespace();
-//		SyntheticProjectLoader loader = new SyntheticProjectLoader();
-//		try {
-//			language().project().addSource(loader);
-//		} catch (ProjectException e) {
-//			// Since it is synthetic, nothing _should_ go wrong here.
-//			throw new ChameleonProgrammerException(e);
-//		}
 		_factory = new PrimitiveTypeFactory(view());
 		addPrimitives("",this);
 	  addInfixOperators();
@@ -48,7 +41,7 @@ public class BaseJavaProjectLoader extends JarLoader {
 
 	protected void addNullType(DocumentLoaderImpl loader) {
     try {
-			loader.addInputSource(new DirectInputSource(new NullType(java()),"",view()));
+			new DirectInputSource(new NullType(java()),"",view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}

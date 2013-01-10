@@ -1,6 +1,5 @@
 package jnome.workspace;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +11,6 @@ import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import jnome.core.language.Java;
 import jnome.input.parser.ASMClassParser;
 import chameleon.core.language.Language;
 import chameleon.core.lookup.LookupException;
@@ -38,6 +36,10 @@ public class JarLoader extends AbstractJarLoader {
 		}
 	}
 	
+	protected String fileExtension() {
+		return ".class";
+	}
+	
 	protected void createInputSources() throws IOException, LookupException, InputException {
 		JarFile jar = createJarFile();
   	Enumeration<JarEntry> entries = jar.entries();
@@ -45,13 +47,18 @@ public class JarLoader extends AbstractJarLoader {
   	while(entries.hasMoreElements()) {
   		JarEntry entry = entries.nextElement();
   		String name = entry.getName();
-  		if(name.endsWith(".class")) {
+  		if(name.endsWith(fileExtension())) {
   			String tmp = Util.getAllButLastPart(name).replace('/', '.').replace('$', '.');
   			if(! tmp.matches(".*\\.[0-9].*")) {
   				names.add(new Pair<Pair<String,String>, JarEntry>(new Pair<String,String>(tmp,Util.getLastPart(Util.getAllButLastPart(name).replace('/', '.')).replace('$', '.')), entry));
   			}
   		}
   	}
+  	// The entries must be sorted first such that if an inner class in processed, its outer
+  	// class will have been processed first.
+  	// TODO Explain why this is actually necessary. Not even sure it is needed anymore now that we have lazy
+  	// loading. With eager loading it would try to add the inner class to the outer when the outer wasn't
+  	// loaded yet.
   	Collections.sort(names, new Comparator<Pair<Pair<String,String>,JarEntry>>(){
 			@Override
 			public int compare(Pair<Pair<String,String>, JarEntry> o1, Pair<Pair<String,String>, JarEntry> o2) {

@@ -1,6 +1,5 @@
 package jnome.input;
 
-import java.io.File;
 import java.io.IOException;
 
 import jnome.core.language.Java;
@@ -8,13 +7,12 @@ import jnome.core.type.NullType;
 import jnome.workspace.JarLoader;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;
-import chameleon.core.namespace.Namespace;
 import chameleon.core.namespace.RootNamespace;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.type.Type;
+import chameleon.workspace.DirectInputSource;
 import chameleon.workspace.DocumentLoaderImpl;
 import chameleon.workspace.InputException;
-import chameleon.workspace.DirectInputSource;
 import chameleon.workspace.View;
 
 public class BaseJavaProjectLoader extends JarLoader {

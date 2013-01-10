@@ -28,7 +28,7 @@ public class ReflectiveJarLoader extends AbstractJarLoader implements DocumentLo
 	protected void notifyProjectAdded(View project) throws ProjectException {
 		_loader = createLoader(file(path()));
 		try {
-			process();
+			createInputSources();
 		} catch (InputException e) {
 			throw new ProjectException(e);
 		}
@@ -45,7 +45,7 @@ public class ReflectiveJarLoader extends AbstractJarLoader implements DocumentLo
 	
 	private ClassLoader _loader;
 
-	private void process() throws ProjectException, InputException {
+	private void createInputSources() throws ProjectException, InputException {
   	try {
   	Enumeration<JarEntry> entries = createJarFile().entries();
   	RootNamespace root = view().namespace();

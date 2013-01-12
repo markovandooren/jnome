@@ -5,7 +5,7 @@ import java.net.URL;
 import jnome.input.JavaFactory;
 import jnome.input.JavaModelFactory;
 import jnome.output.JavaCodeWriter;
-import jnome.workspace.JavaConfigLoader;
+import jnome.workspace.JavaProjectConfigurator;
 import chameleon.core.language.LanguageFactory;
 import chameleon.input.ModelFactory;
 import chameleon.oo.plugin.ObjectOrientedFactory;
@@ -22,7 +22,7 @@ public class JavaLanguageFactory implements LanguageFactory {
 		URL objectLocation = Object.class.getResource("/java/lang/Object.class");
 		String fileName = objectLocation.getFile();
 		String jarName = fileName.substring(5,fileName.indexOf('!'));
-		result.setPlugin(ProjectConfigurator.class, new JavaConfigLoader(jarName));
+		result.setPlugin(ProjectConfigurator.class, new JavaProjectConfigurator(jarName));
 		return result;
 	}
 }

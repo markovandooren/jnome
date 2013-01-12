@@ -9,19 +9,22 @@ import chameleon.workspace.ConfigElement;
 import chameleon.workspace.ConfigException;
 import chameleon.workspace.DocumentLoader;
 import chameleon.workspace.FileInputSourceFactory;
-import chameleon.workspace.ProjectConfig;
+import chameleon.workspace.ProjectConfiguration;
 import chameleon.workspace.ProjectException;
 import chameleon.workspace.View;
+import chameleon.workspace.BootstrapProjectConfig.BaseLibraryConfiguration;
 
-public class JavaProjectConfig extends ProjectConfig {
+public class JavaProjectConfig extends ProjectConfiguration {
 
-	public JavaProjectConfig(View view, FileInputSourceFactory inputSourceFactory, String projectName, File root, String baseJarPath) throws ConfigException {
-		super(view,inputSourceFactory,projectName, root);
-		try {
-			//Add the base loader.
-			view.addBinary(new BaseJavaProjectLoader(baseJarPath));
-		} catch (ProjectException e) {
-			throw new ConfigException(e);
+	public JavaProjectConfig(View view, FileInputSourceFactory inputSourceFactory, String projectName, File root, String baseJarPath, BaseLibraryConfiguration baseLibraryConfiguration) throws ConfigException {
+		super(projectName,root,view, inputSourceFactory);
+		if(baseLibraryConfiguration.mustLoad("Java")) {
+			try {
+				//Add the base loader.
+				view.addBinary(new BaseJavaProjectLoader(baseJarPath));
+			} catch (ProjectException e) {
+				throw new ConfigException(e);
+			}
 		}
 	}
 	
@@ -42,7 +45,7 @@ public class JavaProjectConfig extends ProjectConfig {
 		return Collections.singletonList(".java");
 	}
 	
-	public class BinaryPath extends ProjectConfig.BinaryPath {
+	public class BinaryPath extends ProjectConfiguration.BinaryPath {
 		public class Jar extends ConfigElement {
 			private String _path;
 	  	public void setFile(String path) throws ConfigException {

@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import jnome.core.language.Java;
 import jnome.core.language.JavaLanguageFactory;
@@ -93,7 +95,7 @@ import chameleon.workspace.Project;
 
 public class ASMClassParser {
 
-	public ASMClassParser(JarFile file, JarEntry entry, String className, String packageFQN) {
+	public ASMClassParser(ZipFile file, ZipEntry entry, String className, String packageFQN) {
 		_jarFile = file;
 		_entry = entry;
 		if(className == null) {
@@ -130,9 +132,9 @@ public class ASMClassParser {
 	
 	private Map<String,ASMClassParser> _children;
 	
-	private JarFile _jarFile;
+	private ZipFile _jarFile;
 	
-	private JarEntry _entry;
+	private ZipEntry _entry;
 		
 	public Document load(Java language) throws FileNotFoundException, IOException, LookupException {
 		Type t = read(language);

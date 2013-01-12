@@ -7,26 +7,40 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import jnome.core.language.Java;
 import jnome.input.ReflectiveClassParser;
 import chameleon.core.namespace.LazyNamespace;
 import chameleon.core.namespace.RootNamespace;
 import chameleon.util.Util;
-import chameleon.workspace.DocumentLoader;
+import chameleon.workspace.DocumentLoaderImpl;
 import chameleon.workspace.InputException;
 import chameleon.workspace.ProjectException;
 import chameleon.workspace.View;
 
-public class ReflectiveJarLoader extends AbstractJarLoader implements DocumentLoader {
+/**
+ * A class for loading Java classes from jar files via reflection.
+ *
+ * This class is not part of the {@link ZipLoader} hierarchy because there are too few similarities
+ * and it does not fit in well. Currently, the regular {@link JarLoader} class is recommended, so
+ * I'm not going to put in the effort to adapt this class to fit in the {@link ZipLoader} hierarchy.
+ * Therefore, it is marked as deprecated, but it does function propertly.
+ * 
+ * @author Marko van Dooren
+ * @deprecated
+ */
+public class ReflectiveJarLoader extends DocumentLoaderImpl {
 
 	public ReflectiveJarLoader(String path) throws ProjectException, InputException {
-		super(path);
+		_path = path;
 	}
 	
+	private String _path;
+	
 	@Override
-	protected void notifyProjectAdded(View project) throws ProjectException {
-		_loader = createLoader(file(path()));
+	protected void notifyViewAdded(View view) throws ProjectException {
+		_loader = createLoader(view.project().absoluteFile(_path));
 		try {
 			createInputSources();
 		} catch (InputException e) {
@@ -47,7 +61,7 @@ public class ReflectiveJarLoader extends AbstractJarLoader implements DocumentLo
 
 	private void createInputSources() throws ProjectException, InputException {
   	try {
-  	Enumeration<JarEntry> entries = createJarFile().entries();
+  	Enumeration<JarEntry> entries = new JarFile(project().absolutePath(_path)).entries();
   	RootNamespace root = view().namespace();
   	ReflectiveClassParser parser = new ReflectiveClassParser((Java)view().language());
 		while(entries.hasMoreElements()) {

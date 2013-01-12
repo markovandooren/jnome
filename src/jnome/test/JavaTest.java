@@ -12,7 +12,7 @@ import jnome.input.BaseJavaProjectLoader;
 import jnome.input.EagerJavaFileInputSourceFactory;
 import jnome.input.LazyJavaFileInputSourceFactory;
 import jnome.workspace.JarLoader;
-import jnome.workspace.JavaConfigLoader;
+import jnome.workspace.JavaProjectConfigurator;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -106,7 +106,7 @@ public abstract class JavaTest extends CompositeTest {
 		LanguageRepository repo = new LanguageRepository();
 		Java java = new JavaLanguageFactory().create();
 		repo.add(java);
-		java.setPlugin(ProjectConfigurator.class, new JavaConfigLoader(javaBaseJarPath()));
+		java.setPlugin(ProjectConfigurator.class, new JavaProjectConfigurator(javaBaseJarPath()));
 		BootstrapProjectConfig config = new BootstrapProjectConfig(projectFile().getParentFile(), repo);
 //		config.readFromXML();
 		project = config.project(projectFile(),null);

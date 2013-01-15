@@ -27,6 +27,7 @@ import chameleon.test.provider.ElementProvider;
 import chameleon.workspace.ConfigException;
 import chameleon.workspace.LanguageRepository;
 import chameleon.workspace.View;
+import chameleon.workspace.Workspace;
 
 
 public class DesignAnalyzer {
@@ -119,8 +120,9 @@ public class DesignAnalyzer {
     }
     Config.setCaching(true);
     LanguageRepository repo = new LanguageRepository();
+		Workspace workspace = new Workspace(repo);
     repo.add(new JavaLanguageFactory().create());
-		ModelBuilder provider = new ModelBuilder(args, repo);
+		ModelBuilder provider = new ModelBuilder(args, workspace);
     long start = System.currentTimeMillis();
     VerificationResult result = new DesignAnalyzer(provider.project().views().get(0), provider.namespaceProvider()).analyze();
     System.out.println(result.message());

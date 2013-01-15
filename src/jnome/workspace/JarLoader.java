@@ -1,12 +1,12 @@
 package jnome.workspace;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import org.rejuse.predicate.SafePredicate;
 
 import jnome.input.parser.ASMClassParser;
 import chameleon.core.language.Language;
@@ -20,9 +20,8 @@ import chameleon.workspace.InputSource;
 public class JarLoader extends AbstractZipLoader {
 
 	
-	public JarLoader(String path) {
-		super(path);
-		addFileExtension(".class");
+	public JarLoader(String path, SafePredicate<? super String> filter) {
+		super(path, filter);
 	}
 	
 //	/**

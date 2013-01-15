@@ -2,13 +2,17 @@ package jnome.workspace;
 
 import java.io.File;
 
+import org.rejuse.predicate.SafePredicate;
+
 import jnome.input.LazyJavaFileInputSourceFactory;
 import chameleon.core.namespace.LazyRootNamespace;
 import chameleon.plugin.LanguagePluginImpl;
 import chameleon.workspace.ConfigException;
+import chameleon.workspace.ExtensionPredicate;
 import chameleon.workspace.ProjectConfigurator;
 import chameleon.workspace.ProjectInitialisationListener;
 import chameleon.workspace.View;
+import chameleon.workspace.Workspace;
 import chameleon.workspace.BootstrapProjectConfig.BaseLibraryConfiguration;
 
 /**
@@ -42,19 +46,29 @@ public class JavaProjectConfigurator extends LanguagePluginImpl implements Proje
 	}
 	
 	@Override
-	public JavaProjectConfig createConfigElement(String projectName, File root, ProjectInitialisationListener listener, BaseLibraryConfiguration baseLibraryConfiguration) throws ConfigException {
+	public JavaProjectConfig createConfigElement(String projectName, File root, Workspace workspace, ProjectInitialisationListener listener, BaseLibraryConfiguration baseLibraryConfiguration) throws ConfigException {
 		View view = new JavaView(new LazyRootNamespace(), language());
 		if(listener != null) {listener.viewAdded(view);}
-		return createProjectConfig(projectName, root, view, baseLibraryConfiguration);
+		return createProjectConfig(projectName, root, view, workspace, baseLibraryConfiguration);
 	}
 
-	protected JavaProjectConfig createProjectConfig(String projectName, File root, View view, BaseLibraryConfiguration baseLibraryConfiguration) throws ConfigException {
-		return new JavaProjectConfig(view, new LazyJavaFileInputSourceFactory(), projectName, root, baseJarPath(), baseLibraryConfiguration);
+	protected JavaProjectConfig createProjectConfig(String projectName, File root, View view, Workspace workspace, BaseLibraryConfiguration baseLibraryConfiguration) throws ConfigException {
+		return new JavaProjectConfig(projectName, root, view, workspace, new LazyJavaFileInputSourceFactory(), baseJarPath(), baseLibraryConfiguration);
 	}
 
 	@Override
 	public JavaProjectConfigurator clone() {
 		return new JavaProjectConfigurator(_basePath);
+	}
+
+	@Override
+	public SafePredicate<? super String> sourceFileFilter() {
+		return new ExtensionPredicate("java");
+	}
+
+	@Override
+	public SafePredicate<? super String> binaryFileFilter() {
+		return new ExtensionPredicate("class");
 	}
 
 }

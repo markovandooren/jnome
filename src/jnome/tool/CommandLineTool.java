@@ -18,6 +18,7 @@ import chameleon.workspace.ConfigException;
 import chameleon.workspace.LanguageRepository;
 import chameleon.workspace.Project;
 import chameleon.workspace.View;
+import chameleon.workspace.Workspace;
 
 public abstract class CommandLineTool {
 
@@ -27,8 +28,9 @@ public abstract class CommandLineTool {
     }
     Config.setCaching(true);
     LanguageRepository repo = new LanguageRepository();
+		Workspace workspace = new Workspace(repo);
     repo.add(new JavaLanguageFactory().create());
-		_provider = new ModelBuilder(args, repo);
+		_provider = new ModelBuilder(args, workspace);
     
 	  _project = _provider.project();
 	}

@@ -1,27 +1,27 @@
 package jnome.workspace;
 
 import java.io.File;
-import java.util.Collections;
-import java.util.List;
 
+import jnome.core.language.Java;
 import jnome.input.BaseJavaProjectLoader;
-import chameleon.workspace.ConfigElement;
+import chameleon.workspace.BootstrapProjectConfig.BaseLibraryConfiguration;
 import chameleon.workspace.ConfigException;
 import chameleon.workspace.DocumentLoader;
 import chameleon.workspace.FileInputSourceFactory;
 import chameleon.workspace.ProjectConfiguration;
+import chameleon.workspace.ProjectConfigurator;
 import chameleon.workspace.ProjectException;
 import chameleon.workspace.View;
-import chameleon.workspace.BootstrapProjectConfig.BaseLibraryConfiguration;
+import chameleon.workspace.Workspace;
 
 public class JavaProjectConfig extends ProjectConfiguration {
 
-	public JavaProjectConfig(View view, FileInputSourceFactory inputSourceFactory, String projectName, File root, String baseJarPath, BaseLibraryConfiguration baseLibraryConfiguration) throws ConfigException {
-		super(projectName,root,view, inputSourceFactory);
+	public JavaProjectConfig(String projectName, File root, View view, Workspace workspace, FileInputSourceFactory inputSourceFactory, String baseJarPath, BaseLibraryConfiguration baseLibraryConfiguration) throws ConfigException {
+		super(projectName,root,view, workspace, inputSourceFactory);
 		if(baseLibraryConfiguration.mustLoad("Java")) {
 			try {
 				//Add the base loader.
-				view.addBinary(new BaseJavaProjectLoader(baseJarPath));
+				view.addBinary(new BaseJavaProjectLoader(baseJarPath,(Java)language("java")));
 			} catch (ProjectException e) {
 				throw new ConfigException(e);
 			}
@@ -29,7 +29,7 @@ public class JavaProjectConfig extends ProjectConfiguration {
 	}
 	
 	@Override
-	protected void binaryLoaderAdded(DocumentLoader loader) {
+	protected void binaryLoaderAdded(DocumentLoader loader) throws ConfigException {
 		if(loader instanceof BaseJavaProjectLoader) {
 			return;
 		}
@@ -40,32 +40,19 @@ public class JavaProjectConfig extends ProjectConfiguration {
 			super.binaryLoaderAdded(loader);
 		}
 	}
-	@Override
-	protected List<String> sourceExtensions() {
-		return Collections.singletonList(".java");
-	}
 	
 	public class BinaryPath extends ProjectConfiguration.BinaryPath {
-		public class Jar extends ConfigElement {
-			private String _path;
-	  	public void setFile(String path) throws ConfigException {
-				try {
-					_path = path;
-					view().addBinary(new JarLoader(_path));
-				} catch (ProjectException e) {
-					throw new ConfigException(e);
-				}
-			}
+		
+		public class Jar extends Archive {
 	  	
-	  	public String getFile() {
-	  		return _path;
+	  	protected void pathChanged() throws ConfigException {
+	  		try {
+	  			view().addBinary(new JarLoader(_path, language("java").plugin(ProjectConfigurator.class).binaryFileFilter()));
+	  		} catch (ProjectException e) {
+	  			throw new ConfigException(e);
+	  		}
 	  	}
-
-			@Override
-			protected void $update() {
-				//FIXME: this transforms a relative path into an absolute path
-				_path = ((JarLoader)modelElement()).path();
-			}
+	  	
 	  }
 	}
 	

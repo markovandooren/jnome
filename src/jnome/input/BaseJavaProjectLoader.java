@@ -13,12 +13,13 @@ import chameleon.oo.type.Type;
 import chameleon.workspace.DirectInputSource;
 import chameleon.workspace.DocumentLoaderImpl;
 import chameleon.workspace.InputException;
+import chameleon.workspace.ProjectConfigurator;
 import chameleon.workspace.View;
 
 public class BaseJavaProjectLoader extends JarLoader {
 
-	public BaseJavaProjectLoader(String path) {
-		super(path);
+	public BaseJavaProjectLoader(String path, Java java) {
+		super(path, java.plugin(ProjectConfigurator.class).binaryFileFilter());
 	}
 	
 	@Override

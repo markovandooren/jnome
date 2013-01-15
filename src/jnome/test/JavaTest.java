@@ -40,6 +40,7 @@ import chameleon.workspace.LanguageRepository;
 import chameleon.workspace.Project;
 import chameleon.workspace.ProjectException;
 import chameleon.workspace.View;
+import chameleon.workspace.Workspace;
 
 public abstract class JavaTest extends CompositeTest {
 	
@@ -104,10 +105,11 @@ public abstract class JavaTest extends CompositeTest {
 	protected final Project makeProject() throws ConfigException {
 		Project project;
 		LanguageRepository repo = new LanguageRepository();
+		Workspace workspace = new Workspace(repo);
 		Java java = new JavaLanguageFactory().create();
 		repo.add(java);
 		java.setPlugin(ProjectConfigurator.class, new JavaProjectConfigurator(javaBaseJarPath()));
-		BootstrapProjectConfig config = new BootstrapProjectConfig(projectFile().getParentFile(), repo);
+		BootstrapProjectConfig config = new BootstrapProjectConfig(projectFile().getParentFile(), workspace);
 //		config.readFromXML();
 		project = config.project(projectFile(),null);
 //		View view = project.views().get(0);

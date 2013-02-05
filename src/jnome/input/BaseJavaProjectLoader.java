@@ -19,7 +19,7 @@ import chameleon.workspace.View;
 public class BaseJavaProjectLoader extends JarLoader {
 
 	public BaseJavaProjectLoader(String path, Java java) {
-		super(path, java.plugin(ProjectConfigurator.class).binaryFileFilter());
+		super(path, java.plugin(ProjectConfigurator.class).binaryFileFilter(),true);
 	}
 	
 	@Override

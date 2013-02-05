@@ -33,6 +33,9 @@ import chameleon.workspace.View;
 public class ReflectiveJarLoader extends DocumentLoaderImpl {
 
 	public ReflectiveJarLoader(String path) throws ProjectException, InputException {
+		this(path,false);
+	}
+	public ReflectiveJarLoader(String path, boolean isBaseLoader) throws ProjectException, InputException {
 		_path = path;
 	}
 	

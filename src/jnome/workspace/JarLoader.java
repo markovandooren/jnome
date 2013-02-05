@@ -20,27 +20,41 @@ import chameleon.workspace.InputSource;
 public class JarLoader extends AbstractZipLoader {
 
 	
-	public JarLoader(String path, SafePredicate<? super String> filter) {
-		super(path, filter);
+	/**
+	 * Create a new jar loader for the jar with the given path, file filter, and base loader setting.
+	 * 
+	 * @param path The path of the jar file from which elements must be loaded.
+	 * @param filter A filter that selects files in the zip file based on their paths.
+	 * @param isBaseLoader Indicates whether the loader is responsible for loading a base library.
+	 */
+ /*@
+   @ public behavior
+   @
+   @ pre path != null;
+   @ post path() == path;
+   @ post isBaseLoader() == isBaseLoader;
+   @*/
+	public JarLoader(String path, SafePredicate<? super String> filter, boolean isBaseLoader) {
+		super(path, filter, isBaseLoader);
 	}
-	
-//	/**
-//	 * Create a {@link JarFile} object that represents the jar file
-//	 * from which elements must be loaded. If the path is not absolute
-//	 * it is interpreted as a path relative to the project root.
-//	 * 
-//	 * @throws IOException When the path is not a valid path for a jar file.
-//	 */
-// /*@
-//   @ public behavior
-//   @
-//   @ post \result != null;
-//   @ post \result.getAbsolutePath().equals(project().absolutePath(path()));
-//   @*/
-//	protected JarFile createJarFile() throws IOException {
-//		return new JarFile(project().absolutePath(path()));
-//	}
 
+	/**
+	 * Create a new jar loader for the jar with the given path, file filter. The new loader will
+	 * not be responsible for loading a base library.
+	 * 
+	 * @param path The path of the jar file from which elements must be loaded.
+	 * @param filter A filter that selects files in the zip file based on their paths.
+	 */
+ /*@
+   @ public behavior
+   @
+   @ pre path != null;
+   @ post path() == path;
+   @ post isBaseLoader() == false;
+   @*/
+	public JarLoader(String path, SafePredicate<? super String> filter) {
+		this(path, filter, false);
+	}
 	
 	@Override
 	protected void processMap(ZipFile jar, List<Pair<Pair<String, String>, ZipEntry>> names) throws InputException {

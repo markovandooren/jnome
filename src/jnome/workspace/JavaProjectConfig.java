@@ -29,7 +29,7 @@ public class JavaProjectConfig extends ProjectConfiguration {
 	}
 	
 	@Override
-	protected void binaryLoaderAdded(DocumentLoader loader) throws ConfigException {
+	protected void binaryNonBaseLoaderAdded(DocumentLoader loader) throws ConfigException {
 		if(loader instanceof BaseJavaProjectLoader) {
 			return;
 		}

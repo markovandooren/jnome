@@ -6,6 +6,7 @@ import jnome.input.JavaFactory;
 import jnome.input.JavaModelFactory;
 import jnome.output.JavaCodeWriter;
 import jnome.workspace.JavaProjectConfigurator;
+import chameleon.core.factory.Factory;
 import chameleon.core.language.LanguageFactory;
 import chameleon.input.ModelFactory;
 import chameleon.oo.plugin.ObjectOrientedFactory;
@@ -18,6 +19,8 @@ public class JavaLanguageFactory implements LanguageFactory {
 		Java result = new Java();
 		result.setPlugin(ModelFactory.class, new JavaModelFactory());
 		result.setPlugin(Syntax.class, new JavaCodeWriter());
+		// FIXME: Stupid and ineffient
+		result.setPlugin(Factory.class, new JavaFactory());
 		result.setPlugin(ObjectOrientedFactory.class, new JavaFactory());
 		URL objectLocation = Object.class.getResource("/java/lang/Object.class");
 		String fileName = objectLocation.getFile();

@@ -43,6 +43,7 @@ import chameleon.core.declaration.TargetDeclaration;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;
+import chameleon.core.lookup.LookupStrategyFactory;
 import chameleon.core.namespace.Namespace;
 import chameleon.core.property.ChameleonProperty;
 import chameleon.core.property.DynamicChameleonProperty;
@@ -88,7 +89,6 @@ import chameleon.oo.type.generics.TypeParameter;
 import chameleon.oo.type.inheritance.AbstractInheritanceRelation;
 import chameleon.oo.variable.MemberVariable;
 import chameleon.oo.variable.VariableDeclarator;
-import chameleon.plugin.LanguageProcessor;
 import chameleon.support.member.simplename.method.NormalMethod;
 import chameleon.support.member.simplename.variable.MemberVariableDeclarator;
 import chameleon.support.modifier.PrivateProperty;
@@ -140,7 +140,10 @@ public class Java extends ObjectOrientedLanguage {
 	protected static final String SHORT = "short";
 
 	protected Java(String name, Revision version) {
-		super(name, new JavaLookupFactory(), version);
+		this(name,new JavaLookupFactory(),version);
+	}
+	protected Java(String name, LookupStrategyFactory lookupFactory,Revision version) {
+		super(name, lookupFactory, version);
 //		_nullType = new NullType(this);
 		STRICTFP = new StaticChameleonProperty("strictfp", this, Declaration.class);
 		SYNCHRONIZED = new StaticChameleonProperty("synchronized", this, Method.class);

@@ -7,6 +7,7 @@ import jnome.core.language.Java;
 import jnome.core.type.RegularJavaType;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.exception.ChameleonProgrammerException;
+import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.method.SimpleNameMethodHeader;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;
@@ -19,9 +20,9 @@ import chameleon.support.member.simplename.operator.prefix.PrefixOperator;
 import chameleon.support.modifier.Native;
 import chameleon.support.modifier.Public;
 import chameleon.support.modifier.ValueType;
+import chameleon.workspace.DirectInputSource;
 import chameleon.workspace.DocumentLoaderImpl;
 import chameleon.workspace.InputException;
-import chameleon.workspace.DirectInputSource;
 import chameleon.workspace.View;
 
 public class PrimitiveTypeFactory {
@@ -36,8 +37,8 @@ public class PrimitiveTypeFactory {
 	
 	private View _view;
 	
-	public Java language() {
-		return (Java) _view.language();
+	public ObjectOrientedLanguage language() {
+		return (ObjectOrientedLanguage) _view.language();
 	}
 	
 	public void addPrimitives(String root, DocumentLoaderImpl loader) {

@@ -333,6 +333,11 @@ scope TargetScope {
     return ((Java)language()).plugin(ObjectOrientedFactory.class).createNamespaceDeclaration(ns);
   }
   
+  public NamespaceDeclaration createNamespaceDeclaration() {
+    return ((Java)language()).plugin(ObjectOrientedFactory.class).createRootNamespaceDeclaration();
+  }
+  
+  
   public Java java() {
     return (Java)language();
   }
@@ -364,7 +369,7 @@ retval.element = getDocument();
                 }
             )*
         |   cd=classOrInterfaceDeclaration
-               {npp = createNamespaceDeclaration("");
+               {npp = createNamespaceDeclaration();
                 retval.element.add(npp);
                 processType(npp,cd.element);
                } 
@@ -380,7 +385,7 @@ retval.element = getDocument();
          )?
         {
          if(npp == null) {
-           npp = createNamespaceDeclaration("");
+           npp = createNamespaceDeclaration();
          }
          retval.element.add(npp);
         }

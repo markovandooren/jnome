@@ -7,7 +7,9 @@ import jnome.core.namespacedeclaration.JavaNamespaceDeclaration;
 import jnome.core.type.RegularJavaType;
 import chameleon.aspect.oo.weave.factory.OOFactory;
 import chameleon.core.declaration.SimpleNameSignature;
+import chameleon.core.namespace.Namespace;
 import chameleon.core.namespacedeclaration.NamespaceDeclaration;
+import chameleon.core.reference.CrossReference;
 import chameleon.core.reference.CrossReferenceTarget;
 import chameleon.oo.expression.Expression;
 import chameleon.oo.expression.MethodInvocation;
@@ -45,10 +47,10 @@ public class JavaFactory extends ObjectOrientedFactory implements OOFactory {
 	}
 	
 	@Override
-	public NamespaceDeclaration createNamespaceDeclaration(String fqn) {
-		return new JavaNamespaceDeclaration(fqn);
+	public NamespaceDeclaration createNamespaceDeclaration(CrossReference<Namespace> cref) {
+		return new JavaNamespaceDeclaration(cref);
 	}
-
+	
 	@Override
 	public JavaFactory clone() {
 		return new JavaFactory();

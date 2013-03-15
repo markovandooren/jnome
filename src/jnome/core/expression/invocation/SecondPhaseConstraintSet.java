@@ -7,10 +7,8 @@ import java.util.Set;
 
 import jnome.core.language.Java;
 import jnome.core.type.JavaTypeReference;
-
-import org.rejuse.predicate.TypePredicate;
-import org.rejuse.predicate.UnsafePredicate;
-
+import be.kuleuven.cs.distrinet.rejuse.predicate.TypePredicate;
+import be.kuleuven.cs.distrinet.rejuse.predicate.UnsafePredicate;
 import chameleon.core.lookup.LookupException;
 import chameleon.exception.ChameleonProgrammerException;
 import chameleon.oo.expression.MethodInvocation;

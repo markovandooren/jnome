@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import jnome.core.type.ArrayType;
-
-import org.rejuse.java.collections.Visitor;
-
+import be.kuleuven.cs.distrinet.rejuse.java.collections.Visitor;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.reference.CrossReferenceTarget;
 import chameleon.core.validation.BasicProblem;

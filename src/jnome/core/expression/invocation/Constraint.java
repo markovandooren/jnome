@@ -5,9 +5,7 @@ package jnome.core.expression.invocation;
 
 
 import jnome.core.language.Java;
-
-import org.rejuse.association.SingleAssociation;
-
+import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
 import chameleon.exception.ChameleonProgrammerException;
 
 public class Constraint<C extends Constraint, S extends ConstraintSet<C>> {

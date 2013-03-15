@@ -3,10 +3,8 @@ package jnome.tool;
 import java.util.List;
 
 import jnome.core.language.Java;
-
-import org.rejuse.predicate.SafePredicate;
-import org.rejuse.predicate.UnsafePredicate;
-
+import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
+import be.kuleuven.cs.distrinet.rejuse.predicate.UnsafePredicate;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.reference.CrossReference;

@@ -1,7 +1,6 @@
 package jnome.core.expression.invocation;
 
-import org.rejuse.association.SingleAssociation;
-
+import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.TypeParameter;
 

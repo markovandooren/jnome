@@ -27,8 +27,7 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import org.rejuse.java.collections.Visitor;
-
+import be.kuleuven.cs.distrinet.rejuse.java.collections.Visitor;
 import chameleon.util.Util;
 
 /**

@@ -6,9 +6,7 @@ import java.util.List;
 
 import jnome.core.language.Java;
 import jnome.core.type.JavaTypeReference;
-
-import org.rejuse.association.OrderedMultiAssociation;
-
+import be.kuleuven.cs.distrinet.rejuse.association.OrderedMultiAssociation;
 import chameleon.core.lookup.LookupException;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.TypeReference;

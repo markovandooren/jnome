@@ -2,9 +2,7 @@ package jnome.core.type;
 
 
 import jnome.core.language.Java;
-
-import org.rejuse.logic.ternary.Ternary;
-
+import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;

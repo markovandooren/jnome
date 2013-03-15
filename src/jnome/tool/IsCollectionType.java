@@ -1,9 +1,7 @@
 package jnome.tool;
 
 import jnome.core.language.Java;
-
-import org.rejuse.predicate.UnsafePredicate;
-
+import be.kuleuven.cs.distrinet.rejuse.predicate.UnsafePredicate;
 import chameleon.core.lookup.LookupException;
 import chameleon.oo.type.Type;
 import chameleon.workspace.View;

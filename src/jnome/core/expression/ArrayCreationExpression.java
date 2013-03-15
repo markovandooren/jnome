@@ -6,10 +6,8 @@ import java.util.Set;
 import jnome.core.language.Java;
 import jnome.core.type.ArrayType;
 import jnome.core.type.JavaTypeReference;
-
-import org.rejuse.association.OrderedMultiAssociation;
-import org.rejuse.java.collections.Visitor;
-
+import be.kuleuven.cs.distrinet.rejuse.association.OrderedMultiAssociation;
+import be.kuleuven.cs.distrinet.rejuse.java.collections.Visitor;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.validation.Valid;
 import chameleon.core.validation.VerificationResult;

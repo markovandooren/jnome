@@ -3,8 +3,7 @@ package jnome.core.imports;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.rejuse.logic.ternary.Ternary;
-
+import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.DeclarationContainer;
 import chameleon.core.declaration.Signature;

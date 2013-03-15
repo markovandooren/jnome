@@ -11,10 +11,8 @@ import jnome.core.type.ArrayType;
 import jnome.core.type.JavaTypeReference;
 import jnome.core.type.RawType;
 import jnome.core.variable.MultiFormalParameter;
-
-import org.rejuse.association.SingleAssociation;
-import org.rejuse.logic.ternary.Ternary;
-
+import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
+import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.Signature;
 import chameleon.core.element.Element;

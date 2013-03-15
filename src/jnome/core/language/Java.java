@@ -31,12 +31,10 @@ import jnome.core.type.PureWildCardType;
 import jnome.core.type.PureWildcard;
 import jnome.core.type.RawType;
 import jnome.core.type.RegularJavaType;
-
-import org.rejuse.junit.BasicRevision;
-import org.rejuse.junit.Revision;
-import org.rejuse.logic.ternary.Ternary;
-import org.rejuse.property.PropertyUniverse;
-
+import be.kuleuven.cs.distrinet.rejuse.junit.BasicRevision;
+import be.kuleuven.cs.distrinet.rejuse.junit.Revision;
+import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
+import be.kuleuven.cs.distrinet.rejuse.property.PropertyUniverse;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.declaration.TargetDeclaration;

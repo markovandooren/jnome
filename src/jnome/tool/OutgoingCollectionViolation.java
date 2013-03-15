@@ -1,9 +1,7 @@
 package jnome.tool;
 
 import jnome.core.language.Java;
-
-import org.rejuse.predicate.SafePredicate;
-
+import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.reference.CrossReference;

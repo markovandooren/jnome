@@ -8,10 +8,8 @@ import jnome.core.language.Java;
 import jnome.core.type.ArrayType;
 import jnome.core.type.BasicJavaTypeReference;
 import jnome.core.type.JavaTypeReference;
-
-import org.rejuse.logic.ternary.Ternary;
-import org.rejuse.predicate.UnsafePredicate;
-
+import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
+import be.kuleuven.cs.distrinet.rejuse.predicate.UnsafePredicate;
 import chameleon.core.lookup.LookupException;
 import chameleon.oo.language.ObjectOrientedLanguage;
 import chameleon.oo.type.DerivedType;

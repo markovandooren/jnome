@@ -26,13 +26,11 @@ import jnome.core.type.ArrayTypeReference;
 import jnome.core.type.BasicJavaTypeReference;
 import jnome.core.type.JavaIntersectionTypeReference;
 import jnome.core.type.PureWildcard;
-
-import org.rejuse.java.collections.RobustVisitor;
-import org.rejuse.java.collections.Visitor;
-import org.rejuse.logic.ternary.Ternary;
-import org.rejuse.predicate.AbstractPredicate;
-import org.rejuse.predicate.SafePredicate;
-
+import be.kuleuven.cs.distrinet.rejuse.java.collections.RobustVisitor;
+import be.kuleuven.cs.distrinet.rejuse.java.collections.Visitor;
+import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
+import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
+import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 import chameleon.core.document.Document;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;

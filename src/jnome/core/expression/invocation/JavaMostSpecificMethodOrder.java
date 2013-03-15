@@ -6,9 +6,7 @@ import java.util.List;
 import jnome.core.language.Java;
 import jnome.core.type.ArrayType;
 import jnome.core.variable.MultiFormalParameter;
-
-import org.rejuse.predicate.TypePredicate;
-
+import be.kuleuven.cs.distrinet.rejuse.predicate.TypePredicate;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.relation.WeakPartialOrder;
 import chameleon.oo.expression.MethodInvocation;

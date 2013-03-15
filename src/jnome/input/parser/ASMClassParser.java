@@ -52,8 +52,8 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.signature.SignatureReader;
 import org.objectweb.asm.signature.SignatureVisitor;
-import org.rejuse.association.SingleAssociation;
 
+import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.document.Document;
 import chameleon.core.element.Element;

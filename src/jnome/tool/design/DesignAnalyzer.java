@@ -4,9 +4,7 @@ import jnome.core.language.Java;
 import jnome.core.language.JavaLanguageFactory;
 import jnome.core.type.ArrayType;
 import jnome.input.JavaFactory;
-
-import org.rejuse.predicate.SafePredicate;
-
+import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 import chameleon.core.Config;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.lookup.LookupException;

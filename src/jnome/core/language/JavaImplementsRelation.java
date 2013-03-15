@@ -3,8 +3,7 @@
  */
 package jnome.core.language;
 
-import org.rejuse.logic.ternary.Ternary;
-
+import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 import chameleon.core.lookup.LookupException;
 import chameleon.core.relation.StrictPartialOrder;
 import chameleon.oo.language.ObjectOrientedLanguage;

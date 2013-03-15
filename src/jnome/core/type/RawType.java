@@ -8,10 +8,8 @@ import java.util.List;
 import java.util.Set;
 
 import jnome.core.language.Java;
-
-import org.rejuse.association.SingleAssociation;
-import org.rejuse.logic.ternary.Ternary;
-
+import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
+import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.DeclarationSelector;

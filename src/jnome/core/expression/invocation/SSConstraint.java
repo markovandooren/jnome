@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import jnome.core.type.JavaTypeReference;
-
-import org.rejuse.logic.ternary.Ternary;
-
+import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 import chameleon.core.lookup.LookupException;
 import chameleon.oo.type.Type;
 import chameleon.oo.type.generics.ActualTypeArgument;

@@ -3,10 +3,8 @@ package jnome.core.type;
 import java.util.List;
 
 import jnome.core.language.Java;
-
-import org.rejuse.logic.ternary.Ternary;
-import org.rejuse.predicate.SafePredicate;
-
+import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
+import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 import chameleon.core.declaration.SimpleNameSignature;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LookupException;

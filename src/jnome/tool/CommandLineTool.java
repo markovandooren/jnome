@@ -5,10 +5,8 @@ import java.util.Collection;
 import java.util.List;
 
 import jnome.core.language.JavaLanguageFactory;
-
-import org.rejuse.predicate.SafePredicate;
-import org.rejuse.predicate.UnsafePredicate;
-
+import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
+import be.kuleuven.cs.distrinet.rejuse.predicate.UnsafePredicate;
 import chameleon.core.Config;
 import chameleon.core.element.Element;
 import chameleon.core.language.Language;

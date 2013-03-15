@@ -19,9 +19,8 @@ import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.rejuse.java.collections.RobustVisitor;
-import org.rejuse.java.collections.Visitor;
-
+import be.kuleuven.cs.distrinet.rejuse.java.collections.RobustVisitor;
+import be.kuleuven.cs.distrinet.rejuse.java.collections.Visitor;
 import chameleon.util.Util;
 
 /**

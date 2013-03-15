@@ -6,8 +6,7 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.rejuse.predicate.SafePredicate;
-
+import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 import jnome.input.parser.ASMClassParser;
 import chameleon.core.language.Language;
 import chameleon.core.namespace.InputSourceNamespace;

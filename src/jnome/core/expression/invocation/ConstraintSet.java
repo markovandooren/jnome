@@ -6,9 +6,8 @@ package jnome.core.expression.invocation;
 import java.util.Collection;
 import java.util.List;
 
-import org.rejuse.association.OrderedMultiAssociation;
-import org.rejuse.predicate.TypePredicate;
-
+import be.kuleuven.cs.distrinet.rejuse.association.OrderedMultiAssociation;
+import be.kuleuven.cs.distrinet.rejuse.predicate.TypePredicate;
 import chameleon.oo.expression.MethodInvocation;
 import chameleon.oo.method.Method;
 import chameleon.oo.method.MethodHeader;

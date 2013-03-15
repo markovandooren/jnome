@@ -7,10 +7,8 @@ import java.util.List;
 
 import jnome.core.type.ArrayTypeReference;
 import jnome.core.type.JavaTypeReference;
-
-import org.rejuse.association.SingleAssociation;
-import org.rejuse.predicate.UnsafePredicate;
-
+import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
+import be.kuleuven.cs.distrinet.rejuse.predicate.UnsafePredicate;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.element.Element;
 import chameleon.core.lookup.LookupException;

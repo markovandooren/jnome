@@ -2,8 +2,7 @@ package jnome.core.language;
 
 import java.util.List;
 
-import org.rejuse.java.collections.TypeFilter;
-
+import be.kuleuven.cs.distrinet.rejuse.java.collections.TypeFilter;
 import chameleon.core.declaration.Declaration;
 import chameleon.core.lookup.DeclarationSelector;
 import chameleon.core.lookup.LocalLookupStrategy;

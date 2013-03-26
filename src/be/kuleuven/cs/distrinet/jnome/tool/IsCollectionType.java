@@ -1,0 +1,19 @@
+package be.kuleuven.cs.distrinet.jnome.tool;
+
+import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.rejuse.predicate.UnsafePredicate;
+import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
+import be.kuleuven.cs.distrinet.chameleon.workspace.View;
+
+public class IsCollectionType extends UnsafePredicate<Type, LookupException> {
+
+	@Override
+	public boolean eval(Type type) throws LookupException {
+		View view = type.view();
+		Java language = view.language(Java.class);
+		Type collection = language.erasure(language.findType("java.util.Collection",view.namespace()));
+		return type.subTypeOf(collection);
+	}
+	
+}

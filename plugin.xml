@@ -6,7 +6,7 @@
          name="Jnome Eclipse"
          point="chameleon.eclipse.language">
          <bootstrapper
-          class="jnome.eclipse.Bootstrapper">
+          class="be.kuleuven.cs.distrinet.jnome.eclipse.Bootstrapper">
          </bootstrapper>
    </extension>
 

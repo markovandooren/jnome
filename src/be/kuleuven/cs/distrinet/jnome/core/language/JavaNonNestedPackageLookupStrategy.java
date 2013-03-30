@@ -5,11 +5,11 @@ import java.util.List;
 import be.kuleuven.cs.distrinet.rejuse.java.collections.TypeFilter;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationSelector;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LocalLookupStrategy;
+import be.kuleuven.cs.distrinet.chameleon.core.lookup.LocalLookupContext;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
 
-public class JavaNonNestedPackageLookupStrategy extends LocalLookupStrategy<Namespace> {
+public class JavaNonNestedPackageLookupStrategy extends LocalLookupContext<Namespace> {
 
 
 	public JavaNonNestedPackageLookupStrategy(Namespace element) {

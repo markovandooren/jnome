@@ -8,9 +8,9 @@ import be.kuleuven.cs.distrinet.chameleon.core.declaration.DeclarationContainer;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.core.language.Language;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationSelector;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LocalLookupStrategy;
+import be.kuleuven.cs.distrinet.chameleon.core.lookup.LocalLookupContext;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupStrategy;
+import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupContext;
 import be.kuleuven.cs.distrinet.chameleon.core.validation.Valid;
 import be.kuleuven.cs.distrinet.chameleon.core.validation.VerificationResult;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
@@ -96,7 +96,7 @@ public class EnumConstant extends FixedSignatureMember implements DeclarationWit
 		return nearestAncestor(Type.class);
 	}
 
-	public LocalLookupStrategy<?> targetContext() throws LookupException {
+	public LocalLookupContext<?> targetContext() throws LookupException {
   	Language language = language();
   	if(language != null) {
 		  return language.lookupFactory().createTargetLookupStrategy(this);
@@ -134,7 +134,7 @@ public class EnumConstant extends FixedSignatureMember implements DeclarationWit
 	}
 	
 	@Override
-	public LookupStrategy localStrategy() throws LookupException {
+	public LookupContext localContext() throws LookupException {
 		return language().lookupFactory().createLocalLookupStrategy(this);
 	}
 }

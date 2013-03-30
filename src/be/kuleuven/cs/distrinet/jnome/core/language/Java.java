@@ -41,7 +41,7 @@ import be.kuleuven.cs.distrinet.chameleon.core.declaration.TargetDeclaration;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationSelector;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupStrategyFactory;
+import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupContextFactory;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
 import be.kuleuven.cs.distrinet.chameleon.core.property.ChameleonProperty;
 import be.kuleuven.cs.distrinet.chameleon.core.property.DynamicChameleonProperty;
@@ -140,7 +140,7 @@ public class Java extends ObjectOrientedLanguage {
 	protected Java(String name, Revision version) {
 		this(name,new JavaLookupFactory(),version);
 	}
-	protected Java(String name, LookupStrategyFactory lookupFactory,Revision version) {
+	protected Java(String name, LookupContextFactory lookupFactory,Revision version) {
 		super(name, lookupFactory, version);
 //		_nullType = new NullType(this);
 		STRICTFP = new StaticChameleonProperty("strictfp", this, Declaration.class);

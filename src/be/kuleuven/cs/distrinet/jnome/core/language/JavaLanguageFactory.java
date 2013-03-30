@@ -22,10 +22,15 @@ public class JavaLanguageFactory implements LanguageFactory {
 		// FIXME: Stupid and ineffient
 		result.setPlugin(Factory.class, new JavaFactory());
 		result.setPlugin(ObjectOrientedFactory.class, new JavaFactory());
+		String jarName = javaBaseJar();
+		result.setPlugin(ProjectConfigurator.class, new JavaProjectConfigurator(jarName));
+		return result;
+	}
+
+	public static String javaBaseJar() {
 		URL objectLocation = Object.class.getResource("/java/lang/Object.class");
 		String fileName = objectLocation.getFile();
 		String jarName = fileName.substring(5,fileName.indexOf('!'));
-		result.setPlugin(ProjectConfigurator.class, new JavaProjectConfigurator(jarName));
-		return result;
+		return jarName;
 	}
 }

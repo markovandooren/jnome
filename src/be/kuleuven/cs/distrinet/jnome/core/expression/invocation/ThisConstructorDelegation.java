@@ -34,7 +34,7 @@ public class ThisConstructorDelegation extends ConstructorDelegation {
 
   public <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
 		DeclarationCollector<X> collector = new DeclarationCollector<X>(selector);
-	  nearestAncestor(ClassBody.class).lexicalLookupStrategy().lookUp(collector);
+	  nearestAncestor(ClassBody.class).lexicalContext().lookUp(collector);
 	  return collector.result();
 //	   if(result != null) {
 //		   return result;

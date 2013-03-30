@@ -13,6 +13,8 @@ import be.kuleuven.cs.distrinet.chameleon.core.namespace.InputSourceNamespace;
 import be.kuleuven.cs.distrinet.chameleon.util.Pair;
 import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.chameleon.workspace.AbstractZipLoader;
+import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoader;
+import be.kuleuven.cs.distrinet.chameleon.workspace.FileLoader;
 import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.InputSource;
 
@@ -76,17 +78,28 @@ public class JarLoader extends AbstractZipLoader {
 			} else {
 				map.put(key, parser);
 				InputSourceNamespace ns = (InputSourceNamespace) view().namespace().getOrCreateNamespace(packageFQN);
-				InputSource source = createInputSource(parser, ns);
-				addInputSource(source);
+				createInputSource(parser, ns);
 			}
   	}
 	}
 
-	protected LazyClassFileInputSource createInputSource(ASMClassParser parser, InputSourceNamespace ns) throws InputException {
-		return new LazyClassFileInputSource(parser,ns);
+	protected void createInputSource(ASMClassParser parser, InputSourceNamespace ns) throws InputException {
+		LazyClassFileInputSource result = new LazyClassFileInputSource(parser,ns,this);
+		addInputSource(result);
 	}
 
 	protected Language language() {
 		return view().language();
 	}
+	
+	@Override
+	public int compareTo(DocumentLoader o) {
+		//FIXME Just a hack for now, need proper support for a classpath.
+		//      e.g. put the document loaders in a path like structure.
+		int result = super.compareTo(o);
+		if(result == 0) {
+			result = o instanceof FileLoader ? -1 : 0; 
+		}
+		return result;
 	}
+}

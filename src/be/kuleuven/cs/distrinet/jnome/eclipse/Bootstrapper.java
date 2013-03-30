@@ -11,13 +11,9 @@ public class Bootstrapper extends EclipseBootstrapper {
 
 	public final static String PLUGIN_ID = "be.chameleon.eclipse.java";
 	
-	public Bootstrapper() {
-		super("Java","1.6",PLUGIN_ID);
-	}
-	
 	public Language createLanguage() throws ProjectException {
 		Java result = new JavaLanguageFactory().create();
-		result.setPlugin(EclipseEditorExtension.class, new JavaEditorExtension(getLanguageName()));
+		result.setPlugin(EclipseEditorExtension.class, new JavaEditorExtension());
 		return result;
 	}
 

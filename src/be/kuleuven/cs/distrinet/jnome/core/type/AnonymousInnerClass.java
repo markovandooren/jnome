@@ -6,7 +6,7 @@ import java.util.List;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.ConstructorInvocation;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupStrategy;
+import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupContext;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.InheritanceRelation;
@@ -43,7 +43,7 @@ public class AnonymousInnerClass extends AnonymousType {
 		return result;
 	}
 
-	public LookupStrategy lexicalLookupStrategy(Element element) throws LookupException {
+	public LookupContext lexicalLookupStrategy(Element element) throws LookupException {
   	if(element instanceof SubtypeRelation) {
   		Element parent = parent();
   		if(parent != null) {

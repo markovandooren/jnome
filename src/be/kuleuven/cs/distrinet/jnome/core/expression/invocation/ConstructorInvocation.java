@@ -12,7 +12,7 @@ import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationCollector;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationSelector;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclaratorSelector;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupStrategy;
+import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupContext;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReferenceTarget;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.ClassBody;
@@ -143,7 +143,7 @@ public class ConstructorInvocation extends RegularMethodInvocation implements De
 //  }
 
   @Override
-  public LookupStrategy lexicalLookupStrategy(Element element) throws LookupException {
+  public LookupContext lexicalLookupStrategy(Element element) throws LookupException {
     if ((element == getTypeReference()) && (getTargetExpression() != null)) {
       return getTargetExpression().targetContext();
     } else {
@@ -173,7 +173,7 @@ public class ConstructorInvocation extends RegularMethodInvocation implements De
 	}
 
 	@Override
-	public LookupStrategy localStrategy() throws LookupException {
+	public LookupContext localContext() throws LookupException {
 		return language().lookupFactory().createLocalLookupStrategy(this);
 	}
 

@@ -4,15 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.type.RawType;
-import be.kuleuven.cs.distrinet.jnome.core.variable.MultiFormalParameter;
-import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
-import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Signature;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
@@ -32,6 +26,13 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.InstantiatedTypeParam
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
 import be.kuleuven.cs.distrinet.chameleon.workspace.View;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.RawType;
+import be.kuleuven.cs.distrinet.jnome.core.variable.MultiFormalParameter;
+import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
+import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 
 public abstract class AbstractJavaMethodSelector extends DeclarationSelector<NormalMethod> {
 
@@ -54,6 +55,10 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 	public abstract boolean correctSignature(Signature signature) throws LookupException;
 
 	public List<NormalMethod> selection(List<? extends Declaration> selectionCandidates) throws LookupException {
+		return selection(selectionCandidates,null);
+	}
+	
+	public List<NormalMethod> selection(List<? extends Declaration> selectionCandidates, Map<Declaration,Declaration> cache) throws LookupException {
 		List<NormalMethod> tmp = new ArrayList<NormalMethod>();
 		if(! selectionCandidates.isEmpty()) {
 			List<NormalMethod> candidates = new ArrayList<NormalMethod>();
@@ -77,11 +82,17 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 					}
 				}
 			}
+			
+			/**
+			 * JLS 15.12.2.2 Phase 1: Identify Matching Arity Methods Applicable by Subtyping
+			 */
 			for(NormalMethod decl: candidates) {
 				if(matchingApplicableBySubtyping(decl)) {
 					tmp.add(decl);
 				}
 			}
+			// JLS 15.12.2.2: Only if no candidates are applicable by subtyping
+			//                does the search consider other candidates.
 			// conversion
 			if(tmp.isEmpty()) {
 				for(NormalMethod decl: candidates) {
@@ -151,6 +162,9 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 		return formals;
 	}
 
+	/**
+	 * JLS 15.12.2.2 Phase 1: Identify Matching Arity Methods Applicable by Subtyping
+	 */
 	private boolean matchingApplicableBySubtyping(NormalMethod method) throws LookupException {
 				TypeAssignmentSet actualTypeParameters = actualTypeParameters(method, false);
 				List<Type> formalParameterTypesInContext = JavaMethodInvocation.formalParameterTypesInContext(method,actualTypeParameters);

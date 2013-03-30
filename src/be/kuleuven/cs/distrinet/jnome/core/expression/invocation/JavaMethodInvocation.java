@@ -69,20 +69,16 @@ public class JavaMethodInvocation extends RegularMethodInvocation {
 		DeclarationCollector<X> collector = new DeclarationCollector<X>(selector);
   	CrossReferenceTarget target = getTarget();
   	if(target == null) {
-      lexicalLookupStrategy().lookUp(collector);
+      lexicalContext().lookUp(collector);
   	} else {
   		target.targetContext().lookUp(collector);
   	}
   	result = collector.result();
-//		if (result != null) {
-//			if(cache) {
-				result = (X) ((JavaMethodSelector)selector).instance((NormalMethod) result);
-//			}
-	  	//OPTIMISATION
-	  	if(cache) {
-	  		setCache((NormalMethod) result);
-	  	}
-	    return result;
+  	result = (X) ((JavaMethodSelector)selector).instance((NormalMethod) result);
+  	if(cache) {
+  		setCache((NormalMethod) result);
+  	}
+  	return result;
 //		}
 //		else {
 //			//repeat lookup for debugging purposes.

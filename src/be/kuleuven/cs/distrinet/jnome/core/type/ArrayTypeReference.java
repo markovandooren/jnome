@@ -4,7 +4,7 @@ import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.element.ElementImpl;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupStrategy;
+import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupContext;
 import be.kuleuven.cs.distrinet.chameleon.core.validation.Valid;
 import be.kuleuven.cs.distrinet.chameleon.core.validation.VerificationResult;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.IntersectionTypeReference;
@@ -112,7 +112,7 @@ public class ArrayTypeReference  extends ElementImpl implements JavaTypeReferenc
 	}
 
 	@Override
-	public LookupStrategy targetContext() throws LookupException {
+	public LookupContext targetContext() throws LookupException {
 		return getElement().targetContext();
 	}
 }

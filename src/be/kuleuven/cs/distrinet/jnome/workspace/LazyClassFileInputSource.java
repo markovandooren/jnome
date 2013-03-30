@@ -4,21 +4,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.jnome.input.parser.ASMClassParser;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.InputSourceNamespace;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
+import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoader;
+import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoaderImpl;
 import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.InputSourceImpl;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.input.parser.ASMClassParser;
 
 public class LazyClassFileInputSource extends InputSourceImpl {
 
 	private ASMClassParser _parser;
 	
-	public LazyClassFileInputSource(ASMClassParser parser, InputSourceNamespace ns) throws InputException {
+	public LazyClassFileInputSource(ASMClassParser parser, InputSourceNamespace ns, DocumentLoaderImpl loader) throws InputException {
 		if(parser == null) {
 			throw new IllegalArgumentException();
 		}
@@ -26,6 +28,7 @@ public class LazyClassFileInputSource extends InputSourceImpl {
 		if(ns == null) {
 			throw new IllegalArgumentException();
 		}
+		if(loader != null) {loader.addInputSource(this);}
 		setNamespace(ns);
 	}
 	
@@ -76,7 +79,7 @@ public class LazyClassFileInputSource extends InputSourceImpl {
 	@Override
 	public LazyClassFileInputSource clone() {
 		try {
-			return new LazyClassFileInputSource(parser(),null);
+			return new LazyClassFileInputSource(parser(),null,null);
 		} catch (InputException e) {
 			// Won't be connected, so no exception
 			throw new ChameleonProgrammerException(e);

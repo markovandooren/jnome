@@ -28,23 +28,6 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
-import be.kuleuven.cs.distrinet.jnome.core.modifier.StrictFP;
-import be.kuleuven.cs.distrinet.jnome.core.modifier.Synchronized;
-import be.kuleuven.cs.distrinet.jnome.core.modifier.Volatile;
-import be.kuleuven.cs.distrinet.jnome.core.namespacedeclaration.JavaNamespaceDeclaration;
-import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaBasicTypeArgument;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaExtendsWildcard;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaPureWildcard;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaSuperWildcard;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.variable.JavaVariableDeclaration;
-import be.kuleuven.cs.distrinet.jnome.core.variable.MultiFormalParameter;
-import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
-
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
@@ -53,7 +36,6 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.signature.SignatureReader;
 import org.objectweb.asm.signature.SignatureVisitor;
 
-import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.core.document.Document;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
@@ -61,6 +43,7 @@ import be.kuleuven.cs.distrinet.chameleon.core.language.Language;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.modifier.Modifier;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.LazyRootNamespace;
+import be.kuleuven.cs.distrinet.chameleon.core.namespace.RootNamespaceReference;
 import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.NamespaceDeclaration;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
@@ -92,15 +75,35 @@ import be.kuleuven.cs.distrinet.chameleon.support.modifier.Static;
 import be.kuleuven.cs.distrinet.chameleon.util.Pair;
 import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
+import be.kuleuven.cs.distrinet.jnome.core.modifier.StrictFP;
+import be.kuleuven.cs.distrinet.jnome.core.modifier.Synchronized;
+import be.kuleuven.cs.distrinet.jnome.core.modifier.Volatile;
+import be.kuleuven.cs.distrinet.jnome.core.namespacedeclaration.JavaNamespaceDeclaration;
+import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaBasicTypeArgument;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaExtendsWildcard;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaPureWildcard;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaSuperWildcard;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.variable.JavaVariableDeclaration;
+import be.kuleuven.cs.distrinet.jnome.core.variable.MultiFormalParameter;
+import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
+import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
 
 public class ASMClassParser {
 
 	public ASMClassParser(ZipFile file, ZipEntry entry, String className, String packageFQN) {
-		_jarFile = file;
-		_entry = entry;
 		if(className == null) {
 			throw new ChameleonProgrammerException();
 		}
+//		if(packageFQN == null) {
+//			throw new ChameleonProgrammerException();
+//		}
+		_jarFile = file;
+		_entry = entry;
 		_name = className;
 		_packageFQN = packageFQN;
 	}
@@ -140,7 +143,13 @@ public class ASMClassParser {
 		Type t = read(language);
 		Document doc = new Document();
 //		Namespace ns = namespace(language);
-		NamespaceDeclaration decl = new JavaNamespaceDeclaration(_packageFQN);
+		
+		NamespaceDeclaration decl;
+		if(_packageFQN != null) {
+		decl = new JavaNamespaceDeclaration(_packageFQN);
+		} else {
+			decl = new JavaNamespaceDeclaration(new RootNamespaceReference());
+		}
 		doc.add(decl);
 		decl.add(t);
 		return doc;

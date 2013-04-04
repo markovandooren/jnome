@@ -14,8 +14,6 @@ import be.kuleuven.cs.distrinet.chameleon.workspace.View;
 import be.kuleuven.cs.distrinet.chameleon.exception.ModelException;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
 
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupStrategyFactory;
-
 import be.kuleuven.cs.distrinet.chameleon.core.document.Document;
 
 import be.kuleuven.cs.distrinet.chameleon.oo.member.DeclarationWithParametersHeader;

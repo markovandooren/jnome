@@ -22,7 +22,7 @@ import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectException;
 /**
  * @author Marko van Dooren
  */
-public class TestGenerics extends JavaTest {
+public class TestCustomCases extends JavaTest {
 
 	public static class CustomGenericsTest extends ModelTest {
 

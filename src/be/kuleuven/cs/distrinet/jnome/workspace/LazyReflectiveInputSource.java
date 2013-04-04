@@ -3,7 +3,6 @@ package be.kuleuven.cs.distrinet.jnome.workspace;
 import java.util.Collections;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.jnome.input.ReflectiveClassParser;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.document.Document;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
@@ -14,12 +13,15 @@ import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.NamespaceDec
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.util.Util;
+import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoader;
 import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.InputSourceImpl;
+import be.kuleuven.cs.distrinet.jnome.input.ReflectiveClassParser;
 
 public class LazyReflectiveInputSource extends InputSourceImpl {
 
-	public LazyReflectiveInputSource(ClassLoader loader, ReflectiveClassParser parser, String fqn, LazyNamespace ns) throws InputException {
+	public LazyReflectiveInputSource(ClassLoader loader, ReflectiveClassParser parser, String fqn, LazyNamespace ns, DocumentLoader documentLoader) throws InputException {
+		super(documentLoader);
 		_parser = parser;
 		_fqn = fqn;
 		_name = Util.getLastPart(fqn);
@@ -31,7 +33,7 @@ public class LazyReflectiveInputSource extends InputSourceImpl {
 	@Override
 	public InputSourceImpl clone() {
 		try {
-			return new LazyReflectiveInputSource(_loader, _parser, _fqn, null);
+			return new LazyReflectiveInputSource(_loader, _parser, _fqn, null, null);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}

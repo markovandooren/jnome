@@ -29,7 +29,7 @@ public class SuperConstructorDelegation extends ConstructorDelegation {
   
   // @FIXME: does not work with multiple inheritance. Call is ambiguous.
   public NormalMethod getMethod() throws LookupException {
-//	    return nearestAncestor(Type.class).getDirectSuperTypes().get(0).lexicalLookupStrategy().lookUp(selector());
+//	    return nearestAncestor(Type.class).getDirectSuperTypes().get(0).lookupContext().lookUp(selector());
   	return getElement();
   }
   

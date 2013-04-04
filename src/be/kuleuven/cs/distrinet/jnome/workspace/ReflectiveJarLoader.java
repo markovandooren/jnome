@@ -84,7 +84,7 @@ public class ReflectiveJarLoader extends DocumentLoaderImpl {
   			if(validClassName) {
   				String packageName = Util.getAllButLastPart(className);
 						LazyNamespace ns = (LazyNamespace) root.getOrCreateNamespace(packageName);
-						new LazyReflectiveInputSource(_loader, parser, className, ns);
+						new LazyReflectiveInputSource(_loader, parser, className, ns,this);
   			}
   		}
   	}

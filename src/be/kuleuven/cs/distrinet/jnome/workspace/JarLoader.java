@@ -98,7 +98,7 @@ public class JarLoader extends AbstractZipLoader {
 		//      e.g. put the document loaders in a path like structure.
 		int result = super.compareTo(o);
 		if(result == 0) {
-			result = o instanceof FileLoader ? -1 : 0; 
+			result = o instanceof FileLoader ? 1 : 0; 
 		}
 		return result;
 	}

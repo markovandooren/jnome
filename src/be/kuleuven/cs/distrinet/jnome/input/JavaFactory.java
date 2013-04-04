@@ -1,10 +1,5 @@
 package be.kuleuven.cs.distrinet.jnome.input;
 
-import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaMethodInvocation;
-import be.kuleuven.cs.distrinet.jnome.core.method.JavaNormalMethod;
-import be.kuleuven.cs.distrinet.jnome.core.modifier.JavaConstructor;
-import be.kuleuven.cs.distrinet.jnome.core.namespacedeclaration.JavaNamespaceDeclaration;
-import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
 import be.kuleuven.cs.distrinet.chameleon.aspect.oo.weave.factory.OOFactory;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
@@ -24,6 +19,12 @@ import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.Norma
 import be.kuleuven.cs.distrinet.chameleon.support.statement.FinallyClause;
 import be.kuleuven.cs.distrinet.chameleon.support.statement.ReturnStatement;
 import be.kuleuven.cs.distrinet.chameleon.support.statement.TryStatement;
+import be.kuleuven.cs.distrinet.jnome.core.enumeration.EnumType;
+import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaMethodInvocation;
+import be.kuleuven.cs.distrinet.jnome.core.method.JavaNormalMethod;
+import be.kuleuven.cs.distrinet.jnome.core.modifier.JavaConstructor;
+import be.kuleuven.cs.distrinet.jnome.core.namespacedeclaration.JavaNamespaceDeclaration;
+import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
 
 public class JavaFactory extends ObjectOrientedFactory implements OOFactory {
 	
@@ -33,6 +34,10 @@ public class JavaFactory extends ObjectOrientedFactory implements OOFactory {
 	
 	public RegularType createRegularType(SimpleNameSignature signature) {
 		return new RegularJavaType(signature);
+	}
+	
+	public RegularType createEnumType(SimpleNameSignature signature) {
+		return new EnumType(signature);
 	}
 	
 	@Override

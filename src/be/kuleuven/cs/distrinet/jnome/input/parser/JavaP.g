@@ -224,6 +224,10 @@ scope TargetScope {
      return factory().createRegularType(signature);
   }
   
+  public RegularType createEnum(SimpleNameSignature signature) {
+     return factory().createEnumType(signature);
+  }
+
   public NormalMethod createNormalMethod(MethodHeader header) {
      return factory().createNormalMethod(header);
   }
@@ -548,7 +552,7 @@ enumDeclaration returns [RegularType element]
 scope{
   Type enumType;
 }
-    :   ENUM name=identifierRule {retval.element = createType(new SimpleNameSignature($name.text)); 
+    :   ENUM name=identifierRule {retval.element = createEnum(new SimpleNameSignature($name.text)); 
                               retval.element.addModifier(new Enum()); 
                               $enumDeclaration::enumType=retval.element;
                               setName(retval.element,name.start);}

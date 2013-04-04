@@ -10,7 +10,6 @@ import be.kuleuven.cs.distrinet.chameleon.core.namespace.InputSourceNamespace;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoader;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoaderImpl;
 import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.InputSourceImpl;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
@@ -20,7 +19,8 @@ public class LazyClassFileInputSource extends InputSourceImpl {
 
 	private ASMClassParser _parser;
 	
-	public LazyClassFileInputSource(ASMClassParser parser, InputSourceNamespace ns, DocumentLoaderImpl loader) throws InputException {
+	public LazyClassFileInputSource(ASMClassParser parser, InputSourceNamespace ns, DocumentLoader loader) throws InputException {
+		super(loader);
 		if(parser == null) {
 			throw new IllegalArgumentException();
 		}
@@ -28,7 +28,6 @@ public class LazyClassFileInputSource extends InputSourceImpl {
 		if(ns == null) {
 			throw new IllegalArgumentException();
 		}
-		if(loader != null) {loader.addInputSource(this);}
 		setNamespace(ns);
 	}
 	

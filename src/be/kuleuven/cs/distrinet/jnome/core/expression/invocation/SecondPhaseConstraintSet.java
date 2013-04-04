@@ -20,6 +20,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgument;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.BasicTypeArgument;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ExtendsWildcard;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.InstantiatedParameterType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.InstantiatedTypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.SuperWildcard;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
@@ -107,9 +108,17 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	public Set<Type> Inv(Type G, JavaTypeReference U) throws LookupException {
 		Type base = G.baseType();
 		Set<Type> superTypes = ST(U);
+		//FIXME: Because we use a set, bugs may seem to disappear when debugging.
+		//       Do we have to use a set anyway? The operations applied to it
+		//       further on should work exactly the same whether there are duplicates or not
 		Set<Type> result = new HashSet<Type>();
 		for(Type superType: superTypes) {
 			if(superType.baseType().sameAs(base)) {
+				if(superType instanceof InstantiatedParameterType) {
+					while(superType instanceof InstantiatedParameterType) {
+						superType = ((InstantiatedParameterType) superType).aliasedType();
+					}
+				}
 				result.add(superType);
 			}
 		}
@@ -121,52 +130,41 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		return lci(list);
 	}
 	
-	public Type lci(List<Type> types) throws LookupException {
+	private Type lci(List<Type> types) throws LookupException {
 		int size = types.size();
-		if(size == 1) {
-			return types.get(0);
-		} else if(size >= 2) {
-			Type lci = lci(types.get(0), types.get(1));
-			if(size == 2) {
-				return lci;
-			} else {
-				List<Type> others = new ArrayList<Type>(types);
-				// remove the first
-				others.remove(0);
-				// replace the second with lci
-				others.set(0, lci);
-				return lci(others);
-				
+		if(size > 0) {
+			Type lci = types.get(0);
+			for(int i = 1; i < size; i++) {
+				lci = lci(lci, types.get(i));
 			}
+			return lci;
 		} else {
-			throw new ChameleonProgrammerException("The list of types to compute lci contains less than one element.");
+			throw new ChameleonProgrammerException("The list of types to compute lci is empty.");
 		}
 	}
 	
 	public Type lci(Type first, Type second) throws LookupException {
-		Type result = first.clone();
-		result.setUniParent(first.parent());
-		List<ActualTypeArgument> firstArguments = arguments(first);
-		List<ActualTypeArgument> secondArguments = arguments(second);
-		int size = firstArguments.size();
-		if(secondArguments.size() != size) {
-			throw new ChameleonProgrammerException("The number of type parameters from the first list: "+size+" is different from the number of type parameters in the second list: "+secondArguments.size());
+		Type result = first;
+		if(first.nbTypeParameters(TypeParameter.class) > 0) {
+			result = first.clone();
+			result.setUniParent(first.parent());
+			List<ActualTypeArgument> firstArguments = arguments(first);
+			List<ActualTypeArgument> secondArguments = arguments(second);
+			int size = firstArguments.size();
+			if(secondArguments.size() != size) {
+				throw new ChameleonProgrammerException("The number of type parameters from the first list: "+size+" is different from the number of type parameters in the second list: "+secondArguments.size());
+			}
+			List<TypeParameter> newParameters = lcta(firstArguments, secondArguments);
+			result.replaceAllParameters(TypeParameter.class,newParameters);
 		}
-		List<TypeParameter> newParameters = lcta(firstArguments, secondArguments);
-		result.replaceAllParameter(TypeParameter.class,newParameters);
 		return result;
 	}
 	
-	public List<ActualTypeArgument> arguments(Type type) {
+	private List<ActualTypeArgument> arguments(Type type) {
 		List<TypeParameter> parameters = type.parameters(TypeParameter.class);
 		List<ActualTypeArgument> result = new ArrayList<ActualTypeArgument>();
 		for(TypeParameter parameter: parameters) {
 			result.add(Java.argument(parameter));
-//			if(parameter instanceof InstantiatedTypeParameter) {
-//				result.add(((InstantiatedTypeParameter) parameter).argument());
-//			} else {
-//				throw new ChameleonProgrammerException("Trying to get the actual type arguments of a type that still has formal type parameters");
-//			}
 		}
 		return result;
 	}
@@ -270,8 +268,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		} else if(candidates.size() == 1) {
 			return candidates.get(0);
 		} else {
-		  Type intersectionType = IntersectionType.create(candidates);
-		  return intersectionType;
+		  return IntersectionType.create(candidates);
 		}
 	}
 	

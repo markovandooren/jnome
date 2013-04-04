@@ -43,7 +43,7 @@ public class AnonymousInnerClass extends AnonymousType {
 		return result;
 	}
 
-	public LookupContext lexicalLookupStrategy(Element element) throws LookupException {
+	public LookupContext lookupContext(Element element) throws LookupException {
   	if(element instanceof SubtypeRelation) {
   		Element parent = parent();
   		if(parent != null) {
@@ -53,7 +53,7 @@ public class AnonymousInnerClass extends AnonymousType {
   			throw new LookupException("Parent of type is null when looking for the parent context of a type.");
   		}
   	} else {
-  	  return super.lexicalLookupStrategy(element);
+  	  return super.lookupContext(element);
   	}
   }
 

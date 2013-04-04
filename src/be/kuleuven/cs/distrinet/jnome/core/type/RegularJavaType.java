@@ -56,25 +56,40 @@ public class RegularJavaType extends RegularType implements JavaType {
 	
 	private NormalMethod _defaultDefaultConstructor;
 	
+	/**
+	 * Set the default default constructor.
+	 */
 	protected void setDefaultDefaultConstructor() {
+		JavaNormalMethod cons = createDefaultConstructorWithoutAccessModifier();
+		cons.addModifier(new Public());
+	}
+
+	/**
+	 * Create a default default constructor without an access modifier.
+	 */
+	protected JavaNormalMethod createDefaultConstructorWithoutAccessModifier() {
 		// FIXME Because this code is ran when a regular Java type is constructed, we cannot ask the
 		//       language for the factory. Management of the constructor should be done lazily. When
 		//       the type is actually used, we can assume that a language is attached. Otherwise, we
 		//       throw an exception.
 		JavaNormalMethod cons = new JavaNormalMethod(new SimpleNameMethodHeader(signature().name(), new BasicJavaTypeReference(signature().name())));
 		cons.addModifier(new Constructor());
-		cons.addModifier(new Public());
 		Block body = new Block();
 		cons.setImplementation(new RegularImplementation(body));
 		body.addStatement(new StatementExpression(new SuperConstructorDelegation()));
 		cons.setUniParent(this);
 		_defaultDefaultConstructor = cons;
+		return cons;
 	}
 	
 	protected void clearDefaultDefaultConstructor() {
 		_defaultDefaultConstructor = null;
 	}
 	
+	/**
+	 * A Java reference type has a default constructor when
+	 * no other constructor is present.
+	 */
   @Override
 	public List<Member> implicitMembers() {
   	List<Member> result = new ArrayList<Member>();
@@ -82,6 +97,10 @@ public class RegularJavaType extends RegularType implements JavaType {
   	return result;
 	}
 
+  /**
+   * If the added element is a constructor, the default default
+   * constructor is removed.
+   */
   public void reactOnDescendantAdded(Element element) {
   	if(element instanceof TypeElement) {
   		if(isConstructor(element)) {
@@ -90,9 +109,14 @@ public class RegularJavaType extends RegularType implements JavaType {
   	}
   }
   
+  /**
+   * A Java reference type is not overridable. A such, if B extends A,
+   * and both A and B have a nested class with name C, then B.C does
+   * not override A.C.
+   */
   @Override
-  public PropertySet<Element, ChameleonProperty> declaredProperties() {
-  	PropertySet<Element, ChameleonProperty> result = super.declaredProperties();
+  public PropertySet<Element, ChameleonProperty> inherentProperties() {
+  	PropertySet<Element, ChameleonProperty> result = new PropertySet<Element, ChameleonProperty>();
   	result.add(language(ObjectOrientedLanguage.class).OVERRIDABLE.inverse());
   	return result;
   }
@@ -131,16 +155,6 @@ public class RegularJavaType extends RegularType implements JavaType {
   	reactOnDescendantRemoved(oldElement);
   	reactOnDescendantAdded(newElement);
   }
-  
-//  @Override
-//  protected void addImplicitInheritanceRelations(List<InheritanceRelation> list) {
-//    if(explicitNonMemberInheritanceRelations().isEmpty() && (! "Object".equals(name())) && (! getFullyQualifiedName().equals("java.lang.Object"))) {
-//    	InheritanceRelation relation = new SubtypeRelation(language(ObjectOrientedLanguage.class).createTypeReference(new NamedTarget("java.lang"),"Object"));
-//    	relation.setUniParent(this);
-//    	relation.setMetadata(new TagImpl(), IMPLICIT_CHILD);
-//    	list.add(relation);
-//    }
-//  }
   
   @Override
   public List<InheritanceRelation> implicitNonMemberInheritanceRelations() {

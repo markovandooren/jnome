@@ -29,7 +29,7 @@ public class ThisConstructorDelegation extends ConstructorDelegation {
   }
 
 //  public NormalMethod getMethod() throws LookupException {
-//	   return nearestAncestor(Type.class).lexicalLookupStrategy().lookUp(selector());
+//	   return nearestAncestor(Type.class).lookupContext().lookUp(selector());
 //  }
 
   public <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
@@ -39,7 +39,7 @@ public class ThisConstructorDelegation extends ConstructorDelegation {
 //	   if(result != null) {
 //		   return result;
 //	   } else {
-//	  	 nearestAncestor(ClassBody.class).lexicalLookupStrategy().lookUp(selector);
+//	  	 nearestAncestor(ClassBody.class).lookupContext().lookUp(selector);
 //	  	 throw new LookupException("Cannot find the target of a this constructor delegation.");
 //	   }
   }

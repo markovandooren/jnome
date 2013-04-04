@@ -39,7 +39,7 @@ public class NullType extends RegularType implements JavaType {
   }
 
   public boolean assignableTo(Type other) {
-    return true; 
+    return other.isTrue(language(Java.class).REFERENCE_TYPE); 
   }
 
   protected NullType cloneThis() {
@@ -53,7 +53,7 @@ public class NullType extends RegularType implements JavaType {
   
   @Override
   public boolean auxSubTypeOf(Type other) throws LookupException {
-  	return true;
+  	return other.isTrue(language(Java.class).REFERENCE_TYPE);
   }
 
 	/**

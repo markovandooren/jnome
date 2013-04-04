@@ -143,11 +143,11 @@ public class ConstructorInvocation extends RegularMethodInvocation implements De
 //  }
 
   @Override
-  public LookupContext lexicalLookupStrategy(Element element) throws LookupException {
+  public LookupContext lookupContext(Element element) throws LookupException {
     if ((element == getTypeReference()) && (getTargetExpression() != null)) {
       return getTargetExpression().targetContext();
     } else {
-      return super.lexicalLookupStrategy(element);
+      return super.lookupContext(element);
     }
   }
 

@@ -15,8 +15,7 @@ public class EagerJavaFileInputSourceFactory extends FileInputSourceFactory {
 	@Override
 	public IFileInputSource create(File file, DirectoryLoader loader) throws InputException {
 		String declarationName = Util.getAllButLastPart(file.getName());
-		LazyFileInputSource eagerJavaFileInputSource = new LazyFileInputSource(file,declarationName,(InputSourceNamespace) currentNamespace());
-		loader.addInputSource(eagerJavaFileInputSource);
+		LazyFileInputSource eagerJavaFileInputSource = new LazyFileInputSource(file,declarationName,(InputSourceNamespace) currentNamespace(),loader);
 		eagerJavaFileInputSource.load();
 		return eagerJavaFileInputSource;
 	}

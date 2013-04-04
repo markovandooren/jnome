@@ -1,6 +1,7 @@
-package be.kuleuven.cs.distrinet.jnome.tool;
+package be.kuleuven.cs.distrinet.jnome.tool.design;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.tool.IsCollectionType;
 import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
@@ -23,12 +24,13 @@ public class OutgoingCollectionViolation extends SafePredicate<ReturnStatement> 
 				if(expr instanceof CrossReference) {
 					Declaration declaration = ((CrossReference) expr).getElement();
 					if(declaration instanceof MemberVariable) {
+//						System.out.println("Checking for outgoing collection violations in "+nearestAncestor.nearestAncestor(Type.class).getFullyQualifiedName()+"."+nearestAncestor.name());
 						Type type = ((MemberVariable) declaration).getType();
 						result = new IsCollectionType().eval(type);
 					}
 				}
 			}catch(LookupException exc) {
-				// swallow for now
+				exc.printStackTrace();
 			}
 		}
 		return result;

@@ -1,4 +1,4 @@
-package be.kuleuven.cs.distrinet.jnome.tool;
+package be.kuleuven.cs.distrinet.jnome.tool.design;
 
 import java.util.List;
 

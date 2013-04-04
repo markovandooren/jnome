@@ -4,5 +4,6 @@
     <dependency org="distrinet.cs.kuleuven.be" name="chameleon" rev="latest.integration"/>
     <!-- Used to parse Java class files -->
     <dependency org="org.ow2.asm" name="asm" rev="4.0"/>
+    <dependency org="com.lexicalscope.jewelcli" name="jewelcli" rev="0.8.5"/>
   </dependencies>
 </ivy-module>

@@ -1,6 +1,7 @@
-package be.kuleuven.cs.distrinet.jnome.tool;
+package be.kuleuven.cs.distrinet.jnome.tool.design;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.tool.IsCollectionType;
 import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 import be.kuleuven.cs.distrinet.chameleon.core.Config;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;

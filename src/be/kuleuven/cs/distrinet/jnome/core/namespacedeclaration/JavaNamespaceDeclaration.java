@@ -24,22 +24,19 @@ public class JavaNamespaceDeclaration extends NamespaceDeclaration {
   }
 
   public JavaNamespaceDeclaration(String fqn) {
-  	this(check(fqn));
-  }
-  
-  private static CrossReference<Namespace> check(String fqn) {
-  	if("".equals(fqn)) {
-  		throw new IllegalArgumentException("If you want a namespace declaration for the root namespace, use a RootNamespaceReference, or use the default constructor.");
-  	}
-  	return new SimpleReference<Namespace>(fqn, Namespace.class);
+  	this(new SimpleReference<Namespace>(fqn, Namespace.class));
   }
   
 	public JavaNamespaceDeclaration(CrossReference<Namespace> ref) {
 		super(ref);
-		if(ref instanceof SimpleReference && ((SimpleReference)ref).name().equals("")) {
-			throw new IllegalArgumentException();
-		}
+		verify(ref);
 		set(_defaultImport,new DemandImport(new NamespaceReference("java.lang")));
+	}
+
+	public void verify(CrossReference<Namespace> ref) {
+		if(ref instanceof SimpleReference && ((SimpleReference)ref).name().equals("")) {
+			throw new IllegalArgumentException("If you want a namespace declaration for the root namespace, use a RootNamespaceReference, or use the default constructor.");
+		}
 	}
 	
 	@Override

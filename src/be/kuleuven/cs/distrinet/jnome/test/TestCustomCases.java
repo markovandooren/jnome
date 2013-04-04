@@ -34,31 +34,31 @@ public class TestCustomCases extends JavaTest {
 	public void testSubtyping() throws LookupException {
 		Java language = (Java)view().language();
 		Namespace ns = view().namespace();
-		BasicJavaTypeReference tref1 = (BasicJavaTypeReference) language.createTypeReference("generics.List");
+		BasicJavaTypeReference tref1 = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
 		tref1.addArgument(language.createBasicTypeArgument(language.createTypeReference("java.lang.String")));
 		tref1.setUniParent(ns);
-		BasicJavaTypeReference tref2 = (BasicJavaTypeReference) language.createTypeReference("generics.List");
+		BasicJavaTypeReference tref2 = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
 		tref2.addArgument(language.createBasicTypeArgument(language.createTypeReference("java.lang.String")));
 		tref2.setUniParent(ns);
-		BasicJavaTypeReference tref3 = (BasicJavaTypeReference) language.createTypeReference("generics.SubList");
+		BasicJavaTypeReference tref3 = (BasicJavaTypeReference) language.createTypeReference("test.generics.SubList");
 		tref3.addArgument(language.createBasicTypeArgument(language.createTypeReference("java.lang.String")));
 		tref3.setUniParent(ns);
-		BasicJavaTypeReference tref4 = (BasicJavaTypeReference) language.createTypeReference("generics.List");
+		BasicJavaTypeReference tref4 = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
 		tref4.addArgument(language.createBasicTypeArgument(language.createTypeReference("java.lang.Object")));
 		tref4.setUniParent(ns);
-		BasicJavaTypeReference tref5 = (BasicJavaTypeReference) language.createTypeReference("generics.List");
+		BasicJavaTypeReference tref5 = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
 		tref5.addArgument(language.createExtendsWildcard(language.createTypeReference("java.lang.CharSequence")));
 		tref5.setUniParent(ns);
-		BasicJavaTypeReference tref6 = (BasicJavaTypeReference) language.createTypeReference("generics.List");
+		BasicJavaTypeReference tref6 = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
 		tref6.addArgument(language.createExtendsWildcard(language.createTypeReference("java.lang.String")));
 		tref6.setUniParent(ns);
-		BasicJavaTypeReference tref7 = (BasicJavaTypeReference) language.createTypeReference("generics.List");
+		BasicJavaTypeReference tref7 = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
 		tref7.addArgument(language.createSuperWildcard(language.createTypeReference("java.lang.String")));
 		tref7.setUniParent(ns);
-		BasicJavaTypeReference tref7duo = (BasicJavaTypeReference) language.createTypeReference("generics.List");
+		BasicJavaTypeReference tref7duo = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
 		tref7duo.addArgument(language.createSuperWildcard(language.createTypeReference("java.lang.String")));
 		tref7duo.setUniParent(ns);
-		BasicJavaTypeReference tref8 = (BasicJavaTypeReference) language.createTypeReference("generics.List");
+		BasicJavaTypeReference tref8 = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
 		tref8.addArgument(language.createSuperWildcard(language.createTypeReference("java.lang.CharSequence")));
 		tref8.setUniParent(ns);
 
@@ -130,6 +130,6 @@ public class TestCustomCases extends JavaTest {
 
 	@Override
 	public BasicNamespaceProvider namespaceProvider() {
-		return new BasicNamespaceProvider("generics");
+		return new BasicNamespaceProvider("test");
 	}
 }

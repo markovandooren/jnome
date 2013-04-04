@@ -5,9 +5,12 @@ import java.util.List;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
+import be.kuleuven.cs.distrinet.rejuse.property.PropertySet;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
+import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationSelector;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
+import be.kuleuven.cs.distrinet.chameleon.core.property.ChameleonProperty;
 import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
 import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.SimpleNameMethodHeader;
@@ -27,6 +30,10 @@ public abstract class AnonymousType extends RegularType implements JavaType {
 	public AnonymousType(String name) {
 		super(name);
 	}
+	
+	public AnonymousType() {
+		
+	}
 
 	public List<Member> localMembers() throws LookupException {
 		List<Member> result = super.localMembers();
@@ -35,9 +42,19 @@ public abstract class AnonymousType extends RegularType implements JavaType {
 		return result;
 	}
 	
-	public abstract TypeReference typeReference();
+	@Override
+	public PropertySet<Element, ChameleonProperty> inherentProperties() {
+		PropertySet<Element, ChameleonProperty> result = new PropertySet<Element, ChameleonProperty>();
+		ObjectOrientedLanguage language = language(ObjectOrientedLanguage.class);
+		result.add(language.ABSTRACT.inverse());
+		result.add(language.CLASS.inverse());
+		result.add(language.REFINABLE.inverse());
+		return result;
+	}
+	
+	protected abstract TypeReference typeReference();
 
-	public List<NormalMethod> implicitConstructors() throws LookupException {
+	protected List<NormalMethod> implicitConstructors() throws LookupException {
 		TypeReference tref = typeReference();
 	  Type writtenType = tref.getType();
 	  List<NormalMethod> superMembers = writtenType.localMembers(NormalMethod.class);
@@ -50,8 +67,7 @@ public abstract class AnonymousType extends RegularType implements JavaType {
 	  //if the super type is an interface, there will be no constructor, so we must
 	  //create a default constructor.
 	  if(superMembers.isEmpty()) {
-	  	NormalMethod cons = defaultDefaultConstructor(tref, writtenType);
-	  	superMembers.add(cons);
+	  	superMembers.add(defaultDefaultConstructor(tref, writtenType));
 	  }
 		return superMembers;
 	}

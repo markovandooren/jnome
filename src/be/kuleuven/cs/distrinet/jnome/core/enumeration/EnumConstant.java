@@ -17,12 +17,15 @@ import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
 import be.kuleuven.cs.distrinet.chameleon.oo.member.FixedSignatureMember;
 import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.ClassBody;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.ClassWithBody;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.DeclarationWithType;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.util.association.Multi;
 import be.kuleuven.cs.distrinet.chameleon.util.association.Single;
+import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousInnerClass;
 
-public class EnumConstant extends FixedSignatureMember implements DeclarationWithType, DeclarationContainer {
+public class EnumConstant extends FixedSignatureMember implements DeclarationWithType {
 
 	public EnumConstant(SimpleNameSignature signature) {
 		super(signature);
@@ -31,7 +34,11 @@ public class EnumConstant extends FixedSignatureMember implements DeclarationWit
 	@Override
 	public EnumConstant clone() {
 		EnumConstant result = new EnumConstant((SimpleNameSignature) signature().clone());
-		result.setBody(body().clone());
+		ClassWithBody anonymousInnerType = getAnonymousType();
+		if(anonymousInnerType != null) {
+      result.setAnonymousType(anonymousInnerType.clone());
+    }
+//		result.setBody(body().clone());
 		for(Expression arg: actualArguments()) {
 			result.addParameter(arg.clone());
 		}
@@ -67,20 +74,49 @@ public class EnumConstant extends FixedSignatureMember implements DeclarationWit
     return _parameters.getOtherEnds();
   }
   
+//  public ClassBody body() {
+//  	return _body.getOtherEnd();
+//  }
+//  
+//  public void setBody(ClassBody body) {
+//  	set(_body,body);
+//  }
+//  
+//  private Single<ClassBody> _body = new Single<ClassBody>(this);
+
+	private Single<ClassWithBody> _anonymousType = new Single<ClassWithBody>(this);
+	
+	public void setBody(ClassBody body) {
+		if(body == null) {
+			_anonymousType.connectTo(null);
+		} else {
+			set(_anonymousType,createAnonymousType(body));
+		}
+	}
+	
+	public ClassWithBody getAnonymousType() {
+		return _anonymousType.getOtherEnd();
+	}
+	
+	private void setAnonymousType(ClassWithBody type) {
+		set(_anonymousType, type);
+	}
+
+  private ClassWithBody createAnonymousType(ClassBody body) {
+  	RegularType anon = new EnumConstantType();
+	  anon.setBody(body);
+		return anon;
+	}
+  
   public ClassBody body() {
-  	return _body.getOtherEnd();
+  	ClassWithBody anonymousType = getAnonymousType();
+  	if(anonymousType != null) {
+  		return anonymousType.body();
+  	} else {
+  		return null;
+  	}
   }
-  
-  public void setBody(ClassBody body) {
-  	set(_body,body);
-//  	if(body == null) {
-//  		_body.connectTo(null);
-//  	} else {
-//  		_body.connectTo(body.parentLink());
-//  	}
-  }
-  
-  private Single<ClassBody> _body = new Single<ClassBody>(this);
+
 
 	@Override
 	public VerificationResult verifySelf() {
@@ -96,29 +132,29 @@ public class EnumConstant extends FixedSignatureMember implements DeclarationWit
 		return nearestAncestor(Type.class);
 	}
 
-	public LocalLookupContext<?> targetContext() throws LookupException {
-  	Language language = language();
-  	if(language != null) {
-		  return language.lookupFactory().createTargetLookupStrategy(this);
-  	} else {
-  		throw new LookupException("Element of type "+getClass().getName()+" is not connected to a language. Cannot retrieve target context.");
-  	}
-	}
+//	public LocalLookupContext<?> targetContext() throws LookupException {
+//  	Language language = language();
+//  	if(language != null) {
+//		  return language.lookupFactory().createTargetLookupStrategy(this);
+//  	} else {
+//  		throw new LookupException("Element of type "+getClass().getName()+" is not connected to a language. Cannot retrieve target context.");
+//  	}
+//	}
 
-	public List<? extends Declaration> locallyDeclaredDeclarations() throws LookupException {
-		return body().declarations();
-	}
+//	public List<? extends Declaration> locallyDeclaredDeclarations() throws LookupException {
+//		return body().declarations();
+//	}
+//
+//	public List<? extends Declaration> declarations() throws LookupException {
+//		List<Declaration> result = new ArrayList<Declaration>();
+//		result.addAll(body().declarations());
+//		result.addAll(nearestAncestor(Type.class).declarations());
+//		return result;
+//	}
 
-	public List<? extends Declaration> declarations() throws LookupException {
-		List<Declaration> result = new ArrayList<Declaration>();
-		result.addAll(body().declarations());
-		result.addAll(nearestAncestor(Type.class).declarations());
-		return result;
-	}
-
-	public <D extends Declaration> List<D> declarations(DeclarationSelector<D> selector) throws LookupException {
-		return selector.selection(declarations());
-	}
+//	public <D extends Declaration> List<D> declarations(DeclarationSelector<D> selector) throws LookupException {
+//		return selector.selection(declarations());
+//	}
 
 	public Declaration declarator() {
 		return this;
@@ -134,7 +170,12 @@ public class EnumConstant extends FixedSignatureMember implements DeclarationWit
 	}
 	
 	@Override
-	public LookupContext localContext() throws LookupException {
-		return language().lookupFactory().createLocalLookupStrategy(this);
+	public LookupContext targetContext() throws LookupException {
+		return getAnonymousType().targetContext();
 	}
+	
+//	@Override
+//	public LookupContext localContext() throws LookupException {
+//		return language().lookupFactory().createLocalLookupStrategy(this);
+//	}
 }

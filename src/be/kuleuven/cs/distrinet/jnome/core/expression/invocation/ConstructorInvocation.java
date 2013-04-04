@@ -72,13 +72,13 @@ public class ConstructorInvocation extends RegularMethodInvocation implements De
 
     
     
-	private Single<Type> _body = new Single<Type>(this);
+	private Single<Type> _anonymousType = new Single<Type>(this);
 	
 	public void setBody(ClassBody body) {
 		if(body == null) {
-			_body.connectTo(null);
+			_anonymousType.connectTo(null);
 		} else {
-			set(_body,createAnonymousType(body));
+			set(_anonymousType,createAnonymousType(body));
 		}
 	}
 
@@ -120,11 +120,11 @@ public class ConstructorInvocation extends RegularMethodInvocation implements De
 
   
   public Type getAnonymousInnerType() {
-  	return _body.getOtherEnd();
+  	return _anonymousType.getOtherEnd();
   }
   
   private void setAnonymousType(Type anonymous) {
-  	set(_body,anonymous);
+  	set(_anonymousType,anonymous);
   }
 
   protected ConstructorInvocation cloneInvocation(CrossReferenceTarget target) {

@@ -3,10 +3,22 @@ package be.kuleuven.cs.distrinet.jnome.core.enumeration;
 import java.util.List;
 
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
+import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
+import be.kuleuven.cs.distrinet.chameleon.core.property.ChameleonProperty;
 import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
+import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
+import be.kuleuven.cs.distrinet.chameleon.oo.plugin.ObjectOrientedFactory;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
+import be.kuleuven.cs.distrinet.chameleon.support.modifier.Final;
 import be.kuleuven.cs.distrinet.chameleon.support.modifier.Private;
+import be.kuleuven.cs.distrinet.chameleon.support.modifier.Public;
+import be.kuleuven.cs.distrinet.chameleon.support.modifier.Static;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.method.JavaNormalMethod;
+import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
+import be.kuleuven.cs.distrinet.rejuse.property.PropertySet;
 
 /**
  * A class for enum types in Java. Enum types in Java differ from
@@ -38,12 +50,36 @@ public class EnumType extends RegularJavaType {
 	 * 
 	 * An enum type with the name "E" has the following explicit members:
 	 * <ul>
-	 *  <li></li>
+	 *  <li>public static E[] values();</li>
+	 *  <li>public static E valueOf(String name);</li>
 	 * </ul>
 	 */
 	@Override
 	public List<Member> implicitMembers() {
 		List<Member> result = super.implicitMembers();
+		result.add(values());
+		result.add(valueOf());
+		return result;
+	}
+	
+	protected Method values() {
+		JavaTypeReference enumTypeReference = language(Java.class).createTypeReference(name());
+		JavaTypeReference tref = new ArrayTypeReference(enumTypeReference, 1);
+		return createMethod(tref, "values");
+	}
+
+	protected Method createMethod(JavaTypeReference tref, String name) {
+		ObjectOrientedFactory plugin = language().plugin(ObjectOrientedFactory.class);
+		Method result = plugin.createNormalMethod(name, tref);
+		result.addModifier(new Public());
+		result.addModifier(new Static());
+		result.setUniParent(body());
+		return result;
+	}
+	
+	protected Method valueOf() {
+		JavaTypeReference tref = language(Java.class).createTypeReference(name());
+		Method result = createMethod(tref, "valueOf");
 		return result;
 	}
 	
@@ -55,4 +91,20 @@ public class EnumType extends RegularJavaType {
 		cons.addModifier(new Private());
 	}
 
+	/**
+	 * JLS 3: 8.9 page 250 
+	 * 
+	 * An enum type is final unless it has a constant with a class body.
+	 */
+	@Override
+	public PropertySet<Element, ChameleonProperty> inherentProperties() {
+		PropertySet<Element, ChameleonProperty> result = new PropertySet<Element, ChameleonProperty>();
+		for(EnumConstant constant: body().children(EnumConstant.class)) {
+			if(constant.body() != null) {
+				result.addAll(new Final().impliedProperties());
+				break;
+			}
+		}
+		return result;
+	}
 }

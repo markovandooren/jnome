@@ -644,6 +644,9 @@ public class Java extends ObjectOrientedLanguage {
 			return new JavaIntersectionTypeReference(list);
 		}
 		
+		//FIXME get rid of this monster. Now that the code has stabilized
+		//      it should be merged into the classes and a method should be
+		//      added to JavaType.
 		public JavaTypeReference reference(Type type) throws LookupException {
 			JavaTypeReference result;
 			Namespace rootNamespace = type.view().namespace();

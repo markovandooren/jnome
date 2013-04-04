@@ -64,7 +64,8 @@ public class ReflectiveJarLoader extends DocumentLoaderImpl {
 
 	private void createInputSources() throws ProjectException, InputException {
   	try {
-  	Enumeration<JarEntry> entries = new JarFile(project().absolutePath(_path)).entries();
+  	_jarFile = new JarFile(project().absolutePath(_path));
+		Enumeration<JarEntry> entries = _jarFile.entries();
   	RootNamespace root = view().namespace();
   	ReflectiveClassParser parser = new ReflectiveClassParser((Java)view().language());
 		while(entries.hasMoreElements()) {
@@ -93,4 +94,10 @@ public class ReflectiveJarLoader extends DocumentLoaderImpl {
 		}
   }
 
+	private JarFile _jarFile;
+	
+	@Override
+	protected void finalize() throws Throwable {
+		_jarFile.close();
+	}
 }

@@ -563,6 +563,7 @@ public class Extractor {
       result.add(line); 
       line = reader.readLine();
     }
+    reader.close();
     return result;
   }
 }

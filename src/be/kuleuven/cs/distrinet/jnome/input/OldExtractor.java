@@ -427,6 +427,7 @@ public class OldExtractor {
       result.add(line); 
       line = reader.readLine();
     }
+    reader.close();
     return result;
   }
 }

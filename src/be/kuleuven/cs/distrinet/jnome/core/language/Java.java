@@ -8,40 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaExtendsReference;
-import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaSuperReference;
-import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.method.JavaNormalMethod;
-import be.kuleuven.cs.distrinet.jnome.core.modifier.PackageProperty;
-import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousInnerClass;
-import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
-import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.type.CapturedType;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaBasicTypeArgument;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaDerivedType;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaExtendsWildcard;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaIntersectionTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaPureWildcard;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaSuperWildcard;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaType;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaUnionTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.type.PureWildCardType;
-import be.kuleuven.cs.distrinet.jnome.core.type.PureWildcard;
-import be.kuleuven.cs.distrinet.jnome.core.type.RawType;
-import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
-import be.kuleuven.cs.distrinet.rejuse.junit.BasicRevision;
-import be.kuleuven.cs.distrinet.rejuse.junit.Revision;
-import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
-import be.kuleuven.cs.distrinet.rejuse.property.PropertyUniverse;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.TargetDeclaration;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationSelector;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupContextFactory;
+import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
 import be.kuleuven.cs.distrinet.chameleon.core.property.ChameleonProperty;
 import be.kuleuven.cs.distrinet.chameleon.core.property.DynamicChameleonProperty;
@@ -97,6 +70,33 @@ import be.kuleuven.cs.distrinet.chameleon.support.rule.member.MemberInstanceByDe
 import be.kuleuven.cs.distrinet.chameleon.support.rule.member.MemberOverridableByDefault;
 import be.kuleuven.cs.distrinet.chameleon.support.rule.member.TypeExtensibleByDefault;
 import be.kuleuven.cs.distrinet.chameleon.util.Pair;
+import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaExtendsReference;
+import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaSuperReference;
+import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.method.JavaNormalMethod;
+import be.kuleuven.cs.distrinet.jnome.core.modifier.PackageProperty;
+import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousInnerClass;
+import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
+import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.CapturedType;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaBasicTypeArgument;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaDerivedType;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaExtendsWildcard;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaIntersectionTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaPureWildcard;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaSuperWildcard;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaType;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaUnionTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.PureWildCardType;
+import be.kuleuven.cs.distrinet.jnome.core.type.PureWildcard;
+import be.kuleuven.cs.distrinet.jnome.core.type.RawType;
+import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
+import be.kuleuven.cs.distrinet.rejuse.junit.BasicRevision;
+import be.kuleuven.cs.distrinet.rejuse.junit.Revision;
+import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
+import be.kuleuven.cs.distrinet.rejuse.property.PropertyUniverse;
 
 /**
  * @author Marko van Dooren
@@ -868,6 +868,12 @@ public class Java extends ObjectOrientedLanguage {
 				_type = type;
 			}
 			private Type _type;
+			
+			@Override
+			public Type getElement() throws LookupException {
+				return _type;
+			}
+			
 			@Override
 			public <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
 				return (X) _type;

@@ -25,5 +25,7 @@ public class JavaView extends View {
 		_primitiveCache.put(name, type);
 	}
 	
-
+  public Type primitiveType(String name) {
+  	return _primitiveCache.get(name);
+  }
 }

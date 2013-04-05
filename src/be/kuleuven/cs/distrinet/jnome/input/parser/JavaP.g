@@ -416,9 +416,16 @@ importDeclaration returns [Import element]
          }
         } 
          ('.' '*' 
-            {retval.element = new DemandImport(new NamespaceReference($qn.text));
-             setKeyword(retval.element,im);
-            })? ';'
+            {retval.element.removeAllMetadata();
+             if(st == null) {
+               retval.element = new DemandImport(new NamespaceReference($qn.text));
+               setKeyword(retval.element,im);
+             } else {
+               retval.element = new DemandImport(new SimpleReference($qn.text,DeclarationContainer.class));
+               setKeyword(retval.element,im);
+             }
+            }
+         )? ';'
     ;
 
     
@@ -977,8 +984,8 @@ variableModifier returns [Modifier element]
 typeArguments returns [List<ActualTypeArgument> element]
 @init{retval.element = new ArrayList<ActualTypeArgument>();}
     :   '<'  
-        arg=typeArgument {retval.element.add(arg.element);}
-        (',' argx=typeArgument {retval.element.add(argx.element);})* 
+        (arg=typeArgument {retval.element.add(arg.element);}
+        (',' argx=typeArgument {retval.element.add(argx.element);})*)? 
         '>'
     ;
     
@@ -1477,9 +1484,19 @@ equalityExpression returns [Expression element]
     :   ex=instanceOfExpression  {retval.element = ex.element;} 
           ( ('==' {op="==";} | '!=' {op="!=";}) exx=instanceOfExpression 
         {
+         /*
+         if(op.equals("==")) {
+           retval.element = new EqualityExpression(ex.element, exx.element);
+         } else {
+           retval.element = new NonEqualityExpression(ex.element, exx.element);
+         }
+         */
+        
          retval.element = new InfixOperatorInvocation(op, retval.element);
          ((InfixOperatorInvocation)retval.element).addArgument(exx.element);
+
          setLocation(retval.element,retval.start,exx.stop);
+         
         } )*
     ;
 

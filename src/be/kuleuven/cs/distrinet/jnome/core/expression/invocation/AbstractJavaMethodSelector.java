@@ -114,6 +114,14 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 		return tmp;
 	}
 
+	/**
+	 * FIXME This should implement 15.12.2.6 Method Result and Throws Types. This implementation doesn't always
+	 * use the correct type assignment algorithm. Basically it is fixed now and does not take into account how
+	 * the method was selected.
+	 * @param method
+	 * @return
+	 * @throws LookupException
+	 */
 	public NormalMethod instance(NormalMethod method) throws LookupException {
 		TypeAssignmentSet actualTypeParameters = actualTypeParameters(method, false);
 		return instantiatedMethodTemplate(method, actualTypeParameters);

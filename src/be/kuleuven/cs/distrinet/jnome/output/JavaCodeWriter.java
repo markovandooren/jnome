@@ -505,7 +505,7 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public String toCodeDemandImport(DemandImport imp) throws LookupException {
-    return "import "+toCode(imp.namespaceReference()) +".*;\n";
+    return "import "+toCode(imp.containerReference()) +".*;\n";
   }
   
   public boolean isTypeImport(Element element) {

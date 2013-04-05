@@ -2,19 +2,22 @@ package be.kuleuven.cs.distrinet.jnome.input;
 
 import java.io.IOException;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.jnome.core.type.NullType;
-import be.kuleuven.cs.distrinet.jnome.workspace.JarLoader;
+import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.RootNamespace;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
+import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.Operator;
 import be.kuleuven.cs.distrinet.chameleon.workspace.DirectInputSource;
 import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoaderImpl;
 import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectConfigurator;
 import be.kuleuven.cs.distrinet.chameleon.workspace.View;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.type.NullType;
+import be.kuleuven.cs.distrinet.jnome.workspace.JarLoader;
+import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 
 public class BaseJavaProjectLoader extends JarLoader {
 
@@ -30,9 +33,11 @@ public class BaseJavaProjectLoader extends JarLoader {
 		initializePredefinedElements();
 	}
 	
+	
+	
 	public void initializePredefinedElements() {
 		RootNamespace root = view().namespace();
-		_factory = new PrimitiveTypeFactory(view());
+		_factory = new PrimitiveTypeFactory((JavaView) view());
 		addPrimitives("",this);
 	  addInfixOperators();
 	  addNullType(this);
@@ -45,7 +50,6 @@ public class BaseJavaProjectLoader extends JarLoader {
 			throw new ChameleonProgrammerException(e);
 		}
 	}
-
 	
 	private PrimitiveTypeFactory _factory;
 
@@ -95,7 +99,15 @@ public class BaseJavaProjectLoader extends JarLoader {
                 addInfixOperator(string, "String", "+", "boolean");
                 addInfixOperator(string, "String", "+=", "boolean");
             }
-
+            copyOperators(findType(view(), "int"), findType(view(), "java.lang.Integer"));
+            copyOperators(findType(view(), "long"), findType(view(), "java.lang.Long"));
+            copyOperators(findType(view(), "float"), findType(view(), "java.lang.Float"));
+            copyOperators(findType(view(), "double"), findType(view(), "java.lang.Double"));
+            copyOperators(findType(view(), "boolean"), findType(view(), "java.lang.Boolean"));
+            copyOperators(findType(view(), "short"), findType(view(), "java.lang.Boolean"));
+            copyOperators(findType(view(), "byte"), findType(view(), "java.lang.Byte"));
+            copyOperators(findType(view(), "char"), findType(view(), "java.lang.Character"));
+            
         }
         catch (LookupException e) {
         	// This should only happen if the Java system library was not parsed.
@@ -103,6 +115,17 @@ public class BaseJavaProjectLoader extends JarLoader {
             throw new ChameleonProgrammerException(e);
         }
     }
+
+		private void copyOperators(Type from, Type to) throws LookupException {
+			for(Declaration m: from.locallyDeclaredDeclarations()) {
+				if(m instanceof Operator) {
+					String name = m.name();
+					if((! name.equals("==")) && (! name.equals("!="))) {
+						to.add(((Operator)m).clone());
+					}
+				}
+			}
+		}
 
 
 	  protected void removeElement(Element element) {

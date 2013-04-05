@@ -18,6 +18,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.BasicTypeReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgument;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.util.association.Multi;
 
 public class BasicJavaTypeReference extends BasicTypeReference implements JavaTypeReference, CrossReferenceWithName<Type> {
@@ -123,10 +124,13 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 			if(! (type instanceof RawType)) {
 				List<ActualTypeArgument> typeArguments = typeArguments();
 				Java language = language(Java.class);
+				
+				//Does not work because there is no distinction yet between a diamond empty list and a non-diamond empty list.
+//				if(type.nbTypeParameters(TypeParameter.class) > 0) {
+				
 				if (typeArguments.size() > 0) {
 					result = language.createDerivedType(type, typeArguments);
-//					result = DerivedType.create(type, typeArguments);
-					
+
 					// This is going to give trouble if there is a special lexical context
 					// selection for 'type' in its parent.
 					// set to the type itself? seems dangerous as well.
@@ -134,6 +138,8 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 				} else if(type instanceof RegularType){
 					// create raw type if necessary. The erasure method will check that.
 					result = language.erasure(type);
+				} else {
+					System.out.println("debug");
 				}
 			}
 		}

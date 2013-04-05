@@ -3,8 +3,6 @@ package be.kuleuven.cs.distrinet.jnome.input;
 import java.util.Collections;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
 import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
@@ -24,18 +22,21 @@ import be.kuleuven.cs.distrinet.chameleon.workspace.DirectInputSource;
 import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoaderImpl;
 import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.View;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
+import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 
 public class PrimitiveTypeFactory {
 
-	public PrimitiveTypeFactory(View view) {
+	public PrimitiveTypeFactory(JavaView view) {
 		_view = view;
 	}
 
-	private View view() {
+	private JavaView view() {
 		return _view;
 	}
 	
-	private View _view;
+	private JavaView _view;
 	
 	public ObjectOrientedLanguage language() {
 		return (ObjectOrientedLanguage) _view.language();
@@ -73,7 +74,7 @@ public class PrimitiveTypeFactory {
 		addInfixOperator(booleanT, "boolean", "&=", "boolean");
 		addInfixOperator(booleanT, "boolean", "|=", "boolean");
 		addInfixOperator(booleanT, "boolean", "^=", "boolean");
-//		((Java)language()).storePrimitiveType("boolean",booleanT);
+		view().storePrimitiveType("boolean",booleanT);
 	}
 
 
@@ -212,7 +213,7 @@ public class PrimitiveTypeFactory {
 
 		addUniProm(doubleT);
 		addBinNumOps(doubleT);
-//		((Java)language()).storePrimitiveType("double",doubleT);
+		view().storePrimitiveType("double",doubleT);
 	}
 
 	protected void addLong(String mm, DocumentLoaderImpl loader) {
@@ -237,7 +238,7 @@ public class PrimitiveTypeFactory {
 		addUniPromIntegral(longT);
 
 		addBinNumOpsIntegral(longT);
-//		((Java)language()).storePrimitiveType("long",longT);
+		view().storePrimitiveType("long",longT);
 	}
 
 	protected void addFloat(String mm, DocumentLoaderImpl loader) {
@@ -261,7 +262,7 @@ public class PrimitiveTypeFactory {
 		addUniProm(floatT);
 
 		addBinNumOps(floatT);
-//		((Java)language()).storePrimitiveType("float",floatT);
+		view().storePrimitiveType("float",floatT);
 	}
 
 	protected static class PrimitiveType extends RegularJavaType {
@@ -308,7 +309,7 @@ public class PrimitiveTypeFactory {
 		addUniPromIntegral(intT);
 
 		addBinNumOpsIntegral(intT);
-//		((Java)language()).storePrimitiveType("int",intT);
+		view().storePrimitiveType("int",intT);
 	}
 
 	protected void addByte(String mm, DocumentLoaderImpl loader) {
@@ -337,7 +338,7 @@ public class PrimitiveTypeFactory {
 		addUniPromIntegral(byteT);
 
 		addBinNumOpsIntegral(byteT);
-//		((Java)language()).storePrimitiveType("byte",byteT);
+		view().storePrimitiveType("byte",byteT);
 	}
 
 	protected void addShort(String mm, DocumentLoaderImpl loader) {
@@ -365,7 +366,7 @@ public class PrimitiveTypeFactory {
 		addUniPromIntegral(shortT);
 
 		addBinNumOpsIntegral(shortT);
-//		((Java)language()).storePrimitiveType("short",shortT);
+		view().storePrimitiveType("short",shortT);
 	}
 
 	protected void addChar(String mm, DocumentLoaderImpl loader) {
@@ -392,7 +393,7 @@ public class PrimitiveTypeFactory {
 		addUniPromIntegral(charT);
 
 		addBinNumOpsIntegral(charT);
-//		((Java)language()).storePrimitiveType("char",charT);
+		view().storePrimitiveType("char",charT);
 	}
 
 	protected void addVoid(String mm, DocumentLoaderImpl loader) {
@@ -412,7 +413,7 @@ public class PrimitiveTypeFactory {
 		voidT.addModifier(pub);
 
 		voidT.addModifier(new ValueType());
-//		((Java)language()).storePrimitiveType("void",voidT);
+		view().storePrimitiveType("void",voidT);
 	}
 
 	protected void addPrefixOperator(Type type, String returnType, String symbol) {

@@ -20,6 +20,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.member.DeclarationWithParametersHea
 import be.kuleuven.cs.distrinet.chameleon.oo.member.SimpleNameDeclarationWithParametersHeader;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.TargetDeclaration;
+import be.kuleuven.cs.distrinet.chameleon.core.declaration.DeclarationContainer;
 
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 
@@ -163,14 +164,10 @@ import be.kuleuven.cs.distrinet.chameleon.util.Util;
 
 import be.kuleuven.cs.distrinet.chameleon.oo.plugin.ObjectOrientedFactory;
 
-import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayInitializer;
-import be.kuleuven.cs.distrinet.jnome.core.expression.ClassLiteral;
-import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayAccessExpression;
-import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayCreationExpression;
-import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.ConstructorInvocation;
-import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaMethodInvocation;
-import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.ThisConstructorDelegation;
-import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.SuperConstructorDelegation;
+import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.*;
+
+import be.kuleuven.cs.distrinet.jnome.core.expression.*;
+import be.kuleuven.cs.distrinet.jnome.core.expression.operator.*;
 
 import be.kuleuven.cs.distrinet.jnome.core.imports.SingleStaticImport;
 
@@ -189,6 +186,8 @@ import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaIntersectionTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.PureWildcard;
+
+import be.kuleuven.cs.distrinet.chameleon.core.reference.SimpleReference;
 
 import be.kuleuven.cs.distrinet.jnome.core.enumeration.EnumConstant;
 

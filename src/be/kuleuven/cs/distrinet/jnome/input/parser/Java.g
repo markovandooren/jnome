@@ -170,6 +170,8 @@ import be.kuleuven.cs.distrinet.jnome.core.expression.*;
 import be.kuleuven.cs.distrinet.jnome.core.expression.operator.*;
 
 import be.kuleuven.cs.distrinet.jnome.core.imports.SingleStaticImport;
+import be.kuleuven.cs.distrinet.jnome.core.imports.StaticDemandImport;
+import be.kuleuven.cs.distrinet.jnome.core.imports.JavaDemandImport;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 

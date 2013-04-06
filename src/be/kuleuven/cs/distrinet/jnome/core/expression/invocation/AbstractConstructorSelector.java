@@ -3,11 +3,10 @@ package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 import java.util.ArrayList;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Signature;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 
 public abstract class AbstractConstructorSelector extends AbstractJavaMethodSelector {
 
@@ -15,7 +14,7 @@ public abstract class AbstractConstructorSelector extends AbstractJavaMethodSele
 		super();
 	}
 
-	public List<NormalMethod> selection(List<? extends Declaration> selectionCandidates) throws LookupException {
+	public List<Declaration> withoutNonConstructors(List<? extends Declaration> selectionCandidates) throws LookupException {
 		Java language = invocation().language(Java.class);
 		List<Declaration> tmp = new ArrayList<Declaration>();
 		for(Declaration decl: selectionCandidates) {
@@ -23,7 +22,7 @@ public abstract class AbstractConstructorSelector extends AbstractJavaMethodSele
 				tmp.add(decl);
 			}
 		}
-		return super.selection(tmp);
+		return tmp;
 	}
 	
 	@Override

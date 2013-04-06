@@ -39,6 +39,16 @@ public class ConstructorInvocation extends RegularMethodInvocation implements De
   public Expression getTargetExpression() {
     return (Expression)getTarget();
   }
+  
+  public boolean isDiamondInvocation() {
+  	return _isDiamond;
+  }
+  
+  public void setDiamond(boolean value) {
+  	_isDiamond = value;
+  }
+  
+  private boolean _isDiamond;
 
 	/**
 	 * TYPE REFERENCE
@@ -89,32 +99,49 @@ public class ConstructorInvocation extends RegularMethodInvocation implements De
 	}
 
   protected Type actualType() throws LookupException {
-    Type anonymousInnerType = getAnonymousInnerType();
-		if (anonymousInnerType == null) {
-      // Switching to target or not happens in getContext(Element) invoked by the type reference.
-      return getTypeReference().getType();
+    Type result = getAnonymousInnerType();
+		if (result == null) {
+      result = getTypeReference().getType();
     }
-    else {
-      return anonymousInnerType;
+		return result;
+  }
+  
+  protected Type auxType() throws LookupException {
+    Type result = getAnonymousInnerType();
+		if (result == null) {
+      result = getTypeReference().getType();
+      if(isDiamondInvocation()) {
+      	result = (Type) result.origin();
+      }
     }
+		return result;
+  }
+  
+  protected Type referencedType() throws LookupException {
+  	Type result = getTypeReference().getType();
+  	if(isDiamondInvocation()) {
+  		result = (Type) result.origin();
+  	}
+  	return result;
   }
   
   public <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
+  	//FIXME this is wrong. The constructor selector should not redirect to the origin if it is a diamond
+  	//      the constructor invocation should do it.
+//		DeclarationCollector<X> collector = new DeclarationCollector<X>(selector);
+//  	actualType().targetContext().lookUp(collector);
+//  	return collector.result();
+
+  
 		DeclarationCollector<X> collector = new DeclarationCollector<X>(selector);
-  	actualType().targetContext().lookUp(collector);
+  	auxType().targetContext().lookUp(collector);
   	return collector.result();
-//  	if(result == null) {
-//  		actualType().targetContext().lookUp(selector);
-//			throw new LookupException("Constructor returned by invocation is null", this);
-//  	} else {
-//		  return result;
-//  	}
-  }
+}
   
   @Override
   public Declaration getDeclarator() throws LookupException {
 		DeclarationCollector<Declaration> collector = new DeclarationCollector<Declaration>(new DeclaratorSelector(selector()));
-  	actualType().targetContext().lookUp(collector);
+  	auxType().targetContext().lookUp(collector);
   	return collector.result();
   }
 

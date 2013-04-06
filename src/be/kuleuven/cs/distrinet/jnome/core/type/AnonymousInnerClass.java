@@ -1,8 +1,11 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
+import java.util.List;
+
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.InheritanceRelation;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.ConstructorInvocation;
 
 public class AnonymousInnerClass extends AbstractAnonymousInnerClass {
@@ -43,5 +46,9 @@ public class AnonymousInnerClass extends AbstractAnonymousInnerClass {
 		return new AnonymousInnerClass(invocation());
 	}
 	
+//	@Override
+//	public List<InheritanceRelation> inheritanceRelations() {
+//		compile
+//	}
 	
 }

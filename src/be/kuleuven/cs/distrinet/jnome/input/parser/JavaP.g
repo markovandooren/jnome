@@ -418,10 +418,10 @@ importDeclaration returns [Import element]
          ('.' '*' 
             {retval.element.removeAllMetadata();
              if(st == null) {
-               retval.element = new DemandImport(new NamespaceReference($qn.text));
+               retval.element = new JavaDemandImport(new SimpleReference($qn.text,DeclarationContainer.class));
                setKeyword(retval.element,im);
              } else {
-               retval.element = new DemandImport(new SimpleReference($qn.text,DeclarationContainer.class));
+               retval.element = new StaticDemandImport(new SimpleReference($qn.text,DeclarationContainer.class));
                setKeyword(retval.element,im);
              }
             }
@@ -984,8 +984,8 @@ variableModifier returns [Modifier element]
 typeArguments returns [List<ActualTypeArgument> element]
 @init{retval.element = new ArrayList<ActualTypeArgument>();}
     :   '<'  
-        (arg=typeArgument {retval.element.add(arg.element);}
-        (',' argx=typeArgument {retval.element.add(argx.element);})*)? 
+        arg=typeArgument {retval.element.add(arg.element);}
+        (',' argx=typeArgument {retval.element.add(argx.element);})* 
         '>'
     ;
     
@@ -1827,11 +1827,12 @@ arrayAccessSuffixRubbish returns [Expression element]
 creator returns [Expression element]
 @after{setLocation(retval.element, retval.start, retval.stop);}
 //GEN_METH
-    :   targs=nonWildcardTypeArguments tx=createdName restx=classCreatorRest
+    :   targs=nonWildcardTypeArguments tx=createdName (dia='<''>')? restx=classCreatorRest
          {retval.element = new ConstructorInvocation((BasicJavaTypeReference)tx.element,$TargetScope::target);
           ((ConstructorInvocation)retval.element).setBody(restx.element.body());
           ((ConstructorInvocation)retval.element).addAllArguments(restx.element.arguments());
           ((ConstructorInvocation)retval.element).addAllTypeArguments(targs.element);
+          if(dia != null) {((ConstructorInvocation)retval.element).setDiamond(true);}
          }
     |    tt=createdName {retval.element = new ArrayCreationExpression(tt.element);} 
              ('[' ']' {((ArrayCreationExpression)retval.element).addDimensionInitializer(new EmptyArrayIndex(1));})+ init=arrayInitializer 
@@ -1839,10 +1840,11 @@ creator returns [Expression element]
     |    ttt=createdName  {retval.element = new ArrayCreationExpression(ttt.element);} 
           ('[' exx=expression ']' {((ArrayCreationExpression)retval.element).addDimensionInitializer(new FilledArrayIndex(exx.element));})+ 
             ('[' ']' {((ArrayCreationExpression)retval.element).addDimensionInitializer(new EmptyArrayIndex(1));})*
-    |   t=createdName rest=classCreatorRest 
+    |   t=createdName (diam='<''>')? rest=classCreatorRest 
          {retval.element = new ConstructorInvocation((BasicJavaTypeReference)t.element,$TargetScope::target);
           ((ConstructorInvocation)retval.element).setBody(rest.element.body());
           ((ConstructorInvocation)retval.element).addAllArguments(rest.element.arguments());
+          if(diam != null) {((ConstructorInvocation)retval.element).setDiamond(true);}
          }
            
     ;

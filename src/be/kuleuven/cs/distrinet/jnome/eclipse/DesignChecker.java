@@ -38,6 +38,9 @@ public class DesignChecker extends Tool {
 	}
 	
 	public void execute(String[] args) {
+//		for(String arg: args) {
+//			System.out.println(arg);
+//		}
 		try
 	  {
 			DesignCheckerOptions result = CliFactory.parseArguments(DesignCheckerOptions.class, args);

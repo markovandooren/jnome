@@ -138,8 +138,6 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 				} else if(type instanceof RegularType){
 					// create raw type if necessary. The erasure method will check that.
 					result = language.erasure(type);
-				} else {
-					System.out.println("debug");
 				}
 			}
 		}

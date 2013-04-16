@@ -4,12 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
-import be.kuleuven.cs.distrinet.rejuse.property.PropertySet;
-import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.SuperConstructorDelegation;
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.jnome.core.method.JavaNormalMethod;
-import be.kuleuven.cs.distrinet.jnome.core.modifier.JavaConstructor;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
@@ -18,7 +12,6 @@ import be.kuleuven.cs.distrinet.chameleon.core.property.ChameleonProperty;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.SimpleReference;
 import be.kuleuven.cs.distrinet.chameleon.core.tag.TagImpl;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.NamedTarget;
 import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
 import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.RegularImplementation;
@@ -27,13 +20,22 @@ import be.kuleuven.cs.distrinet.chameleon.oo.statement.Block;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeElement;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgument;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.InheritanceRelation;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.SubtypeRelation;
 import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
 import be.kuleuven.cs.distrinet.chameleon.support.modifier.Constructor;
+import be.kuleuven.cs.distrinet.chameleon.support.modifier.Native;
 import be.kuleuven.cs.distrinet.chameleon.support.modifier.Public;
 import be.kuleuven.cs.distrinet.chameleon.support.statement.StatementExpression;
 import be.kuleuven.cs.distrinet.chameleon.util.Util;
+import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.SuperConstructorDelegation;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.method.JavaNormalMethod;
+import be.kuleuven.cs.distrinet.jnome.core.modifier.JavaConstructor;
+import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
+import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
+import be.kuleuven.cs.distrinet.rejuse.property.PropertySet;
 
 public class RegularJavaType extends RegularType implements JavaType {
 
@@ -94,8 +96,35 @@ public class RegularJavaType extends RegularType implements JavaType {
 	public List<Member> implicitMembers() {
   	List<Member> result = new ArrayList<Member>();
   	Util.addNonNull(defaultDefaultConstructor(), result);
+  	Util.addNonNull(getClassMethod(),result);
   	return result;
 	}
+  
+  /**
+   * This is actually cheating because the getClass method in Java
+   * is a member of Object. Maybe we should set the parent to Object
+   * instead of the current class. Anyhow, the Java language specification
+   * cheats as well.
+   * @return
+   */
+  public NormalMethod getClassMethod() {
+  	if(_getClassMethod == null) {
+  		if(view(JavaView.class).topLevelType() != this) {
+  			Java language = language(Java.class);
+  			BasicJavaTypeReference returnType = language.createTypeReference("java.lang.Class");
+  			JavaTypeReference erasedThisType = language.createTypeReference(name());
+  			ActualTypeArgument arg = language.createExtendsWildcard(erasedThisType);
+  			returnType.addArgument(arg);
+  			_getClassMethod = new NormalMethod(new SimpleNameMethodHeader("getClass", returnType));
+  			_getClassMethod.addModifier(new Public());
+  			_getClassMethod.addModifier(new Native());
+  			_getClassMethod.setUniParent(body());
+  		}
+  	}
+  	return _getClassMethod;
+  }
+  
+  private NormalMethod _getClassMethod;
 
   /**
    * If the added element is a constructor, the default default

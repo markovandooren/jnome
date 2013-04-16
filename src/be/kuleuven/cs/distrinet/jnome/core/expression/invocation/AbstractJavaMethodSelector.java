@@ -19,6 +19,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.expression.MethodInvocation;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.MethodHeader;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeIndirection;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgument;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.BasicTypeArgument;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalTypeParameter;
@@ -269,7 +270,12 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 
 	private boolean convertibleThroughMethodInvocationConversion(Type first, Type second) throws LookupException {
 		boolean result = false;
-		Java language = first.language(Java.class);
+		if(first instanceof TypeIndirection) {
+			return convertibleThroughMethodInvocationConversion(((TypeIndirection)first).aliasedType(), second);
+		} else if(second instanceof TypeIndirection) {
+			return convertibleThroughMethodInvocationConversion(first, ((TypeIndirection)second).aliasedType());
+		}
+		
 		// A) Identity conversion 
 		if(first.sameAs(second)) {
 			result = true;

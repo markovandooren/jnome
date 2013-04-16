@@ -170,4 +170,10 @@ public class SSConstraint extends FirstPhaseConstraint {
 		Type G = typeWithSameBaseTypeAs(F(), supers);
 		return G;
 	}
+	
+	@Override
+	public String toString() {
+		return this.ARef().toString() +" << " +this.F().toString();
+	}
+
 }

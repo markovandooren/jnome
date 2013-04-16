@@ -78,5 +78,9 @@ public class EQConstraint extends FirstPhaseConstraint {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return this.ARef().toString() +" = " +this.F().toString();
+	}
 
 }

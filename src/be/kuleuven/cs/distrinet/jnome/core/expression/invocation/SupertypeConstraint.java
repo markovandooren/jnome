@@ -24,5 +24,9 @@ public class SupertypeConstraint extends SecondPhaseConstraint {
 	public void process() {
 	}
 	
-	
+	@Override
+	public String toString() {
+		return this.typeParameter().name() + " :> " + this.URef().toString();
+	}
+
 }

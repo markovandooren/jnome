@@ -17,4 +17,8 @@ public class ActualTypeAssignment extends TypeAssignment {
 	
 	private Type _type;
 
+	@Override
+	public String toString() {
+		return parameter().name() + " = " + type().getFullyQualifiedName();
+	}
 }

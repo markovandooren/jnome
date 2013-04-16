@@ -20,4 +20,9 @@ public class SubtypeConstraint extends SecondPhaseConstraint {
 		
 	}
 	
+	@Override
+	public String toString() {
+		return this.typeParameter().name() + " <: " + this.URef().toString();
+	}
+	
 }

@@ -6,8 +6,6 @@ package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
-
-
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.TargetDeclaration;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.NamedTarget;
@@ -70,4 +68,10 @@ public class EqualTypeConstraint extends SecondPhaseConstraint {
 			}
 		}
 	}
+	
+	@Override
+	public String toString() {
+		return this.typeParameter().name() + " = " + this.URef().toString();
+	}
+
 }

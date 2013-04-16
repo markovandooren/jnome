@@ -54,15 +54,17 @@ public class TypeAssignmentSet {
 	public boolean valid() throws LookupException {
 		boolean result = unassigned().isEmpty();
 		if(result) {
-			for(TypeAssignment assignment: assignments()) {
+			List<TypeAssignment> assignments = assignments();
+			for(TypeAssignment assignment: assignments) {
 				TypeReference upperBoundReference = assignment.parameter().upperBoundReference();
 				Java language = upperBoundReference.language(Java.class);
 				JavaTypeReference bound = (JavaTypeReference) upperBoundReference.clone();
 				bound.setUniParent(upperBoundReference);
-				for(TypeAssignment nested: assignments()) {
+				for(TypeAssignment nested: assignments) {
 					NonLocalJavaTypeReference.replace(language.reference(nested.type()), nested.parameter(), bound);
 				}
-				if(! assignment.type().subTypeOf(bound.getElement())) {
+				Type type = assignment.type();
+				if(! type.subTypeOf(bound.getElement())) {
 					result = false;
 					break;
 				}

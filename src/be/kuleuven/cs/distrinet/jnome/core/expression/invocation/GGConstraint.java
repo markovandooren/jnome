@@ -1,6 +1,3 @@
-/**
- * 
- */
 package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
 import java.util.ArrayList;
@@ -20,6 +17,9 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.InstantiatedTypeParam
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.SuperWildcard;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 
+/**
+ * A >> F 
+ */
 public class GGConstraint extends FirstPhaseConstraint {
 
 	public GGConstraint(JavaTypeReference A, Type F) {
@@ -74,9 +74,9 @@ public class GGConstraint extends FirstPhaseConstraint {
 						  result.addAll(recursive.process());
 						}
 					} else {
-						TypeParameter ithTypeParameterOfG = G.parameters(TypeParameter.class).get(index);
-						if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
-							ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
+						TypeParameter ithTypeParameterOfA = A().parameters(TypeParameter.class).get(index);
+						if(ithTypeParameterOfA instanceof InstantiatedTypeParameter) {
+							ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfA).argument();
 							if(arg instanceof BasicTypeArgument) {
 								EQConstraint recursive = new EQConstraint((JavaTypeReference) ((BasicTypeArgument)arg).typeReference(), U.getElement());
 								recursive.setUniParent(parent());
@@ -142,9 +142,9 @@ public class GGConstraint extends FirstPhaseConstraint {
 					  result.addAll(recursive.process());
 					}
 				} else {
-					TypeParameter ithTypeParameterOfG = G.parameters(TypeParameter.class).get(index);
-					if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
-						ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
+					TypeParameter ithTypeParameterOfA = A().parameters(TypeParameter.class).get(index);
+					if(ithTypeParameterOfA instanceof InstantiatedTypeParameter) {
+						ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfA).argument();
 						if(arg instanceof ExtendsWildcard) {
 							GGConstraint recursive = new GGConstraint((JavaTypeReference) ((ExtendsWildcard)arg).typeReference(), U.getElement());
 							recursive.setUniParent(parent());
@@ -200,9 +200,9 @@ public class GGConstraint extends FirstPhaseConstraint {
 					  result.addAll(recursive.process());
 					}
 				} else {
-					TypeParameter ithTypeParameterOfG = G.parameters(TypeParameter.class).get(index);
-					if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
-						ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
+					TypeParameter ithTypeParameterOfA = A().parameters(TypeParameter.class).get(index);
+					if(ithTypeParameterOfA instanceof InstantiatedTypeParameter) {
+						ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfA).argument();
 						if(arg instanceof SuperWildcard) {
 							SSConstraint recursive = new SSConstraint((JavaTypeReference) ((SuperWildcard)arg).typeReference(), U.getElement());
 							recursive.setUniParent(parent());
@@ -215,6 +215,11 @@ public class GGConstraint extends FirstPhaseConstraint {
 		catch(IndexOutOfBoundsException exc) {
 			return;
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return this.ARef().toString() +" >> " +this.F().toString();
 	}
 
 }

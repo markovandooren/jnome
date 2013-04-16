@@ -61,7 +61,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 //		return _typeReference;
 //	}
 //	
-	public Type F() throws LookupException {
+	public Type F() {
 		return _F;
 	}
 	

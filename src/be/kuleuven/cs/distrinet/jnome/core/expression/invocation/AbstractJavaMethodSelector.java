@@ -71,7 +71,7 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 					// done by the container, so we check for names after the arguments.
 					if ((
 							(nbFormals == nbActuals) ||
-							((nbFormals > 1) 
+							((nbFormals > 0) 
 									&&
 									(method.lastFormalParameter() instanceof MultiFormalParameter)
 									&& 
@@ -177,13 +177,21 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 				TypeAssignmentSet actualTypeParameters = actualTypeParameters(method, false);
 				List<Type> formalParameterTypesInContext = JavaMethodInvocation.formalParameterTypesInContext(method,actualTypeParameters);
 				boolean match = true;
-				int size = formalParameterTypesInContext.size();
 				List<Expression> actualParameters = invocation().getActualParameters();
-				for(int i=0; match && i < size; i++) {
-					Type formalType = formalParameterTypesInContext.get(i);
+				int nbFormals = formalParameterTypesInContext.size();
+				int nbActuals = actualParameters.size();
+				for(int i=0; match && i < nbActuals; i++) {
+					Type formalType;
+					if(i >= nbFormals) {
+						formalType = formalParameterTypesInContext.get(nbFormals - 1);
+					} else {
+					  formalType = formalParameterTypesInContext.get(i);
+					}
 					Type actualType = actualParameters.get(i).getType();
 					match = actualType.subTypeOf(formalType) || convertibleThroughUncheckedConversionAndSubtyping(actualType, formalType);
 				}
+				// This may be inefficient, be it is literally what the language spec says
+				// so for now I do it exactly the same way.
 				if(match) {
 					match = actualTypeParameters.valid();
 				} 

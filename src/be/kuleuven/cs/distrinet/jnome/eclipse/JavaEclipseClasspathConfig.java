@@ -84,8 +84,14 @@ public class JavaEclipseClasspathConfig extends ConfigElement {
 				} else if(_kind.equals("lib")) {
 					loadBin(_path);
 				} else if(_kind.equals("con")) {
+					if(_path == null) {
+						throw new IllegalStateException("The container has not path attribute.");
+					}
 					if(! _path.equals("org.eclipse.jdt.launching.JRE_CONTAINER")) {
 						String path = _loaders.get(_path);
+						if(path == null) {
+							throw new IllegalStateException("No container with key "+path+" is registered.");
+						}
 						loadBin(path);
 					}
 				}

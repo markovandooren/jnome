@@ -28,4 +28,14 @@ public class JavaView extends View {
   public Type primitiveType(String name) {
   	return _primitiveCache.get(name);
   }
+  
+  public Type topLevelType() {
+  	return _topLevelType;
+  }
+  
+  public void setTopLevelType(Type type) {
+  	_topLevelType = type;
+  }
+  
+  private Type _topLevelType;
 }

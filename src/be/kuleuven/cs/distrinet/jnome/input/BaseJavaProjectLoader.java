@@ -72,13 +72,15 @@ public class BaseJavaProjectLoader extends JarLoader {
 	}
 	  protected void addInfixOperators() {
         try {
-            Type obj = findType(view(), "java.lang.Object");
+            JavaView view = (JavaView) view();
+						Type obj = findType(view, "java.lang.Object");
+            view.setTopLevelType(obj);
             if (obj != null) {
                 addInfixOperator(obj, "boolean", equality(), "Object");
                 addInfixOperator(obj, "boolean", "!=", "Object");
                 addPlusString(obj);
             }
-            Type string = findType(view(), "java.lang.String");
+            Type string = findType(view, "java.lang.String");
             if (string != null) {
                 addInfixOperator(string, "String", "+", "Object");
                 addInfixOperator(string, "String", "+=", "Object");
@@ -99,14 +101,14 @@ public class BaseJavaProjectLoader extends JarLoader {
                 addInfixOperator(string, "String", "+", "boolean");
                 addInfixOperator(string, "String", "+=", "boolean");
             }
-            copyOperators(findType(view(), "int"), findType(view(), "java.lang.Integer"));
-            copyOperators(findType(view(), "long"), findType(view(), "java.lang.Long"));
-            copyOperators(findType(view(), "float"), findType(view(), "java.lang.Float"));
-            copyOperators(findType(view(), "double"), findType(view(), "java.lang.Double"));
-            copyOperators(findType(view(), "boolean"), findType(view(), "java.lang.Boolean"));
-            copyOperators(findType(view(), "short"), findType(view(), "java.lang.Boolean"));
-            copyOperators(findType(view(), "byte"), findType(view(), "java.lang.Byte"));
-            copyOperators(findType(view(), "char"), findType(view(), "java.lang.Character"));
+            copyOperators(findType(view, "int"), findType(view, "java.lang.Integer"));
+            copyOperators(findType(view, "long"), findType(view, "java.lang.Long"));
+            copyOperators(findType(view, "float"), findType(view, "java.lang.Float"));
+            copyOperators(findType(view, "double"), findType(view, "java.lang.Double"));
+            copyOperators(findType(view, "boolean"), findType(view, "java.lang.Boolean"));
+            copyOperators(findType(view, "short"), findType(view, "java.lang.Boolean"));
+            copyOperators(findType(view, "byte"), findType(view, "java.lang.Byte"));
+            copyOperators(findType(view, "char"), findType(view, "java.lang.Character"));
             
         }
         catch (LookupException e) {

@@ -14,6 +14,7 @@ import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
 import be.kuleuven.cs.distrinet.jnome.tool.DesignAnalyser;
 import be.kuleuven.cs.distrinet.jnome.tool.Tool;
+import be.kuleuven.cs.distrinet.rejuse.io.FileUtils;
 
 import com.lexicalscope.jewel.cli.ArgumentValidationException;
 import com.lexicalscope.jewel.cli.CliFactory;
@@ -58,7 +59,7 @@ public class DesignChecker extends Tool {
 		}
 	}
 
-	public Map getContainerConfiguration(DesignCheckerOptions result) {
+	private Map getContainerConfiguration(DesignCheckerOptions result) {
 		Map containerConfiguration = new HashMap<String,String>();
 		if(result.getContainers() != null) {
 		  File containerConfigFile = new File(result.getContainers());
@@ -71,8 +72,22 @@ public class DesignChecker extends Tool {
 			} catch (IOException e) {
 				throw new IllegalArgumentException("The given container configuration file was found, but could not be read.");
 			}
+		  File parentFile = containerConfigFile.getParentFile();
+		  if(parentFile == null) {
+		  	parentFile = new File(".");
+		  }
+			makeRelativePathsAbsoluteRelativeToConfigFile(containerConfiguration, parentFile);
 		}
 		return containerConfiguration;
+	}
+	
+	private void makeRelativePathsAbsoluteRelativeToConfigFile(Map<Object,Object> map, File rootForRelativePaths) {
+		for(Map.Entry entry: map.entrySet()) {
+			String path = (String) entry.getValue();
+			String key = (String) entry.getKey();
+			String newPath = FileUtils.absolutePath(path, rootForRelativePaths);
+			map.put(key, newPath);
+		}
 	}
 	
 	public static interface DesignCheckerOptions {

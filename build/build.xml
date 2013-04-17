@@ -8,4 +8,20 @@
   <property name="common.dir" value="${workspace.dir}/common"/>
   <import file="${common.dir}/build/build.xml"/>
 
+  <target name="AllTests" depends="jar">
+    <path id="jnome.path">
+      <pathelement path="${dist.jar}/${module}.jar"/>
+      <path refid="project.classpath"/>
+    </path>
+
+    <mkdir dir="${junit.output.dir}"/>
+    <junit fork="yes" printsummary="withOutAndErr">
+      <formatter type="xml"/>
+      <test name="be.kuleuven.cs.distrinet.jnome.test.AllTests" todir="${junit.output.dir}"/>
+      <jvmarg line="-Xmx1024m"/>
+      <classpath refid="jnome.path"/>
+    </junit>
+  </target>
+
+
 </project>

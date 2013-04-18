@@ -1,10 +1,10 @@
 package be.kuleuven.cs.distrinet.jnome.tool.design;
 
-import be.kuleuven.cs.distrinet.chameleon.core.analysis.AnalysisResult;
+import be.kuleuven.cs.distrinet.chameleon.core.analysis.Result;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.util.action.SafeAction;
 
-public abstract class Analysis<E extends Element, R extends AnalysisResult<R>> extends SafeAction<E> {
+public abstract class Analysis<E extends Element, R extends Result<R>> extends SafeAction<E> {
 
 	public Analysis(Class<E> type) {
 		super(type);

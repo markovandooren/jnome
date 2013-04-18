@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import be.kuleuven.cs.distrinet.chameleon.core.validation.Valid;
-import be.kuleuven.cs.distrinet.chameleon.core.validation.VerificationResult;
+import be.kuleuven.cs.distrinet.chameleon.core.validation.Verification;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.IntersectionTypeReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
@@ -30,7 +30,7 @@ public class JavaIntersectionTypeReference extends IntersectionTypeReference imp
 	}
 
 	@Override
-	public VerificationResult verifySelf() {
+	public Verification verifySelf() {
     return Valid.create();
 	}
 

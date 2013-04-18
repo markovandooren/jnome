@@ -5,7 +5,7 @@ import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;
 import be.kuleuven.cs.distrinet.chameleon.core.validation.AtomicProblem;
 import be.kuleuven.cs.distrinet.chameleon.core.validation.Valid;
-import be.kuleuven.cs.distrinet.chameleon.core.validation.VerificationResult;
+import be.kuleuven.cs.distrinet.chameleon.core.validation.Verification;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
@@ -16,15 +16,15 @@ import be.kuleuven.cs.distrinet.chameleon.support.expression.AssignmentExpressio
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.tool.IsCollectionType;
 
-public class IncomingCollectionViolation extends Analysis<AssignmentExpression, VerificationResult> {
+public class IncomingLeak extends Analysis<AssignmentExpression, Verification> {
 
-	public IncomingCollectionViolation() {
+	public IncomingLeak() {
 		super(AssignmentExpression.class);
 	}
 
 	@Override
-	protected VerificationResult analyse(AssignmentExpression assignment) {
-		VerificationResult result = Valid.create();
+	protected Verification analyse(AssignmentExpression assignment) {
+		Verification result = Valid.create();
 		try {
 			Method method = assignment.nearestAncestor(Method.class);
 			if(method != null && method.isTrue(method.language(Java.class).PUBLIC)) {
@@ -36,7 +36,7 @@ public class IncomingCollectionViolation extends Analysis<AssignmentExpression, 
 						if(rhs instanceof FormalParameter) {
 							Type type_of_value = ((FormalParameter)rhs).getType();
 							if(new IsCollectionType().eval(type_of_value)) {
-								result = result.and(new IncomingCollectionViolationResult(v,(FormalParameter) rhs));
+								result = result.and(new CollectionEncapsulationViolationResult(v,(FormalParameter) rhs));
 							}
 						}
 					}
@@ -49,9 +49,9 @@ public class IncomingCollectionViolation extends Analysis<AssignmentExpression, 
 		return result;
 	}
 	
-	private static class IncomingCollectionViolationResult extends AtomicProblem {
+	private static class CollectionEncapsulationViolationResult extends AtomicProblem {
 
-		public IncomingCollectionViolationResult(Variable member, FormalParameter parameter) {
+		public CollectionEncapsulationViolationResult(Variable member, FormalParameter parameter) {
 			super(parameter);
 			_member = member;
 			_parameter = parameter;
@@ -65,7 +65,7 @@ public class IncomingCollectionViolation extends Analysis<AssignmentExpression, 
 		public String message() {
 			Method m = _parameter.nearestAncestor(Method.class);
 			Type t = m.nearestAncestor(Type.class);
-			String msg = "Error: encapsulation: collection parameter "+_parameter.name()+ 
+			String msg = "Error: incoming leak: collection parameter "+_parameter.name()+ 
 					         " of public method "+m.name()+" in "+t.getFullyQualifiedName()+ 
 					         " is directly assigned to field "+_member.name();
 			return msg;

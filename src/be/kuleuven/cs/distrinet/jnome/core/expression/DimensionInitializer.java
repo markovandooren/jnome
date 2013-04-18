@@ -2,7 +2,7 @@ package be.kuleuven.cs.distrinet.jnome.core.expression;
 
 import be.kuleuven.cs.distrinet.chameleon.core.element.ElementImpl;
 import be.kuleuven.cs.distrinet.chameleon.core.validation.Valid;
-import be.kuleuven.cs.distrinet.chameleon.core.validation.VerificationResult;
+import be.kuleuven.cs.distrinet.chameleon.core.validation.Verification;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
 import be.kuleuven.cs.distrinet.chameleon.util.association.Single;
 
@@ -43,7 +43,7 @@ public class DimensionInitializer extends ElementImpl {
   }
 
   @Override
-  public VerificationResult verifySelf() {
+  public Verification verifySelf() {
 	  return Valid.create();
   }
   

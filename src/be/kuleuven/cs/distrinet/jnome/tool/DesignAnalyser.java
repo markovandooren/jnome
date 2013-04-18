@@ -15,9 +15,11 @@ import be.kuleuven.cs.distrinet.chameleon.oo.variable.MemberVariable;
 import be.kuleuven.cs.distrinet.chameleon.oo.variable.Variable;
 import be.kuleuven.cs.distrinet.chameleon.support.expression.AssignmentExpression;
 import be.kuleuven.cs.distrinet.chameleon.support.statement.ReturnStatement;
+import be.kuleuven.cs.distrinet.chameleon.util.action.Nothing;
 import be.kuleuven.cs.distrinet.chameleon.workspace.ConfigException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
+import be.kuleuven.cs.distrinet.jnome.tool.design.Analysis;
 import be.kuleuven.cs.distrinet.jnome.tool.design.IncomingCollectionViolation;
 import be.kuleuven.cs.distrinet.jnome.tool.design.NonDefensiveFieldAssignment;
 import be.kuleuven.cs.distrinet.jnome.tool.design.OutgoingCollectionViolation;
@@ -42,16 +44,9 @@ public class DesignAnalyser {
 	private Project _project;
 
 	public void findIncomingViolations() throws LookupException, InputException {
-		List<AssignmentExpression> results = find(AssignmentExpression.class,new IncomingCollectionViolation());
-		int count = 1;
-		for(AssignmentExpression assignment : results) {
-			Variable member = assignment.variable();
-			Method m = assignment.nearestAncestor(Method.class);
-			Type t = m.nearestAncestor(Type.class);
-			FormalParameter param = (FormalParameter) ((CrossReference)assignment.getValue()).getElement();
-			String msg = count++ + ": ENCAPSULATION Collection parameter "+param.name()+ " of public method "+m.name()+" in "+t.getFullyQualifiedName()+ " is directly assigned to field "+member.name();
-			System.out.println(msg);
-		}
+		IncomingCollectionViolation analysis = new IncomingCollectionViolation();
+		analyse(analysis);
+		System.out.println(analysis.result().message());
 	}
 	
 	public void findUncheckedFieldAssignments() throws LookupException, InputException {
@@ -91,6 +86,12 @@ public class DesignAnalyser {
 //		checker.findOutgoingViolations();
 //		checker.findNonDefensiveFieldAssignments();
 //  }
+	
+	public void analyse(Analysis<?,?> analysis) throws Nothing, InputException {
+		for(Document doc: sourceDocuments()) {
+			doc.apply(analysis);
+		}
+	}
 
 	//TODO Extract to class Tool or so?
 	public <E extends Element> List<E> find(Class<E> kind, SafePredicate<E> safe) throws InputException {

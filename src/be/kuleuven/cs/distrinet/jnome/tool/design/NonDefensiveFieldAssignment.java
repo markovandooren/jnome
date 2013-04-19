@@ -19,6 +19,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.variable.MemberVariable;
 import be.kuleuven.cs.distrinet.chameleon.oo.variable.Variable;
 import be.kuleuven.cs.distrinet.chameleon.support.expression.AssignmentExpression;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.UnsafePredicate;
 
@@ -46,30 +47,33 @@ public class NonDefensiveFieldAssignment extends Analysis<AssignmentExpression,V
 					if(e instanceof CrossReference) {
 						final Declaration rhs = ((CrossReference) e).getElement();
 						if(rhs instanceof FormalParameter) {
-							boolean notMentioned = true;
-							Statement stat = assignment.farthestAncestor(Statement.class, new SafePredicate<Statement>() {
-								@Override
-								public boolean eval(Statement s) {
-									// If s.parent() == the implementation object, then we have reached the
-									// block of the implementation, so we have to stop before that to object
-									// the child statement of the block of the implementation
-									return (! (s.parent() instanceof Implementation)) && s.nearestAncestor(Method.class) == method;
-								}
-							});
-							Block b = (Block) stat.parent();
-							List<Statement> befores = b.statementsBefore(stat);
-							for(Statement before : befores) {
-								List<CrossReference> crefs = before.descendants(CrossReference.class, new UnsafePredicate<CrossReference,LookupException>(){
+							Type booleanType = assignment.view(JavaView.class).primitiveType("boolean");
+							if(! ((FormalParameter) rhs).getType().sameAs(booleanType)) {
+								boolean notMentioned = true;
+								Statement stat = assignment.farthestAncestor(Statement.class, new SafePredicate<Statement>() {
 									@Override
-									public boolean eval(CrossReference cref) throws LookupException {
-										return cref.getElement().sameAs(rhs);
-									}});
-								if(! crefs.isEmpty()) {
-									notMentioned = false; 
+									public boolean eval(Statement s) {
+										// If s.parent() == the implementation object, then we have reached the
+										// block of the implementation, so we have to stop before that to object
+										// the child statement of the block of the implementation
+										return (! (s.parent() instanceof Implementation)) && s.nearestAncestor(Method.class) == method;
+									}
+								});
+								Block b = (Block) stat.parent();
+								List<Statement> befores = b.statementsBefore(stat);
+								for(Statement before : befores) {
+									List<CrossReference> crefs = before.descendants(CrossReference.class, new UnsafePredicate<CrossReference,LookupException>(){
+										@Override
+										public boolean eval(CrossReference cref) throws LookupException {
+											return cref.getElement().sameAs(rhs);
+										}});
+									if(! crefs.isEmpty()) {
+										notMentioned = false; 
+									}
 								}
-							}
-							if(notMentioned) {
-								result = new NonDefensiveFieldAssignmentResult((FormalParameter)rhs,v);
+								if(notMentioned) {
+									result = new NonDefensiveFieldAssignmentResult((FormalParameter)rhs,v);
+								}
 							}
 						}
 					}
@@ -97,7 +101,7 @@ public class NonDefensiveFieldAssignment extends Analysis<AssignmentExpression,V
 		public String message() {
 			Method m = _parameter.nearestAncestor(Method.class);
 			Type t = m.nearestAncestor(Type.class);
-			return "Warning: potential incoming leak: parameter "+_parameter.name()+ 
+			return "Warning: encapsulation: unchecked assignment to internal state: parameter "+_parameter.name()+ 
 					         " of public method "+m.name()+" in "+t.getFullyQualifiedName()+ 
 					         " is assigned to field "+_member.name()+
 					         " without being referenced in the statements before the assignment.";

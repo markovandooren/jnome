@@ -58,7 +58,7 @@ public class OutgoingLeak extends Analysis<ReturnStatement, Verification> {
 		@Override
 		public String message() {
 			Type t = _method.nearestAncestor(Type.class);
-			return "Error: outgoing leak: public method "+_method.name()+ 
+			return "Error: encapsulation: outgoing leak of internal state: public method "+_method.name()+ 
 					   " in "+t.getFullyQualifiedName()+
 					   " directly returns the collection stored in field "+_member.name();
 		}

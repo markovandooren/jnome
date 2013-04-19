@@ -22,7 +22,7 @@
       <jvmarg line="-Xmx1024m"/>
       <classpath refid="jnome.path"/>
     </junit>
-    <rename src="${junit.output.dir}/" dest=""/>
+    <!--<move src="${junit.output.dir}/" dest=""/>-->
   </target>
 
 

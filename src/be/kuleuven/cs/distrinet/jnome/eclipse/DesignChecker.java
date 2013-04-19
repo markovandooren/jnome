@@ -3,7 +3,10 @@ package be.kuleuven.cs.distrinet.jnome.eclipse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -46,10 +49,21 @@ public class DesignChecker extends Tool {
 	  {
 			DesignCheckerOptions result = CliFactory.parseArguments(DesignCheckerOptions.class, args);
 	    File root = new File(result.getRoot());
-	    System.out.println("Checking project in "+root.getAbsolutePath());
 	    Map containerConfiguration = getContainerConfiguration(result);
 			Project project = new JavaEclipseProjectConfig(root, containerConfiguration).project();
-			new DesignAnalyser(project).findViolations();
+			OutputStream stream;
+			if(result.isOut()) {
+				File output = new File(result.getOut());
+				stream = new FileOutputStream(output);
+			} else {
+				stream = System.out;
+			}
+	    OutputStreamWriter writer = new OutputStreamWriter(stream);
+			writer.write("Checking project in "+root.getAbsolutePath()+"\n");
+			writer.flush();
+			new DesignAnalyser(project).findViolations(writer);
+			writer.close();
+			stream.close();
 	  }
 	  catch(ArgumentValidationException e) {
 	    throw new IllegalArgumentException("The arguments could not be processed.");
@@ -94,5 +108,7 @@ public class DesignChecker extends Tool {
 		
 		@Option(shortName="r", defaultValue="./") String getRoot();
 		@Option(shortName="c") String getContainers();
+		@Option(shortName="o") String getOut();
+		boolean isOut();
 	}
 }

@@ -1,5 +1,7 @@
 package be.kuleuven.cs.distrinet.jnome.tool;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Collection;
 
 import be.kuleuven.cs.distrinet.chameleon.core.analysis.Result;
@@ -14,6 +16,7 @@ import be.kuleuven.cs.distrinet.jnome.tool.design.Analysis;
 import be.kuleuven.cs.distrinet.jnome.tool.design.IncomingLeak;
 import be.kuleuven.cs.distrinet.jnome.tool.design.NonDefensiveFieldAssignment;
 import be.kuleuven.cs.distrinet.jnome.tool.design.OutgoingLeak;
+import be.kuleuven.cs.distrinet.jnome.tool.design.PublicFieldViolation;
 
 // TODO
 //   0) public void method only invoked from within current class is suspicious
@@ -32,19 +35,24 @@ public class DesignAnalyser {
 	
 	private Project _project;
 
-	public void findViolations() throws LookupException, InputException {
-	  analyse(new IncomingLeak());
-	  analyse(new OutgoingLeak());
-	  analyse(new NonDefensiveFieldAssignment());
+	public void findViolations(OutputStreamWriter writer) throws LookupException, InputException, IOException {
+	  analyse(new IncomingLeak(),writer);
+	  analyse(new OutgoingLeak(),writer);
+	  analyse(new PublicFieldViolation(),writer);
+	  analyse(new NonDefensiveFieldAssignment(),writer);
 	}
 	
-	public void analyse(Analysis<?,?> analysis) throws InputException {
+	public void analyse(Analysis<?,?> analysis, OutputStreamWriter writer) throws InputException, IOException {
 		Result result = analysisResult(analysis);
 		int index = 1;
-		System.out.println("");
+		writer.write("\n");
 		if(result instanceof Invalid) {
 		  for(AtomicProblem problem: ((Invalid)result).problems()) {
-		  	System.out.println(index+" "+problem.message());
+		  	writer.write(""+index);
+		  	writer.write(" ");
+		  	writer.write(problem.message());
+		  	writer.write("\n");
+		  	writer.flush();
 		  	index++;
 		  }
 		}

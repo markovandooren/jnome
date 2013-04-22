@@ -65,7 +65,7 @@ public class IncomingLeak extends Analysis<AssignmentExpression, Verification> {
 		public String message() {
 			Method m = _parameter.nearestAncestor(Method.class);
 			Type t = m.nearestAncestor(Type.class);
-			String msg = "Error: encapsulation: incoming leak of internal state: collection parameter "+_parameter.name()+ 
+			String msg = "Warning: encapsulation: potential incoming leak of internal state: collection parameter "+_parameter.name()+ 
 					         " of public method "+m.name()+" in "+t.getFullyQualifiedName()+ 
 					         " is directly assigned to field "+_member.name();
 			return msg;

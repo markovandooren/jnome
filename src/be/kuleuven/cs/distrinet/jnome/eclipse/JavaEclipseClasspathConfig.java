@@ -1,8 +1,10 @@
 package be.kuleuven.cs.distrinet.jnome.eclipse;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.jar.JarFile;
 
 import be.kuleuven.cs.distrinet.chameleon.workspace.ConfigElement;
 import be.kuleuven.cs.distrinet.chameleon.workspace.ConfigException;
@@ -87,7 +89,7 @@ public class JavaEclipseClasspathConfig extends ConfigElement {
 					if(_path == null) {
 						throw new IllegalStateException("The container has not path attribute.");
 					}
-					if(! _path.equals("org.eclipse.jdt.launching.JRE_CONTAINER")) {
+					if(! _path.startsWith("org.eclipse.jdt.launching.JRE_CONTAINER")) {
 						String path = _loaders.get(_path);
 						if(path == null) {
 							throw new IllegalStateException("No container with key "+path+" is registered.");
@@ -107,7 +109,13 @@ public class JavaEclipseClasspathConfig extends ConfigElement {
 		private void loadBin(String path) throws ProjectException {
 			SafePredicate<? super String> binaryFileFilter = java().plugin(ProjectConfigurator.class).binaryFileFilter();
 			if(path.endsWith(".jar")) {
-				_project.views().get(0).addBinary(new JarLoader(path, binaryFileFilter));
+				JarFile file;
+				try {
+					file = new JarFile(_project.absoluteFile(path));
+					_project.views().get(0).addBinary(new JarLoader(file, binaryFileFilter));
+				} catch (IOException e) {
+					throw new ProjectException(e);
+				}
 			} else {
 				_project.views().get(0).addBinary(new DirectoryLoader(".", binaryFileFilter, new LazyJavaFileInputSourceFactory()));
 			}

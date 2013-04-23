@@ -3,11 +3,10 @@ package be.kuleuven.cs.distrinet.jnome.workspace;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
-import be.kuleuven.cs.distrinet.jnome.input.parser.ASMClassParser;
 import be.kuleuven.cs.distrinet.chameleon.core.language.Language;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.InputSourceNamespace;
 import be.kuleuven.cs.distrinet.chameleon.util.Pair;
@@ -16,7 +15,8 @@ import be.kuleuven.cs.distrinet.chameleon.workspace.AbstractZipLoader;
 import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoader;
 import be.kuleuven.cs.distrinet.chameleon.workspace.FileLoader;
 import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.InputSource;
+import be.kuleuven.cs.distrinet.jnome.input.parser.ASMClassParser;
+import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 
 public class JarLoader extends AbstractZipLoader {
 
@@ -35,7 +35,7 @@ public class JarLoader extends AbstractZipLoader {
    @ post path() == path;
    @ post isBaseLoader() == isBaseLoader;
    @*/
-	public JarLoader(String path, SafePredicate<? super String> filter, boolean isBaseLoader) {
+	public JarLoader(JarFile path, SafePredicate<? super String> filter, boolean isBaseLoader) {
 		super(path, filter, isBaseLoader);
 	}
 
@@ -53,7 +53,7 @@ public class JarLoader extends AbstractZipLoader {
    @ post path() == path;
    @ post isBaseLoader() == false;
    @*/
-	public JarLoader(String path, SafePredicate<? super String> filter) {
+	public JarLoader(JarFile path, SafePredicate<? super String> filter) {
 		this(path, filter, false);
 	}
 	

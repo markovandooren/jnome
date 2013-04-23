@@ -1,18 +1,19 @@
 package be.kuleuven.cs.distrinet.jnome.workspace;
 
 import java.io.File;
+import java.util.jar.JarFile;
 
-import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
-import be.kuleuven.cs.distrinet.jnome.input.LazyJavaFileInputSourceFactory;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.LazyRootNamespace;
 import be.kuleuven.cs.distrinet.chameleon.plugin.LanguagePluginImpl;
+import be.kuleuven.cs.distrinet.chameleon.workspace.BootstrapProjectConfig.BaseLibraryConfiguration;
 import be.kuleuven.cs.distrinet.chameleon.workspace.ConfigException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.ExtensionPredicate;
 import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectConfigurator;
 import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectInitialisationListener;
 import be.kuleuven.cs.distrinet.chameleon.workspace.View;
 import be.kuleuven.cs.distrinet.chameleon.workspace.Workspace;
-import be.kuleuven.cs.distrinet.chameleon.workspace.BootstrapProjectConfig.BaseLibraryConfiguration;
+import be.kuleuven.cs.distrinet.jnome.input.LazyJavaFileInputSourceFactory;
+import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 
 /**
  * A class for configuring Java projects.
@@ -34,13 +35,13 @@ public class JavaProjectConfigurator extends LanguagePluginImpl implements Proje
    @
    @ post baseJarPath() == javaBaseJarPath;
    @*/
-	public JavaProjectConfigurator(String javaBaseJarPath) {
+	public JavaProjectConfigurator(JarFile javaBaseJarPath) {
 		_basePath = javaBaseJarPath;
 	}
 	
-	private String _basePath;
+	private JarFile _basePath;
 	
-	public String baseJarPath() {
+	public JarFile baseJarPath() {
 		return _basePath;
 	}
 	

@@ -1,6 +1,7 @@
 package be.kuleuven.cs.distrinet.jnome.input;
 
 import java.io.IOException;
+import java.util.jar.JarFile;
 
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
@@ -21,7 +22,7 @@ import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 
 public class BaseJavaProjectLoader extends JarLoader {
 
-	public BaseJavaProjectLoader(String path, Java java) {
+	public BaseJavaProjectLoader(JarFile path, Java java) {
 		super(path, java.plugin(ProjectConfigurator.class).binaryFileFilter(),true);
 	}
 	

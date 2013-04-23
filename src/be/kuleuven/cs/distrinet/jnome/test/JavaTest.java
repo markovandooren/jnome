@@ -5,25 +5,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
-
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
-import be.kuleuven.cs.distrinet.jnome.input.BaseJavaProjectLoader;
-import be.kuleuven.cs.distrinet.jnome.input.EagerJavaFileInputSourceFactory;
-import be.kuleuven.cs.distrinet.jnome.input.LazyJavaFileInputSourceFactory;
-import be.kuleuven.cs.distrinet.jnome.workspace.JarLoader;
-import be.kuleuven.cs.distrinet.jnome.workspace.JavaProjectConfigurator;
+import java.util.jar.JarFile;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import be.kuleuven.cs.distrinet.chameleon.core.Config;
-import be.kuleuven.cs.distrinet.chameleon.core.language.Language;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.LazyNamespaceFactory;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.LazyRootNamespace;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.NamespaceFactory;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.RegularNamespaceFactory;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.RootNamespace;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.support.test.ExpressionTest;
@@ -33,36 +20,35 @@ import be.kuleuven.cs.distrinet.chameleon.test.provider.BasicDescendantProvider;
 import be.kuleuven.cs.distrinet.chameleon.test.provider.ElementProvider;
 import be.kuleuven.cs.distrinet.chameleon.workspace.BootstrapProjectConfig;
 import be.kuleuven.cs.distrinet.chameleon.workspace.ConfigException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectConfigurator;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DirectoryLoader;
-import be.kuleuven.cs.distrinet.chameleon.workspace.FileInputSourceFactory;
 import be.kuleuven.cs.distrinet.chameleon.workspace.LanguageRepository;
 import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.View;
+import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectConfigurator;
 import be.kuleuven.cs.distrinet.chameleon.workspace.Workspace;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
+import be.kuleuven.cs.distrinet.jnome.workspace.JavaProjectConfigurator;
 
 public abstract class JavaTest extends CompositeTest {
 	
-	@Before
-	public void loadProperties() {
-		try {
-		Properties properties = new Properties();
-			properties.load(new BufferedInputStream(new FileInputStream(new File("test.properties"))));
-			_javaBaseJarPath = properties.getProperty("api");
-		} catch (IOException e) {
-			throw new RuntimeException("need file test.properties with property 'api' set to the location of the jar with the Java base library.");
-		}
-	}
+//	@Before
+//	public void loadProperties() {
+//		try {
+//		Properties properties = new Properties();
+//			properties.load(new BufferedInputStream(new FileInputStream(new File("test.properties"))));
+//			_javaBaseJarPath = new File(properties.getProperty("api"));
+//		} catch (IOException e) {
+//			throw new RuntimeException("need file test.properties with property 'api' set to the location of the jar with the Java base library.");
+//		}
+//	}
 	
 	protected abstract File projectFile();	
 	
-	private String _javaBaseJarPath;
-	
-	public String javaBaseJarPath() {
-		return _javaBaseJarPath;
-	}
-	
+//	private JarFile _javaBaseJarPath;
+//	
+//	public JarFile javaBaseJarPath() {
+//		return _javaBaseJarPath;
+//	}
+//	
 	/**
 	 * Set the log levels of Log4j. By default, nothing is changed.
 	 */
@@ -108,7 +94,7 @@ public abstract class JavaTest extends CompositeTest {
 		Workspace workspace = new Workspace(repo);
 		Java java = new JavaLanguageFactory().create();
 		repo.add(java);
-		java.setPlugin(ProjectConfigurator.class, new JavaProjectConfigurator(javaBaseJarPath()));
+		java.setPlugin(ProjectConfigurator.class, new JavaProjectConfigurator(JavaLanguageFactory.javaBaseJar()));
 		BootstrapProjectConfig config = new BootstrapProjectConfig(projectFile().getParentFile(), workspace);
 //		config.readFromXML();
 		project = config.project(projectFile(),null);

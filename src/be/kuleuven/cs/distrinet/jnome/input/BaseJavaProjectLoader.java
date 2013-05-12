@@ -123,9 +123,9 @@ public class BaseJavaProjectLoader extends JarLoader {
 			for(Declaration m: from.locallyDeclaredDeclarations()) {
 				if(m instanceof Operator) {
 					String name = m.name();
-					if((! name.equals("==")) && (! name.equals("!="))) {
+//					if((! name.equals("==")) && (! name.equals("!="))) {
 						to.add(((Operator)m).clone());
-					}
+//					}
 				}
 			}
 		}

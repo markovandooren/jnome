@@ -25,7 +25,7 @@ public class JavaLanguageFactory implements LanguageFactory {
 		Java result = new Java();
 		result.setPlugin(ModelFactory.class, new JavaModelFactory());
 		result.setPlugin(Syntax.class, new JavaCodeWriter());
-		// FIXME: Stupid and ineffient
+		// FIXME: Stupid and inefficient
 		result.setPlugin(Factory.class, new JavaFactory());
 		result.setPlugin(ObjectOrientedFactory.class, new JavaFactory());
 		JarFile jarName = javaBaseJar();
@@ -34,10 +34,6 @@ public class JavaLanguageFactory implements LanguageFactory {
 	}
 
 	public static JarFile javaBaseJar() throws ConfigException {
-//		URL objectLocation = Object.class.getResource("/java/lang/Object.class");
-//		String fileName = objectLocation.getFile();
-//		String jarName = fileName.substring(5,fileName.indexOf('!'));
-//		return jarName;
 		URL objectLocation = Object.class.getResource("/java/lang/Object.class");
 		try {
 			JarURLConnection connection = (JarURLConnection) objectLocation.openConnection();

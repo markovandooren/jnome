@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import be.kuleuven.cs.distrinet.jnome.eclipse.DesignChecker;
+import be.kuleuven.cs.distrinet.jnome.tool.design.DesignAnalysisTool;
+import be.kuleuven.cs.distrinet.jnome.tool.syntax.SyntaxAnalysisTool;
 
 public class FrontEnd {
 
@@ -15,7 +16,8 @@ public class FrontEnd {
 	}
 	
 	public FrontEnd() {
-		add(new DesignChecker());
+		add(new DesignAnalysisTool());
+		add(new SyntaxAnalysisTool());
 	}
 	
 	private void add(Tool tool) {

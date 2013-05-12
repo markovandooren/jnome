@@ -12,11 +12,10 @@ import java.util.Map;
 import java.util.Properties;
 
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ConfigException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
-import be.kuleuven.cs.distrinet.jnome.tool.DesignAnalyser;
 import be.kuleuven.cs.distrinet.jnome.tool.Tool;
+import be.kuleuven.cs.distrinet.jnome.tool.design.DesignAnalyzer;
 import be.kuleuven.cs.distrinet.rejuse.io.FileUtils;
 
 import com.lexicalscope.jewel.cli.ArgumentValidationException;
@@ -25,28 +24,13 @@ import com.lexicalscope.jewel.cli.CliFactory;
 import com.lexicalscope.jewel.cli.CommandLineInterface;
 import com.lexicalscope.jewel.cli.Option;
 
-public class DesignChecker extends Tool {
+public abstract class AnalysisTool extends Tool {
 
-	public DesignChecker() {
-		super("DesignChecker");
-	}
-
-	/**
-	 * 
-	 * @param args argument list containing the root path if it is given explicitly. 
-	 *             Otherwise, the directory from which the tool is run is used.
-	 * @throws InputException 
-	 * @throws ConfigException 
-	 * @throws LookupException 
-	 */
-	public static void main(String[] args) throws LookupException, ConfigException, InputException {
-		new DesignChecker().execute(args);
+	protected AnalysisTool(String name) {
+		super(name);
 	}
 	
 	public void execute(String[] args) {
-//		for(String arg: args) {
-//			System.out.println(arg);
-//		}
 		try
 	  {
 			DesignCheckerOptions result = CliFactory.parseArguments(DesignCheckerOptions.class, args);
@@ -65,9 +49,9 @@ public class DesignChecker extends Tool {
 				stream = System.out;
 			}
 	    OutputStreamWriter writer = new OutputStreamWriter(stream);
-			writer.write("Checking project in "+root.getAbsolutePath()+"\n");
+			writer.write("Analyzing project in "+root.getAbsolutePath()+"\n");
 			writer.flush();
-			new DesignAnalyser(project).findViolations(writer);
+			check(project, writer);
 			writer.close();
 			stream.close();
 	  }
@@ -79,6 +63,8 @@ public class DesignChecker extends Tool {
 			e.printStackTrace();
 		}
 	}
+
+	protected abstract void check(Project project, OutputStreamWriter writer) throws LookupException, InputException, IOException;
 
 	private void printHelp() {
 		Cli<DesignCheckerOptions> cli = CliFactory.createCli(DesignCheckerOptions.class);

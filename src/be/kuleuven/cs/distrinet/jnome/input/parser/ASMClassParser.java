@@ -266,22 +266,29 @@ public class ASMClassParser {
 		public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 			if(! isSynthetic(access)) {
 				Method m = factory(_language).createNormalMethod(name,null);
+				boolean constructor = false;
 				if(name.equals("<init>")) {
 					name = _type.name();
 					m.setName(name);
 					factory(_language).transformToConstructor(m);
 					m.setReturnTypeReference(_language.createTypeReference(name));
+					constructor = true;
 				}
 				_type.add(m);
 				List<Modifier> mods = accessToMethodModifier(access);
 				m.addModifiers(mods);
 				m.setImplementation(new NativeImplementation());
-				if(signature != null) {
-					new SignatureReader(signature).accept(new MethodExtractor(m,language()));
+				MethodExtractor extractor;
+				if(constructor) {
+					extractor = new ConstructorExtractor(m,language());
 				} else {
-					new SignatureReader(desc).accept(new MethodExtractor(m,language()));
+					extractor = new MethodExtractor(m,language()); 
 				}
-				MethodHeader h = m.header();
+				if(signature != null) {
+					new SignatureReader(signature).accept(extractor);
+				} else {
+					new SignatureReader(desc).accept(extractor);
+				}
 				if(isVarargs(access)) {
 					FormalParameter param = m.lastFormalParameter();
 					MultiFormalParameter multi = new MultiFormalParameter(param.signature(), ((ArrayTypeReference) param.getTypeReference()).elementTypeReference());
@@ -427,7 +434,7 @@ public class ASMClassParser {
 			return _language;
 		}
 		
-		private Java _language;
+		protected Java _language;
 		
 		private Method _method;
 		
@@ -472,6 +479,19 @@ public class ASMClassParser {
 			};
 		}
 		
+	}
+	
+	private class ConstructorExtractor extends MethodExtractor {
+
+		public ConstructorExtractor(Method method, Java language) {
+			super(method,language);
+		}
+		
+		@Override
+		public SignatureVisitor visitReturnType() {
+			// for a constructor, the return type of the method is already set.
+			return new TypeReferenceExtractor(_language);
+		}
 	}
 	
 	private class TypeParameterBoundExtractor extends TypeReferenceExtractor {

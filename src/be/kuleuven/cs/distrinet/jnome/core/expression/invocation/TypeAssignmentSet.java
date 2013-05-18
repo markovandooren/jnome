@@ -61,7 +61,7 @@ public class TypeAssignmentSet {
 				JavaTypeReference bound = (JavaTypeReference) upperBoundReference.clone();
 				bound.setUniParent(upperBoundReference);
 				for(TypeAssignment nested: assignments) {
-					NonLocalJavaTypeReference.replace(language.reference(nested.type()), nested.parameter(), bound);
+					bound = (JavaTypeReference) NonLocalJavaTypeReference.replace(language.reference(nested.type()), nested.parameter(), bound);
 				}
 				Type type = assignment.type();
 				if(! type.subTypeOf(bound.getElement())) {

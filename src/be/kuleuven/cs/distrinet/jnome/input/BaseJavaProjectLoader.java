@@ -122,19 +122,13 @@ public class BaseJavaProjectLoader extends JarLoader {
 		private void copyOperators(Type from, Type to) throws LookupException {
 			for(Declaration m: from.locallyDeclaredDeclarations()) {
 				if(m instanceof Operator) {
-					String name = m.name();
+//					String name = m.name();
 //					if((! name.equals("==")) && (! name.equals("!="))) {
 						to.add(((Operator)m).clone());
 //					}
 				}
 			}
 		}
-
-
-	  protected void removeElement(Element element) {
-      element.parentLink().connectTo(null);
-    }
-
 
     protected Java java() {
     	return (Java) language();

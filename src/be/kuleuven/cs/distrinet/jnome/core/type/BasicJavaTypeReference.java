@@ -19,16 +19,24 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgument;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
+import be.kuleuven.cs.distrinet.chameleon.util.CreationStackTrace;
 import be.kuleuven.cs.distrinet.chameleon.util.association.Multi;
 
 public class BasicJavaTypeReference extends BasicTypeReference implements JavaTypeReference, CrossReferenceWithName<Type> {
 
 	public BasicJavaTypeReference(CrossReferenceTarget target, String name) {
   	super(target,name);
+  	if(name.equals("void")) {
+  		_trace = new CreationStackTrace();
+  	}
   }
+	private CreationStackTrace _trace;
   
   public BasicJavaTypeReference(CrossReferenceTarget target, SimpleNameSignature signature) {
   	super(target,signature);
+  	if(signature.name().equals("void")) {
+  		_trace = new CreationStackTrace();
+  	}
   }
   
   /**
@@ -41,6 +49,9 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
   
   public BasicJavaTypeReference(String fqn) {
   	super(fqn);
+  	if(fqn.equals("void")) {
+  		_trace = new CreationStackTrace();
+  	}
   }
   
 //  @Override
@@ -58,6 +69,9 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
   }
   
   public void addArgument(ActualTypeArgument arg) {
+  	if(signature().name().equals("void")) {
+  		System.out.println("debug");
+  	}
   	add(_genericParameters,arg);
   }
   

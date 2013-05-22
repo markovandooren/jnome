@@ -44,7 +44,7 @@ public class ThisConstructorDelegation extends ConstructorDelegation {
 //	   }
   }
 
-  protected ThisConstructorDelegation cloneInvocation(CrossReferenceTarget target) {
+  protected ThisConstructorDelegation cloneSelf() {
     return new ThisConstructorDelegation();
   }
 

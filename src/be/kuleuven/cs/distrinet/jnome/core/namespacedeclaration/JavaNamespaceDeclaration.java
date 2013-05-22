@@ -40,8 +40,8 @@ public class JavaNamespaceDeclaration extends NamespaceDeclaration {
 	}
 	
 	@Override
-	public NamespaceDeclaration cloneThis() {
-		return new JavaNamespaceDeclaration(namespaceReference().clone());
+	protected NamespaceDeclaration cloneSelf() {
+		return new JavaNamespaceDeclaration((CrossReference)null);
 	}
 	
 	@Override

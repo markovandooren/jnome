@@ -33,7 +33,7 @@ public class SuperConstructorDelegation extends ConstructorDelegation {
   	return getElement();
   }
   
-  protected SuperConstructorDelegation cloneInvocation(CrossReferenceTarget target) {
+  protected SuperConstructorDelegation cloneSelf() {
     return new SuperConstructorDelegation();
   }
 

@@ -154,13 +154,8 @@ public class ConstructorInvocation extends RegularMethodInvocation implements De
   	set(_anonymousType,anonymous);
   }
 
-  protected ConstructorInvocation cloneInvocation(CrossReferenceTarget target) {
-    ConstructorInvocation result = new ConstructorInvocation((BasicJavaTypeReference)getTypeReference().clone(), (Expression)target);
-    Type anonymousInnerType = getAnonymousInnerType();
-		if(anonymousInnerType != null) {
-      result.setAnonymousType(anonymousInnerType.clone());
-    }
-    return result;
+  protected ConstructorInvocation cloneSelf() {
+    return new ConstructorInvocation((BasicJavaTypeReference)null, null);
   }
 
 //  public void prefix(InvocationTarget target) throws LookupException {

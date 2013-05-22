@@ -3,8 +3,6 @@ package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 import java.util.ArrayList;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.element.ElementImpl;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationCollector;
@@ -19,7 +17,10 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.variable.FormalParameter;
 import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
 import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.RegularMethodInvocation;
+import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.chameleon.util.association.Single;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 
 public class JavaMethodInvocation extends RegularMethodInvocation {
 
@@ -44,9 +45,8 @@ public class JavaMethodInvocation extends RegularMethodInvocation {
 	}
 
 	@Override
-  protected JavaMethodInvocation cloneInvocation(CrossReferenceTarget target) {
-  	// target is already cloned.
-		return new JavaMethodInvocation(name(), target);
+  protected JavaMethodInvocation cloneSelf() {
+		return new JavaMethodInvocation(name(), null);
   }
 
   @Override
@@ -112,7 +112,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation {
 			List<TypeReference> references = new ArrayList<TypeReference>();
 			for(FormalParameter par: formalParameters) {
 				TypeReference tref = par.getTypeReference();
-				TypeReference clone = tref.clone();
+				TypeReference clone = Util.clone(tref);
 				ReferenceStub stub = new ReferenceStub(clone);
 				stub.setUniParent(tref.parent());
 				references.add(clone);
@@ -149,8 +149,8 @@ public class JavaMethodInvocation extends RegularMethodInvocation {
 		}
 		
 		@Override
-		public ReferenceStub clone() {
-			return new ReferenceStub(typeReference().clone());
+		public ReferenceStub cloneSelf() {
+			return new ReferenceStub(null);
 		}
 
 		@Override

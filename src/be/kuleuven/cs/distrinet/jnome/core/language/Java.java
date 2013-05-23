@@ -2,6 +2,7 @@ package be.kuleuven.cs.distrinet.jnome.core.language;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -93,6 +94,7 @@ import be.kuleuven.cs.distrinet.jnome.core.type.PureWildCardType;
 import be.kuleuven.cs.distrinet.jnome.core.type.PureWildcard;
 import be.kuleuven.cs.distrinet.jnome.core.type.RawType;
 import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
+import be.kuleuven.cs.distrinet.rejuse.java.collections.Collections;
 import be.kuleuven.cs.distrinet.rejuse.junit.BasicRevision;
 import be.kuleuven.cs.distrinet.rejuse.junit.Revision;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
@@ -102,6 +104,8 @@ import be.kuleuven.cs.distrinet.rejuse.property.PropertyUniverse;
  * @author Marko van Dooren
  */
 public class Java extends ObjectOrientedLanguage {
+	
+	public static final String NAME = "Java";
 	
 	protected static final String JAVA_LANG_SHORT = "java.lang.Short";
 
@@ -172,8 +176,8 @@ public class Java extends ObjectOrientedLanguage {
   	OVERRIDABLE.addValidElementType(VariableDeclarator.class);
   	DEFINED.addValidElementType(VariableDeclarator.class);
   	REFINABLE.addValidElementType(MemberVariableDeclarator.class);
-  	
-  	_operatorNames = new ArrayList<String>();
+    FINAL.addValidElementType(MemberVariableDeclarator.class);
+
   	for(String string: new String[]{"==","!=","+","++","-","--","*","/","+=","-=","*=","/=","&","&&","|","||","^","!","&=","|=","^=","<<=",">>=",">>>+","%","<",">","<=",">=","%=","<<",">>",">>>"}) {
   		_operatorNames.add(string);
   	}
@@ -217,11 +221,11 @@ public class Java extends ObjectOrientedLanguage {
   	return operatorNames().contains(method.name());
   }
   
-  public List<String> operatorNames() {
-  	return new ArrayList(_operatorNames);
+  public Set<String> operatorNames() {
+  	return java.util.Collections.unmodifiableSet(_operatorNames);
   }
   
-  private List<String> _operatorNames;
+  private final Set<String> _operatorNames = new HashSet<String>();
   
 	public SimpleNameDeclarationWithParametersSignature erasure(SimpleNameDeclarationWithParametersSignature signature) {
 		SimpleNameDeclarationWithParametersSignature result = new SimpleNameDeclarationWithParametersSignature(signature.name());

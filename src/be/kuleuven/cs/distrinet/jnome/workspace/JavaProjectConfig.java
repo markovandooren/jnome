@@ -20,10 +20,10 @@ public class JavaProjectConfig extends ProjectConfiguration {
 
 	public JavaProjectConfig(String projectName, File root, View view, Workspace workspace, FileInputSourceFactory inputSourceFactory, JarFile baseJarPath, BaseLibraryConfiguration baseLibraryConfiguration) throws ConfigException {
 		super(projectName,root,view, workspace, inputSourceFactory);
-		if(baseLibraryConfiguration.mustLoad("Java")) {
+		if(baseLibraryConfiguration.mustLoad(Java.NAME)) {
 			try {
 				//Add the base loader.
-				view.addBinary(new BaseJavaProjectLoader(baseJarPath,(Java)language("java")));
+				view.addBinary(new BaseJavaProjectLoader(baseJarPath,(Java)language(Java.NAME)));
 			} catch (ProjectException e) {
 				throw new ConfigException(e);
 			}
@@ -50,7 +50,7 @@ public class JavaProjectConfig extends ProjectConfiguration {
 	  	protected void pathChanged() throws ConfigException {
 	  		try {
 	  			JarFile path = new JarFile(project().absoluteFile(_path));
-					view().addBinary(new JarLoader(path, language("java").plugin(ProjectConfigurator.class).binaryFileFilter()));
+					view().addBinary(new JarLoader(path, language(Java.NAME).plugin(ProjectConfigurator.class).binaryFileFilter()));
 	  		} catch (ProjectException | IOException e) {
 	  			throw new ConfigException(e);
 	  		}

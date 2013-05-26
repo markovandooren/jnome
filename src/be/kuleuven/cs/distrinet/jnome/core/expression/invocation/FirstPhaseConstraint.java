@@ -4,12 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
-import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
-import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
-import be.kuleuven.cs.distrinet.rejuse.predicate.UnsafePredicate;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.DerivedType;
@@ -25,7 +19,14 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.InstantiatedTypeParam
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.SuperWildcard;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeConstraint;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
+import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.chameleon.workspace.View;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
+import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
+import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
+import be.kuleuven.cs.distrinet.rejuse.predicate.UnsafePredicate;
 
 /**
  * A = type()
@@ -95,7 +96,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 			if(A() instanceof ArrayType && involvesTypeParameter(F())) {
 				Type componentType = ((ArrayType)A()).elementType();
 				if(componentType.is(language().REFERENCE_TYPE) == Ternary.TRUE) {
-					JavaTypeReference componentTypeReference = ARef().clone().componentTypeReference();
+					JavaTypeReference componentTypeReference = Util.clone(ARef()).componentTypeReference();
 					componentTypeReference.setUniParent(ARef().parent());
 					FirstPhaseConstraint recursive = Array(componentTypeReference, ((ArrayType)F()).elementType());
 					result.addAll(recursive.process());
@@ -115,7 +116,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 					List<TypeConstraint> constraints = ((CapturedTypeParameter) par).constraints();
 					if(constraints.size() == 1 && constraints.get(0) instanceof EqualityConstraint) {
 						EqualityConstraint eq = (EqualityConstraint) constraints.get(0);
-						BasicTypeArgument arg = new BasicTypeArgument(eq.typeReference().clone());
+						BasicTypeArgument arg = new BasicTypeArgument(Util.clone(eq.typeReference()));
 						arg.setUniParent(eq);
 						actualsOfF.add(arg);
 					}

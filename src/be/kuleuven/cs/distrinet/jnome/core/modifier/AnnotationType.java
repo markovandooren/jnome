@@ -9,7 +9,7 @@ import be.kuleuven.cs.distrinet.chameleon.core.property.ChameleonProperty;
 public class AnnotationType extends ModifierImpl {
 
 	@Override
-	public AnnotationType clone() {
+	protected AnnotationType cloneSelf() {
 		return new AnnotationType();
 	}
 

@@ -16,7 +16,7 @@ public class PackageAccessible extends ModifierImpl {
   
 
 	@Override
-	public PackageAccessible clone() {
+	protected PackageAccessible cloneSelf() {
 		return new PackageAccessible();
 	}
 

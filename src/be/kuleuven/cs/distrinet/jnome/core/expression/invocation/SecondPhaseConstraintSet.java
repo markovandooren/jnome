@@ -5,10 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
-import be.kuleuven.cs.distrinet.rejuse.predicate.TypePredicate;
-import be.kuleuven.cs.distrinet.rejuse.predicate.UnsafePredicate;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.MethodInvocation;
@@ -25,7 +21,12 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.InstantiatedTypeParam
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.SuperWildcard;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.support.expression.AssignmentExpression;
+import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.chameleon.workspace.View;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
+import be.kuleuven.cs.distrinet.rejuse.predicate.TypePredicate;
+import be.kuleuven.cs.distrinet.rejuse.predicate.UnsafePredicate;
 
 public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstraint> {
 
@@ -146,7 +147,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	public Type lci(Type first, Type second) throws LookupException {
 		Type result = first;
 		if(first.nbTypeParameters(TypeParameter.class) > 0) {
-			result = first.clone();
+			result = Util.clone(first);
 			result.setUniParent(first.parent());
 			List<ActualTypeArgument> firstArguments = arguments(first);
 			List<ActualTypeArgument> secondArguments = arguments(second);
@@ -173,7 +174,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		List<TypeParameter> result = new ArrayList<TypeParameter>();
 		int size = firsts.size();
 		for(int i=0; i<size;i++) {
-			result.add(new InstantiatedTypeParameter(((InstantiatedTypeParameter)firsts.get(i).parent()).signature().clone(),lcta(firsts.get(i), seconds.get(i))));
+			result.add(new InstantiatedTypeParameter(Util.clone(((InstantiatedTypeParameter)firsts.get(i).parent()).signature()),lcta(firsts.get(i), seconds.get(i))));
 		}
 		return result;
 	}
@@ -192,7 +193,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 				Type U = ((BasicTypeArgument)first).type();
 				Type V = ((BasicTypeArgument)second).type();
 				if(U.sameAs(V)) {
-					result = first.clone();
+					result = Util.clone(first);
 				} else {
 					List<JavaTypeReference> list = new ArrayList<JavaTypeReference>();
 					list.add((JavaTypeReference) ((BasicTypeArgument)first).typeReference());
@@ -222,7 +223,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 				Type U = ((BasicTypeArgument)first).type();
 				Type V = ((BasicTypeArgument)second).type();
 				if(U.sameAs(V)) {
-					result = first.language(Java.class).createBasicTypeArgument(ext.typeReference().clone());
+					result = first.language(Java.class).createBasicTypeArgument(Util.clone(ext.typeReference()));
 				} else {
 					result = first.language(Java.class).createPureWildcard();
 				}
@@ -425,7 +426,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 
 
 	private JavaTypeReference substitutedReference(JavaTypeReference RRef) throws LookupException {
-		JavaTypeReference RprimeRef = RRef.clone();
+		JavaTypeReference RprimeRef = Util.clone(RRef);
 		RprimeRef.setUniParent(RRef.parent());
 		// Let R' = R[T1=B(T1) ... Tn=B(Tn)] where B(Ti) is the type inferred for Ti in the previous section, or Ti if no type was inferred.
 		for(TypeAssignment assignment: assignments().assignments()) {

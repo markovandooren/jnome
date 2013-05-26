@@ -59,15 +59,15 @@ public class ArrayTypeReference  extends ElementImpl implements JavaTypeReferenc
 	public JavaTypeReference toArray(int dimension) {
   	JavaTypeReference result;
   	if(dimension > 0) {
-  	  result = new ArrayTypeReference(clone(), dimension);
+  	  result = new ArrayTypeReference(clone(this), dimension);
   	} else {
   		result = this;
   	}
   	return result;
 	}
 
-	public ArrayTypeReference clone() {
-		return new ArrayTypeReference(elementTypeReference().clone());
+	protected ArrayTypeReference cloneSelf() {
+		return new ArrayTypeReference(null);
 	}
 
 	@Override
@@ -88,13 +88,13 @@ public class ArrayTypeReference  extends ElementImpl implements JavaTypeReferenc
 	}
 
 	public TypeReference intersectionDoubleDispatch(TypeReference other) {
-		IntersectionTypeReference intersectionTypeReference = language(Java.class).createIntersectionReference(clone(), other.clone());
+		IntersectionTypeReference intersectionTypeReference = language(Java.class).createIntersectionReference(clone(this), clone(other));
 		return intersectionTypeReference;
 	}
 
 	public TypeReference intersectionDoubleDispatch(IntersectionTypeReference other) {
-		IntersectionTypeReference result = other.clone();
-		result.add(clone());
+		IntersectionTypeReference result = clone(other);
+		result.add(clone(this));
 		return result;
 	}
 

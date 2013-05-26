@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.util.jar.JarFile;
 
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.RootNamespace;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.Operator;
+import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.chameleon.workspace.DirectInputSource;
 import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoaderImpl;
 import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
@@ -124,7 +124,7 @@ public class BaseJavaProjectLoader extends JarLoader {
 				if(m instanceof Operator) {
 //					String name = m.name();
 //					if((! name.equals("==")) && (! name.equals("!="))) {
-						to.add(((Operator)m).clone());
+						to.add(Util.clone((Operator)m));
 //					}
 				}
 			}

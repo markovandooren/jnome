@@ -70,6 +70,7 @@ import be.kuleuven.cs.distrinet.chameleon.support.rule.member.MemberInstanceByDe
 import be.kuleuven.cs.distrinet.chameleon.support.rule.member.MemberOverridableByDefault;
 import be.kuleuven.cs.distrinet.chameleon.support.rule.member.TypeExtensibleByDefault;
 import be.kuleuven.cs.distrinet.chameleon.util.Pair;
+import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaExtendsReference;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaSuperReference;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;
@@ -577,7 +578,7 @@ public class Java extends ObjectOrientedLanguage {
 				for(TypeParameter par: type.parameters(TypeParameter.class)) {
 					if(par instanceof InstantiatedTypeParameter) {
 						InstantiatedTypeParameter inst = (InstantiatedTypeParameter) par;
-						result.addArgument(inst.argument().clone());
+						result.addArgument(Util.clone(inst.argument()));
 					}
 				}
 			}
@@ -591,7 +592,7 @@ public class Java extends ObjectOrientedLanguage {
 					if(par instanceof InstantiatedTypeParameter) {
 						InstantiatedTypeParameter inst = (InstantiatedTypeParameter) par;
 						ActualTypeArgument argument = inst.argument();
-						ActualTypeArgument clone = argument.clone();
+						ActualTypeArgument clone = Util.clone(argument);
 						if(argument instanceof ActualTypeArgumentWithTypeReference) {
 							ActualTypeArgumentWithTypeReference arg = (ActualTypeArgumentWithTypeReference) argument;
 							TypeReference tref = arg.typeReference();
@@ -747,7 +748,7 @@ public class Java extends ObjectOrientedLanguage {
 			ActualTypeArgument result = null;
 			if(parameter instanceof InstantiatedTypeParameter) {
 				ActualTypeArgument argument = ((InstantiatedTypeParameter)parameter).argument();
-				result = argument.clone();
+				result = Util.clone(argument);
 				if(result instanceof ActualTypeArgumentWithTypeReference) {
 					ActualTypeArgumentWithTypeReference argWithRef = (ActualTypeArgumentWithTypeReference) result;
 					//it will be detached from the cloned argument automatically
@@ -757,7 +758,7 @@ public class Java extends ObjectOrientedLanguage {
 			} else {
 				List<TypeConstraint> constraints = ((CapturedTypeParameter)parameter).constraints();
 				if(constraints.size() == 1 && constraints.get(0) instanceof EqualityConstraint) {
-					result = new BasicTypeArgument(constraints.get(0).typeReference().clone());
+					result = new BasicTypeArgument(Util.clone(constraints.get(0).typeReference()));
 				}
 //					// there are always constraints in a captured type parameter
 //					for(TypeConstraint constraint: constraints) {

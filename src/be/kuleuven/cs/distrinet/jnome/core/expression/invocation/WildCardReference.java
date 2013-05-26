@@ -19,8 +19,6 @@ import be.kuleuven.cs.distrinet.chameleon.util.association.Single;
 
 public abstract class WildCardReference<E extends WildCardReference> extends ElementImpl implements JavaTypeReference {
 	
-		public abstract E clone();
-	
 		public WildCardReference(TypeReference tref) {
 			set(_tref,tref);
 		}
@@ -57,12 +55,12 @@ public abstract class WildCardReference<E extends WildCardReference> extends Ele
 		}
 
 		public TypeReference intersectionDoubleDispatch(TypeReference other) {
-			return language(ObjectOrientedLanguage.class).createIntersectionReference(clone(), other.clone());
+			return language(ObjectOrientedLanguage.class).createIntersectionReference(clone(this), clone(other));
 		}
 
 		public TypeReference intersectionDoubleDispatch(IntersectionTypeReference other) {
-			IntersectionTypeReference result = other.clone();
-			result.add(clone());
+			IntersectionTypeReference result = clone(other);
+			result.add(clone(this));
 			return result;
 		}
 

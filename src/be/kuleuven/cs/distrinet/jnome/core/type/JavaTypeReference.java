@@ -9,8 +9,6 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
  */
 public interface JavaTypeReference extends TypeReference {
 
-	public JavaTypeReference clone();
-	
 //	public void setArrayDimension(int i);
 	
 //	public JavaTypeReference addArrayDimension(int i);

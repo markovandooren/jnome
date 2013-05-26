@@ -17,7 +17,7 @@ public class JavaPureWildcard extends PureWildcard {
 	}
 
 	@Override
-	public JavaPureWildcard clone() {
+	protected JavaPureWildcard cloneSelf() {
 		return new JavaPureWildcard();
 	}
 	

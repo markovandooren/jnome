@@ -32,17 +32,8 @@ public class EnumConstant extends FixedSignatureMember implements DeclarationWit
 	}
 	
 	@Override
-	public EnumConstant clone() {
-		EnumConstant result = new EnumConstant((SimpleNameSignature) signature().clone());
-		ClassWithBody anonymousInnerType = getAnonymousType();
-		if(anonymousInnerType != null) {
-      result.setAnonymousType(anonymousInnerType.clone());
-    }
-//		result.setBody(body().clone());
-		for(Expression arg: actualArguments()) {
-			result.addParameter(arg.clone());
-		}
-		return result;
+	public EnumConstant cloneSelf() {
+		return new EnumConstant(null);
 	}
 
 	public List<Member> getIntroducedMembers() {

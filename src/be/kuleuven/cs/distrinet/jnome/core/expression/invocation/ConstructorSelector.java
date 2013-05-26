@@ -10,6 +10,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.BasicTypeArgument;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
+import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.method.JavaNormalMethod;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
@@ -84,7 +85,7 @@ public class ConstructorSelector extends AbstractConstructorSelector {
 		method.setOrigin(decl);
 		Type type = decl.nearestAncestor(Type.class);
 		for(TypeParameter param:type.parameters(TypeParameter.class)) {
-			method.header().addTypeParameter(param.clone());
+			method.header().addTypeParameter(Util.clone(param));
 			returnTypeReference.addArgument(new BasicTypeArgument(invocation.language(Java.class).createTypeReference(param.name())));
 		}
 		return method;

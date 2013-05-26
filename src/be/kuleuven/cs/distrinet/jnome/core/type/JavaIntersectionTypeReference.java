@@ -1,6 +1,7 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import be.kuleuven.cs.distrinet.chameleon.core.validation.Valid;
@@ -21,12 +22,8 @@ public class JavaIntersectionTypeReference extends IntersectionTypeReference imp
 	}
 	
 	@Override
-	public JavaIntersectionTypeReference clone() {
-		List<TypeReference> trefs = new ArrayList<TypeReference>();
-		for(TypeReference tref: typeReferences()) {
-			trefs.add(tref.clone());
-		}
-		return new JavaIntersectionTypeReference(trefs);
+	protected JavaIntersectionTypeReference cloneSelf() {
+		return new JavaIntersectionTypeReference(Collections.EMPTY_LIST);
 	}
 
 	@Override

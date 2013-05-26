@@ -9,7 +9,7 @@ import be.kuleuven.cs.distrinet.chameleon.core.property.ChameleonProperty;
 public class Implements extends ModifierImpl {
 
 	@Override
-	public Implements clone() {
+	protected Implements cloneSelf() {
 		return new Implements();
 	}
 

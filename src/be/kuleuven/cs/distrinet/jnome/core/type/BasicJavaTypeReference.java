@@ -90,7 +90,7 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
   public JavaTypeReference toArray(int arrayDimension) {
   	JavaTypeReference result;
   	if(arrayDimension > 0) {
-  	  result = new ArrayTypeReference(clone(), arrayDimension);
+  	  result = new ArrayTypeReference(clone(this), arrayDimension);
   	} else {
   		result = this;
   	}
@@ -158,13 +158,8 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 		return result;
 	}
 
-  public BasicJavaTypeReference clone() {
-  	BasicJavaTypeReference result =  new BasicJavaTypeReference((getTarget() == null ? null : getTarget().clone()),(SimpleNameSignature)signature().clone());
-  	for(ActualTypeArgument typeArgument: typeArguments()) {
-  		ActualTypeArgument clone = typeArgument.clone();
-			result.addArgument(clone);
-  	}
-  	return result;
+  public BasicJavaTypeReference cloneSelf() {
+  	return new BasicJavaTypeReference( null ,(SimpleNameSignature)null);
   }
 
 	@SuppressWarnings("unchecked")

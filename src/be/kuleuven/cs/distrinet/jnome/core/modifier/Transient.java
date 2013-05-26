@@ -15,7 +15,7 @@ public class Transient extends ModifierImpl {
   }
 
 	@Override
-	public Transient clone() {
+	protected Transient cloneSelf() {
 		return new Transient();
 	}
 

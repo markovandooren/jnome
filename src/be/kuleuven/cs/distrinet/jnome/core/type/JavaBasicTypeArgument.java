@@ -25,8 +25,8 @@ public class JavaBasicTypeArgument extends BasicTypeArgument {
 	}
 
 	@Override
-	public JavaBasicTypeArgument clone() {
-		return new JavaBasicTypeArgument(typeReference().clone());
+	protected JavaBasicTypeArgument cloneSelf() {
+		return new JavaBasicTypeArgument(null);
 	}
 
 }

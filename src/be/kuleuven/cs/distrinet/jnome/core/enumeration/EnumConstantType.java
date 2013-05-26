@@ -33,7 +33,7 @@ public class EnumConstantType extends AbstractAnonymousInnerClass {
 	}
 	
 	@Override
-	protected RegularType cloneThis() {
+	protected RegularType cloneSelf() {
 		return new EnumConstantType();
 	}
 }

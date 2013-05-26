@@ -67,19 +67,8 @@ public class ArrayAccessExpression extends Expression implements Assignable {
     return tmp.elementType();
   }
 
-  public ArrayAccessExpression clone() {
-    CrossReferenceTarget target = null;
-    if(getTarget() != null) {
-      target = getTarget().clone();
-    }
-    final ArrayAccessExpression result = new ArrayAccessExpression((Expression)target);
-    new Visitor() {
-      public void visit(Object element) {
-        //result.addIndex(((Expression)element).cloneExpr());
-    	  result.addIndex(((ArrayIndex)element).clone());
-      }
-    }.applyTo(getIndices());
-    return result;
+  protected ArrayAccessExpression cloneSelf() {
+    return new ArrayAccessExpression(null);
   }
 
   public Assignable cloneAssignable() {

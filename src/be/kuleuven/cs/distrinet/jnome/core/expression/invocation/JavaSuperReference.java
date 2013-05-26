@@ -15,8 +15,8 @@ public class JavaSuperReference extends WildCardReference<JavaSuperReference> {
 	}
 	
 	@Override
-	public JavaSuperReference clone() {
-		return new JavaSuperReference(typeReference().clone());
+	protected JavaSuperReference cloneSelf() {
+		return new JavaSuperReference(null);
 	}
 
 	public Type getElement() throws LookupException {

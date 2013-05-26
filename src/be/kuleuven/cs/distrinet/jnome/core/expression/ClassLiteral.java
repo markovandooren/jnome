@@ -23,16 +23,13 @@ public class ClassLiteral extends Expression {
 
   protected Type actualType() throws LookupException {
   	BasicJavaTypeReference tref = (BasicJavaTypeReference) language(ObjectOrientedLanguage.class).createTypeReferenceInNamespace("java.lang.Class", view().namespace());
-  	tref.addArgument(new BasicTypeArgument(target().clone()));
+  	tref.addArgument(new BasicTypeArgument(clone(target())));
   	tref.setUniParent(this);
   	return tref.getElement();
   }
 
-  public ClassLiteral clone() {
-    TypeReference target = target();
-		TypeReference clone = (target == null ? null : target.clone());
-		ClassLiteral result = new ClassLiteral(clone);
-    return result;
+  protected ClassLiteral cloneSelf() {
+		return new ClassLiteral(null);
   }
   
 	/**

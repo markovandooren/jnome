@@ -214,7 +214,7 @@ scope TargetScope {
     if(target != null) {
       CrossReferenceTarget targetOfTarget = target.getTarget();
       if(targetOfTarget != null) {
-        result = targetOfTarget.clone();
+        result = Util.clone(targetOfTarget);
       }
     }
     return result;
@@ -235,7 +235,7 @@ scope TargetScope {
   public CrossReferenceTarget cloneTarget(CrossReferenceTarget target) {
     CrossReferenceTarget result = null;
     if(target != null) {
-        result = target.clone();
+        result = Util.clone(target);
     }
     return result;
   }
@@ -946,7 +946,7 @@ classOrInterfaceType returns [JavaTypeReference element]
 	             retval.element = createTypeReference(target,$namex.text);
 	             // We must clone the target here, or else it will be removed from the
 	             // type reference we just created.
-	             target = new NamedTarget($namex.text,target.clone());
+	             target = new NamedTarget($namex.text,Util.clone(target));
 	           } else {
 	             throw new Error();
 	             //retval.element = createTypeReference(retval.element,$namex.text);

@@ -8,14 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
-import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.type.RawType;
-import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
-import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
-import be.kuleuven.cs.distrinet.rejuse.predicate.UnsafePredicate;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
@@ -35,6 +27,15 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeConstraint;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.WildCardType;
 import be.kuleuven.cs.distrinet.chameleon.util.Pair;
+import be.kuleuven.cs.distrinet.chameleon.util.Util;
+import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
+import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.RawType;
+import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
+import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
+import be.kuleuven.cs.distrinet.rejuse.predicate.UnsafePredicate;
 
 public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	
@@ -264,44 +265,6 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		return result;
 	}
 	
-	private JavaTypeReference replace(JavaTypeReference replacement, final Declaration declarator, JavaTypeReference in) throws LookupException {
-		JavaTypeReference result = in;
-		UnsafePredicate<BasicJavaTypeReference, LookupException> predicate = new UnsafePredicate<BasicJavaTypeReference, LookupException>() {
-			@Override
-			public boolean eval(BasicJavaTypeReference object) throws LookupException {
-				return object.getDeclarator().sameAs(declarator);
-			}
-		};
-		List<BasicJavaTypeReference> crefs = in.descendants(BasicJavaTypeReference.class, 
-				predicate);
-		if(in instanceof BasicJavaTypeReference) {
-			BasicJavaTypeReference in2 = (BasicJavaTypeReference) in;
-			if(predicate.eval(in2)) {
-				crefs.add(in2);
-			}
-		}
-		for(BasicJavaTypeReference cref: crefs) {
-			JavaTypeReference substitute;
-			if(replacement.isDerived()) {
-			  substitute = new CaptureReference(replacement.clone());
-			  substitute.setOrigin(replacement);
-			} else {
-			  substitute = new CaptureReference(replacement.clone());
-			}
-			if(! cref.isDerived()) {
-				SingleAssociation crefParentLink = cref.parentLink();
-				crefParentLink.getOtherRelation().replace(crefParentLink, substitute.parentLink());
-			} else {
-				substitute.setUniParent(in.parent());
-			}
-			if(cref == in) {
-				result = substitute;
-			}
-		}
-		return result;
-	}
-
-	
 	public static class CaptureReference extends NonLocalJavaTypeReference {
 
 		public CaptureReference(JavaTypeReference tref) {
@@ -314,8 +277,8 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		}
 
 		@Override
-		public CaptureReference clone() {
-			return new CaptureReference((JavaTypeReference) actualReference().clone());
+		protected CaptureReference cloneSelf() {
+			return new CaptureReference(null);
 		}
 		
 	}

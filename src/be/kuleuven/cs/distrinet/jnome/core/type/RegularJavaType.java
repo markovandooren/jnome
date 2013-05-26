@@ -48,8 +48,8 @@ public class RegularJavaType extends RegularType implements JavaType {
 		this(new SimpleNameSignature(name));
 	}
 	
-	protected RegularType cloneThis() {
-		return new RegularJavaType(signature().clone());
+	protected RegularType cloneSelf() {
+		return new RegularJavaType((SimpleNameSignature)null);
 	}
 
 	protected NormalMethod defaultDefaultConstructor() {

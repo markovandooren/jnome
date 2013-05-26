@@ -23,7 +23,7 @@ public class JavaExtendsWildcard extends ExtendsWildcard {
 	}
 
 	@Override
-	public JavaExtendsWildcard clone() {
-		return new JavaExtendsWildcard(typeReference().clone());
+	protected JavaExtendsWildcard cloneSelf() {
+		return new JavaExtendsWildcard(null);
 	}
 }

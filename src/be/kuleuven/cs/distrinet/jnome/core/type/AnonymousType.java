@@ -73,7 +73,7 @@ public abstract class AnonymousType extends RegularType implements JavaType {
 	}
 
 	private NormalMethod defaultDefaultConstructor(TypeReference tref, Type writtenType) {
-		NormalMethod cons = language(Java.class).createNormalMethod(new SimpleNameMethodHeader(writtenType.signature().name(), tref.clone()));
+		NormalMethod cons = language(Java.class).createNormalMethod(new SimpleNameMethodHeader(writtenType.signature().name(), clone(tref)));
 		cons.addModifier(new Constructor());
 		cons.addModifier(new Public());
 		cons.setUniParent(this);

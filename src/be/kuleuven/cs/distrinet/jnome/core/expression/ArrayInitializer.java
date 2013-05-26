@@ -65,14 +65,8 @@ public class ArrayInitializer extends Expression {
     }
   }
 
-  public ArrayInitializer clone() {
-    final ArrayInitializer result = new ArrayInitializer();
-    new Visitor() {
-      public void visit(Object element) {
-        result.addInitializer(((Expression)element).clone());
-      }
-    }.applyTo(getVariableInitializers());
-    return result;
+  public ArrayInitializer cloneSelf() {
+    return new ArrayInitializer();
   }
 
   public Set<Type> getDirectExceptions() throws LookupException {

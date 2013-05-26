@@ -22,7 +22,7 @@ public class PureWildcard extends ActualTypeArgument {
 	}
 	
 	public TypeParameter capture(FormalTypeParameter formal, List<TypeConstraint> accumulator) {
-		CapturedTypeParameter newParameter = new CapturedTypeParameter(formal.signature().clone());
+		CapturedTypeParameter newParameter = new CapturedTypeParameter(clone(formal.signature()));
 		for(TypeConstraint constraint: formal.constraints()) {
 //			newParameter.addConstraint(constraint.clone());
 			TypeConstraint clone = cloneAndResetTypeReference(constraint,constraint);
@@ -33,7 +33,7 @@ public class PureWildcard extends ActualTypeArgument {
 	}
 
 	@Override
-	public PureWildcard clone() {
+	protected PureWildcard cloneSelf() {
 		return new PureWildcard();
 	}
 

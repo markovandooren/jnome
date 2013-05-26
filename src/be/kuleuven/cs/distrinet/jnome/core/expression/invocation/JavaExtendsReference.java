@@ -15,8 +15,8 @@ public class JavaExtendsReference extends WildCardReference {
 	}
 	
 	@Override
-	public JavaExtendsReference clone() {
-		return new JavaExtendsReference(typeReference().clone());
+	protected JavaExtendsReference cloneSelf() {
+		return new JavaExtendsReference(null);
 	}
 
 	public Type getElement() throws LookupException {

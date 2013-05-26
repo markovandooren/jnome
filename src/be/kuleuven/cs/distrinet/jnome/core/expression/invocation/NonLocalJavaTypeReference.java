@@ -5,19 +5,19 @@ package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
-import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
-import be.kuleuven.cs.distrinet.rejuse.predicate.UnsafePredicate;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupContext;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
 import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.BasicTypeReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.NonLocalTypeReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
+import be.kuleuven.cs.distrinet.chameleon.util.Util;
+import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
+import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
+import be.kuleuven.cs.distrinet.rejuse.predicate.UnsafePredicate;
 
 public class NonLocalJavaTypeReference extends NonLocalTypeReference implements JavaTypeReference {
 
@@ -32,8 +32,8 @@ public class NonLocalJavaTypeReference extends NonLocalTypeReference implements 
 	}
 	
 	@Override
-	public NonLocalJavaTypeReference clone() {
-		return new NonLocalJavaTypeReference((JavaTypeReference) actualReference().clone(),lookupParent());
+	protected NonLocalJavaTypeReference cloneSelf() {
+		return new NonLocalJavaTypeReference(null,lookupParent());
 	}
 	
 	public static <E extends Element> E replace(TypeReference replacement, final Declaration declarator, E in, Class<E> kind) throws LookupException {
@@ -58,10 +58,10 @@ public class NonLocalJavaTypeReference extends NonLocalTypeReference implements 
 			if(replacement.isDerived()) {
 				Element oldParent = replacement.parent();
 //				replacement.setUniParent(null);
-			  substitute = lang.createNonLocalTypeReference(replacement.clone(),oldParent);
+			  substitute = lang.createNonLocalTypeReference(Util.clone(replacement),oldParent);
 			  substitute.setOrigin(replacement);
 			} else {
-			  substitute = lang.createNonLocalTypeReference(replacement.clone());
+			  substitute = lang.createNonLocalTypeReference(Util.clone(replacement));
 			}
 			if(! cref.isDerived()) {
 				SingleAssociation crefParentLink = cref.parentLink();
@@ -96,7 +96,7 @@ public class NonLocalJavaTypeReference extends NonLocalTypeReference implements 
 	}
 
 	public JavaTypeReference toArray(int arrayDimension) {
-  	JavaTypeReference result = new ArrayTypeReference(clone(), arrayDimension);
+  	JavaTypeReference result = new ArrayTypeReference(clone(this), arrayDimension);
   	return result;
   }
 

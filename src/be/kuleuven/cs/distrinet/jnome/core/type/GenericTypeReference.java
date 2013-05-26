@@ -1,6 +1,7 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
@@ -59,12 +60,8 @@ public class GenericTypeReference extends ElementImpl implements JavaTypeReferen
   
 
 	@Override
-	public GenericTypeReference clone() {
-		List<ActualTypeArgument> args = new ArrayList<ActualTypeArgument>();
-		for(ActualTypeArgument arg: typeArguments()) {
-			args.add(arg.clone());
-		}
-		return new GenericTypeReference(target().clone(), args);
+	protected GenericTypeReference cloneSelf() {
+		return new GenericTypeReference(null, Collections.EMPTY_LIST);
 	}
 
 	public JavaTypeReference componentTypeReference() {
@@ -78,7 +75,7 @@ public class GenericTypeReference extends ElementImpl implements JavaTypeReferen
 	public JavaTypeReference toArray(int dimension) {
   	JavaTypeReference result;
   	if(dimension > 0) {
-  	  result = new ArrayTypeReference(clone(), dimension);
+  	  result = new ArrayTypeReference(clone(this), dimension);
   	} else {
   		result = this;
   	}
@@ -94,12 +91,12 @@ public class GenericTypeReference extends ElementImpl implements JavaTypeReferen
 	}
 
 	public TypeReference intersectionDoubleDispatch(TypeReference other) {
-		return language(ObjectOrientedLanguage.class).createIntersectionReference(clone(), other.clone());
+		return language(ObjectOrientedLanguage.class).createIntersectionReference(clone(this), clone(other));
 	}
 
 	public TypeReference intersectionDoubleDispatch(IntersectionTypeReference other) {
-		IntersectionTypeReference result = other.clone();
-		result.add(clone());
+		IntersectionTypeReference result = clone(other);
+		result.add(clone(this));
 		return result;
 	}
 

@@ -15,7 +15,7 @@ public class Synchronized extends ModifierImpl {
 	}
 
 	@Override
-	public Synchronized clone() {
+	protected Synchronized cloneSelf() {
 		return new Synchronized();
 	}
 

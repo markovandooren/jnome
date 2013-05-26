@@ -34,12 +34,8 @@ public class DimensionInitializer extends ElementImpl {
   /**
    * @return
    */
-  public DimensionInitializer clone() {
-    Expression expr = null;
-    if(getExpression() != null) {
-      expr = getExpression().clone();
-    }
-    return new DimensionInitializer(expr);
+  protected DimensionInitializer cloneSelf() {
+    return new DimensionInitializer(null);
   }
 
   @Override

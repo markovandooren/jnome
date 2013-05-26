@@ -35,8 +35,8 @@ public class SingleStaticImport extends Import {
 	}
 	
 	@Override
-	public SingleStaticImport clone() {
-		return new SingleStaticImport(typeReference().clone(), name());
+	protected SingleStaticImport cloneSelf() {
+		return new SingleStaticImport(null, name());
 	}
 
 	@Override

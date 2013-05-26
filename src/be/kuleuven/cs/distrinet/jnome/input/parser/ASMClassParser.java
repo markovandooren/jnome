@@ -317,7 +317,7 @@ public class ASMClassParser {
 			List<Modifier> result = new ArrayList<Modifier>();
 			for(Integer i: _fieldAccessList) {
 				if((access & i) != 0) {
-					result.add(_fieldAccessMap.get(i).clone());
+					result.add(Util.clone(_fieldAccessMap.get(i)));
 				}
 			}
 			return result;
@@ -343,7 +343,7 @@ public class ASMClassParser {
 			List<Modifier> result = new ArrayList<Modifier>();
 			for(Integer i: _methodAccessList) {
 				if((access & i) != 0) {
-					result.add(_methodAccessMap.get(i).clone());
+					result.add(Util.clone(_methodAccessMap.get(i)));
 				}
 			}
 			return result;
@@ -378,7 +378,7 @@ public class ASMClassParser {
 				if((access & i) != 0) {
 					Modifier modifier = _classAccessMap.get(i);
 					if(modifier != null) {
-						result.add(modifier.clone());
+						result.add(Util.clone(modifier));
 					}
 				}
 			}

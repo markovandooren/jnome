@@ -3,11 +3,8 @@ package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 import java.util.ArrayList;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.DerivedType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgument;
@@ -16,6 +13,9 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ExtendsWildcard;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.InstantiatedTypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.SuperWildcard;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
+import be.kuleuven.cs.distrinet.chameleon.util.Util;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 
 /**
  * A >> F 
@@ -65,7 +65,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 					  // replace the index-th parameter with a clone of type reference U.
 						TypeParameter oldParameter = GG.parameters(TypeParameter.class).get(index);
 					  BasicTypeArgument actual = (BasicTypeArgument) U.parent();
-						TypeParameter newParameter = new InstantiatedTypeParameter(oldParameter.signature().clone(), actual);
+						TypeParameter newParameter = new InstantiatedTypeParameter(Util.clone(oldParameter.signature()), actual);
 					  GG.replaceParameter(TypeParameter.class,oldParameter, newParameter);
 						Type V=typeWithSameBaseTypeAs(H, GG.getAllSuperTypes());
 						if(F().subTypeOf(V)) {
@@ -123,7 +123,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 				  // replace the index-th parameter with a clone of type reference U.
 					TypeParameter oldParameter = GG.parameters(TypeParameter.class).get(index);
 				  BasicTypeArgument actual = (BasicTypeArgument) U.parent();
-					TypeParameter newParameter = new InstantiatedTypeParameter(oldParameter.signature().clone(), actual);
+					TypeParameter newParameter = new InstantiatedTypeParameter(Util.clone(oldParameter.signature()), actual);
 				  GG.replaceParameter(TypeParameter.class,oldParameter, newParameter);
 					Type V=typeWithSameBaseTypeAs(H, GG.getAllSuperTypes());
 					// Replace actual parameters with extends wildcards
@@ -131,9 +131,9 @@ public class GGConstraint extends FirstPhaseConstraint {
 						InstantiatedTypeParameter inst = (InstantiatedTypeParameter) par;
 						BasicTypeArgument basic = (BasicTypeArgument) inst.argument();
 						TypeReference typeReference = basic.typeReference();
-						ExtendsWildcard ext = par.language(Java.class).createExtendsWildcard(typeReference.clone());
+						ExtendsWildcard ext = par.language(Java.class).createExtendsWildcard(Util.clone(typeReference));
 						ext.setUniParent(typeReference.parent());
-						TypeParameter newP = new InstantiatedTypeParameter(par.signature().clone(),ext);
+						TypeParameter newP = new InstantiatedTypeParameter(Util.clone(par.signature()),ext);
 						V.replaceParameter(TypeParameter.class,par, newP);
 					}
 					if(F().subTypeOf(V)) {
@@ -181,7 +181,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 				  // replace the index-th parameter with a clone of type reference U.
 					TypeParameter oldParameter = GG.parameters(TypeParameter.class).get(index);
 				  BasicTypeArgument actual = (BasicTypeArgument) U.parent();
-					TypeParameter newParameter = new InstantiatedTypeParameter(oldParameter.signature().clone(), actual);
+					TypeParameter newParameter = new InstantiatedTypeParameter(Util.clone(oldParameter.signature()), actual);
 				  GG.replaceParameter(TypeParameter.class,oldParameter, newParameter);
 					Type V=typeWithSameBaseTypeAs(H, GG.getAllSuperTypes());
 					// Replace actual parameters with extends wildcards
@@ -189,9 +189,9 @@ public class GGConstraint extends FirstPhaseConstraint {
 						InstantiatedTypeParameter inst = (InstantiatedTypeParameter) par;
 						BasicTypeArgument basic = (BasicTypeArgument) inst.argument();
 						TypeReference typeReference = basic.typeReference();
-						SuperWildcard ext = par.language(Java.class).createSuperWildcard(typeReference.clone());
+						SuperWildcard ext = par.language(Java.class).createSuperWildcard(Util.clone(typeReference));
 						ext.setUniParent(typeReference.parent());
-						TypeParameter newP = new InstantiatedTypeParameter(par.signature().clone(),ext);
+						TypeParameter newP = new InstantiatedTypeParameter(Util.clone(par.signature()),ext);
 						V.replaceParameter(TypeParameter.class,par, newP);
 					}
 					if(F().subTypeOf(V)) {

@@ -92,18 +92,8 @@ public class ArrayCreationExpression extends Expression {
     }
   }
 
-  public ArrayCreationExpression clone() {
-    final ArrayCreationExpression result = new ArrayCreationExpression((JavaTypeReference)getTypeReference().clone());
-    if(getInitializer() != null) {
-      result.setInitializer((ArrayInitializer)getInitializer().clone());
-    }
-    new Visitor() {
-      public void visit(Object element) {
-        //result.addDimensionInitializer(((DimensionInitializer)element).cloneDimInit());
-    	  result.addDimensionInitializer(((ArrayIndex)element).clone());
-      }
-    }.applyTo(getDimensionInitializers());
-    return result;
+  public ArrayCreationExpression cloneSelf() {
+    return new ArrayCreationExpression(null);
   }
 
   public Set<Type> getDirectExceptions() throws LookupException {

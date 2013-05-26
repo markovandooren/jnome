@@ -21,8 +21,8 @@ public class JavaNormalMethod extends NormalMethod {
 		super(header);
 	}
 	
-	protected JavaNormalMethod cloneThis() {
-    return new JavaNormalMethod((MethodHeader) header().clone());
+	protected JavaNormalMethod cloneSelf() {
+    return new JavaNormalMethod(null);
   }
 
 	public MemberRelationSelector<Method> overridesSelector() {

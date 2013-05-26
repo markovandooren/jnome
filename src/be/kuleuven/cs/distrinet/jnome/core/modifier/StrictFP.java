@@ -15,7 +15,7 @@ public class StrictFP extends ModifierImpl {
   }
 
 	@Override
-	public StrictFP clone() {
+	protected StrictFP cloneSelf() {
 		return new StrictFP();
 	}
 

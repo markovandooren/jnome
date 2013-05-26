@@ -10,21 +10,13 @@ public class JavaSuperWildcard extends SuperWildcard {
 		super(ref);
 	}
 
-//	public JavaTypeReference componentTypeReference() {
-//		return this;
-//	}
-//
-//	public JavaTypeReference erasedReference() {
-//		return this;
-//	}
-
 	public JavaTypeReference toArray(int dimension) {
 		throw new ChameleonProgrammerException();
 	}
 
 	@Override
-	public JavaSuperWildcard clone() {
-		return new JavaSuperWildcard(typeReference().clone());
+	protected JavaSuperWildcard cloneSelf() {
+		return new JavaSuperWildcard(null);
 	}
 	
 	

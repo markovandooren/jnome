@@ -17,7 +17,7 @@ public class Volatile extends ModifierImpl {
   }
 
 	@Override
-	public Volatile clone() {
+	protected Volatile cloneSelf() {
 		return new Volatile();
 	}
 

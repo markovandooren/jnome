@@ -30,7 +30,7 @@ public class JavaConstructor extends Constructor {
   }
   
   @Override
-  public Constructor clone() {
+  protected Constructor cloneSelf() {
   	return new JavaConstructor();
   }
 

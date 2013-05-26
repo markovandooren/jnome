@@ -23,7 +23,7 @@ public abstract class AbstractAnonymousInnerClass extends AnonymousType {
 	@Override
 	public List<InheritanceRelation> inheritanceRelations() {
 		List<InheritanceRelation> result = new ArrayList<InheritanceRelation>();
-		SubtypeRelation subtypeRelation = new SubtypeRelation(typeReference().clone());
+		SubtypeRelation subtypeRelation = new SubtypeRelation(clone(typeReference()));
 		subtypeRelation.setUniParent(this);
 		result.add(subtypeRelation);
 		return result;

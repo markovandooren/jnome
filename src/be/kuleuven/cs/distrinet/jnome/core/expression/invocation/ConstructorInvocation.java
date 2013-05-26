@@ -155,7 +155,7 @@ public class ConstructorInvocation extends RegularMethodInvocation implements De
   }
 
   protected ConstructorInvocation cloneSelf() {
-    return new ConstructorInvocation((BasicJavaTypeReference)null, null);
+    return new ConstructorInvocation(clone(getTypeReference()), null);
   }
 
 //  public void prefix(InvocationTarget target) throws LookupException {

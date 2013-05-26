@@ -21,6 +21,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeElement;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgument;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.InheritanceRelation;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.SubtypeRelation;
 import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
@@ -49,7 +50,10 @@ public class RegularJavaType extends RegularType implements JavaType {
 	}
 	
 	protected RegularType cloneSelf() {
-		return new RegularJavaType((SimpleNameSignature)null);
+		RegularJavaType regularJavaType = new RegularJavaType(clone(signature()));
+		regularJavaType.setSignature(null);
+		regularJavaType.parameterBlock(TypeParameter.class).disconnect();
+		return regularJavaType;
 	}
 
 	protected NormalMethod defaultDefaultConstructor() {

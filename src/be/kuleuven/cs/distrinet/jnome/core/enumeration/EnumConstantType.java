@@ -4,6 +4,7 @@ import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.AbstractAnonymousInnerClass;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
@@ -34,6 +35,8 @@ public class EnumConstantType extends AbstractAnonymousInnerClass {
 	
 	@Override
 	protected RegularType cloneSelf() {
-		return new EnumConstantType();
+		EnumConstantType enumConstantType = new EnumConstantType();
+		enumConstantType.parameterBlock(TypeParameter.class).disconnect();
+		return enumConstantType;
 	}
 }

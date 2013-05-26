@@ -3,6 +3,7 @@ package be.kuleuven.cs.distrinet.jnome.core.type;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.ConstructorInvocation;
 
 public class AnonymousInnerClass extends AbstractAnonymousInnerClass {
@@ -40,7 +41,11 @@ public class AnonymousInnerClass extends AbstractAnonymousInnerClass {
 
 	@Override
 	protected AnonymousInnerClass cloneSelf() {
-		return new AnonymousInnerClass(invocation());
+		//FIXME Fix this ugly code. Probably by creating a factory method to create
+		//      the appropriate parameter block for a give parameter type.
+		AnonymousInnerClass anonymousInnerClass = new AnonymousInnerClass(invocation());
+		anonymousInnerClass.parameterBlock(TypeParameter.class).disconnect();
+		return anonymousInnerClass;
 	}
 	
 //	@Override

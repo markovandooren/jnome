@@ -26,17 +26,9 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 
 	public BasicJavaTypeReference(CrossReferenceTarget target, String name) {
   	super(target,name);
-  	if(name.equals("void")) {
-  		_trace = new CreationStackTrace();
-  	}
   }
-	private CreationStackTrace _trace;
-  
   public BasicJavaTypeReference(CrossReferenceTarget target, SimpleNameSignature signature) {
   	super(target,signature);
-  	if(signature.name().equals("void")) {
-  		_trace = new CreationStackTrace();
-  	}
   }
   
   /**
@@ -49,9 +41,6 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
   
   public BasicJavaTypeReference(String fqn) {
   	super(fqn);
-  	if(fqn.equals("void")) {
-  		_trace = new CreationStackTrace();
-  	}
   }
   
 //  @Override

@@ -39,7 +39,17 @@ public class JavaLanguageFactory implements LanguageFactory {
 			JarURLConnection connection = (JarURLConnection) objectLocation.openConnection();
 			return connection.getJarFile();
 		} catch (IOException e) {
-			throw new ConfigException("Cannot locate the Java base library jar.",e);
+			throw new ConfigException("Cannot locate the jar file for "+Object.class.getName(),e);
+		}
+	}
+
+	public static JarFile jarFile(Class klazz) throws ConfigException {
+		URL objectLocation = klazz.getProtectionDomain().getCodeSource().getLocation();
+		try {
+			JarURLConnection connection = (JarURLConnection) objectLocation.openConnection();
+			return connection.getJarFile();
+		} catch (IOException e) {
+			throw new ConfigException("Cannot locate the jar file for "+klazz.getName(),e);
 		}
 	}
 }

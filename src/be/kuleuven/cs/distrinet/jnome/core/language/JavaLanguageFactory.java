@@ -2,9 +2,11 @@ package be.kuleuven.cs.distrinet.jnome.core.language;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.JarURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.jar.JarFile;
 
 import be.kuleuven.cs.distrinet.chameleon.core.factory.Factory;
@@ -33,23 +35,27 @@ public class JavaLanguageFactory implements LanguageFactory {
 		return result;
 	}
 
+//	public static JarFile javaBaseJarOld() throws ConfigException {
+//		URL objectLocation = Object.class.getResource("/java/lang/Object.class");
+//		try {
+//			JarURLConnection connection = (JarURLConnection) objectLocation.openConnection();
+//			return connection.getJarFile();
+//		} catch (IOException e) {
+//			throw new ConfigException("Cannot locate the jar file for "+Object.class.getName(),e);
+//		}
+//	}
+
 	public static JarFile javaBaseJar() throws ConfigException {
-		URL objectLocation = Object.class.getResource("/java/lang/Object.class");
 		try {
-			JarURLConnection connection = (JarURLConnection) objectLocation.openConnection();
-			return connection.getJarFile();
+			URL url = Object.class.getResource("/java/lang/Object.class");
+			String path = URLDecoder.decode(url.getFile(),"UTF-8");
+			path = path.substring(5, path.indexOf('!'));
+			JarFile jarFile = new JarFile(path);
+			return jarFile;
 		} catch (IOException e) {
-			throw new ConfigException("Cannot locate the jar file for "+Object.class.getName(),e);
+			throw new ConfigException(e);
 		}
 	}
 
-	public static JarFile jarFile(Class klazz) throws ConfigException {
-		URL objectLocation = klazz.getProtectionDomain().getCodeSource().getLocation();
-		try {
-			JarURLConnection connection = (JarURLConnection) objectLocation.openConnection();
-			return connection.getJarFile();
-		} catch (IOException e) {
-			throw new ConfigException("Cannot locate the jar file for "+klazz.getName(),e);
-		}
-	}
+
 }

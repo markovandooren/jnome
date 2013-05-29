@@ -688,7 +688,7 @@ public class ASMClassParser {
   	String jarPath = args[0];
 		JarFile jar = new JarFile(jarPath);
   	Java lang = new JavaLanguageFactory().create();
-  	Project project = new Project("test", new JavaView(new LazyRootNamespace(), lang), new File("."));
+  	Project project = new Project("test", new File("."), new JavaView(new LazyRootNamespace(), lang));
 
 
   	Enumeration<JarEntry> entries = jar.entries();

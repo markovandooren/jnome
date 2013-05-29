@@ -86,8 +86,7 @@ public abstract class OutputTest {
 	public void setUp() throws MalformedURLException, FileNotFoundException, ParseException, IOException, Exception {
 		addTestFiles();
 		Java language = new JavaLanguageFactory().create();
-		Project project = new Project("output test", new JavaView(new RootNamespace(new RegularNamespaceFactory()),language), new File("."));
-		EagerJavaFileInputSourceFactory inputSourceFactory = new EagerJavaFileInputSourceFactory();
+		Project project = new Project("output test", new File("."),  new JavaView(new RootNamespace(new RegularNamespaceFactory()),language));
 		//FIXME I think this entire test class has to be deleted.
 		throw new Error();
 //		_args = new ArgumentParser(project,true).parse(arguments(), _extension,inputSourceFactory);

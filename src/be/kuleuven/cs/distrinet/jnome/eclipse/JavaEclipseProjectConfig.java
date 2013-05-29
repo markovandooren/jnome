@@ -39,7 +39,7 @@ public class JavaEclipseProjectConfig extends ConfigElement {
 	@Override
 	protected void $after() throws ConfigException {
 		Java java = new JavaLanguageFactory().create();
-		_project = new Project(_name, new JavaView(new LazyRootNamespace(), java), _root);
+		_project = new Project(_name, _root, new JavaView(new LazyRootNamespace(), java));
 		try {
 			new JavaEclipseClasspathConfig(_project,_containerConfiguration);
 		} catch (ProjectException e) {

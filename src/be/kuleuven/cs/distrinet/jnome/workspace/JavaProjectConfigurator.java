@@ -1,18 +1,17 @@
 package be.kuleuven.cs.distrinet.jnome.workspace;
 
-import java.io.File;
 import java.util.jar.JarFile;
 
 import be.kuleuven.cs.distrinet.chameleon.core.language.Language;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.LazyRootNamespace;
-import be.kuleuven.cs.distrinet.chameleon.plugin.LanguagePluginImpl;
 import be.kuleuven.cs.distrinet.chameleon.workspace.BaseLibraryConfiguration;
 import be.kuleuven.cs.distrinet.chameleon.workspace.BaseLibraryConfigurator;
 import be.kuleuven.cs.distrinet.chameleon.workspace.ConfigException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.ExtensionPredicate;
+import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectConfiguration;
 import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectConfigurator;
+import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectConfiguratorImpl;
 import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectInitialisationListener;
 import be.kuleuven.cs.distrinet.chameleon.workspace.View;
 import be.kuleuven.cs.distrinet.chameleon.workspace.Workspace;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
@@ -25,7 +24,7 @@ import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
  * 
  * @author Marko van Dooren
  */
-public class JavaProjectConfigurator extends LanguagePluginImpl implements ProjectConfigurator {
+public class JavaProjectConfigurator extends ProjectConfiguratorImpl implements ProjectConfigurator {
 
 	/**
 	 * Initialize a new Java project configurator with the give path of the jar that contains
@@ -51,21 +50,10 @@ public class JavaProjectConfigurator extends LanguagePluginImpl implements Proje
 	}
 	
 	@Override
-	public JavaProjectConfig createConfigElement(String projectName, File root, Workspace workspace, ProjectInitialisationListener listener, BaseLibraryConfiguration baseLibraryConfiguration) throws ConfigException {
-		View view = new JavaView(new LazyRootNamespace(), language());
-		if(listener != null) {listener.viewAdded(view);}
-		processBaseLibraries(view, workspace, baseLibraryConfiguration);
-		return createProjectConfig(projectName, root, view, workspace);
-	}
-
-	protected JavaProjectConfig createProjectConfig(String projectName, File root, View view, Workspace workspace) throws ConfigException {
-		return new JavaProjectConfig(projectName, root, view, workspace, new LazyJavaFileInputSourceFactory());
-	}
-	
-	protected void processBaseLibraries(View view, Workspace workspace, BaseLibraryConfiguration baseLibraryConfiguration) {
+	protected void addBaseLibraries(View view, BaseLibraryConfiguration baseLibraryConfiguration) {
 		new JavaBaseLibraryConfigurator(language()).process(view, baseLibraryConfiguration);
 	}
-
+	
 	public class JavaBaseLibraryConfigurator extends BaseLibraryConfigurator {
 
 		public JavaBaseLibraryConfigurator(Language language) {
@@ -102,5 +90,14 @@ public class JavaProjectConfigurator extends LanguagePluginImpl implements Proje
 		return workspace.languageRepository().get(name);
 	}
 
+	@Override
+	protected ProjectConfiguration createProjectConfig(View view) throws ConfigException {
+		return new JavaProjectConfig(view, new LazyJavaFileInputSourceFactory());
+	}
+
+	@Override
+	protected View createView() {
+		return new JavaView(new LazyRootNamespace(), language());
+	}
 
 }

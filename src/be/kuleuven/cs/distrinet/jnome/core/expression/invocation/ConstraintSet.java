@@ -6,13 +6,12 @@ package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 import java.util.Collection;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.rejuse.association.OrderedMultiAssociation;
-import be.kuleuven.cs.distrinet.rejuse.predicate.TypePredicate;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.MethodInvocation;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.MethodHeader;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalTypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
+import be.kuleuven.cs.distrinet.rejuse.association.OrderedMultiAssociation;
+import be.kuleuven.cs.distrinet.rejuse.predicate.TypePredicate;
 
 public abstract class ConstraintSet<C extends Constraint> {
 	
@@ -28,6 +27,17 @@ public abstract class ConstraintSet<C extends Constraint> {
 	
 	public List<? extends C> constraints() {
 		return _constraints.getOtherEnds();
+	}
+	
+	public <T extends C> T first(Class<T> kind) {
+		int size = _constraints.size();
+		for(int i = 1; i <= size;i++) {
+		  C elementAt = _constraints.elementAt(i);
+			if(kind.isInstance(elementAt)) {
+		  	return (T) elementAt;
+		  }
+		}
+		return null;
 	}
 	
 	public void add(C constraint) {

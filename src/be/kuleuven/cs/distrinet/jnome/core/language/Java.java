@@ -761,8 +761,11 @@ public class Java extends ObjectOrientedLanguage {
 				}
 			} else {
 				List<TypeConstraint> constraints = ((CapturedTypeParameter)parameter).constraints();
-				if(constraints.size() == 1 && constraints.get(0) instanceof EqualityConstraint) {
-					result = new BasicTypeArgument(Util.clone(constraints.get(0).typeReference()));
+				if(constraints.size() == 1){ 
+					TypeConstraint typeConstraint = constraints.get(0);
+					if(typeConstraint instanceof EqualityConstraint) {
+						result = new BasicTypeArgument(Util.clone(typeConstraint.typeReference()));
+					} 
 				}
 //					// there are always constraints in a captured type parameter
 //					for(TypeConstraint constraint: constraints) {

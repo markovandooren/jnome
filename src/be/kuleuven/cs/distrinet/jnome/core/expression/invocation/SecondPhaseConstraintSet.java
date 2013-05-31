@@ -290,20 +290,13 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	
 	private void processEqualityConstraints() throws LookupException {
 		boolean searching = true;
-		int index = 0;
 		while(searching) {
 			// Keep processing until there are no equality constraints.
 			List<? extends SecondPhaseConstraint> constraints = constraints();
 			new TypePredicate<SecondPhaseConstraint, EqualTypeConstraint>(EqualTypeConstraint.class).filter(constraints);
-			if(constraints.size() > 0) {
-			  EqualTypeConstraint eq = (EqualTypeConstraint) constraints.get(0);
+		  EqualTypeConstraint eq = first(EqualTypeConstraint.class);
+			if(eq != null) {
 			  eq.process();
-//				for(SecondPhaseConstraint constraint: constraints()) {
-//					if(constraint instanceof EqualTypeConstraint) {
-//						EqualTypeConstraint eq = (EqualTypeConstraint) constraint;
-//						eq.process();
-//					}
-//				}
 			} else {
 				searching = false;
 			}

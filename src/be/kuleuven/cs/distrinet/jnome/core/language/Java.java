@@ -860,12 +860,6 @@ public class Java extends ObjectOrientedLanguage {
 			return subtypeRelation.upperBoundNotHigherThan(first, second, trace);
 		}
 
-		@Override
-		public synchronized void flushCache() {
-//		  _rawCache = new HashMap<Type, RawType>();
-//		  subtypeRelation().flushCache();
-		}
-
 		public Type createdCapturedType(ParameterSubstitution parameterSubstitution, Type base) {
 			return new CapturedType(parameterSubstitution, base);
 		}

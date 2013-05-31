@@ -49,6 +49,6 @@ public class JavaNamespaceDeclaration extends NamespaceDeclaration {
 		return Collections.singletonList(_defaultImport.getOtherEnd());
 	}
 
-	private Single<Import> _defaultImport = new Single<Import>(this);
+	private Single<Import> _defaultImport = new Single<Import>(this, "default import");
 
 }

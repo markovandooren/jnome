@@ -13,6 +13,9 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 import be.kuleuven.cs.distrinet.rejuse.association.OrderedMultiAssociation;
 import be.kuleuven.cs.distrinet.rejuse.predicate.TypePredicate;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+
 public abstract class ConstraintSet<C extends Constraint> {
 	
 	public ConstraintSet(MethodInvocation invocation, MethodHeader invokedMethod) {
@@ -20,7 +23,7 @@ public abstract class ConstraintSet<C extends Constraint> {
 		_invokedGenericMethod = invokedMethod;
 		List<TypeParameter> typeParameters = invokedMethod.typeParameters();
 		new TypePredicate<TypeParameter, FormalTypeParameter>(FormalTypeParameter.class).filter(typeParameters);
-		_typeParameters = typeParameters;
+		_typeParameters = ImmutableList.copyOf(typeParameters);
 	}
 	
 	private OrderedMultiAssociation<ConstraintSet<C>, C> _constraints = new OrderedMultiAssociation<ConstraintSet<C>, C>(this);
@@ -66,10 +69,11 @@ public abstract class ConstraintSet<C extends Constraint> {
 //	}
 	
 	public List<TypeParameter> typeParameters() {
+		// Immutable so no need to clone.
 		return _typeParameters;
 	}
 	
-	private List<TypeParameter> _typeParameters;
+	private ImmutableList<TypeParameter> _typeParameters;
 	
   public MethodInvocation invocation() {
   	return _invocation;

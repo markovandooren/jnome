@@ -5,6 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
+import com.google.common.collect.ImmutableSet.Builder;
+
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.MethodInvocation;
@@ -402,18 +406,17 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	}
 
 	
-	public List<TypeParameter> unresolvedParameters() {
-		List<TypeParameter> result = typeParameters();
-		result.removeAll(resolvedParameters());
-		return result;
+	public Set<TypeParameter> unresolvedParameters() {
+		Set<TypeParameter> typeParameters = ImmutableSet.copyOf(typeParameters());
+		return Sets.difference(typeParameters, resolvedParameters());
 	}
 
-	public List<TypeParameter> resolvedParameters() {
-		List<TypeParameter> result = new ArrayList<TypeParameter>();
+	public Set<TypeParameter> resolvedParameters() {
+		Builder<TypeParameter> builder = ImmutableSet.<TypeParameter>builder();
 		for(TypeAssignment assignment: assignments().assignments()) {
-			result.add(assignment.parameter());
+			builder.add(assignment.parameter());
 		}
-		return result;
+		return builder.build();
 	}
 	
 

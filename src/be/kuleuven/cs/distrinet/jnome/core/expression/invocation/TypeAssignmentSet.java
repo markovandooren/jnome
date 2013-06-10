@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
-import be.kuleuven.cs.distrinet.rejuse.association.OrderedMultiAssociation;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalTypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
+import be.kuleuven.cs.distrinet.rejuse.association.OrderedMultiAssociation;
 
 public class TypeAssignmentSet {
 
@@ -20,6 +19,9 @@ public class TypeAssignmentSet {
 	}
 	
 	private OrderedMultiAssociation<TypeAssignmentSet, TypeAssignment> _assignments = new OrderedMultiAssociation<TypeAssignmentSet, TypeAssignment>(this);
+	{
+		_assignments.enableCache();
+	}
 	
 	public List<TypeAssignment> assignments() {
 		return _assignments.getOtherEnds();
@@ -105,7 +107,9 @@ public class TypeAssignmentSet {
 	
 	public List<TypeParameter> unassigned() throws LookupException {
 		List<TypeParameter> result = new ArrayList<TypeParameter>();
-		List<TypeAssignment> local = assignments();
+		//FIXME Avoid cloning.
+		//PERFORMANCE
+		List<TypeAssignment> local = new ArrayList<>(assignments());
 		for(TypeParameter parameter: typeParameters()) {
 			int position = -1;
 			int index = 0;

@@ -94,10 +94,15 @@ public class JavaMostSpecificMethodOrder extends WeakPartialOrder<NormalMethod> 
 		List<Type> Ts = first.header().formalParameterTypes();
 		List<Type> Us = second.header().formalParameterTypes();
 		int size =Ts.size();
-		List typeParameters = second.typeParameters();
-		new TypePredicate<TypeParameter, FormalTypeParameter>(FormalTypeParameter.class).filter(typeParameters);
+		boolean hasFormalTypeParameter = false;
+		for(TypeParameter p: second.typeParameters()) {
+			if(p instanceof FormalTypeParameter) {
+				hasFormalTypeParameter = true;
+				break;
+			}
+		}
 		List<Type> Ss;
-		if(typeParameters.size() > 0) {
+		if(hasFormalTypeParameter) {
 			FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(_invocation, second.header());
 			for(int i=0; i < size; i++) {
 				constraints.add(new SSConstraint(language.reference(Ts.get(i)), Us.get(i)));

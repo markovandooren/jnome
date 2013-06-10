@@ -5,6 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
+import com.google.common.collect.ImmutableSet.Builder;
+
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.MethodInvocation;
@@ -290,20 +294,13 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	
 	private void processEqualityConstraints() throws LookupException {
 		boolean searching = true;
-		int index = 0;
 		while(searching) {
 			// Keep processing until there are no equality constraints.
 			List<? extends SecondPhaseConstraint> constraints = constraints();
 			new TypePredicate<SecondPhaseConstraint, EqualTypeConstraint>(EqualTypeConstraint.class).filter(constraints);
-			if(constraints.size() > 0) {
-			  EqualTypeConstraint eq = (EqualTypeConstraint) constraints.get(0);
+		  EqualTypeConstraint eq = first(EqualTypeConstraint.class);
+			if(eq != null) {
 			  eq.process();
-//				for(SecondPhaseConstraint constraint: constraints()) {
-//					if(constraint instanceof EqualTypeConstraint) {
-//						EqualTypeConstraint eq = (EqualTypeConstraint) constraint;
-//						eq.process();
-//					}
-//				}
 			} else {
 				searching = false;
 			}
@@ -409,18 +406,17 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	}
 
 	
-	public List<TypeParameter> unresolvedParameters() {
-		List<TypeParameter> result = typeParameters();
-		result.removeAll(resolvedParameters());
-		return result;
+	public Set<TypeParameter> unresolvedParameters() {
+		Set<TypeParameter> typeParameters = ImmutableSet.copyOf(typeParameters());
+		return Sets.difference(typeParameters, resolvedParameters());
 	}
 
-	public List<TypeParameter> resolvedParameters() {
-		List<TypeParameter> result = new ArrayList<TypeParameter>();
+	public Set<TypeParameter> resolvedParameters() {
+		Builder<TypeParameter> builder = ImmutableSet.<TypeParameter>builder();
 		for(TypeAssignment assignment: assignments().assignments()) {
-			result.add(assignment.parameter());
+			builder.add(assignment.parameter());
 		}
-		return result;
+		return builder.build();
 	}
 	
 

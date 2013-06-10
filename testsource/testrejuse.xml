@@ -1,10 +1,10 @@
 <project name="testrejuse">
 	<language name="java"/>
 	<sourcepath>
-      <source root="jregex" extension=".java"/> 
       <source root="jutil/src" extension=".java"/>
 	</sourcepath>
     <binarypath>
+        <jar file="lib/jregex1.2_00.jar" />
         <jar file="lib/junit-3.8.2.jar" />
     </binarypath>
 </project>

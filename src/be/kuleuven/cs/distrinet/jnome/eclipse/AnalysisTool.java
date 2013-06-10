@@ -33,25 +33,24 @@ public abstract class AnalysisTool extends Tool {
 	public void execute(String[] args) {
 		try
 	  {
-			DesignCheckerOptions result = CliFactory.parseArguments(DesignCheckerOptions.class, args);
-			if(result.isHelp()) {
+			AnalysisOptions options = parseArguments(args);
+			if(options.isHelp()) {
 				printHelp();
 				System.exit(0);
 			}
-	    File root = new File(result.getRoot());
-	    Map containerConfiguration = getContainerConfiguration(result);
+	    File root = new File(options.getRoot());
+	    Map containerConfiguration = getContainerConfiguration(options);
 			Project project = new JavaEclipseProjectConfig(root, containerConfiguration).project();
 			OutputStream stream;
-			if(result.isOut()) {
-				File output = new File(result.getOut());
+			if(options.isOut()) {
+				File output = new File(options.getOut());
 				stream = new FileOutputStream(output);
 			} else {
 				stream = System.out;
 			}
 	    OutputStreamWriter writer = new OutputStreamWriter(stream);
-			writer.write("Analyzing project in "+root.getAbsolutePath()+"\n");
-			writer.flush();
-			check(project, writer);
+			writeProjectInfo(root, writer);
+			check(project, writer, options);
 			writer.close();
 			stream.close();
 	  }
@@ -64,14 +63,31 @@ public abstract class AnalysisTool extends Tool {
 		}
 	}
 
-	protected abstract void check(Project project, OutputStreamWriter writer) throws LookupException, InputException, IOException;
+	protected AnalysisOptions parseArguments(String[] args) {
+		return CliFactory.parseArguments(optionsClass(), args);
+	}
+
+	protected Class<? extends AnalysisOptions> optionsClass() {
+		return AnalysisOptions.class;
+	}
+
+	protected Cli<? extends AnalysisOptions> createCLI() {
+		return CliFactory.createCli(optionsClass());
+	}
+
+	protected void writeProjectInfo(File root, OutputStreamWriter writer) throws IOException {
+		writer.write("Analyzing project in "+root.getAbsolutePath()+"\n");
+		writer.flush();
+	}
+
+	protected abstract void check(Project project, OutputStreamWriter writer, AnalysisOptions options) throws LookupException, InputException, IOException;
 
 	private void printHelp() {
-		Cli<DesignCheckerOptions> cli = CliFactory.createCli(DesignCheckerOptions.class);
+		Cli<? extends AnalysisOptions> cli = createCLI();
 		System.out.println(cli.getHelpMessage());
 	}
 
-	private Map getContainerConfiguration(DesignCheckerOptions result) {
+	private Map getContainerConfiguration(AnalysisOptions result) {
 		Map containerConfiguration = new HashMap<String,String>();
 		if(result.getContainers() != null) {
 		  File containerConfigFile = new File(result.getContainers());
@@ -102,8 +118,8 @@ public abstract class AnalysisTool extends Tool {
 		}
 	}
 	
-	@CommandLineInterface(application="DesignChecker")
-	public static interface DesignCheckerOptions {
+	@CommandLineInterface(application="Analysis")
+	public static interface AnalysisOptions {
 		
 		@Option(defaultValue="./", description="The directory that contains the Eclipse .project and .classpath files. Note that the Eclipse project should have no compile errors.") 
 		String getRoot();

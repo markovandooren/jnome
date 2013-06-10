@@ -1,5 +1,6 @@
 package be.kuleuven.cs.distrinet.jnome.tool.design;
 
+import be.kuleuven.cs.distrinet.chameleon.analysis.Analysis;
 import be.kuleuven.cs.distrinet.chameleon.core.validation.BasicProblem;
 import be.kuleuven.cs.distrinet.chameleon.core.validation.Valid;
 import be.kuleuven.cs.distrinet.chameleon.core.validation.Verification;

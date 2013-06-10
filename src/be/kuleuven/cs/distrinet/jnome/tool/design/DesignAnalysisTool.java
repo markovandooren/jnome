@@ -14,7 +14,8 @@ public class DesignAnalysisTool extends AnalysisTool {
 		super("DesignChecker");
 	}
 
-	protected void check(Project project, OutputStreamWriter writer) throws LookupException, InputException, IOException {
+	@Override
+	protected void check(Project project, OutputStreamWriter writer, AnalysisOptions options) throws LookupException, InputException, IOException {
 		new DesignAnalyzer(project).analyze(writer);
 	}
 

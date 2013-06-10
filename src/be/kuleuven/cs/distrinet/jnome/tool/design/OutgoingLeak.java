@@ -1,5 +1,6 @@
 package be.kuleuven.cs.distrinet.jnome.tool.design;
 
+import be.kuleuven.cs.distrinet.chameleon.analysis.Analysis;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;

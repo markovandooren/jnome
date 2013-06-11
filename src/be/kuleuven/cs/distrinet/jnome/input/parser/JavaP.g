@@ -311,12 +311,6 @@ scope TargetScope {
     }
   }
   
-  public void addNonTopLevelObjectInheritance(Type type) {
-    //if(type.nonMemberInheritanceRelations().isEmpty()){
-    //  type.addInheritanceRelation(new SubtypeRelation(createTypeReference(new NamedTarget("java.lang"),"Object")));
-    //}
-  }
-  
   public JavaTypeReference typeRef(String qn) {
     return ((Java)language()).createTypeReference(qn);
   }
@@ -660,8 +654,8 @@ memberDecl returns [TypeElement element]
     |   mem=memberDeclaration {retval.element = mem.element;}
     |   vmd=voidMethodDeclaration {retval.element = vmd.element;}
     |   cs=constructorDeclaration {retval.element = cs.element;}
-    |   id=interfaceDeclaration {retval.element=id.element; addNonTopLevelObjectInheritance(id.element);}
-    |   cd=classDeclaration {retval.element=cd.element; addNonTopLevelObjectInheritance(cd.element);}
+    |   id=interfaceDeclaration {retval.element=id.element;}
+    |   cd=classDeclaration {retval.element=cd.element; }
     ;
     
 voidMethodDeclaration returns [Method element]
@@ -738,8 +732,8 @@ interfaceMemberDecl returns [TypeElement element]
     :   decl=interfaceMethodOrFieldDecl {retval.element = decl.element;}
     |   decl2=interfaceGenericMethodDecl {retval.element = decl2.element;}
     |   decl5=voidInterfaceMethodDeclaration {retval.element = decl5.element;}
-    |   decl3=interfaceDeclaration {retval.element = decl3.element; addNonTopLevelObjectInheritance(decl3.element);}
-    |   decl4=classDeclaration {retval.element = decl4.element;  addNonTopLevelObjectInheritance(decl4.element);}
+    |   decl3=interfaceDeclaration {retval.element = decl3.element; }
+    |   decl4=classDeclaration {retval.element = decl4.element; }
     ;
     
 voidInterfaceMethodDeclaration  returns [Method element]
@@ -1108,7 +1102,7 @@ annotations returns [List<AnnotationModifier> element]
     ;
 
 annotation returns [AnnotationModifier element]
-    :   '@' a=annotationName {retval.element=new AnnotationModifier($a.text);} ( '(' ( elementValuePairs | elementValue )? ')' )?
+    :   '@' a=annotationName {retval.element=new AnnotationModifier(typeRef($a.text));} ( '(' ( elementValuePairs | elementValue )? ')' )?
     ;
     
 annotationName
@@ -1162,8 +1156,8 @@ annotationTypeElementRest returns [TypeElement element]
     :   t=type ann=annotationMethodOrConstantRest[$t.element] {retval.element = ann.element;} 
         
     ';' 
-    |   cd=normalClassDeclaration { retval.element = cd.element; addNonTopLevelObjectInheritance(cd.element);}';'?
-    |   id=normalInterfaceDeclaration { retval.element = id.element; addNonTopLevelObjectInheritance(id.element);}';'?
+    |   cd=normalClassDeclaration { retval.element = cd.element; }';'?
+    |   id=normalInterfaceDeclaration { retval.element = id.element; }';'?
     |   en=enumDeclaration {retval.element = en.element;} ';'?
     |   an=annotationTypeDeclaration {retval.element = an.element;} ';'?
     ;

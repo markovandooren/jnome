@@ -637,7 +637,6 @@ public class JavaCodeWriter extends Syntax {
     }
     //Name
     result.append("class ");
-    Util.debug(type.name().equals("kind"));
     result.append(type.name());
     appendTypeParameters(type.parameters(TypeParameter.class), result);
     List<SubtypeRelation> superTypes = type.nonMemberInheritanceRelations(SubtypeRelation.class);

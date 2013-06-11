@@ -31,6 +31,7 @@ public class JavaNamespaceDeclaration extends NamespaceDeclaration {
 		super(ref);
 		verify(ref);
 		set(_defaultImport,new DemandImport(new NamespaceReference("java.lang")));
+		_defaultImport.lock();
 	}
 
 	public void verify(CrossReference<Namespace> ref) {
@@ -39,6 +40,7 @@ public class JavaNamespaceDeclaration extends NamespaceDeclaration {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected NamespaceDeclaration cloneSelf() {
 		return new JavaNamespaceDeclaration((CrossReference)null);

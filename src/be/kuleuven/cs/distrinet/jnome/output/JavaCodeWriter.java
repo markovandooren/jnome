@@ -8,32 +8,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayAccessExpression;
-import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayCreationExpression;
-import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayInitializer;
-import be.kuleuven.cs.distrinet.jnome.core.expression.ClassLiteral;
-import be.kuleuven.cs.distrinet.jnome.core.expression.DimensionInitializer;
-import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.ConstructorInvocation;
-import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.SuperConstructorDelegation;
-import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.ThisConstructorDelegation;
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.jnome.core.modifier.Default;
-import be.kuleuven.cs.distrinet.jnome.core.modifier.StrictFP;
-import be.kuleuven.cs.distrinet.jnome.core.modifier.Synchronized;
-import be.kuleuven.cs.distrinet.jnome.core.modifier.Volatile;
-import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
-import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaIntersectionTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.type.PureWildcard;
-import be.kuleuven.cs.distrinet.rejuse.java.collections.RobustVisitor;
-import be.kuleuven.cs.distrinet.rejuse.java.collections.Visitor;
-import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
-import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
-import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 import be.kuleuven.cs.distrinet.chameleon.core.document.Document;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.modifier.ElementWithModifiers;
 import be.kuleuven.cs.distrinet.chameleon.core.modifier.Modifier;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.NamespaceReference;
@@ -132,13 +108,35 @@ import be.kuleuven.cs.distrinet.chameleon.support.tool.Arguments;
 import be.kuleuven.cs.distrinet.chameleon.support.type.EmptyTypeElement;
 import be.kuleuven.cs.distrinet.chameleon.support.type.StaticInitializer;
 import be.kuleuven.cs.distrinet.chameleon.support.variable.LocalVariableDeclarator;
+import be.kuleuven.cs.distrinet.chameleon.util.Util;
+import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayAccessExpression;
+import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayCreationExpression;
+import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayInitializer;
+import be.kuleuven.cs.distrinet.jnome.core.expression.ClassLiteral;
+import be.kuleuven.cs.distrinet.jnome.core.expression.DimensionInitializer;
+import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.ConstructorInvocation;
+import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.SuperConstructorDelegation;
+import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.ThisConstructorDelegation;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.modifier.Default;
+import be.kuleuven.cs.distrinet.jnome.core.modifier.StrictFP;
+import be.kuleuven.cs.distrinet.jnome.core.modifier.Synchronized;
+import be.kuleuven.cs.distrinet.jnome.core.modifier.Volatile;
+import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
+import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaIntersectionTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.PureWildcard;
+import be.kuleuven.cs.distrinet.rejuse.java.collections.Visitor;
+import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
+import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 
 /**
  * @author Marko van Dooren
  */
 public class JavaCodeWriter extends Syntax {
   
-  public String toCode(Element element) throws LookupException {
+  public String toCode(Element element)  {
     String result = null;
     if(isAnonymousClass(element)) {
       result = toCodeAnonymousClass((Type) element);
@@ -309,7 +307,7 @@ public class JavaCodeWriter extends Syntax {
   	return element instanceof ExtendsWildcard;
   }
   
-  public String toCodeExtendsWildCard(ExtendsWildcard element) throws LookupException {
+  public String toCodeExtendsWildCard(ExtendsWildcard element)  {
   	return "? extends " + toCode(element.typeReference());
   }
   
@@ -317,7 +315,7 @@ public class JavaCodeWriter extends Syntax {
   	return element instanceof SuperWildcard;
   }
   
-  public String toCodeSuperWildCard(SuperWildcard element) throws LookupException {
+  public String toCodeSuperWildCard(SuperWildcard element)  {
   	return "? super " + toCode(element.typeReference());
   }
   
@@ -325,7 +323,7 @@ public class JavaCodeWriter extends Syntax {
   	return element instanceof PureWildcard;
   }
   
-  public String toCodePureWildCard(PureWildcard element) throws LookupException {
+  public String toCodePureWildCard(PureWildcard element)  {
   	return "?";
   }
   
@@ -333,11 +331,11 @@ public class JavaCodeWriter extends Syntax {
   	return element instanceof AssertStatement;
   }
   
-  public String toCodeAssert(AssertStatement element) throws LookupException {
+  public String toCodeAssert(AssertStatement element)  {
   	return "assert(" + toCode(element.getExpression()) +");";
   }
   
-  public String toCodeBasicTypeArgument(BasicTypeArgument element) throws LookupException {
+  public String toCodeBasicTypeArgument(BasicTypeArgument element)  {
 		return toCode(element.typeReference());
 	}
 
@@ -349,7 +347,7 @@ public class JavaCodeWriter extends Syntax {
 //  	return element instanceof ActualArgument;
 //  }
 //  
-//  public String toCodeActualParameter(ActualArgument parameter) throws LookupException {
+//  public String toCodeActualParameter(ActualArgument parameter)  {
 //  	return toCode(parameter.getExpression());
 //  }
   
@@ -357,7 +355,7 @@ public class JavaCodeWriter extends Syntax {
 //    return element instanceof NamespaceOrTypeReference;
 //  }
 //  
-//  public String toCodeNamespaceOrTypeReference(NamespaceOrTypeReference typeReference) throws LookupException {
+//  public String toCodeNamespaceOrTypeReference(NamespaceOrTypeReference typeReference)  {
 //    String result = toCode(typeReference.getTarget());
 //    if(result.length() > 0) {
 //      result = result + ".";
@@ -370,7 +368,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof SpecificReference;
   }
   
-  public String toCodeSpecificReference(SpecificReference typeReference) throws LookupException {
+  public String toCodeSpecificReference(SpecificReference typeReference)  {
     String result = toCode(typeReference.getTarget());
     if(result.length() > 0) {
       result = result + ".";
@@ -383,7 +381,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof NamespaceReference;
   }
   
-  public String toCodeNamespaceReference(NamespaceReference typeReference) throws LookupException {
+  public String toCodeNamespaceReference(NamespaceReference typeReference)  {
     String result = toCode(typeReference.getTarget());
     if(result.length() > 0) {
       result = result + ".";
@@ -396,7 +394,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof JavaIntersectionTypeReference;
   }
   
-  public String toCodeIntersectionTypeReference(JavaIntersectionTypeReference typeReference) throws LookupException {
+  public String toCodeIntersectionTypeReference(JavaIntersectionTypeReference typeReference)  {
   	StringBuffer result = new StringBuffer();
   	Iterator<? extends TypeReference> iter = typeReference.typeReferences().iterator();
   	while(iter.hasNext()) {
@@ -413,7 +411,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ArrayTypeReference;
   }
   
-  public String toCodeArrayTypeReference(ArrayTypeReference typeReference) throws LookupException {
+  public String toCodeArrayTypeReference(ArrayTypeReference typeReference)  {
   	return toCode(typeReference.elementTypeReference()) + "[]";
   }
   
@@ -421,7 +419,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof BasicJavaTypeReference;
   }
   
-  public String toCodeBasicTypeReference(BasicJavaTypeReference typeReference) throws LookupException {
+  public String toCodeBasicTypeReference(BasicJavaTypeReference typeReference)  {
     String result = toCode(typeReference.getTarget());
     if(result.length() > 0) {
       result = result + ".";
@@ -446,7 +444,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof StaticInitializer;
   }
   
-  public String toCodeStaticInitializer(StaticInitializer init) throws LookupException {
+  public String toCodeStaticInitializer(StaticInitializer init)  {
     return "static " + toCode(init.getBlock());
   }
   
@@ -504,7 +502,7 @@ public class JavaCodeWriter extends Syntax {
   	return element instanceof DemandImport;
   }
   
-  public String toCodeDemandImport(DemandImport imp) throws LookupException {
+  public String toCodeDemandImport(DemandImport imp)  {
     return "import "+toCode(imp.containerReference()) +".*;\n";
   }
   
@@ -512,11 +510,11 @@ public class JavaCodeWriter extends Syntax {
   	return element instanceof TypeImport;
   }
   
-  public String toCodeTypeImport(TypeImport imp) throws LookupException {
+  public String toCodeTypeImport(TypeImport imp) {
 		return "import "+ toCode(((TypeImport)imp).getTypeReference()) +";\n";
   }
   
-  public String toCodeNamespacePart(NamespaceDeclaration part) throws LookupException {
+  public String toCodeNamespacePart(NamespaceDeclaration part)  {
     StringBuffer result = new StringBuffer();
     result.append("package "+part.namespace().getFullyQualifiedName() +";\n\n");
     for(Import imp: part.imports()) {
@@ -539,7 +537,7 @@ public class JavaCodeWriter extends Syntax {
     return result.toString();
   }
   
-  public String toCodeCompilationUnit(Document cu) throws LookupException {
+  public String toCodeCompilationUnit(Document cu)  {
     StringBuffer result = new StringBuffer();
   	for(NamespaceDeclaration part: cu.namespaceDeclarations()) {
   		result.append(toCodeNamespacePart(part));
@@ -573,7 +571,7 @@ public class JavaCodeWriter extends Syntax {
     } else if(element instanceof Interface) {
     	return "";
     } else if(element instanceof AnnotationModifier) {
-    	return "@" + ((AnnotationModifier) element).name();
+    	return "@" + toCode(((AnnotationModifier) element).typeReference());
     } else if(element instanceof Volatile) {
     	return "volatile";
     } else if(element instanceof Enum) {
@@ -603,63 +601,40 @@ public class JavaCodeWriter extends Syntax {
     return false;
   }
   
-  public String toCodeClassBlock(Type type) throws LookupException {
-    try {
-      
+  public String toCodeClassBlock(Type type)  {
     final StringBuffer result = new StringBuffer();
     result.append("{\n");
     indent();
     
     List<? extends TypeElement> members = type.directlyDeclaredElements();
     // Members
-    new RobustVisitor() {
-      public Object visit(Object element) throws LookupException {
-        result.append(toCode((Element)element));
-        result.append("\n\n");
-        return null;
-      }
-
-      public void unvisit(Object element, Object undo) {
-        //NOP
-      }
-    }.applyTo(members);
-    
+    for(Element element: members) {
+      result.append(toCode((Element)element));
+      result.append("\n\n");
+    }
     undent();
     result.append(startLine());
     result.append("}");
     
     return result.toString();
-    }
-    catch (LookupException e) {
-      throw e;
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-      throw new Error();
-    }
   }
   
   public boolean isAnonymousClass(Element element) {
     return (element instanceof Type) && (element.parent() instanceof ConstructorInvocation);
   }
   
-  public String toCodeAnonymousClass(Type type) throws LookupException {
+  public String toCodeAnonymousClass(Type type)  {
     return toCodeClassBlock(type);
   }
   
-  public String toCodeClass(Type type) throws LookupException {
-    try {
+  public String toCodeClass(Type type)  {
     final StringBuffer result = startLine();
     
     //Modifiers
-    
-    new Visitor() {
-      public void visit(Object element) {
-        result.append((toCodeModifier((Modifier)element)));
-        result.append(" ");
-      }
-    }.applyTo(type.modifiers());
-    
+    for(Modifier element:type.modifiers()) {
+      result.append((toCodeModifier((Modifier)element)));
+      result.append(" ");
+    }
     //Name
     result.append("class ");
     result.append(type.name());
@@ -694,18 +669,9 @@ public class JavaCodeWriter extends Syntax {
     result.append(toCodeClassBlock(type));
     
     return result.toString();
-    }
-    catch (LookupException e) {
-      throw e;
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-      throw new Error();
-    }
-    
   }
 
-	private void appendTypeParameters(List<? extends Element> parameters, final StringBuffer result) throws LookupException {
+	private void appendTypeParameters(List<? extends Element> parameters, final StringBuffer result)  {
 		if(! parameters.isEmpty()) {
     	result.append("<");
     	Iterator<? extends Element> iter = parameters.iterator();
@@ -723,7 +689,7 @@ public class JavaCodeWriter extends Syntax {
   	return element instanceof FormalTypeParameter;
   }
   
-  public String toCodeFormalTypeParameter(FormalTypeParameter param) throws LookupException {
+  public String toCodeFormalTypeParameter(FormalTypeParameter param)  {
   	StringBuffer result = new StringBuffer();
   	result.append(param.signature().name());
   	List<TypeConstraint> constraints = param.constraints();
@@ -744,33 +710,29 @@ public class JavaCodeWriter extends Syntax {
   	return element instanceof ExtendsConstraint;
   }
   
-  public String toCodeExtendsConstraint(ExtendsConstraint constraint) throws LookupException {
+  public String toCodeExtendsConstraint(ExtendsConstraint constraint)  {
   	StringBuffer result = new StringBuffer();
   	result.append("extends ");
   	result.append(toCode(constraint.typeReference()));
   	return result.toString();
   }
 
-  public String toCodeInterface(Type type) throws LookupException {
-    try {
+  public String toCodeInterface(Type type)  {
     final StringBuffer result = startLine();
     
     //Modifiers
-    
-    new Visitor() {
-      public void visit(Object element) {
-        result.append((toCodeModifier((Modifier)element)));
-        result.append(" ");
-      }
-    }.applyTo(type.modifiers());
+    for(Modifier element: type.modifiers()) {
+      result.append((toCodeModifier((Modifier)element)));
+      result.append(" ");
+    }
     
     //Name
     result.append("interface ");
     result.append(type.name());
     appendTypeParameters(type.parameters(TypeParameter.class), result);
-    List<SubtypeRelation> superTypes = type.nonMemberInheritanceRelations(SubtypeRelation.class);
-    new AbstractPredicate<SubtypeRelation>() {
-      public boolean eval(SubtypeRelation rel) throws LookupException {
+    List<SubtypeRelation> superTypes = new ArrayList<>(type.nonMemberInheritanceRelations(SubtypeRelation.class));
+    new SafePredicate<SubtypeRelation>() {
+      public boolean eval(SubtypeRelation rel)  {
         return ! toCode((rel).superClassReference()).equals("java.lang.Object");
       }
     }.filter(superTypes);
@@ -789,18 +751,10 @@ public class JavaCodeWriter extends Syntax {
     result.append(toCodeClassBlock(type));
     
     return result.toString();
-    }
-    catch (LookupException e) {
-      throw e;
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-      throw new Error();
-    }
     
   }
 
-  public String toCodeMethod(Method method) throws LookupException {
+  public String toCodeMethod(Method method)  {
 	    final StringBuffer result = startLine();
 	    
 	    addModifiers(method, result);
@@ -879,7 +833,7 @@ public class JavaCodeWriter extends Syntax {
 		}.applyTo(element.modifiers());
 	}
   
-  public String toCodeImplementation(Implementation impl) throws LookupException {
+  public String toCodeImplementation(Implementation impl)  {
     if((impl == null) || (impl instanceof NativeImplementation)) {
       return ";";
     }
@@ -892,7 +846,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof Method;
   }
   
-  public String toCodeExceptionClause(ExceptionClause ec) throws LookupException {
+  public String toCodeExceptionClause(ExceptionClause ec)  {
     final StringBuffer result = new StringBuffer();
     List decls = ec.exceptionDeclarations();
     if(! decls.isEmpty()) {
@@ -908,7 +862,7 @@ public class JavaCodeWriter extends Syntax {
     return result.toString();
   }
   
-  public String toCodeExceptionDeclaration(ExceptionDeclaration ed) throws LookupException {
+  public String toCodeExceptionDeclaration(ExceptionDeclaration ed)  {
     if(ed instanceof TypeExceptionDeclaration) {
       return toCode(((TypeExceptionDeclaration)ed).getTypeReference());
     }
@@ -921,11 +875,11 @@ public class JavaCodeWriter extends Syntax {
    * MEMBER VARIABLES *
    ********************/
   
-//  public String toCodeMemberVariable(RegularMemberVariable var) throws LookupException {
+//  public String toCodeMemberVariable(RegularMemberVariable var)  {
 //    return startLine() + toCodeVariable(var);
 //  }
   
-  public String toCodeVariable(FormalParameter var) throws LookupException {
+  public String toCodeVariable(FormalParameter var)  {
     final StringBuffer result = new StringBuffer();
     new Visitor() {
       public void visit(Object element) {
@@ -952,7 +906,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof StatementExpression;
   }
   
-  public String toCodeStatementExpression(StatementExpression stat) throws LookupException {
+  public String toCodeStatementExpression(StatementExpression stat)  {
     return toCode(stat.getExpression())+";";
   }
   
@@ -976,7 +930,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof Block;
   }
   
-  public String toCodeBlock(Block block) throws LookupException {
+  public String toCodeBlock(Block block)  {
     StringBuffer result = new StringBuffer();
     result.append("{\n");
     indent();
@@ -996,7 +950,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof IfThenElseStatement;
   }
   
-  public String toCodeIf(IfThenElseStatement stat) throws LookupException {
+  public String toCodeIf(IfThenElseStatement stat)  {
     StringBuffer result = new StringBuffer();
     result.append("if(");
     result.append(toCode(stat.getExpression()));
@@ -1015,7 +969,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof WhileStatement;
   }
   
-  public String toCodeWhile(WhileStatement element) throws LookupException {
+  public String toCodeWhile(WhileStatement element)  {
     StringBuffer result = new StringBuffer();
     result.append("while (");
     result.append(toCode(element.condition()));
@@ -1028,7 +982,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof TryStatement;
   }
   
-  public String toCodeTry(TryStatement statement) throws LookupException {
+  public String toCodeTry(TryStatement statement)  {
     StringBuffer result = new StringBuffer();
     result.append("try ");
     result.append(toCode(statement.getStatement()));
@@ -1044,11 +998,11 @@ public class JavaCodeWriter extends Syntax {
     return result.toString();
   }
   
-  public String toCodeCatchClause(CatchClause cc) throws LookupException {
+  public String toCodeCatchClause(CatchClause cc)  {
     return "catch ("+toCodeVariable(cc.getExceptionParameter()) + ") " + toCode(cc.statement());
   }
   
-  public String toCodeFinally(FinallyClause cc) throws LookupException {
+  public String toCodeFinally(FinallyClause cc)  {
     return "finally " + toCode(cc.statement());
   }
   
@@ -1056,7 +1010,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ThrowStatement;
   }
   
-  public String toCodeThrow(ThrowStatement ts) throws LookupException {
+  public String toCodeThrow(ThrowStatement ts)  {
     return "throw "+toCode(ts.getExpression())+";";
   }
   
@@ -1064,7 +1018,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof SynchronizedStatement;
   }
   
-  public String toCodeSynchronized(SynchronizedStatement ts) throws LookupException {
+  public String toCodeSynchronized(SynchronizedStatement ts)  {
     return "synchronized("+toCode(ts.expression())+") "+toCode(ts.getStatement());
   }
   
@@ -1072,29 +1026,14 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof SwitchStatement;
   }
   
-  public String toCodeSwitch(SwitchStatement st) throws LookupException {
+  public String toCodeSwitch(SwitchStatement st)  {
     final StringBuffer result = new StringBuffer();
     result.append("switch(" + toCode(st.getExpression()) + ") {\n");
     indent();
-    try {
-      new RobustVisitor() {
-        public Object visit(Object o) throws LookupException {
-          result.append(startLine());
-          result.append(toCodeSwitchCase((SwitchCase)o));
-          result.append("\n");
-          return null;
-        }
-
-        public void unvisit(Object o, Object undo) {
-          //NOP
-        }
-      }.applyTo(st.getSwitchCases());
-    }
-    catch (LookupException e) {
-      throw e;
-    }
-    catch (Exception e) {
-      throw new Error();
+    for(SwitchCase o:st.getSwitchCases()) {
+      result.append(startLine());
+      result.append(toCodeSwitchCase((SwitchCase)o));
+      result.append("\n");
     }
     undent();
     result.append(startLine());
@@ -1102,35 +1041,20 @@ public class JavaCodeWriter extends Syntax {
     return result.toString();
   }
   
-  public String toCodeSwitchCase(SwitchCase sc) throws LookupException {
+  public String toCodeSwitchCase(SwitchCase sc)  {
     final StringBuffer result = new StringBuffer();
     result.append(startLine());
     result.append(toCodeSwitchLabel(sc.getLabel()));
     result.append("\n");
     indent();
-    try {
-      new RobustVisitor() {
-        public Object visit(Object o) throws LookupException {
-          result.append(toCode((Element)o));
-          return null;
-        }
-
-        public void unvisit(Object o, Object undo) {
-          //NOP
-        }
-      }.applyTo(sc.statements());
-    }
-    catch (LookupException e) {
-      throw e;
-    }
-    catch (Exception e) {
-      throw new Error();
+    for(Element o: sc.statements()) {
+      result.append(toCode((Element)o));
     }
     undent();
     return result.toString();
   }
   
-  public String toCodeSwitchLabel(SwitchLabel sl) throws LookupException {
+  public String toCodeSwitchLabel(SwitchLabel sl)  {
     if(sl instanceof DefaultLabel) {
       return "default:";
     }
@@ -1143,7 +1067,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof StatementExprList;
   }
   
-  public String toCodeStatementExprList(StatementExprList sel) throws LookupException {
+  public String toCodeStatementExprList(StatementExprList sel)  {
     StringBuffer result = new StringBuffer();
     Iterator iter = sel.statements().iterator();
     while(iter.hasNext()) {
@@ -1159,7 +1083,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ReturnStatement;
   }
   
-  public String toCodeReturn(ReturnStatement ts) throws LookupException {
+  public String toCodeReturn(ReturnStatement ts)  {
     return "return "+toCode(ts.getExpression())+";";
   }
   
@@ -1167,7 +1091,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof LocalVariableDeclarator;
   }
 
-  public String toCodeLocalVariableDeclarator(LocalVariableDeclarator local) throws LookupException {
+  public String toCodeLocalVariableDeclarator(LocalVariableDeclarator local)  {
     return toCodeVariableDeclarator(local) + ";";
   }
   
@@ -1175,11 +1099,11 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof MemberVariableDeclarator;
   }
 
-  public String toCodeMemberVariableDeclarator(MemberVariableDeclarator local) throws LookupException {
+  public String toCodeMemberVariableDeclarator(MemberVariableDeclarator local)  {
     return startLine()+toCodeVariableDeclarator(local) + ";";
   }
 
-  public String toCodeVariableDeclarator(VariableDeclarator local) throws LookupException {
+  public String toCodeVariableDeclarator(VariableDeclarator local)  {
     final StringBuffer result = new StringBuffer();
     List modifiers = local.modifiers();
     if (modifiers.size() != 0) {
@@ -1191,38 +1115,22 @@ public class JavaCodeWriter extends Syntax {
     }
     result.append(toCode(local.typeReference()));
     result.append(" ");
-    try {
-      new RobustVisitor<VariableDeclaration>() {
-        private boolean first = true;
+    boolean first = true;
+    for(VariableDeclaration element: local.variableDeclarations()) {
+    	//    LocalVariable variable = (LocalVariable)element;
+    	if (!first) {
+    		result.append(", ");
+    	}
+    	else {
+    		first = false;
+    	}
+    	result.append(element.signature().name());
+    	Expression initCode = element.initialization();
+    	if (initCode != null) {
+    		result.append(" = ");
+    		result.append(toCode(initCode));
+    	}
 
-        public Object visit(VariableDeclaration element) throws LookupException {
-//          LocalVariable variable = (LocalVariable)element;
-          if (!first) {
-            result.append(", ");
-          }
-          else {
-            first = false;
-          }
-          result.append(element.signature().name());
-          Expression initCode = element.initialization();
-          if (initCode != null) {
-            result.append(" = ");
-							result.append(toCode(initCode));
-          }
-          return null;
-        }
-
-        public void unvisit(VariableDeclaration el, Object undo) {
-          //NOP
-        }
-      }.applyTo(local.variableDeclarations());
-    }
-    catch (LookupException e) {
-      throw e;
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-      throw new Error();
     }
     return result.toString();
   }
@@ -1231,7 +1139,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof LocalClassStatement;
   }
   
-  public String toCodeLocalClass(LocalClassStatement local) throws LookupException {
+  public String toCodeLocalClass(LocalClassStatement local)  {
     return toCode(local.getType());
   }
   
@@ -1239,7 +1147,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof LabeledStatement;
   }
   
-  public String toCodeLabeledStatement(LabeledStatement local) throws LookupException {
+  public String toCodeLabeledStatement(LabeledStatement local)  {
     return local.getLabel() +": "+toCode(local.getStatement());
   }
   
@@ -1247,7 +1155,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ForStatement;
   }
   
-  public String toCodeFor(ForStatement statement) throws LookupException {
+  public String toCodeFor(ForStatement statement)  {
     return "for "+toCode(statement.forControl()) + toCode(statement.getStatement());
   }
   
@@ -1255,7 +1163,7 @@ public class JavaCodeWriter extends Syntax {
   	return element instanceof SimpleForControl;
   }
   
-  public String toCodeSimpleForControl(SimpleForControl control) throws LookupException {
+  public String toCodeSimpleForControl(SimpleForControl control)  {
   	return "("+toCodeForInit((Element)control.getForInit())+"; "+toCode(control.condition())+"; "+toCode(control.update())+") ";
   }
   
@@ -1263,11 +1171,11 @@ public class JavaCodeWriter extends Syntax {
   	return element instanceof EnhancedForControl;
   }
 
-  public String toCodeEnhancedForControl(EnhancedForControl control) throws LookupException {
+  public String toCodeEnhancedForControl(EnhancedForControl control)  {
   	return "("+toCodeForInit((Element)control.variableDeclarator())+": "+toCode(control.collection())+") ";
   }
 
-  public String toCodeForInit(Element element) throws LookupException {
+  public String toCodeForInit(Element element)  {
     if(element instanceof LocalVariableDeclarator) {
       return toCodeVariableDeclarator((LocalVariableDeclarator)element);
     } else {
@@ -1287,7 +1195,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof DoStatement;
   }
   
-  public String toCodeDo(DoStatement statement) throws LookupException {
+  public String toCodeDo(DoStatement statement)  {
     return "do "+toCode(statement.getStatement())+ "while("+toCode(statement.condition())+");";
   }
   
@@ -1300,7 +1208,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ConstructorInvocation;
   }
   
-  public String toCodeConstructorInvocation(ConstructorInvocation inv) throws LookupException {
+  public String toCodeConstructorInvocation(ConstructorInvocation inv)  {
     StringBuffer result = new StringBuffer();
     if(inv.getTarget() != null) {
       result.append(toCode(inv.getTarget()));
@@ -1323,7 +1231,7 @@ public class JavaCodeWriter extends Syntax {
 	  return ")";
   }
   
-  public String getActualArgs(MethodInvocation inv) throws LookupException {
+  public String getActualArgs(MethodInvocation inv)  {
     StringBuffer result = new StringBuffer();
     result.append(getActualArgsOpeningBrace());
     Iterator<Expression> iter = inv.getActualParameters().iterator();
@@ -1342,7 +1250,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ConditionalAndExpression;
   }
   
-  public String toCodeCondAnd(ConditionalAndExpression cae) throws LookupException {
+  public String toCodeCondAnd(ConditionalAndExpression cae)  {
     return "(" + toCode(cae.getFirst())+" && " + toCode(cae.getSecond()) +")";
   }
   
@@ -1350,7 +1258,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ConditionalOrExpression;
   }
   
-  public String toCodeCondOr(ConditionalOrExpression cae) throws LookupException {
+  public String toCodeCondOr(ConditionalOrExpression cae)  {
     return "(" + toCode(cae.getFirst())+" || " + toCode(cae.getSecond()) +")";
   }
   
@@ -1358,7 +1266,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof InfixOperatorInvocation;
   }
   
-  public String toCodeInfixInvocation(InfixOperatorInvocation inv) throws LookupException {
+  public String toCodeInfixInvocation(InfixOperatorInvocation inv)  {
     return "(" + toCode(inv.getTarget())+") " + inv.name()+ " (" + toCode((Element)inv.getActualParameters().get(0)) +")";
   }
   
@@ -1366,7 +1274,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof PrefixOperatorInvocation;
   }
   
-  public String toCodePrefixInvocation(PrefixOperatorInvocation inv) throws LookupException {
+  public String toCodePrefixInvocation(PrefixOperatorInvocation inv)  {
     return inv.name()+"("+toCode(inv.getTarget())+")";
   }
   
@@ -1374,7 +1282,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof PostfixOperatorInvocation;
   }
   
-  public String toCodePostfixInvocation(PostfixOperatorInvocation inv) throws LookupException {
+  public String toCodePostfixInvocation(PostfixOperatorInvocation inv)  {
     return toCode(inv.getTarget()) + inv.name();
   }
   
@@ -1382,7 +1290,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ClassLiteral;
   }
   
-  public String toCodeClassLiteral(ClassLiteral literal) throws LookupException {
+  public String toCodeClassLiteral(ClassLiteral literal)  {
     return toCode(literal.target())+".class";
   }
   
@@ -1390,7 +1298,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ThisLiteral;
   }
   
-  public String toCodeThisLiteral(ThisLiteral literal) throws LookupException {
+  public String toCodeThisLiteral(ThisLiteral literal)  {
     if(literal.getTypeReference() != null) {
       return toCode(literal.getTypeReference())+".this";
     } else {
@@ -1410,7 +1318,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof NamedTarget;
   }
   
-  public String toCodeNamedTarget(NamedTarget nt) throws LookupException {
+  public String toCodeNamedTarget(NamedTarget nt)  {
     StringBuffer result = new StringBuffer();
     if(nt.getTarget() != null) {
       result.append(toCode(nt.getTarget()));
@@ -1424,7 +1332,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof RegularMethodInvocation;
   }
   
-  public String toCodeRegularMethodInvocation(RegularMethodInvocation inv) throws LookupException {
+  public String toCodeRegularMethodInvocation(RegularMethodInvocation inv)  {
     StringBuffer result = new StringBuffer();
     if(inv.getTarget() != null) {
       result.append(toCode(inv.getTarget()));
@@ -1440,7 +1348,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof NamedTargetExpression;
   }
   
-  public String toCodeNamedTargetRef(NamedTargetExpression var) throws LookupException {
+  public String toCodeNamedTargetRef(NamedTargetExpression var)  {
     CrossReferenceTarget target = var.getTarget();
     if(target != null) {
 		  return toCode(target)+"."+var.name();
@@ -1453,7 +1361,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof VariableReference;
   }
   
-  public String toCodeVarRef(VariableReference var) throws LookupException {
+  public String toCodeVarRef(VariableReference var)  {
     return toCode(var.getTarget());
   }
   
@@ -1465,7 +1373,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ThisConstructorDelegation;
   }
   
-  public String toCodeThisConstructorDelegation(ThisConstructorDelegation deleg) throws LookupException {
+  public String toCodeThisConstructorDelegation(ThisConstructorDelegation deleg)  {
     return "this" + getActualArgs(deleg);
   }
   
@@ -1473,7 +1381,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof SuperTarget;
   }
   
-  public String toCodeSuperTarget(SuperTarget nt) throws LookupException {
+  public String toCodeSuperTarget(SuperTarget nt)  {
     StringBuffer result = new StringBuffer();
     CrossReferenceTarget target = nt.getTarget();
 		if(target != null) {
@@ -1488,7 +1396,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof SuperConstructorDelegation;
   }
   
-  public String toCodeSuperConstructorDelegation(SuperConstructorDelegation deleg) throws LookupException {
+  public String toCodeSuperConstructorDelegation(SuperConstructorDelegation deleg)  {
     return "super" + getActualArgs(deleg);
   }
   
@@ -1496,7 +1404,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof InstanceofExpression;
   }
   
-  public String toCodeInstanceOf(InstanceofExpression ioe) throws LookupException {
+  public String toCodeInstanceOf(InstanceofExpression ioe)  {
     return "(" + toCode(ioe.getExpression()) + " instanceof " + toCode(ioe.getTypeReference())+")";
   }
   
@@ -1504,7 +1412,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof DimensionInitializer;
   }
   
-  public String toCodeDimInit(DimensionInitializer init) throws LookupException {
+  public String toCodeDimInit(DimensionInitializer init)  {
     return "["+(init.getExpression() != null ? toCode(init.getExpression()) : "")+"]";
   }
   
@@ -1512,7 +1420,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ConditionalExpression;
   }
   
-  public String toCodeCondExpr(ConditionalExpression ce) throws LookupException {
+  public String toCodeCondExpr(ConditionalExpression ce)  {
     return "(" +toCode(ce.getCondition())+" ? "+toCode(ce.getFirst()) + " : "+ toCode(ce.getSecond())+")";
   }
   
@@ -1520,7 +1428,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ClassCastExpression;
   }
   
-  public String toCodeCast(ClassCastExpression cc) throws LookupException {
+  public String toCodeCast(ClassCastExpression cc)  {
     return "(("+toCode(cc.getTypeReference())+")" + toCode(cc.getExpression()) +")";
   }
   
@@ -1528,7 +1436,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ArrayInitializer;
   }
   
-  public String toCodeArrayInit(ArrayInitializer init) throws LookupException {
+  public String toCodeArrayInit(ArrayInitializer init)  {
     StringBuffer result = new StringBuffer();
     result.append("{");
     Iterator iter = init.getVariableInitializers().iterator();
@@ -1546,7 +1454,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ArrayCreationExpression;
   }
   
-  public String toCodeArrayCreation(ArrayCreationExpression expr) throws LookupException {
+  public String toCodeArrayCreation(ArrayCreationExpression expr)  {
     StringBuffer result = new StringBuffer();
     result.append("new ");
     result.append(toCode(expr.getTypeReference()));
@@ -1566,7 +1474,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof ArrayAccessExpression;
   }
   
-  public String toCodeArrayAccess(ArrayAccessExpression expr) throws LookupException {
+  public String toCodeArrayAccess(ArrayAccessExpression expr)  {
     StringBuffer result = new StringBuffer();
     result.append(toCode(expr.getTarget()));
     Iterator iter = expr.getIndices().iterator();
@@ -1582,7 +1490,7 @@ public class JavaCodeWriter extends Syntax {
     return element instanceof AssignmentExpression;
   }
   
-  public String toCodeAssignment(AssignmentExpression expr) throws LookupException {
+  public String toCodeAssignment(AssignmentExpression expr)  {
     return toCode((Element)expr.getVariableExpression()) + " = " + toCode(expr.getValue());
   }
   
@@ -1607,7 +1515,7 @@ public class JavaCodeWriter extends Syntax {
 	}
 	
 	
-	public String toCodeFilledArrayIndex(FilledArrayIndex ai) throws LookupException{
+	public String toCodeFilledArrayIndex(FilledArrayIndex ai) {
 		StringBuffer result = new StringBuffer();
 		result.append("[");
 		List expressions = ai.getIndices();
@@ -1623,7 +1531,7 @@ public class JavaCodeWriter extends Syntax {
 	}
 
 
-  public static void writeCode(Arguments arguments) throws IOException, LookupException {
+  public static void writeCode(Arguments arguments) throws IOException {
     JavaCodeWriter writer = new JavaCodeWriter(2);
     List<Type> types = arguments.getTypes();
     new SafePredicate<Type>() {

@@ -15,7 +15,7 @@ public class SyntaxAnalysisTool extends AnalysisTool {
 	}
 
 	@Override
-	protected void check(Project project, OutputStreamWriter writer) throws LookupException, InputException, IOException {
+	protected void check(Project project, OutputStreamWriter writer, AnalysisOptions options) throws LookupException, InputException, IOException {
 		new SyntaxAnalyzer(project).analyseSyntax(writer);
 	}
 

@@ -8,6 +8,7 @@ import java.util.Map;
 
 import be.kuleuven.cs.distrinet.jnome.tool.design.DesignAnalysisTool;
 import be.kuleuven.cs.distrinet.jnome.tool.syntax.SyntaxAnalysisTool;
+import be.kuleuven.cs.distrinet.jnome.tool.dependency.DependencyAnalysisTool;
 
 public class FrontEnd {
 
@@ -18,6 +19,7 @@ public class FrontEnd {
 	public FrontEnd() {
 		add(new DesignAnalysisTool());
 		add(new SyntaxAnalysisTool());
+		add(new DependencyAnalysisTool());
 	}
 	
 	private void add(Tool tool) {

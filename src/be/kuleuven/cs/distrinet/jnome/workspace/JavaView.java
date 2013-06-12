@@ -6,9 +6,9 @@ import java.util.Map;
 import be.kuleuven.cs.distrinet.chameleon.core.language.Language;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.RootNamespace;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.workspace.View;
+import be.kuleuven.cs.distrinet.chameleon.oo.view.ObjectOrientedView;
 
-public class JavaView extends View {
+public class JavaView extends ObjectOrientedView {
 
 	public JavaView(RootNamespace namespace, Language language) {
 		super(namespace, language);

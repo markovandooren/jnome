@@ -376,7 +376,13 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 	}
 
 	public boolean convertibleThroughWideningReferenceConversion(Type first, Type second) throws LookupException {
-		return referenceWideningConversionCandidates(first).contains(second);
+		Collection<Type> referenceWideningConversionCandidates = referenceWideningConversionCandidates(first);
+		for(Type type: referenceWideningConversionCandidates) {
+			if(type.sameAs(second) || type.subTypeOf(second)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public Collection<Type> referenceWideningConversionCandidates(Type type) throws LookupException {

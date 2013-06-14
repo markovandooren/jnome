@@ -1,14 +1,18 @@
 package be.kuleuven.cs.distrinet.jnome.core.enumeration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.property.ChameleonProperty;
+import be.kuleuven.cs.distrinet.chameleon.core.tag.TagImpl;
+import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
 import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
 import be.kuleuven.cs.distrinet.chameleon.oo.plugin.ObjectOrientedFactory;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.InheritanceRelation;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.SubtypeRelation;
 import be.kuleuven.cs.distrinet.chameleon.support.modifier.Final;
 import be.kuleuven.cs.distrinet.chameleon.support.modifier.Private;
 import be.kuleuven.cs.distrinet.chameleon.support.modifier.Public;
@@ -105,6 +109,16 @@ public class EnumType extends RegularJavaType {
 				break;
 			}
 		}
+		return result;
+	}
+	
+	@Override
+	public List<InheritanceRelation> implicitNonMemberInheritanceRelations() {
+		List<InheritanceRelation> result = new ArrayList<>();
+		InheritanceRelation relation = new SubtypeRelation(language(ObjectOrientedLanguage.class).createTypeReference("java.lang.Enum"));
+  	relation.setUniParent(this);
+  	relation.setMetadata(new TagImpl(), IMPLICIT_CHILD);
+  	result.add(relation);
 		return result;
 	}
 }

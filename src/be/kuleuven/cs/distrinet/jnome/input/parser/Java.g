@@ -166,6 +166,8 @@ import be.kuleuven.cs.distrinet.chameleon.oo.plugin.ObjectOrientedFactory;
 
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.*;
 
+import be.kuleuven.cs.distrinet.jnome.core.statement.*;
+
 import be.kuleuven.cs.distrinet.jnome.core.expression.*;
 import be.kuleuven.cs.distrinet.jnome.core.expression.operator.*;
 

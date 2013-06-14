@@ -1308,7 +1308,7 @@ switchBlockStatementGroups returns [List<SwitchCase> element]
    labels and statements. */
 switchCase returns [SwitchCase element]
 @after{assert(retval.element != null);}
-    :   label=switchLabel {retval.element = new SwitchCase(label.element);} blockStatement*
+    :   label=switchLabel {retval.element = new JavaSwitchCase(label.element);} blockStatement*
     ;
     
 switchLabel returns [SwitchLabel element]

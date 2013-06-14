@@ -11,47 +11,115 @@ import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.ListenableDirectedGraph;
 
 import be.kuleuven.cs.distrinet.chameleon.analysis.Analyzer;
+import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
+import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.DerivedType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.util.Util;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalParameterType;
+import be.kuleuven.cs.distrinet.chameleon.util.Pair;
 import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
+import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
+import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
+import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
+import be.kuleuven.cs.distrinet.rejuse.action.SafeAction;
 import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
+
+import com.google.common.base.Function;
 
 public class DependencyAnalyzer extends Analyzer {
 
-	private Predicate<Type> _filter;
+	private Predicate<Pair<Type,Set<Type>>> _originPredicate;
+	private Predicate<CrossReference> _crossReferencePredicate;
 
-	public DependencyAnalyzer(Project project, Predicate<Type> filter) {
+	public DependencyAnalyzer(Project project, Predicate<Pair<Type,Set<Type>>> filter, Predicate<CrossReference> crossReferencePredicate) {
 		super(project);
-		_filter = filter;
+		if(filter == null) {
+			throw new IllegalArgumentException("The declaration predicate cannot be null");
+		}
+		if(crossReferencePredicate == null) {
+			throw new IllegalArgumentException("The cross reference predicate cannot be null");
+		}
+		_originPredicate = filter;
+		_crossReferencePredicate = crossReferencePredicate;
+	}
+	
+//	public class RemoveSuperTypeDependencies extends SafeAction<Pair<Pair<Type,Set<Type>>,Pair<Type,Set<Type>>>> {
+//
+//		public RemoveSuperTypeDependencies(Class<Pair<Pair<Type, Set<Type>>, Pair<Type, Set<Type>>>> type) {
+//			super(Pair.class);
+//		}
+//
+//		@Override
+//		public void perform(Pair<Pair<Type, Set<Type>>, Pair<Type, Set<Type>>> pair) throws Nothing {
+//			try {
+//				if(pair.first().first().subTypeOf(pair.second().first())) {
+//					pair.first().second().removeAll(pair.second().second());
+//				}
+//			} catch (LookupException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		
+//	}
+	
+	public void filter(DependencyResult result) {
+		Map<Type,Set<Type>> deps = result.dependencies();
+		for(Map.Entry<Type, Set<Type>> first : deps.entrySet()) {
+			for(Map.Entry<Type, Set<Type>> second : deps.entrySet()) {
+				try {
+					Type t1 = first.getKey();
+					Type t2 = second.getKey();
+					if(t1 != t2 && t1.subTypeOf(t2)) {
+						first.getValue().removeAll(second.getValue());
+					}
+				} catch (LookupException e) {
+				}
+			}
+		}
 	}
 	
 	public void visualize(Writer writer) throws InputException {
-		DependencyResult result = analysisResult(new DependencyAnalysis());
+		
+		Function<Type,Type> function = createMapper();
+		
+		DependencyResult result = analysisResult(new DependencyAnalysis<Type>(Type.class, _originPredicate, _crossReferencePredicate, function));
+		filter(result);
 		Map<Type,Set<Type>> deps = result.dependencies();
 		ListenableDirectedGraph<Type, DefaultEdge> graph = new ListenableDirectedGraph<>(DefaultEdge.class);
 		for(Map.Entry<Type,Set<Type>> dependencies: deps.entrySet()) {
 			Type origin = dependencies.getKey();
-			try {
-				if(_filter.eval(origin)) {
-					Set<Type> value = dependencies.getValue();
-					//			if(! value.isEmpty()) {
-					graph.addVertex(origin);
-					//			}
-					for(Type dependency: value) {
-						boolean add = true;
-						add = _filter.eval(dependency); 
-						if(add) {
-							graph.addVertex(dependency);
-							graph.addEdge(origin, dependency);
-						}
-					}
-				}
-			} catch (Exception e) {
+			graph.addVertex(origin);
+			for(Type dependency: dependencies.getValue()) {
+				graph.addVertex(dependency);
+				graph.addEdge(origin, dependency);
 			}
 		}
 		DOTExporter<Type,DefaultEdge> exporter = createExporter();
 		exporter.export(writer, graph);
+	}
+
+	protected Function<Type, Type> createMapper() {
+		return new Function<Type,Type> (){
+
+			@Override
+			public Type apply(Type type) {
+				while(type instanceof ArrayType) {
+					type = ((ArrayType)type).elementType();
+				}
+				while(type instanceof DerivedType) {
+					type = type.baseType();
+				}
+				while(type instanceof FormalParameterType) {
+					type = type.nearestAncestor(Type.class);
+				}
+				AnonymousType anon = type.farthestAncestorOrSelf(AnonymousType.class);
+				if(anon != null) {
+					type = anon.nearestAncestor(Type.class);
+				}
+				return type;
+			}
+		};
 	}
 
 	protected DOTExporter<Type, DefaultEdge> createExporter() {

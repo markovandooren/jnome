@@ -2,7 +2,9 @@ package be.kuleuven.cs.distrinet.jnome.eclipse;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.jar.JarFile;
 
@@ -19,6 +21,7 @@ import be.kuleuven.cs.distrinet.jnome.input.BaseJavaProjectLoader;
 import be.kuleuven.cs.distrinet.jnome.input.LazyJavaFileInputSourceFactory;
 import be.kuleuven.cs.distrinet.jnome.workspace.JarLoader;
 import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
+import be.kuleuven.cs.distrinet.rejuse.string.Strings;
 
 public class JavaEclipseClasspathConfig extends ConfigElement {
 
@@ -77,6 +80,14 @@ public class JavaEclipseClasspathConfig extends ConfigElement {
 		public String path() {
 			return _path;
 		}
+		
+		public void setExclude(String excluded) {
+			_exludeGlobs = Strings.splitUnescapedPipe(excluded);
+			
+			//FIXME finish this.
+		}
+		
+		private List<String> _exludeGlobs = new ArrayList<>();
 		
 		@Override
 		protected void $after() throws ConfigException {

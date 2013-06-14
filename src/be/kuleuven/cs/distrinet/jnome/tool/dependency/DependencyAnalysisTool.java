@@ -7,16 +7,24 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
-import be.kuleuven.cs.distrinet.chameleon.core.document.Document;
+import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
+import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.InheritanceRelation;
 import be.kuleuven.cs.distrinet.chameleon.oo.view.ObjectOrientedView;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoader;
+import be.kuleuven.cs.distrinet.chameleon.util.Pair;
 import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
+import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
 import be.kuleuven.cs.distrinet.jnome.eclipse.AnalysisTool;
+import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.And;
+import be.kuleuven.cs.distrinet.rejuse.predicate.False;
+import be.kuleuven.cs.distrinet.rejuse.predicate.GlobPredicate;
+import be.kuleuven.cs.distrinet.rejuse.predicate.Or;
 import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.True;
@@ -32,56 +40,194 @@ public class DependencyAnalysisTool extends AnalysisTool {
 	}
 	
 	
-	
+	/**
+	 * Add a comment before writing the project info. Otherwise the DOT file is corrupt.
+	 */
 	@Override
 	protected void writeProjectInfo(File root, OutputStreamWriter writer) throws IOException {
-		
+		writer.write("//");
+		super.writeProjectInfo(root, writer);
 	}
 
 	@Override
 	protected void check(Project project, OutputStreamWriter writer, AnalysisOptions options) throws LookupException, InputException, IOException {
 		ObjectOrientedView view = (ObjectOrientedView) project.views().get(0);
-		Predicate<Type> filter = new True<>();
-		List<String> ignored = ignored((DependencyOptions) options);
+		Predicate<Pair<Type, Set<Type>>> filter = 
+				new And<> (hierarchyFilter(options, view), annotationFilter(options, view));
+		filter = new And<> (filter, annonymousTypeFilter(options,view));
+		filter = new And<> (filter, packageFilter(options,view));
+		Predicate<CrossReference> crossReferenceFilter =
+				new And<>(crossReferenceSourceFilter(),crossReferenceNonInheritanceFilter());
+		new DependencyAnalyzer(project,filter,crossReferenceFilter).visualize(writer);
+	}
+
+	protected Predicate<CrossReference> crossReferenceSourceFilter() {
+//		return new True<>();
+		return new SafePredicate<CrossReference>() {
+
+			@Override
+			public boolean eval(CrossReference object) {
+				Declaration d;
+				try {
+					d = object.getElement();
+					return d.view().isSource(d);
+				} catch (LookupException e) {
+					return true;
+				}
+			}
+		};
+	
+	}
+
+	protected Predicate<CrossReference> crossReferenceNonInheritanceFilter() {
+//	return new True<>();
+	return new SafePredicate<CrossReference>() {
+
+		@Override
+		public boolean eval(CrossReference object) {
+			return object.nearestAncestor(InheritanceRelation.class) == null;
+		}
+	};
+
+}
+
+	protected Predicate<Pair<Type, Set<Type>>> annonymousTypeFilter(AnalysisOptions options, ObjectOrientedView view) {
+		return new SafePredicate<Pair<Type, Set<Type>>>() {
+
+			@Override
+			public boolean eval(Pair<Type, Set<Type>> object)  {
+				return object.first().nearestAncestorOrSelf(AnonymousType.class) == null;
+			}
+
+		};
+	}
+	
+	protected Predicate<Pair<Type, Set<Type>>> annotationFilter(AnalysisOptions options, ObjectOrientedView view) {
+		List<String> ignoredAnnotation = ignoredAnnotationTypes((DependencyOptions) options);
+		Predicate<Pair<Type,Set<Type>>> filter = new True<>();
+		for(String fqn: ignoredAnnotation) {
+			try {
+				Type type = view.findType(fqn);
+				filter = new And<Pair<Type, Set<Type>>>(filter, new NoAnnotationOfType(type));
+			} catch (LookupException e) {
+			}
+		}
+		return filter;
+	}	
+	
+	protected Predicate<Pair<Type, Set<Type>>> packageFilter(final AnalysisOptions options, ObjectOrientedView view) {
+		return new AbstractPredicate<Pair<Type,Set<Type>>>() {
+
+			@Override
+			public boolean eval(Pair<Type, Set<Type>> object) throws Exception {
+				return packagePredicate(options).eval(object.first());
+			}
+		};
+	}
+	
+//	protected Predicate<CrossReference> packageFilter(final AnalysisOptions options) {
+//		return new AbstractPredicate<CrossReference>() {
+//
+//			@Override
+//			public boolean eval(CrossReference object) throws Exception {
+//				return packagePredicate(options).eval(object.getElement());
+//			}
+//		};
+//	}
+	
+	protected Predicate<Type> packagePredicate(AnalysisOptions options) {
+		List<String> packageNames = packageNames((DependencyOptions) options);
+		Predicate<Type> result;
+		if(packageNames.isEmpty()) {
+			result = new True<>();
+		} else {
+			result = new False<>();
+			for(final String string: packageNames) {
+				result = new Or<>(result,
+						new SafePredicate<Type>() {
+
+					@Override
+					public boolean eval(Type object) {
+						return new GlobPredicate(string,'.').eval(object.namespace().getFullyQualifiedName());
+					}
+
+				});
+			}
+		}
+		return result;
+	}
+	
+	protected Predicate<Pair<Type, Set<Type>>> hierarchyFilter(AnalysisOptions options, ObjectOrientedView view) {
+		Predicate<Pair<Type,Set<Type>>> filter = new True<>();
+		List<String> ignored = ignoredHierarchies((DependencyOptions) options);
 		for(String fqn: ignored) {
 			try {
-				Type testCase = view.findType(fqn);
-				filter = new And(filter,new NoSubtypeOf(testCase));
+				Type type = view.findType(fqn);
+				filter = new And<Pair<Type,Set<Type>>>(filter,new NoSubtypeOf(type));
 			} catch(LookupException exc) {
 			}
 		}
-		new DependencyAnalyzer(project,new And(new SourceType(),filter)).visualize(writer);
+		filter = new And<Pair<Type,Set<Type>>>(new SourceType(),filter);
+		return filter;
 	}
 	
-	protected static class SourceType extends SafePredicate<Type> {
+	protected static class SourceType extends SafePredicate<Pair<Type,Set<Type>>> {
 
 		@Override
-		public boolean eval(Type type) {
-			return type.view().isSource(type);
+		public boolean eval(Pair<Type,Set<Type>> pair) {
+			Type first = pair.first();
+			return first.view().isSource(first);
 		}
 		
 	}
+	
+	protected List<String> ignoredAnnotationTypes(DependencyOptions options) {
+		List<String> result = new ArrayList<String>();
+		if(options.isIgnoreAnnotations()) {
+			File file = options.getIgnoreAnnotations();
+			result = readLines(file);
+		}
+		return result;
 
-	protected List<String> ignored(DependencyOptions options) {
+	}
+
+	protected List<String> ignoredHierarchies(DependencyOptions options) {
 		List<String> result = new ArrayList<String>();
 		if(options.isIgnoreHierarchies()) {
 			File file = options.getIgnoreHierarchies();
-			BufferedReader reader;
+			result = readLines(file);
+		}
+		return result;
+	}
+
+	protected List<String> packageNames(DependencyOptions options) {
+		List<String> result = new ArrayList<String>();
+		if(options.isPackages()) {
+			File file = options.getPackages();
+			result = readLines(file);
+		}
+		return result;
+	}
+
+
+
+	protected List<String> readLines(File file) {
+		List<String> result = new ArrayList<String>();
+	BufferedReader reader;
+		try {
+			reader = new BufferedReader(new FileReader(file));
 			try {
-				reader = new BufferedReader(new FileReader(file));
-				try {
-					String line;
-					while((line = reader.readLine()) != null) {
-						result.add(line);
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				} finally {
-					reader.close();					
+				String line;
+				while((line = reader.readLine()) != null) {
+					result.add(line);
 				}
-			} catch (IOException e1) {
-				e1.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				reader.close();					
 			}
+		} catch (IOException e1) {
+			e1.printStackTrace();
 		}
 		return result;
 	}
@@ -97,6 +243,13 @@ public class DependencyAnalysisTool extends AnalysisTool {
 		File getIgnoreHierarchies();
 		boolean isIgnoreHierarchies();
 
+		@Option(description="A file that contains the fully qualified name of annotation types that cause a container to be ignored.") 
+		File getIgnoreAnnotations();
+		boolean isIgnoreAnnotations();
+
+		@Option(description="A file that contains the fully qualified names of the packages that must be processed.") 
+		File getPackages();
+		boolean isPackages();
 		
 	}
 }

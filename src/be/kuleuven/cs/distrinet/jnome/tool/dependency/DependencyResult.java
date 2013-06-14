@@ -1,26 +1,36 @@
 package be.kuleuven.cs.distrinet.jnome.tool.dependency;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import be.kuleuven.cs.distrinet.chameleon.analysis.Result;
+import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
+public class DependencyResult<D extends Declaration> extends Result<DependencyResult<D>> {
 
-public class DependencyResult extends Result<DependencyResult> {
-
-	public DependencyResult(Type type, Set<Type> dependencies) {
-		Set<Type> myDeps = ImmutableSet.<Type>copyOf(dependencies);
-		_dependencies = ImmutableMap.<Type, Set<Type>>builder().put(type, myDeps).build(); 
+	public DependencyResult(D type, Set<D> dependencies) {
+//		Set<D> myDeps = ImmutableSet.<D>copyOf(dependencies);
+//		_dependencies = ImmutableMap.<D, Set<D>>builder().put(type, myDeps).build();
+		Set<D> myDeps = new HashSet<D>(dependencies);
+		_dependencies = new HashMap<D,Set<D>>();
+		_dependencies.put(type, myDeps);
+	}
+	
+	public DependencyResult() {
+//		_dependencies = ImmutableMap.<D, Set<D>>builder().build(); 
+		_dependencies = new HashMap<D,Set<D>>();
 	}
 	
 	private DependencyResult(DependencyResult first, DependencyResult second) {
-		_dependencies = ImmutableMap.<Type, Set<Type>>builder()
-				                        .putAll(first._dependencies)
-				                        .putAll(second._dependencies).build();
+//		_dependencies = ImmutableMap.<D, Set<D>>builder()
+//				                        .putAll(first._dependencies)
+//				                        .putAll(second._dependencies).build();
+		_dependencies = new HashMap<D,Set<D>>();
+		_dependencies.putAll(first._dependencies);
+		_dependencies.putAll(second._dependencies);
 	}
 	
 	@Override
@@ -43,9 +53,9 @@ public class DependencyResult extends Result<DependencyResult> {
 		}
 	}
 	
-	public Map<Type,Set<Type>> dependencies() {
+	public Map<D,Set<D>> dependencies() {
 		return _dependencies;
 	}
 
-	private ImmutableMap<Type, Set<Type>> _dependencies;
+	private Map<D, Set<D>> _dependencies;
 }

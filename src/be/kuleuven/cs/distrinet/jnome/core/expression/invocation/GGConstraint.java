@@ -26,10 +26,10 @@ public class GGConstraint extends FirstPhaseConstraint {
 		super(A,F);
 	}
 
-	@Override
-	public List<SecondPhaseConstraint> processSpecifics() throws LookupException {
-		return null;
-	}
+//	@Override
+//	public List<SecondPhaseConstraint> processSpecifics() throws LookupException {
+//		return null;
+//	}
 	
 	public SubtypeConstraint FequalsTj(TypeParameter declarator, JavaTypeReference type) {
 		return new SubtypeConstraint(declarator, type);

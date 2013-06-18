@@ -27,20 +27,37 @@ public class SSConstraint extends FirstPhaseConstraint {
 	public SSConstraint(JavaTypeReference A, Type F) {
 		super(A,F);
 	}
-
+	
 	@Override
-	public List<SecondPhaseConstraint> processSpecifics() throws LookupException {
-		List<SecondPhaseConstraint> result = new ArrayList<SecondPhaseConstraint>();
+	public List<SecondPhaseConstraint> processFirstLevel() throws LookupException {
+		List<SecondPhaseConstraint> result;
 		if(A().is(language().PRIMITIVE_TYPE) == Ternary.TRUE) {
+			result = new ArrayList<SecondPhaseConstraint>();
 			// If A is a primitive type, then A is converted to a reference type U via
 			// boxing conversion and this algorithm is applied recursively to the constraint
 			// U << F
 			SSConstraint recursive = new SSConstraint(language().box(ARef(), view().namespace()), F());
 			recursive.setUniParent(parent());
 			result.addAll(recursive.process());
-		} 
+		} else {
+			result = super.processFirstLevel(); 
+		}
 		return result;
 	}
+
+//	@Override
+//	public List<SecondPhaseConstraint> processSpecifics() throws LookupException {
+//		List<SecondPhaseConstraint> result = new ArrayList<SecondPhaseConstraint>();
+//		if(A().is(language().PRIMITIVE_TYPE) == Ternary.TRUE) {
+//			// If A is a primitive type, then A is converted to a reference type U via
+//			// boxing conversion and this algorithm is applied recursively to the constraint
+//			// U << F
+//			SSConstraint recursive = new SSConstraint(language().box(ARef(), view().namespace()), F());
+//			recursive.setUniParent(parent());
+//			result.addAll(recursive.process());
+//		} 
+//		return result;
+//	}
 	
 	@Override
 	public FirstPhaseConstraint Array(JavaTypeReference componentType, Type componentTypeReference) {

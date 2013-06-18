@@ -24,6 +24,7 @@ import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.action.SafeAction;
 import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
+import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 
 import com.google.common.base.Function;
 
@@ -65,7 +66,28 @@ public class DependencyAnalyzer extends Analyzer {
 	
 	public void filter(DependencyResult result) {
 		Map<Type,Set<Type>> deps = result.dependencies();
-		for(Map.Entry<Type, Set<Type>> first : deps.entrySet()) {
+		for(final Map.Entry<Type, Set<Type>> first : deps.entrySet()) {
+			// if a type depends on S and T and S <: T then remove T to make the graph cleaner
+			// might give a deceptive view though.
+			new SafePredicate<Type>() {
+				@Override
+				public boolean eval(final Type o1) {
+					return new SafePredicate<Type>() {
+
+						@Override
+						public boolean eval(Type o2) {
+							try {
+								return o1 == o2 || (! o2.subTypeOf(o1));
+							} catch (LookupException e) {
+								return true;
+							} 
+						}
+					}.forAll(first.getValue());
+				}
+			}.filter(first.getValue());
+			
+			
+			
 			for(Map.Entry<Type, Set<Type>> second : deps.entrySet()) {
 				try {
 					Type t1 = first.getKey();

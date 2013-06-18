@@ -16,11 +16,17 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.InheritanceRelation;
 import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
+import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.infix.InfixOperatorInvocation;
+import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.postfix.PostfixOperatorInvocation;
+import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.prefix.PrefixOperatorInvocation;
 import be.kuleuven.cs.distrinet.chameleon.support.statement.FinallyClause;
 import be.kuleuven.cs.distrinet.chameleon.support.statement.ReturnStatement;
 import be.kuleuven.cs.distrinet.chameleon.support.statement.TryStatement;
 import be.kuleuven.cs.distrinet.jnome.core.enumeration.EnumType;
+import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaInfixOperatorInvocation;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaMethodInvocation;
+import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaPostfixOperatorInvocation;
+import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaPrefixOperatorInvocation;
 import be.kuleuven.cs.distrinet.jnome.core.method.JavaNormalMethod;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.JavaConstructor;
 import be.kuleuven.cs.distrinet.jnome.core.namespacedeclaration.JavaNamespaceDeclaration;
@@ -81,5 +87,20 @@ public class JavaFactory extends ObjectOrientedFactory implements OOFactory {
 	@Override
 	public InheritanceRelation createDefaultInheritanceRelation(Type type) {
 		return null;
+	}
+	
+	@Override
+	public InfixOperatorInvocation createInfixOperatorInvocation(String name, CrossReferenceTarget target) {
+		return new JavaInfixOperatorInvocation(name, target);
+	}
+	
+	@Override
+	public PrefixOperatorInvocation createPrefixOperatorInvocation(String name, CrossReferenceTarget target) {
+		return new JavaPrefixOperatorInvocation(name, target);
+	}
+	
+	@Override
+	public PostfixOperatorInvocation createPostfixOperatorInvocation(String name, CrossReferenceTarget target) {
+		return new JavaPostfixOperatorInvocation(name, target);
 	}
 }

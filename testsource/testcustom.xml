@@ -1,0 +1,6 @@
+<project name="testgenerics">
+  <language name="java"/>
+	<sourcepath>
+      <source root="test_cases" extension=".java"/>
+	</sourcepath>
+</project>

@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.google.common.collect.ImmutableSet.Builder;
 
+import be.kuleuven.cs.distrinet.chameleon.core.language.WrongLanguageException;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.MethodInvocation;
@@ -337,15 +338,20 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
   	}
   }
 
-	private void processUnresolved(JavaTypeReference S) throws LookupException {
+  private JavaTypeReference box(JavaTypeReference ref) throws WrongLanguageException, LookupException {
+  	return ref.language(Java.class).box(ref, ref.namespace());
+  }
+  
+	private void processUnresolved(JavaTypeReference Sref) throws LookupException {
 		JavaTypeReference RRef = (JavaTypeReference) invokedGenericMethod().returnTypeReference();
 		FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(invocation(), invokedGenericMethod());
 		View view = RRef.view();
+		JavaTypeReference SprimeRef = box(Sref);
 		Java java = view.language(Java.class);
 		if(! RRef.getElement().sameAs(java.voidType(RRef.view().namespace()))) {
 		  // the constraint S >> R', provided R is not void	
 			JavaTypeReference RprimeRef = substitutedReference(RRef);
-			constraints.add(new GGConstraint(S, RprimeRef.getType()));
+			constraints.add(new GGConstraint(SprimeRef, RprimeRef.getType()));
 		}
 		// additional constraints Bi[T1=B(T1) ... Tn=B(Tn)] >> Ti where Bi is the declared bound of Ti
 		for(TypeParameter param: typeParameters()) {

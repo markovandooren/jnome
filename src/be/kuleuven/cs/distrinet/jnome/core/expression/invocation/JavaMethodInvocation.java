@@ -11,6 +11,7 @@ import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReferenceTarget;
 import be.kuleuven.cs.distrinet.chameleon.core.validation.Valid;
 import be.kuleuven.cs.distrinet.chameleon.core.validation.Verification;
+import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
@@ -51,7 +52,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation {
 
   @Override
   protected DeclarationSelector<NormalMethod> createSelector() {
-  	return new JavaMethodSelector(this);
+  	return new JavaMethodSelector<NormalMethod>(this,NormalMethod.class);
   }
 
   public <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
@@ -102,7 +103,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation {
 	 * type arguments are inferred.
 	 * @throws LookupException 
 	 */
-	public static List<Type> formalParameterTypesInContext(NormalMethod method,TypeAssignmentSet actualTypeParameters) throws LookupException {
+	public static List<Type> formalParameterTypesInContext(Method method,TypeAssignmentSet actualTypeParameters) throws LookupException {
 		List<TypeParameter> parameters = method.typeParameters();
 		List<Type> result;
 		if(parameters.size() > 0) {

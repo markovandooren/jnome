@@ -200,7 +200,7 @@ public class RegularJavaType extends RegularType implements JavaType {
     	InheritanceRelation relation = new SubtypeRelation(language(ObjectOrientedLanguage.class).createTypeReference(defaultSuperClassFQN));
     	relation.setUniParent(this);
     	relation.setMetadata(new TagImpl(), IMPLICIT_CHILD);
-    	List<InheritanceRelation> result = new ArrayList<InheritanceRelation>();
+    	List<InheritanceRelation> result = new ArrayList<InheritanceRelation>(1);
     	result.add(relation);
     	return result;
     } else {

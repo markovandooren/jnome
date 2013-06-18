@@ -58,6 +58,7 @@ public class DependencyAnalysisTool extends AnalysisTool {
 		filter = new And<> (filter, packageFilter(options,view));
 		Predicate<CrossReference> crossReferenceFilter =
 				new And<>(crossReferenceSourceFilter(),crossReferenceNonInheritanceFilter());
+				crossReferenceFilter = new And<>(crossReferenceFilter,crossReferenceHierarchyFilter(options,view));
 		new DependencyAnalyzer(project,filter,crossReferenceFilter).visualize(writer);
 	}
 
@@ -80,7 +81,6 @@ public class DependencyAnalysisTool extends AnalysisTool {
 	}
 
 	protected Predicate<CrossReference> crossReferenceNonInheritanceFilter() {
-//	return new True<>();
 	return new SafePredicate<CrossReference>() {
 
 		@Override
@@ -157,26 +157,51 @@ public class DependencyAnalysisTool extends AnalysisTool {
 		return result;
 	}
 	
-	protected Predicate<Pair<Type, Set<Type>>> hierarchyFilter(AnalysisOptions options, ObjectOrientedView view) {
-		Predicate<Pair<Type,Set<Type>>> filter = new True<>();
+	protected Predicate<Pair<Type, Set<Type>>> hierarchyFilter(final AnalysisOptions options, final ObjectOrientedView view) {
+		return new AbstractPredicate<Pair<Type,Set<Type>>>() {
+
+			@Override
+			public boolean eval(Pair<Type, Set<Type>> object) throws Exception {
+				return hierarchyPredicate(options, view).eval(object.first());
+			}
+		};
+	}
+	protected Predicate<CrossReference> crossReferenceHierarchyFilter(final AnalysisOptions options, final ObjectOrientedView view) {
+		return new AbstractPredicate<CrossReference>() {
+
+			@Override
+			public boolean eval(CrossReference object) throws Exception {
+				Declaration element = object.getElement();
+				Type t = element.nearestAncestorOrSelf(Type.class);
+				if(t != null) {
+					return hierarchyPredicate(options, view).eval(t);
+				} else {
+					return true;
+				}
+			}
+		};
+	}
+
+	
+	protected Predicate<Type> hierarchyPredicate(AnalysisOptions options, ObjectOrientedView view) {
+		Predicate<Type> filter = new True<>();
 		List<String> ignored = ignoredHierarchies((DependencyOptions) options);
 		for(String fqn: ignored) {
 			try {
 				Type type = view.findType(fqn);
-				filter = new And<Pair<Type,Set<Type>>>(filter,new NoSubtypeOf(type));
+				filter = new And<>(filter,new NoSubtypeOf(type));
 			} catch(LookupException exc) {
 			}
 		}
-		filter = new And<Pair<Type,Set<Type>>>(new SourceType(),filter);
+		filter = new And<>(new SourceType(),filter);
 		return filter;
 	}
-	
-	protected static class SourceType extends SafePredicate<Pair<Type,Set<Type>>> {
+
+	protected static class SourceType extends SafePredicate<Type> {
 
 		@Override
-		public boolean eval(Pair<Type,Set<Type>> pair) {
-			Type first = pair.first();
-			return first.view().isSource(first);
+		public boolean eval(Type type) {
+			return type.view().isSource(type);
 		}
 		
 	}

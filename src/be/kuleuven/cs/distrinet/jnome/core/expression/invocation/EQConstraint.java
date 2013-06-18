@@ -23,10 +23,10 @@ public class EQConstraint extends FirstPhaseConstraint {
 		super(A,F);
 	}
 
-	@Override
-	public List<SecondPhaseConstraint> processSpecifics() throws LookupException {
-		return new ArrayList<SecondPhaseConstraint>();
-	}
+//	@Override
+//	public List<SecondPhaseConstraint> processSpecifics() throws LookupException {
+//		return new ArrayList<SecondPhaseConstraint>();
+//	}
 	
 	@Override
 	public EqualTypeConstraint FequalsTj(TypeParameter declarator, JavaTypeReference type) {

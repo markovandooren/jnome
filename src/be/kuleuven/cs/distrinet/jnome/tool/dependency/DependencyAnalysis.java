@@ -67,7 +67,8 @@ public class DependencyAnalysis<D extends Type> extends Analysis<D, DependencyRe
 						Declaration decl = cref.getElement();
 						D container = decl.nearestAncestorOrSelf(DependencyAnalysis.this.type());
 						if(container != null) {
-							deps.add(_declarationMapper.apply(container));
+							D apply = _declarationMapper.apply(container);
+							deps.add(apply);
 						}
 					}
 				} catch (Exception e) {

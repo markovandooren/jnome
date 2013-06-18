@@ -143,9 +143,9 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 					i++;
 				}
 		}
-		else {
-			result.addAll(processSpecifics());
-		}
+//		else {
+//			result.addAll(processSpecifics());
+//		}
 		return result;
 	}
 	
@@ -162,7 +162,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 	
 	public abstract FirstPhaseConstraint Array(JavaTypeReference componentType, Type componentTypeReference);
 	
-	public abstract List<SecondPhaseConstraint> processSpecifics() throws LookupException;
+//	public abstract List<SecondPhaseConstraint> processSpecifics() throws LookupException;
 	
 	public boolean involvesTypeParameter(JavaTypeReference tref) throws LookupException {
 		return ! involvedTypeParameters(tref).isEmpty();

@@ -166,6 +166,8 @@ import be.kuleuven.cs.distrinet.chameleon.oo.plugin.ObjectOrientedFactory;
 
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.*;
 
+import be.kuleuven.cs.distrinet.jnome.core.statement.*;
+
 import be.kuleuven.cs.distrinet.jnome.core.expression.*;
 import be.kuleuven.cs.distrinet.jnome.core.expression.operator.*;
 
@@ -196,6 +198,7 @@ import be.kuleuven.cs.distrinet.jnome.core.enumeration.EnumConstant;
 import be.kuleuven.cs.distrinet.jnome.core.variable.JavaVariableDeclaration;
 import be.kuleuven.cs.distrinet.jnome.core.variable.MultiFormalParameter;
 
+import be.kuleuven.cs.distrinet.jnome.core.expression.*;
 import be.kuleuven.cs.distrinet.jnome.input.JavaFactory;
 
 import java.util.List;

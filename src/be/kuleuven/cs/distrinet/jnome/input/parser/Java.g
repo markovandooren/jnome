@@ -198,6 +198,7 @@ import be.kuleuven.cs.distrinet.jnome.core.enumeration.EnumConstant;
 import be.kuleuven.cs.distrinet.jnome.core.variable.JavaVariableDeclaration;
 import be.kuleuven.cs.distrinet.jnome.core.variable.MultiFormalParameter;
 
+import be.kuleuven.cs.distrinet.jnome.core.expression.*;
 import be.kuleuven.cs.distrinet.jnome.input.JavaFactory;
 
 import java.util.List;

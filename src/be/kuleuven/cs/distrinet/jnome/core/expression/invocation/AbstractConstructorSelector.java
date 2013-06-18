@@ -6,12 +6,13 @@ import java.util.List;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Signature;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
+import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 
-public abstract class AbstractConstructorSelector extends AbstractJavaMethodSelector {
+public abstract class AbstractConstructorSelector extends AbstractJavaMethodSelector<NormalMethod> {
 
 	public AbstractConstructorSelector() {
-		super();
+		super(NormalMethod.class);
 	}
 
 	public List<Declaration> withoutNonConstructors(List<? extends Declaration> selectionCandidates) throws LookupException {

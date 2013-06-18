@@ -198,6 +198,18 @@ scope TargetScope {
   public MethodInvocation invocation(String name, CrossReferenceTarget target) {
     return factory().createInvocation(name, target);
   }
+  
+  public InfixOperatorInvocation createInfixOperatorInvocation(String name,CrossReferenceTarget target) {
+    return factory().createInfixOperatorInvocation(name,target);
+  }
+
+  public PrefixOperatorInvocation createPrefixOperatorInvocation(String name,CrossReferenceTarget target) {
+    return factory().createPrefixOperatorInvocation(name,target);
+  }
+
+  public PostfixOperatorInvocation createPostfixOperatorInvocation(String name,CrossReferenceTarget target) {
+    return factory().createPostfixOperatorInvocation(name,target);
+  }
 
   private JavaFactory _javaFactory = new JavaFactory();
   
@@ -1379,7 +1391,7 @@ expression returns [Expression element]
          if(txt.equals("=")) {
            retval.element = new AssignmentExpression(ex.element,exx.element);
          } else {
-           retval.element = new InfixOperatorInvocation($op.text,ex.element);
+           retval.element = createInfixOperatorInvocation($op.text,ex.element);
            ((InfixOperatorInvocation)retval.element).addArgument(exx.element);
          }
          //setName(retval.element,op.start,op.stop);
@@ -1446,7 +1458,7 @@ inclusiveOrExpression returns [Expression element]
 @after{check_null(retval.element);}
     :   ex=exclusiveOrExpression {retval.element = ex.element;} ( '|' exx=exclusiveOrExpression 
        {
-         retval.element = new InfixOperatorInvocation("|", retval.element);
+         retval.element = createInfixOperatorInvocation("|", retval.element);
          ((InfixOperatorInvocation)retval.element).addArgument(exx.element);
          setLocation(retval.element,retval.start,exx.stop);
         } )*
@@ -1456,7 +1468,7 @@ exclusiveOrExpression returns [Expression element]
 @after{check_null(retval.element);}
     :   ex=andExpression {retval.element = ex.element;} ( '^' exx=andExpression
     {
-         retval.element = new InfixOperatorInvocation("^", retval.element);
+         retval.element = createInfixOperatorInvocation("^", retval.element);
          ((InfixOperatorInvocation)retval.element).addArgument(exx.element);
          setLocation(retval.element,retval.start,exx.stop);
         } )*
@@ -1466,7 +1478,7 @@ andExpression returns [Expression element]
 @after{check_null(retval.element);}
     :   ex=equalityExpression {retval.element = ex.element;} ( '&' exx=equalityExpression
     {
-         retval.element = new InfixOperatorInvocation("&", retval.element);
+         retval.element = createInfixOperatorInvocation("&", retval.element);
          ((InfixOperatorInvocation)retval.element).addArgument(exx.element);
          setLocation(retval.element,retval.start,exx.stop);
         } )*
@@ -1486,7 +1498,7 @@ equalityExpression returns [Expression element]
          }
          */
         
-         retval.element = new InfixOperatorInvocation(op, retval.element);
+         retval.element = createInfixOperatorInvocation(op, retval.element);
          ((InfixOperatorInvocation)retval.element).addArgument(exx.element);
 
          setLocation(retval.element,retval.start,exx.stop);
@@ -1510,7 +1522,7 @@ relationalExpression returns [Expression element]
               //if(ex.element == null) {throw new Error("retval is null");}
               retval.element = ex.element;} ( op=relationalOp exx=shiftExpression 
         {
-         retval.element = new InfixOperatorInvocation($op.text, retval.element);
+         retval.element = createInfixOperatorInvocation($op.text, retval.element);
          ((InfixOperatorInvocation)retval.element).addArgument(exx.element);
          setLocation(retval.element,ex.start,exx.stop);
         }
@@ -1531,7 +1543,7 @@ relationalOp
 shiftExpression returns [Expression element]
     :   ex=additiveExpression {check_null(ex.element); retval.element = ex.element;} ( op=shiftOp exx=additiveExpression 
     {
-         retval.element = new InfixOperatorInvocation($op.text, retval.element);
+         retval.element = createInfixOperatorInvocation($op.text, retval.element);
          ((InfixOperatorInvocation)retval.element).addArgument(exx.element);
          setLocation(retval.element,ex.start,exx.stop);
         }
@@ -1557,7 +1569,7 @@ additiveExpression returns [Expression element]
 @init{String op = null;}
     :   ex=multiplicativeExpression {check_null(ex.element); retval.element = ex.element;} ( ('+' {op="+";} | '-' {op="-";}) exx=multiplicativeExpression 
     {
-         retval.element = new InfixOperatorInvocation(op, retval.element);
+         retval.element = createInfixOperatorInvocation(op, retval.element);
          ((InfixOperatorInvocation)retval.element).addArgument(exx.element);
          setLocation(retval.element,ex.start,exx.stop);
         })*
@@ -1567,23 +1579,23 @@ multiplicativeExpression returns [Expression element]
 @init{String op = null;}
     :   ex=unaryExpression {check_null(ex.element); retval.element = ex.element;} ( ( '*' {op="*";} | '/' {op="/";} | '%' {op="\%";}) exx=unaryExpression 
     {
-         retval.element = new InfixOperatorInvocation(op, retval.element);
+         retval.element = createInfixOperatorInvocation(op, retval.element);
          ((InfixOperatorInvocation)retval.element).addArgument(exx.element);
          setLocation(retval.element,ex.start,exx.stop);
         })*
     ;
     
 unaryExpression returns [Expression element]
-    :   '+' ex=unaryExpression {retval.element = new PrefixOperatorInvocation("+",ex.element);
+    :   '+' ex=unaryExpression {retval.element = createPrefixOperatorInvocation("+",ex.element);
 	setLocation(retval.element,retval.start,ex.stop);
     }
-    |   '-' exx=unaryExpression {retval.element = new PrefixOperatorInvocation("-",exx.element);
+    |   '-' exx=unaryExpression {retval.element = createPrefixOperatorInvocation("-",exx.element);
 	setLocation(retval.element,retval.start,exx.stop);
     }
-    |   '++' exxx=unaryExpression {retval.element = new PrefixOperatorInvocation("++",exxx.element);
+    |   '++' exxx=unaryExpression {retval.element = createPrefixOperatorInvocation("++",exxx.element);
 	setLocation(retval.element,retval.start,exxx.stop);
     }
-    |   '--' exxxx=unaryExpression {retval.element = new PrefixOperatorInvocation("--",exxxx.element);
+    |   '--' exxxx=unaryExpression {retval.element = createPrefixOperatorInvocation("--",exxxx.element);
 	setLocation(retval.element,retval.start,exxxx.stop);
     }
     |   eks=unaryExpressionNotPlusMinus {check_null(eks.element); retval.element = eks.element;} 
@@ -1596,12 +1608,12 @@ Token start=null;
 Token stop=null;
 }
     :   a='~' {start=a;} ex=unaryExpression 
-        {retval.element = new PrefixOperatorInvocation("~",ex.element); 
+        {retval.element = createPrefixOperatorInvocation("~",ex.element); 
          stop=ex.stop;
          setLocation(retval.element,start,stop);
         }
     |   b='!' {start=b;} exx=unaryExpression 
-        {retval.element = new PrefixOperatorInvocation("!",exx.element); 
+        {retval.element = createPrefixOperatorInvocation("!",exx.element); 
          stop=exx.stop;
          setLocation(retval.element,start,stop);
         }
@@ -1621,10 +1633,10 @@ Token stop=null;
             setLocation(retval.element,start,stop);}
         )*
         (
-           c='++' {retval.element = new PostfixOperatorInvocation("++", retval.element); 
+           c='++' {retval.element = createPostfixOperatorInvocation("++", retval.element); 
 		   stop=c;
 		   setLocation(retval.element,start,stop);}
-         | d='--' {retval.element = new PostfixOperatorInvocation("--", retval.element); 
+         | d='--' {retval.element = createPostfixOperatorInvocation("--", retval.element); 
           	   stop=d;
           	   setLocation(retval.element,start,stop);}
         )?

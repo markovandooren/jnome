@@ -534,13 +534,19 @@ public class Java extends ObjectOrientedLanguage {
 
 		private Set<String> _unboxables;
 
+		//SLOW move to JavaView? Or will that be reverted anyway with multiview project
+		//     which should allow the base library to be loaded only once?
 		public Type box(Type type) throws LookupException {
-			String fqn = type.getFullyQualifiedName();
-			String newFqn = _boxMap.get(fqn);
-			if(newFqn == null) {
-				throw new LookupException("Type "+fqn+" cannot be converted through boxing.");
+			if (type.isTrue(PRIMITIVE_TYPE)) {
+				String fqn = type.getFullyQualifiedName();
+				String newFqn = _boxMap.get(fqn);
+				if(newFqn == null) {
+					throw new LookupException("Type "+fqn+" cannot be converted through boxing.");
+				}
+				return findType(newFqn,type.view().namespace());
+			} else {
+				return type;
 			}
-			return findType(newFqn,type.view().namespace());
 		}
 
 		public Type unbox(Type type) throws LookupException {
@@ -554,11 +560,12 @@ public class Java extends ObjectOrientedLanguage {
 		}
 
 		public JavaTypeReference box(JavaTypeReference aRef, Namespace root) throws LookupException {
-			//SPEED this is horrible
+			//SLOW SPEED this is horrible
 			String fqn = aRef.getElement().getFullyQualifiedName();
 			String newFqn = _boxMap.get(fqn);
 			if(newFqn == null) {
-				throw new LookupException("Type "+fqn+" cannot be converted through boxing.");
+				//throw new LookupException("Type "+fqn+" cannot be converted through boxing.");
+				return aRef;
 			}
 			JavaTypeReference result = createTypeReference(newFqn);
 			result.setUniParent(root);

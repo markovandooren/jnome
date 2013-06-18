@@ -9,10 +9,11 @@ import be.kuleuven.cs.distrinet.chameleon.core.declaration.Signature;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
 import be.kuleuven.cs.distrinet.chameleon.oo.member.SimpleNameDeclarationWithParametersSignature;
+import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
 import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.SimpleNameMethodInvocation;
 import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
 
-public class JavaMethodSelector extends AbstractJavaMethodSelector {
+public class JavaMethodSelector<M extends Method> extends AbstractJavaMethodSelector<M> {
 
   	/**
 		 * 
@@ -22,13 +23,14 @@ public class JavaMethodSelector extends AbstractJavaMethodSelector {
 		/**
 		 * @param javaMethodInvocation
 		 */
-		JavaMethodSelector(SimpleNameMethodInvocation javaMethodInvocation) {
+		JavaMethodSelector(SimpleNameMethodInvocation javaMethodInvocation, Class<M> type) {
+			super(type);
 			_javaMethodInvocation = javaMethodInvocation;
 		}
 
 
 
-		protected NormalMethod selection(Declaration declarator) throws LookupException {
+		protected M selection(Declaration declarator) throws LookupException {
   		throw new ChameleonProgrammerException();
   	}
   	

@@ -3,19 +3,19 @@ package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 import java.util.ArrayList;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
-import be.kuleuven.cs.distrinet.jnome.core.variable.MultiFormalParameter;
-import be.kuleuven.cs.distrinet.rejuse.predicate.TypePredicate;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.relation.WeakPartialOrder;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.MethodInvocation;
+import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalTypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
+import be.kuleuven.cs.distrinet.jnome.core.variable.MultiFormalParameter;
 
-public class JavaMostSpecificMethodOrder extends WeakPartialOrder<NormalMethod> {
+public class JavaMostSpecificMethodOrder<M extends Method> extends WeakPartialOrder<M> {
 	
 	MethodInvocation _invocation;
 	
@@ -24,7 +24,7 @@ public class JavaMostSpecificMethodOrder extends WeakPartialOrder<NormalMethod> 
 	}
 
 	@Override
-	public boolean contains(NormalMethod first, NormalMethod second) throws LookupException {
+	public boolean contains(M first, M second) throws LookupException {
 		boolean result = false;
 		if(! first.sameAs(second)) {
 			if(!(first.lastFormalParameter() instanceof MultiFormalParameter) && ! (second.lastFormalParameter() instanceof MultiFormalParameter)) {
@@ -36,7 +36,7 @@ public class JavaMostSpecificMethodOrder extends WeakPartialOrder<NormalMethod> 
 		return result;
 	}
 
-	public boolean containsVariableArity(NormalMethod first, NormalMethod second) throws LookupException {
+	public boolean containsVariableArity(M first, M second) throws LookupException {
 		boolean result = true;
 		Java language = (Java) first.language(Java.class);
 		List<Type> firstTypes = first.header().formalParameterTypes();
@@ -88,7 +88,7 @@ public class JavaMostSpecificMethodOrder extends WeakPartialOrder<NormalMethod> 
 		return result;
 	}
 	
-	public boolean containsFixedArity(NormalMethod first, NormalMethod second) throws LookupException {
+	public boolean containsFixedArity(Method first, Method second) throws LookupException {
 		boolean result = true;
 		Java language = (Java) first.language(Java.class);
 		List<Type> Ts = first.header().formalParameterTypes();

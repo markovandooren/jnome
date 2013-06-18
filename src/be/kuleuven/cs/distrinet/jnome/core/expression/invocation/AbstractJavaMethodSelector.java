@@ -16,6 +16,7 @@ import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
 import be.kuleuven.cs.distrinet.chameleon.core.relation.WeakPartialOrder;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.MethodInvocation;
+import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.MethodHeader;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
@@ -25,7 +26,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.BasicTypeArgument;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalTypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.InstantiatedTypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
+import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.chameleon.workspace.View;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
@@ -35,11 +36,18 @@ import be.kuleuven.cs.distrinet.jnome.core.variable.MultiFormalParameter;
 import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 
-public abstract class AbstractJavaMethodSelector extends DeclarationSelector<NormalMethod> {
+public abstract class AbstractJavaMethodSelector<M extends Method> extends DeclarationSelector<M> {
 
-	public AbstractJavaMethodSelector() {
+	public AbstractJavaMethodSelector(Class<M> type) {
 		super();
+		if(type == null) {
+			throw new IllegalArgumentException("The type of methods selected cannot be null.");
+		}
+		_type = type;
+		
 	}
+	
+	private Class<M> _type;
 	
 	@Override
 	public boolean isGreedy() {
@@ -55,18 +63,18 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 	
 	public abstract boolean correctSignature(Signature signature) throws LookupException;
 
-	public List<NormalMethod> selection(List<? extends Declaration> selectionCandidates) throws LookupException {
+	public List<M> selection(List<? extends Declaration> selectionCandidates) throws LookupException {
 		return selection(selectionCandidates,null);
 	}
 	
-	public List<NormalMethod> selection(List<? extends Declaration> selectionCandidates, Map<Declaration,Declaration> cache) throws LookupException {
-		List<NormalMethod> tmp = new ArrayList<NormalMethod>();
+	public List<M> selection(List<? extends Declaration> selectionCandidates, Map<Declaration,Declaration> cache) throws LookupException {
+		List<M> tmp = new ArrayList<M>();
 		if(! selectionCandidates.isEmpty()) {
-			List<NormalMethod> candidates = new ArrayList<NormalMethod>();
+			List<M> candidates = new ArrayList<M>();
 			int nbActuals = invocation().nbActualParameters();
 			for(Declaration decl: selectionCandidates) {
-				if(decl instanceof NormalMethod) {
-					NormalMethod method = (NormalMethod) decl;
+				if(_type.isInstance(decl)) {
+					M method = (M) decl;
 					int nbFormals = method.nbFormalParameters();
 					// If caching is enable, selected based on the name will already have been
 					// done by the container, so we check for names after the arguments.
@@ -87,7 +95,7 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 			/**
 			 * JLS 15.12.2.2 Phase 1: Identify Matching Arity Methods Applicable by Subtyping
 			 */
-			for(NormalMethod decl: candidates) {
+			for(M decl: candidates) {
 				if(matchingApplicableBySubtyping(decl)) {
 					tmp.add(decl);
 				}
@@ -96,14 +104,14 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 			//                does the search consider other candidates.
 			// conversion
 			if(tmp.isEmpty()) {
-				for(NormalMethod decl: candidates) {
+				for(M decl: candidates) {
 					if(matchingApplicableByConversion(decl)) {
 						tmp.add(decl);
 					}
 				}
 				// variable arity
 				if(tmp.isEmpty()) {
-					for(NormalMethod decl: candidates) {
+					for(M decl: candidates) {
 						if(variableApplicableBySubtyping(decl)) {
 							tmp.add(decl);
 						}
@@ -123,12 +131,12 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 	 * @return
 	 * @throws LookupException
 	 */
-	public NormalMethod instance(NormalMethod method) throws LookupException {
+	public M instance(M method) throws LookupException {
 		TypeAssignmentSet actualTypeParameters = actualTypeParameters(method, false);
 		return instantiatedMethodTemplate(method, actualTypeParameters);
 	}
 
-	private TypeAssignmentSet actualTypeParameters(NormalMethod originalMethod, boolean includeNonreference) throws LookupException {
+	private TypeAssignmentSet actualTypeParameters(M originalMethod, boolean includeNonreference) throws LookupException {
 		MethodHeader methodHeader = (MethodHeader) originalMethod.header().clone();
 		methodHeader.setOrigin(originalMethod.header());
 		methodHeader.setUniParent(originalMethod.parent());
@@ -174,7 +182,7 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 	/**
 	 * JLS 15.12.2.2 Phase 1: Identify Matching Arity Methods Applicable by Subtyping
 	 */
-	private boolean matchingApplicableBySubtyping(NormalMethod method) throws LookupException {
+	private boolean matchingApplicableBySubtyping(M method) throws LookupException {
 				TypeAssignmentSet actualTypeParameters = actualTypeParameters(method, false);
 				List<Type> formalParameterTypesInContext = JavaMethodInvocation.formalParameterTypesInContext(method,actualTypeParameters);
 				boolean match = true;
@@ -199,11 +207,11 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 				return match;
 			}
 
-	private NormalMethod instantiatedMethodTemplate(NormalMethod method, TypeAssignmentSet actualTypeParameters) throws LookupException {
-		NormalMethod result=method;
+	private M instantiatedMethodTemplate(M method, TypeAssignmentSet actualTypeParameters) throws LookupException {
+		M result=method;
 		int nbTypeParameters = actualTypeParameters.nbAssignments();
 		if(nbTypeParameters > 0) {
-			result = (NormalMethod) method.clone();
+			result = (M) method.clone();
 			result.setOrigin(method);
 			result.setUniParent(method.parent());
 			for(int i=1; i <= nbTypeParameters;i++) {
@@ -244,7 +252,7 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 		return result;
 	}
 
-	private boolean matchingApplicableByConversion(NormalMethod method) throws LookupException {
+	private boolean matchingApplicableByConversion(M method) throws LookupException {
 				TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true);
 				List<Type> formalParameterTypesInContext = JavaMethodInvocation.formalParameterTypesInContext(method,actualTypeParameters);
 				boolean match = true;
@@ -257,6 +265,7 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 				}
 				if(match) {
 					match = actualTypeParameters.valid();
+					Util.debug(!match);
 				} 
 	//			  &&  {
 	//				result = method;
@@ -391,7 +400,7 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 		return allSuperTypes;
 	}
 
-	public boolean variableApplicableBySubtyping(NormalMethod method) throws LookupException {
+	public boolean variableApplicableBySubtyping(M method) throws LookupException {
 				boolean match = method.lastFormalParameter() instanceof MultiFormalParameter;
 				if(match) {
 					TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true);
@@ -425,13 +434,13 @@ public abstract class AbstractJavaMethodSelector extends DeclarationSelector<Nor
 			}
 
 	@Override
-	public WeakPartialOrder<NormalMethod> order() {
-		return new JavaMostSpecificMethodOrder(invocation());
+	public WeakPartialOrder<M> order() {
+		return new JavaMostSpecificMethodOrder<M>(invocation());
 	}
 
 	@Override
-	public Class<NormalMethod> selectedClass() {
-		return NormalMethod.class;
+	public Class<M> selectedClass() {
+		return _type;
 	}
 
 }

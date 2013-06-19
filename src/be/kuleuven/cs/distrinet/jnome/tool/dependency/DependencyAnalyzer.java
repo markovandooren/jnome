@@ -45,25 +45,6 @@ public class DependencyAnalyzer extends Analyzer {
 		_crossReferencePredicate = crossReferencePredicate;
 	}
 	
-//	public class RemoveSuperTypeDependencies extends SafeAction<Pair<Pair<Type,Set<Type>>,Pair<Type,Set<Type>>>> {
-//
-//		public RemoveSuperTypeDependencies(Class<Pair<Pair<Type, Set<Type>>, Pair<Type, Set<Type>>>> type) {
-//			super(Pair.class);
-//		}
-//
-//		@Override
-//		public void perform(Pair<Pair<Type, Set<Type>>, Pair<Type, Set<Type>>> pair) throws Nothing {
-//			try {
-//				if(pair.first().first().subTypeOf(pair.second().first())) {
-//					pair.first().second().removeAll(pair.second().second());
-//				}
-//			} catch (LookupException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		
-//	}
-	
 	public void filter(DependencyResult result) {
 		Map<Type,Set<Type>> deps = result.dependencies();
 		for(final Map.Entry<Type, Set<Type>> first : deps.entrySet()) {
@@ -79,6 +60,9 @@ public class DependencyAnalyzer extends Analyzer {
 							try {
 								return o1 == o2 || (! o2.subTypeOf(o1));
 							} catch (LookupException e) {
+								// don't filter if a lookup exception is thrown because we don't know
+								// if it is safe to filter.
+								e.printStackTrace();
 								return true;
 							} 
 						}
@@ -96,6 +80,9 @@ public class DependencyAnalyzer extends Analyzer {
 						first.getValue().removeAll(second.getValue());
 					}
 				} catch (LookupException e) {
+					// don't filter if a lookup exception is thrown because we don't know
+					// if it is safe to filter.
+					e.printStackTrace();
 				}
 			}
 		}

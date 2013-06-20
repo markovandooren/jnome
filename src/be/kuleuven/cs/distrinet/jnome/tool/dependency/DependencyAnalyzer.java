@@ -1,9 +1,11 @@
 package be.kuleuven.cs.distrinet.jnome.tool.dependency;
 
 import java.io.Writer;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.jgrapht.ext.ComponentAttributeProvider;
 import org.jgrapht.ext.DOTExporter;
 import org.jgrapht.ext.EdgeNameProvider;
 import org.jgrapht.ext.VertexNameProvider;
@@ -21,8 +23,6 @@ import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
 import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
-import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
-import be.kuleuven.cs.distrinet.rejuse.action.SafeAction;
 import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 
@@ -142,7 +142,8 @@ public class DependencyAnalyzer extends Analyzer {
 
 			@Override
 			public String getVertexName(Type arg0) {
-				return arg0.getFullyQualifiedName().replace('.', '_');
+//				return arg0.getFullyQualifiedName().replace('.', '_');
+				return arg0.name().replace('.', '_');
 			}
 		}, new EdgeNameProvider<DefaultEdge>() {
 
@@ -150,6 +151,24 @@ public class DependencyAnalyzer extends Analyzer {
 			public String getEdgeName(DefaultEdge arg0) {
 				return "";
 			}
-		});
+		}, new ComponentAttributeProvider<Type>() {
+
+			@Override
+			public Map<String, String> getComponentAttributes(Type arg0) {
+				Map<String,String> result = new HashMap<>();
+				result.put("shape", "box");
+				return result;
+			}
+		}, new ComponentAttributeProvider<DefaultEdge>() {
+
+			@Override
+			public Map<String, String> getComponentAttributes(DefaultEdge arg0) {
+				Map<String,String> result = new HashMap<>();
+				return result;
+			}
+		}
+		
+				
+				);
 	}
 }

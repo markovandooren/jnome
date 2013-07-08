@@ -7,6 +7,7 @@ import be.kuleuven.cs.distrinet.chameleon.analysis.Analysis;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
+import be.kuleuven.cs.distrinet.chameleon.plugin.output.Syntax;
 import be.kuleuven.cs.distrinet.chameleon.util.Pair;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.action.SafeAction;
@@ -53,6 +54,7 @@ public class DependencyAnalysis<D extends Type> extends Analysis<D, DependencyRe
 					return new DependencyResult();
 				}
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new DependencyResult();
 		}
 	}

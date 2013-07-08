@@ -72,9 +72,8 @@ public class DependencyAnalysisTool extends AnalysisTool {
 				try {
 					d = object.getElement();
 					return d.view().isSource(d);
-				} catch (LookupException e) {
-					return true;
-				} catch(Throwable e) {
+				} catch(Exception e) {
+					e.printStackTrace();
 					return true;
 				}
 			}

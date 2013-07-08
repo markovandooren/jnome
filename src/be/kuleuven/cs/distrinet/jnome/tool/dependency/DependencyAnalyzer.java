@@ -89,9 +89,7 @@ public class DependencyAnalyzer extends Analyzer {
 	}
 	
 	public void visualize(Writer writer) throws InputException {
-		
 		Function<Type,Type> function = createMapper();
-		
 		DependencyResult result = analysisResult(new DependencyAnalysis<Type>(Type.class, _originPredicate, _crossReferencePredicate, function));
 		filter(result);
 		Map<Type,Set<Type>> deps = result.dependencies();

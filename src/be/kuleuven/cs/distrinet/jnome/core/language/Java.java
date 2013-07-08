@@ -640,9 +640,9 @@ public class Java extends ObjectOrientedLanguage {
 			return new JavaDerivedType(baseType,typeArguments);
 		}
 		
-		public NormalMethod createNormalMethod(MethodHeader header) {
-			return new JavaNormalMethod(header);
-		}
+//		public NormalMethod createNormalMethod(MethodHeader header) {
+//			return new JavaNormalMethod(header);
+//		}
 
 		public TypeReference glb(List<? extends JavaTypeReference> typeReferenceList) {
 			return new JavaIntersectionTypeReference(typeReferenceList);

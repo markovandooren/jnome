@@ -581,7 +581,11 @@ public class Java extends ObjectOrientedLanguage {
 				return new BasicJavaTypeReference(fqn);
 //			}
 		}
-
+		
+//		public CrossReference createTypeReferenceTarget(String fqn) {
+//			
+//		}
+		
 		@Override
 		public BasicJavaTypeReference createTypeReference(Type type) {
 			BasicJavaTypeReference result = createTypeReference(type.getFullyQualifiedName());

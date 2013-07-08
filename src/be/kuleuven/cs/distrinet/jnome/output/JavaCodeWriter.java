@@ -17,7 +17,7 @@ import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.DemandImport
 import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.Import;
 import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.NamespaceDeclaration;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReferenceTarget;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.SpecificReference;
+import be.kuleuven.cs.distrinet.chameleon.core.reference.SimpleReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.Literal;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.MethodInvocation;
@@ -108,7 +108,6 @@ import be.kuleuven.cs.distrinet.chameleon.support.tool.Arguments;
 import be.kuleuven.cs.distrinet.chameleon.support.type.EmptyTypeElement;
 import be.kuleuven.cs.distrinet.chameleon.support.type.StaticInitializer;
 import be.kuleuven.cs.distrinet.chameleon.support.variable.LocalVariableDeclarator;
-import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayAccessExpression;
 import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayCreationExpression;
 import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayInitializer;
@@ -252,8 +251,8 @@ public class JavaCodeWriter extends Syntax {
       result = toCodeArrayTypeReference((ArrayTypeReference)element);
     } 
       // Specific reference MUST come after the other references.
-      else if(isSpecificReference(element)) {
-      result = toCodeSpecificReference((SpecificReference)element);
+      else if(isSimpleReference(element)) {
+      result = toCodeSpecificReference((SimpleReference)element);
     } else if(isNamespacePart(element)) {
     	result = toCodeNamespacePart((NamespaceDeclaration) element);
     } 
@@ -364,11 +363,11 @@ public class JavaCodeWriter extends Syntax {
 //    return result;
 //  }
 
-  public boolean isSpecificReference(Element element) {
-    return element instanceof SpecificReference;
+  public boolean isSimpleReference(Element element) {
+    return element instanceof SimpleReference;
   }
   
-  public String toCodeSpecificReference(SpecificReference typeReference)  {
+  public String toCodeSpecificReference(SimpleReference typeReference)  {
     String result = toCode(typeReference.getTarget());
     if(result.length() > 0) {
       result = result + ".";

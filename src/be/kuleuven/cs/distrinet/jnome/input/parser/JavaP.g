@@ -920,6 +920,19 @@ type returns [JavaTypeReference element]
 	     }
 	   }
 	;
+	
+	
+possibleUnionType returns [JavaTypeReference element]
+ : t = type {retval.element = $t.element;}
+   ('|' tt=type 
+     {if(! (retval.element instanceof UnionTypeReference)) {
+       retval.element = new JavaUnionTypeReference();
+       ((UnionTypeReference)retval.element).add($t.element);
+      } 
+      ((UnionTypeReference)retval.element).add($tt.element);
+     }
+   )* 
+ ;
 
 classOrInterfaceType returns [JavaTypeReference element]
 @init{NamedTarget target = null;
@@ -1095,11 +1108,23 @@ literal returns [Literal element]
     |   'null' {retval.element = new NullLiteral();}
     ;
 
+//integerLiteral returns [Literal element]
+//    :   hexl=HexIntegerLiteral {retval.element=new RegularLiteral(typeRef("int"),$hexl.text);}
+//    |   octl=OctalIntegerLiteral {retval.element=new RegularLiteral(typeRef("int"),$octl.text);}
+//    |   decl=DecimalIntegerLiteral {retval.element=new RegularLiteral(typeRef("int"),$decl.text);}
+//    ;
+
 integerLiteral returns [Literal element]
-    :   hexl=HexLiteral {retval.element=new RegularLiteral(typeRef("int"),$hexl.text);}
-    |   octl=OctalLiteral {retval.element=new RegularLiteral(typeRef("int"),$octl.text);}
-    |   decl=DecimalLiteral {retval.element=new RegularLiteral(typeRef("int"),$decl.text);}
-    ;
+    :   hexl=IntegerLiteral {
+        char last = $hexl.text.charAt($hexl.text.length()-1);
+        String type = "int";
+        if(last == 'l' || last == 'L') {
+           type = "long";
+        }
+       retval.element=new RegularLiteral(typeRef(type),$hexl.text);
+      }
+   ;
+
 
 booleanLiteral returns [Literal element]
     :   'true' {retval.element = new RegularLiteral(typeRef("boolean"),"true");}
@@ -1248,9 +1273,12 @@ setLocation(retval.element, (CommonToken)retval.start, (CommonToken)retval.stop)
         {retval.element= new DoStatement(doex.element, dostat.element);
         setKeyword(retval.element,dokey);
         setKeyword(retval.element,whilekey);}
-    |   trykey='try' traaibl=block 
-        {retval.element = new TryStatement(traaibl.element);
-        setKeyword(retval.element,trykey);}
+    |   trykey='try' ress=resources? traaibl=block 
+        {
+         retval.element = new JavaTryStatement(traaibl.element);
+         ((JavaTryStatement)retval.element).setResourceBlock($ress.element);
+         setKeyword(retval.element,trykey);
+         }
         ( cts=catches finkey='finally' trybl=block 
            {((TryStatement)retval.element).addAllCatchClauses(cts.element); 
             ((TryStatement)retval.element).setFinallyClause(new FinallyClause(trybl.element));
@@ -1289,6 +1317,14 @@ setLocation(retval.element, (CommonToken)retval.start, (CommonToken)retval.stop)
     |   name=identifierRule ':' labstat=statement {retval.element = new LabeledStatement($name.text,labstat.element);}
     ;
     
+resources returns [ResourceBlock element]
+    : '(' {retval.element = new ResourceBlock();}
+           d = localVariableDeclaration {retval.element.addResource($d.element);}
+          (';' decl = localVariableDeclaration {retval.element.addResource($decl.element);})*
+          (';')? 
+      ')'
+    ;    
+    
 catches returns [List<CatchClause> element]
 @after{assert(retval.element != null);}
     :   {retval.element = new ArrayList<CatchClause>();} (ct=catchClause {retval.element.add(ct.element);})+
@@ -1296,10 +1332,22 @@ catches returns [List<CatchClause> element]
     
 catchClause returns [CatchClause element]
 @after{assert(retval.element != null);}
-    :   catchkey='catch' '(' par=formalParameter ')' bl=block 
+    :   catchkey='catch' '(' par=catchParameter ')' bl=block 
         {retval.element = new CatchClause(par.element, bl.element);
         setKeyword(retval.element,catchkey);}
     ;
+
+//Copy & pasted from formalParameter to add support for union type references
+// in catch clauses without allowing them everywhere.
+catchParameter returns [FormalParameter element]
+@after{assert(retval.element != null);}
+    :   mods=variableModifiers tref=possibleUnionType name=variableDeclaratorId 
+        {retval.element = new FormalParameter(new SimpleNameSignature(name.element.name()), myToArray(tref.element, name.element));
+         setLocation(retval.element, mods.start, name.stop);
+        }
+    ;
+        
+
 
 formalParameter returns [FormalParameter element]
 @after{assert(retval.element != null);}
@@ -1696,6 +1744,9 @@ scope TargetScope;
 Token start=null;
 Token stop=null;
 }
+@after{
+  check_null(retval.element);
+}
     :   parex=parExpression {retval.element = parex.element;}
     |   rubex=identifierSuffixRubbush {retval.element = rubex.element;}
     |    skw='super' { 
@@ -1808,12 +1859,23 @@ scope TargetScope;
 argumentsSuffixRubbish returns [MethodInvocation element]
 // the last part of target is the method name
 	:	args=arguments 
-	        {String name = ((NamedTarget)$TargetScope::target).name();
-	         $TargetScope::target = ((NamedTarget)$TargetScope::target).getTarget(); //chop off head
-	         retval.element = invocation(name, $TargetScope::target);
-	         retval.element.addAllArguments(args.element);
+	        {
+	         Object tar = $TargetScope::target;
+	         ((Element)tar).removeAllMetadata();
+	         if(tar instanceof NamedTarget) {
+	           String name = ((NamedTarget)tar).name();
+	           $TargetScope::target = ((NamedTarget)tar).getTarget(); //chop off head
+	           retval.element = invocation(name, $TargetScope::target);
+	           retval.element.addAllArguments(args.element);
+	         } else if (tar instanceof ThisLiteral) {
+	           $TargetScope::target = ((ThisLiteral)tar).getTypeReference(); //chop off head
+	           retval.element = new ThisConstructorDelegation();
+	           ((ThisConstructorDelegation)retval.element).setTarget($TargetScope::target);
+             retval.element.addAllArguments(args.element);
+           }
 	         setLocation(retval.element, $TargetScope::start, args.stop);
 	        }
+	         
 	;
 
 // NEEDS_TARGET
@@ -1899,6 +1961,9 @@ superSuffix returns [TargetedExpression element]
 @init{
    Token start=null;
    Token stop=null;
+}
+@after{
+  check_null(retval.element);
 }
     :   //arguments
         //|   

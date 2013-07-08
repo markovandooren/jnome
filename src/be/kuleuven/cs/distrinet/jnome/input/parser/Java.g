@@ -21,6 +21,8 @@ import be.kuleuven.cs.distrinet.chameleon.oo.member.SimpleNameDeclarationWithPar
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.TargetDeclaration;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.DeclarationContainer;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.*;
+import be.kuleuven.cs.distrinet.jnome.core.type.*;
 
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 

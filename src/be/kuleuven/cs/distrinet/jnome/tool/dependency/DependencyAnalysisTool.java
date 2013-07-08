@@ -74,6 +74,8 @@ public class DependencyAnalysisTool extends AnalysisTool {
 					return d.view().isSource(d);
 				} catch (LookupException e) {
 					return true;
+				} catch(Throwable e) {
+					return true;
 				}
 			}
 		};

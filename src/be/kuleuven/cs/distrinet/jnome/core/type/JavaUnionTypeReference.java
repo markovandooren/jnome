@@ -7,11 +7,11 @@ import java.util.List;
 import be.kuleuven.cs.distrinet.chameleon.core.validation.Valid;
 import be.kuleuven.cs.distrinet.chameleon.core.validation.Verification;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.IntersectionTypeReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.UnionTypeReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgument;
 
-public class JavaUnionTypeReference extends IntersectionTypeReference implements JavaTypeReference {
+public class JavaUnionTypeReference extends UnionTypeReference implements JavaTypeReference {
 	
 	public JavaUnionTypeReference() {
 		

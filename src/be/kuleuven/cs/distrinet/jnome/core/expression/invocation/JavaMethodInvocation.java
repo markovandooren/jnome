@@ -104,9 +104,8 @@ public class JavaMethodInvocation extends RegularMethodInvocation {
 	 * @throws LookupException 
 	 */
 	public static List<Type> formalParameterTypesInContext(Method method,TypeAssignmentSet actualTypeParameters) throws LookupException {
-		List<TypeParameter> parameters = method.typeParameters();
 		List<Type> result;
-		if(parameters.size() > 0) {
+		if(method.nbTypeParameters() > 0) {
 			Java language = method.language(Java.class);
 			// Substitute
 			List<FormalParameter> formalParameters = method.formalParameters();

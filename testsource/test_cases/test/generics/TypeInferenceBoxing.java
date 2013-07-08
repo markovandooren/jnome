@@ -1,3 +1,4 @@
+package test.generics;
 
 public class TypeInferenceBoxing {
 

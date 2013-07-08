@@ -58,9 +58,6 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
   }
   
   public void addArgument(ActualTypeArgument arg) {
-  	if(signature().name().equals("void")) {
-  		System.out.println("debug");
-  	}
   	add(_genericParameters,arg);
   }
   

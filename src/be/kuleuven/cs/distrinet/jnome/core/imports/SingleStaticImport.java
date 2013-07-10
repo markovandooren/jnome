@@ -68,9 +68,14 @@ public class SingleStaticImport extends Import {
 	public DeclarationSelector<Member> selector() {
 		return new TwoPhaseDeclarationSelector<Member>() {
 
+//			@Override
+//			public WeakPartialOrder<Member> order() {
+//				return new SelectorWithoutOrder.EqualityOrder<Member>();
+//			}
+			
 			@Override
-			public WeakPartialOrder<Member> order() {
-				return new SelectorWithoutOrder.EqualityOrder<Member>();
+			protected void applyOrder(List<Member> tmp) throws LookupException {
+				
 			}
 
 			@Override

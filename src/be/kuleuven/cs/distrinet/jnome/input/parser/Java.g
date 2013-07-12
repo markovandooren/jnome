@@ -32,7 +32,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.expression.Literal;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.Assignable;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.NamedTarget;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.NamedTargetExpression;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReferenceTarget;
+import be.kuleuven.cs.distrinet.chameleon.core.reference.*;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.TargetedExpression;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.VariableReference;
 

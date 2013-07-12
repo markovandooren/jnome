@@ -22,6 +22,8 @@ import be.kuleuven.cs.distrinet.chameleon.core.property.PropertyRule;
 import be.kuleuven.cs.distrinet.chameleon.core.property.StaticChameleonProperty;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReferenceTarget;
+import be.kuleuven.cs.distrinet.chameleon.core.reference.ElementReference;
+import be.kuleuven.cs.distrinet.chameleon.core.reference.MultiTypeReference;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.SimpleReference;
 import be.kuleuven.cs.distrinet.chameleon.core.relation.EquivalenceRelation;
 import be.kuleuven.cs.distrinet.chameleon.core.relation.StrictPartialOrder;
@@ -246,8 +248,8 @@ public class Java extends ObjectOrientedLanguage {
 				if(target instanceof CrossReference) {
 					namedTarget.setTarget((CrossReferenceTarget)erasure((T)target));
 				}
-			} else if(ref instanceof SimpleReference) {
-				SimpleReference eref = (SimpleReference) result;
+			} else if(ref instanceof ElementReference) {
+				ElementReference eref = (ElementReference) result;
 				CrossReferenceTarget target = eref.getTarget();
 				if(target instanceof CrossReference) {
 					eref.setTarget(erasure((CrossReference)target));
@@ -573,13 +575,18 @@ public class Java extends ObjectOrientedLanguage {
 //			if(t != null) {
 //				return new PrimitiveTypeReference(fqn,t);
 //			} else {
+//			String first = Util.getAllButLastPart(fqn);
+//			if(first == null) {
 				return new BasicJavaTypeReference(fqn);
+//			} else {
+//				return new BasicJavaTypeReference(createTypeReferenceTarget(first),Util.getLastPart(fqn));
+//			}
 //			}
 		}
 		
-//		public CrossReference createTypeReferenceTarget(String fqn) {
-//			
-//		}
+		public CrossReferenceTarget createTypeReferenceTarget(String fqn) {
+			return BasicJavaTypeReference.typeReferenceTarget(fqn);
+		}
 		
 		@Override
 		public BasicJavaTypeReference createTypeReference(Type type) {

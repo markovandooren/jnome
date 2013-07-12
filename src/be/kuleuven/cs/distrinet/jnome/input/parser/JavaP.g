@@ -326,6 +326,10 @@ scope TargetScope {
   public JavaTypeReference typeRef(String qn) {
     return ((Java)language()).createTypeReference(qn);
   }
+  
+  public CrossReferenceTarget createTypeReferenceTarget(String qn) {
+  return ((Java)language()).createTypeReferenceTarget(qn);
+  }
 
   public JavaTypeReference createTypeReference(CrossReference<? extends TargetDeclaration> target, String name) {
     return ((Java)language()).createTypeReference(target,name);
@@ -935,7 +939,7 @@ possibleUnionType returns [JavaTypeReference element]
  ;
 
 classOrInterfaceType returns [JavaTypeReference element]
-@init{NamedTarget target = null;
+@init{CrossReferenceWithTarget target = null;
       Token stop = null;
      }
 // We will process the different parts. The current type reference (return value) is kept in retval. Alongside that
@@ -944,7 +948,7 @@ classOrInterfaceType returns [JavaTypeReference element]
 	:	name=identifierRule 
 	          {
 	           retval.element = typeRef($name.text); 
-	           target =  new NamedTarget($name.text);
+	           target =  (CrossReferenceWithTarget) createTypeReferenceTarget($name.text);
 	           stop=name.start; 
 	          } 
 	        (args=typeArguments 
@@ -965,10 +969,11 @@ classOrInterfaceType returns [JavaTypeReference element]
 	             retval.element = createTypeReference(target,$namex.text);
 	             // We must clone the target here, or else it will be removed from the
 	             // type reference we just created.
-	             target = new NamedTarget($namex.text,Util.clone(target));
+	             CrossReferenceTarget nt = Util.clone(target);
+	             target = (CrossReferenceWithTarget) createTypeReferenceTarget($namex.text);
+	             target.setTarget(nt);
 	           } else {
 	             throw new Error();
-	             //retval.element = createTypeReference(retval.element,$namex.text);
 	           }
 	           stop=namex.start;
 	          } 
@@ -980,7 +985,8 @@ classOrInterfaceType returns [JavaTypeReference element]
 	           // so we se the target to the current type reference.
 	           target = null;
 	           stop = argsx.stop;
-	          })? {setLocation(retval.element,name.start,stop);})*
+	          })? {setLocation(retval.element,name.start,stop);}
+	        )*
 	;
 
 primitiveType returns [JavaTypeReference element]

@@ -2,6 +2,9 @@ package be.kuleuven.cs.distrinet.jnome.core.type;
 
 import java.lang.ref.SoftReference;
 import java.util.List;
+import java.util.Set;
+
+import com.google.common.collect.ImmutableSet;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.chameleon.core.Config;
@@ -10,9 +13,11 @@ import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.TargetDeclaration;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationSelector;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
+import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReferenceTarget;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReferenceWithName;
+import be.kuleuven.cs.distrinet.chameleon.core.reference.MultiTypeReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.NamedTarget;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.BasicTypeReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
@@ -20,15 +25,18 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgument;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.util.CreationStackTrace;
+import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.chameleon.util.association.Multi;
 
 public class BasicJavaTypeReference extends BasicTypeReference implements JavaTypeReference, CrossReferenceWithName<Type> {
 
 	public BasicJavaTypeReference(CrossReferenceTarget target, String name) {
   	super(target,name);
+  	Util.debug(target instanceof NamedTarget);
   }
   public BasicJavaTypeReference(CrossReferenceTarget target, SimpleNameSignature signature) {
   	super(target,signature);
+  	Util.debug(target instanceof NamedTarget);
   }
   
   /**
@@ -36,13 +44,32 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
    * @param target
    */
   public BasicJavaTypeReference(NamedTarget target) {
-  	super(target.getTarget() == null ? null : target.getTarget(),target.name());
+  	super(target.getTarget() == null ? null : typeReferenceTarget((NamedTarget) target.getTarget()), target.name());
   }
   
   public BasicJavaTypeReference(String fqn) {
-  	super(fqn);
+  	super(typeReferenceTarget(Util.getAllButLastPart(fqn)),Util.getLastPart(fqn));
   }
   
+  protected static CrossReferenceTarget typeReferenceTarget(NamedTarget target) {
+  	if(target == null) {
+  		return null;
+  	} else {
+  		CrossReferenceTarget t = target.getTarget();
+  		if(t == null) {
+  			return new MultiTypeReference<Declaration>(target.name(), _typeReferenceTargetTypes);
+  		} else {
+  			return new MultiTypeReference<Declaration>(typeReferenceTarget((NamedTarget) t),target.name(), _typeReferenceTargetTypes);
+  		}
+  	}
+  }
+  
+  public static CrossReferenceTarget typeReferenceTarget(String fqn) {
+		return fqn == null ? null : new MultiTypeReference<Declaration>(fqn, _typeReferenceTargetTypes);
+  }
+  
+	private static Set _typeReferenceTargetTypes = ImmutableSet.<Class>builder().add(Type.class).add(Namespace.class).build();
+
 //  @Override
 //  protected void notifyParentRemoved(Element element) {
 //  	_trace = new CreationStackTrace();

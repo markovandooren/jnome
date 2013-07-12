@@ -441,9 +441,12 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 		return new JavaMostSpecificMethodOrder<M>(invocation());
 	}
 
-	@Override
 	public Class<M> selectedClass() {
 		return _type;
 	}
 
+	@Override
+	public boolean canSelect(Class<? extends Declaration> type) {
+		return _type.isAssignableFrom(type);
+	}
 }

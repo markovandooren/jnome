@@ -365,7 +365,7 @@ public class JavaCodeWriter extends Syntax {
 //  }
 
   public boolean isElementReference(Element element) {
-    return element instanceof SimpleReference;
+    return element instanceof ElementReference;
   }
   
   public String toCodeElementReference(ElementReference typeReference)  {

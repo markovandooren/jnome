@@ -9,7 +9,7 @@ import be.kuleuven.cs.distrinet.chameleon.core.declaration.DeclarationContainer;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Signature;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationSelector;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.SelectorWithoutOrder;
+import be.kuleuven.cs.distrinet.chameleon.core.lookup.SimpleSelector;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.TwoPhaseDeclarationSelector;
 import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.Import;
 import be.kuleuven.cs.distrinet.chameleon.core.relation.WeakPartialOrder;
@@ -68,9 +68,14 @@ public class SingleStaticImport extends Import {
 	public DeclarationSelector<Member> selector() {
 		return new TwoPhaseDeclarationSelector<Member>() {
 
+//			@Override
+//			public WeakPartialOrder<Member> order() {
+//				return new SelectorWithoutOrder.EqualityOrder<Member>();
+//			}
+			
 			@Override
-			public WeakPartialOrder<Member> order() {
-				return new SelectorWithoutOrder.EqualityOrder<Member>();
+			protected void applyOrder(List<Member> tmp) throws LookupException {
+				
 			}
 
 			@Override

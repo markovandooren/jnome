@@ -22,6 +22,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.ClassWithBody;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeElement;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.BasicTypeArgument;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalTypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
@@ -73,7 +74,8 @@ public class RawType extends ClassWithBody implements JavaType {
   @Override
   public List<InheritanceRelation> implicitNonMemberInheritanceRelations() {
     if(explicitNonMemberInheritanceRelations().isEmpty() && (! "Object".equals(name())) && (! getFullyQualifiedName().equals("java.lang.Object"))) {
-    	InheritanceRelation relation = new SubtypeRelation(language(ObjectOrientedLanguage.class).createTypeReference(new NamedTarget("java.lang"),"Object"));
+    	TypeReference objectTypeReference = language(ObjectOrientedLanguage.class).createTypeReference("java.lang.Object");
+			InheritanceRelation relation = new SubtypeRelation(objectTypeReference);
     	relation.setUniParent(this);
     	relation.setMetadata(new TagImpl(), IMPLICIT_CHILD);
     	List<InheritanceRelation> result = new ArrayList<InheritanceRelation>();

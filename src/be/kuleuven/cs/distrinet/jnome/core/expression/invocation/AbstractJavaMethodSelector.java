@@ -432,14 +432,21 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 				return match;
 			}
 
-	@Override
+
+	protected void applyOrder(List<M> tmp) throws LookupException {
+		order().removeBiggerElements(tmp);
+	}
+	
 	public WeakPartialOrder<M> order() {
 		return new JavaMostSpecificMethodOrder<M>(invocation());
 	}
 
-	@Override
 	public Class<M> selectedClass() {
 		return _type;
 	}
 
+	@Override
+	public boolean canSelect(Class<? extends Declaration> type) {
+		return _type.isAssignableFrom(type);
+	}
 }

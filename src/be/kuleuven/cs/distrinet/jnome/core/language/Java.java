@@ -2,7 +2,6 @@ package be.kuleuven.cs.distrinet.jnome.core.language;
 
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -23,7 +22,9 @@ import be.kuleuven.cs.distrinet.chameleon.core.property.PropertyRule;
 import be.kuleuven.cs.distrinet.chameleon.core.property.StaticChameleonProperty;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReferenceTarget;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.ElementReferenceWithTarget;
+import be.kuleuven.cs.distrinet.chameleon.core.reference.ElementReference;
+import be.kuleuven.cs.distrinet.chameleon.core.reference.MultiTypeReference;
+import be.kuleuven.cs.distrinet.chameleon.core.reference.SimpleReference;
 import be.kuleuven.cs.distrinet.chameleon.core.relation.EquivalenceRelation;
 import be.kuleuven.cs.distrinet.chameleon.core.relation.StrictPartialOrder;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
@@ -32,7 +33,6 @@ import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
 import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
 import be.kuleuven.cs.distrinet.chameleon.oo.member.SimpleNameDeclarationWithParametersSignature;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.MethodHeader;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.DerivedType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.IntersectionType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.IntersectionTypeReference;
@@ -61,7 +61,6 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.AbstractInheritanceRelation;
 import be.kuleuven.cs.distrinet.chameleon.oo.variable.MemberVariable;
 import be.kuleuven.cs.distrinet.chameleon.oo.variable.VariableDeclarator;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
 import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.variable.MemberVariableDeclarator;
 import be.kuleuven.cs.distrinet.chameleon.support.modifier.PrivateProperty;
 import be.kuleuven.cs.distrinet.chameleon.support.modifier.ProtectedProperty;
@@ -75,7 +74,6 @@ import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaExtendsReference;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaSuperReference;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.method.JavaNormalMethod;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.PackageProperty;
 import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousInnerClass;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
@@ -95,7 +93,6 @@ import be.kuleuven.cs.distrinet.jnome.core.type.PureWildCardType;
 import be.kuleuven.cs.distrinet.jnome.core.type.PureWildcard;
 import be.kuleuven.cs.distrinet.jnome.core.type.RawType;
 import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
-import be.kuleuven.cs.distrinet.rejuse.java.collections.Collections;
 import be.kuleuven.cs.distrinet.rejuse.junit.BasicRevision;
 import be.kuleuven.cs.distrinet.rejuse.junit.Revision;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
@@ -251,8 +248,8 @@ public class Java extends ObjectOrientedLanguage {
 				if(target instanceof CrossReference) {
 					namedTarget.setTarget((CrossReferenceTarget)erasure((T)target));
 				}
-			} else if(ref instanceof ElementReferenceWithTarget) {
-				ElementReferenceWithTarget eref = (ElementReferenceWithTarget) result;
+			} else if(ref instanceof ElementReference) {
+				ElementReference eref = (ElementReference) result;
 				CrossReferenceTarget target = eref.getTarget();
 				if(target instanceof CrossReference) {
 					eref.setTarget(erasure((CrossReference)target));
@@ -578,10 +575,19 @@ public class Java extends ObjectOrientedLanguage {
 //			if(t != null) {
 //				return new PrimitiveTypeReference(fqn,t);
 //			} else {
+//			String first = Util.getAllButLastPart(fqn);
+//			if(first == null) {
 				return new BasicJavaTypeReference(fqn);
+//			} else {
+//				return new BasicJavaTypeReference(createTypeReferenceTarget(first),Util.getLastPart(fqn));
+//			}
 //			}
 		}
-
+		
+		public CrossReferenceTarget createTypeReferenceTarget(String fqn) {
+			return BasicJavaTypeReference.typeReferenceTarget(fqn);
+		}
+		
 		@Override
 		public BasicJavaTypeReference createTypeReference(Type type) {
 			BasicJavaTypeReference result = createTypeReference(type.getFullyQualifiedName());
@@ -640,9 +646,9 @@ public class Java extends ObjectOrientedLanguage {
 			return new JavaDerivedType(baseType,typeArguments);
 		}
 		
-		public NormalMethod createNormalMethod(MethodHeader header) {
-			return new JavaNormalMethod(header);
-		}
+//		public NormalMethod createNormalMethod(MethodHeader header) {
+//			return new JavaNormalMethod(header);
+//		}
 
 		public TypeReference glb(List<? extends JavaTypeReference> typeReferenceList) {
 			return new JavaIntersectionTypeReference(typeReferenceList);

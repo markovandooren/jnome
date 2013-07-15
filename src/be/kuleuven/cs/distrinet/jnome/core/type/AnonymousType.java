@@ -10,6 +10,7 @@ import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationSelector;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
+import be.kuleuven.cs.distrinet.chameleon.core.lookup.SelectionResult;
 import be.kuleuven.cs.distrinet.chameleon.core.property.ChameleonProperty;
 import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
 import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
@@ -81,8 +82,8 @@ public abstract class AnonymousType extends RegularType implements JavaType {
 		return cons;
 	}
 
-	public <D extends Member> List<D> localMembers(DeclarationSelector<D> selector) throws LookupException {
-		List<D> result = super.localMembers(selector);
+	public <D extends Member> List<? extends SelectionResult> localMembers(DeclarationSelector<D> selector) throws LookupException {
+		List<SelectionResult> result = (List)super.localMembers(selector);
 		List<NormalMethod> superMembers = implicitConstructors();
 	  result.addAll(selector.selection(superMembers));
 		return result;

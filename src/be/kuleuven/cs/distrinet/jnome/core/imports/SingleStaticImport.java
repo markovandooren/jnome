@@ -9,6 +9,7 @@ import be.kuleuven.cs.distrinet.chameleon.core.declaration.DeclarationContainer;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Signature;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationSelector;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
+import be.kuleuven.cs.distrinet.chameleon.core.lookup.SelectionResult;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.SimpleSelector;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.TwoPhaseDeclarationSelector;
 import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.Import;
@@ -45,8 +46,8 @@ public class SingleStaticImport extends Import {
 	}
 
 	@Override
-	public <D extends Declaration> List<D> demandImports(DeclarationSelector<D> selector) throws LookupException {
-		return new ArrayList<D>();
+	public <D extends Declaration> List<? extends SelectionResult> demandImports(DeclarationSelector<D> selector) throws LookupException {
+		return new ArrayList<SelectionResult>();
 	}
 
 	@Override
@@ -55,12 +56,12 @@ public class SingleStaticImport extends Import {
 	}
 
 	@Override
-	public <D extends Declaration> List<D> directImports(DeclarationSelector<D> selector) throws LookupException {
+	public <D extends Declaration> List<? extends SelectionResult> directImports(DeclarationSelector<D> selector) throws LookupException {
 		Type type = typeReference().getElement();
 		return selector.selection(type.declarations());
 	}
 	
-	public List<Member> members() throws LookupException {
+	public List<? extends SelectionResult> members() throws LookupException {
 		Type type = typeReference().getElement();
 		return selector().selection(type.declarations());
 	}
@@ -74,7 +75,7 @@ public class SingleStaticImport extends Import {
 //			}
 			
 			@Override
-			protected void applyOrder(List<Member> tmp) throws LookupException {
+			protected void applyOrder(List<SelectionResult> tmp) throws LookupException {
 				
 			}
 

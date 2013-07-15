@@ -20,6 +20,7 @@ import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.Norma
 import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.RegularMethodInvocation;
 import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.chameleon.util.association.Single;
+import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.AbstractJavaMethodSelector.MethodSelectionResult;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 
@@ -67,15 +68,14 @@ public class JavaMethodInvocation extends RegularMethodInvocation {
 	   	return result;
 	  }
 	   
-		DeclarationCollector<X> collector = new DeclarationCollector<X>(selector);
+		DeclarationCollector collector = new DeclarationCollector(selector);
   	CrossReferenceTarget target = getTarget();
   	if(target == null) {
       lexicalContext().lookUp(collector);
   	} else {
   		target.targetContext().lookUp(collector);
   	}
-  	result = collector.result();
-  	result = (X) ((JavaMethodSelector)selector).instance((NormalMethod) result);
+  	result = (X) collector.result();
   	if(cache) {
   		setCache((NormalMethod) result);
   	}
@@ -105,7 +105,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation {
 	 */
 	public static List<Type> formalParameterTypesInContext(Method method,TypeAssignmentSet actualTypeParameters) throws LookupException {
 		List<Type> result;
-		if(method.nbTypeParameters() > 0) {
+		if(method.nbTypeParameters() > 0 && actualTypeParameters!=null) {
 			Java language = method.language(Java.class);
 			// Substitute
 			List<FormalParameter> formalParameters = method.formalParameters();

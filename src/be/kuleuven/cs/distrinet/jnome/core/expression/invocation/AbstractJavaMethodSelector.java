@@ -436,6 +436,11 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 			return instantiatedMethodTemplate(_template);
 		}
 		
+		@Override
+		public SelectionResult updatedTo(Declaration declaration) {
+			return new BasicMethodSelectionResult((Method) declaration, _assignment, _phase);
+		}
+
 		public Method method() {
 			return _template;
 		}

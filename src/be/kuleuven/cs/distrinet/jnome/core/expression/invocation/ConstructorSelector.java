@@ -19,6 +19,27 @@ import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 
 public class ConstructorSelector extends AbstractConstructorSelector {
 
+	protected class ConstructorSelectionResult extends BasicMethodSelectionResult {
+		protected ConstructorSelectionResult(Method template, TypeAssignmentSet assignment, int phase) {
+			super(template, assignment, phase);
+		}
+
+		@Override
+		public Declaration finalDeclaration() throws LookupException {
+			if(invocation().isDiamondInvocation()) {
+				return instantiatedMethodTemplate(createDiamondConstructorDummy(method()));
+			} else {
+				return method();
+			}
+		}
+		
+		@Override
+		public SelectionResult updatedTo(Declaration declaration) {
+			return new ConstructorSelectionResult((Method) declaration, typeAssignment(), phase());
+		}
+
+	}
+
 	private ConstructorInvocation _invocation;
 
 	protected ConstructorInvocation invocation() {
@@ -74,16 +95,7 @@ public class ConstructorSelector extends AbstractConstructorSelector {
 	@Override
 	public be.kuleuven.cs.distrinet.jnome.core.expression.invocation.AbstractJavaMethodSelector.MethodSelectionResult createSelectionResult(
 			Method method, TypeAssignmentSet typeAssignment, int phase) {
-		return new BasicMethodSelectionResult(method, typeAssignment, phase) {
-			@Override
-			public Declaration finalDeclaration() throws LookupException {
-				if(invocation().isDiamondInvocation()) {
-					return instantiatedMethodTemplate(createDiamondConstructorDummy(method()));
-				} else {
-					return method();
-				}
-			}
-		};
+		return new ConstructorSelectionResult(method, typeAssignment, phase);
 	}
 	
 //	@Override

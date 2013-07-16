@@ -414,6 +414,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 	public static interface MethodSelectionResult extends SelectionResult {
 		public Method method();
 		public int phase();
+		public TypeAssignmentSet typeAssignment();
 	}
 	
 	public static class BasicMethodSelectionResult implements MethodSelectionResult {
@@ -442,6 +443,10 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 		private Method _template;
 		
 		private TypeAssignmentSet _assignment;
+		
+		public TypeAssignmentSet typeAssignment() {
+			return _assignment;
+		}
 		
 		protected Method instantiatedMethodTemplate(Method method) throws LookupException {
 			Method result=method;

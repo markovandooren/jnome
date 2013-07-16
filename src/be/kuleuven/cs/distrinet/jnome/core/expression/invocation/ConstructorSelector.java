@@ -61,9 +61,11 @@ public class ConstructorSelector extends AbstractConstructorSelector {
 		if(diamondInvocation) {
 			List<SelectionResult> tmp = selection;
 			selection = new ArrayList<SelectionResult>();
-			for(SelectionResult method: tmp) {
-				NormalMethod normalMethod = (NormalMethod)method.finalDeclaration();
-				selection.add((NormalMethod)normalMethod.origin());
+			for(SelectionResult r: tmp) {
+				MethodSelectionResult result = (MethodSelectionResult) r;
+				NormalMethod normalMethod = (NormalMethod)result.finalDeclaration();
+				NormalMethod origin = (NormalMethod)normalMethod.origin();
+				selection.add(createSelectionResult(origin, result.typeAssignment(), result.phase()));
 			}
 		}
 		return selection;

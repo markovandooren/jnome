@@ -2,9 +2,7 @@ package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
@@ -208,7 +206,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 					match = actualTypeParameters.valid();
 				}
 				if(match) {
-				  return createSelectionResult(method, actualTypeParameters);
+				  return createSelectionResult(method, actualTypeParameters,1);
 				} else {
 					return null;
 				}
@@ -245,11 +243,11 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 					Type actualType = actualParameters.get(i).getType();
 					match = convertibleThroughMethodInvocationConversion(actualType, formalType);
 				}
-				if(match && actualParameters != null) {
+				if(match && actualTypeParameters != null) {
 					match = actualTypeParameters.valid();
 				} 
 				if(match) {
-				  return createSelectionResult(method, actualTypeParameters);
+				  return createSelectionResult(method, actualTypeParameters,2);
 				} else {
 					return null;
 				}
@@ -401,7 +399,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 						match = actualTypeParameters.valid();
 					} 
 					if(match) {
-					  return createSelectionResult(method, actualTypeParameters);
+					  return createSelectionResult(method, actualTypeParameters,3);
 					} else {
 						return null;
 					}
@@ -409,24 +407,32 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 				return null;
 			}
 
-	public MethodSelectionResult createSelectionResult(Method method, TypeAssignmentSet typeAssignment) {
-		return new BasicMethodSelectionResult(method, typeAssignment);
+	public MethodSelectionResult createSelectionResult(Method method, TypeAssignmentSet typeAssignment, int phase) {
+		return new BasicMethodSelectionResult(method, typeAssignment,phase);
 	}
 	
 	public static interface MethodSelectionResult extends SelectionResult {
 		public Method method();
+		public int phase();
 	}
 	
 	public static class BasicMethodSelectionResult implements MethodSelectionResult {
 
-		public BasicMethodSelectionResult(Method template, TypeAssignmentSet assignment) {
+		public BasicMethodSelectionResult(Method template, TypeAssignmentSet assignment,int phase) {
 			_template = template;
 			_assignment = assignment;
+			_phase = phase;
 		}
+		
+		public int phase() {
+			return _phase;
+		}
+		
+		private int _phase;
 		
 		@Override
 		public Declaration finalDeclaration() throws LookupException {
-			return instantiatedMethodTemplate();
+			return instantiatedMethodTemplate(_template);
 		}
 		
 		public Method method() {
@@ -437,9 +443,9 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 		
 		private TypeAssignmentSet _assignment;
 		
-		private Method instantiatedMethodTemplate() throws LookupException {
-			Method result=_template;
-			int nbTypeParameters = _assignment.nbAssignments();
+		protected Method instantiatedMethodTemplate(Method method) throws LookupException {
+			Method result=method;
+			int nbTypeParameters = _assignment == null ? 0 : _assignment.nbAssignments();
 			if(nbTypeParameters > 0) {
 				result = Util.clone(_template);
 				result.setOrigin(_template);
@@ -465,6 +471,11 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Override
+	public void filter(List<? extends SelectionResult> selected) throws LookupException {
+		applyOrder((List)selected);
+	}
 
 	protected void applyOrder(List<MethodSelectionResult> tmp) throws LookupException {
 		order().removeBiggerElements(tmp);

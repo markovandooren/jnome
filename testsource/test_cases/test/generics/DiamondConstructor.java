@@ -22,4 +22,5 @@ public class DiamondConstructor {
 		A<DiamondConstructor> x = new A<>(new DiamondConstructor());
 		
 	}
+	
 }

@@ -63,11 +63,6 @@ public abstract class JavaTest extends CompositeTest {
 		Config.setSingleThreaded(true);
 	}
 	
-//	@Override
-//	public void setCaching() {
-//	  Config.setCaching(false);
-//	}
-	
 	@Override
 	@Test
 	public void testCrossReferences() throws Exception {

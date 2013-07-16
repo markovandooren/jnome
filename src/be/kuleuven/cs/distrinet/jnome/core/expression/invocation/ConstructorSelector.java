@@ -7,6 +7,7 @@ import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.DeclarationContainer;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.SelectionResult;
+import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.BasicTypeArgument;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
@@ -61,18 +62,32 @@ public class ConstructorSelector extends AbstractConstructorSelector {
 			List<SelectionResult> tmp = selection;
 			selection = new ArrayList<SelectionResult>();
 			for(SelectionResult method: tmp) {
-				selection.add(((NormalMethod)method.finalDeclaration()).origin());
+				NormalMethod normalMethod = (NormalMethod)method.finalDeclaration();
+				selection.add((NormalMethod)normalMethod.origin());
 			}
 		}
 		return selection;
 	}
 	
-	
-	
 	@Override
-	public NormalMethod instance(NormalMethod method) throws LookupException {
-		return instance(createDiamondConstructorDummy(method));
+	public be.kuleuven.cs.distrinet.jnome.core.expression.invocation.AbstractJavaMethodSelector.MethodSelectionResult createSelectionResult(
+			Method method, TypeAssignmentSet typeAssignment, int phase) {
+		return new BasicMethodSelectionResult(method, typeAssignment, phase) {
+			@Override
+			public Declaration finalDeclaration() throws LookupException {
+				if(invocation().isDiamondInvocation()) {
+					return instantiatedMethodTemplate(createDiamondConstructorDummy(method()));
+				} else {
+					return method();
+				}
+			}
+		};
 	}
+	
+//	@Override
+//	public NormalMethod instance(NormalMethod method) throws LookupException {
+//		return instance(createDiamondConstructorDummy(method));
+//	}
 
 	public List<Declaration> diamondConstructors(List<? extends Declaration> selectionCandidates) throws LookupException {
 		List<Declaration> result = new ArrayList<Declaration>();

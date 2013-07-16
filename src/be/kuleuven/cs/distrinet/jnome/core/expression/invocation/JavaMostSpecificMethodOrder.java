@@ -25,14 +25,24 @@ public class JavaMostSpecificMethodOrder<M extends MethodSelectionResult> extend
 
 	@Override
 	public boolean contains(M firstResult, M secondResult) throws LookupException {
-		Method first = firstResult.method();
-		Method second = secondResult.method();
 		boolean result = false;
-		if(! first.sameAs(second)) {
-			if(!(first.lastFormalParameter() instanceof MultiFormalParameter) && ! (second.lastFormalParameter() instanceof MultiFormalParameter)) {
-				result = containsFixedArity(first, second);
-			} else if((first.lastFormalParameter() instanceof MultiFormalParameter) && (second.lastFormalParameter() instanceof MultiFormalParameter)){
-				result = containsVariableArity(first, second);
+		if(firstResult != secondResult) {
+			int firstPhase = firstResult.phase();
+			int secondPhase = secondResult.phase();
+			if(firstPhase < secondPhase) {
+				result = true;
+			} else if(firstPhase > secondPhase) {
+				result = false;
+			} else {
+				Method first = firstResult.method();
+				Method second = secondResult.method();
+				if(! first.sameAs(second)) {
+					if(!(first.lastFormalParameter() instanceof MultiFormalParameter) && ! (second.lastFormalParameter() instanceof MultiFormalParameter)) {
+						result = containsFixedArity(first, second);
+					} else if((first.lastFormalParameter() instanceof MultiFormalParameter) && (second.lastFormalParameter() instanceof MultiFormalParameter)){
+						result = containsVariableArity(first, second);
+					}
+				}
 			}
 		}
 		return result;

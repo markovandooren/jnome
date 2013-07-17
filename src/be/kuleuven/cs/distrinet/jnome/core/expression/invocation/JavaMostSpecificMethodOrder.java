@@ -10,12 +10,12 @@ import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalTypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
+import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.AbstractJavaMethodSelector.MethodSelectionResult;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.variable.MultiFormalParameter;
 
-public class JavaMostSpecificMethodOrder<M extends Method> extends WeakPartialOrder<M> {
+public class JavaMostSpecificMethodOrder<M extends MethodSelectionResult> extends WeakPartialOrder<M> {
 	
 	MethodInvocation _invocation;
 	
@@ -24,19 +24,31 @@ public class JavaMostSpecificMethodOrder<M extends Method> extends WeakPartialOr
 	}
 
 	@Override
-	public boolean contains(M first, M second) throws LookupException {
+	public boolean contains(M firstResult, M secondResult) throws LookupException {
 		boolean result = false;
-		if(! first.sameAs(second)) {
-			if(!(first.lastFormalParameter() instanceof MultiFormalParameter) && ! (second.lastFormalParameter() instanceof MultiFormalParameter)) {
-				result = containsFixedArity(first, second);
-			} else if((first.lastFormalParameter() instanceof MultiFormalParameter) && (second.lastFormalParameter() instanceof MultiFormalParameter)){
-				result = containsVariableArity(first, second);
+		if(firstResult != secondResult) {
+			int firstPhase = firstResult.phase();
+			int secondPhase = secondResult.phase();
+			if(firstPhase < secondPhase) {
+				result = true;
+			} else if(firstPhase > secondPhase) {
+				result = false;
+			} else {
+				Method first = firstResult.method();
+				Method second = secondResult.method();
+				if(! first.sameAs(second)) {
+					if(!(first.lastFormalParameter() instanceof MultiFormalParameter) && ! (second.lastFormalParameter() instanceof MultiFormalParameter)) {
+						result = containsFixedArity(first, second);
+					} else if((first.lastFormalParameter() instanceof MultiFormalParameter) && (second.lastFormalParameter() instanceof MultiFormalParameter)){
+						result = containsVariableArity(first, second);
+					}
+				}
 			}
 		}
 		return result;
 	}
 
-	public boolean containsVariableArity(M first, M second) throws LookupException {
+	public boolean containsVariableArity(Method first, Method second) throws LookupException {
 		boolean result = true;
 		Java language = (Java) first.language(Java.class);
 		List<Type> firstTypes = first.header().formalParameterTypes();

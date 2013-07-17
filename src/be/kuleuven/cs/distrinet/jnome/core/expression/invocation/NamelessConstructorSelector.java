@@ -1,18 +1,16 @@
 package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.DeclarationContainer;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
+import be.kuleuven.cs.distrinet.chameleon.core.lookup.SelectionResult;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 
 public class NamelessConstructorSelector extends AbstractConstructorSelector {
 	
-	public List<NormalMethod> selection(List<? extends Declaration> selectionCandidates) throws LookupException {
+	public List<? extends SelectionResult> selection(List<? extends Declaration> selectionCandidates) throws LookupException {
 		return super.selection(withoutNonConstructors(selectionCandidates));
 	}
 	

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
+
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
@@ -42,7 +45,7 @@ public class RegularJavaType extends RegularType implements JavaType {
 
 	public RegularJavaType(SimpleNameSignature sig) {
 		super(sig);
-		setDefaultDefaultConstructor();
+		setDefaultDefaultConstructor(false);
 	}
 
 	public RegularJavaType(String name) {
@@ -65,15 +68,15 @@ public class RegularJavaType extends RegularType implements JavaType {
 	/**
 	 * Set the default default constructor.
 	 */
-	protected void setDefaultDefaultConstructor() {
-		JavaNormalMethod cons = createDefaultConstructorWithoutAccessModifier();
+	protected void setDefaultDefaultConstructor(boolean rebuildCache) {
+		JavaNormalMethod cons = createDefaultConstructorWithoutAccessModifier(rebuildCache);
 		cons.addModifier(new Public());
 	}
 
 	/**
 	 * Create a default default constructor without an access modifier.
 	 */
-	protected JavaNormalMethod createDefaultConstructorWithoutAccessModifier() {
+	protected JavaNormalMethod createDefaultConstructorWithoutAccessModifier(boolean rebuildCache) {
 		// FIXME Because this code is ran when a regular Java type is constructed, we cannot ask the
 		//       language for the factory. Management of the constructor should be done lazily. When
 		//       the type is actually used, we can assume that a language is attached. Otherwise, we
@@ -84,12 +87,17 @@ public class RegularJavaType extends RegularType implements JavaType {
 		cons.setImplementation(new RegularImplementation(body));
 		body.addStatement(new StatementExpression(new SuperConstructorDelegation()));
 		cons.setUniParent(this);
-		_defaultDefaultConstructor = cons;
+		setDefaultDefaultConstructor(cons);
 		return cons;
 	}
 	
 	protected void clearDefaultDefaultConstructor() {
-		_defaultDefaultConstructor = null;
+		setDefaultDefaultConstructor(null);
+	}
+	
+	private void setDefaultDefaultConstructor(JavaNormalMethod method) {
+		_defaultDefaultConstructor = method;
+		_implicitMemberCache = null;
 	}
 	
 	/**
@@ -98,12 +106,27 @@ public class RegularJavaType extends RegularType implements JavaType {
 	 */
   @Override
 	public List<Member> implicitMembers() {
-  	List<Member> result = new ArrayList<Member>();
-  	Util.addNonNull(defaultDefaultConstructor(), result);
-  	Util.addNonNull(getClassMethod(),result);
-  	return result;
+  	if(_implicitMemberCache == null) {
+  		_implicitMemberCache = buildImplicitMembersCache();
+  	}
+  	return _implicitMemberCache;
 	}
-  
+
+	protected List<Member> buildImplicitMembersCache() {
+  	Builder<Member> builder = ImmutableList.<Member>builder();
+  	NormalMethod defaultDefaultConstructor = defaultDefaultConstructor();
+  	if(defaultDefaultConstructor != null) {
+  		builder.add(defaultDefaultConstructor);
+  	}
+  	NormalMethod classMethod = getClassMethod();
+  	if(classMethod != null) {
+  		builder.add(classMethod);
+  	}
+  	return builder.build();
+	}
+	
+	private List<Member> _implicitMemberCache;
+
   /**
    * This is actually cheating because the getClass method in Java
    * is a member of Object. Maybe we should set the parent to Object
@@ -180,7 +203,7 @@ public class RegularJavaType extends RegularType implements JavaType {
   				return;
   			}
   		}
-  		setDefaultDefaultConstructor();
+  		setDefaultDefaultConstructor(true);
   	}
   }
 
@@ -262,6 +285,8 @@ public class RegularJavaType extends RegularType implements JavaType {
 	public synchronized void flushLocalCache() {
 		super.flushLocalCache();
 		_rawTypeCache = null;
+		// The implicit member cache is kept up to date via the
+		// reactTo... methods.
 	}
 
 }

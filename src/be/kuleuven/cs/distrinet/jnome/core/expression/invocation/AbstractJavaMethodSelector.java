@@ -2,9 +2,7 @@ package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
@@ -12,6 +10,7 @@ import be.kuleuven.cs.distrinet.chameleon.core.declaration.Signature;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationSelector;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
+import be.kuleuven.cs.distrinet.chameleon.core.lookup.SelectionResult;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
 import be.kuleuven.cs.distrinet.chameleon.core.relation.WeakPartialOrder;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
@@ -55,20 +54,20 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 	}
 
 	@Override
-	public List<? extends Declaration> declarators(List<? extends Declaration> selectionCandidates) throws LookupException {
-		return selection(selectionCandidates);
+	public List<? extends SelectionResult> declarators(List<? extends Declaration> selectionCandidates) throws LookupException {
+		List<SelectionResult> result = new ArrayList<>();
+		for(SelectionResult r: selection(selectionCandidates)) {
+			result.add(((MethodSelectionResult)r).method().declarator());
+		}
+		return result;
 	}
 	
 	protected abstract MethodInvocation invocation();
 	
 	public abstract boolean correctSignature(Signature signature) throws LookupException;
 
-	public List<M> selection(List<? extends Declaration> selectionCandidates) throws LookupException {
-		return selection(selectionCandidates,null);
-	}
-	
-	public List<M> selection(List<? extends Declaration> selectionCandidates, Map<Declaration,Declaration> cache) throws LookupException {
-		List<M> tmp = new ArrayList<M>();
+	public List<? extends SelectionResult> selection(List<? extends Declaration> selectionCandidates) throws LookupException {
+		List<MethodSelectionResult> tmp = new ArrayList<MethodSelectionResult>();
 		if(! selectionCandidates.isEmpty()) {
 			List<M> candidates = new ArrayList<M>();
 			int nbActuals = invocation().nbActualParameters();
@@ -96,8 +95,9 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 			 * JLS 15.12.2.2 Phase 1: Identify Matching Arity Methods Applicable by Subtyping
 			 */
 			for(M decl: candidates) {
-				if(matchingApplicableBySubtyping(decl)) {
-					tmp.add(decl);
+				MethodSelectionResult matchingApplicableBySubtyping = matchingApplicableBySubtyping(decl);
+				if(matchingApplicableBySubtyping != null) {
+					tmp.add(matchingApplicableBySubtyping);
 				}
 			}
 			// JLS 15.12.2.2: Only if no candidates are applicable by subtyping
@@ -105,15 +105,17 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 			// conversion
 			if(tmp.isEmpty()) {
 				for(M decl: candidates) {
-					if(matchingApplicableByConversion(decl)) {
-						tmp.add(decl);
+					MethodSelectionResult matchingApplicableByConversion = matchingApplicableByConversion(decl);
+					if(matchingApplicableByConversion != null) {
+						tmp.add(matchingApplicableByConversion);
 					}
 				}
 				// variable arity
 				if(tmp.isEmpty()) {
 					for(M decl: candidates) {
-						if(variableApplicableBySubtyping(decl)) {
-							tmp.add(decl);
+						MethodSelectionResult variableApplicableBySubtyping = variableApplicableBySubtyping(decl);
+						if(variableApplicableBySubtyping != null) {
+							tmp.add(variableApplicableBySubtyping);
 						}
 					}
 				}
@@ -123,33 +125,33 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 		return tmp;
 	}
 
-	/**
-	 * FIXME This should implement 15.12.2.6 Method Result and Throws Types. This implementation doesn't always
-	 * use the correct type assignment algorithm. Basically it is fixed now and does not take into account how
-	 * the method was selected.
-	 * @param method
-	 * @return
-	 * @throws LookupException
-	 */
-	public M instance(M method) throws LookupException {
-		TypeAssignmentSet actualTypeParameters = actualTypeParameters(method, false);
-		return instantiatedMethodTemplate(method, actualTypeParameters);
-	}
+//	/**
+//	 * FIXME This should implement 15.12.2.6 Method Result and Throws Types. This implementation doesn't always
+//	 * use the correct type assignment algorithm. Basically it is fixed now and does not take into account how
+//	 * the method was selected.
+//	 * @param method
+//	 * @return
+//	 * @throws LookupException
+//	 */
+//	public M instance(M method) throws LookupException {
+//		TypeAssignmentSet actualTypeParameters = actualTypeParameters(method, false);
+//		return instantiatedMethodTemplate(method, actualTypeParameters);
+//	}
 
 	private TypeAssignmentSet actualTypeParameters(M originalMethod, boolean includeNonreference) throws LookupException {
 		MethodHeader methodHeader = (MethodHeader) originalMethod.header().clone();
 		methodHeader.setOrigin(originalMethod.header());
 		methodHeader.setUniParent(originalMethod.parent());
 		List<TypeParameter> parameters = methodHeader.typeParameters();
-		TypeAssignmentSet formals;
-		//			List<TypeParameter> methodTypeParameters = method.typeParameters();
-		if(parameters.size() > 0 && (parameters.get(0) instanceof FormalTypeParameter)) {
+		TypeAssignmentSet typeAssignment;
+		int size = parameters.size();
+		if(size > 0 && (parameters.get(0) instanceof FormalTypeParameter)) {
 			if(invocation().hasTypeArguments()) {
 				List<ActualTypeArgument> typeArguments = invocation().typeArguments();
-				formals = new TypeAssignmentSet(parameters);
-				int size = typeArguments.size();
-				for(int i=0; i< size; i++) {
-					formals.add(new ActualTypeAssignment(parameters.get(i),typeArguments.get(i).upperBound()));
+				typeAssignment = new TypeAssignmentSet(parameters);
+				int theSize = typeArguments.size();
+				for(int i=0; i< theSize; i++) {
+					typeAssignment.add(new ActualTypeAssignment(parameters.get(i),typeArguments.get(i).upperBound()));
 				}
 			} else {
 				Java language = originalMethod.language(Java.class);
@@ -157,33 +159,32 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 				FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(invocation(),methodHeader);
 				List<Expression> actualParameters = invocation().getActualParameters();
 				List<Type> formalParameters = methodHeader.formalParameterTypes();
-				int size = actualParameters.size();
-				for(int i=0; i< size; i++) {
+				int theSize = actualParameters.size();
+				for(int i=0; i< theSize; i++) {
 					// if the formal parameter type is reference type, add a constraint
 					Type argType = actualParameters.get(i).getType();
 					if(includeNonreference || argType.is(language.REFERENCE_TYPE) == Ternary.TRUE) {
 						constraints.add(new SSConstraint(language.reference(argType), formalParameters.get(i)));
 					}
 				}
-				formals = constraints.resolve();
+				typeAssignment = constraints.resolve();
+			}
+			List<TypeParameter> originalParameters = originalMethod.typeParameters();
+			for(int i = 0; i < size; i++) {
+				typeAssignment.substitute(parameters.get(i), originalParameters.get(i));
 			}
 		} else {
-			formals = new TypeAssignmentSet(Collections.EMPTY_LIST);
+			typeAssignment = null;
 		}
-		int size = parameters.size();
-		List<TypeParameter> originalParameters = originalMethod.typeParameters();
-
-		for(int i = 0; i < size; i++) {
-			formals.substitute(parameters.get(i), originalParameters.get(i));
-		}
-		return formals;
+		return typeAssignment;
 	}
 
 	/**
 	 * JLS 15.12.2.2 Phase 1: Identify Matching Arity Methods Applicable by Subtyping
 	 */
-	private boolean matchingApplicableBySubtyping(M method) throws LookupException {
+	private MethodSelectionResult matchingApplicableBySubtyping(M method) throws LookupException {
 				TypeAssignmentSet actualTypeParameters = actualTypeParameters(method, false);
+				//SLOW We can probably cache the substituted type instead/as well.
 				List<Type> formalParameterTypesInContext = JavaMethodInvocation.formalParameterTypesInContext(method,actualTypeParameters);
 				boolean match = true;
 				List<Expression> actualParameters = invocation().getActualParameters();
@@ -201,37 +202,16 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 				}
 				// This may be inefficient, be it is literally what the language spec says
 				// so for now I do it exactly the same way.
-				if(match) {
+				if(match && actualTypeParameters != null) {
 					match = actualTypeParameters.valid();
-				} 
-				return match;
+				}
+				if(match) {
+				  return createSelectionResult(method, actualTypeParameters,1);
+				} else {
+					return null;
+				}
 			}
 
-	private M instantiatedMethodTemplate(M method, TypeAssignmentSet actualTypeParameters) throws LookupException {
-		M result=method;
-		int nbTypeParameters = actualTypeParameters.nbAssignments();
-		if(nbTypeParameters > 0) {
-			result = (M) method.clone();
-			result.setOrigin(method);
-			result.setUniParent(method.parent());
-			for(int i=1; i <= nbTypeParameters;i++) {
-				TypeParameter originalPar = method.typeParameter(i);
-				TypeParameter clonedPar = result.typeParameter(i);
-				// we detach the signature from the clone.
-				Type assignedType = actualTypeParameters.type(originalPar);
-				Java language = invocation().language(Java.class);
-				JavaTypeReference reference = language.reference(assignedType);
-				Element parent = reference.parent();
-				reference.setUniParent(null);
-				BasicTypeArgument argument = language.createBasicTypeArgument(reference);
-				argument.setUniParent(parent);
-				TypeParameter newPar = new InstantiatedTypeParameter(clonedPar.signature(), argument);
-				SingleAssociation parentLink = clonedPar.parentLink();
-				parentLink.getOtherRelation().replace(parentLink, newPar.parentLink());
-			}
-		}
-		return result;
-	}
 
 	private boolean convertibleThroughUncheckedConversionAndSubtyping(Type first, Type second) throws LookupException {
 		boolean result = false;
@@ -252,7 +232,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 		return result;
 	}
 
-	private boolean matchingApplicableByConversion(M method) throws LookupException {
+	private MethodSelectionResult matchingApplicableByConversion(M method) throws LookupException {
 				TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true);
 				List<Type> formalParameterTypesInContext = JavaMethodInvocation.formalParameterTypesInContext(method,actualTypeParameters);
 				boolean match = true;
@@ -263,17 +243,14 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 					Type actualType = actualParameters.get(i).getType();
 					match = convertibleThroughMethodInvocationConversion(actualType, formalType);
 				}
-				if(match) {
+				if(match && actualTypeParameters != null) {
 					match = actualTypeParameters.valid();
 				} 
-	//			  &&  {
-	//				result = method;
-	//				if(actualTypeParameters.hasAssignments()) {
-	//					// create instance
-	//					result = instantiatedMethodTemplate(method, actualTypeParameters);
-	//				}
-	//			}
-				return match;
+				if(match) {
+				  return createSelectionResult(method, actualTypeParameters,2);
+				} else {
+					return null;
+				}
 			}
 
 	private boolean convertibleThroughMethodInvocationConversion(Type first, Type second) throws LookupException {
@@ -399,7 +376,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 		return allSuperTypes;
 	}
 
-	public boolean variableApplicableBySubtyping(M method) throws LookupException {
+	public MethodSelectionResult variableApplicableBySubtyping(M method) throws LookupException {
 				boolean match = method.lastFormalParameter() instanceof MultiFormalParameter;
 				if(match) {
 					TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true);
@@ -418,27 +395,104 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 						Type actualType = actualParameters.get(i).getType();
 						match = convertibleThroughMethodInvocationConversion(actualType, formalType);
 					}
-					if(match) {
+					if(match && actualTypeParameters != null) {
 						match = actualTypeParameters.valid();
 					} 
-	//				  &&  {
-	//					result = method;
-	//					if(actualTypeParameters.hasAssignments()) {
-	//						// create instance
-	//						result = instantiatedMethodTemplate(method, actualTypeParameters);
-	//					}
-	//				}
+					if(match) {
+					  return createSelectionResult(method, actualTypeParameters,3);
+					} else {
+						return null;
+					}
 				}
-				return match;
+				return null;
 			}
 
+	public MethodSelectionResult createSelectionResult(Method method, TypeAssignmentSet typeAssignment, int phase) {
+		return new BasicMethodSelectionResult(method, typeAssignment,phase);
+	}
+	
+	public static interface MethodSelectionResult extends SelectionResult {
+		public Method method();
+		public int phase();
+		public TypeAssignmentSet typeAssignment();
+	}
+	
+	public static class BasicMethodSelectionResult implements MethodSelectionResult {
 
-	protected void applyOrder(List<M> tmp) throws LookupException {
+		public BasicMethodSelectionResult(Method template, TypeAssignmentSet assignment,int phase) {
+			_template = template;
+			_assignment = assignment;
+			_phase = phase;
+		}
+		
+		public int phase() {
+			return _phase;
+		}
+		
+		private int _phase;
+		
+		@Override
+		public Declaration finalDeclaration() throws LookupException {
+			return instantiatedMethodTemplate(_template);
+		}
+		
+		@Override
+		public SelectionResult updatedTo(Declaration declaration) {
+			return new BasicMethodSelectionResult((Method) declaration, _assignment, _phase);
+		}
+
+		public Method method() {
+			return _template;
+		}
+		
+		private Method _template;
+		
+		private TypeAssignmentSet _assignment;
+		
+		public TypeAssignmentSet typeAssignment() {
+			return _assignment;
+		}
+		
+		protected Method instantiatedMethodTemplate(Method method) throws LookupException {
+			Method result=method;
+			int nbTypeParameters = _assignment == null ? 0 : _assignment.nbAssignments();
+			if(nbTypeParameters > 0) {
+				result = Util.clone(_template);
+				result.setOrigin(_template);
+				result.setUniParent(_template.parent());
+				for(int i=1; i <= nbTypeParameters;i++) {
+					TypeParameter originalPar = _template.typeParameter(i);
+					TypeParameter clonedPar = result.typeParameter(i);
+					// we detach the signature from the clone.
+					Type assignedType = _assignment.type(originalPar);
+					Java language = _template.language(Java.class);
+					JavaTypeReference reference = language.reference(assignedType);
+					Element parent = reference.parent();
+					reference.setUniParent(null);
+					BasicTypeArgument argument = language.createBasicTypeArgument(reference);
+					argument.setUniParent(parent);
+					TypeParameter newPar = new InstantiatedTypeParameter(clonedPar.signature(), argument);
+					SingleAssociation parentLink = clonedPar.parentLink();
+					parentLink.getOtherRelation().replace(parentLink, newPar.parentLink());
+				}
+			}
+			return result;
+		}
+
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public void filter(List<? extends SelectionResult> selected) throws LookupException {
+		applyOrder((List)selected);
+	}
+
+	protected void applyOrder(List<MethodSelectionResult> tmp) throws LookupException {
 		order().removeBiggerElements(tmp);
 	}
 	
-	public WeakPartialOrder<M> order() {
-		return new JavaMostSpecificMethodOrder<M>(invocation());
+	public WeakPartialOrder<MethodSelectionResult> order() {
+		return new JavaMostSpecificMethodOrder<MethodSelectionResult>(invocation());
 	}
 
 	public Class<M> selectedClass() {

@@ -1,7 +1,11 @@
 package be.kuleuven.cs.distrinet.jnome.core.enumeration;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
 
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
@@ -59,11 +63,12 @@ public class EnumType extends RegularJavaType {
 	 * </ul>
 	 */
 	@Override
-	public List<Member> implicitMembers() {
-		List<Member> result = super.implicitMembers();
-		result.add(values());
-		result.add(valueOf());
-		return result;
+	protected List<Member> buildImplicitMembersCache() {
+		Builder<Member> builder = ImmutableList.<Member>builder();
+		builder.addAll(super.buildImplicitMembersCache());
+		builder.add(values());
+		builder.add(valueOf());
+		return builder.build();
 	}
 	
 	protected Method values() {
@@ -90,8 +95,9 @@ public class EnumType extends RegularJavaType {
 	/**
 	 * The default default constructor of an enum type is private.
 	 */
-	protected void setDefaultDefaultConstructor() {
-		JavaNormalMethod cons = createDefaultConstructorWithoutAccessModifier();
+	@Override
+	protected void setDefaultDefaultConstructor(boolean rebuildCache) {
+		JavaNormalMethod cons = createDefaultConstructorWithoutAccessModifier(rebuildCache);
 		cons.addModifier(new Private());
 	}
 

@@ -6,6 +6,8 @@ import java.util.List;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.DeclarationContainer;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
+import be.kuleuven.cs.distrinet.chameleon.core.lookup.SelectionResult;
+import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.BasicTypeArgument;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
@@ -16,6 +18,27 @@ import be.kuleuven.cs.distrinet.jnome.core.method.JavaNormalMethod;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 
 public class ConstructorSelector extends AbstractConstructorSelector {
+
+	protected class ConstructorSelectionResult extends BasicMethodSelectionResult {
+		protected ConstructorSelectionResult(Method template, TypeAssignmentSet assignment, int phase) {
+			super(template, assignment, phase);
+		}
+
+		@Override
+		public Declaration finalDeclaration() throws LookupException {
+			if(invocation().isDiamondInvocation()) {
+				return instantiatedMethodTemplate(createDiamondConstructorDummy(method()));
+			} else {
+				return method();
+			}
+		}
+		
+		@Override
+		public SelectionResult updatedTo(Declaration declaration) {
+			return new ConstructorSelectionResult((Method) declaration, typeAssignment(), phase());
+		}
+
+	}
 
 	private ConstructorInvocation _invocation;
 
@@ -47,27 +70,38 @@ public class ConstructorSelector extends AbstractConstructorSelector {
 //  	}
 //  }
 
-	public List<NormalMethod> selection(List<? extends Declaration> selectionCandidates) throws LookupException {
+	public List<? extends SelectionResult> selection(List<? extends Declaration> selectionCandidates) throws LookupException {
 		List<Declaration> withoutNonConstructors = withoutNonConstructors(selectionCandidates);
 		boolean diamondInvocation = invocation().isDiamondInvocation();
 		if(diamondInvocation) {
 			withoutNonConstructors = diamondConstructors(withoutNonConstructors);
 		}
-		List<NormalMethod> selection = super.selection(withoutNonConstructors);
+		List<SelectionResult> selection = (List)super.selection(withoutNonConstructors);
+		//
+		
 		if(diamondInvocation) {
-			List<NormalMethod> tmp = selection;
-			selection = new ArrayList<NormalMethod>();
-			for(NormalMethod method: tmp) {
-				selection.add((NormalMethod)method.origin());
+			List<SelectionResult> tmp = selection;
+			selection = new ArrayList<SelectionResult>();
+			for(SelectionResult r: tmp) {
+				MethodSelectionResult result = (MethodSelectionResult) r;
+				NormalMethod normalMethod = (NormalMethod)result.finalDeclaration();
+				NormalMethod origin = (NormalMethod)normalMethod.origin();
+				selection.add(createSelectionResult(origin, result.typeAssignment(), result.phase()));
 			}
 		}
 		return selection;
 	}
 	
 	@Override
-	public NormalMethod instance(NormalMethod method) throws LookupException {
-		return instance(createDiamondConstructorDummy(method));
+	public be.kuleuven.cs.distrinet.jnome.core.expression.invocation.AbstractJavaMethodSelector.MethodSelectionResult createSelectionResult(
+			Method method, TypeAssignmentSet typeAssignment, int phase) {
+		return new ConstructorSelectionResult(method, typeAssignment, phase);
 	}
+	
+//	@Override
+//	public NormalMethod instance(NormalMethod method) throws LookupException {
+//		return instance(createDiamondConstructorDummy(method));
+//	}
 
 	public List<Declaration> diamondConstructors(List<? extends Declaration> selectionCandidates) throws LookupException {
 		List<Declaration> result = new ArrayList<Declaration>();

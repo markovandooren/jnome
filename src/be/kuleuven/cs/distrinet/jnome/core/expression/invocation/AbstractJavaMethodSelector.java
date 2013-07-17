@@ -57,7 +57,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 	public List<? extends SelectionResult> declarators(List<? extends Declaration> selectionCandidates) throws LookupException {
 		List<SelectionResult> result = new ArrayList<>();
 		for(SelectionResult r: selection(selectionCandidates)) {
-			result.add(((MethodSelectionResult)r).method());
+			result.add(((MethodSelectionResult)r).method().declarator());
 		}
 		return result;
 	}

@@ -1,5 +1,6 @@
 package be.kuleuven.cs.distrinet.jnome.core.imports;
 
+import java.util.Iterator;
 import java.util.List;
 
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
@@ -21,6 +22,18 @@ public class JavaDemandImport extends DemandImport {
 	 */
   @Override
   protected void filterImportedElements(List<Declaration> declarations) throws LookupException {
-		new TypePredicate(Type.class).filter(declarations);
+//		new TypePredicate(Type.class).filter(declarations);
+		Iterator<Declaration> iterator = declarations.iterator();
+		while(iterator.hasNext()) {
+			Declaration next = iterator.next();
+			if(! (next instanceof Type)) {
+				iterator.remove();
+			}
+		}
+  }
+  
+  @Override
+  protected DemandImport cloneSelf() {
+  	return new JavaDemandImport(null);
   }
 }

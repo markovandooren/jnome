@@ -1,6 +1,5 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -52,7 +51,7 @@ public class JavaIntersectionTypeReference extends IntersectionTypeReference imp
 	}
 
 	public List<ActualTypeArgument> typeArguments() {
-		return new ArrayList<ActualTypeArgument>();
+		return Collections.EMPTY_LIST;
 	}
 
 	public JavaTypeReference erasedReference() {

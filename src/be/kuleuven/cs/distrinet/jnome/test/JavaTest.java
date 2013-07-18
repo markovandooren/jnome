@@ -1,11 +1,6 @@
 package be.kuleuven.cs.distrinet.jnome.test;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
-import java.util.jar.JarFile;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,25 +25,8 @@ import be.kuleuven.cs.distrinet.jnome.workspace.JavaProjectConfigurator;
 
 public abstract class JavaTest extends CompositeTest {
 	
-//	@Before
-//	public void loadProperties() {
-//		try {
-//		Properties properties = new Properties();
-//			properties.load(new BufferedInputStream(new FileInputStream(new File("test.properties"))));
-//			_javaBaseJarPath = new File(properties.getProperty("api"));
-//		} catch (IOException e) {
-//			throw new RuntimeException("need file test.properties with property 'api' set to the location of the jar with the Java base library.");
-//		}
-//	}
-	
 	protected abstract File projectFile();	
 	
-//	private JarFile _javaBaseJarPath;
-//	
-//	public JarFile javaBaseJarPath() {
-//		return _javaBaseJarPath;
-//	}
-//	
 	/**
 	 * Set the log levels of Log4j. By default, nothing is changed.
 	 */

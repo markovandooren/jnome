@@ -6,12 +6,12 @@ import java.util.List;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.NamespaceReference;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.RootNamespaceReference;
-import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.DemandImport;
 import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.Import;
 import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.NamespaceDeclaration;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.SimpleReference;
 import be.kuleuven.cs.distrinet.chameleon.util.association.Single;
+import be.kuleuven.cs.distrinet.jnome.core.imports.JavaDemandImport;
 
 public class JavaNamespaceDeclaration extends NamespaceDeclaration {
 
@@ -30,7 +30,7 @@ public class JavaNamespaceDeclaration extends NamespaceDeclaration {
 	public JavaNamespaceDeclaration(CrossReference<Namespace> ref) {
 		super(ref);
 		verify(ref);
-		set(_defaultImport,new DemandImport(new NamespaceReference("java.lang")));
+		set(_defaultImport,new JavaDemandImport(new NamespaceReference("java.lang")));
 		_defaultImport.lock();
 	}
 

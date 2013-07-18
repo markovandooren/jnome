@@ -1,6 +1,5 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -47,16 +46,12 @@ public class JavaUnionTypeReference extends UnionTypeReference implements JavaTy
 		return 0;
 	}
 
-//	public Type erasure() throws LookupException {
-//		return erasedReference().erasure();
-//	}
-
 	public JavaTypeReference toArray(int dimension) {
 		throw new ChameleonProgrammerException("Cannot change the dimension of an intersection type reference");
 	}
 
 	public List<ActualTypeArgument> typeArguments() {
-		return new ArrayList<ActualTypeArgument>();
+		return Collections.EMPTY_LIST;
 	}
 
 	public JavaTypeReference erasedReference() {

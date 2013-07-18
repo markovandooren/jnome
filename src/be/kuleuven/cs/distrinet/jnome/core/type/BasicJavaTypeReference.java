@@ -32,11 +32,9 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 
 	public BasicJavaTypeReference(CrossReferenceTarget target, String name) {
   	super(target,name);
-  	Util.debug(target instanceof NamedTarget);
   }
   public BasicJavaTypeReference(CrossReferenceTarget target, SimpleNameSignature signature) {
   	super(target,signature);
-  	Util.debug(target instanceof NamedTarget);
   }
   
   /**

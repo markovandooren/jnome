@@ -79,11 +79,11 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 //  }
   
   public List<ActualTypeArgument> typeArguments() {
-  	return _genericParameters.getOtherEnds();
+  	return _typeArguments.getOtherEnds();
   }
   
   public void addArgument(ActualTypeArgument arg) {
-  	add(_genericParameters,arg);
+  	add(_typeArguments,arg);
   }
   
   public void addAllArguments(List<ActualTypeArgument> args) {
@@ -93,10 +93,10 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
   }
   
   public void removeArgument(ActualTypeArgument arg) {
-  	remove(_genericParameters,arg);
+  	remove(_typeArguments,arg);
   }
   
-  private Multi<ActualTypeArgument> _genericParameters = new Multi<ActualTypeArgument>(this);
+  private Multi<ActualTypeArgument> _typeArguments = new Multi<ActualTypeArgument>(this);
   
   public JavaTypeReference toArray(int arrayDimension) {
   	JavaTypeReference result;
@@ -147,14 +147,13 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
   	Type result = type;
 		if (type != null) {
 			if(! (type instanceof RawType)) {
-				List<ActualTypeArgument> typeArguments = typeArguments();
 				Java language = language(Java.class);
 				
 				//Does not work because there is no distinction yet between a diamond empty list and a non-diamond empty list.
 //				if(type.nbTypeParameters(TypeParameter.class) > 0) {
 				
-				if (typeArguments.size() > 0) {
-					result = language.createDerivedType(type, typeArguments);
+				if (hasTypeArguments()) {
+					result = language.createDerivedType(type, typeArguments());
 
 					// This is going to give trouble if there is a special lexical context
 					// selection for 'type' in its parent.
@@ -169,6 +168,10 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 		return result;
 	}
 
+  public boolean hasTypeArguments() {
+  	return _typeArguments.size() > 0;
+  }
+  
   public BasicJavaTypeReference cloneSelf() {
   	return new BasicJavaTypeReference( null ,(SimpleNameSignature)null);
   }

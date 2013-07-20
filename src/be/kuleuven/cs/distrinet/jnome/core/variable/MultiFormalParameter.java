@@ -15,5 +15,12 @@ public class MultiFormalParameter extends FormalParameter {
 	public MultiFormalParameter(SimpleNameSignature sig, JavaTypeReference T) {
 		super(sig,T.toArray(1));
 	}
+	
+	private MultiFormalParameter(SimpleNameSignature sig, JavaTypeReference T, boolean dummy) {
+		super(sig,T);
+	}
 
+	public static MultiFormalParameter createUnsafe(SimpleNameSignature sig, JavaTypeReference T) {
+		return new MultiFormalParameter(sig, T, false);
+	}
 }

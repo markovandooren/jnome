@@ -1,5 +1,5 @@
 <ivy-module version="2.0">
-  <info organisation="distrinet.cs.kuleuven.be" module="jnome"/>
+  <info organisation="${organisation}" module="jnome"/>
   <dependencies>
     <dependency org="distrinet.cs.kuleuven.be" name="chameleon" rev="latest.integration"/>
     <!-- Used to parse Java class files -->

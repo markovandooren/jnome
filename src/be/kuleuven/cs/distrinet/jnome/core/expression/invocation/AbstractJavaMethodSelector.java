@@ -447,6 +447,11 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 		
 		private Method _template;
 		
+		@Override
+		public Declaration template() {
+			return _template;
+		}
+		
 		private TypeAssignmentSet _assignment;
 		
 		public TypeAssignmentSet typeAssignment() {

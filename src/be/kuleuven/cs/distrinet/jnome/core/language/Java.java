@@ -71,6 +71,7 @@ import be.kuleuven.cs.distrinet.chameleon.support.rule.member.MemberOverridableB
 import be.kuleuven.cs.distrinet.chameleon.support.rule.member.TypeExtensibleByDefault;
 import be.kuleuven.cs.distrinet.chameleon.util.Pair;
 import be.kuleuven.cs.distrinet.chameleon.util.Util;
+import be.kuleuven.cs.distrinet.chameleon.workspace.View;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaExtendsReference;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaSuperReference;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;

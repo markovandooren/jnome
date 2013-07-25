@@ -20,7 +20,6 @@ public class LazyClassFileInputSource extends InputSourceImpl {
 	private ASMClassParser _parser;
 	
 	public LazyClassFileInputSource(ASMClassParser parser, InputSourceNamespace ns, DocumentLoader loader) throws InputException {
-		super(loader);
 		if(parser == null) {
 			throw new IllegalArgumentException();
 		}
@@ -28,7 +27,8 @@ public class LazyClassFileInputSource extends InputSourceImpl {
 		if(ns == null) {
 			throw new IllegalArgumentException();
 		}
-		setNamespace(ns);
+		init(ns,loader);
+//		setNamespace(ns);
 	}
 	
 	@Override

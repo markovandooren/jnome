@@ -1,5 +1,4 @@
 Manifest-Version: 1.0
-Main-Class: be.kuleuven.cs.distrinet.jnome.tool.FrontEnd
 Bundle-ManifestVersion: 2
 Bundle-Name: Chameleon Java Plugin
 Bundle-SymbolicName: be.chameleon.eclipse.java;singleton:=true
@@ -37,5 +36,7 @@ Require-Bundle: org.eclipse.swt;bundle-version="3.7.0",
  org.eclipse.jface;bundle-version="3.7.0",
  be.chameleon.eclipse;bundle-version="1.0.6",
  rejuse.distrinet.cs.kuleuven.be;bundle-version="1.0.10",
- org.junit;bundle-version="4.10.0"
+ org.junit;bundle-version="4.10.0",
+ Guava;bundle-version="14.0.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Main-Class: be.kuleuven.cs.distrinet.jnome.tool.FrontEnd

@@ -21,7 +21,7 @@ import be.kuleuven.cs.distrinet.jnome.input.ReflectiveClassParser;
 public class LazyReflectiveInputSource extends InputSourceImpl {
 
 	public LazyReflectiveInputSource(ClassLoader loader, ReflectiveClassParser parser, String fqn, LazyNamespace ns, DocumentLoader documentLoader) throws InputException {
-		super(documentLoader);
+		init(documentLoader);
 		_parser = parser;
 		_fqn = fqn;
 		_name = Util.getLastPart(fqn);

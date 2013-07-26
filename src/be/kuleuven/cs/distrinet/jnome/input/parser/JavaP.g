@@ -803,7 +803,14 @@ methodDeclaratorRest
     ;
     
 voidMethodDeclaratorRest
-    :   pars=formalParameters {for(FormalParameter par: pars.element){$MethodScope::method.header().addFormalParameter(par);}}
+    :   pars=formalParameters {
+         // On parse error, this may get executed even without a match.
+         if(pars != null) {
+         for(FormalParameter par: pars.element){
+            $MethodScope::method.header().addFormalParameter(par);
+         }
+         }
+       }
          (thrkw='throws' names=qualifiedNameList { ExceptionClause clause = new ExceptionClause(); for(String name: names.element){clause.add(new TypeExceptionDeclaration(typeRef(name)));$MethodScope::method.setExceptionClause(clause);}})?
         (   body=methodBody {$MethodScope::method.setImplementation(new RegularImplementation(body.element));}
         |   ';' {$MethodScope::method.setImplementation(null);}

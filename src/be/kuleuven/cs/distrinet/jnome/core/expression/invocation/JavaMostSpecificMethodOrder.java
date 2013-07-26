@@ -34,8 +34,8 @@ public class JavaMostSpecificMethodOrder<M extends MethodSelectionResult> extend
 			} else if(firstPhase > secondPhase) {
 				result = false;
 			} else {
-				Method first = firstResult.method();
-				Method second = secondResult.method();
+				Method first = firstResult.template();
+				Method second = secondResult.template();
 				if(! first.sameAs(second)) {
 					if(!(first.lastFormalParameter() instanceof MultiFormalParameter) && ! (second.lastFormalParameter() instanceof MultiFormalParameter)) {
 						result = containsFixedArity(first, second);

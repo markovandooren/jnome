@@ -27,9 +27,9 @@ public class ConstructorSelector extends AbstractConstructorSelector {
 		@Override
 		public Declaration finalDeclaration() throws LookupException {
 			if(invocation().isDiamondInvocation()) {
-				return instantiatedMethodTemplate(createDiamondConstructorDummy(method()));
+				return instantiatedMethodTemplate(createDiamondConstructorDummy(template()));
 			} else {
-				return method();
+				return template();
 			}
 		}
 		

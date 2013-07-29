@@ -92,7 +92,7 @@ public class JavaProjectConfigurator extends ProjectConfiguratorImpl implements 
 
 	@Override
 	protected ProjectConfiguration createProjectConfig(View view) throws ConfigException {
-		return new JavaProjectConfig(view, new LazyJavaFileInputSourceFactory());
+		return new JavaProjectConfiguration(view, new LazyJavaFileInputSourceFactory());
 	}
 
 	@Override

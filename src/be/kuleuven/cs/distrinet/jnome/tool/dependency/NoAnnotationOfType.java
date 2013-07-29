@@ -8,7 +8,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.util.Pair;
 import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 
-public class NoAnnotationOfType extends SafePredicate<Pair<Type, Set<Type>>> {
+public class NoAnnotationOfType extends SafePredicate<Pair<Type, Type>> {
 
 	public NoAnnotationOfType(Type type) {
 		if(type == null) {
@@ -18,7 +18,7 @@ public class NoAnnotationOfType extends SafePredicate<Pair<Type, Set<Type>>> {
 	}
 	
 	@Override
-	public boolean eval(Pair<Type, Set<Type>> object) {
+	public boolean eval(Pair<Type, Type> object) {
 		for(AnnotationModifier mod: object.first().descendants(AnnotationModifier.class)) {
 			try {
 				if(mod.type().subTypeOf(_type)) {

@@ -185,7 +185,7 @@ public class Java extends ObjectOrientedLanguage {
 	}
 		
 	public Java() {
-		this("Java", new BasicRevision(1,6,0));
+		this("Java", new BasicRevision(1,7,0));
 	}
 	
 	public Java clone() {

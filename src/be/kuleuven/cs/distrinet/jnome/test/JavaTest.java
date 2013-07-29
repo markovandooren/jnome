@@ -25,6 +25,8 @@ import be.kuleuven.cs.distrinet.jnome.workspace.JavaProjectConfigurator;
 
 public abstract class JavaTest extends CompositeTest {
 	
+	public final static File TEST_DATA = new File("testdata");
+	
 	protected abstract File projectFile();	
 	
 	/**
@@ -68,10 +70,8 @@ public abstract class JavaTest extends CompositeTest {
 		Java java = new JavaLanguageFactory().create();
 		repo.add(java);
 		java.setPlugin(ProjectConfigurator.class, new JavaProjectConfigurator(JavaLanguageFactory.javaBaseJar()));
-		BootstrapProjectConfig config = new BootstrapProjectConfig(projectFile().getParentFile(), workspace);
-//		config.readFromXML();
+		BootstrapProjectConfig config = new BootstrapProjectConfig(workspace);
 		project = config.project(projectFile(),null);
-//		View view = project.views().get(0);
 		return project;
 	}
 	

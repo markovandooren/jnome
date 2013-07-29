@@ -15,7 +15,7 @@ public class TestJnome extends JavaTest {
 	
 	@Override
 	protected File projectFile() {
-		return new File("testsource/testjnome.xml");
+		return new File(TEST_DATA,"testjnome.xml");
 	}
 
 //	public void setLogLevels() {

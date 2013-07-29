@@ -18,7 +18,7 @@ public class TestGenericRejuse extends JavaTest {
 
 	@Override
 	protected File projectFile() {
-		return new File("testsource/testgenericrejuse.xml");
+		return new File(TEST_DATA,"testgenericrejuse.xml");
 	}
 
 	@Override

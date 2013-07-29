@@ -11,7 +11,7 @@ public class TestAntlr extends JavaTest {
 
 	@Override
 	protected File projectFile() {
-		return new File("testsource/testantlr.xml");
+		return new File(TEST_DATA,"testantlr.xml");
 	}
 	
 	@Override

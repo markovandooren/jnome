@@ -37,7 +37,6 @@ public class BaseJavaProjectLoader extends JarLoader {
 	
 	
 	public void initializePredefinedElements() {
-		RootNamespace root = view().namespace();
 		_factory = new PrimitiveTypeFactory((JavaView) view());
 		addPrimitives("",this);
 	  addInfixOperators();

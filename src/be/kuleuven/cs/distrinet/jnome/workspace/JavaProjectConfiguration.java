@@ -15,9 +15,9 @@ import be.kuleuven.cs.distrinet.chameleon.workspace.Workspace;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.input.BaseJavaProjectLoader;
 
-public class JavaProjectConfig extends ProjectConfiguration {
+public class JavaProjectConfiguration extends ProjectConfiguration {
 
-	public JavaProjectConfig(View view, FileInputSourceFactory inputSourceFactory) throws ConfigException {
+	public JavaProjectConfiguration(View view, FileInputSourceFactory inputSourceFactory) throws ConfigException {
 		super(view, inputSourceFactory);
 	}
 	

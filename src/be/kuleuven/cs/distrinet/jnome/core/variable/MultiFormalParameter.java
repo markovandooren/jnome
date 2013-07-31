@@ -1,8 +1,8 @@
 package be.kuleuven.cs.distrinet.jnome.core.variable;
 
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.oo.variable.FormalParameter;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 
 public class MultiFormalParameter extends FormalParameter {
 

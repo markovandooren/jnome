@@ -198,7 +198,7 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		Iterator<Type> typeIterator = supers.iterator();
 		while((!result) && typeIterator.hasNext()) {
 			Type current = typeIterator.next();
-			result = (snd instanceof RawType && second.baseType().sameAs(current.baseType())) || sameBaseTypeWithCompatibleParameters(current, snd, new ArrayList());
+			result = (snd instanceof RawType && second.baseType().sameAs(current.baseType())) || sameBaseTypeWithCompatibleParameters(current, snd, new ArrayList<Pair<Type, TypeParameter>>());
 		}
 //		if(result) {
 //			synchronized(this) {
@@ -238,7 +238,7 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 					}
 					typeParameters.add(((InstantiatedTypeParameter) actualParam).capture((FormalTypeParameter) formalParam,toBeSubstituted));
 				}
-				result = type.language(Java.class).createdCapturedType(new ParameterSubstitution(TypeParameter.class,typeParameters), base);
+				result = type.language(Java.class).createdCapturedType(new ParameterSubstitution<>(TypeParameter.class,typeParameters), base);
 				result.setUniParent(type.parent());
 				for(TypeParameter newParameter: typeParameters) {
 					for(TypeParameter oldParameter: baseParameters) {

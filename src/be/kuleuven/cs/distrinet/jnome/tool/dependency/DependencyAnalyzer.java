@@ -23,6 +23,7 @@ import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
 import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
+import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 
@@ -30,10 +31,10 @@ import com.google.common.base.Function;
 
 public class DependencyAnalyzer extends Analyzer {
 
-	private Predicate<Pair<Type,Set<Type>>> _originPredicate;
-	private Predicate<CrossReference> _crossReferencePredicate;
+	private Predicate<Pair<Type,Set<Type>>,Nothing> _originPredicate;
+	private Predicate<CrossReference,Nothing> _crossReferencePredicate;
 
-	public DependencyAnalyzer(Project project, Predicate<Pair<Type,Set<Type>>> filter, Predicate<CrossReference> crossReferencePredicate) {
+	public DependencyAnalyzer(Project project, Predicate<Pair<Type,Set<Type>>,Nothing> filter, Predicate<CrossReference,Nothing> crossReferencePredicate) {
 		super(project);
 		if(filter == null) {
 			throw new IllegalArgumentException("The declaration predicate cannot be null");

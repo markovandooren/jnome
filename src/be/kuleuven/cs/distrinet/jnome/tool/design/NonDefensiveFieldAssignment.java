@@ -21,8 +21,8 @@ import be.kuleuven.cs.distrinet.chameleon.oo.variable.Variable;
 import be.kuleuven.cs.distrinet.chameleon.support.expression.AssignmentExpression;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
+import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
-import be.kuleuven.cs.distrinet.rejuse.predicate.UnsafePredicate;
 
 /**
  * Check whether a parameter is assigned to a field without being
@@ -63,7 +63,7 @@ public class NonDefensiveFieldAssignment extends Analysis<AssignmentExpression,V
 								Block b = (Block) stat.parent();
 								List<Statement> befores = b.statementsBefore(stat);
 								for(Statement before : befores) {
-									List<CrossReference> crefs = before.descendants(CrossReference.class, new UnsafePredicate<CrossReference,LookupException>(){
+									List<CrossReference> crefs = before.descendants(CrossReference.class, new AbstractPredicate<CrossReference,LookupException>(){
 										@Override
 										public boolean eval(CrossReference cref) throws LookupException {
 											return cref.getElement().sameAs(rhs);

@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
-import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
-import be.kuleuven.cs.distrinet.rejuse.predicate.UnsafePredicate;
 import be.kuleuven.cs.distrinet.chameleon.core.Config;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.language.Language;
@@ -17,6 +14,9 @@ import be.kuleuven.cs.distrinet.chameleon.workspace.LanguageRepository;
 import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
 import be.kuleuven.cs.distrinet.chameleon.workspace.View;
 import be.kuleuven.cs.distrinet.chameleon.workspace.Workspace;
+import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
+import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
+import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 
 public abstract class CommandLineTool {
 
@@ -62,7 +62,7 @@ public abstract class CommandLineTool {
 		return result;
 	}
 
-	public <E extends Element,X extends Exception> List<E> find(Class<E> kind, UnsafePredicate<E,X> unsafe) throws X {
+	public <E extends Element,X extends Exception> List<E> find(Class<E> kind, Predicate<E,X> unsafe) throws X {
 		List<E> result = new ArrayList<E>();
 		for(Namespace ns: namespaces()) {
 			result.addAll(ns.descendants(kind, unsafe));

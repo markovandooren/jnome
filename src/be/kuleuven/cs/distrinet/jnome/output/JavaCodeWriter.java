@@ -522,8 +522,8 @@ public class JavaCodeWriter extends Syntax {
     }
     result.append("\n");
     Collection<Type> types = part.declarations(Type.class);
-    new SafePredicate() {
-      public boolean eval(Object o) {
+    new SafePredicate<Type>() {
+      public boolean eval(Type o) {
         return !(o instanceof ArrayType);
       }
     }.filter(types);

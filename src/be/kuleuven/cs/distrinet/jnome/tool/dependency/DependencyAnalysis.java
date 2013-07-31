@@ -7,7 +7,6 @@ import be.kuleuven.cs.distrinet.chameleon.analysis.Analysis;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.plugin.output.Syntax;
 import be.kuleuven.cs.distrinet.chameleon.util.Pair;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.action.SafeAction;
@@ -18,8 +17,8 @@ import com.google.common.base.Function;
 public class DependencyAnalysis<D extends Type> extends Analysis<D, DependencyResult<D>> {
 
 	public DependencyAnalysis(Class<D> kind, 
-														Predicate<Pair<D, Set<D>>> declarationPredicate, 
-														Predicate<CrossReference> crossReferencePredicate,
+														Predicate<Pair<D, Set<D>>,Nothing> declarationPredicate, 
+														Predicate<CrossReference,Nothing> crossReferencePredicate,
 														Function<D,D> declarationMapper) {
 		super(kind);
 		if(crossReferencePredicate == null) {
@@ -37,9 +36,9 @@ public class DependencyAnalysis<D extends Type> extends Analysis<D, DependencyRe
 	}
 
 	
-	private Predicate<Pair<D, Set<D>>> _declarationPredicate;
+	private Predicate<Pair<D, Set<D>>,Nothing> _declarationPredicate;
 	
-	private Predicate<CrossReference> _crossReferencePredicate;
+	private Predicate<CrossReference,Nothing> _crossReferencePredicate;
 	
 	private Function<D, D> _declarationMapper;
 

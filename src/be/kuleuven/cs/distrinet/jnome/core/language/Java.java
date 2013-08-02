@@ -23,8 +23,6 @@ import be.kuleuven.cs.distrinet.chameleon.core.property.StaticChameleonProperty;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReferenceTarget;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.ElementReference;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.MultiTypeReference;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.SimpleReference;
 import be.kuleuven.cs.distrinet.chameleon.core.relation.EquivalenceRelation;
 import be.kuleuven.cs.distrinet.chameleon.core.relation.StrictPartialOrder;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;

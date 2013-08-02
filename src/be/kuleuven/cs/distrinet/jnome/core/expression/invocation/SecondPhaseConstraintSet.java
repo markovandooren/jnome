@@ -5,10 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
-import com.google.common.collect.ImmutableSet.Builder;
-
 import be.kuleuven.cs.distrinet.chameleon.core.language.WrongLanguageException;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
@@ -30,8 +26,12 @@ import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.chameleon.workspace.View;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
+import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.TypePredicate;
-import be.kuleuven.cs.distrinet.rejuse.predicate.UnsafePredicate;
+
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableSet.Builder;
+import com.google.common.collect.Sets;
 
 public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstraint> {
 
@@ -88,10 +88,10 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	
 	public Set<Type> MEC(TypeParameter Tj) throws LookupException {
 		final Set<Type> EC = EC(Tj);
-		new UnsafePredicate<Type, LookupException>() {
+		new AbstractPredicate<Type, LookupException>() {
 			@Override
 			public boolean eval(final Type first) throws LookupException {
-				return ! new UnsafePredicate<Type, LookupException>() {
+				return ! new AbstractPredicate<Type, LookupException>() {
 					@Override
 					public boolean eval(Type second) throws LookupException {
 						return (! first.sameAs(second)) && (second.subTypeOf(first));

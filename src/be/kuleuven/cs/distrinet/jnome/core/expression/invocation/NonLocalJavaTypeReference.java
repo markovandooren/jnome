@@ -17,7 +17,8 @@ import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
-import be.kuleuven.cs.distrinet.rejuse.predicate.UnsafePredicate;
+import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
+import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
 
 public class NonLocalJavaTypeReference extends NonLocalTypeReference implements JavaTypeReference {
 
@@ -39,7 +40,7 @@ public class NonLocalJavaTypeReference extends NonLocalTypeReference implements 
 	public static <E extends Element> E replace(TypeReference replacement, final Declaration declarator, E in, Class<E> kind) throws LookupException {
 		ObjectOrientedLanguage lang = in.language(ObjectOrientedLanguage.class);
 		E result = in;
-		UnsafePredicate<BasicTypeReference, LookupException> predicate = new UnsafePredicate<BasicTypeReference, LookupException>() {
+		Predicate<BasicTypeReference, LookupException> predicate = new AbstractPredicate<BasicTypeReference, LookupException>() {
 			@Override
 			public boolean eval(BasicTypeReference object) throws LookupException {
 				return object.getDeclarator().sameAs(declarator);

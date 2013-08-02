@@ -1,10 +1,6 @@
 package be.kuleuven.cs.distrinet.jnome.core.language;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.JarURLConnection;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.jar.JarFile;

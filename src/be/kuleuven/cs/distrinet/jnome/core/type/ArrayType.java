@@ -1,8 +1,6 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
@@ -13,6 +11,8 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.SubtypeRelation;
 import be.kuleuven.cs.distrinet.chameleon.oo.variable.RegularMemberVariable;
 import be.kuleuven.cs.distrinet.chameleon.support.modifier.Final;
 import be.kuleuven.cs.distrinet.chameleon.workspace.View;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 
 /**
  * @author Marko van Dooren

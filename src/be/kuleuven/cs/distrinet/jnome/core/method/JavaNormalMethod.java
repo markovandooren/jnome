@@ -1,6 +1,5 @@
 package be.kuleuven.cs.distrinet.jnome.core.method;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Signature;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.oo.member.DeclarationWithParametersSignature;
@@ -10,10 +9,9 @@ import be.kuleuven.cs.distrinet.chameleon.oo.member.OverridesRelation;
 import be.kuleuven.cs.distrinet.chameleon.oo.member.SimpleNameDeclarationWithParametersSignature;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.MethodHeader;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.RegularMethod;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
-import be.kuleuven.cs.distrinet.chameleon.util.CreationStackTrace;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 
 public class JavaNormalMethod extends NormalMethod {
 		

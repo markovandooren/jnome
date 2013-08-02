@@ -3,7 +3,6 @@
  */
 package be.kuleuven.cs.distrinet.jnome.core.language;
 
-import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.relation.StrictPartialOrder;
 import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
@@ -12,6 +11,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
 import be.kuleuven.cs.distrinet.chameleon.oo.member.SimpleNameDeclarationWithParametersSignature;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
+import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 
 public class JavaImplementsRelation extends StrictPartialOrder<Member> {
 

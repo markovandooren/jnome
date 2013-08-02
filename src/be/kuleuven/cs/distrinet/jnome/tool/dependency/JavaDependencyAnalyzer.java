@@ -22,14 +22,23 @@ import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
 import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
+import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
 
 import com.google.common.base.Function;
 
 public class JavaDependencyAnalyzer extends DependencyAnalyzer<Type> {
 
+<<<<<<< HEAD:src/be/kuleuven/cs/distrinet/jnome/tool/dependency/JavaDependencyAnalyzer.java
 	public JavaDependencyAnalyzer(Project project, Predicate<Pair<Type,Type>> filter, Predicate<CrossReference<?>> crossReferencePredicate) {
 		super(project,Type.class);
+=======
+	private Predicate<Pair<Type,Set<Type>>,Nothing> _originPredicate;
+	private Predicate<CrossReference,Nothing> _crossReferencePredicate;
+
+	public DependencyAnalyzer(Project project, Predicate<Pair<Type,Set<Type>>,Nothing> filter, Predicate<CrossReference,Nothing> crossReferencePredicate) {
+		super(project);
+>>>>>>> predicate_exception:src/be/kuleuven/cs/distrinet/jnome/tool/dependency/DependencyAnalyzer.java
 		if(filter == null) {
 			throw new IllegalArgumentException("The declaration predicate cannot be null");
 		}

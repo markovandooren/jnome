@@ -20,11 +20,10 @@ import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
 import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
 import be.kuleuven.cs.distrinet.jnome.eclipse.AnalysisTool;
+import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
-import be.kuleuven.cs.distrinet.rejuse.predicate.And;
 import be.kuleuven.cs.distrinet.rejuse.predicate.False;
 import be.kuleuven.cs.distrinet.rejuse.predicate.GlobPredicate;
-import be.kuleuven.cs.distrinet.rejuse.predicate.Or;
 import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.True;
@@ -52,6 +51,7 @@ public class DependencyAnalysisTool extends AnalysisTool {
 	@Override
 	protected void check(Project project, OutputStreamWriter writer, AnalysisOptions options) throws LookupException, InputException, IOException {
 		ObjectOrientedView view = (ObjectOrientedView) project.views().get(0);
+<<<<<<< HEAD
 		Predicate<Pair<Type, Type>> filter = 
 				new And<> (hierarchyFilter(options, view), annotationFilter(options, view));
 		filter = new And<> (filter, annonymousTypeFilter(options,view));
@@ -63,6 +63,20 @@ public class DependencyAnalysisTool extends AnalysisTool {
 	}
 
 	protected Predicate<CrossReference<?>> crossReferenceSourceFilter() {
+=======
+		Predicate<Pair<Type, Set<Type>>,Nothing> filter = 
+				hierarchyFilter(options, view).and(annotationFilter(options, view));
+		filter = filter.and(annonymousTypeFilter(options,view))
+                   .and(packageFilter(options,view));
+		Predicate<CrossReference,Nothing> crossReferenceFilter =
+				crossReferenceSourceFilter()
+				.and(crossReferenceNonInheritanceFilter())
+				.and(crossReferenceHierarchyFilter(options,view));
+		new DependencyAnalyzer(project,filter,crossReferenceFilter).visualize(writer);
+	}
+
+	protected SafePredicate<CrossReference> crossReferenceSourceFilter() {
+>>>>>>> predicate_exception
 //		return new True<>();
 		return new SafePredicate<CrossReference<?>>() {
 
@@ -81,8 +95,13 @@ public class DependencyAnalysisTool extends AnalysisTool {
 	
 	}
 
+<<<<<<< HEAD
 	protected Predicate<CrossReference<?>> crossReferenceNonInheritanceFilter() {
 	return new SafePredicate<CrossReference<?>>() {
+=======
+	protected SafePredicate<CrossReference> crossReferenceNonInheritanceFilter() {
+	return new SafePredicate<CrossReference>() {
+>>>>>>> predicate_exception
 
 		@Override
 		public boolean eval(CrossReference<?> object) {
@@ -92,8 +111,13 @@ public class DependencyAnalysisTool extends AnalysisTool {
 
 }
 
+<<<<<<< HEAD
 	protected Predicate<Pair<Type, Type>> annonymousTypeFilter(AnalysisOptions options, ObjectOrientedView view) {
 		return new SafePredicate<Pair<Type, Type>>() {
+=======
+	protected SafePredicate<Pair<Type, Set<Type>>> annonymousTypeFilter(AnalysisOptions options, ObjectOrientedView view) {
+		return new SafePredicate<Pair<Type, Set<Type>>>() {
+>>>>>>> predicate_exception
 
 			@Override
 			public boolean eval(Pair<Type, Type> object)  {
@@ -103,6 +127,7 @@ public class DependencyAnalysisTool extends AnalysisTool {
 		};
 	}
 	
+<<<<<<< HEAD
 	protected Predicate<Pair<Type, Type>> annotationFilter(AnalysisOptions options, ObjectOrientedView view) {
 		List<String> ignoredAnnotation = ignoredAnnotationTypes((DependencyOptions) options);
 		Predicate<Pair<Type,Type>> filter = new True<>();
@@ -110,17 +135,34 @@ public class DependencyAnalysisTool extends AnalysisTool {
 			try {
 				Type type = view.findType(fqn);
 				filter = new And<Pair<Type, Type>>(filter, new NoAnnotationOfType(type));
+=======
+	protected Predicate<Pair<Type, Set<Type>>,Nothing> annotationFilter(AnalysisOptions options, ObjectOrientedView view) {
+		List<String> ignoredAnnotation = ignoredAnnotationTypes((DependencyOptions) options);
+		Predicate<Pair<Type,Set<Type>>,Nothing> filter = new True<>();
+		for(String fqn: ignoredAnnotation) {
+			try {
+				Type type = view.findType(fqn);
+				filter = filter.and(new NoAnnotationOfType(type));
+>>>>>>> predicate_exception
 			} catch (LookupException e) {
 			}
 		}
 		return filter;
 	}	
 	
+<<<<<<< HEAD
 	protected Predicate<Pair<Type, Type>> packageFilter(final AnalysisOptions options, ObjectOrientedView view) {
 		return new AbstractPredicate<Pair<Type,Type>>() {
 
 			@Override
 			public boolean eval(Pair<Type, Type> object) throws Exception {
+=======
+	protected SafePredicate<Pair<Type, Set<Type>>> packageFilter(final AnalysisOptions options, ObjectOrientedView view) {
+		return new SafePredicate<Pair<Type,Set<Type>>>() {
+
+			@Override
+			public boolean eval(Pair<Type, Set<Type>> object) {
+>>>>>>> predicate_exception
 				return packagePredicate(options).eval(object.first());
 			}
 		};
@@ -136,15 +178,15 @@ public class DependencyAnalysisTool extends AnalysisTool {
 //		};
 //	}
 	
-	protected Predicate<Type> packagePredicate(AnalysisOptions options) {
+	protected Predicate<Type,Nothing> packagePredicate(AnalysisOptions options) {
 		List<String> packageNames = packageNames((DependencyOptions) options);
-		Predicate<Type> result;
+		Predicate<Type,Nothing> result;
 		if(packageNames.isEmpty()) {
 			result = new True<>();
 		} else {
 			result = new False<>();
 			for(final String string: packageNames) {
-				result = new Or<>(result,
+				result = result.or(
 						new SafePredicate<Type>() {
 
 					@Override
@@ -158,43 +200,51 @@ public class DependencyAnalysisTool extends AnalysisTool {
 		return result;
 	}
 	
+<<<<<<< HEAD
 	protected Predicate<Pair<Type, Type>> hierarchyFilter(final AnalysisOptions options, final ObjectOrientedView view) {
 		return new AbstractPredicate<Pair<Type,Type>>() {
 
 			@Override
 			public boolean eval(Pair<Type, Type> object) throws Exception {
 				return hierarchyPredicate(options, view).eval(object.first());
+=======
+	protected SafePredicate<Pair<Type, Set<Type>>> hierarchyFilter(final AnalysisOptions options, final ObjectOrientedView view) throws LookupException {
+		final Predicate<Type, Nothing> hierarchyPredicate = hierarchyPredicate(options, view);
+		return new SafePredicate<Pair<Type,Set<Type>>>() {
+
+			@Override
+			public boolean eval(Pair<Type, Set<Type>> object)  {
+				return hierarchyPredicate.eval(object.first());
+>>>>>>> predicate_exception
 			}
 		};
 	}
-	protected Predicate<CrossReference> crossReferenceHierarchyFilter(final AnalysisOptions options, final ObjectOrientedView view) {
-		return new AbstractPredicate<CrossReference>() {
+	
+	protected Predicate<CrossReference,Nothing> crossReferenceHierarchyFilter(final AnalysisOptions options, final ObjectOrientedView view) throws LookupException {
+		final Predicate<Type, Nothing> hierarchyPredicate = hierarchyPredicate(options, view);
+		return new AbstractPredicate<CrossReference,LookupException>() {
 
 			@Override
-			public boolean eval(CrossReference object) throws Exception {
+			public boolean eval(CrossReference object) throws LookupException{
 				Declaration element = object.getElement();
 				Type t = element.nearestAncestorOrSelf(Type.class);
 				if(t != null) {
-					return hierarchyPredicate(options, view).eval(t);
+					return hierarchyPredicate.eval(t);
 				} else {
 					return true;
 				}
 			}
-		};
+		}.guard(true);
 	}
 
 	
-	protected Predicate<Type> hierarchyPredicate(AnalysisOptions options, ObjectOrientedView view) {
-		Predicate<Type> filter = new True<>();
+	protected Predicate<Type,Nothing> hierarchyPredicate(AnalysisOptions options, ObjectOrientedView view) throws LookupException {
+		Predicate<Type,Nothing> filter = new SourceType();
 		List<String> ignored = ignoredHierarchies((DependencyOptions) options);
 		for(String fqn: ignored) {
-			try {
 				Type type = view.findType(fqn);
-				filter = new And<>(filter,new NoSubtypeOf(type));
-			} catch(LookupException exc) {
-			}
+				filter = filter.and(new NoSubtypeOf(type));
 		}
-		filter = new And<>(new SourceType(),filter);
 		return filter;
 	}
 

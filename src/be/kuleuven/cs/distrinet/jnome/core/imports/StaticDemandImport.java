@@ -8,7 +8,7 @@ import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.DemandImport;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.SimpleReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
-import be.kuleuven.cs.distrinet.rejuse.predicate.UnsafePredicate;
+import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
 
 public class StaticDemandImport extends DemandImport {
 
@@ -18,7 +18,7 @@ public class StaticDemandImport extends DemandImport {
 	
 	@Override
 	protected void filterImportedElements(List<Declaration> declarations) throws LookupException {
-		new UnsafePredicate<Declaration, LookupException>() {
+		new AbstractPredicate<Declaration, LookupException>() {
 
 			@Override
 			public boolean eval(Declaration object) throws LookupException {

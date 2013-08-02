@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.relation.WeakPartialOrder;
@@ -27,15 +26,12 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeConstraint;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.WildCardType;
 import be.kuleuven.cs.distrinet.chameleon.util.Pair;
-import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.RawType;
-import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
-import be.kuleuven.cs.distrinet.rejuse.predicate.UnsafePredicate;
 
 public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 	
@@ -202,7 +198,7 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 		Iterator<Type> typeIterator = supers.iterator();
 		while((!result) && typeIterator.hasNext()) {
 			Type current = typeIterator.next();
-			result = (snd instanceof RawType && second.baseType().sameAs(current.baseType())) || sameBaseTypeWithCompatibleParameters(current, snd, new ArrayList());
+			result = (snd instanceof RawType && second.baseType().sameAs(current.baseType())) || sameBaseTypeWithCompatibleParameters(current, snd, new ArrayList<Pair<Type, TypeParameter>>());
 		}
 //		if(result) {
 //			synchronized(this) {
@@ -242,7 +238,7 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 					}
 					typeParameters.add(((InstantiatedTypeParameter) actualParam).capture((FormalTypeParameter) formalParam,toBeSubstituted));
 				}
-				result = type.language(Java.class).createdCapturedType(new ParameterSubstitution(TypeParameter.class,typeParameters), base);
+				result = type.language(Java.class).createdCapturedType(new ParameterSubstitution<>(TypeParameter.class,typeParameters), base);
 				result.setUniParent(type.parent());
 				for(TypeParameter newParameter: typeParameters) {
 					for(TypeParameter oldParameter: baseParameters) {

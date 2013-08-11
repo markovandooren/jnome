@@ -298,7 +298,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		while(searching) {
 			// Keep processing until there are no equality constraints.
 			List<? extends SecondPhaseConstraint> constraints = constraints();
-			new TypePredicate<SecondPhaseConstraint, EqualTypeConstraint>(EqualTypeConstraint.class).filter(constraints);
+			new TypePredicate<EqualTypeConstraint>(EqualTypeConstraint.class).filter(constraints);
 		  EqualTypeConstraint eq = first(EqualTypeConstraint.class);
 			if(eq != null) {
 			  eq.process();

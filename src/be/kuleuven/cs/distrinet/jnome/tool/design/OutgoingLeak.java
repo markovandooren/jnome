@@ -15,34 +15,12 @@ import be.kuleuven.cs.distrinet.chameleon.oo.variable.Variable;
 import be.kuleuven.cs.distrinet.chameleon.support.statement.ReturnStatement;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.tool.IsCollectionType;
+import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 
 public class OutgoingLeak extends Analysis<ReturnStatement, Verification> {
 
 	public OutgoingLeak() {
-		super(ReturnStatement.class);
-	}
-
-	@Override
-	public Verification analyse(ReturnStatement statement) {
-		Verification result = Valid.create();
-		Method nearestAncestor = statement.nearestAncestor(Method.class);
-		if(nearestAncestor != null && nearestAncestor.isTrue(statement.language(Java.class).PUBLIC)) {
-			try {
-				Expression expr = statement.getExpression();
-				if(expr instanceof CrossReference) {
-					Declaration declaration = ((CrossReference) expr).getElement();
-					if(declaration instanceof MemberVariable) {
-						Type type = ((MemberVariable) declaration).getType();
-						if(new IsCollectionType().eval(type)) {
-							result = new OutgoingCollectionEncapsulationViolation(nearestAncestor, (Variable) declaration);
-						}
-					}
-				}
-			}catch(LookupException exc) {
-				exc.printStackTrace();
-			}
-		}
-		return result;
+		super(ReturnStatement.class, Valid.create());
 	}
 
 	private static class OutgoingCollectionEncapsulationViolation extends AtomicProblem{
@@ -65,4 +43,28 @@ public class OutgoingLeak extends Analysis<ReturnStatement, Verification> {
 		}
 		
 	}
+
+	@Override
+	protected void doPerform(ReturnStatement statement) throws Nothing {
+		Verification result = Valid.create();
+		Method nearestAncestor = statement.nearestAncestor(Method.class);
+		if(nearestAncestor != null && nearestAncestor.isTrue(statement.language(Java.class).PUBLIC)) {
+			try {
+				Expression expr = statement.getExpression();
+				if(expr instanceof CrossReference) {
+					Declaration declaration = ((CrossReference) expr).getElement();
+					if(declaration instanceof MemberVariable) {
+						Type type = ((MemberVariable) declaration).getType();
+						if(new IsCollectionType().eval(type)) {
+							result = new OutgoingCollectionEncapsulationViolation(nearestAncestor, (Variable) declaration);
+						}
+					}
+				}
+			}catch(LookupException exc) {
+				exc.printStackTrace();
+			}
+		}
+		setResult(result().and(result));
+	}
+	
 }

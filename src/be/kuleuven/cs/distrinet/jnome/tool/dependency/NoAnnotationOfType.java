@@ -1,16 +1,15 @@
 package be.kuleuven.cs.distrinet.jnome.tool.dependency;
 
-import java.util.Set;
-
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.oo.modifier.AnnotationModifier;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.util.Pair;
-import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
+import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
+import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
 
-public class NoAnnotationOfType extends SafePredicate<Pair<Type, Type>> {
+public class NoAnnotationOfType extends UniversalPredicate<Type,Nothing> {
 
 	public NoAnnotationOfType(Type type) {
+		super(Type.class);
 		if(type == null) {
 			throw new IllegalArgumentException("The type of the annotation is null.");
 		}
@@ -18,8 +17,8 @@ public class NoAnnotationOfType extends SafePredicate<Pair<Type, Type>> {
 	}
 	
 	@Override
-	public boolean eval(Pair<Type, Type> object) {
-		for(AnnotationModifier mod: object.first().descendants(AnnotationModifier.class)) {
+	public boolean uncheckedEval(Type object) {
+		for(AnnotationModifier mod: object.descendants(AnnotationModifier.class)) {
 			try {
 				if(mod.type().subTypeOf(_type)) {
 					return false;

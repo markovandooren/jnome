@@ -21,6 +21,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.variable.Variable;
 import be.kuleuven.cs.distrinet.chameleon.support.expression.AssignmentExpression;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
+import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 
@@ -33,11 +34,38 @@ import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 public class NonDefensiveFieldAssignment extends Analysis<AssignmentExpression,Verification> {
 
 	public NonDefensiveFieldAssignment() {
-		super(AssignmentExpression.class);
+		super(AssignmentExpression.class, Valid.create());
 	}
 
+	
+	
+	private static class NonDefensiveFieldAssignmentResult extends AtomicProblem {
+
+		public NonDefensiveFieldAssignmentResult(FormalParameter parameter, Variable member) {
+			super(parameter);
+			this._parameter = parameter;
+			this._member = member;
+		}
+
+		private FormalParameter _parameter;
+		private Variable _member; 
+		
+		@Override
+		public String message() {
+			Method m = _parameter.nearestAncestor(Method.class);
+			Type t = m.nearestAncestor(Type.class);
+			return "Warning: encapsulation: unchecked assignment to internal state: parameter "+_parameter.name()+ 
+					         " of public method "+m.name()+" in "+t.getFullyQualifiedName()+ 
+					         " is assigned to field "+_member.name()+
+					         " without being referenced in the statements before the assignment.";
+		}
+		
+	}
+
+
+
 	@Override
-	public Verification analyse(AssignmentExpression assignment) {
+	protected void doPerform(AssignmentExpression assignment) throws Nothing {
 		Verification result = Valid.create();
 		try {
 			final Method method = assignment.nearestAncestor(Method.class);
@@ -84,29 +112,7 @@ public class NonDefensiveFieldAssignment extends Analysis<AssignmentExpression,V
 		catch(LookupException exc) {
 			// swallow for now.
 		}
-		return result;
+		setResult(result().and(result));
 	}
 	
-	private static class NonDefensiveFieldAssignmentResult extends AtomicProblem {
-
-		public NonDefensiveFieldAssignmentResult(FormalParameter parameter, Variable member) {
-			super(parameter);
-			this._parameter = parameter;
-			this._member = member;
-		}
-
-		private FormalParameter _parameter;
-		private Variable _member; 
-		
-		@Override
-		public String message() {
-			Method m = _parameter.nearestAncestor(Method.class);
-			Type t = m.nearestAncestor(Type.class);
-			return "Warning: encapsulation: unchecked assignment to internal state: parameter "+_parameter.name()+ 
-					         " of public method "+m.name()+" in "+t.getFullyQualifiedName()+ 
-					         " is assigned to field "+_member.name()+
-					         " without being referenced in the statements before the assignment.";
-		}
-		
-	}
 }

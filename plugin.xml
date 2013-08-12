@@ -10,10 +10,31 @@
          </bootstrapper>
    </extension>
 
-   <extension point="org.eclipse.core.contenttype.contentTypes"> 
+<!--   <extension point="org.eclipse.core.contenttype.contentTypes"> 
       <file-association 
        content-type="be.chameleon.eclipse.chameleonsource"
        file-extensions="java"/>
-   </extension> 
+   </extension> --> 
+
+
+<!--   <extension
+         id="JDTNature"
+         name="JDT Background Model"
+         point="org.eclipse.core.resources.natures">
+         <runtime>
+         	 <run class="be.kuleuven.cs.distrinet.chameleon.eclipse.project.ChameleonProjectNature"></run>
+         </runtime>
+         <builder id="be.chameleon.eclipse.SyncBuilder"/>
+   </extension> -->
+   
+<!--  <extension
+       id="ChameleonBuilder"
+       name="Chameleon Builder" 
+       point="org.eclipse.core.resources.builders">
+       <builder hasNature="true"> 
+       <run class="be.kuleuven.cs.distrinet.chameleon.eclipse.builder.ChameleonBuilder"/> 
+      </builder>
+  </extension> -->
+
 
 </plugin>

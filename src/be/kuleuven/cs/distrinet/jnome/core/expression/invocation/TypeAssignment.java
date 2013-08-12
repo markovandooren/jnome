@@ -34,4 +34,8 @@ public abstract class TypeAssignment {
 		}
 	}
 
+	public abstract TypeAssignment clone();
+	
+	public abstract TypeAssignment updatedTo(TypeParameter newParameter);
+	
 }

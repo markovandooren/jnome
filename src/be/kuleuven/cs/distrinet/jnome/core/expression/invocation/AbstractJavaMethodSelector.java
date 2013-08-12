@@ -438,7 +438,9 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 		
 		@Override
 		public SelectionResult updatedTo(Declaration declaration) {
-			return new BasicMethodSelectionResult((Method) declaration, _assignment, _phase);
+			Method method = (Method) declaration;
+			TypeAssignmentSet assignment = _assignment == null ? null : _assignment.updatedTo(method.typeParameters());
+			return new BasicMethodSelectionResult(method, assignment, _phase);
 		}
 
 		private Method _template;

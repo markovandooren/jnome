@@ -2,7 +2,9 @@ package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
@@ -139,6 +141,27 @@ public class TypeAssignmentSet {
 				_completeList.set(i, newParameter);
 			}
 		}
+	}
+	
+	public TypeAssignmentSet updatedTo(List<TypeParameter> newParameters) {
+		TypeAssignmentSet result = new TypeAssignmentSet(_completeList);
+		Map<String, TypeParameter> map = new HashMap<>();
+		for(TypeParameter parameter: newParameters) {
+			map.put(parameter.name(),parameter);
+		}
+		for(TypeAssignment assignment: assignments()) {
+			String name = assignment.parameter().name();
+			result.add(assignment.updatedTo(map.get(name)));
+		}
+		return result;
+	}
+	
+	public TypeAssignmentSet clone() {
+		TypeAssignmentSet result = new TypeAssignmentSet(_completeList);
+		for(TypeAssignment assignment: assignments()) {
+			result.add(assignment.clone());
+		}
+		return result;
 	}
 
 }

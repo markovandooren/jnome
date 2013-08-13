@@ -10,11 +10,11 @@
          </bootstrapper>
    </extension>
 
-<!--   <extension point="org.eclipse.core.contenttype.contentTypes"> 
+   <extension point="org.eclipse.core.contenttype.contentTypes"> 
       <file-association 
        content-type="be.chameleon.eclipse.chameleonsource"
        file-extensions="java"/>
-   </extension> --> 
+   </extension> 
 
 
 <!--   <extension

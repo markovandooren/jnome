@@ -16,17 +16,55 @@
        file-extensions="java"/>
    </extension> 
 
+ <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <command
+               commandId="be.kuleuven.cs.distrinet.jnome.actions.project.AddChameleonNature"
+               label="Add Chameleon Background Analysis Nature">
+            <!--<visibleWhen>
+              	<test property="chameleon.properties.isJDTProject" forcePluginActivation="true"/>
+            </visibleWhen>-->
+            
+            <visibleWhen>
+				           <with variable="activeMenuSelection">
+				            <iterate ifEmpty="false">
+                 <and>
+				             <adapt type="org.eclipse.core.resources.IResource">
+				               <test property="org.eclipse.core.resources.projectNature" value="org.eclipse.jdt.core.javanature" />
+				             </adapt>
+                     <not>
+				             <adapt type="org.eclipse.core.resources.IResource">
+				               <test property="org.eclipse.core.resources.projectNature" value="be.chameleon.eclipse.BackgroundNature" />
+				             </adapt>
+                     </not>
+				             
+                 </and>
+				            </iterate>
+				           </with>
+         			</visibleWhen>
+         </command>
+      </menuContribution>
+  </extension>
 
-<!--   <extension
-         id="JDTNature"
-         name="JDT Background Model"
-         point="org.eclipse.core.resources.natures">
-         <runtime>
-         	 <run class="be.kuleuven.cs.distrinet.chameleon.eclipse.project.ChameleonProjectNature"></run>
-         </runtime>
-         <builder id="be.chameleon.eclipse.SyncBuilder"/>
-   </extension> -->
-   
+
+
+  <extension point="org.eclipse.ui.commands">
+    <command
+        name="Add Chameleon Background Analysis Nature"
+        description="Add Chameleon Background Analysis Nature"
+        id="be.kuleuven.cs.distrinet.jnome.actions.project.AddChameleonNature">
+    </command>
+  </extension>
+
+  <extension point="org.eclipse.ui.handlers">
+    <handler
+            class="be.kuleuven.cs.distrinet.jnome.eclipse.action.AddChameleonBackgroundNature"
+            commandId="be.kuleuven.cs.distrinet.jnome.actions.project.AddChameleonNature">
+    </handler>
+  </extension>
+
 <!--  <extension
        id="ChameleonBuilder"
        name="Chameleon Builder" 

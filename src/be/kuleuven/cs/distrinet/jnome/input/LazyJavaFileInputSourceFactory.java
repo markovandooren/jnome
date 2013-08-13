@@ -14,8 +14,10 @@ public class LazyJavaFileInputSourceFactory extends FileInputSourceFactory {
 
 	@Override
 	public IFileInputSource create(File file, DirectoryLoader loader) throws InputException {
+		InputSourceNamespace currentNamespace = (InputSourceNamespace) currentNamespace();
+//		System.out.println("Adding file: "+file.getAbsolutePath()+ " to namespace "+currentNamespace.getFullyQualifiedName());
 		String declarationName = Util.getAllButLastPart(file.getName());
-		LazyFileInputSource javaFileInputSource = new LazyFileInputSource(file, declarationName, (InputSourceNamespace) currentNamespace(),loader);
+		LazyFileInputSource javaFileInputSource = new LazyFileInputSource(file, declarationName, currentNamespace,loader);
 		return javaFileInputSource;
 	}
 	

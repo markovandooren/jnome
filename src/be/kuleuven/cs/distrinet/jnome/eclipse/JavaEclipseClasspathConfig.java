@@ -20,7 +20,8 @@ import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
 import be.kuleuven.cs.distrinet.jnome.input.BaseJavaProjectLoader;
 import be.kuleuven.cs.distrinet.jnome.input.LazyJavaFileInputSourceFactory;
 import be.kuleuven.cs.distrinet.jnome.workspace.JarLoader;
-import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
+import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
+import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
 import be.kuleuven.cs.distrinet.rejuse.string.Strings;
 
 public class JavaEclipseClasspathConfig extends ConfigElement {
@@ -118,7 +119,7 @@ public class JavaEclipseClasspathConfig extends ConfigElement {
 		}
 		
 		private void loadBin(String path) throws ProjectException {
-			SafePredicate<? super String> binaryFileFilter = java().plugin(ProjectConfigurator.class).binaryFileFilter();
+			Predicate<? super String,Nothing> binaryFileFilter = java().plugin(ProjectConfigurator.class).binaryFileFilter();
 			if(path.endsWith(".jar")) {
 				JarFile file;
 				try {

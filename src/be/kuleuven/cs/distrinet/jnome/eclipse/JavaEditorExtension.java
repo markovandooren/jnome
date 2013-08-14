@@ -1,17 +1,21 @@
 package be.kuleuven.cs.distrinet.jnome.eclipse;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.jnome.core.modifier.Default;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.jdt.core.JavaCore;
+
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.modifier.Modifier;
 import be.kuleuven.cs.distrinet.chameleon.eclipse.connector.EclipseEditorExtension;
 import be.kuleuven.cs.distrinet.chameleon.eclipse.presentation.treeview.CompositeIconProvider;
 import be.kuleuven.cs.distrinet.chameleon.eclipse.presentation.treeview.DefaultIconProvider;
 import be.kuleuven.cs.distrinet.chameleon.eclipse.presentation.treeview.IconProvider;
+import be.kuleuven.cs.distrinet.chameleon.eclipse.util.Projects;
 import be.kuleuven.cs.distrinet.chameleon.exception.ModelException;
 import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
@@ -27,6 +31,8 @@ import be.kuleuven.cs.distrinet.chameleon.support.modifier.Private;
 import be.kuleuven.cs.distrinet.chameleon.support.modifier.Protected;
 import be.kuleuven.cs.distrinet.chameleon.support.modifier.Public;
 import be.kuleuven.cs.distrinet.chameleon.support.modifier.Static;
+import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
+import be.kuleuven.cs.distrinet.jnome.core.modifier.Default;
 
 /**
  * @author Marko van Dooren
@@ -147,4 +153,16 @@ public class JavaEditorExtension extends EclipseEditorExtension {
 	public final IconProvider CLASS_ICON_PROVIDER;
 	public final IconProvider FIELD_ICON_PROVIDER;
 	public final IconProvider MEMBER_ICON_PROVIDER;
+
+	@Override
+	public boolean canLoad(IProject project) {
+		return Projects.hasNature(project, JavaCore.NATURE_ID);
+	}
+	
+	@Override
+	public Project load(IProject project) {
+		File root = project.getFile(".").getLocation().toFile();
+		return new JavaEclipseProjectConfig(root, containerConfiguration).project();
+	}
+	
 }

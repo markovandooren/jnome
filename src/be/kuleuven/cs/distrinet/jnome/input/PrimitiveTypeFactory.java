@@ -19,6 +19,7 @@ import be.kuleuven.cs.distrinet.chameleon.support.modifier.Native;
 import be.kuleuven.cs.distrinet.chameleon.support.modifier.Public;
 import be.kuleuven.cs.distrinet.chameleon.support.modifier.ValueType;
 import be.kuleuven.cs.distrinet.chameleon.workspace.DirectInputSource;
+import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoader;
 import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoaderImpl;
 import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.View;
@@ -42,7 +43,7 @@ public class PrimitiveTypeFactory {
 		return (ObjectOrientedLanguage) _view.language();
 	}
 	
-	public void addPrimitives(String root, DocumentLoaderImpl loader) {
+	public void addPrimitives(String root, DocumentLoader loader) {
 		addVoid(root,loader);
 		addDouble(root,loader);
 		addFloat(root,loader);
@@ -54,7 +55,7 @@ public class PrimitiveTypeFactory {
 		addBoolean(root,loader);
 	}
 
-	protected void addBoolean(String mm, DocumentLoaderImpl loader) {
+	protected void addBoolean(String mm, DocumentLoader loader) {
 		Public pub = new Public();
 		Type booleanT = new PrimitiveType("boolean");
 		booleanT.addModifier(pub);
@@ -199,7 +200,7 @@ public class PrimitiveTypeFactory {
 		addPlusString(type);
 	}
 
-	protected void addDouble(String mm, DocumentLoaderImpl loader) {
+	protected void addDouble(String mm, DocumentLoader loader) {
 		Public pub = new Public();
 		Type doubleT = new PrimitiveType("double");
 		try {
@@ -216,7 +217,7 @@ public class PrimitiveTypeFactory {
 		view().storePrimitiveType("double",doubleT);
 	}
 
-	protected void addLong(String mm, DocumentLoaderImpl loader) {
+	protected void addLong(String mm, DocumentLoader loader) {
 		Public pub = new Public();
 
 		Type longT = new PrimitiveType("long") {
@@ -241,7 +242,7 @@ public class PrimitiveTypeFactory {
 		view().storePrimitiveType("long",longT);
 	}
 
-	protected void addFloat(String mm, DocumentLoaderImpl loader) {
+	protected void addFloat(String mm, DocumentLoader loader) {
 		Public pub = new Public();
 
 		Type floatT = new PrimitiveType("float") {
@@ -286,7 +287,7 @@ public class PrimitiveTypeFactory {
 
 	}
 
-	protected void addInt(String mm, DocumentLoaderImpl loader) {
+	protected void addInt(String mm, DocumentLoader loader) {
 		Public pub = new Public();
 
 		Type intT = new PrimitiveType("int") {
@@ -312,7 +313,7 @@ public class PrimitiveTypeFactory {
 		view().storePrimitiveType("int",intT);
 	}
 
-	protected void addByte(String mm, DocumentLoaderImpl loader) {
+	protected void addByte(String mm, DocumentLoader loader) {
 		Public pub = new Public();
 		Type byteT = new PrimitiveType("byte") {
 			public boolean assignableTo(Type other) {
@@ -341,7 +342,7 @@ public class PrimitiveTypeFactory {
 		view().storePrimitiveType("byte",byteT);
 	}
 
-	protected void addShort(String mm, DocumentLoaderImpl loader) {
+	protected void addShort(String mm, DocumentLoader loader) {
 		Public pub = new Public();
 		Type shortT = new PrimitiveType("short") {
 			public boolean assignableTo(Type other) {
@@ -369,7 +370,7 @@ public class PrimitiveTypeFactory {
 		view().storePrimitiveType("short",shortT);
 	}
 
-	protected void addChar(String mm, DocumentLoaderImpl loader) {
+	protected void addChar(String mm, DocumentLoader loader) {
 		Public pub = new Public();
 
 		Type charT = new PrimitiveType("char") {
@@ -396,7 +397,7 @@ public class PrimitiveTypeFactory {
 		view().storePrimitiveType("char",charT);
 	}
 
-	protected void addVoid(String mm, DocumentLoaderImpl loader) {
+	protected void addVoid(String mm, DocumentLoader loader) {
 		Public pub = new Public();
 		Type voidT = new PrimitiveType("void") {
 

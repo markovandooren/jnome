@@ -104,4 +104,9 @@ public class JarLoader extends AbstractZipLoader {
 		}
 		return result;
 	}
+	
+	@Override
+	public String toString() {
+		return "Jar loader: "+file().getName();
+	}
 }

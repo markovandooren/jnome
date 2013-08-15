@@ -17,6 +17,8 @@ import be.kuleuven.cs.distrinet.chameleon.workspace.Workspace;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.input.BaseJavaProjectLoader;
 import be.kuleuven.cs.distrinet.jnome.input.LazyJavaFileInputSourceFactory;
+import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
+import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 
 /**
@@ -82,7 +84,7 @@ public class JavaProjectConfigurator extends ProjectConfiguratorImpl implements 
 	}
 
 	@Override
-	public SafePredicate<? super String> binaryFileFilter() {
+	public Predicate<? super String,Nothing> binaryFileFilter() {
 		return new ExtensionPredicate("class");
 	}
 
@@ -92,7 +94,7 @@ public class JavaProjectConfigurator extends ProjectConfiguratorImpl implements 
 
 	@Override
 	protected ProjectConfiguration createProjectConfig(View view) throws ConfigException {
-		return new JavaProjectConfig(view, new LazyJavaFileInputSourceFactory());
+		return new JavaProjectConfiguration(view, new LazyJavaFileInputSourceFactory());
 	}
 
 	@Override

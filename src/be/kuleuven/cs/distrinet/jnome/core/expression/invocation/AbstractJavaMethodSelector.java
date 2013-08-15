@@ -57,7 +57,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 	public List<? extends SelectionResult> declarators(List<? extends Declaration> selectionCandidates) throws LookupException {
 		List<SelectionResult> result = new ArrayList<>();
 		for(SelectionResult r: selection(selectionCandidates)) {
-			result.add(((MethodSelectionResult)r).method().declarator());
+			result.add(((MethodSelectionResult)r).template().declarator());
 		}
 		return result;
 	}
@@ -412,7 +412,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 	}
 	
 	public static interface MethodSelectionResult extends SelectionResult {
-		public Method method();
+		public Method template();
 		public int phase();
 		public TypeAssignmentSet typeAssignment();
 	}
@@ -438,14 +438,17 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 		
 		@Override
 		public SelectionResult updatedTo(Declaration declaration) {
-			return new BasicMethodSelectionResult((Method) declaration, _assignment, _phase);
+			Method method = (Method) declaration;
+			TypeAssignmentSet assignment = _assignment == null ? null : _assignment.updatedTo(method.typeParameters());
+			return new BasicMethodSelectionResult(method, assignment, _phase);
 		}
 
-		public Method method() {
+		private Method _template;
+		
+		@Override
+		public Method template() {
 			return _template;
 		}
-		
-		private Method _template;
 		
 		private TypeAssignmentSet _assignment;
 		

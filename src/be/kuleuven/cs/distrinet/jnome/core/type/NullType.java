@@ -2,7 +2,6 @@ package be.kuleuven.cs.distrinet.jnome.core.type;
 
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.SimpleNameMethodHeader;
@@ -14,6 +13,7 @@ import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.inf
 import be.kuleuven.cs.distrinet.chameleon.support.modifier.Native;
 import be.kuleuven.cs.distrinet.chameleon.support.modifier.Public;
 import be.kuleuven.cs.distrinet.chameleon.util.Pair;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 
 /**
  * @author Marko van Dooren

@@ -1,7 +1,6 @@
 package be.kuleuven.cs.distrinet.jnome.core.expression;
 
 
-import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.validation.Valid;
 import be.kuleuven.cs.distrinet.chameleon.core.validation.Verification;
@@ -11,6 +10,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.BasicTypeArgument;
 import be.kuleuven.cs.distrinet.chameleon.util.association.Single;
+import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 
 /**
  * @author Marko van Dooren

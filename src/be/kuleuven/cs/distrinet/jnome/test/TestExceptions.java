@@ -42,7 +42,7 @@ public class TestExceptions extends JavaTest {
 
 	@Override
 	protected File projectFile() {
-		return new File("testsource/testexceptions.xml");
+		return new File(TEST_DATA,"testexceptions.xml");
 	}
 
 //	@Override

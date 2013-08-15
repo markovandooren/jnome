@@ -2,19 +2,20 @@ package be.kuleuven.cs.distrinet.jnome.tool.dependency;
 
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.util.Util;
-import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
+import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
+import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
 
-public class NoSubtypeOf extends SafePredicate<Type> {
+public class NoSubtypeOf extends UniversalPredicate<Type,Nothing> {
 
 	public NoSubtypeOf(Type superType) {
+		super(Type.class);
 		_superType = superType;
 	}
 	
 	private Type _superType;
 	
 	@Override
-	public boolean eval(Type object) {
+	public boolean uncheckedEval(Type object) {
 		try {
 			boolean subTypeOf = object.subTypeOf(_superType);
 			return ! subTypeOf;

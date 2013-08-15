@@ -16,9 +16,12 @@
     </path>
 
     <mkdir dir="${junit.output.dir}"/>
+    <tstamp>
+      <format property="test_time" pattern="yyyy-MM-dd@HH:mm:ss"/>
+    </tstamp>
     <junit fork="yes" printsummary="withOutAndErr">
       <formatter type="xml"/>
-      <test name="be.kuleuven.cs.distrinet.jnome.test.AllTests" todir="${junit.output.dir}"/>
+      <test name="be.kuleuven.cs.distrinet.jnome.test.AllTests" todir="${junit.output.dir}" outfile="test_${test_time}"/>
       <jvmarg line="-Xmx1024m"/>
       <classpath refid="jnome.path"/>
     </junit>

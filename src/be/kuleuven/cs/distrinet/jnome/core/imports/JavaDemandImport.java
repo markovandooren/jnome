@@ -9,7 +9,6 @@ import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.DemandImport;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.SimpleReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.rejuse.predicate.TypePredicate;
 
 public class JavaDemandImport extends DemandImport {
 

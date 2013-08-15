@@ -21,7 +21,7 @@ import be.kuleuven.cs.distrinet.jnome.input.ReflectiveClassParser;
 public class LazyReflectiveInputSource extends InputSourceImpl {
 
 	public LazyReflectiveInputSource(ClassLoader loader, ReflectiveClassParser parser, String fqn, LazyNamespace ns, DocumentLoader documentLoader) throws InputException {
-		super(documentLoader);
+		init(documentLoader);
 		_parser = parser;
 		_fqn = fqn;
 		_name = Util.getLastPart(fqn);
@@ -71,10 +71,9 @@ public class LazyReflectiveInputSource extends InputSourceImpl {
 	}
 
 	@Override
-	protected void doLoad() throws InputException {
+	protected void doRefresh() throws InputException {
 		Class clazz;
 		try {
-//			clazz = Class.forName(_fqn, true, _loader);
 			setDocument(new Document());
 			clazz = _loader.loadClass(_fqn);
 			parser().read(clazz, _root, rawDocument());

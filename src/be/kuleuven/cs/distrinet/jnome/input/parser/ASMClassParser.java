@@ -291,9 +291,10 @@ public class ASMClassParser {
 				}
 				if(isVarargs(access)) {
 					FormalParameter param = m.lastFormalParameter();
-					MultiFormalParameter multi = new MultiFormalParameter(param.signature(), ((ArrayTypeReference) param.getTypeReference()).elementTypeReference());
-//					h.remove(param);
-//					h.add(multi);
+//					MultiFormalParameter multi = new MultiFormalParameter(param.signature(), ((ArrayTypeReference) param.getTypeReference()).elementTypeReference());
+
+					MultiFormalParameter multi = MultiFormalParameter.createUnsafe(param.signature(), (JavaTypeReference)param.getTypeReference());
+					
 					SingleAssociation<Element, Element> parentLink = param.parentLink();
 					parentLink.getOtherRelation().replace(parentLink, multi.parentLink());
 				}

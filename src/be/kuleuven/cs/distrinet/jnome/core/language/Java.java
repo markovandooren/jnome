@@ -23,8 +23,6 @@ import be.kuleuven.cs.distrinet.chameleon.core.property.StaticChameleonProperty;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReferenceTarget;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.ElementReference;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.MultiTypeReference;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.SimpleReference;
 import be.kuleuven.cs.distrinet.chameleon.core.relation.EquivalenceRelation;
 import be.kuleuven.cs.distrinet.chameleon.core.relation.StrictPartialOrder;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
@@ -71,6 +69,7 @@ import be.kuleuven.cs.distrinet.chameleon.support.rule.member.MemberOverridableB
 import be.kuleuven.cs.distrinet.chameleon.support.rule.member.TypeExtensibleByDefault;
 import be.kuleuven.cs.distrinet.chameleon.util.Pair;
 import be.kuleuven.cs.distrinet.chameleon.util.Util;
+import be.kuleuven.cs.distrinet.chameleon.workspace.View;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaExtendsReference;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaSuperReference;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;
@@ -184,7 +183,7 @@ public class Java extends ObjectOrientedLanguage {
 	}
 		
 	public Java() {
-		this("Java", new BasicRevision(1,6,0));
+		this("Java", new BasicRevision(1,7,0));
 	}
 	
 	public Java clone() {

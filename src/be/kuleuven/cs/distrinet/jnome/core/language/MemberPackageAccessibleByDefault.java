@@ -1,12 +1,12 @@
 package be.kuleuven.cs.distrinet.jnome.core.language;
 
-import be.kuleuven.cs.distrinet.rejuse.property.PropertySet;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.property.ChameleonProperty;
 import be.kuleuven.cs.distrinet.chameleon.core.property.PropertyRule;
 import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeElement;
 import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.variable.MemberVariableDeclarator;
+import be.kuleuven.cs.distrinet.rejuse.property.PropertySet;
 
 public class MemberPackageAccessibleByDefault extends PropertyRule<TypeElement> {
 

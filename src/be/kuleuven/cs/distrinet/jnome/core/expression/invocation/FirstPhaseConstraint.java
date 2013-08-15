@@ -26,7 +26,8 @@ import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
-import be.kuleuven.cs.distrinet.rejuse.predicate.UnsafePredicate;
+import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
+import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
 
 /**
  * A = type()
@@ -179,7 +180,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 			return true;
 		}
 		 
-    	return new UnsafePredicate<TypeParameter, LookupException>() {
+    	return new AbstractPredicate<TypeParameter, LookupException>() {
 
 				@Override
 				public boolean eval(TypeParameter object) throws LookupException {
@@ -202,7 +203,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 	}
 	
 	public List<TypeParameter> involvedTypeParameters(JavaTypeReference tref) throws LookupException {
-		UnsafePredicate<BasicJavaTypeReference, LookupException> predicate = new UnsafePredicate<BasicJavaTypeReference, LookupException>() {
+		Predicate<BasicJavaTypeReference, LookupException> predicate = new AbstractPredicate<BasicJavaTypeReference, LookupException>() {
 
 			@Override
 			public boolean eval(BasicJavaTypeReference object) throws LookupException {

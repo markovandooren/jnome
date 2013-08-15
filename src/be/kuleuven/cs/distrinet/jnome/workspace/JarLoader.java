@@ -16,6 +16,8 @@ import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoader;
 import be.kuleuven.cs.distrinet.chameleon.workspace.FileLoader;
 import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
 import be.kuleuven.cs.distrinet.jnome.input.parser.ASMClassParser;
+import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
+import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 
 public class JarLoader extends AbstractZipLoader {
@@ -35,7 +37,7 @@ public class JarLoader extends AbstractZipLoader {
    @ post path() == path;
    @ post isBaseLoader() == isBaseLoader;
    @*/
-	public JarLoader(JarFile path, SafePredicate<? super String> filter, boolean isBaseLoader) {
+	public JarLoader(JarFile path, Predicate<? super String,Nothing> filter, boolean isBaseLoader) {
 		super(path, filter, isBaseLoader);
 	}
 
@@ -53,7 +55,7 @@ public class JarLoader extends AbstractZipLoader {
    @ post path() == path;
    @ post isBaseLoader() == false;
    @*/
-	public JarLoader(JarFile path, SafePredicate<? super String> filter) {
+	public JarLoader(JarFile path, Predicate<? super String,Nothing> filter) {
 		this(path, filter, false);
 	}
 	
@@ -101,5 +103,10 @@ public class JarLoader extends AbstractZipLoader {
 			result = o instanceof FileLoader ? 1 : 0; 
 		}
 		return result;
+	}
+	
+	@Override
+	public String toString() {
+		return "Jar loader: "+file().getName();
 	}
 }

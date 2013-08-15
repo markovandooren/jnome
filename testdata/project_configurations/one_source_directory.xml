@@ -1,0 +1,6 @@
+<project name="one source directory project">
+  <language name="java"/>
+  <sourcepath>
+    <source root="src" extension=".jlo"/> 
+  </sourcepath>
+</project>

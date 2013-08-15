@@ -13,7 +13,7 @@ public class TestChameleonSupport extends TestChameleon {
 
 	@Override
 	protected File projectFile() {
-		return new File("testsource/testchameleonsupport.xml");
+		return new File(TEST_DATA,"testchameleonsupport.xml");
 	}
 
 //	public ElementProvider<Type> typeProvider() {

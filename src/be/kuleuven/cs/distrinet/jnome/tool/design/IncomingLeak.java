@@ -16,40 +16,14 @@ import be.kuleuven.cs.distrinet.chameleon.oo.variable.Variable;
 import be.kuleuven.cs.distrinet.chameleon.support.expression.AssignmentExpression;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.tool.IsCollectionType;
+import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 
 public class IncomingLeak extends Analysis<AssignmentExpression, Verification> {
 
 	public IncomingLeak() {
-		super(AssignmentExpression.class);
+		super(AssignmentExpression.class, Valid.create());
 	}
 
-	@Override
-	protected Verification analyse(AssignmentExpression assignment) {
-		Verification result = Valid.create();
-		try {
-			Method method = assignment.nearestAncestor(Method.class);
-			if(method != null && method.isTrue(method.language(Java.class).PUBLIC)) {
-				Variable v = assignment.variable();
-				if(v instanceof MemberVariable) {
-					Expression e = assignment.getValue();
-					if(e instanceof CrossReference) {
-						Declaration rhs = ((CrossReference) e).getElement();
-						if(rhs instanceof FormalParameter) {
-							Type type_of_value = ((FormalParameter)rhs).getType();
-							if(new IsCollectionType().eval(type_of_value)) {
-								result = result.and(new CollectionEncapsulationViolationResult(v,(FormalParameter) rhs));
-							}
-						}
-					}
-				}
-			}
-		}
-		catch(LookupException exc) {
-			// swallow for now.
-		}
-		return result;
-	}
-	
 	private static class CollectionEncapsulationViolationResult extends AtomicProblem {
 
 		public CollectionEncapsulationViolationResult(Variable member, FormalParameter parameter) {
@@ -72,5 +46,32 @@ public class IncomingLeak extends Analysis<AssignmentExpression, Verification> {
 			return msg;
 		}
 		
+	}
+
+	@Override
+	protected void doPerform(AssignmentExpression assignment) throws Nothing {
+		Verification result = Valid.create();
+		try {
+			Method method = assignment.nearestAncestor(Method.class);
+			if(method != null && method.isTrue(method.language(Java.class).PUBLIC)) {
+				Variable v = assignment.variable();
+				if(v instanceof MemberVariable) {
+					Expression e = assignment.getValue();
+					if(e instanceof CrossReference) {
+						Declaration rhs = ((CrossReference) e).getElement();
+						if(rhs instanceof FormalParameter) {
+							Type type_of_value = ((FormalParameter)rhs).getType();
+							if(new IsCollectionType().eval(type_of_value)) {
+								result = result.and(new CollectionEncapsulationViolationResult(v,(FormalParameter) rhs));
+							}
+						}
+					}
+				}
+			}
+		}
+		catch(LookupException exc) {
+			// swallow for now.
+		}
+		setResult(result().and(result));
 	}
 }

@@ -112,7 +112,7 @@ public class TestCustomCases extends JavaTest {
 
 	@Override
 	protected File projectFile() {
-		return new File("testsource/testcustom.xml");
+		return new File(TEST_DATA,"testcustom.xml");
 	}
 
 //	@Override @Test

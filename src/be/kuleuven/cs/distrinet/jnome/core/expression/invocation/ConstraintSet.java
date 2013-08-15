@@ -22,7 +22,7 @@ public abstract class ConstraintSet<C extends Constraint> {
 		_invocation = invocation;
 		_invokedGenericMethod = invokedMethod;
 		List<TypeParameter> typeParameters = invokedMethod.typeParameters();
-		new TypePredicate<TypeParameter, FormalTypeParameter>(FormalTypeParameter.class).filter(typeParameters);
+		new TypePredicate<FormalTypeParameter>(FormalTypeParameter.class).filter(typeParameters);
 		_typeParameters = ImmutableList.copyOf(typeParameters);
 	}
 	

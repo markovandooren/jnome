@@ -33,4 +33,14 @@ public class IndirectTypeAssignment extends TypeAssignment {
 			_source = newParameter;
 		}
 	}
+	
+	@Override
+	public TypeAssignment clone() {
+		return new IndirectTypeAssignment(parameter(), source());
+	}
+
+	@Override
+	public TypeAssignment updatedTo(TypeParameter newParameter) {
+		return new IndirectTypeAssignment(newParameter, source());
+	}
 }

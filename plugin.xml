@@ -22,7 +22,7 @@
             locationURI="popup:org.eclipse.ui.popup.any?after=additions">
          <command
                commandId="be.kuleuven.cs.distrinet.jnome.actions.project.AddChameleonNature"
-               label="Add Chameleon Background Analysis Nature">
+               label="Enable Chameleon Analysis">
             <!--<visibleWhen>
               	<test property="chameleon.properties.isJDTProject" forcePluginActivation="true"/>
             </visibleWhen>-->

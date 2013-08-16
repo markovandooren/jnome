@@ -5,6 +5,7 @@ import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
 import be.kuleuven.cs.distrinet.chameleon.core.language.Language;
 import be.kuleuven.cs.distrinet.chameleon.eclipse.connector.EclipseBootstrapper;
 import be.kuleuven.cs.distrinet.chameleon.eclipse.connector.EclipseEditorExtension;
+import be.kuleuven.cs.distrinet.chameleon.eclipse.connector.EclipseProjectLoader;
 import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectException;
 
 public class Bootstrapper extends EclipseBootstrapper {
@@ -14,6 +15,7 @@ public class Bootstrapper extends EclipseBootstrapper {
 	public Language createLanguage() throws ProjectException {
 		Java result = new JavaLanguageFactory().create();
 		result.setPlugin(EclipseEditorExtension.class, new JavaEditorExtension());
+		result.setPlugin(EclipseProjectLoader.class, new JDTProjectLoader());
 		return result;
 	}
 

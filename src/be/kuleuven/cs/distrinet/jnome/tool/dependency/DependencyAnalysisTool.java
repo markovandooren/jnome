@@ -64,20 +64,7 @@ public class DependencyAnalysisTool extends AnalysisTool {
 
 	protected UniversalPredicate<CrossReference<?>,Nothing> crossReferenceSourceFilter() {
 //		return new True<>();
-		return new UniversalPredicate(CrossReference.class) {
-
-			@Override
-			public boolean uncheckedEval(Object object) {
-				Declaration d;
-				try {
-					d = ((CrossReference<?>)object).getElement();
-					return d.view().isSource(d);
-				} catch(Exception e) {
-					e.printStackTrace();
-					return true;
-				}
-			}
-		};
+		return (UniversalPredicate) new IsSource();
 	
 	}
 
@@ -197,6 +184,24 @@ public class DependencyAnalysisTool extends AnalysisTool {
 				filter = filter.and(new NoSubtypeOf(type));
 		}
 		return filter;
+	}
+
+	protected static class IsSource extends UniversalPredicate<CrossReference,Nothing> {
+		protected IsSource() {
+			super(CrossReference.class);
+		}
+
+		@Override
+		public boolean uncheckedEval(CrossReference object) {
+			Declaration d;
+			try {
+				d = ((CrossReference<?>)object).getElement();
+				return d.view().isSource(d);
+			} catch(Exception e) {
+				e.printStackTrace();
+				return true;
+			}
+		}
 	}
 
 	protected static class SourceType extends UniversalPredicate<Type,Nothing> {

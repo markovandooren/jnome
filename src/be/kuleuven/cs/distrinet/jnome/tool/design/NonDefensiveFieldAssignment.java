@@ -23,7 +23,7 @@ import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
-import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
+import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
 
 /**
  * Check whether a parameter is assigned to a field without being
@@ -79,9 +79,9 @@ public class NonDefensiveFieldAssignment extends Analysis<AssignmentExpression,V
 							Type booleanType = assignment.view(JavaView.class).primitiveType("boolean");
 							if(! ((FormalParameter) rhs).getType().sameAs(booleanType)) {
 								boolean notMentioned = true;
-								Statement stat = assignment.farthestAncestor(Statement.class, new SafePredicate<Statement>() {
+								Statement stat = assignment.farthestAncestor(new UniversalPredicate<Statement,Nothing>(Statement.class) {
 									@Override
-									public boolean eval(Statement s) {
+									public boolean uncheckedEval(Statement s) {
 										// If s.parent() == the implementation object, then we have reached the
 										// block of the implementation, so we have to stop before that to object
 										// the child statement of the block of the implementation

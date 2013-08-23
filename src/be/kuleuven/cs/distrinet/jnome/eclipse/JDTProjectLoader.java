@@ -64,7 +64,7 @@ public class JDTProjectLoader extends LanguagePluginImpl implements EclipseProje
 			// a classpath.
 			IJavaProject nature = (IJavaProject) jdtProject.getNature(JavaCore.NATURE_ID);
 			IClasspathEntry[] rawClasspath = nature.getRawClasspath();
-			addLoaders(view, jdtProject, rawClasspath,false);
+			addLoaders(view, jdtProject, rawClasspath,false,false);
 			DocumentLoader loader = new DocumentLoaderImpl() {
 				@Override
 				public String label() {
@@ -86,7 +86,7 @@ public class JDTProjectLoader extends LanguagePluginImpl implements EclipseProje
 		}
 	}
 	
-	protected void addLoaders(JavaView view, IProject jdtProject, IClasspathEntry[] entries, boolean inContainer) throws CoreException {
+	protected void addLoaders(JavaView view, IProject jdtProject, IClasspathEntry[] entries, boolean inContainer, boolean inOtherProject) throws CoreException {
 		
 		IJavaProject nature = (IJavaProject) jdtProject.getNature(JavaCore.NATURE_ID);
 		
@@ -98,13 +98,26 @@ public class JDTProjectLoader extends LanguagePluginImpl implements EclipseProje
 			switch (entry.getEntryKind()) {
 			case IClasspathEntry.CPE_SOURCE:
 				IPath projectRelativePath = Workspaces.root().findMember(path).getProjectRelativePath();
-				String sourceRoot = projectRelativePath.toString();
+				String sourceRoot;
+				if(inOtherProject) {
+					sourceRoot = Files.workspaceFileToAbsoluteFile(path).toString();
+				} else {
+					sourceRoot = projectRelativePath.toString();
+				}
 				DirectoryLoader loader = new DirectoryLoader(sourceRoot, sourceFileFilter, new LazyJavaFileInputSourceFactory());
 				try {
-					if(view.canAddSource(loader)) {
-						view.addSource(loader);
+					if(inOtherProject) {
+						if(view.canAddBinary(loader)) {
+							view.addBinary(loader);
+						} else {
+							System.out.println("Not adding other project source loader twice.");
+						}
 					} else {
-						System.out.println("Not adding source loader twice.");
+						if(view.canAddSource(loader)) {
+							view.addSource(loader);
+						} else {
+							System.out.println("Not adding source loader twice.");
+						}
 					}
 				} catch(ProjectException exc) {
 					exc.printStackTrace();
@@ -112,7 +125,7 @@ public class JDTProjectLoader extends LanguagePluginImpl implements EclipseProje
 				break;
 			case IClasspathEntry.CPE_CONTAINER:
 				IClasspathContainer classpathContainer = JavaCore.getClasspathContainer(path, nature);
-				addLoaders(view, jdtProject, classpathContainer.getClasspathEntries(),true);
+				addLoaders(view, jdtProject, classpathContainer.getClasspathEntries(),true,false);
 				break;
 			case IClasspathEntry.CPE_LIBRARY:
 				try {
@@ -152,7 +165,7 @@ public class JDTProjectLoader extends LanguagePluginImpl implements EclipseProje
 			case IClasspathEntry.CPE_PROJECT:
 				IProject dependency = Projects.project(path);
 				IJavaProject dependencyJDTProject = (IJavaProject) dependency.getNature(JavaCore.NATURE_ID);
-				addLoaders(view, dependency, dependencyJDTProject.getRawClasspath(),false);
+				addLoaders(view, dependency, dependencyJDTProject.getRawClasspath(),false,true);
 				break;
 			default:
 				break;

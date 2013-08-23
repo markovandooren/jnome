@@ -100,4 +100,8 @@ public class ReflectiveJarLoader extends DocumentLoaderImpl {
 	protected void finalize() throws Throwable {
 		_jarFile.close();
 	}
+	@Override
+	public String label() {
+		return _path;
+	}
 }

@@ -65,10 +65,15 @@ public class JDTProjectLoader extends LanguagePluginImpl implements EclipseProje
 			IJavaProject nature = (IJavaProject) jdtProject.getNature(JavaCore.NATURE_ID);
 			IClasspathEntry[] rawClasspath = nature.getRawClasspath();
 			addLoaders(view, jdtProject, rawClasspath,false);
-			DocumentLoader loader = new DocumentLoaderImpl();
+			DocumentLoader loader = new DocumentLoaderImpl() {
+				@Override
+				public String label() {
+				  return "Java built-in types";
+				}
+			};
 			try {
 				view.addBinary(loader);
-			new PredefinedElementsFactory(view, loader).initializePredefinedElements();
+				new PredefinedElementsFactory(view, loader).initializePredefinedElements();
 			} catch(ProjectException exc) {
 				// This goes wrong when no Java standard library is in the classpath.
 				exc.printStackTrace();
@@ -92,8 +97,8 @@ public class JDTProjectLoader extends LanguagePluginImpl implements EclipseProje
 			IPath path = entry.getPath();
 			switch (entry.getEntryKind()) {
 			case IClasspathEntry.CPE_SOURCE:
-				
-				String sourceRoot = Files.workspaceFileToAbsoluteFile(path).toString();
+				IPath projectRelativePath = Workspaces.root().findMember(path).getProjectRelativePath();
+				String sourceRoot = projectRelativePath.toString();
 				DirectoryLoader loader = new DirectoryLoader(sourceRoot, sourceFileFilter, new LazyJavaFileInputSourceFactory());
 				try {
 					if(view.canAddSource(loader)) {

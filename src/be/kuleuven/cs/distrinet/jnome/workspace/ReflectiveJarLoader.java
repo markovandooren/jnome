@@ -14,6 +14,8 @@ import be.kuleuven.cs.distrinet.jnome.input.ReflectiveClassParser;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.LazyNamespace;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.RootNamespace;
 import be.kuleuven.cs.distrinet.chameleon.util.Util;
+import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoader;
+import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoaderContainer;
 import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoaderImpl;
 import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectException;
@@ -42,8 +44,11 @@ public class ReflectiveJarLoader extends DocumentLoaderImpl {
 	private String _path;
 	
 	@Override
-	protected void notifyViewAdded(View view) throws ProjectException {
-		_loader = createLoader(view.project().absoluteFile(_path));
+	public void notifyContainerConnected(DocumentLoaderContainer container) throws ProjectException {
+		View view = view();
+		if(view != null) {
+			_loader = createLoader(view.project().absoluteFile(_path));
+		}
 		try {
 			createInputSources();
 		} catch (InputException e) {
@@ -103,5 +108,15 @@ public class ReflectiveJarLoader extends DocumentLoaderImpl {
 	@Override
 	public String label() {
 		return _path;
+	}
+	
+	@Override
+	public boolean loadsSameAs(DocumentLoader loader) {
+		if(loader == this) {
+			return true;
+		} else if(loader instanceof ReflectiveJarLoader) {
+			return ((ReflectiveJarLoader) loader)._jarFile.equals(_jarFile);
+		}
+		return false;
 	}
 }

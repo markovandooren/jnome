@@ -23,9 +23,8 @@ import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.contract.Contracts;
+import be.kuleuven.cs.distrinet.rejuse.function.Function;
 import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
-
-import com.google.common.base.Function;
 
 public class JavaDependencyAnalyzer extends DependencyAnalyzer<Type> {
 
@@ -45,8 +44,8 @@ public class JavaDependencyAnalyzer extends DependencyAnalyzer<Type> {
 	}
 	
 	@Override
-	protected Function<Type, Type> createMapper() {
-		return new Function<Type,Type> (){
+	protected Function<Type, Type,Nothing> createMapper() {
+		return new Function<Type,Type,Nothing> (){
 
 			@Override
 			public Type apply(Type type) {

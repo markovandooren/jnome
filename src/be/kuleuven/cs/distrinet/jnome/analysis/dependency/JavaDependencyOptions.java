@@ -1,12 +1,11 @@
 package be.kuleuven.cs.distrinet.jnome.analysis.dependency;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import be.kuleuven.cs.distrinet.chameleon.analysis.Analysis;
-import be.kuleuven.cs.distrinet.chameleon.analysis.AnalysisOptions;
+import be.kuleuven.cs.distrinet.chameleon.analysis.AbstractAnalysisOptions;
 import be.kuleuven.cs.distrinet.chameleon.analysis.OptionGroup;
+import be.kuleuven.cs.distrinet.chameleon.analysis.PredicateOptionGroup;
 import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.Dependency;
 import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.DependencyAnalysis;
 import be.kuleuven.cs.distrinet.chameleon.analysis.predicate.IsBinary;
@@ -16,7 +15,6 @@ import be.kuleuven.cs.distrinet.chameleon.core.document.Document;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;
-import be.kuleuven.cs.distrinet.chameleon.eclipse.view.dependency.DependencyOptions;
 import be.kuleuven.cs.distrinet.chameleon.oo.analysis.dependency.NoSupertypeReferences;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.DerivedType;
@@ -24,8 +22,6 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalParameterType;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.LabelProvider;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.PredicateSelector;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.Selector;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.WidgetFactory;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.checkbox.CheckboxSelector;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.list.ComboBoxSelector;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.list.ListContentProvider;
@@ -50,13 +46,18 @@ import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
 
 import com.google.common.collect.ImmutableList;
 
-public class JavaDependencyOptions implements AnalysisOptions {
+public class JavaDependencyOptions extends AbstractAnalysisOptions {
 
-	JavaDependencyOptions() {
+	public JavaDependencyOptions() {
 		_groups = ImmutableList.of(_target,_source,_crossReferences,_dependencies);
 	}
 	
-	private UniversalPredicate<? super Element, Nothing> predicate(List<PredicateSelector<?>> selectors) {
+	@Override
+	public List<? extends OptionGroup> optionGroups() {
+		return _groups;
+	}
+	
+	private UniversalPredicate predicate(List<PredicateSelector<?>> selectors) {
 		UniversalPredicate result = new True();
 		for(PredicateSelector selector: selectors) {
 			result = result.and(selector.predicate());
@@ -65,25 +66,23 @@ public class JavaDependencyOptions implements AnalysisOptions {
 	}
 	
 	@Override
-	public Analysis createAnalysis() {
-		element = predicate(_source.);
-		return new DependencyAnalysis<>(elementPredicate, crossReferencePredicate, declarationMapper, declarationPredicate, dependencyPredicate)
+	public DependencyAnalysis<Element,Declaration> createAnalysis() {
+		UniversalPredicate sourcePredicate = _source.predicate();
+		UniversalPredicate crossReferencePredicate = _crossReferences.predicate();
+		UniversalPredicate targetPredicate = _target.predicate();
+		UniversalPredicate dependencyPredicate = _dependencies.predicate();
+		return new DependencyAnalysis<Element,Declaration>(
+				Declaration.class,
+				sourcePredicate, 
+				crossReferencePredicate,
+				Declaration.class,
+				mapper(), 
+				targetPredicate, 
+				dependencyPredicate);
 	}
 	
-	List<OptionGroup> _groups;
+	List<? extends OptionGroup> _groups;
 
-	private static class PredicateOptionGroup extends OptionGroup {
-
-		public PredicateOptionGroup(String name) {
-			super(name);
-		}
-		
-		protected void addPredicateSelector(PredicateSelector selector) {
-			add(selector);
-		}
-		
-	}
-	
 	private SourceOptionGroup _source = new SourceOptionGroup();
 	private class SourceOptionGroup extends PredicateOptionGroup {
 		public SourceOptionGroup() {
@@ -131,7 +130,7 @@ public class JavaDependencyOptions implements AnalysisOptions {
 //		return new DependencyOptions(source, cref,target,dependency,mapper());
 //	}
 	
-	private Function<Element,Element,Nothing> mapper() {
+	private Function mapper() {
 		return new Function<Element,Element,Nothing> (){
 
 			@Override
@@ -280,7 +279,8 @@ public class JavaDependencyOptions implements AnalysisOptions {
 				return new False();
 			}
 		};
-		return new TristateTreeSelector<Object,Element>(contentProvider, generator, labelProvider);
+		TristateTreeSelector<Object, Element> tristateTreeSelector = new TristateTreeSelector<Object,Element>(contentProvider, generator, labelProvider);
+		return tristateTreeSelector;
 	}
 
 }

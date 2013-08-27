@@ -3,7 +3,7 @@ package be.kuleuven.cs.distrinet.jnome.eclipse;
 import be.kuleuven.cs.distrinet.jnome.analysis.dependency.JavaDependencyOptions;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
-import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.DependencyOptions;
+import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.DependencyOptionsFactory;
 import be.kuleuven.cs.distrinet.chameleon.core.language.Language;
 import be.kuleuven.cs.distrinet.chameleon.eclipse.connector.EclipseBootstrapper;
 import be.kuleuven.cs.distrinet.chameleon.eclipse.connector.EclipseEditorExtension;
@@ -18,7 +18,7 @@ public class Bootstrapper extends EclipseBootstrapper {
 		Java result = new JavaLanguageFactory().create();
 		result.setPlugin(EclipseEditorExtension.class, new JavaEditorExtension());
 		result.setPlugin(EclipseProjectLoader.class, new JDTProjectLoader());
-		result.setPlugin(DependencyOptions.class, new JavaDependencyOptions());
+		result.setPlugin(DependencyOptionsFactory.class, new JavaDependencyOptions());
 		return result;
 	}
 

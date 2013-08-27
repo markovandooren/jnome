@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.DefaultDependencyOptions;
+import be.kuleuven.cs.distrinet.chameleon.analysis.Analysis;
+import be.kuleuven.cs.distrinet.chameleon.analysis.AnalysisOptions;
+import be.kuleuven.cs.distrinet.chameleon.analysis.OptionGroup;
 import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.Dependency;
+import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.DependencyAnalysis;
 import be.kuleuven.cs.distrinet.chameleon.analysis.predicate.IsBinary;
 import be.kuleuven.cs.distrinet.chameleon.analysis.predicate.IsSource;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
@@ -13,7 +16,7 @@ import be.kuleuven.cs.distrinet.chameleon.core.document.Document;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;
-import be.kuleuven.cs.distrinet.chameleon.eclipse.view.dependency.DependencyConfiguration;
+import be.kuleuven.cs.distrinet.chameleon.eclipse.view.dependency.DependencyOptions;
 import be.kuleuven.cs.distrinet.chameleon.oo.analysis.dependency.NoSupertypeReferences;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.DerivedType;
@@ -21,6 +24,8 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalParameterType;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.LabelProvider;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.PredicateSelector;
+import be.kuleuven.cs.distrinet.chameleon.ui.widget.Selector;
+import be.kuleuven.cs.distrinet.chameleon.ui.widget.WidgetFactory;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.checkbox.CheckboxSelector;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.list.ComboBoxSelector;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.list.ListContentProvider;
@@ -39,29 +44,92 @@ import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.function.Function;
 import be.kuleuven.cs.distrinet.rejuse.predicate.False;
+import be.kuleuven.cs.distrinet.rejuse.predicate.True;
 import be.kuleuven.cs.distrinet.rejuse.predicate.TypePredicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
 
 import com.google.common.collect.ImmutableList;
 
-public class JavaDependencyOptions extends DefaultDependencyOptions {
+public class JavaDependencyOptions implements AnalysisOptions {
 
-	@Override
-	public DependencyConfiguration createConfiguration() {
-		List<PredicateSelector<? super Element>> source = new ArrayList<>();
-		source.add(declarationTypeSelector());
-		
-		List<PredicateSelector<? super Element>> target = new ArrayList<>();
-		target.add(declarationTypeSelector());
-		target.add(sourceSelector());
-		
-		List<PredicateSelector<? super Element>> cref = new ArrayList<>();
-		cref.add(new CheckboxSelector<>(new NoSupertypeReferences(), "Ignore Subtype Relations",true));
-
-		List<PredicateSelector<? super Dependency<? super Element, ? super CrossReference, ? super Declaration>>> dependency = new ArrayList<>();
-		dependency.add(noDescendants());
-		return new DependencyConfiguration(source, cref,target,dependency,mapper());
+	JavaDependencyOptions() {
+		_groups = ImmutableList.of(_target,_source,_crossReferences,_dependencies);
 	}
+	
+	private UniversalPredicate<? super Element, Nothing> predicate(List<PredicateSelector<?>> selectors) {
+		UniversalPredicate result = new True();
+		for(PredicateSelector selector: selectors) {
+			result = result.and(selector.predicate());
+		}
+		return result;
+	}
+	
+	@Override
+	public Analysis createAnalysis() {
+		element = predicate(_source.);
+		return new DependencyAnalysis<>(elementPredicate, crossReferencePredicate, declarationMapper, declarationPredicate, dependencyPredicate)
+	}
+	
+	List<OptionGroup> _groups;
+
+	private static class PredicateOptionGroup extends OptionGroup {
+
+		public PredicateOptionGroup(String name) {
+			super(name);
+		}
+		
+		protected void addPredicateSelector(PredicateSelector selector) {
+			add(selector);
+		}
+		
+	}
+	
+	private SourceOptionGroup _source = new SourceOptionGroup();
+	private class SourceOptionGroup extends PredicateOptionGroup {
+		public SourceOptionGroup() {
+			super("Source");
+			addPredicateSelector(declarationTypeSelector());
+		}
+	}
+
+	private TargetOptionGroup _target = new TargetOptionGroup();
+	private class TargetOptionGroup extends PredicateOptionGroup {
+		public TargetOptionGroup() {
+			super("Target");
+			addPredicateSelector(declarationTypeSelector());
+			addPredicateSelector(sourceSelector());
+		}
+	}
+	
+	private CrossReferenceOptionGroup _crossReferences = new CrossReferenceOptionGroup();
+	private class CrossReferenceOptionGroup extends PredicateOptionGroup {
+		public CrossReferenceOptionGroup() {
+			super("Cross-references");
+			addPredicateSelector(new CheckboxSelector<>(new NoSupertypeReferences(), "Ignore Subtype Relations",true));
+		}
+	}	
+
+	private DependencyOptionGroup _dependencies = new DependencyOptionGroup();
+	private class DependencyOptionGroup extends PredicateOptionGroup {
+		public DependencyOptionGroup() {
+			super("Dependency");
+			addPredicateSelector(noDescendants());
+		}
+	}	
+	
+	
+	
+//	@Override
+//	public DependencyOptions createConfiguration() {
+//		
+//		
+//		List<PredicateSelector<? super Element>> cref = new ArrayList<>();
+//		cref.add();
+//
+//		List<PredicateSelector<? super Dependency<? super Element, ? super CrossReference, ? super Declaration>>> dependency = new ArrayList<>();
+//		dependency.add();
+//		return new DependencyOptions(source, cref,target,dependency,mapper());
+//	}
 	
 	private Function<Element,Element,Nothing> mapper() {
 		return new Function<Element,Element,Nothing> (){
@@ -214,5 +282,5 @@ public class JavaDependencyOptions extends DefaultDependencyOptions {
 		};
 		return new TristateTreeSelector<Object,Element>(contentProvider, generator, labelProvider);
 	}
-	
+
 }

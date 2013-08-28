@@ -8,6 +8,8 @@ import be.kuleuven.cs.distrinet.chameleon.analysis.OptionGroup;
 import be.kuleuven.cs.distrinet.chameleon.analysis.PredicateOptionGroup;
 import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.Dependency;
 import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.DependencyAnalysis;
+import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.DependencyAnalysis.HistoryFilter;
+import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.DependencyResult;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
@@ -32,6 +34,9 @@ import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.function.Function;
+import be.kuleuven.cs.distrinet.rejuse.graph.Edge;
+import be.kuleuven.cs.distrinet.rejuse.graph.UniEdge;
+import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.True;
 import be.kuleuven.cs.distrinet.rejuse.predicate.TypePredicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
@@ -91,7 +96,8 @@ public class JavaDependencyOptions extends AbstractAnalysisOptions {
 				Declaration.class,
 				mapper(), 
 				targetPredicate, 
-				dependencyPredicate);
+				dependencyPredicate,
+				new RedundantInheritedDependencyFilter());
 	}
 	
 	List<? extends OptionGroup> _groups;
@@ -273,6 +279,54 @@ public class JavaDependencyOptions extends AbstractAnalysisOptions {
 		TristatePredicateGenerator<Object,Element> generator = new ContainerSelectionPredicateGenerator();
 		TristateTreeSelector<Object, Element> tristateTreeSelector = new TristateTreeSelector<Object,Element>(contentProvider, generator, labelProvider);
 		return tristateTreeSelector;
+	}
+
+	
+	public static class RedundantInheritedDependencyFilter extends HistoryFilter<Element>{
+		
+		private static class Container {
+			public boolean add = true;
+		}
+		
+		public boolean process(Dependency<Element, CrossReference, Element> dependency, DependencyResult result) {
+			final Container container = new Container(); 
+			final Element newSource = dependency.source();
+			final Element newTarget = dependency.target();
+
+			result.<Nothing>filter(new AbstractPredicate<Edge<Element>, Nothing>() {
+
+				@Override
+				public boolean eval(Edge<Element> object) throws Nothing {
+					try {
+						Element oldSource = ((UniEdge<Element>) object).startNode()
+								.object();
+						Element oldTarget = ((UniEdge<Element>) object).endNode().object();
+						if (newSource instanceof Type && oldSource instanceof Type
+								&& newTarget instanceof Type && oldTarget instanceof Type) {
+							Type newSourceType = (Type) newSource;
+							Type newTargetType = (Type) newTarget;
+							Type oldSourceType = (Type) oldSource;
+							Type oldTargetType = (Type) oldTarget;
+
+							// We first check if the new dependency is redundant.
+							// That way, if we reach the else branch, we now
+							// for sure that we can remove the old dependency
+							// if the second branch is executed.
+							if (newSourceType.subTypeOf(oldSourceType) && oldTargetType.subTypeOf(newTargetType)) {
+								container.add = false;
+								return true;
+							} else if(oldSourceType.subTypeOf(newSourceType) && newTargetType.subTypeOf(oldTargetType)) {
+								return false;
+							}
+						}
+						return true;
+					} catch (LookupException e) {
+						return true;
+					}
+				}
+			});
+			return container.add;
+		}
 	}
 
 }

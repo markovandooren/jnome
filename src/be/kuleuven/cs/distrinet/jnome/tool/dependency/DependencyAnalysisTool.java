@@ -11,6 +11,7 @@ import java.util.List;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;
+import be.kuleuven.cs.distrinet.chameleon.oo.analysis.dependency.NoSubtypeOf;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.InheritanceRelation;
 import be.kuleuven.cs.distrinet.chameleon.oo.view.ObjectOrientedView;

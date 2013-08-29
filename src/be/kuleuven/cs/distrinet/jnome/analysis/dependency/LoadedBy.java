@@ -2,6 +2,7 @@ package be.kuleuven.cs.distrinet.jnome.analysis.dependency;
 
 import be.kuleuven.cs.distrinet.chameleon.core.document.Document;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
+import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
 import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoader;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
@@ -16,6 +17,9 @@ public class LoadedBy extends UniversalPredicate<Element, Nothing> {
 
 	@Override
 	public boolean uncheckedEval(Element t) throws Nothing {
+		if(t instanceof Namespace) {
+			return currentLoader.namespaces().contains(t); 
+		}
 		DocumentLoader loader = t.nearestAncestor(Document.class).inputSource().loader();
 		while(true) {
 			if(loader == currentLoader) {

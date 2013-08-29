@@ -19,15 +19,18 @@ import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.DerivedType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalParameterType;
+import be.kuleuven.cs.distrinet.chameleon.oo.variable.Variable;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.LabelProvider;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.PredicateSelector;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.checkbox.CheckboxSelector;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.list.ComboBoxSelector;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.list.ListContentProvider;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.LexicalTreeContentProvider;
+import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.DocumentLoaderContentProvider;
+import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.NamespaceContentProvider;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TreeViewNodeLabelProvider;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TristateTreeSelector;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TristateTreeSelector.TristatePredicateGenerator;
+import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
@@ -107,7 +110,8 @@ public class JavaDependencyOptions extends AbstractAnalysisOptions {
 		public SourceOptionGroup() {
 			super("Source");
 			addPredicateSelector(declarationTypeSelector());
-			addPredicateSelector(sourceSelector());
+//			addPredicateSelector(namespaceSelector());
+			addPredicateSelector(loaderSelector());
 			addPredicateSelector(noAnonymousClasses());
 		}
 	}
@@ -117,7 +121,8 @@ public class JavaDependencyOptions extends AbstractAnalysisOptions {
 		public TargetOptionGroup() {
 			super("Target");
 			addPredicateSelector(declarationTypeSelector());
-			addPredicateSelector(sourceSelector());
+//			addPredicateSelector(namespaceSelector());
+			addPredicateSelector(loaderSelector());
 			addPredicateSelector(noExceptions());
 		}
 	}
@@ -148,23 +153,24 @@ public class JavaDependencyOptions extends AbstractAnalysisOptions {
 	private Function mapper() {
 		return new Function<Element,Element,Nothing> (){
 			@Override
-			public Element apply(Element type) {
-				while(type instanceof ArrayType) {
-					type = ((ArrayType)type).elementType();
+			public Element apply(Element element) {
+				element = element.origin();
+				while(element instanceof ArrayType) {
+					element = ((ArrayType)element).elementType();
 				}
-				while(type instanceof DerivedType) {
-					type = ((DerivedType)type).baseType();
+				while(element instanceof DerivedType) {
+					element = ((DerivedType)element).baseType();
 				}
-				while(type instanceof FormalParameterType) {
-					type = type.nearestAncestor(Type.class);
+				while(element instanceof FormalParameterType) {
+					element = element.nearestAncestor(Type.class);
 				}
-				if(type instanceof Type) {
-					AnonymousType anon = type.farthestAncestorOrSelf(AnonymousType.class);
+				if(element instanceof Type) {
+					AnonymousType anon = element.farthestAncestorOrSelf(AnonymousType.class);
 					if(anon != null) {
-						type = anon.nearestAncestor(Type.class);
+						element = anon.nearestAncestor(Type.class);
 					}
 				}
-				return type;
+				return element;
 			}
 		};
 	}
@@ -218,7 +224,7 @@ public class JavaDependencyOptions extends AbstractAnalysisOptions {
 
 			@Override
 			public List<Class> items(Object context) {
-				return ImmutableList.<Class>of(Declaration.class,Type.class,Method.class);
+				return ImmutableList.<Class>of(Declaration.class,Namespace.class,Type.class,Method.class,Variable.class);
 			}
 		};
 		LabelProvider labelProvider = new LabelProvider(){
@@ -243,7 +249,7 @@ public class JavaDependencyOptions extends AbstractAnalysisOptions {
 				return new TypePredicate<>(argument);
 			}
 		};
-		ComboBoxSelector<Class,Element> selector = new ComboBoxSelector<>(contentProvider, labelProvider,function,2);
+		ComboBoxSelector<Class,Element> selector = new ComboBoxSelector<>(contentProvider, labelProvider,function,3);
 		return selector;
 	}
 
@@ -272,14 +278,24 @@ public class JavaDependencyOptions extends AbstractAnalysisOptions {
 		}, "Ignore throwables", true);
 	}
 	
-	private PredicateSelector<Element> sourceSelector() {
-		LexicalTreeContentProvider contentProvider = new LexicalTreeContentProvider();
+	private PredicateSelector<Element> loaderSelector() {
+		DocumentLoaderContentProvider contentProvider = new DocumentLoaderContentProvider();
 		
 		TreeViewNodeLabelProvider labelProvider = new TreeViewNodeLabelProvider();
-		TristatePredicateGenerator<Object,Element> generator = new ContainerSelectionPredicateGenerator();
+		TristatePredicateGenerator<Object,Element> generator = new LoaderSelectionPredicateGenerator(new NamespaceSelectionPredicateGenerator(null));
 		TristateTreeSelector<Object, Element> tristateTreeSelector = new TristateTreeSelector<Object,Element>(contentProvider, generator, labelProvider);
 		return tristateTreeSelector;
 	}
+	
+	private PredicateSelector<Element> namespaceSelector() {
+		NamespaceContentProvider contentProvider = new NamespaceContentProvider();
+		
+		TreeViewNodeLabelProvider labelProvider = new TreeViewNodeLabelProvider();
+		TristatePredicateGenerator<Object,Element> generator = new NamespaceSelectionPredicateGenerator(null);
+		TristateTreeSelector<Object, Element> tristateTreeSelector = new TristateTreeSelector<Object,Element>(contentProvider, generator, labelProvider);
+		return tristateTreeSelector;
+	}
+
 
 	
 	public static class RedundantInheritedDependencyFilter extends HistoryFilter<Element>{

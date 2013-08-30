@@ -31,8 +31,13 @@ public class NamespaceSelectionPredicateGenerator extends TristatePredicateGener
 
 					@Override
 					public boolean uncheckedEval(Element t) throws Nothing {
-						return t.namespace() == ns;
+						Namespace namespace = t.logical().nearestAncestorOrSelf(t, Namespace.class);
+						return namespace == ns;
 					}
+					
+					public String toString() {
+						return "namespace = "+ns.getFullyQualifiedName();
+					};
 				}.or(first.childrenDisjunction(node, checked, grayed, first));
 			}
 			return result;
@@ -50,9 +55,15 @@ public class NamespaceSelectionPredicateGenerator extends TristatePredicateGener
 				return new UniversalPredicate<Element, Nothing>(Element.class) {
 					@Override
 					public boolean uncheckedEval(Element t) throws Nothing {
-						Namespace namespace = t.namespace();
+//						Namespace namespace = t.namespace();
+						Namespace namespace = t.logical().nearestAncestorOrSelf(t, Namespace.class);
 						return namespace == currentNamespace || namespace.hasAncestor(currentNamespace);
 					}
+					
+					public String toString() {
+						return "namespace ancestor = "+currentNamespace.getFullyQualifiedName();
+					};
+
 				};
 			}
 			return result;

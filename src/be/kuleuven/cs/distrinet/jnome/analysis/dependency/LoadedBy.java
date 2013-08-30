@@ -34,4 +34,9 @@ public class LoadedBy extends UniversalPredicate<Element, Nothing> {
 		}
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		return "loaded by "+currentLoader.label();
+	}
 }

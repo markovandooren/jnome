@@ -26,11 +26,9 @@ import be.kuleuven.cs.distrinet.chameleon.ui.widget.checkbox.CheckboxSelector;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.list.ComboBoxSelector;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.list.ListContentProvider;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.DocumentLoaderContentProvider;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.NamespaceContentProvider;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TreeViewNodeLabelProvider;
+import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TristateTreePruner;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TristateTreeSelector;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TristateTreeSelector.TristatePredicateGenerator;
-import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
@@ -92,6 +90,8 @@ public class JavaDependencyOptions extends AbstractAnalysisOptions {
 		UniversalPredicate crossReferencePredicate = _dependencies.crossReferencePredicate();
 		UniversalPredicate targetPredicate = _target.predicate();
 		UniversalPredicate dependencyPredicate = _dependencies.predicate();
+		TristateTreePruner<Object,Element> generator = new LoaderSelectionPredicateGenerator(new NamespaceSelectionPredicateGenerator(null));
+		
 		return new DependencyAnalysis<Element,Declaration>(
 				Declaration.class,
 				sourcePredicate, 
@@ -111,9 +111,14 @@ public class JavaDependencyOptions extends AbstractAnalysisOptions {
 			super("Source");
 			addPredicateSelector(declarationTypeSelector());
 //			addPredicateSelector(namespaceSelector());
-			addPredicateSelector(loaderSelector());
+			_locationSelector = loaderSelector();
+			add(_locationSelector);
+			TristateTreePruner<Object,Element> generator = new LoaderSelectionPredicateGenerator(new NamespaceSelectionPredicateGenerator(null));
+
 			addPredicateSelector(noAnonymousClasses());
 		}
+		
+		public TristateTreeSelector<Object> _locationSelector;
 	}
 
 	private TargetOptionGroup _target = new TargetOptionGroup();
@@ -122,9 +127,11 @@ public class JavaDependencyOptions extends AbstractAnalysisOptions {
 			super("Target");
 			addPredicateSelector(declarationTypeSelector());
 //			addPredicateSelector(namespaceSelector());
-			addPredicateSelector(loaderSelector());
+			_locationSelector = loaderSelector();
+			add(_locationSelector);
 			addPredicateSelector(noExceptions());
 		}
+		public TristateTreeSelector<Object> _locationSelector;
 	}
 	
 	private DependencyOptionGroup _dependencies = new DependencyOptionGroup();
@@ -278,23 +285,22 @@ public class JavaDependencyOptions extends AbstractAnalysisOptions {
 		}, "Ignore throwables", true);
 	}
 	
-	private PredicateSelector<Element> loaderSelector() {
+	private TristateTreeSelector<Object> loaderSelector() {
 		DocumentLoaderContentProvider contentProvider = new DocumentLoaderContentProvider();
 		
 		TreeViewNodeLabelProvider labelProvider = new TreeViewNodeLabelProvider();
-		TristatePredicateGenerator<Object,Element> generator = new LoaderSelectionPredicateGenerator(new NamespaceSelectionPredicateGenerator(null));
-		TristateTreeSelector<Object, Element> tristateTreeSelector = new TristateTreeSelector<Object,Element>(contentProvider, generator, labelProvider);
+		TristateTreeSelector<Object> tristateTreeSelector = new TristateTreeSelector<Object>(contentProvider, labelProvider);
 		return tristateTreeSelector;
 	}
 	
-	private PredicateSelector<Element> namespaceSelector() {
-		NamespaceContentProvider contentProvider = new NamespaceContentProvider();
-		
-		TreeViewNodeLabelProvider labelProvider = new TreeViewNodeLabelProvider();
-		TristatePredicateGenerator<Object,Element> generator = new NamespaceSelectionPredicateGenerator(null);
-		TristateTreeSelector<Object, Element> tristateTreeSelector = new TristateTreeSelector<Object,Element>(contentProvider, generator, labelProvider);
-		return tristateTreeSelector;
-	}
+//	private Selector<Element> namespaceSelector() {
+//		NamespaceContentProvider contentProvider = new NamespaceContentProvider();
+//		
+//		TreeViewNodeLabelProvider labelProvider = new TreeViewNodeLabelProvider();
+////		TristatePredicateGenerator<Object,Element> generator = new NamespaceSelectionPredicateGenerator(null);
+//		TristateTreeSelector<Object, Element> tristateTreeSelector = new TristateTreeSelector<Object,Element>(contentProvider, labelProvider);
+//		return tristateTreeSelector;
+//	}
 
 
 	

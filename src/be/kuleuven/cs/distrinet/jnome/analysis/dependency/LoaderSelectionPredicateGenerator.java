@@ -11,14 +11,14 @@ import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.DocumentLoaderContentPr
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.DocumentLoaderContentProvider.SourceNode;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.DocumentLoaderNode;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TreeNode;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TristateTreeSelector.TristatePredicateGenerator;
+import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TristateTreePruner;
 import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoader;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
 
-public class LoaderSelectionPredicateGenerator extends TristatePredicateGenerator<Object, Element> {
+public class LoaderSelectionPredicateGenerator extends TristateTreePruner<Object, Element> {
 	
-	public LoaderSelectionPredicateGenerator(TristatePredicateGenerator<Object, Element> next) {
+	public LoaderSelectionPredicateGenerator(TristateTreePruner<Object, Element> next) {
 		super(next);
 	}
 
@@ -27,7 +27,7 @@ public class LoaderSelectionPredicateGenerator extends TristatePredicateGenerato
 			TreeNode<?,Object> node, 
 			Set<TreeNode<?,Object>> checked, 
 			Set<TreeNode<?,Object>> grayed, 
-			TristatePredicateGenerator<Object,Element>  first) {
+			TristateTreePruner<Object,Element>  first) {
 		UniversalPredicate<? super Element, Nothing> result = null;
 		if(node instanceof ProjectNode | node instanceof LoaderGroupNode) {
 			result = first.childrenDisjunction(node, checked, grayed, first);
@@ -43,7 +43,7 @@ public class LoaderSelectionPredicateGenerator extends TristatePredicateGenerato
 			TreeNode<?,Object> node, 
 			Set<TreeNode<?,Object>> checked, 
 			Set<TreeNode<?,Object>> grayed, 
-			TristatePredicateGenerator<Object,Element>  first) {
+			TristateTreePruner<Object,Element>  first) {
 		if(node instanceof SourceNode) {
 			return new IsSource();
 		} else if(node instanceof BinaryNode) {

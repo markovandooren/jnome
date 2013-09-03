@@ -3,12 +3,12 @@ package be.kuleuven.cs.distrinet.jnome.analysis.dependency;
 import java.util.ArrayList;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.analysis.AbstractAnalysisOptions;
 import be.kuleuven.cs.distrinet.chameleon.analysis.OptionGroup;
 import be.kuleuven.cs.distrinet.chameleon.analysis.PredicateOptionGroup;
 import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.Dependency;
 import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.DependencyAnalysis;
 import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.DependencyAnalysis.HistoryFilter;
+import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.DependencyOptions;
 import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.DependencyResult;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
@@ -29,6 +29,7 @@ import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.DocumentLoaderContentPr
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TreeViewNodeLabelProvider;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TristateTreePruner;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TristateTreeSelector;
+import be.kuleuven.cs.distrinet.chameleon.util.action.TopDown;
 import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
@@ -41,10 +42,13 @@ import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.True;
 import be.kuleuven.cs.distrinet.rejuse.predicate.TypePredicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
+import be.kuleuven.cs.distrinet.rejuse.tree.PrunedTreeStructure;
+import be.kuleuven.cs.distrinet.rejuse.tree.TreePredicate;
+import be.kuleuven.cs.distrinet.rejuse.tree.TreeStructure;
 
 import com.google.common.collect.ImmutableList;
 
-public class JavaDependencyOptions extends AbstractAnalysisOptions {
+public class JavaDependencyOptions extends DependencyOptions {
 
 	@Override
 	public void setContext(Object context) {
@@ -84,24 +88,32 @@ public class JavaDependencyOptions extends AbstractAnalysisOptions {
 		return result;
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public DependencyAnalysis<Element,Declaration> createAnalysis() {
+	public DependencyResult createAnalysis() {
 		UniversalPredicate sourcePredicate = _source.predicate();
 		UniversalPredicate crossReferencePredicate = _dependencies.crossReferencePredicate();
 		UniversalPredicate targetPredicate = _target.predicate();
 		UniversalPredicate dependencyPredicate = _dependencies.predicate();
 		TristateTreePruner<Object,Element> generator = new LoaderSelectionPredicateGenerator(new NamespaceSelectionPredicateGenerator(null));
-		
-		return new DependencyAnalysis<Element,Declaration>(
+		TreePredicate<? super Element, Nothing> source = generator.create(_source._locationSelector.root(), _source._locationSelector.checked(), _source._locationSelector.grayed());
+		TreePredicate<? super Element, Nothing> targetLocation = generator.create(_target._locationSelector.root(), _target._locationSelector.checked(), _target._locationSelector.grayed());
+		DependencyAnalysis<Element, Declaration> dependencyAnalysis = new DependencyAnalysis<Element,Declaration>(
 				Declaration.class,
-				sourcePredicate, 
+				sourcePredicate.and(source), 
 				crossReferencePredicate,
 				Declaration.class,
 				mapper(), 
-				targetPredicate, 
+				targetPredicate.and(targetLocation), 
 				dependencyPredicate,
 				new RedundantInheritedDependencyFilter());
+		TreeStructure<Element> logicalStructure = _root.logical();
+		PrunedTreeStructure<Element> sourceStructure = new PrunedTreeStructure(logicalStructure, source);
+		TopDown<Element, Nothing> topDown = new TopDown<>(dependencyAnalysis);
+		topDown.traverse(_root, sourceStructure);
+		return dependencyAnalysis.result();
 	}
+	
 	
 	List<? extends OptionGroup> _groups;
 
@@ -113,7 +125,7 @@ public class JavaDependencyOptions extends AbstractAnalysisOptions {
 //			addPredicateSelector(namespaceSelector());
 			_locationSelector = loaderSelector();
 			add(_locationSelector);
-			TristateTreePruner<Object,Element> generator = new LoaderSelectionPredicateGenerator(new NamespaceSelectionPredicateGenerator(null));
+//			TristateTreePruner<Object,Element> generator = new LoaderSelectionPredicateGenerator(new NamespaceSelectionPredicateGenerator(null));
 
 			addPredicateSelector(noAnonymousClasses());
 		}

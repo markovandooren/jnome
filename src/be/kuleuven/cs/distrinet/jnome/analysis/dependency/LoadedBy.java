@@ -5,9 +5,9 @@ import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
 import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoader;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
-import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
+import be.kuleuven.cs.distrinet.rejuse.tree.TreePredicate;
 
-public class LoadedBy extends UniversalPredicate<Element, Nothing> {
+public class LoadedBy extends TreePredicate<Element, Nothing> {
 	private final DocumentLoader currentLoader;
 
 	public LoadedBy(Class<Element> type, DocumentLoader currentLoader) {
@@ -38,5 +38,10 @@ public class LoadedBy extends UniversalPredicate<Element, Nothing> {
 	@Override
 	public String toString() {
 		return "loaded by "+currentLoader.label();
+	}
+
+	@Override
+	public boolean canSucceedBeyond(Element node) throws Nothing {
+		return uncheckedEval(node);
 	}
 }

@@ -15,6 +15,7 @@ import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TristateTreePruner;
 import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoader;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
+import be.kuleuven.cs.distrinet.rejuse.tree.TreePredicate;
 
 public class LoaderSelectionPredicateGenerator extends TristateTreePruner<Object, Element> {
 	
@@ -23,23 +24,23 @@ public class LoaderSelectionPredicateGenerator extends TristateTreePruner<Object
 	}
 
 	@Override
-	protected UniversalPredicate<? super Element, Nothing> grayed(
+	protected TreePredicate<? super Element, Nothing> grayed(
 			TreeNode<?,Object> node, 
 			Set<TreeNode<?,Object>> checked, 
 			Set<TreeNode<?,Object>> grayed, 
 			TristateTreePruner<Object,Element>  first) {
-		UniversalPredicate<? super Element, Nothing> result = null;
-		if(node instanceof ProjectNode | node instanceof LoaderGroupNode) {
+		TreePredicate<? super Element, Nothing> result = null;
+		if(node instanceof ProjectNode || node instanceof LoaderGroupNode) {
 			result = first.childrenDisjunction(node, checked, grayed, first);
 		} else if(node instanceof DocumentLoaderNode) {
 			DocumentLoader currentLoader = ((DocumentLoaderNode)node).domainObject();
-			result = new LoadedBy(Element.class, currentLoader).and(first.childrenDisjunction(node, checked, grayed, first));
+			result = new LoadedBy(Element.class, currentLoader).and((TreePredicate)first.childrenDisjunction(node, checked, grayed, first));
 		} 
 		return result;
 	}
 
 	@Override
-	protected UniversalPredicate<? super Element, Nothing> checked(
+	protected TreePredicate<? super Element, Nothing> checked(
 			TreeNode<?,Object> node, 
 			Set<TreeNode<?,Object>> checked, 
 			Set<TreeNode<?,Object>> grayed, 

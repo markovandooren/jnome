@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import be.kuleuven.cs.distrinet.chameleon.core.Config;
+import be.kuleuven.cs.distrinet.chameleon.core.element.ElementImpl;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.support.test.ExpressionTest;
@@ -46,10 +47,15 @@ public abstract class JavaTest extends CompositeTest {
 	@Override
 	@Test
 	public void testCrossReferences() throws Exception {
+//		ElementImpl.elementsCreated = 0;
+//		ElementImpl.elementsOnWhichParentInvoked = 0;
 		Project project = project();
 		ElementProvider<Type> typeProvider = typeProvider();
 		new ExpressionTest(project, typeProvider).testExpressionTypes();
 		new CrossReferenceTest(project, new BasicDescendantProvider<CrossReference>(namespaceProvider(), CrossReference.class)).testCrossReferences();
+//		System.out.println("Elements created: "+ElementImpl.elementsCreated);
+//		System.out.println("Elements on which parent was invoked: "+ElementImpl.elementsOnWhichParentInvoked);
+//		System.out.println("Elements ratio: "+(double)ElementImpl.elementsOnWhichParentInvoked/(double)ElementImpl.elementsCreated);
 	}
 
 	public ElementProvider<Type> typeProvider() {

@@ -17,22 +17,28 @@ public class LoadedBy extends TreePredicate<Element, Nothing> {
 
 	@Override
 	public boolean uncheckedEval(Element t) throws Nothing {
+		boolean result = false;
 		if(t instanceof Namespace) {
-			return currentLoader.namespaces().contains(t); 
-		}
-		DocumentLoader loader = t.nearestAncestor(Document.class).inputSource().loader();
-		while(true) {
-			if(loader == currentLoader) {
-				return true;
+			return currentLoader.namespaces().contains(t);
+		} else {
+			Document document = t.nearestAncestor(Document.class);
+			// The signature of a namespace is not part of document.
+			if(document != null) {
+				DocumentLoader loader = document.inputSource().loader();
+				while(true) {
+					if(loader == currentLoader) {
+						result = true;
+					}
+					Object o = loader.container();
+					if(o instanceof DocumentLoader) {
+						loader = (DocumentLoader) o;
+					} else {
+						break;
+					}
+				}
 			}
-			Object o = loader.container();
-			if(o instanceof DocumentLoader) {
-				loader = (DocumentLoader) o;
-			} else {
-			  break;
-			}
 		}
-		return false;
+		return result;
 	}
 	
 	@Override
@@ -42,6 +48,32 @@ public class LoadedBy extends TreePredicate<Element, Nothing> {
 
 	@Override
 	public boolean canSucceedBeyond(Element node) throws Nothing {
-		return uncheckedEval(node);
+		boolean result = false;
+		if(node instanceof Namespace) {
+			for(Namespace ns: currentLoader.namespaces()) {
+				if(ns == node || ns.hasAncestor(node)) {
+					result = true;
+					break;
+				}
+			}
+		} else {
+			Document document = node.nearestAncestor(Document.class);
+			// The signature of a namespace is not part of document.
+			if(document != null) {
+				DocumentLoader loader = document.inputSource().loader();
+				while(true) {
+					if(loader == currentLoader) {
+						result = true;
+					}
+					Object o = loader.container();
+					if(o instanceof DocumentLoader) {
+						loader = (DocumentLoader) o;
+					} else {
+						break;
+					}
+				}
+			}
+		}
+		return result;
 	}
 }

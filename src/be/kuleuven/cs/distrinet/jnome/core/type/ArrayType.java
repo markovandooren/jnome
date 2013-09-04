@@ -4,11 +4,15 @@ package be.kuleuven.cs.distrinet.jnome.core.type;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
+import be.kuleuven.cs.distrinet.chameleon.core.namespace.RootNamespace;
 import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
+import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
+import be.kuleuven.cs.distrinet.chameleon.oo.method.SimpleNameMethodHeader;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.SubtypeRelation;
 import be.kuleuven.cs.distrinet.chameleon.oo.variable.RegularMemberVariable;
+import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
 import be.kuleuven.cs.distrinet.chameleon.support.modifier.Final;
 import be.kuleuven.cs.distrinet.chameleon.workspace.View;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
@@ -18,7 +22,6 @@ import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
  * @author Marko van Dooren
  */
 public class ArrayType extends RegularType {
-//	TODO: this class should not be a member. This is just a quickfix
   public ArrayType(Type type) {
     super(new SimpleNameSignature(getArrayName(type.name())));
     //FIXME: copy the modifiers?
@@ -27,9 +30,16 @@ public class ArrayType extends RegularType {
     setUniParent(type.parent());
     Java language = type.language(Java.class);
 		JavaTypeReference jtr = language.createTypeReference("int");
+		
+		// JLS7 10.7 Array Members
     RegularMemberVariable var = new RegularMemberVariable(new SimpleNameSignature("length"), jtr);
     var.addModifier(new Final());
     add(var);
+    
+    String fullyQualifiedName = type.getFullyQualifiedName();
+		JavaTypeReference returnType = new ArrayTypeReference((JavaTypeReference) language.createTypeReference(fullyQualifiedName));
+    Method clone = new NormalMethod(new SimpleNameMethodHeader("clone", returnType));
+    add(clone);
     // JLS3 4.10.3 p.64
     // FIXME May these should be implicit inheritance relations. Not that important, though, as
     //       these cannot be manipulated by programmers anyway.
@@ -37,6 +47,8 @@ public class ArrayType extends RegularType {
     addInheritanceRelation(new SubtypeRelation(language.createTypeReference("java.lang.Cloneable")));
     addInheritanceRelation(new SubtypeRelation(language.createTypeReference("java.io.Serializable")));
   }
+  
+
   
   public ArrayType(Type componentType, int dimension) {
   	this(consAux(componentType,dimension-1));

@@ -80,7 +80,7 @@ public class NamespaceSelectionPredicateGenerator extends TristateTreePruner<Obj
 
 				@Override
 				public boolean canSucceedBeyond(Element node) {
-					return node == currentNamespace || currentNamespace.hasAncestor(node) || node.hasAncestor(currentNamespace);
+					return node == currentNamespace || currentNamespace.hasAncestor(node) || node.logical().hasAncestorOrSelf(node,currentNamespace);
 				};
 
 			};

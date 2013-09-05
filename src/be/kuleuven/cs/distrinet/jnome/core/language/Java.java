@@ -98,6 +98,10 @@ import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 import be.kuleuven.cs.distrinet.rejuse.property.PropertyUniverse;
 
 /**
+ * A class representing the Java programming language.
+ * 
+ * FIXME This class has too many responsibilities with respect to subtyping.
+ * 
  * @author Marko van Dooren
  */
 public class Java extends ObjectOrientedLanguage {
@@ -361,13 +365,16 @@ public class Java extends ObjectOrientedLanguage {
   	MEMBER_OVERRIDABLE_BY_DEFAULT = new MemberOverridableByDefault();
   	MEMBER_INHERITABLE_BY_DEFAULT = new MemberInheritableByDefault();
   	TYPE_EXTENSIBLE_BY_DEFAULT = new TypeExtensibleByDefault();
+  	TYPE_REFERENCE_BY_DEFAULT = new TypeReferenceByDefault();
   	addPropertyRule(MEMBER_OVERRIDABLE_BY_DEFAULT);
   	addPropertyRule(MEMBER_INHERITABLE_BY_DEFAULT);
   	addPropertyRule(TYPE_EXTENSIBLE_BY_DEFAULT);
+  	addPropertyRule(TYPE_REFERENCE_BY_DEFAULT);
   	addPropertyRule(new MemberInstanceByDefault());
   	addPropertyRule(new MemberPackageAccessibleByDefault());
   }
   
+  private PropertyRule<Type> TYPE_REFERENCE_BY_DEFAULT;
   private PropertyRule<Member> MEMBER_OVERRIDABLE_BY_DEFAULT;
   private PropertyRule<Member> MEMBER_INHERITABLE_BY_DEFAULT;
   private PropertyRule<Member> TYPE_EXTENSIBLE_BY_DEFAULT;
@@ -852,20 +859,6 @@ public class Java extends ObjectOrientedLanguage {
 			return new JavaPureWildcard();
 		}
 		
-//		private Map<Type, RawType> _rawCache = new HashMap<Type, RawType>();
-		
-//		public synchronized void putRawCache(Type type, RawType raw) {
-//			if(Config.cacheDeclarations()) {
-//			  _rawCache.put(type, raw);
-//			} else {
-//				_rawCache.clear();
-//			}
-//		}
-		
-//		public synchronized RawType getRawCache(Type original) {
-//			return _rawCache.get(original);
-//		}
-
 		@Override
 		public boolean upperBoundNotHigherThan(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
 			JavaSubtypingRelation subtypeRelation = subtypeRelation();
@@ -893,4 +886,6 @@ public class Java extends ObjectOrientedLanguage {
 				return (X) _type;
 			}
 		}
+		
+		
 }

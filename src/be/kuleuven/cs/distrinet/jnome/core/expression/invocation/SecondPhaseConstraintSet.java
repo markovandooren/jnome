@@ -40,42 +40,6 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		_assignments = new TypeAssignmentSet(typeParameters());
 	}
 
-	public Set<Type> ST(JavaTypeReference U) throws LookupException {
-		Set<Type> result = U.getElement().getAllSuperTypes();
-		result.add(U.getElement());
-		return result;
-	}
-
-	public Set<Type> EST(JavaTypeReference U) throws LookupException {
-		Set<Type> STU = ST(U);
-		Set<Type> result = new HashSet<Type>();
-		for(Type type:STU) {
-			Type erasure = U.language(Java.class).erasure(type);
-			result.add(erasure);
-		}
-		return result;
-	}
-
-	public Set<Type> EC(TypeParameter Tj) throws LookupException {
-		List<JavaTypeReference> Us = Us(Tj, SupertypeConstraint.class);
-		List<Set<Type>> ESTs = new ArrayList<Set<Type>>();
-		for(JavaTypeReference URef: Us) {
-			ESTs.add(EST(URef));
-		}
-		Set<Type> result;
-		int size = ESTs.size();
-		if(size > 0) {
-			result = ESTs.get(0);
-			for(int i = 1; i< size; i++) {
-				result.retainAll(ESTs.get(i));
-			}
-		} else {
-		  result = new HashSet<Type>();
-		}
-		return result;
-		// Take intersection
-	}
-
 	private List<JavaTypeReference> Us(TypeParameter Tj, Class<? extends SecondPhaseConstraint> kind) throws LookupException {
 		List<JavaTypeReference> Us = new ArrayList<JavaTypeReference>();
 		for(SecondPhaseConstraint constraint: constraints()) {
@@ -86,199 +50,15 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		return Us;
 	}
 	
-	public Set<Type> MEC(TypeParameter Tj) throws LookupException {
-		final Set<Type> EC = EC(Tj);
-		new AbstractPredicate<Type, LookupException>() {
-			@Override
-			public boolean eval(final Type first) throws LookupException {
-				return ! new AbstractPredicate<Type, LookupException>() {
-					@Override
-					public boolean eval(Type second) throws LookupException {
-						return (! first.sameAs(second)) && (second.subTypeOf(first));
-					}
-				}.exists(EC);
-			}
-		}.filter(EC);
-		return EC;
-	}
+
+
 	
-	public Set<Type> Inv(Type G, TypeParameter Tj) throws LookupException {
-		List<JavaTypeReference> Us = Us(Tj, SupertypeConstraint.class);
-		Set<Type> result = new HashSet<Type>();
-		for(JavaTypeReference U: Us) {
-			result.addAll(Inv(G, U));
-		}
-		return result;
+	private Type leastUpperBound(List<? extends JavaTypeReference> Us, Java language) throws LookupException {
+		return language.subtypeRelation().leastUpperBound(Us);
 	}
-	
-	public Set<Type> Inv(Type G, JavaTypeReference U) throws LookupException {
-		Type base = G.baseType();
-		Set<Type> superTypes = ST(U);
-		//FIXME: Because we use a set, bugs may seem to disappear when debugging.
-		//       Do we have to use a set anyway? The operations applied to it
-		//       further on should work exactly the same whether there are duplicates or not
-		Set<Type> result = new HashSet<Type>();
-		for(Type superType: superTypes) {
-			if(superType.baseType().sameAs(base)) {
-				if(superType instanceof InstantiatedParameterType) {
-					while(superType instanceof InstantiatedParameterType) {
-						superType = ((InstantiatedParameterType) superType).aliasedType();
-					}
-				}
-				result.add(superType);
-			}
-		}
-		return result; 
-	}
-	
-	public Type lci(Set<Type> types) throws LookupException {
-		List<Type> list = new ArrayList<Type>(types);
-		return lci(list);
-	}
-	
-	private Type lci(List<Type> types) throws LookupException {
-		int size = types.size();
-		if(size > 0) {
-			Type lci = types.get(0);
-			for(int i = 1; i < size; i++) {
-				lci = lci(lci, types.get(i));
-			}
-			return lci;
-		} else {
-			throw new ChameleonProgrammerException("The list of types to compute lci is empty.");
-		}
-	}
-	
-	public Type lci(Type first, Type second) throws LookupException {
-		Type result = first;
-		if(first.nbTypeParameters(TypeParameter.class) > 0) {
-			result = Util.clone(first);
-			result.setUniParent(first.parent());
-			List<ActualTypeArgument> firstArguments = arguments(first);
-			List<ActualTypeArgument> secondArguments = arguments(second);
-			int size = firstArguments.size();
-			if(secondArguments.size() != size) {
-				throw new ChameleonProgrammerException("The number of type parameters from the first list: "+size+" is different from the number of type parameters in the second list: "+secondArguments.size());
-			}
-			List<TypeParameter> newParameters = lcta(firstArguments, secondArguments);
-			result.replaceAllParameters(TypeParameter.class,newParameters);
-		}
-		return result;
-	}
-	
-	private List<ActualTypeArgument> arguments(Type type) {
-		List<TypeParameter> parameters = type.parameters(TypeParameter.class);
-		List<ActualTypeArgument> result = new ArrayList<ActualTypeArgument>();
-		for(TypeParameter parameter: parameters) {
-			result.add(Java.argument(parameter));
-		}
-		return result;
-	}
-	
-	public List<TypeParameter> lcta(List<ActualTypeArgument> firsts, List<ActualTypeArgument> seconds) throws LookupException {
-		List<TypeParameter> result = new ArrayList<TypeParameter>();
-		int size = firsts.size();
-		for(int i=0; i<size;i++) {
-			result.add(new InstantiatedTypeParameter(Util.clone(((InstantiatedTypeParameter)firsts.get(i).parent()).signature()),lcta(firsts.get(i), seconds.get(i))));
-		}
-		return result;
-	}
-	
-	public List<JavaTypeReference> typeReferenceList(ActualTypeArgumentWithTypeReference first, ActualTypeArgumentWithTypeReference second) throws LookupException {
-		List<JavaTypeReference> list = new ArrayList<JavaTypeReference>();
-		list.add((JavaTypeReference) first.typeReference());
-		list.add((JavaTypeReference) second.typeReference());
-		return list;
-	}
-	
-	public ActualTypeArgument lcta(ActualTypeArgument first, ActualTypeArgument second) throws LookupException {
-		ActualTypeArgument result;
-		if(first instanceof BasicTypeArgument || second instanceof BasicTypeArgument) {
-			if(first instanceof BasicTypeArgument && second instanceof BasicTypeArgument) {
-				Type U = ((BasicTypeArgument)first).type();
-				Type V = ((BasicTypeArgument)second).type();
-				if(U.sameAs(V)) {
-					result = Util.clone(first);
-				} else {
-					List<JavaTypeReference> list = new ArrayList<JavaTypeReference>();
-					list.add((JavaTypeReference) ((BasicTypeArgument)first).typeReference());
-					list.add((JavaTypeReference) ((BasicTypeArgument)second).typeReference());
-					result = first.language(Java.class).createExtendsWildcard(lub(list));
-				}
-			} else if(first instanceof ExtendsWildcard || second instanceof ExtendsWildcard) {
-				BasicTypeArgument basic = (BasicTypeArgument) (first instanceof BasicTypeArgument? first : second);
-				ExtendsWildcard ext = (ExtendsWildcard)(basic == first ? second : first);
-				result = first.language(Java.class).createExtendsWildcard(lub(typeReferenceList(basic,ext)));
-			} else if(first instanceof SuperWildcard || second instanceof SuperWildcard) {
-				BasicTypeArgument basic = (BasicTypeArgument) (first instanceof BasicTypeArgument? first : second);
-				SuperWildcard ext = (SuperWildcard)(basic == first ? second : first);
-				result = first.language(Java.class).createSuperWildcard(first.language(Java.class).glb(typeReferenceList(basic,ext)));
-			} else {
-				result = null;
-			}
-		} else if(first instanceof ExtendsWildcard || second instanceof ExtendsWildcard) {
-			if(first instanceof ExtendsWildcard && second instanceof ExtendsWildcard) {
-				List<JavaTypeReference> list = new ArrayList<JavaTypeReference>();
-				list.add((JavaTypeReference) ((ExtendsWildcard)first).typeReference());
-				list.add((JavaTypeReference) ((ExtendsWildcard)second).typeReference());
-				result = first.language(Java.class).createExtendsWildcard(lub(list));
-			} else if(first instanceof SuperWildcard || second instanceof SuperWildcard) {
-				ExtendsWildcard ext = (ExtendsWildcard) (first instanceof ExtendsWildcard? first : second);
-				SuperWildcard sup = (SuperWildcard)(ext == first ? second : first);
-				Type U = ((BasicTypeArgument)first).type();
-				Type V = ((BasicTypeArgument)second).type();
-				if(U.sameAs(V)) {
-					result = first.language(Java.class).createBasicTypeArgument(Util.clone(ext.typeReference()));
-				} else {
-					result = first.language(Java.class).createPureWildcard();
-				}
-			} else {
-				result = null;
-			}
-		} else if (first instanceof SuperWildcard && second instanceof SuperWildcard) {
-			result = first.language(Java.class).createSuperWildcard(first.language(Java.class).glb(typeReferenceList((SuperWildcard)first,(SuperWildcard)second)));
-		} else {
-			result = null;
-		}
-		if(result == null) {
-		  throw new ChameleonProgrammerException("lcta is not defined for the given actual type arguments of types " + first.getClass().getName() + " and " + second.getClass().getName());
-		}
-		result.setUniParent(first.parent()); 
-		return result;
-	}
-	
-	public JavaTypeReference lub(List<? extends JavaTypeReference> types) {
-  	throw new Error();
-	}
-	
-	public Type CandidateInvocation(Type G, TypeParameter Tj) throws LookupException {
-		return lci(Inv(G,Tj));
-	}
-	
-	public Type Candidate(Type W, TypeParameter Tj) throws LookupException {
-		if(W.parameters(TypeParameter.class).size() > 0) {
-			return CandidateInvocation(W, Tj);
-		} else {
-			return W;
-		}
-	}
-	
-	public Type inferredType(TypeParameter Tj) throws LookupException {
-		List<Type> MEC = new ArrayList<Type>(MEC(Tj));
-		List<Type> candidates = new ArrayList<Type>();
-		for(Type W:MEC) {
-			candidates.add(Candidate(W,Tj));
-		}
-		if(candidates.isEmpty()) {
-			throw new LookupException("No candidates for the inferred type of parameter "+Tj.signature().name()+" of class "+Tj.nearestAncestor(Type.class).getFullyQualifiedName());
-		} else if(candidates.size() == 1) {
-			return candidates.get(0);
-		} else {
-		  return IntersectionType.create(candidates);
-		}
-	}
-	
+
 	private void processSuperTypeConstraints() throws LookupException {
+		Java language = null;
 		for(TypeParameter p: typeParameters()) {
 			boolean hasSuperConstraints = false;
 			for(SecondPhaseConstraint constraint: constraints()) {
@@ -288,7 +68,11 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 				}
 			}
 			if(hasSuperConstraints) {
-				add(new ActualTypeAssignment(p, inferredType(p)));
+				List<JavaTypeReference> Us = Us(p, SupertypeConstraint.class);
+				if(language == null) {
+					language = p.language(Java.class);
+				}
+				add(new ActualTypeAssignment(p, leastUpperBound(Us,language)));
 			}
 		}
 	}
@@ -412,12 +196,12 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	}
 
 	
-	public Set<TypeParameter> unresolvedParameters() {
+	private Set<TypeParameter> unresolvedParameters() {
 		Set<TypeParameter> typeParameters = ImmutableSet.copyOf(typeParameters());
 		return Sets.difference(typeParameters, resolvedParameters());
 	}
 
-	public Set<TypeParameter> resolvedParameters() {
+	private Set<TypeParameter> resolvedParameters() {
 		Builder<TypeParameter> builder = ImmutableSet.<TypeParameter>builder();
 		for(TypeAssignment assignment: assignments().assignments()) {
 			builder.add(assignment.parameter());
@@ -441,7 +225,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		return RprimeRef;
 	}
   
-  public JavaTypeReference S() throws LookupException {
+	private JavaTypeReference S() throws LookupException {
   	if(! inContextOfAssignmentConversion()) {
   		throw new ChameleonProgrammerException();
   	} else {
@@ -450,7 +234,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
   	}
   }
   
-  public boolean inContextOfAssignmentConversion() {
+  private boolean inContextOfAssignmentConversion() {
   	return invocation().parent() instanceof AssignmentExpression;
   }
   

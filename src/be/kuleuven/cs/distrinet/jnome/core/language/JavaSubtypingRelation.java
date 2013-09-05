@@ -4,6 +4,7 @@
 package be.kuleuven.cs.distrinet.jnome.core.language;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -12,28 +13,37 @@ import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.relation.WeakPartialOrder;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
+import be.kuleuven.cs.distrinet.chameleon.oo.language.SubtypeRelation;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.DerivedType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.IntersectionType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.ParameterSubstitution;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.UnionType;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgument;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.BasicTypeArgument;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.CapturedTypeParameter;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ExtendsWildcard;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalTypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.InstantiatedParameterType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.InstantiatedTypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.LazyInstantiatedAlias;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.SuperWildcard;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeConstraint;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.WildCardType;
 import be.kuleuven.cs.distrinet.chameleon.util.Pair;
+import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.RawType;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
+import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
 
-public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
+public class JavaSubtypingRelation extends SubtypeRelation {
 	
 	
 	
@@ -312,6 +322,242 @@ public class JavaSubtypingRelation extends WeakPartialOrder<Type> {
 			result = firstParam.compatibleWith(secondParam, slowTrace);
 		}
 		return result;
+	}
+	
+	@Override
+	public Type leastUpperBound(List<? extends TypeReference> Us) throws LookupException {
+		List<Type> MEC = new ArrayList<Type>(MEC((List<? extends JavaTypeReference>) Us));
+		List<Type> candidates = new ArrayList<Type>();
+		for(Type W:MEC) {
+			candidates.add(Candidate(W,(List<? extends JavaTypeReference>) Us));
+		}
+		return intersection(candidates);
+	}
+
+	private Set<Type> MEC(List<? extends JavaTypeReference> Us) throws LookupException {
+		final Set<Type> EC = EC(Us);
+		new AbstractPredicate<Type, LookupException>() {
+			@Override
+			public boolean eval(final Type first) throws LookupException {
+				return ! new AbstractPredicate<Type, LookupException>() {
+					@Override
+					public boolean eval(Type second) throws LookupException {
+						return (! first.sameAs(second)) && (second.subTypeOf(first));
+					}
+				}.exists(EC);
+			}
+		}.filter(EC);
+		return EC;
+	}
+	
+	private Set<Type> EC(List<? extends JavaTypeReference> Us) throws LookupException {
+		List<Set<Type>> ESTs = new ArrayList<Set<Type>>();
+		for(JavaTypeReference URef: Us) {
+			ESTs.add(EST(URef));
+		}
+		Set<Type> result;
+		int size = ESTs.size();
+		if(size > 0) {
+			result = ESTs.get(0);
+			for(int i = 1; i< size; i++) {
+				result.retainAll(ESTs.get(i));
+			}
+		} else {
+		  result = new HashSet<Type>();
+		}
+		return result;
+		// Take intersection
+	}
+
+	private Set<Type> EST(JavaTypeReference U) throws LookupException {
+		Set<Type> STU = ST(U);
+		Set<Type> result = new HashSet<Type>();
+		for(Type type:STU) {
+			Type erasure = U.language(Java.class).erasure(type);
+			result.add(erasure);
+		}
+		return result;
+	}
+	
+	private Type intersection(List<Type> candidates)
+			throws LookupException {
+		if(candidates.isEmpty()) {
+			throw new LookupException("No candidates for the inferred type");
+		} else if(candidates.size() == 1) {
+			return candidates.get(0);
+		} else {
+		  return IntersectionType.create(candidates);
+		}
+	}
+	
+
+
+	private Set<Type> ST(JavaTypeReference U) throws LookupException {
+		Set<Type> result = U.getElement().getAllSuperTypes();
+		result.add(U.getElement());
+		return result;
+	}
+
+	private Type CandidateInvocation(Type G, List<? extends JavaTypeReference> Us) throws LookupException {
+		return lci(Inv(G,Us));
+	}
+	
+	private Type Candidate(Type W, List<? extends JavaTypeReference> Us) throws LookupException {
+		if(W.parameters(TypeParameter.class).size() > 0) {
+			return CandidateInvocation(W, Us);
+		} else {
+			return W;
+		}
+	}
+	
+	private Set<Type> Inv(Type G, List<? extends JavaTypeReference> Us) throws LookupException {
+		Set<Type> result = new HashSet<Type>();
+		for(JavaTypeReference U: Us) {
+			result.addAll(Inv(G, U));
+		}
+		return result;
+	}
+	
+	private Set<Type> Inv(Type G, JavaTypeReference U) throws LookupException {
+		Type base = G.baseType();
+		Set<Type> superTypes = ST(U);
+		//FIXME: Because we use a set, bugs may seem to disappear when debugging.
+		//       Do we have to use a set anyway? The operations applied to it
+		//       further on should work exactly the same whether there are duplicates or not
+		Set<Type> result = new HashSet<Type>();
+		for(Type superType: superTypes) {
+			if(superType.baseType().sameAs(base)) {
+				if(superType instanceof InstantiatedParameterType) {
+					while(superType instanceof InstantiatedParameterType) {
+						superType = ((InstantiatedParameterType) superType).aliasedType();
+					}
+				}
+				result.add(superType);
+			}
+		}
+		return result; 
+	}
+	
+	private Type lci(Set<Type> types) throws LookupException {
+		List<Type> list = new ArrayList<Type>(types);
+		return lci(list);
+	}
+	
+	private Type lci(List<Type> types) throws LookupException {
+		int size = types.size();
+		if(size > 0) {
+			Type lci = types.get(0);
+			for(int i = 1; i < size; i++) {
+				lci = lci(lci, types.get(i));
+			}
+			return lci;
+		} else {
+			throw new ChameleonProgrammerException("The list of types to compute lci is empty.");
+		}
+	}
+	
+	private Type lci(Type first, Type second) throws LookupException {
+		Type result = first;
+		if(first.nbTypeParameters(TypeParameter.class) > 0) {
+			result = Util.clone(first);
+			result.setUniParent(first.parent());
+			List<ActualTypeArgument> firstArguments = arguments(first);
+			List<ActualTypeArgument> secondArguments = arguments(second);
+			int size = firstArguments.size();
+			if(secondArguments.size() != size) {
+				throw new ChameleonProgrammerException("The number of type parameters from the first list: "+size+" is different from the number of type parameters in the second list: "+secondArguments.size());
+			}
+			List<TypeParameter> newParameters = lcta(firstArguments, secondArguments);
+			result.replaceAllParameters(TypeParameter.class,newParameters);
+		}
+		return result;
+	}
+	
+	private List<ActualTypeArgument> arguments(Type type) {
+		List<TypeParameter> parameters = type.parameters(TypeParameter.class);
+		List<ActualTypeArgument> result = new ArrayList<ActualTypeArgument>();
+		for(TypeParameter parameter: parameters) {
+			result.add(Java.argument(parameter));
+		}
+		return result;
+	}
+	
+	private List<TypeParameter> lcta(List<ActualTypeArgument> firsts, List<ActualTypeArgument> seconds) throws LookupException {
+		List<TypeParameter> result = new ArrayList<TypeParameter>();
+		int size = firsts.size();
+		for(int i=0; i<size;i++) {
+			result.add(new InstantiatedTypeParameter(Util.clone(((InstantiatedTypeParameter)firsts.get(i).parent()).signature()),lcta(firsts.get(i), seconds.get(i))));
+		}
+		return result;
+	}
+	
+	private ActualTypeArgument lcta(ActualTypeArgument first, ActualTypeArgument second) throws LookupException {
+		ActualTypeArgument result;
+		if(first instanceof BasicTypeArgument || second instanceof BasicTypeArgument) {
+			if(first instanceof BasicTypeArgument && second instanceof BasicTypeArgument) {
+				Type U = ((BasicTypeArgument)first).type();
+				Type V = ((BasicTypeArgument)second).type();
+				if(U.sameAs(V)) {
+					result = Util.clone(first);
+				} else {
+					List<JavaTypeReference> list = new ArrayList<JavaTypeReference>();
+					list.add((JavaTypeReference) ((BasicTypeArgument)first).typeReference());
+					list.add((JavaTypeReference) ((BasicTypeArgument)second).typeReference());
+					Java java = first.language(Java.class);
+					Type leastUpperBound = leastUpperBound(list);
+					result = java.createExtendsWildcard(java.reference(leastUpperBound));
+				}
+			} else if(first instanceof ExtendsWildcard || second instanceof ExtendsWildcard) {
+				BasicTypeArgument basic = (BasicTypeArgument) (first instanceof BasicTypeArgument? first : second);
+				ExtendsWildcard ext = (ExtendsWildcard)(basic == first ? second : first);
+				Java java = first.language(Java.class);
+				Type leastUpperBound = leastUpperBound(typeReferenceList(basic,ext));
+				result = java.createExtendsWildcard(java.reference(leastUpperBound));
+			} else if(first instanceof SuperWildcard || second instanceof SuperWildcard) {
+				BasicTypeArgument basic = (BasicTypeArgument) (first instanceof BasicTypeArgument? first : second);
+				SuperWildcard ext = (SuperWildcard)(basic == first ? second : first);
+				result = first.language(Java.class).createSuperWildcard(first.language(Java.class).glb(typeReferenceList(basic,ext)));
+			} else {
+				result = null;
+			}
+		} else if(first instanceof ExtendsWildcard || second instanceof ExtendsWildcard) {
+			if(first instanceof ExtendsWildcard && second instanceof ExtendsWildcard) {
+				List<JavaTypeReference> list = new ArrayList<JavaTypeReference>();
+				list.add((JavaTypeReference) ((ExtendsWildcard)first).typeReference());
+				list.add((JavaTypeReference) ((ExtendsWildcard)second).typeReference());
+				Java java = first.language(Java.class);
+				Type leastUpperBound = leastUpperBound(list);
+				result = java.createExtendsWildcard(java.reference(leastUpperBound));
+			} else if(first instanceof SuperWildcard || second instanceof SuperWildcard) {
+				ExtendsWildcard ext = (ExtendsWildcard) (first instanceof ExtendsWildcard? first : second);
+				SuperWildcard sup = (SuperWildcard)(ext == first ? second : first);
+				Type U = ((BasicTypeArgument)first).type();
+				Type V = ((BasicTypeArgument)second).type();
+				if(U.sameAs(V)) {
+					result = first.language(Java.class).createBasicTypeArgument(Util.clone(ext.typeReference()));
+				} else {
+					result = first.language(Java.class).createPureWildcard();
+				}
+			} else {
+				result = null;
+			}
+		} else if (first instanceof SuperWildcard && second instanceof SuperWildcard) {
+			result = first.language(Java.class).createSuperWildcard(first.language(Java.class).glb(typeReferenceList((SuperWildcard)first,(SuperWildcard)second)));
+		} else {
+			result = null;
+		}
+		if(result == null) {
+		  throw new ChameleonProgrammerException("lcta is not defined for the given actual type arguments of types " + first.getClass().getName() + " and " + second.getClass().getName());
+		}
+		result.setUniParent(first.parent()); 
+		return result;
+	}
+
+	private List<JavaTypeReference> typeReferenceList(ActualTypeArgumentWithTypeReference first, ActualTypeArgumentWithTypeReference second) throws LookupException {
+		List<JavaTypeReference> list = new ArrayList<JavaTypeReference>();
+		list.add((JavaTypeReference) first.typeReference());
+		list.add((JavaTypeReference) second.typeReference());
+		return list;
 	}
 	
 

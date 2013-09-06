@@ -86,8 +86,11 @@ public class EnumType extends RegularJavaType {
 	}
 	
 	protected Method valueOf() {
-		JavaTypeReference tref = language(Java.class).createTypeReference(name());
+		Java java = language(Java.class);
+		JavaTypeReference tref = java.createTypeReference(name());
 		Method result = createMethod(tref, "valueOf");
+		TypeReference type = java.createTypeReference("java.lang.String");
+		result.header().addFormalParameter(new FormalParameter(new SimpleNameSignature("argument"), type));
 		return result;
 	}
 	

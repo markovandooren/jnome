@@ -2,6 +2,7 @@ package be.kuleuven.cs.distrinet.jnome.analysis.dependency;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import be.kuleuven.cs.distrinet.chameleon.analysis.OptionGroup;
 import be.kuleuven.cs.distrinet.chameleon.analysis.PredicateOptionGroup;
@@ -25,15 +26,20 @@ import be.kuleuven.cs.distrinet.chameleon.ui.widget.PredicateSelector;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.checkbox.CheckboxSelector;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.list.ComboBoxSelector;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.list.ListContentProvider;
+import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.CheckStateProvider;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.DocumentLoaderContentProvider;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TreeViewNodeLabelProvider;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TristateTreePruner;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TristateTreeSelector;
+import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.DocumentLoaderContentProvider.SourceNode;
 import be.kuleuven.cs.distrinet.chameleon.util.action.TopDown;
+import be.kuleuven.cs.distrinet.chameleon.workspace.InputSourceImpl;
 import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
+import be.kuleuven.cs.distrinet.chameleon.workspace.StreamInputSource;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
+import be.kuleuven.cs.distrinet.jnome.workspace.LazyClassFileInputSource;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.function.Function;
 import be.kuleuven.cs.distrinet.rejuse.graph.Edge;

@@ -735,7 +735,7 @@ public class Java extends ObjectOrientedLanguage {
 						Element lookupParent = tpar;
 						JavaTypeReference nameref = createTypeReference(tpar.signature().name());
 						TypeReference tref = new NonLocalJavaTypeReference(nameref, lookupParent);
-						((BasicJavaTypeReference)result).addArgument(new BasicTypeArgument(tref));
+						((BasicJavaTypeReference)result).addArgument(createBasicTypeArgument(tref));
 					}
 				}
 			} else if (type instanceof RawType) {
@@ -783,7 +783,7 @@ public class Java extends ObjectOrientedLanguage {
 				if(constraints.size() == 1){ 
 					TypeConstraint typeConstraint = constraints.get(0);
 					if(typeConstraint instanceof EqualityConstraint) {
-						result = new BasicTypeArgument(Util.clone(typeConstraint.typeReference()));
+						result = parameter.language(Java.class).createBasicTypeArgument(Util.clone(typeConstraint.typeReference()));
 					} 
 				}
 //					// there are always constraints in a captured type parameter
@@ -812,9 +812,9 @@ public class Java extends ObjectOrientedLanguage {
 		}
 		
 		public BasicTypeArgument createBasicTypeArgument(TypeReference tref) {
-			if(tref == null) {
-				throw new ChameleonProgrammerException();
-			}
+//			if(tref == null) {
+//				throw new ChameleonProgrammerException();
+//			}
 			JavaBasicTypeArgument result = new JavaBasicTypeArgument(tref);
 //			tref.parentLink().getOtherRelation().addListener(new AssociationListener<Element>() {
 //

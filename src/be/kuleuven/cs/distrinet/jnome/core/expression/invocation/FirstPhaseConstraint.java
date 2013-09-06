@@ -24,6 +24,7 @@ import be.kuleuven.cs.distrinet.chameleon.workspace.View;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaBasicTypeArgument;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
@@ -113,11 +114,10 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 				  actualsOfF.add(((InstantiatedTypeParameter)par).argument());
 				} 
 				else if(par instanceof CapturedTypeParameter) {
-					CapturedTypeParameter captured = (CapturedTypeParameter) par;
 					List<TypeConstraint> constraints = ((CapturedTypeParameter) par).constraints();
 					if(constraints.size() == 1 && constraints.get(0) instanceof EqualityConstraint) {
 						EqualityConstraint eq = (EqualityConstraint) constraints.get(0);
-						BasicTypeArgument arg = new BasicTypeArgument(Util.clone(eq.typeReference()));
+						BasicTypeArgument arg = language().createBasicTypeArgument(Util.clone(eq.typeReference()));
 						arg.setUniParent(eq);
 						actualsOfF.add(arg);
 					}

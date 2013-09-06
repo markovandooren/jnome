@@ -654,11 +654,11 @@ public class ASMClassParser {
 			// create visitor with 'this' as its parent.
 			final ActualTypeArgumentWithTypeReference arg;
 			if(kind == SignatureVisitor.INSTANCEOF) {
-				arg = new JavaBasicTypeArgument(null);
+				arg = _language.createBasicTypeArgument(null);
 			} else if(kind == SignatureVisitor.EXTENDS) {
-				arg = new JavaExtendsWildcard(null);
+				arg = _language.createExtendsWildcard(null);
 			} else if(kind == SignatureVisitor.SUPER) {
-				arg = new JavaSuperWildcard(null);
+				arg = _language.createSuperWildcard(null);
 			} else {
 				throw new ChameleonProgrammerException();
 			}

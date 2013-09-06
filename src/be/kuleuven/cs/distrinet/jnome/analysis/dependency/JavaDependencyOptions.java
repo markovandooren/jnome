@@ -268,7 +268,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 				return new TypePredicate<>(argument);
 			}
 		};
-		ComboBoxSelector<Class,Element> selector = new ComboBoxSelector<>(contentProvider, labelProvider,function,3);
+		ComboBoxSelector<Class,Element> selector = new ComboBoxSelector<>(contentProvider, labelProvider,function,2);
 		return selector;
 	}
 

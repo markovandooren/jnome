@@ -90,7 +90,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public DependencyResult createAnalysis() {
+	public DependencyResult analyze() {
 		UniversalPredicate sourcePredicate = _source.predicate();
 		UniversalPredicate crossReferencePredicate = _dependencies.crossReferencePredicate();
 		UniversalPredicate targetPredicate = _target.predicate();

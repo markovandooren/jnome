@@ -6,5 +6,6 @@ public class ClientForEnumerationWithConstants {
 		x.m();
 		f(EnumerationWithConstants.FIRST);
 		EnumerationWithConstants.FIRST.m();
+		EnumerationWithConstants.valueOf("FIRST");
 	}
 }

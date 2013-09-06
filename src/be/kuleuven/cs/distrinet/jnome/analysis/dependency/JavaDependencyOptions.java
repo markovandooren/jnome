@@ -301,7 +301,19 @@ public class JavaDependencyOptions extends DependencyOptions {
 		DocumentLoaderContentProvider contentProvider = new DocumentLoaderContentProvider();
 		
 		TreeViewNodeLabelProvider labelProvider = new TreeViewNodeLabelProvider();
-		TristateTreeSelector<Object> tristateTreeSelector = new TristateTreeSelector<Object>(contentProvider, labelProvider);
+		CheckStateProvider checkStateProvider = new CheckStateProvider<Object>() {
+
+			@Override
+			public boolean isGrayed(Object element) {
+				return false;
+			}
+
+			@Override
+			public boolean isChecked(Object element) {
+				return element instanceof SourceNode;
+			}
+		};
+		TristateTreeSelector<Object> tristateTreeSelector = new TristateTreeSelector<Object>(contentProvider, labelProvider, checkStateProvider);
 		return tristateTreeSelector;
 	}
 	

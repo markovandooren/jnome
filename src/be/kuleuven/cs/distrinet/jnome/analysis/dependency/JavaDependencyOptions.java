@@ -326,15 +326,13 @@ public class JavaDependencyOptions extends DependencyOptions {
 //		return tristateTreeSelector;
 //	}
 
-
-	
-	public static class RedundantInheritedDependencyFilter extends HistoryFilter<Element>{
+	public static class RedundantInheritedDependencyFilter extends HistoryFilter<Element,Declaration>{
 		
 		private static class Container {
 			public boolean add = true;
 		}
 		
-		public boolean process(Dependency<Element, CrossReference, Element> dependency, DependencyResult result) {
+		public boolean process(Dependency<Element, CrossReference, Declaration> dependency, DependencyResult result) {
 			final Container container = new Container(); 
 			final Element newSource = dependency.source();
 			final Element newTarget = dependency.target();
@@ -344,6 +342,9 @@ public class JavaDependencyOptions extends DependencyOptions {
 				@Override
 				public boolean eval(Edge<Element> object) throws Nothing {
 					try {
+						if(container.add == false) {
+							return true;
+						}
 						Element oldSource = ((UniEdge<Element>) object).startNode()
 								.object();
 						Element oldTarget = ((UniEdge<Element>) object).endNode().object();

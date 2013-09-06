@@ -223,7 +223,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 			public boolean uncheckedEval(Dependency t) throws Nothing {
 				return ! ((Element) t.target()).hasAncestor((Element)t.source());
 			}
-		}, "Ignore lexical descendants",true);
+		}, "Ignore lexical descendants",false);
 	}
 	
 	private PredicateSelector<? super Dependency<? super Element, ? super CrossReference, ? super Declaration>> noAncestors() {

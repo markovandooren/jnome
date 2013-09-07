@@ -117,7 +117,9 @@ public class JavaDependencyOptions extends DependencyOptions {
 		PrunedTreeStructure<Element> sourceStructure = new PrunedTreeStructure(logicalStructure, source);
 		TopDown<Element, Nothing> topDown = new TopDown<>(dependencyAnalysis);
 		topDown.traverse(_root, sourceStructure);
-		return dependencyAnalysis.result();
+		DependencyResult result = dependencyAnalysis.result();
+		result.prune();
+		return result;
 	}
 	
 	

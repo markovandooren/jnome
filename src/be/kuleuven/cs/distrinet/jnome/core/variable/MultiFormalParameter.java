@@ -23,4 +23,9 @@ public class MultiFormalParameter extends FormalParameter {
 	public static MultiFormalParameter createUnsafe(SimpleNameSignature sig, JavaTypeReference T) {
 		return new MultiFormalParameter(sig, T, false);
 	}
+	
+	@Override
+	protected MultiFormalParameter cloneSelf() {
+		return new MultiFormalParameter(null,null,false);
+	}
 }

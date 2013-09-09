@@ -1,6 +1,7 @@
 package be.kuleuven.cs.distrinet.jnome.core.enumeration;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
@@ -11,8 +12,10 @@ import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
 import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
 import be.kuleuven.cs.distrinet.chameleon.oo.plugin.ObjectOrientedFactory;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.InheritanceRelation;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.SubtypeRelation;
+import be.kuleuven.cs.distrinet.chameleon.oo.variable.FormalParameter;
 import be.kuleuven.cs.distrinet.chameleon.support.modifier.Final;
 import be.kuleuven.cs.distrinet.chameleon.support.modifier.Private;
 import be.kuleuven.cs.distrinet.chameleon.support.modifier.Public;
@@ -20,6 +23,7 @@ import be.kuleuven.cs.distrinet.chameleon.support.modifier.Static;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.method.JavaNormalMethod;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
 import be.kuleuven.cs.distrinet.rejuse.property.PropertySet;
@@ -86,8 +90,11 @@ public class EnumType extends RegularJavaType {
 	}
 	
 	protected Method valueOf() {
-		JavaTypeReference tref = language(Java.class).createTypeReference(name());
+		Java java = language(Java.class);
+		JavaTypeReference tref = java.createTypeReference(name());
 		Method result = createMethod(tref, "valueOf");
+		TypeReference type = java.createTypeReference("java.lang.String");
+		result.header().addFormalParameter(new FormalParameter(new SimpleNameSignature("argument"), type));
 		return result;
 	}
 	
@@ -122,10 +129,14 @@ public class EnumType extends RegularJavaType {
 	@Override
 	public List<InheritanceRelation> implicitNonMemberInheritanceRelations() {
 		List<InheritanceRelation> result = new ArrayList<>();
-		InheritanceRelation relation = new SubtypeRelation(language(ObjectOrientedLanguage.class).createTypeReference("java.lang.Enum"));
+		Java language = language(Java.class);
+		BasicJavaTypeReference enumReference = (BasicJavaTypeReference) language.createTypeReference("java.lang.Enum");
+		enumReference.addArgument(language.createBasicTypeArgument(language.createTypeReference(getFullyQualifiedName())));
+		InheritanceRelation relation = new SubtypeRelation(enumReference);
   	relation.setUniParent(this);
   	relation.setMetadata(new TagImpl(), IMPLICIT_CHILD);
   	result.add(relation);
 		return result;
 	}
+	
 }

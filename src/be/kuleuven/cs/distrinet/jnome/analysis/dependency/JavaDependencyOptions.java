@@ -2,6 +2,7 @@ package be.kuleuven.cs.distrinet.jnome.analysis.dependency;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import be.kuleuven.cs.distrinet.chameleon.analysis.OptionGroup;
 import be.kuleuven.cs.distrinet.chameleon.analysis.PredicateOptionGroup;
@@ -25,15 +26,20 @@ import be.kuleuven.cs.distrinet.chameleon.ui.widget.PredicateSelector;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.checkbox.CheckboxSelector;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.list.ComboBoxSelector;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.list.ListContentProvider;
+import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.CheckStateProvider;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.DocumentLoaderContentProvider;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TreeViewNodeLabelProvider;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TristateTreePruner;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TristateTreeSelector;
+import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.DocumentLoaderContentProvider.SourceNode;
 import be.kuleuven.cs.distrinet.chameleon.util.action.TopDown;
+import be.kuleuven.cs.distrinet.chameleon.workspace.InputSourceImpl;
 import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
+import be.kuleuven.cs.distrinet.chameleon.workspace.StreamInputSource;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
+import be.kuleuven.cs.distrinet.jnome.workspace.LazyClassFileInputSource;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.function.Function;
 import be.kuleuven.cs.distrinet.rejuse.graph.Edge;
@@ -90,7 +96,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public DependencyResult createAnalysis() {
+	public DependencyResult analyze() {
 		UniversalPredicate sourcePredicate = _source.predicate();
 		UniversalPredicate crossReferencePredicate = _dependencies.crossReferencePredicate();
 		UniversalPredicate targetPredicate = _target.predicate();
@@ -111,7 +117,9 @@ public class JavaDependencyOptions extends DependencyOptions {
 		PrunedTreeStructure<Element> sourceStructure = new PrunedTreeStructure(logicalStructure, source);
 		TopDown<Element, Nothing> topDown = new TopDown<>(dependencyAnalysis);
 		topDown.traverse(_root, sourceStructure);
-		return dependencyAnalysis.result();
+		DependencyResult result = dependencyAnalysis.result();
+		result.prune();
+		return result;
 	}
 	
 	
@@ -223,7 +231,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 			public boolean uncheckedEval(Dependency t) throws Nothing {
 				return ! ((Element) t.target()).hasAncestor((Element)t.source());
 			}
-		}, "Ignore lexical descendants",true);
+		}, "Ignore lexical descendants",false);
 	}
 	
 	private PredicateSelector<? super Dependency<? super Element, ? super CrossReference, ? super Declaration>> noAncestors() {
@@ -268,7 +276,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 				return new TypePredicate<>(argument);
 			}
 		};
-		ComboBoxSelector<Class,Element> selector = new ComboBoxSelector<>(contentProvider, labelProvider,function,3);
+		ComboBoxSelector<Class,Element> selector = new ComboBoxSelector<>(contentProvider, labelProvider,function,2);
 		return selector;
 	}
 
@@ -301,7 +309,19 @@ public class JavaDependencyOptions extends DependencyOptions {
 		DocumentLoaderContentProvider contentProvider = new DocumentLoaderContentProvider();
 		
 		TreeViewNodeLabelProvider labelProvider = new TreeViewNodeLabelProvider();
-		TristateTreeSelector<Object> tristateTreeSelector = new TristateTreeSelector<Object>(contentProvider, labelProvider);
+		CheckStateProvider checkStateProvider = new CheckStateProvider<Object>() {
+
+			@Override
+			public boolean isGrayed(Object element) {
+				return false;
+			}
+
+			@Override
+			public boolean isChecked(Object element) {
+				return element instanceof SourceNode;
+			}
+		};
+		TristateTreeSelector<Object> tristateTreeSelector = new TristateTreeSelector<Object>(contentProvider, labelProvider, checkStateProvider);
 		return tristateTreeSelector;
 	}
 	
@@ -314,15 +334,13 @@ public class JavaDependencyOptions extends DependencyOptions {
 //		return tristateTreeSelector;
 //	}
 
-
-	
-	public static class RedundantInheritedDependencyFilter extends HistoryFilter<Element>{
+	public static class RedundantInheritedDependencyFilter extends HistoryFilter<Element,Declaration>{
 		
 		private static class Container {
 			public boolean add = true;
 		}
 		
-		public boolean process(Dependency<Element, CrossReference, Element> dependency, DependencyResult result) {
+		public boolean process(Dependency<Element, CrossReference, Declaration> dependency, DependencyResult result) {
 			final Container container = new Container(); 
 			final Element newSource = dependency.source();
 			final Element newTarget = dependency.target();
@@ -332,6 +350,9 @@ public class JavaDependencyOptions extends DependencyOptions {
 				@Override
 				public boolean eval(Edge<Element> object) throws Nothing {
 					try {
+						if(container.add == false) {
+							return true;
+						}
 						Element oldSource = ((UniEdge<Element>) object).startNode()
 								.object();
 						Element oldTarget = ((UniEdge<Element>) object).endNode().object();

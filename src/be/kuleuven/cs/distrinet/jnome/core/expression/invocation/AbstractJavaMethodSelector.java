@@ -15,6 +15,7 @@ import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
 import be.kuleuven.cs.distrinet.chameleon.core.relation.WeakPartialOrder;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.MethodInvocation;
+import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.MethodHeader;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
@@ -30,6 +31,7 @@ import be.kuleuven.cs.distrinet.chameleon.workspace.View;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.NullType;
 import be.kuleuven.cs.distrinet.jnome.core.type.RawType;
 import be.kuleuven.cs.distrinet.jnome.core.variable.MultiFormalParameter;
 import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
@@ -255,6 +257,12 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 
 	private boolean convertibleThroughMethodInvocationConversion(Type first, Type second) throws LookupException {
 		boolean result = false;
+		// JLS 4.1 & JLS 4.10 : Null type is convertible to any reference type.
+		// FIXME Bad design! Delegating reference widening to the type itself would get rid
+		// of this stupid case.
+		if(first instanceof NullType) {
+			return second.isTrue(second.language(ObjectOrientedLanguage.class).REFERENCE_TYPE);
+		}
 		if(first instanceof TypeIndirection) {
 			return convertibleThroughMethodInvocationConversion(((TypeIndirection)first).aliasedType(), second);
 		} else if(second instanceof TypeIndirection) {

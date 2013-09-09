@@ -80,27 +80,8 @@ public class JavaFactory extends ObjectOrientedFactory implements OOFactory {
 	}
 	
 	@Override
-	public MethodInvocation createInvocation(String name, CrossReferenceTarget target) {
-		return new JavaMethodInvocation(name, target);
-	}
-
-	@Override
 	public InheritanceRelation createDefaultInheritanceRelation(Type type) {
 		return null;
 	}
 	
-	@Override
-	public InfixOperatorInvocation createInfixOperatorInvocation(String name, CrossReferenceTarget target) {
-		return new JavaInfixOperatorInvocation(name, target);
-	}
-	
-	@Override
-	public PrefixOperatorInvocation createPrefixOperatorInvocation(String name, CrossReferenceTarget target) {
-		return new JavaPrefixOperatorInvocation(name, target);
-	}
-	
-	@Override
-	public PostfixOperatorInvocation createPostfixOperatorInvocation(String name, CrossReferenceTarget target) {
-		return new JavaPostfixOperatorInvocation(name, target);
-	}
 }

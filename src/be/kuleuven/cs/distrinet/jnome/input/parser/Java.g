@@ -26,28 +26,16 @@ import be.kuleuven.cs.distrinet.jnome.core.type.*;
 
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.MethodInvocation;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.Literal;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.Assignable;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.NamedTarget;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.NamedTargetExpression;
+import be.kuleuven.cs.distrinet.chameleon.oo.expression.*;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.*;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.TargetedExpression;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.VariableReference;
 
 import be.kuleuven.cs.distrinet.chameleon.core.language.Language;
 
 import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
 
-import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.MethodHeader;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.SimpleNameMethodHeader;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.Implementation;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.RegularImplementation;
+import be.kuleuven.cs.distrinet.chameleon.oo.method.*;
 
-import be.kuleuven.cs.distrinet.chameleon.oo.method.exception.ExceptionClause;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.exception.TypeExceptionDeclaration;
+import be.kuleuven.cs.distrinet.chameleon.oo.method.exception.*;
 
 import be.kuleuven.cs.distrinet.chameleon.core.modifier.Modifier;
 
@@ -201,7 +189,7 @@ import be.kuleuven.cs.distrinet.jnome.core.variable.JavaVariableDeclaration;
 import be.kuleuven.cs.distrinet.jnome.core.variable.MultiFormalParameter;
 
 import be.kuleuven.cs.distrinet.jnome.core.expression.*;
-import be.kuleuven.cs.distrinet.jnome.input.JavaFactory;
+import be.kuleuven.cs.distrinet.jnome.input.*;
 
 import java.util.List;
 import java.util.ArrayList;

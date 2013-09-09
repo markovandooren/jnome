@@ -196,19 +196,29 @@ scope TargetScope {
 @parser::members {
 
   public MethodInvocation invocation(String name, CrossReferenceTarget target) {
-    return factory().createInvocation(name, target);
+    return expressionFactory().createInvocation(name, target);
   }
   
   public InfixOperatorInvocation createInfixOperatorInvocation(String name,CrossReferenceTarget target) {
-    return factory().createInfixOperatorInvocation(name,target);
+    return expressionFactory().createInfixOperatorInvocation(name,target);
   }
 
   public PrefixOperatorInvocation createPrefixOperatorInvocation(String name,CrossReferenceTarget target) {
-    return factory().createPrefixOperatorInvocation(name,target);
+    return expressionFactory().createPrefixOperatorInvocation(name,target);
   }
 
   public PostfixOperatorInvocation createPostfixOperatorInvocation(String name,CrossReferenceTarget target) {
-    return factory().createPostfixOperatorInvocation(name,target);
+    return expressionFactory().createPostfixOperatorInvocation(name,target);
+  }
+
+  private ExpressionFactory _expressionFactory = new JavaExpressionFactory();
+  
+  public ExpressionFactory expressionFactory() {
+    return _expressionFactory;
+  }
+
+  public void setExpressionFactory(ExpressionFactory expressionFactory) {
+    _expressionFactory = expressionFactory;
   }
 
   private JavaFactory _javaFactory = new JavaFactory();
@@ -1493,7 +1503,7 @@ assignmentOperator
 conditionalExpression returns [Expression element]
 @after{check_null(retval.element);}
     :   ex=conditionalOrExpression {retval.element = ex.element;}( '?' exx=expression ':' exxx=expression 
-        {retval.element = new ConditionalExpression(retval.element,exx.element,exxx.element);
+        {retval.element = expressionFactory().createConditionalExpression(retval.element,exx.element,exxx.element);
          setLocation(retval.element,retval.start,exxx.stop);
         }
     )?

@@ -5,6 +5,7 @@ import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.RootNamespace;
+import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
 import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.SimpleNameMethodHeader;
@@ -22,7 +23,7 @@ import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
  * @author Marko van Dooren
  */
 public class ArrayType extends RegularType {
-  public ArrayType(Type type) {
+  public ArrayType(Type type) throws LookupException {
     super(new SimpleNameSignature(getArrayName(type.name())));
     //FIXME: copy the modifiers?
     //addModifier(type.getAccessModifier());
@@ -37,7 +38,9 @@ public class ArrayType extends RegularType {
     add(var);
     
     String fullyQualifiedName = type.getFullyQualifiedName();
-		JavaTypeReference returnType = new ArrayTypeReference((JavaTypeReference) language.createTypeReference(fullyQualifiedName));
+		JavaTypeReference reference = (JavaTypeReference) language.reference(type);
+		reference.setUniParent(null);
+		JavaTypeReference returnType = new ArrayTypeReference(reference);
     Method clone = new NormalMethod(new SimpleNameMethodHeader("clone", returnType));
     add(clone);
     // JLS3 4.10.3 p.64
@@ -50,11 +53,11 @@ public class ArrayType extends RegularType {
   
 
   
-  public ArrayType(Type componentType, int dimension) {
+  public ArrayType(Type componentType, int dimension) throws LookupException {
   	this(consAux(componentType,dimension-1));
   }
   
-  private static Type consAux(Type componentType, int dimension) {
+  private static Type consAux(Type componentType, int dimension) throws LookupException {
   	if(dimension <0) {
   		throw new Error();
   	}
@@ -127,7 +130,11 @@ public class ArrayType extends RegularType {
   }
 
   protected ArrayType cloneThis() {
-    return new ArrayType(elementType());
+    try {
+			return new ArrayType(elementType());
+		} catch (LookupException e) {
+			throw new ChameleonProgrammerException(e);
+		}
   }
 
   @Override

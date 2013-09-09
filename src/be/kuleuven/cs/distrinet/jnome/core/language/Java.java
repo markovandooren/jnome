@@ -91,6 +91,7 @@ import be.kuleuven.cs.distrinet.jnome.core.type.PureWildCardType;
 import be.kuleuven.cs.distrinet.jnome.core.type.PureWildcard;
 import be.kuleuven.cs.distrinet.jnome.core.type.RawType;
 import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
+import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 import be.kuleuven.cs.distrinet.rejuse.junit.BasicRevision;
 import be.kuleuven.cs.distrinet.rejuse.junit.Revision;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
@@ -560,6 +561,15 @@ public class Java extends ObjectOrientedLanguage {
 			}
 			return findType(newFqn,type.view().namespace());
 		}
+		
+		public boolean unboxable(Type type) {
+			String fqn = type.getFullyQualifiedName();
+			return _unboxMap.get(fqn) != null;
+		}
+		
+		public boolean convertibleToNumeric(Type type) {
+			return unboxable(type) || _numericPrimitives.contains(type.getFullyQualifiedName());
+		}
 
 		public JavaTypeReference box(JavaTypeReference aRef, Namespace root) throws LookupException {
 			//SLOW SPEED this is horrible
@@ -886,4 +896,39 @@ public class Java extends ObjectOrientedLanguage {
 			}
 		}
 	
+		public Type binaryNumericPromotion(Type first, Type second) throws LookupException {
+			if(! convertibleToNumeric(first) || ! convertibleToNumeric(second)) {
+				throw new LookupException("Cannot perform binary numeric conversion on "+first.getFullyQualifiedName()+" and "+ second.getFullyQualifiedName());
+			}
+			Type ufirst = unboxIfNecessary(first);
+			Type usecond = unboxIfNecessary(second);
+			JavaView view = first.view(JavaView.class);
+			Type tdouble = view.primitiveType("double");
+			Type result = null;
+			if(ufirst.sameAs(tdouble) || usecond.sameAs(tdouble)) {
+				result = tdouble;
+			} else {
+				Type tfloat = view.primitiveType("float");
+				if(ufirst.sameAs(tfloat) || usecond.sameAs(tfloat)) {
+					result = tfloat;
+				} else {
+					Type tlong = view.primitiveType("long");
+					if(ufirst.sameAs(tlong) || usecond.sameAs(tlong)) {
+						result = tlong;
+					} else {
+						result = view.primitiveType("int");
+					}
+				}
+			}
+			return result;
+		}
+		
+		private Type unboxIfNecessary(Type type) throws LookupException {
+			if(unboxable(type)) {
+				return unbox(type);
+			} else {
+				return type;
+			}
+		}
+
 }

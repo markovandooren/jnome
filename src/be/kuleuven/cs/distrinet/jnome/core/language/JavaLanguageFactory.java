@@ -8,10 +8,12 @@ import java.util.jar.JarFile;
 import be.kuleuven.cs.distrinet.chameleon.core.factory.Factory;
 import be.kuleuven.cs.distrinet.chameleon.core.language.LanguageFactory;
 import be.kuleuven.cs.distrinet.chameleon.input.ModelFactory;
+import be.kuleuven.cs.distrinet.chameleon.oo.expression.ExpressionFactory;
 import be.kuleuven.cs.distrinet.chameleon.oo.plugin.ObjectOrientedFactory;
 import be.kuleuven.cs.distrinet.chameleon.plugin.output.Syntax;
 import be.kuleuven.cs.distrinet.chameleon.workspace.ConfigException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectConfigurator;
+import be.kuleuven.cs.distrinet.jnome.input.JavaExpressionFactory;
 import be.kuleuven.cs.distrinet.jnome.input.JavaFactory;
 import be.kuleuven.cs.distrinet.jnome.input.JavaModelFactory;
 import be.kuleuven.cs.distrinet.jnome.output.JavaCodeWriter;
@@ -26,6 +28,7 @@ public class JavaLanguageFactory implements LanguageFactory {
 		// FIXME: Stupid and inefficient
 		result.setPlugin(Factory.class, new JavaFactory());
 		result.setPlugin(ObjectOrientedFactory.class, new JavaFactory());
+		result.setPlugin(ExpressionFactory.class, new JavaExpressionFactory());
 		JarFile jarName = javaBaseJar();
 		result.setPlugin(ProjectConfigurator.class, new JavaProjectConfigurator(jarName));
 		return result;

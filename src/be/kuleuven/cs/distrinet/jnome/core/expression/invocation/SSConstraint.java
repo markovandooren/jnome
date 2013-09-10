@@ -90,6 +90,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 				if(arg instanceof BasicTypeArgument) {
 					JavaTypeReference V = (JavaTypeReference) ((BasicTypeArgument)arg).typeReference();
 					GGConstraint recursive = new GGConstraint(V, U.getElement());
+					parent().addGenerated(recursive);
 					recursive.setUniParent(parent());
 					result.addAll(recursive.process());
 				} 
@@ -97,6 +98,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 				else if (arg instanceof ExtendsWildcard) {
 					JavaTypeReference V = (JavaTypeReference) ((ExtendsWildcard)arg).typeReference();
 					GGConstraint recursive = new GGConstraint(V, U.getElement());
+					parent().addGenerated(recursive);
 					result.addAll(recursive.process());
 				}
 				// Otherwise, no constraint is implied on Tj.
@@ -158,18 +160,21 @@ public class SSConstraint extends FirstPhaseConstraint {
 					if(arg instanceof BasicTypeArgument) {
 						JavaTypeReference V = (JavaTypeReference) ((BasicTypeArgument)arg).typeReference();
 						EQConstraint recursive = new EQConstraint(V, U.getElement());
+						parent().addGenerated(recursive);
 						recursive.setUniParent(parent());
 						result.addAll(recursive.process());
 					} else if(arg instanceof ExtendsWildcard) {
 						JavaTypeReference V = new JavaExtendsReference(((ExtendsWildcard)arg).typeReference());
 						V.setUniParent(ithTypeParameterOfG);
 						EQConstraint recursive = new EQConstraint(V, U.getElement());
+						parent().addGenerated(recursive);
 						recursive.setUniParent(parent());
 						result.addAll(recursive.process());
 					} else if(arg instanceof SuperWildcard) {
 						JavaTypeReference V = new JavaSuperReference(((SuperWildcard)arg).typeReference());
 						V.setUniParent(ithTypeParameterOfG);
 						EQConstraint recursive = new EQConstraint(V, U.getElement());
+						parent().addGenerated(recursive);
 						recursive.setUniParent(parent());
 						result.addAll(recursive.process());
 					}
@@ -182,8 +187,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 	}
 
 	private Type GsuperTypeOfA() throws LookupException {
-		Set<Type> supers = A().getAllSuperTypes();
-		supers.add(A());
+		Set<Type> supers = A().getSelfAndAllSuperTypesView();
 		Type G = typeWithSameBaseTypeAs(F(), supers);
 		return G;
 	}

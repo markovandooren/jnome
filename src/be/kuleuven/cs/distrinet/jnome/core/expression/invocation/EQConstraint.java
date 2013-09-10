@@ -3,10 +3,8 @@
  */
 package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgument;
@@ -16,6 +14,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ExtendsWildcard;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.InstantiatedTypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.SuperWildcard;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 
 public class EQConstraint extends FirstPhaseConstraint {
 
@@ -36,6 +35,7 @@ public class EQConstraint extends FirstPhaseConstraint {
 	@Override
 	public FirstPhaseConstraint Array(JavaTypeReference componentType, Type componentTypeReference) {
 		EQConstraint eqConstraint = new EQConstraint(componentType, componentTypeReference);
+		parent().addGenerated(eqConstraint);
 		eqConstraint.setUniParent(parent());
 		return eqConstraint;
 	}

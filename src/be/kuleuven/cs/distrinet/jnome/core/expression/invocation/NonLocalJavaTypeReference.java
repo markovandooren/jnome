@@ -16,6 +16,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
 import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
+import be.kuleuven.cs.distrinet.jnome.input.OldExtractor;
 import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
 import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
@@ -56,13 +57,13 @@ public class NonLocalJavaTypeReference extends NonLocalTypeReference implements 
 		}
 		for(BasicTypeReference cref: crefs) {
 			TypeReference substitute;
+			Element oldParent = replacement.parent();
 			if(replacement.isDerived()) {
-				Element oldParent = replacement.parent();
 //				replacement.setUniParent(null);
 			  substitute = lang.createNonLocalTypeReference(Util.clone(replacement),oldParent);
 			  substitute.setOrigin(replacement);
 			} else {
-			  substitute = lang.createNonLocalTypeReference(Util.clone(replacement));
+			  substitute = lang.createNonLocalTypeReference(Util.clone(replacement),oldParent);
 			}
 			if(! cref.isDerived()) {
 				SingleAssociation crefParentLink = cref.parentLink();

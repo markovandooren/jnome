@@ -325,6 +325,18 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 	}
 	
 	private StackOverflowTracer _tracer = new StackOverflowTracer(10);
+
+//	@Override
+//	private Type leastUpperBound(List<? extends TypeReference> Us, List<List<? extends TypeReference>> trace) throws LookupException {
+//		_tracer.push();
+//		List<Type> MEC = new ArrayList<Type>(MEC((List<? extends JavaTypeReference>) Us));
+//		List<Type> candidates = new ArrayList<Type>();
+//		for(Type W:MEC) {
+//			candidates.add(Candidate(W,(List<? extends JavaTypeReference>) Us));
+//		}
+//		_tracer.pop();
+//		return intersection(candidates);
+//	}
 	
 	@Override
 	public Type leastUpperBound(List<? extends TypeReference> Us) throws LookupException {

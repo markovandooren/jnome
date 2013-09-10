@@ -486,7 +486,9 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		List<TypeParameter> result = new ArrayList<TypeParameter>();
 		int size = firsts.size();
 		for(int i=0; i<size;i++) {
-			result.add(new InstantiatedTypeParameter(Util.clone(((InstantiatedTypeParameter)firsts.get(i).parent()).signature()),lcta(firsts.get(i), seconds.get(i))));
+			ActualTypeArgument ith = firsts.get(i);
+			Element parent = ith.parent();
+			result.add(new InstantiatedTypeParameter(Util.clone(((TypeParameter)parent).signature()),lcta(ith, seconds.get(i))));
 		}
 		return result;
 	}

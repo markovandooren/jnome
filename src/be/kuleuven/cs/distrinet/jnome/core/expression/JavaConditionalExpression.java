@@ -78,8 +78,8 @@ public class JavaConditionalExpression extends ConditionalExpression {
 					}
 				}
 				if(result == null) {
-//					result = java.subtypeRelation().leastUpperBound(ImmutableList.of(java.reference(boxFirst), java.reference(boxSecond)));
-					result = IntersectionType.create(ImmutableList.of(boxFirst, boxSecond));
+					result = java.subtypeRelation().leastUpperBound(ImmutableList.of(java.reference(boxFirst), java.reference(boxSecond)));
+//					result = IntersectionType.create(ImmutableList.of(boxFirst, boxSecond));
 					if(result instanceof JavaDerivedType) {
 						result = ((JavaDerivedType)result).captureConversion();
 					}

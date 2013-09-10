@@ -6,12 +6,15 @@ import java.util.Set;
 
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.AbstractInstantiatedTypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgument;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.BasicTypeArgument;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ExtendsWildcard;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.InstantiatedTypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.SuperWildcard;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
+import be.kuleuven.cs.distrinet.chameleon.util.Util;
+import be.kuleuven.cs.distrinet.jnome.core.type.ErasedTypeParameter;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 
@@ -85,6 +88,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 		if(G != null) {
 			TypeParameter ithTypeParameterOfG = G.parameters(TypeParameter.class).get(index);
 			if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
+//				Util.debug(ithTypeParameterOfG instanceof ErasedTypeParameter);
 				ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 				// 1)
 				if(arg instanceof BasicTypeArgument) {
@@ -121,6 +125,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 		if(G != null) {
 			TypeParameter ithTypeParameterOfG = G.parameters(TypeParameter.class).get(index);
 			if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
+//				Util.debug(ithTypeParameterOfG instanceof ErasedTypeParameter);
 				ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 				// 1)
 				if(arg instanceof BasicTypeArgument) {
@@ -155,6 +160,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 				TypeParameter ithTypeParameterOfG = G.parameters(TypeParameter.class).get(index);
 
 				if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
+//					Util.debug(ithTypeParameterOfG instanceof ErasedTypeParameter);
 					// Get the i-th type parameter of zuppa: V.
 					ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 					if(arg instanceof BasicTypeArgument) {
@@ -189,7 +195,11 @@ public class SSConstraint extends FirstPhaseConstraint {
 	private Type GsuperTypeOfA() throws LookupException {
 		Set<Type> supers = A().getAllSuperTypes();
 		supers.add(A());
+//		Set<Type> debug = A().getSelfAndAllSuperTypesView();
+//		Util.debug(! debug.containsAll(supers));
+//		Util.debug(! supers.containsAll(debug));
 		Type G = typeWithSameBaseTypeAs(F(), supers);
+//		Type Q = typeWithSameBaseTypeAs(F(), debug);
 		return G;
 	}
 	

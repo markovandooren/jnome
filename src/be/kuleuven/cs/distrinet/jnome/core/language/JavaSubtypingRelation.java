@@ -34,6 +34,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeConstraint;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.WildCardType;
 import be.kuleuven.cs.distrinet.chameleon.util.Pair;
+import be.kuleuven.cs.distrinet.chameleon.util.StackOverflowTracer;
 import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
@@ -144,8 +145,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 					result = types.get(i).upperBoundNotHigherThan(second, slowTrace);
 				}
 			} else if(second instanceof RawType) {
-				Set<Type> supers = first.getAllSuperTypes();
-				supers.add(first);
+				Set<Type> supers = first.getSelfAndAllSuperTypesView();
 				Iterator<Type> typeIterator = supers.iterator();
 				while((!result) && typeIterator.hasNext()) {
 					Type current = typeIterator.next();
@@ -324,13 +324,17 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		return result;
 	}
 	
+	private StackOverflowTracer _tracer = new StackOverflowTracer(10);
+	
 	@Override
 	public Type leastUpperBound(List<? extends TypeReference> Us) throws LookupException {
+		_tracer.push();
 		List<Type> MEC = new ArrayList<Type>(MEC((List<? extends JavaTypeReference>) Us));
 		List<Type> candidates = new ArrayList<Type>();
 		for(Type W:MEC) {
 			candidates.add(Candidate(W,(List<? extends JavaTypeReference>) Us));
 		}
+		_tracer.pop();
 		return intersection(candidates);
 	}
 
@@ -393,9 +397,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 
 
 	private Set<Type> ST(JavaTypeReference U) throws LookupException {
-		Set<Type> result = U.getElement().getAllSuperTypes();
-		result.add(U.getElement());
-		return result;
+		return U.getElement().getSelfAndAllSuperTypesView();
 	}
 
 	private Type CandidateInvocation(Type G, List<? extends JavaTypeReference> Us) throws LookupException {
@@ -427,10 +429,8 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		Set<Type> result = new HashSet<Type>();
 		for(Type superType: superTypes) {
 			if(superType.baseType().sameAs(base)) {
-				if(superType instanceof InstantiatedParameterType) {
-					while(superType instanceof InstantiatedParameterType) {
-						superType = ((InstantiatedParameterType) superType).aliasedType();
-					}
+				while(superType instanceof InstantiatedParameterType) {
+					superType = ((InstantiatedParameterType) superType).aliasedType();
 				}
 				result.add(superType);
 			}

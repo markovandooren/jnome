@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.language.WrongLanguageException;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
@@ -16,6 +17,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgument;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.BasicTypeArgument;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.EqualityConstraint;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ExtendsWildcard;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.InstantiatedParameterType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.InstantiatedTypeParameter;
@@ -40,9 +42,9 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		_assignments = new TypeAssignmentSet(typeParameters());
 		_origin = origin;
 	}
-
-	private FirstPhaseConstraintSet _origin;
 	
+	private FirstPhaseConstraintSet _origin;
+
 	private List<JavaTypeReference> Us(TypeParameter Tj, Class<? extends SecondPhaseConstraint> kind) throws LookupException {
 		List<JavaTypeReference> Us = new ArrayList<JavaTypeReference>();
 		for(SecondPhaseConstraint constraint: constraints()) {
@@ -113,9 +115,12 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
   }
   
   private void processUnresolvedParameters() throws LookupException {
+  	// JLS 15.12.2.8
+  	// In context of assignment with type S.
   	if(inContextOfAssignmentConversion()) {
   		processUnresolved(S());
   	} else {
+  		// Perform under the assumption that S is java.lang.Object
   		if(! typeParameters().isEmpty()) {
   			TypeParameter typeParameter = typeParameters().get(0);
   			View view = typeParameter.view();
@@ -142,23 +147,30 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		}
 		// additional constraints Bi[T1=B(T1) ... Tn=B(Tn)] >> Ti where Bi is the declared bound of Ti
 		for(TypeParameter param: typeParameters()) {
-			JavaTypeReference bound = (JavaTypeReference) param.upperBoundReference();
-			JavaTypeReference Bi= substitutedReference(bound);
+			JavaTypeReference Bi = (JavaTypeReference) param.upperBoundReference();
+			JavaTypeReference BiAfterSubstitution= substitutedReference(Bi);
 			
-			Type Ti = assignments().type(param);
-			if(Ti == null) {
-			 Ti = (Type) param.selectionDeclaration();
-			 constraints.add(new GGConstraint(Bi, Ti));
-			} else {
-		   constraints.add(new SSConstraint(java.reference(Ti), Bi.getElement()));
-		  }
-
-//			 Type Ti = param.selectionDeclaration();
-//			 constraints.add(new GGConstraint(Bi, Ti));
+			Type Ti = (Type) param.selectionDeclaration();
+			Type BTi = assignments().type(param);
+			if(BTi == null) {
+				BTi = Ti;
+			}
+			constraints.add(new GGConstraint(BiAfterSubstitution, Ti));
+			constraints.add(new SSConstraint(java.reference(BTi), BiAfterSubstitution.getElement()));
 			
 		}
+		for(GGConstraint constraint: _origin.generatedGG()) {
+			constraints.add(new GGConstraint(substitutedReference(constraint.ARef()), constraint.F()));
+		}
+		for(EQConstraint constraint: _origin.generatedEQ()) {
+			constraints.add(new EQConstraint(substitutedReference(constraint.ARef()), constraint.F()));
+		}
+		
 		SecondPhaseConstraintSet seconds = constraints.secondPhase();
+		// JLS: Any equality constraints are resolved ...
 		seconds.processEqualityConstraints();
+		// JLS: ..., and then, for each remaining constraint of the form Ti <: Uk, the argument
+		//      Ti is inferred to be glb(U1,...,Uk)
 		seconds.processSubtypeConstraints();
 		// SPEED why not use the 'java' var and view from above? 
 		// not going to change this during the refactoring, too risky
@@ -220,7 +232,6 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		// Let R' = R[T1=B(T1) ... Tn=B(Tn)] where B(Ti) is the type inferred for Ti in the previous section, or Ti if no type was inferred.
 		for(TypeAssignment assignment: assignments().assignments()) {
 			Type type = assignment.type();
-//			JavaTypeReference replacement = new DirectJavaTypeReference(type);
 			JavaTypeReference replacement = RRef.language(Java.class).reference(type);
 //			replacement.setUniParent(RRef.language().defaultNamespace()); XXX
 			RprimeRef = (JavaTypeReference) NonLocalJavaTypeReference.replace(replacement, assignment.parameter(), RprimeRef);

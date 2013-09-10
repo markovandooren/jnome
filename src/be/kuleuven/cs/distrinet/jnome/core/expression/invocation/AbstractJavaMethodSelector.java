@@ -289,7 +289,6 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 		} else {
 			// E) reference widening
 			Collection<Type> candidates = referenceWideningConversionCandidates(first);
-			candidates.add(first);
 			if(candidates.contains(second)) {
 				result = true;
 			} else {
@@ -379,9 +378,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 	}
 
 	public Collection<Type> referenceWideningConversionCandidates(Type type) throws LookupException {
-		Set<Type> allSuperTypes = type.getAllSuperTypes();
-		allSuperTypes.add(type);
-		return allSuperTypes;
+		return type.getSelfAndAllSuperTypesView();
 	}
 
 	public MethodSelectionResult variableApplicableBySubtyping(M method) throws LookupException {

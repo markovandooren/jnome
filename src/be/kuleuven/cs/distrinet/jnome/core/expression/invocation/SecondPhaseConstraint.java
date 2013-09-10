@@ -11,8 +11,8 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 
 public abstract class SecondPhaseConstraint extends Constraint<SecondPhaseConstraint, SecondPhaseConstraintSet> {
 	
-	public SecondPhaseConstraint(TypeParameter param, JavaTypeReference type) {
-	  _UReference = type;	
+	public SecondPhaseConstraint(TypeParameter param, JavaTypeReference typeReference) {
+	  _UReference = typeReference;	
 	  _typeParameter = param;
 	}
 	

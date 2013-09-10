@@ -35,11 +35,14 @@ import com.google.common.collect.Sets;
 
 public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstraint> {
 
-	public SecondPhaseConstraintSet(MethodInvocation invocation, MethodHeader invokedMethod) {
+	public SecondPhaseConstraintSet(MethodInvocation invocation, MethodHeader invokedMethod, FirstPhaseConstraintSet origin) {
 		super(invocation,invokedMethod);
 		_assignments = new TypeAssignmentSet(typeParameters());
+		_origin = origin;
 	}
 
+	private FirstPhaseConstraintSet _origin;
+	
 	private List<JavaTypeReference> Us(TypeParameter Tj, Class<? extends SecondPhaseConstraint> kind) throws LookupException {
 		List<JavaTypeReference> Us = new ArrayList<JavaTypeReference>();
 		for(SecondPhaseConstraint constraint: constraints()) {

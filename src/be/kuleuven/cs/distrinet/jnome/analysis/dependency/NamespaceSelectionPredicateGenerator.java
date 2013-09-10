@@ -50,7 +50,7 @@ public class NamespaceSelectionPredicateGenerator extends TristateTreePruner<Obj
 					return "namespace = "+currentNamespace.getFullyQualifiedName();
 				}
 
-			}.or((TreePredicate)childrenDisjunction);
+			}.orTree((TreePredicate)childrenDisjunction);
 		}
 		return result;
 	}

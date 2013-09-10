@@ -187,7 +187,8 @@ public class SSConstraint extends FirstPhaseConstraint {
 	}
 
 	private Type GsuperTypeOfA() throws LookupException {
-		Set<Type> supers = A().getSelfAndAllSuperTypesView();
+		Set<Type> supers = A().getAllSuperTypes();
+		supers.add(A());
 		Type G = typeWithSameBaseTypeAs(F(), supers);
 		return G;
 	}

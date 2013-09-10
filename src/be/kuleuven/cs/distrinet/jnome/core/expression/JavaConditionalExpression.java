@@ -4,6 +4,7 @@ import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
 import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.IntersectionType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
 import be.kuleuven.cs.distrinet.chameleon.support.expression.ConditionalExpression;
@@ -77,7 +78,8 @@ public class JavaConditionalExpression extends ConditionalExpression {
 					}
 				}
 				if(result == null) {
-					result = java.subtypeRelation().leastUpperBound(ImmutableList.of(java.reference(boxFirst), java.reference(boxSecond)));
+//					result = java.subtypeRelation().leastUpperBound(ImmutableList.of(java.reference(boxFirst), java.reference(boxSecond)));
+					result = IntersectionType.create(ImmutableList.of(boxFirst, boxSecond));
 					if(result instanceof JavaDerivedType) {
 						result = ((JavaDerivedType)result).captureConversion();
 					}

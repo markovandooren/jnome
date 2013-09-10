@@ -76,7 +76,7 @@ public class ArrayTypeReference  extends ElementImpl implements JavaTypeReferenc
 	}
 
 	public Type getElement() throws LookupException {
-		return new ArrayType(elementTypeReference().getElement());
+		return ArrayType.create(elementTypeReference().getElement());
 	}
 
 	public Type getType() throws LookupException {

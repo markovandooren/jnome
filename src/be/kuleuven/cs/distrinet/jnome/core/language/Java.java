@@ -198,7 +198,7 @@ public class Java extends ObjectOrientedLanguage {
   	Type result;
   	if(original instanceof ArrayType) {
   		ArrayType arrayType = (ArrayType) original;
-  		result = new ArrayType(erasure(arrayType.elementType()));
+  		result = ArrayType.create(erasure(arrayType.elementType()));
   	} 
   	else if(original instanceof FormalParameterType){
   		result = original;

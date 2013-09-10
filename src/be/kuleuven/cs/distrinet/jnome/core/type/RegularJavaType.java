@@ -280,10 +280,20 @@ public class RegularJavaType extends RegularType implements JavaType {
 
 	private RawType _rawTypeCache;
 	
+	public ArrayType toArray() throws LookupException {
+		if(_arrayType == null) {
+			_arrayType = new ArrayType(this);
+		}
+		return _arrayType;
+	}
+	
+	private ArrayType _arrayType;
+	
 	@Override
 	public synchronized void flushLocalCache() {
 		super.flushLocalCache();
 		_rawTypeCache = null;
+		_arrayType = null;
 		// The implicit member cache is kept up to date via the
 		// reactTo... methods.
 	}

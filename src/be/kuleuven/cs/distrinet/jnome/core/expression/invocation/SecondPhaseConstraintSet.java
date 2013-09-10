@@ -121,9 +121,9 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
   		processUnresolved(S());
   	} else {
   		// Perform under the assumption that S is java.lang.Object
-  		if(! typeParameters().isEmpty()) {
-  			TypeParameter typeParameter = typeParameters().get(0);
-  			View view = typeParameter.view();
+  		if(! unresolvedParameters().isEmpty()) {
+//  			TypeParameter typeParameter = typeParameters().get(0);
+  			View view = invocation().view();
 				ObjectOrientedLanguage language = (ObjectOrientedLanguage) view.language();
   			processUnresolved((JavaTypeReference) language.createTypeReferenceInNamespace(language.getDefaultSuperClassFQN(),view.namespace()));
   		}

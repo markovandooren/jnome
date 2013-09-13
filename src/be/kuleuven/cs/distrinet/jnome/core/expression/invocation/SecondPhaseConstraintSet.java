@@ -1,11 +1,9 @@
 package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.language.WrongLanguageException;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
@@ -14,22 +12,14 @@ import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.MethodHeader;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.IntersectionType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgument;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.BasicTypeArgument;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.EqualityConstraint;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ExtendsWildcard;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.InstantiatedParameterType;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.InstantiatedTypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.SuperWildcard;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalParameterType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.support.expression.AssignmentExpression;
 import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.chameleon.workspace.View;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
-import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
-import be.kuleuven.cs.distrinet.rejuse.predicate.TypePredicate;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSet.Builder;
@@ -133,6 +123,8 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
   }
   
 	private void processUnresolved(JavaTypeReference Sref) throws LookupException {
+		// WARNING
+		// INCOMPLETE see processSubtypeConstraints
 		JavaTypeReference RRef = (JavaTypeReference) invokedGenericMethod().returnTypeReference();
 		FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(invocation(), invokedGenericMethod());
 		View view = RRef.view();
@@ -173,9 +165,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		// SPEED why not use the 'java' var and view from above? 
 		// not going to change this during the refactoring, too risky
 		for(TypeParameter param: seconds.unresolvedParameters()) {
-			View v = param.view();
-			ObjectOrientedLanguage l = v.language(ObjectOrientedLanguage.class);
-			seconds.add(new ActualTypeAssignment(param, l.getDefaultSuperClass(v.namespace())));
+			seconds.add(new ActualTypeAssignment(param, java.getDefaultSuperClass(view.namespace())));
 		}
 		for(TypeParameter param: unresolvedParameters()) {
 			add(seconds.assignments().assignment(param));
@@ -183,6 +173,8 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	}
 	
 	private void processSubtypeConstraints() throws LookupException {
+		// WARNING
+		// INCOMPLETE
 		for(TypeParameter p: typeParameters()) {
 			boolean hasSubConstraints = false;
 			for(SecondPhaseConstraint constraint: constraints()) {
@@ -199,13 +191,37 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	}
 	
 	private Type glb(TypeParameter Tj) throws LookupException {
+		// INCOMPLETE: If there are multiple constraints, we cannot
+		// return TjType in case of self references in the bounds.
+		// we must clone the entire type parameter block to ensure
+		// that any other references to Tj are properly rerouted
+		// to the 'fresh type variable X' which will just
+		// be a clone of Tj with glb(URefs) as its extends constraint bound.
 		List<JavaTypeReference> URefs = Us(Tj, SubtypeConstraint.class);
+		boolean recursive = false;
 		List<Type> Us = new ArrayList<Type>();
+		Type TjType = null;
 		for(JavaTypeReference URef: URefs) {
+			List<TypeReference> descendants = URef.descendants(TypeReference.class);
+			descendants.add(URef);
+			for(TypeReference tref: descendants) {
+				Type type = tref.getElement();
+				if(type instanceof FormalParameterType && ((FormalParameterType) type).parameter().origin() == Tj) {
+					TjType = type;
+					recursive = true;
+				}
+			}
+			if(recursive) {
+				break;
+			}
 			Us.add(URef.getElement());
 		}
-		Type intersectionType = IntersectionType.create(Us);
-		return intersectionType;
+		if(! recursive) {
+			Type intersectionType = IntersectionType.create(Us);
+			return intersectionType;
+		} else {
+			return TjType;
+		}
 	}
 
 	

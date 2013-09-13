@@ -29,13 +29,13 @@ public class TestGenericRejuse extends JavaTest {
 //	public ElementProvider<Type> typeProvider() {
 //		return new ElementProvider<Type>() {
 //
-//			public Collection<Type> elements(Language language) {
+//			public Collection<Type> elements(View language) {
 //				Collection<Type> types = new BasicDescendantProvider<Type>(namespaceProvider(), Type.class).elements(language);
 //				new SafePredicate<Type>() {
 //
 //					@Override
 //					public boolean eval(Type object) {
-//						return object.getFullyQualifiedName().equals("org.rejuse.property.PropertySet");
+//						return object.getFullyQualifiedName().equals("org.rejuse.property.PropertyImpl");
 //					}
 //				}.filter(types);
 //				return types;

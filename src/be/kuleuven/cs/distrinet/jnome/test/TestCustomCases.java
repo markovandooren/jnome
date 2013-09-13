@@ -4,9 +4,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.Collection;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
+import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 
 import org.junit.Test;
 
@@ -14,10 +16,13 @@ import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.test.ModelTest;
+import be.kuleuven.cs.distrinet.chameleon.test.provider.BasicDescendantProvider;
 import be.kuleuven.cs.distrinet.chameleon.test.provider.BasicNamespaceProvider;
+import be.kuleuven.cs.distrinet.chameleon.test.provider.ElementProvider;
 import be.kuleuven.cs.distrinet.chameleon.workspace.ConfigException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
 import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectException;
+import be.kuleuven.cs.distrinet.chameleon.workspace.View;
 
 /**
  * @author Marko van Dooren
@@ -132,4 +137,21 @@ public class TestCustomCases extends JavaTest {
 	public BasicNamespaceProvider namespaceProvider() {
 		return new BasicNamespaceProvider("test");
 	}
+
+//	public ElementProvider<Type> typeProvider() {
+//		return new ElementProvider<Type>() {
+//
+//			public Collection<Type> elements(View language) {
+//				Collection<Type> types = new BasicDescendantProvider<Type>(namespaceProvider(), Type.class).elements(language);
+//				new SafePredicate<Type>() {
+//
+//					@Override
+//					public boolean eval(Type object) {
+//						return object.getFullyQualifiedName().equals("test.generics.RawInvocationGenericMethod");
+//					}
+//				}.filter(types);
+//				return types;
+//			}
+//		};
+//	}
 }

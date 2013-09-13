@@ -52,7 +52,7 @@ public abstract class JavaTest extends CompositeTest {
 		Project project = project();
 		ElementProvider<Type> typeProvider = typeProvider();
 		new ExpressionTest(project, typeProvider).testExpressionTypes();
-		new CrossReferenceTest(project, new BasicDescendantProvider<CrossReference>(namespaceProvider(), CrossReference.class)).testCrossReferences();
+		new CrossReferenceTest(project, new BasicDescendantProvider<CrossReference>(typeProvider(), CrossReference.class)).testCrossReferences();
 //		System.out.println("Elements created: "+ElementImpl.elementsCreated);
 //		System.out.println("Elements on which parent was invoked: "+ElementImpl.elementsOnWhichParentInvoked);
 //		System.out.println("Elements ratio: "+(double)ElementImpl.elementsOnWhichParentInvoked/(double)ElementImpl.elementsCreated);

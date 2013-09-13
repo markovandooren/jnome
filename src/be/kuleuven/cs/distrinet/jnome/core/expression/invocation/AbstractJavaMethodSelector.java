@@ -18,6 +18,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.expression.MethodInvocation;
 import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.MethodHeader;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.ClassImpl;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeIndirection;
@@ -26,6 +27,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.BasicTypeArgument;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalTypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.InstantiatedTypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
+import be.kuleuven.cs.distrinet.chameleon.util.CallTracer;
 import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.chameleon.workspace.View;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
@@ -311,7 +313,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 	public boolean convertibleThroughBoxingAndOptionalWidening(Type first, Type second) throws LookupException {
 		boolean result = false;
 		Java language = first.language(Java.class);
-		if(first.is(language.NUMERIC_TYPE) == Ternary.TRUE) {
+		if(first.is(language.PRIMITIVE_TYPE) == Ternary.TRUE) {
 			Type tmp = language.box(first);
 			if(tmp.sameAs(second)) {
 				result = true;

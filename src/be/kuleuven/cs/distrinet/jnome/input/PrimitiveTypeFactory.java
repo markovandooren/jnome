@@ -75,6 +75,7 @@ public class PrimitiveTypeFactory {
 		addInfixOperator(booleanT, "boolean", "&=", "boolean");
 		addInfixOperator(booleanT, "boolean", "|=", "boolean");
 		addInfixOperator(booleanT, "boolean", "^=", "boolean");
+		addStringConcatenation(booleanT);
 		view().storePrimitiveType("boolean",booleanT);
 	}
 
@@ -134,6 +135,10 @@ public class PrimitiveTypeFactory {
 		else {
 			return "int";
 		}
+	}
+	
+	protected void addStringConcatenation(Type type) {
+		addInfixOperator(type, "java.lang.String", "+", "java.lang.Object");
 	}
 
 	protected void addBinComp(Type type, String operator) {
@@ -214,6 +219,7 @@ public class PrimitiveTypeFactory {
 
 		addUniProm(doubleT);
 		addBinNumOps(doubleT);
+		addStringConcatenation(doubleT);
 		view().storePrimitiveType("double",doubleT);
 	}
 
@@ -239,6 +245,7 @@ public class PrimitiveTypeFactory {
 		addUniPromIntegral(longT);
 
 		addBinNumOpsIntegral(longT);
+		addStringConcatenation(longT);
 		view().storePrimitiveType("long",longT);
 	}
 
@@ -263,6 +270,7 @@ public class PrimitiveTypeFactory {
 		addUniProm(floatT);
 
 		addBinNumOps(floatT);
+		addStringConcatenation(floatT);
 		view().storePrimitiveType("float",floatT);
 	}
 
@@ -310,6 +318,7 @@ public class PrimitiveTypeFactory {
 		addUniPromIntegral(intT);
 
 		addBinNumOpsIntegral(intT);
+		addStringConcatenation(intT);
 		view().storePrimitiveType("int",intT);
 	}
 
@@ -339,6 +348,7 @@ public class PrimitiveTypeFactory {
 		addUniPromIntegral(byteT);
 
 		addBinNumOpsIntegral(byteT);
+		addStringConcatenation(byteT);
 		view().storePrimitiveType("byte",byteT);
 	}
 
@@ -367,6 +377,7 @@ public class PrimitiveTypeFactory {
 		addUniPromIntegral(shortT);
 
 		addBinNumOpsIntegral(shortT);
+		addStringConcatenation(shortT);
 		view().storePrimitiveType("short",shortT);
 	}
 
@@ -394,6 +405,7 @@ public class PrimitiveTypeFactory {
 		addUniPromIntegral(charT);
 
 		addBinNumOpsIntegral(charT);
+		addStringConcatenation(charT);
 		view().storePrimitiveType("char",charT);
 	}
 

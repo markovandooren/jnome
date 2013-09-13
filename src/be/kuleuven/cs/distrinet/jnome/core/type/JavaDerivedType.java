@@ -120,10 +120,13 @@ public class JavaDerivedType extends DerivedType implements JavaType {
 				}
 				typeParameters.add(((InstantiatedTypeParameter) actualParam).capture((FormalTypeParameter) formalParam,toBeSubstituted));
 			}
+			// Everything works as well when we pass 'this' instead of 'base'.
 			result = language(Java.class).createdCapturedType(new ParameterSubstitution(TypeParameter.class,typeParameters), base);
 			result.setUniParent(parent());
 			for(TypeParameter newParameter: typeParameters) {
 				for(TypeParameter oldParameter: baseParameters) {
+					//If we replace references to the old parameters with references to the captured type parameters, then
+					// why is the capturing done with non-locals pointing to the formal?
 					JavaTypeReference tref = new BasicJavaTypeReference(oldParameter.signature().name());
 					tref.setUniParent(newParameter);
 					if(newParameter instanceof CapturedTypeParameter) {
@@ -147,5 +150,31 @@ public class JavaDerivedType extends DerivedType implements JavaType {
 		return new JavaDerivedType(args,baseType());
 	}
 
+	public String toString() {
+		StringBuilder result = new StringBuilder();
+		result.append(name());
+		List<TypeParameter> parameters = parameters(TypeParameter.class);
+		if(parameters.size() > 0) {
+			result.append('<');
+			Iterator<TypeParameter> iter = parameters.iterator();
+			while(iter.hasNext()) {
+				TypeParameter parameter = iter.next();
+//				TypeParameter clone = clone(parameter);
+//				for(BasicJavaTypeReference tref: clone.descendants(BasicJavaTypeReference.class)) {
+//					Type element = tref.getElement();
+//					if(parameters.contains(element)) {
+//						
+//					}
+//				}
+				
+				result.append(parameter.toString());
+				if(iter.hasNext()) {
+					result.append(",");
+				}
+			}
+			result.append('>');
+		}
+		return result.toString();
+	}
 
 }

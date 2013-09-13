@@ -38,6 +38,15 @@ public class NonLocalJavaTypeReference extends NonLocalTypeReference implements 
 		return new NonLocalJavaTypeReference(null,lookupParent());
 	}
 	
+	/**
+	 * Replace all references to 'declarator' in 'in' with copies of 'replacement'.
+	 * @param replacement
+	 * @param declarator
+	 * @param in
+	 * @param kind
+	 * @return
+	 * @throws LookupException
+	 */
 	public static <E extends Element> E replace(TypeReference replacement, final Declaration declarator, E in, Class<E> kind) throws LookupException {
 		ObjectOrientedLanguage lang = in.language(ObjectOrientedLanguage.class);
 		E result = in;

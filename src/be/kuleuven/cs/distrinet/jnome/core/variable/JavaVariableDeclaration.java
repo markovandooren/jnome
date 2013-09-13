@@ -3,8 +3,10 @@ package be.kuleuven.cs.distrinet.jnome.core.variable;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.variable.Variable;
 import be.kuleuven.cs.distrinet.chameleon.oo.variable.VariableDeclaration;
+import be.kuleuven.cs.distrinet.chameleon.oo.variable.VariableDeclarator;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 
@@ -65,5 +67,15 @@ public class JavaVariableDeclaration extends VariableDeclaration {
 	 }
  }
 
+ public TypeReference typeReference() {
+	 int arrayDimension = arrayDimension();
+	 VariableDeclarator variableDeclarator = nearestAncestor(VariableDeclarator.class);
+	JavaTypeReference result = (JavaTypeReference) variableDeclarator.typeReference();
+	 if(arrayDimension > 0) {
+	   result = new ArrayTypeReference(clone(result),arrayDimension);
+	   result.setUniParent(variableDeclarator);
+	 }
+	 return result;
+ }
 
 }

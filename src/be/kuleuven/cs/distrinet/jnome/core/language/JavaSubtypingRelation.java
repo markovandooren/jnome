@@ -9,11 +9,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableList;
+
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.relation.WeakPartialOrder;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
 import be.kuleuven.cs.distrinet.chameleon.oo.language.SubtypeRelation;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.ClassImpl;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.DerivedType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.IntersectionType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.ParameterSubstitution;
@@ -33,6 +35,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.SuperWildcard;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeConstraint;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.WildCardType;
+import be.kuleuven.cs.distrinet.chameleon.util.CallTracer;
 import be.kuleuven.cs.distrinet.chameleon.util.Pair;
 import be.kuleuven.cs.distrinet.chameleon.util.StackOverflowTracer;
 import be.kuleuven.cs.distrinet.chameleon.util.Util;
@@ -40,6 +43,7 @@ import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTyp
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.PureWildcard;
 import be.kuleuven.cs.distrinet.jnome.core.type.RawType;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
@@ -344,16 +348,28 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 //		return intersection(candidates);
 //	}
 	
-	@Override
-	public Type leastUpperBound(List<? extends TypeReference> Us) throws LookupException {
-		_tracer.push();
+	
+	public Type leastUpperBound(List<? extends TypeReference> Us, Binder root) throws LookupException {
 		List<Type> MEC = new ArrayList<Type>(MEC((List<? extends JavaTypeReference>) Us));
 		List<Type> candidates = new ArrayList<Type>();
 		for(Type W:MEC) {
-			candidates.add(Candidate(W,(List<? extends JavaTypeReference>) Us));
+			candidates.add(Candidate(W,(List<? extends JavaTypeReference>) Us,root));
 		}
-		_tracer.pop();
 		return intersection(candidates);
+	}
+
+	
+	@Override
+	public Type leastUpperBound(List<? extends TypeReference> Us) throws LookupException {
+		return leastUpperBound(Us, null);
+//		_tracer.push();
+//		List<Type> MEC = new ArrayList<Type>(MEC((List<? extends JavaTypeReference>) Us));
+//		List<Type> candidates = new ArrayList<Type>();
+//		for(Type W:MEC) {
+//			candidates.add(Candidate(W,(List<? extends JavaTypeReference>) Us));
+//		}
+//		_tracer.pop();
+//		return intersection(candidates);
 	}
 
 	private Set<Type> MEC(List<? extends JavaTypeReference> Us) throws LookupException {
@@ -418,13 +434,13 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		return U.getElement().getSelfAndAllSuperTypesView();
 	}
 
-	private Type CandidateInvocation(Type G, List<? extends JavaTypeReference> Us) throws LookupException {
-		return lci(Inv(G,Us));
+	private Type CandidateInvocation(Type G, List<? extends JavaTypeReference> Us, Binder root) throws LookupException {
+		return lci(Inv(G,Us),root);
 	}
 	
-	private Type Candidate(Type W, List<? extends JavaTypeReference> Us) throws LookupException {
+	private Type Candidate(Type W, List<? extends JavaTypeReference> Us, Binder root) throws LookupException {
 		if(W.parameters(TypeParameter.class).size() > 0) {
-			return CandidateInvocation(W, Us);
+			return CandidateInvocation(W, Us,root);
 		} else {
 			return W;
 		}
@@ -456,17 +472,17 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		return result; 
 	}
 	
-	private Type lci(Set<Type> types) throws LookupException {
+	private Type lci(Set<Type> types, Binder root) throws LookupException {
 		List<Type> list = new ArrayList<Type>(types);
-		return lci(list);
+		return lci(list,root);
 	}
 	
-	private Type lci(List<Type> types) throws LookupException {
+	private Type lci(List<Type> types, Binder root) throws LookupException {
 		int size = types.size();
 		if(size > 0) {
 			Type lci = types.get(0);
 			for(int i = 1; i < size; i++) {
-				lci = lci(lci, types.get(i));
+				lci = lci(lci, types.get(i),root);
 			}
 			return lci;
 		} else {
@@ -474,7 +490,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		}
 	}
 	
-	private Type lci(Type first, Type second) throws LookupException {
+	private Type lci(Type first, Type second, Binder root) throws LookupException {
 		Type result = first;
 		if(first.nbTypeParameters(TypeParameter.class) > 0) {
 			result = Util.clone(first);
@@ -485,7 +501,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 			if(secondArguments.size() != size) {
 				throw new ChameleonProgrammerException("The number of type parameters from the first list: "+size+" is different from the number of type parameters in the second list: "+secondArguments.size());
 			}
-			List<TypeParameter> newParameters = lcta(firstArguments, secondArguments);
+			List<TypeParameter> newParameters = lcta(firstArguments, secondArguments,root);
 			result.replaceAllParameters(TypeParameter.class,newParameters);
 		}
 		return result;
@@ -500,18 +516,18 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		return result;
 	}
 	
-	private List<TypeParameter> lcta(List<ActualTypeArgument> firsts, List<ActualTypeArgument> seconds) throws LookupException {
+	private List<TypeParameter> lcta(List<ActualTypeArgument> firsts, List<ActualTypeArgument> seconds, Binder root) throws LookupException {
 		List<TypeParameter> result = new ArrayList<TypeParameter>();
 		int size = firsts.size();
 		for(int i=0; i<size;i++) {
 			ActualTypeArgument ith = firsts.get(i);
 			Element parent = ith.parent();
-			result.add(new InstantiatedTypeParameter(Util.clone(((TypeParameter)parent).signature()),lcta(ith, seconds.get(i))));
+			result.add(new InstantiatedTypeParameter(Util.clone(((TypeParameter)parent).signature()),lcta(ith, seconds.get(i),root)));
 		}
 		return result;
 	}
 	
-	private ActualTypeArgument lcta(ActualTypeArgument first, ActualTypeArgument second) throws LookupException {
+	private ActualTypeArgument lcta(ActualTypeArgument first, ActualTypeArgument second, Binder root) throws LookupException { // , List<List<? extends TypeReference>> trace
 		ActualTypeArgument result;
 		if(first instanceof BasicTypeArgument || second instanceof BasicTypeArgument) {
 			if(first instanceof BasicTypeArgument && second instanceof BasicTypeArgument) {
@@ -523,20 +539,18 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 					List<JavaTypeReference> list = new ArrayList<JavaTypeReference>();
 					list.add((JavaTypeReference) ((BasicTypeArgument)first).typeReference());
 					list.add((JavaTypeReference) ((BasicTypeArgument)second).typeReference());
-					Java java = first.language(Java.class);
-					Type leastUpperBound = leastUpperBound(list);
-					result = java.createExtendsWildcard(java.reference(leastUpperBound));
+					result = new Binder(list,root).argument();
 				}
 			} else if(first instanceof ExtendsWildcard || second instanceof ExtendsWildcard) {
 				BasicTypeArgument basic = (BasicTypeArgument) (first instanceof BasicTypeArgument? first : second);
 				ExtendsWildcard ext = (ExtendsWildcard)(basic == first ? second : first);
-				Java java = first.language(Java.class);
-				Type leastUpperBound = leastUpperBound(typeReferenceList(basic,ext));
-				result = java.createExtendsWildcard(java.reference(leastUpperBound));
+//				Type leastUpperBound = leastUpperBound(typeReferenceList(basic,ext));
+				result = new Binder(typeReferenceList(basic,ext),root).argument();
 			} else if(first instanceof SuperWildcard || second instanceof SuperWildcard) {
 				BasicTypeArgument basic = (BasicTypeArgument) (first instanceof BasicTypeArgument? first : second);
 				SuperWildcard ext = (SuperWildcard)(basic == first ? second : first);
-				result = first.language(Java.class).createSuperWildcard(first.language(Java.class).glb(typeReferenceList(basic,ext)));
+				Java java = first.language(Java.class);
+				result = java.createSuperWildcard(java.glb(typeReferenceList(basic,ext)));
 			} else {
 				result = null;
 			}
@@ -545,9 +559,11 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 				List<JavaTypeReference> list = new ArrayList<JavaTypeReference>();
 				list.add((JavaTypeReference) ((ExtendsWildcard)first).typeReference());
 				list.add((JavaTypeReference) ((ExtendsWildcard)second).typeReference());
-				Java java = first.language(Java.class);
-				Type leastUpperBound = leastUpperBound(list);
-				result = java.createExtendsWildcard(java.reference(leastUpperBound));
+//				Java java = first.language(Java.class);
+//				Type leastUpperBound = leastUpperBound(list);
+//				result = java.createExtendsWildcard(java.reference(leastUpperBound));
+				result = new Binder(list,root).argument();
+
 			} else if(first instanceof SuperWildcard || second instanceof SuperWildcard) {
 				ExtendsWildcard ext = (ExtendsWildcard) (first instanceof ExtendsWildcard? first : second);
 				SuperWildcard sup = (SuperWildcard)(ext == first ? second : first);
@@ -581,4 +597,69 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 	}
 	
 
+	private class Binder {
+		
+		public Binder(List<? extends JavaTypeReference> refs, Binder next) {
+			_refs = ImmutableList.copyOf(refs);
+			_next = next;
+		}
+		
+		public ActualTypeArgument argument() throws LookupException {
+			return argument(_refs, this);
+		}
+		
+		private boolean _active;
+		
+		private boolean _looped;
+		
+		protected ActualTypeArgument argument(List<? extends JavaTypeReference> refs, Binder root) throws LookupException {
+			if(_active && equal(refs,_refs)) {
+				_looped = true;
+				return loop();
+			} else if(_next != null) {
+				_active = true;
+				return _next.argument(refs, root);
+			} else {
+				_active = true;
+				Type leastUpperBound = leastUpperBound(refs, root);
+				if(!_looped) {
+					return createArgument(leastUpperBound);
+				} else {
+					return loop();
+				}
+				
+			}
+		}
+		
+		private boolean equal(List<? extends JavaTypeReference> first, List<? extends JavaTypeReference> second) throws LookupException {
+			int size = first.size();
+			boolean result = (size == second.size());
+			if(result){
+				List<Type> Tfirst = new ArrayList<>();
+				for(int i=0; i<size;i++) {
+					Tfirst.add(first.get(i).getElement());
+				}
+				for(int i=0; i<size;i++) {
+					if(! Tfirst.contains(second.get(i).getElement())) {
+						result = false;
+						break;
+					}
+				}
+			}
+			return result;
+		}
+		
+		protected ActualTypeArgument loop() {
+			return new PureWildcard();
+		}
+
+		protected ActualTypeArgument createArgument(Type type) throws LookupException {
+			Java java = type.language(Java.class);
+			return java.createExtendsWildcard(java.reference(type));
+		}
+		
+		private Binder _next;
+		
+		private List<? extends JavaTypeReference> _refs;
+	}
 }

@@ -7,6 +7,7 @@ import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.SimpleNameMethodHeader;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.UnionType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.variable.FormalParameter;
 import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.infix.InfixOperator;
@@ -66,6 +67,21 @@ public class NullType extends RegularType implements JavaType {
    @*/
 	public Type erasure() {
 		return this;
+	}
+	
+	@Override
+	public Type union(Type type) throws LookupException {
+		return type;
+	}
+	
+	@Override
+	public Type unionDoubleDispatch(Type type) throws LookupException {
+		return type;
+	}
+	
+	@Override
+	public Type unionDoubleDispatch(UnionType type) throws LookupException {
+		return type;
 	}
 
 }

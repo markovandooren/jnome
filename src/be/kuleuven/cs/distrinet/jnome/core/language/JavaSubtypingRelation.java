@@ -290,11 +290,12 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 	}
 
 	public boolean sameBaseTypeWithCompatibleParameters(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
-		List<Pair<Type, TypeParameter>> slowTrace = new ArrayList<Pair<Type, TypeParameter>>(trace);
-//		List<Pair<TypeParameter, TypeParameter>> slowTrace = trace;
+//		List<Pair<Type, TypeParameter>> slowTrace = new ArrayList<Pair<Type, TypeParameter>>(trace);
+		List<Pair<Type, TypeParameter>> slowTrace = trace;
 		boolean result = false;
 		if(first.baseType().sameAs(second.baseType())) {
 			result = compatibleParameters(first, second, slowTrace);// || rawType(second); equality in formal parameter should take care of this.
+		} else {
 		}
 		return result;
 	}
@@ -309,24 +310,29 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 	}
 
 	private boolean compatibleParameters(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
-		List<Pair<Type, TypeParameter>> slowTrace = new ArrayList<Pair<Type, TypeParameter>>(trace);
+//		List<Pair<Type, TypeParameter>> slowTrace = new ArrayList<Pair<Type, TypeParameter>>(trace);
+		List<Pair<Type, TypeParameter>> slowTrace = trace;
 		boolean result;
 		List<TypeParameter> firstFormal= first.parameters(TypeParameter.class);
 		List<TypeParameter> secondFormal= second.parameters(TypeParameter.class);
 		result = true;
-		Iterator<TypeParameter> firstIter = firstFormal.iterator();
-		Iterator<TypeParameter> secondIter = secondFormal.iterator();
-		while(result && firstIter.hasNext()) {
-			TypeParameter firstParam = firstIter.next();
-			TypeParameter secondParam = secondIter.next();
-			result = firstParam.compatibleWith(secondParam, slowTrace);
+		int size = firstFormal.size();
+		for(int i=0; result && i < size; i++) {
+			result = firstFormal.get(i).compatibleWith(secondFormal.get(i), slowTrace);
 		}
+//		Iterator<TypeParameter> firstIter = firstFormal.iterator();
+//		Iterator<TypeParameter> secondIter = secondFormal.iterator();
+//		while(result && firstIter.hasNext()) {
+//			TypeParameter firstParam = firstIter.next();
+//			TypeParameter secondParam = secondIter.next();
+//			result = firstParam.compatibleWith(secondParam, slowTrace);
+//		}
 		return result;
 	}
 	
-	private StackOverflowTracer _tracer = new StackOverflowTracer(10);
-
-//	@Override
+//	private Type leastUpperBoundRecursive(List<? extends TypeReference> Us, List<List<? extends TypeReference>> trace) throws LookupException {
+//		return leastUpperBound(Us, trace);
+//	}
 //	private Type leastUpperBound(List<? extends TypeReference> Us, List<List<? extends TypeReference>> trace) throws LookupException {
 //		_tracer.push();
 //		List<Type> MEC = new ArrayList<Type>(MEC((List<? extends JavaTypeReference>) Us));

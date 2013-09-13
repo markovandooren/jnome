@@ -25,21 +25,21 @@ public class TestWeka extends JavaTest {
 		return new BasicNamespaceProvider("weka");
 	}
 
-	public ElementProvider<Type> typeProvider() {
-		return new ElementProvider<Type>() {
-
-			public Collection<Type> elements(View view) {
-				Collection<Type> types = new BasicDescendantProvider<Type>(namespaceProvider(), Type.class).elements(view);
-				new SafePredicate<Type>() {
-
-					@Override
-					public boolean eval(Type object) {
-						return object.getFullyQualifiedName().equals("weka.attributeSelection.PrincipalComponents");
-					}
-				}.filter(types);
-				return types;
-			}
-		};
-	}
+//	public ElementProvider<Type> typeProvider() {
+//		return new ElementProvider<Type>() {
+//
+//			public Collection<Type> elements(View view) {
+//				Collection<Type> types = new BasicDescendantProvider<Type>(namespaceProvider(), Type.class).elements(view);
+//				new SafePredicate<Type>() {
+//
+//					@Override
+//					public boolean eval(Type object) {
+//						return object.getFullyQualifiedName().equals("weka.gui.experiment.AlgorithmListPanel");
+//					}
+//				}.filter(types);
+//				return types;
+//			}
+//		};
+//	}
 
 }

@@ -22,6 +22,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeConstraint;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.InheritanceRelation;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.SubtypeRelation;
+import be.kuleuven.cs.distrinet.chameleon.util.Lists;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 
@@ -99,7 +100,7 @@ public class JavaDerivedType extends DerivedType implements JavaType {
 	
 	public Type captureConversion() throws LookupException {
 		Type result = this;
-		List<TypeParameter> typeParameters = new ArrayList<TypeParameter>();
+		List<TypeParameter> typeParameters = Lists.create();
 		if(! (parameter(TypeParameter.class,1) instanceof CapturedTypeParameter)) {
 			Type base = baseType();
 			List<TypeParameter> baseParameters = base.parameters(TypeParameter.class);
@@ -108,7 +109,7 @@ public class JavaDerivedType extends DerivedType implements JavaType {
 			Iterator<TypeParameter> actuals = actualParameters.iterator();
 			// substitute parameters by their capture bounds.
 			// ITERATOR because we iterate over 'formals' and 'actuals' simultaneously.
-			List<TypeConstraint> toBeSubstituted = new ArrayList<TypeConstraint>();
+			List<TypeConstraint> toBeSubstituted = Lists.create();
 			while(actuals.hasNext()) {
 				TypeParameter formalParam = formals.next();
 				if(!(formalParam instanceof FormalTypeParameter)) {

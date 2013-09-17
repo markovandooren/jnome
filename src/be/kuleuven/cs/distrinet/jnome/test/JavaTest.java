@@ -14,6 +14,8 @@ import be.kuleuven.cs.distrinet.chameleon.test.CompositeTest;
 import be.kuleuven.cs.distrinet.chameleon.test.CrossReferenceTest;
 import be.kuleuven.cs.distrinet.chameleon.test.provider.BasicDescendantProvider;
 import be.kuleuven.cs.distrinet.chameleon.test.provider.ElementProvider;
+import be.kuleuven.cs.distrinet.chameleon.util.Lists;
+import be.kuleuven.cs.distrinet.chameleon.util.profile.Timer;
 import be.kuleuven.cs.distrinet.chameleon.workspace.BootstrapProjectConfig;
 import be.kuleuven.cs.distrinet.chameleon.workspace.ConfigException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.LanguageRepository;
@@ -49,10 +51,18 @@ public abstract class JavaTest extends CompositeTest {
 	public void testCrossReferences() throws Exception {
 //		ElementImpl.elementsCreated = 0;
 //		ElementImpl.elementsOnWhichParentInvoked = 0;
+		Timer.INFIX_OPERATOR_INVOCATION.reset();
+		Timer.PREFIX_OPERATOR_INVOCATION.reset();
+		Timer.POSTFIX_OPERATOR_INVOCATION.reset();
+		Lists.LIST_CREATION.reset();
 		Project project = project();
 		ElementProvider<Type> typeProvider = typeProvider();
 		new ExpressionTest(project, typeProvider).testExpressionTypes();
 		new CrossReferenceTest(project, new BasicDescendantProvider<CrossReference>(typeProvider(), CrossReference.class)).testCrossReferences();
+		System.out.println("infix operator invocations: "+Timer.INFIX_OPERATOR_INVOCATION.elapsedMillis()+"ms");
+		System.out.println("prefix operator invocations: "+Timer.PREFIX_OPERATOR_INVOCATION.elapsedMillis()+"ms");
+		System.out.println("postfix operator invocations: "+Timer.POSTFIX_OPERATOR_INVOCATION.elapsedMillis()+"ms");
+		System.out.println("list creation: "+Lists.LIST_CREATION.elapsedMillis()+"ms");
 //		System.out.println("Elements created: "+ElementImpl.elementsCreated);
 //		System.out.println("Elements on which parent was invoked: "+ElementImpl.elementsOnWhichParentInvoked);
 //		System.out.println("Elements ratio: "+(double)ElementImpl.elementsOnWhichParentInvoked/(double)ElementImpl.elementsCreated);

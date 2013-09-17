@@ -1,6 +1,5 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -81,8 +80,7 @@ public class RawType extends ClassWithBody implements JavaType {
 			InheritanceRelation relation = new SubtypeRelation(objectTypeReference);
     	relation.setUniParent(this);
     	relation.setMetadata(new TagImpl(), IMPLICIT_CHILD);
-    	List<InheritanceRelation> result = new ArrayList<InheritanceRelation>();
-    	result.add(relation);
+    	List<InheritanceRelation> result = ImmutableList.of(relation);
     	return result;
     } else {
     	return Collections.EMPTY_LIST;

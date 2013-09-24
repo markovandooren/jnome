@@ -23,7 +23,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.Literal;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.MethodInvocation;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.NamedTarget;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.NamedTargetExpression;
+import be.kuleuven.cs.distrinet.chameleon.oo.expression.NameExpression;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.VariableReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.member.SimpleNameDeclarationWithParametersSignature;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.Implementation;
@@ -175,7 +175,7 @@ public class JavaCodeWriter extends Syntax {
     } else if(isRegulaMethodInvocation(element)) {
       result = toCodeRegularMethodInvocation((RegularMethodInvocation)element);
     } else if(isNamedTargetRef(element)) {
-      result = toCodeNamedTargetRef((NamedTargetExpression)element);
+      result = toCodeNamedTargetRef((NameExpression)element);
     } else if(isVarRef(element)) {
       result = toCodeVarRef((VariableReference)element);
     } else if(isThisConstructorDelegation(element)) {
@@ -1345,10 +1345,10 @@ public class JavaCodeWriter extends Syntax {
   }
   
   public boolean isNamedTargetRef(Element element) {
-    return element instanceof NamedTargetExpression;
+    return element instanceof NameExpression;
   }
   
-  public String toCodeNamedTargetRef(NamedTargetExpression var)  {
+  public String toCodeNamedTargetRef(NameExpression var)  {
     CrossReferenceTarget target = var.getTarget();
     if(target != null) {
 		  return toCode(target)+"."+var.name();

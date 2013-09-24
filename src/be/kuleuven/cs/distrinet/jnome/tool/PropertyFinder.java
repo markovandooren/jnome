@@ -3,7 +3,7 @@ package be.kuleuven.cs.distrinet.jnome.tool;
 import java.util.List;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.NamedTargetExpression;
+import be.kuleuven.cs.distrinet.chameleon.oo.expression.NameExpression;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.support.expression.AssignmentExpression;
@@ -54,12 +54,12 @@ public class PropertyFinder extends CommandLineTool {
 			  					if(exprs.size() == 1) {
 			  						AssignmentExpression e = exprs.get(0);
 			  						String varName = null;
-			  						if(e.getVariableExpression() instanceof NamedTargetExpression) {
-			  							varName = ((NamedTargetExpression)e.getVariableExpression()).name();
+			  						if(e.getVariableExpression() instanceof NameExpression) {
+			  							varName = ((NameExpression)e.getVariableExpression()).name();
 			  						} 
 			  						boolean found = false;
-			  						List<NamedTargetExpression> reads = method.descendants(NamedTargetExpression.class);
-			  						for(NamedTargetExpression read:reads) {
+			  						List<NameExpression> reads = method.descendants(NameExpression.class);
+			  						for(NameExpression read:reads) {
 			  							if(read.name().equals(varName)) {
 					  						pairsInClasses++;
 					  						found = true;

@@ -1,15 +1,20 @@
 package be.kuleuven.cs.distrinet.jnome.test;
 
 import java.io.File;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import be.kuleuven.cs.distrinet.chameleon.core.Config;
-import be.kuleuven.cs.distrinet.chameleon.core.element.ElementImpl;
+import be.kuleuven.cs.distrinet.chameleon.core.lookup.LexicalLookupContext;
+import be.kuleuven.cs.distrinet.chameleon.core.lookup.LocalLookupContext;
+import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupContextFactory;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;
+import be.kuleuven.cs.distrinet.chameleon.oo.statement.Block;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.support.test.ExpressionTest;
+import be.kuleuven.cs.distrinet.chameleon.support.variable.LocalVariableDeclarator;
 import be.kuleuven.cs.distrinet.chameleon.test.CompositeTest;
 import be.kuleuven.cs.distrinet.chameleon.test.CrossReferenceTest;
 import be.kuleuven.cs.distrinet.chameleon.test.provider.BasicDescendantProvider;
@@ -49,10 +54,26 @@ public abstract class JavaTest extends CompositeTest {
 	public void testCrossReferences() throws Exception {
 //		ElementImpl.elementsCreated = 0;
 //		ElementImpl.elementsOnWhichParentInvoked = 0;
+//		LexicalLookupContext.CREATED = 0;
+//		LocalLookupContext.CREATED = 0;
+//		Block.LINEAR.reset();
+//		LocalVariableDeclarator.LINEAR.reset();
+//		LookupContextFactory.LEXICAL_ALLOCATORS.clear();
+//		LookupContextFactory.LEXICAL_DONE.clear();
+//		LocalLookupContext.ALLOCATORS.clear();
+//		LocalLookupContext.DONE.clear();
 		Project project = project();
 		ElementProvider<Type> typeProvider = typeProvider();
 		new ExpressionTest(project, typeProvider).testExpressionTypes();
 		new CrossReferenceTest(project, new BasicDescendantProvider<CrossReference>(typeProvider(), CrossReference.class)).testCrossReferences();
+//		System.out.println("Created "+LexicalLookupContext.CREATED+" lexical lookup contexts.");
+//		System.out.println("Created "+LocalLookupContext.CREATED+" local lookup contexts.");
+//		System.out.println("Block linear context: "+Block.LINEAR.elapsedMillis()+"ms");
+//		System.out.println("Local variable declarator linear context: "+LocalVariableDeclarator.LINEAR.elapsedMillis()+"ms");
+//		System.out.println("Local context allocations per class:");
+//		for(Map.Entry<Class, Integer> entry: LocalLookupContext.ALLOCATORS.entrySet()) {
+//			System.out.println(entry.getKey().getName()+" : "+entry.getValue());
+//		}
 //		System.out.println("Elements created: "+ElementImpl.elementsCreated);
 //		System.out.println("Elements on which parent was invoked: "+ElementImpl.elementsOnWhichParentInvoked);
 //		System.out.println("Elements ratio: "+(double)ElementImpl.elementsOnWhichParentInvoked/(double)ElementImpl.elementsCreated);

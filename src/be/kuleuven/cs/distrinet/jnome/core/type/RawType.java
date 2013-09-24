@@ -14,6 +14,7 @@ import be.kuleuven.cs.distrinet.chameleon.core.lookup.SelectionResult;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.SimpleReference;
 import be.kuleuven.cs.distrinet.chameleon.core.tag.TagImpl;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
+import be.kuleuven.cs.distrinet.chameleon.oo.expression.ExpressionFactory;
 import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
 import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
@@ -244,8 +245,9 @@ public class RawType extends ClassWithBody implements JavaType {
 					outerTypes.add(0, this);
 
 					int size = outerTypes.size();
+					ExpressionFactory expressionFactory = language().plugin(ExpressionFactory.class);
 					for(int i = size - 2; i>=0;i--) {
-						SimpleReference<RawType> simpleRef = new SimpleReference<RawType>(outerTypes.get(i).signature().name(), RawType.class);
+						SimpleReference<RawType> simpleRef = expressionFactory.createSimpleReference(outerTypes.get(i).signature().name(), RawType.class);
 						simpleRef.setUniParent(current);
 						try {
 							current = simpleRef.getElement();

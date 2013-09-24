@@ -194,7 +194,7 @@ public class Java extends ObjectOrientedLanguage {
 		return new Java();
 	}
 	
-  public Type erasure(Type original) throws LookupException {
+  public Type erasure(Type original) {
   	Type result;
   	if(original instanceof ArrayType) {
   		ArrayType arrayType = (ArrayType) original;
@@ -206,7 +206,6 @@ public class Java extends ObjectOrientedLanguage {
   	else {
   		try {
   			if(original.nbTypeParameters(TypeParameter.class) > 0 && (original.parameter(TypeParameter.class,1) instanceof FormalTypeParameter)) {
-//				result = RawType.create(original);
   				result = ((JavaType)original).erasure();
 			} else {
   			result = original;
@@ -461,7 +460,7 @@ public class Java extends ObjectOrientedLanguage {
 //		    return result;
 //		}
 
-		private JavaSubtypingRelation _subtypingRelation = new JavaSubtypingRelation();
+		private JavaSubtypingRelation _subtypingRelation = new JavaSubtypingRelation(this);
 		  
 		/**
 		 * Returns true if the given character is a valid character
@@ -680,7 +679,7 @@ public class Java extends ObjectOrientedLanguage {
 		//FIXME get rid of this monster. Now that the code has stabilized
 		//      it should be merged into the classes and a method should be
 		//      added to JavaType.
-		public JavaTypeReference reference(Type type) throws LookupException {
+		public JavaTypeReference reference(Type type) {
 			JavaTypeReference result;
 			Namespace rootNamespace = type.view().namespace();
 			if(type instanceof IntersectionType) {
@@ -733,8 +732,12 @@ public class Java extends ObjectOrientedLanguage {
 				result = new BasicJavaTypeReference(type.signature().name());
 				result.setUniParent(((InstantiatedParameterType)type).parameter().parent());
 			} else if (type instanceof AnonymousInnerClass) {
-				String fqn = ((AnonymousInnerClass)type).invocation().getTypeReference().getElement().getFullyQualifiedName();
-				result = (JavaTypeReference) createTypeReferenceInNamespace(fqn,rootNamespace);
+//				throw new Error();
+				BasicJavaTypeReference typeReference = ((AnonymousInnerClass)type).invocation().getTypeReference();
+				result = Util.clone(typeReference);
+				result.setUniParent(typeReference.parent());
+//				String fqn = typeReference.getElement().getFullyQualifiedName();
+//				result = (JavaTypeReference) createTypeReferenceInNamespace(fqn,rootNamespace);
 			} else if (type instanceof RegularType) {
 				// for now, if this code is invoked, there are no generic parameters.
 				result = (JavaTypeReference) createTypeReferenceInNamespace(type.getFullyQualifiedName(),rootNamespace);

@@ -20,7 +20,6 @@ import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.Norma
 import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.RegularMethodInvocation;
 import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.chameleon.util.association.Single;
-import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.AbstractJavaMethodSelector.MethodSelectionResult;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 

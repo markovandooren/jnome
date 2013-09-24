@@ -23,7 +23,7 @@ import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
  * @author Marko van Dooren
  */
 public class ArrayType extends RegularType {
-  ArrayType(Type type) throws LookupException {
+  ArrayType(Type type) {
     super(new SimpleNameSignature(getArrayName(type.name())));
     //FIXME: copy the modifiers?
     //addModifier(type.getAccessModifier());
@@ -50,7 +50,7 @@ public class ArrayType extends RegularType {
     addInheritanceRelation(new SubtypeRelation(language.createTypeReference("java.io.Serializable")));
   }
   
-  public static ArrayType create(Type type) throws LookupException {
+  public static ArrayType create(Type type) {
   	if(type instanceof RegularJavaType) {
   		return ((RegularJavaType)type).toArray();
   	}
@@ -134,11 +134,7 @@ public class ArrayType extends RegularType {
   }
 
   protected ArrayType cloneThis() {
-    try {
-			return new ArrayType(elementType());
-		} catch (LookupException e) {
-			throw new ChameleonProgrammerException(e);
-		}
+  	return new ArrayType(elementType());
   }
 
   @Override

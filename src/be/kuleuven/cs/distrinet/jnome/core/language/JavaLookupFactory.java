@@ -9,6 +9,7 @@ public class JavaLookupFactory extends LookupContextFactory {
 
   public  LookupContext createLocalLookupStrategy(DeclarationContainer element) {
 		if(element instanceof Namespace) {
+//			report(element);
 			return new JavaNonNestedPackageLookupStrategy((Namespace)element);
 		} else {
 			return super.createLocalLookupStrategy(element);

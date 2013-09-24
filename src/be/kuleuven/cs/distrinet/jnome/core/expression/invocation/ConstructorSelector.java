@@ -19,14 +19,24 @@ import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 public class ConstructorSelector extends AbstractConstructorSelector {
 
 	protected class ConstructorSelectionResult extends BasicMethodSelectionResult {
-		protected ConstructorSelectionResult(Method template, TypeAssignmentSet assignment, int phase) {
-			super(template, assignment, phase);
+		protected ConstructorSelectionResult(Method template, TypeAssignmentSet assignment, int phase,boolean requiredUncheckedConversion) {
+			super(template, assignment, phase,requiredUncheckedConversion);
 		}
 
 		@Override
+		public Type returnType(Method method) throws LookupException {
+			if(invocation().isDiamondInvocation()) {
+				return method.returnType();
+			} else {
+				return super.returnType(method);
+			}
+		}
+		
+		@Override
 		public Declaration finalDeclaration() throws LookupException {
 			if(invocation().isDiamondInvocation()) {
-				return instantiatedMethodTemplate(createDiamondConstructorDummy(template()));
+//				return instantiatedMethodTemplate(createDiamondConstructorDummy(template()));
+			return instantiatedMethodTemplate(template());
 			} else {
 				return template();
 			}
@@ -34,7 +44,7 @@ public class ConstructorSelector extends AbstractConstructorSelector {
 		
 		@Override
 		public SelectionResult updatedTo(Declaration declaration) {
-			return new ConstructorSelectionResult((Method) declaration, typeAssignment(), phase());
+			return new ConstructorSelectionResult((Method) declaration, typeAssignment(), phase(),requiredUncheckedConversion());
 		}
 
 	}
@@ -76,8 +86,6 @@ public class ConstructorSelector extends AbstractConstructorSelector {
 			withoutNonConstructors = diamondConstructors(withoutNonConstructors);
 		}
 		List<SelectionResult> selection = (List)super.selection(withoutNonConstructors);
-		//
-		
 		if(diamondInvocation) {
 			List<SelectionResult> tmp = selection;
 			selection = new ArrayList<SelectionResult>();
@@ -85,16 +93,16 @@ public class ConstructorSelector extends AbstractConstructorSelector {
 				MethodSelectionResult result = (MethodSelectionResult) r;
 				NormalMethod normalMethod = (NormalMethod)result.finalDeclaration();
 				NormalMethod origin = (NormalMethod)normalMethod.origin();
-				selection.add(createSelectionResult(origin, result.typeAssignment(), result.phase()));
+				selection.add(createSelectionResult(origin, result.typeAssignment(), result.phase(), result.requiredUncheckedConversion()));
 			}
 		}
 		return selection;
 	}
 	
 	@Override
-	public be.kuleuven.cs.distrinet.jnome.core.expression.invocation.AbstractJavaMethodSelector.MethodSelectionResult createSelectionResult(
-			Method method, TypeAssignmentSet typeAssignment, int phase) {
-		return new ConstructorSelectionResult(method, typeAssignment, phase);
+	public be.kuleuven.cs.distrinet.jnome.core.expression.invocation.MethodSelectionResult createSelectionResult(
+			Method method, TypeAssignmentSet typeAssignment, int phase, boolean requiredUncheckedConversion) {
+		return new ConstructorSelectionResult(method, typeAssignment, phase, requiredUncheckedConversion);
 	}
 	
 //	@Override

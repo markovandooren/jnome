@@ -14,9 +14,9 @@ public class CapturedType extends JavaDerivedType {
 		super(substitution, baseType);
 	}
 
-	public CapturedType(Type baseType, List<ActualTypeArgument> typeParameters) throws LookupException {
-		super(baseType, typeParameters);
-	}
+//	public CapturedType(Type baseType, List<ActualTypeArgument> typeParameters) throws LookupException {
+//		super(baseType, typeParameters);
+//	}
 	
 	public CapturedType(List<ParameterSubstitution> parameters, Type baseType) {
 		super(parameters, baseType);

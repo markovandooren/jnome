@@ -7,7 +7,6 @@ import java.util.Set;
 
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Signature;
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationSelector;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.SelectionResult;
@@ -22,19 +21,16 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeIndirection;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgument;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.BasicTypeArgument;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalTypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.InstantiatedTypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.chameleon.workspace.View;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.JavaSubtypingRelation;
+import be.kuleuven.cs.distrinet.jnome.core.language.JavaSubtypingRelation.UncheckedConversionIndicator;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.NullType;
 import be.kuleuven.cs.distrinet.jnome.core.type.RawType;
 import be.kuleuven.cs.distrinet.jnome.core.variable.MultiFormalParameter;
-import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 
 public abstract class AbstractJavaMethodSelector<M extends Method> extends DeclarationSelector<M> {
@@ -92,12 +88,12 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 					}
 				}
 			}
-			
+			Java java = invocation().language(Java.class);
 			/**
 			 * JLS 15.12.2.2 Phase 1: Identify Matching Arity Methods Applicable by Subtyping
 			 */
 			for(M decl: candidates) {
-				MethodSelectionResult matchingApplicableBySubtyping = matchingApplicableBySubtyping(decl);
+				MethodSelectionResult matchingApplicableBySubtyping = matchingApplicableBySubtyping(decl,java);
 				if(matchingApplicableBySubtyping != null) {
 					tmp.add(matchingApplicableBySubtyping);
 				}
@@ -107,7 +103,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 			// conversion
 			if(tmp.isEmpty()) {
 				for(M decl: candidates) {
-					MethodSelectionResult matchingApplicableByConversion = matchingApplicableByConversion(decl);
+					MethodSelectionResult matchingApplicableByConversion = matchingApplicableByConversion(decl,java);
 					if(matchingApplicableByConversion != null) {
 						tmp.add(matchingApplicableByConversion);
 					}
@@ -115,7 +111,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 				// variable arity
 				if(tmp.isEmpty()) {
 					for(M decl: candidates) {
-						MethodSelectionResult variableApplicableBySubtyping = variableApplicableBySubtyping(decl);
+						MethodSelectionResult variableApplicableBySubtyping = variableApplicableBySubtyping(decl,java);
 						if(variableApplicableBySubtyping != null) {
 							tmp.add(variableApplicableBySubtyping);
 						}
@@ -184,7 +180,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 	/**
 	 * JLS 15.12.2.2 Phase 1: Identify Matching Arity Methods Applicable by Subtyping
 	 */
-	private MethodSelectionResult matchingApplicableBySubtyping(M method) throws LookupException {
+	private MethodSelectionResult matchingApplicableBySubtyping(M method, Java java) throws LookupException {
 				TypeAssignmentSet actualTypeParameters = actualTypeParameters(method, false);
 				//SLOW We can probably cache the substituted type instead/as well.
 				List<Type> formalParameterTypesInContext = JavaMethodInvocation.formalParameterTypesInContext(method,actualTypeParameters);
@@ -192,6 +188,8 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 				List<Expression> actualParameters = invocation().getActualParameters();
 				int nbFormals = formalParameterTypesInContext.size();
 				int nbActuals = actualParameters.size();
+				JavaSubtypingRelation subtypeRelation = java.subtypeRelation();
+				boolean uncheckedConversion = false;
 				for(int i=0; match && i < nbActuals; i++) {
 					Type formalType;
 					if(i >= nbFormals) {
@@ -200,7 +198,13 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 					  formalType = formalParameterTypesInContext.get(i);
 					}
 					Type actualType = actualParameters.get(i).getType();
-					match = actualType.subTypeOf(formalType) || convertibleThroughUncheckedConversionAndSubtyping(actualType, formalType);
+					match = actualType.subTypeOf(formalType);
+					if(! match) {
+						match = subtypeRelation.convertibleThroughUncheckedConversionAndSubtyping(actualType, formalType);
+						if(match) {
+							uncheckedConversion = true;
+						}
+					}
 				}
 				// This may be inefficient, be it is literally what the language spec says
 				// so for now I do it exactly the same way.
@@ -208,180 +212,40 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 					match = actualTypeParameters.valid();
 				}
 				if(match) {
-				  return createSelectionResult(method, actualTypeParameters,1);
+				  return createSelectionResult(method, actualTypeParameters,1,uncheckedConversion);
 				} else {
 					return null;
 				}
 			}
 
 
-	private boolean convertibleThroughUncheckedConversionAndSubtyping(Type first, Type second) throws LookupException {
-		boolean result = false;
-		if(first instanceof RawType) {
-			result = ((RawType)first).convertibleThroughUncheckedConversionAndSubtyping(second);
-		} else if(first instanceof ArrayType && second instanceof ArrayType) {
-			ArrayType first2 = (ArrayType)first;
-			ArrayType second2 = (ArrayType)second;
-			result = convertibleThroughUncheckedConversionAndSubtyping(first2.elementType(), second2.elementType());
-		} else if(first instanceof RegularType) {
-			Set<Type> supers = first.getSelfAndAllSuperTypesView();
-			for(Type type: supers) {
-				if(type.baseType().sameAs(second.baseType())) {
-					return true;
-				}
-			}
-		}
-		return result;
-	}
-
-	private MethodSelectionResult matchingApplicableByConversion(M method) throws LookupException {
+	private MethodSelectionResult matchingApplicableByConversion(M method, Java java) throws LookupException {
 				TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true);
 				List<Type> formalParameterTypesInContext = JavaMethodInvocation.formalParameterTypesInContext(method,actualTypeParameters);
 				boolean match = true;
 				int size = formalParameterTypesInContext.size();
 				List<Expression> actualParameters = invocation().getActualParameters();
+				JavaSubtypingRelation subtypeRelation = java.subtypeRelation();
+				UncheckedConversionIndicator indicator = new UncheckedConversionIndicator();
 				for(int i=0; match && i < size; i++) {
 					Type formalType = formalParameterTypesInContext.get(i);
 					Type actualType = actualParameters.get(i).getType();
-					match = convertibleThroughMethodInvocationConversion(actualType, formalType);
+					match = subtypeRelation.convertibleThroughMethodInvocationConversion(actualType, formalType,indicator);
 				}
 				if(match && actualTypeParameters != null) {
 					match = actualTypeParameters.valid();
 				} 
 				if(match) {
-				  return createSelectionResult(method, actualTypeParameters,2);
+				  return createSelectionResult(method, actualTypeParameters,2, indicator.isSet());
 				} else {
 					return null;
 				}
 			}
 
-	private boolean convertibleThroughMethodInvocationConversion(Type first, Type second) throws LookupException {
-		boolean result = false;
-		// JLS 4.1 & JLS 4.10 : Null type is convertible to any reference type.
-		// FIXME Bad design! Delegating reference widening to the type itself would get rid
-		// of this stupid case.
-		if(first instanceof NullType) {
-			return second.isTrue(second.language(ObjectOrientedLanguage.class).REFERENCE_TYPE);
-		}
-		if(first instanceof TypeIndirection) {
-			return convertibleThroughMethodInvocationConversion(((TypeIndirection)first).aliasedType(), second);
-		} else if(second instanceof TypeIndirection) {
-			return convertibleThroughMethodInvocationConversion(first, ((TypeIndirection)second).aliasedType());
-		}
-		
-		// A) Identity conversion 
-		if(first.sameAs(second)) {
-			result = true;
-		}
-		// B) Widening conversion
-		else if(convertibleThroughWideningPrimitiveConversion(first, second)) {
-			// the result cannot be a raw type so no unchecked conversion is required.
-			result = true;
-		}
-		// C) unboxing and optional widening conversion.
-		else if(convertibleThroughUnboxingAndOptionalWidening(first,second)) {
-			result = true;
-		}
-		// D) boxing and widening reference conversion.
-		else if(convertibleThroughBoxingAndOptionalWidening(first,second)){
-			// can't be raw, so no unchecked conversion can apply
-			result = true;
-		} else {
-			// E) reference widening
-			Collection<Type> candidates = referenceWideningConversionCandidates(first);
-			if(candidates.contains(second)) {
-				result = true;
-			} else {
-				// F) unchecked conversion after reference widening 
-				for(Type type: candidates) {
-					if(convertibleThroughUncheckedConversionAndSubtyping(type, second)) {
-						result = true;
-						break;
-					}
-				}
-				if(! result) {
-					// FIXME is this still necessary? first has already been added to the previous check G) unchecked conversion after identity
-					result = convertibleThroughUncheckedConversionAndSubtyping(first, second);
-				}
-			}
-		}
-		return result;
-	}
 
-	public boolean convertibleThroughBoxingAndOptionalWidening(Type first, Type second) throws LookupException {
-		boolean result = false;
-		Java language = first.language(Java.class);
-		if(first.is(language.PRIMITIVE_TYPE) == Ternary.TRUE) {
-			Type tmp = language.box(first);
-			if(tmp.sameAs(second)) {
-				result = true;
-			} else {
-				result = convertibleThroughWideningReferenceConversion(tmp, second);
-			}
-		}
-		return result;
-	}
 
-	public boolean convertibleThroughUnboxingAndOptionalWidening(Type first, Type second) throws LookupException {
-		boolean result = false;
-		Java language = first.language(Java.class);
-		if(first.is(language.UNBOXABLE_TYPE) == Ternary.TRUE) {
-			Type tmp = language.unbox(first);
-			if(tmp.sameAs(second)) {
-				result = true;
-			} else {
-				result = convertibleThroughWideningPrimitiveConversion(tmp, second);
-			}
-		}
-		return result;
-	}
 
-	public boolean convertibleThroughWideningPrimitiveConversion(Type first, Type second) throws LookupException {
-		return primitiveWideningConversionCandidates(first).contains(second);
-	}
-
-	public Collection<Type> primitiveWideningConversionCandidates(Type type) throws LookupException {
-		Collection<Type> result = new ArrayList<Type>();
-		View view = type.view();
-		Java language = view.language(Java.class);
-		String name = type.getFullyQualifiedName();
-		Namespace ns = view.namespace();
-		if(type.is(language.NUMERIC_TYPE) == Ternary.TRUE) {
-			if(! name.equals("double")) {
-				result.add(language.findType("double",ns));
-				if(! name.equals("float")) {
-					result.add(language.findType("float",ns));
-					if(! name.equals("long")) {
-						result.add(language.findType("long",ns));
-						if(! name.equals("int")) {
-							result.add(language.findType("int",ns));
-							// char and short do not convert to short via widening.
-							if(name.equals("byte")) {
-								result.add(language.findType("short",ns));
-							}
-						}
-					}
-				}
-			}
-		}
-		return result;
-	}
-
-	public boolean convertibleThroughWideningReferenceConversion(Type first, Type second) throws LookupException {
-		Collection<Type> referenceWideningConversionCandidates = referenceWideningConversionCandidates(first);
-		for(Type type: referenceWideningConversionCandidates) {
-			if(type.sameAs(second) || type.subTypeOf(second)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public Collection<Type> referenceWideningConversionCandidates(Type type) throws LookupException {
-		return type.getSelfAndAllSuperTypesView();
-	}
-
-	public MethodSelectionResult variableApplicableBySubtyping(M method) throws LookupException {
+	public MethodSelectionResult variableApplicableBySubtyping(M method, Java java) throws LookupException {
 				boolean match = method.lastFormalParameter() instanceof MultiFormalParameter;
 				if(match) {
 					TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true);
@@ -390,21 +254,23 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 					List<Expression> actualParameters = invocation().getActualParameters();
 					int actualSize = actualParameters.size();
 					// For the non-varags arguments, use method invocation conversion
+					UncheckedConversionIndicator indicator = new UncheckedConversionIndicator();
+					JavaSubtypingRelation subtypeRelation = java.subtypeRelation();
 					for(int i=0; match && i < size-1; i++) {
 						Type formalType = formalParameterTypesInContext.get(i);
 						Type actualType = actualParameters.get(i).getType();
-						match = convertibleThroughMethodInvocationConversion(actualType, formalType);
+						match = subtypeRelation.convertibleThroughMethodInvocationConversion(actualType, formalType,indicator);
 					}
 					Type formalType = ((ArrayType)formalParameterTypesInContext.get(size-1)).elementType();
 					for(int i = size-1; match && i< actualSize;i++) {
 						Type actualType = actualParameters.get(i).getType();
-						match = convertibleThroughMethodInvocationConversion(actualType, formalType);
+						match = subtypeRelation.convertibleThroughMethodInvocationConversion(actualType, formalType,indicator);
 					}
 					if(match && actualTypeParameters != null) {
 						match = actualTypeParameters.valid();
 					} 
 					if(match) {
-					  return createSelectionResult(method, actualTypeParameters,3);
+					  return createSelectionResult(method, actualTypeParameters,3,indicator.isSet());
 					} else {
 						return null;
 					}
@@ -412,81 +278,8 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 				return null;
 			}
 
-	public MethodSelectionResult createSelectionResult(Method method, TypeAssignmentSet typeAssignment, int phase) {
-		return new BasicMethodSelectionResult(method, typeAssignment,phase);
-	}
-	
-	public static interface MethodSelectionResult extends SelectionResult {
-		public Method template();
-		public int phase();
-		public TypeAssignmentSet typeAssignment();
-	}
-	
-	public static class BasicMethodSelectionResult implements MethodSelectionResult {
-
-		public BasicMethodSelectionResult(Method template, TypeAssignmentSet assignment,int phase) {
-			_template = template;
-			_assignment = assignment;
-			_phase = phase;
-		}
-		
-		public int phase() {
-			return _phase;
-		}
-		
-		private int _phase;
-		
-		@Override
-		public Declaration finalDeclaration() throws LookupException {
-			return instantiatedMethodTemplate(_template);
-		}
-		
-		@Override
-		public SelectionResult updatedTo(Declaration declaration) {
-			Method method = (Method) declaration;
-			TypeAssignmentSet assignment = _assignment == null ? null : _assignment.updatedTo(method.typeParameters());
-			return new BasicMethodSelectionResult(method, assignment, _phase);
-		}
-
-		private Method _template;
-		
-		@Override
-		public Method template() {
-			return _template;
-		}
-		
-		private TypeAssignmentSet _assignment;
-		
-		public TypeAssignmentSet typeAssignment() {
-			return _assignment;
-		}
-		
-		protected Method instantiatedMethodTemplate(Method method) throws LookupException {
-			Method result=method;
-			int nbTypeParameters = _assignment == null ? 0 : _assignment.nbAssignments();
-			if(nbTypeParameters > 0) {
-				result = Util.clone(_template);
-				result.setOrigin(_template);
-				result.setUniParent(_template.parent());
-				for(int i=1; i <= nbTypeParameters;i++) {
-					TypeParameter originalPar = _template.typeParameter(i);
-					TypeParameter clonedPar = result.typeParameter(i);
-					// we detach the signature from the clone.
-					Type assignedType = _assignment.type(originalPar);
-					Java language = _template.language(Java.class);
-					JavaTypeReference reference = language.reference(assignedType);
-					Element parent = reference.parent();
-					reference.setUniParent(null);
-					BasicTypeArgument argument = language.createBasicTypeArgument(reference);
-					argument.setUniParent(parent);
-					TypeParameter newPar = new InstantiatedTypeParameter(clonedPar.signature(), argument);
-					SingleAssociation parentLink = clonedPar.parentLink();
-					parentLink.getOtherRelation().replace(parentLink, newPar.parentLink());
-				}
-			}
-			return result;
-		}
-
+	public MethodSelectionResult createSelectionResult(Method method, TypeAssignmentSet typeAssignment, int phase, boolean requiredUncheckedConversion) {
+		return new BasicMethodSelectionResult(method, typeAssignment,phase,requiredUncheckedConversion);
 	}
 	
 	@SuppressWarnings("unchecked")

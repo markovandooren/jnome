@@ -12,6 +12,7 @@ import be.kuleuven.cs.distrinet.chameleon.core.property.ChameleonProperty;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.SimpleReference;
 import be.kuleuven.cs.distrinet.chameleon.core.tag.TagImpl;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
+import be.kuleuven.cs.distrinet.chameleon.oo.expression.ExpressionFactory;
 import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
 import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.RegularImplementation;
@@ -239,6 +240,7 @@ public class RegularJavaType extends RegularType implements JavaType {
 
 	@Override
 	public Type erasure() {
+		//FIXME this code seems to have been duplicated a number of times.
 		Java language = language(Java.class);
 		RawType result = _rawTypeCache;
 		if(result == null) {
@@ -258,8 +260,9 @@ public class RegularJavaType extends RegularType implements JavaType {
 					outerTypes.add(0, this);
 
 					int size = outerTypes.size();
+					ExpressionFactory expressionFactory = language.plugin(ExpressionFactory.class);
 					for(int i = size - 2; i>=0;i--) {
-						SimpleReference<RawType> simpleRef = new SimpleReference<RawType>(outerTypes.get(i).signature().name(), RawType.class);
+						SimpleReference<RawType> simpleRef = expressionFactory.createSimpleReference(outerTypes.get(i).signature().name(), RawType.class);
 						simpleRef.setUniParent(current);
 						try {
 							current = simpleRef.getElement();
@@ -280,7 +283,7 @@ public class RegularJavaType extends RegularType implements JavaType {
 
 	private RawType _rawTypeCache;
 	
-	public ArrayType toArray() throws LookupException {
+	public ArrayType toArray() {
 		if(_arrayType == null) {
 			_arrayType = new ArrayType(this);
 		}

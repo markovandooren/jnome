@@ -39,15 +39,19 @@ public class JavaMostSpecificMethodOrder<M extends MethodSelectionResult> extend
 					if(!(first.lastFormalParameter() instanceof MultiFormalParameter) && ! (second.lastFormalParameter() instanceof MultiFormalParameter)) {
 						result = containsFixedArity(first, second);
 					} else if((first.lastFormalParameter() instanceof MultiFormalParameter) && (second.lastFormalParameter() instanceof MultiFormalParameter)){
-						result = containsVariableArity(first, second);
+						result = containsVariableArity(firstResult, secondResult);
 					}
+					
 				}
 			}
 		}
 		return result;
 	}
 
-	public boolean containsVariableArity(Method first, Method second) throws LookupException {
+	public boolean containsVariableArity(M firstResult, M secondResult) throws LookupException {
+		Method first = firstResult.template();
+		Method second = secondResult.template();
+
 		boolean result = true;
 		Java language = (Java) first.language(Java.class);
 		List<Type> firstTypes = first.header().formalParameterTypes();

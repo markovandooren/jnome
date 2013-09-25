@@ -41,11 +41,11 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 			throw new IllegalArgumentException("The type of methods selected cannot be null.");
 		}
 		_type = type;
-		
+
 	}
-	
+
 	private Class<M> _type;
-	
+
 	@Override
 	public boolean isGreedy() {
 		return false;
@@ -59,9 +59,9 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 		}
 		return result;
 	}
-	
+
 	protected abstract MethodInvocation invocation();
-	
+
 	public abstract boolean correctSignature(Signature signature) throws LookupException;
 
 	public List<? extends SelectionResult> selection(List<? extends Declaration> selectionCandidates) throws LookupException {
@@ -82,8 +82,8 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 									(method.lastFormalParameter() instanceof MultiFormalParameter)
 									&& 
 									(nbActuals >= nbFormals - 1)
-							)
-					) && correctSignature(method.signature())){
+									)
+							) && correctSignature(method.signature())){
 						candidates.add(method);
 					}
 				}
@@ -123,18 +123,18 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 		return tmp;
 	}
 
-//	/**
-//	 * FIXME This should implement 15.12.2.6 Method Result and Throws Types. This implementation doesn't always
-//	 * use the correct type assignment algorithm. Basically it is fixed now and does not take into account how
-//	 * the method was selected.
-//	 * @param method
-//	 * @return
-//	 * @throws LookupException
-//	 */
-//	public M instance(M method) throws LookupException {
-//		TypeAssignmentSet actualTypeParameters = actualTypeParameters(method, false);
-//		return instantiatedMethodTemplate(method, actualTypeParameters);
-//	}
+	//	/**
+	//	 * FIXME This should implement 15.12.2.6 Method Result and Throws Types. This implementation doesn't always
+	//	 * use the correct type assignment algorithm. Basically it is fixed now and does not take into account how
+	//	 * the method was selected.
+	//	 * @param method
+	//	 * @return
+	//	 * @throws LookupException
+	//	 */
+	//	public M instance(M method) throws LookupException {
+	//		TypeAssignmentSet actualTypeParameters = actualTypeParameters(method, false);
+	//		return instantiatedMethodTemplate(method, actualTypeParameters);
+	//	}
 
 	private TypeAssignmentSet actualTypeParameters(M originalMethod, boolean includeNonreference) throws LookupException {
 		MethodHeader methodHeader = (MethodHeader) originalMethod.header().clone();
@@ -181,107 +181,117 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 	 * JLS 15.12.2.2 Phase 1: Identify Matching Arity Methods Applicable by Subtyping
 	 */
 	private MethodSelectionResult matchingApplicableBySubtyping(M method, Java java) throws LookupException {
-				TypeAssignmentSet actualTypeParameters = actualTypeParameters(method, false);
-				//SLOW We can probably cache the substituted type instead/as well.
-				List<Type> formalParameterTypesInContext = JavaMethodInvocation.formalParameterTypesInContext(method,actualTypeParameters);
-				boolean match = true;
-				List<Expression> actualParameters = invocation().getActualParameters();
-				int nbFormals = formalParameterTypesInContext.size();
-				int nbActuals = actualParameters.size();
-				JavaSubtypingRelation subtypeRelation = java.subtypeRelation();
-				boolean uncheckedConversion = false;
-				for(int i=0; match && i < nbActuals; i++) {
-					Type formalType;
-					if(i >= nbFormals) {
-						formalType = formalParameterTypesInContext.get(nbFormals - 1);
-					} else {
-					  formalType = formalParameterTypesInContext.get(i);
-					}
-					Type actualType = actualParameters.get(i).getType();
-					match = actualType.subTypeOf(formalType);
-					if(! match) {
-						match = subtypeRelation.convertibleThroughUncheckedConversionAndSubtyping(actualType, formalType);
-						if(match) {
-							uncheckedConversion = true;
-						}
-					}
-				}
-				// This may be inefficient, be it is literally what the language spec says
-				// so for now I do it exactly the same way.
-				if(match && actualTypeParameters != null) {
-					match = actualTypeParameters.valid();
-				}
-				if(match) {
-				  return createSelectionResult(method, actualTypeParameters,1,uncheckedConversion);
+		if(method.nbFormalParameters() == invocation().nbActualParameters()) {
+			TypeAssignmentSet actualTypeParameters = actualTypeParameters(method, false);
+			//SLOW We can probably cache the substituted type instead/as well.
+			List<Type> formalParameterTypesInContext = JavaMethodInvocation.formalParameterTypesInContext(method,actualTypeParameters);
+			boolean match = true;
+			List<Expression> actualParameters = invocation().getActualParameters();
+			int nbFormals = formalParameterTypesInContext.size();
+			int nbActuals = actualParameters.size();
+			JavaSubtypingRelation subtypeRelation = java.subtypeRelation();
+			boolean uncheckedConversion = false;
+			for(int i=0; match && i < nbActuals; i++) {
+				Type formalType;
+				if(i >= nbFormals) {
+					formalType = formalParameterTypesInContext.get(nbFormals - 1);
 				} else {
-					return null;
+					formalType = formalParameterTypesInContext.get(i);
+				}
+				Type actualType = actualParameters.get(i).getType();
+				match = actualType.subTypeOf(formalType);
+				if(! match) {
+					match = subtypeRelation.convertibleThroughUncheckedConversionAndSubtyping(actualType, formalType);
+					if(match) {
+						uncheckedConversion = true;
+					}
 				}
 			}
+			// This may be inefficient, be it is literally what the language spec says
+			// so for now I do it exactly the same way.
+			if(match && actualTypeParameters != null) {
+				match = actualTypeParameters.valid();
+			}
+			if(match) {
+				return createSelectionResult(method, actualTypeParameters,1,uncheckedConversion);
+			} else {
+				return null;
+			}
+		} 
+		else {
+			return null;
+		}
+	}
 
 
 	private MethodSelectionResult matchingApplicableByConversion(M method, Java java) throws LookupException {
-				TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true);
-				List<Type> formalParameterTypesInContext = JavaMethodInvocation.formalParameterTypesInContext(method,actualTypeParameters);
-				boolean match = true;
-				int size = formalParameterTypesInContext.size();
-				List<Expression> actualParameters = invocation().getActualParameters();
-				JavaSubtypingRelation subtypeRelation = java.subtypeRelation();
-				UncheckedConversionIndicator indicator = new UncheckedConversionIndicator();
-				for(int i=0; match && i < size; i++) {
-					Type formalType = formalParameterTypesInContext.get(i);
-					Type actualType = actualParameters.get(i).getType();
-					match = subtypeRelation.convertibleThroughMethodInvocationConversion(actualType, formalType,indicator);
-				}
-				if(match && actualTypeParameters != null) {
-					match = actualTypeParameters.valid();
-				} 
-				if(match) {
-				  return createSelectionResult(method, actualTypeParameters,2, indicator.isSet());
-				} else {
-					return null;
-				}
-			}
+		if(method.nbFormalParameters() == invocation().nbActualParameters()) {
+		TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true);
+		List<Type> formalParameterTypesInContext = JavaMethodInvocation.formalParameterTypesInContext(method,actualTypeParameters);
+		boolean match = true;
+		int size = formalParameterTypesInContext.size();
+		List<Expression> actualParameters = invocation().getActualParameters();
+		JavaSubtypingRelation subtypeRelation = java.subtypeRelation();
+		UncheckedConversionIndicator indicator = new UncheckedConversionIndicator();
+		for(int i=0; match && i < size; i++) {
+			Type formalType = formalParameterTypesInContext.get(i);
+			Type actualType = actualParameters.get(i).getType();
+			match = subtypeRelation.convertibleThroughMethodInvocationConversion(actualType, formalType,indicator);
+		}
+		if(match && actualTypeParameters != null) {
+			match = actualTypeParameters.valid();
+		} 
+		if(match) {
+			return createSelectionResult(method, actualTypeParameters,2, indicator.isSet());
+		} else {
+			return null;
+		}
+	} 
+	else {
+		return null;
+	}
+}
 
 
 
 
 	public MethodSelectionResult variableApplicableBySubtyping(M method, Java java) throws LookupException {
-				boolean match = method.lastFormalParameter() instanceof MultiFormalParameter;
-				if(match) {
-					TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true);
-					List<Type> formalParameterTypesInContext = JavaMethodInvocation.formalParameterTypesInContext(method,actualTypeParameters);
-					int size = formalParameterTypesInContext.size();
-					List<Expression> actualParameters = invocation().getActualParameters();
-					int actualSize = actualParameters.size();
-					// For the non-varags arguments, use method invocation conversion
-					UncheckedConversionIndicator indicator = new UncheckedConversionIndicator();
-					JavaSubtypingRelation subtypeRelation = java.subtypeRelation();
-					for(int i=0; match && i < size-1; i++) {
-						Type formalType = formalParameterTypesInContext.get(i);
-						Type actualType = actualParameters.get(i).getType();
-						match = subtypeRelation.convertibleThroughMethodInvocationConversion(actualType, formalType,indicator);
-					}
-					Type formalType = ((ArrayType)formalParameterTypesInContext.get(size-1)).elementType();
-					for(int i = size-1; match && i< actualSize;i++) {
-						Type actualType = actualParameters.get(i).getType();
-						match = subtypeRelation.convertibleThroughMethodInvocationConversion(actualType, formalType,indicator);
-					}
-					if(match && actualTypeParameters != null) {
-						match = actualTypeParameters.valid();
-					} 
-					if(match) {
-					  return createSelectionResult(method, actualTypeParameters,3,indicator.isSet());
-					} else {
-						return null;
-					}
-				}
+		boolean match = method.lastFormalParameter() instanceof MultiFormalParameter;
+		if(match) {
+			TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true);
+			List<Type> formalParameterTypesInContext = JavaMethodInvocation.formalParameterTypesInContext(method,actualTypeParameters);
+			int size = formalParameterTypesInContext.size();
+			List<Expression> actualParameters = invocation().getActualParameters();
+			int actualSize = actualParameters.size();
+			// For the non-varags arguments, use method invocation conversion
+			UncheckedConversionIndicator indicator = new UncheckedConversionIndicator();
+			JavaSubtypingRelation subtypeRelation = java.subtypeRelation();
+			for(int i=0; match && i < size-1; i++) {
+				Type formalType = formalParameterTypesInContext.get(i);
+				Type actualType = actualParameters.get(i).getType();
+				match = subtypeRelation.convertibleThroughMethodInvocationConversion(actualType, formalType,indicator);
+			}
+			Type formalType = ((ArrayType)formalParameterTypesInContext.get(size-1)).elementType();
+			for(int i = size-1; match && i< actualSize;i++) {
+				Type actualType = actualParameters.get(i).getType();
+				match = subtypeRelation.convertibleThroughMethodInvocationConversion(actualType, formalType,indicator);
+			}
+			if(match && actualTypeParameters != null) {
+				match = actualTypeParameters.valid();
+			} 
+			if(match) {
+				return createSelectionResult(method, actualTypeParameters,3,indicator.isSet());
+			} else {
 				return null;
 			}
+		}
+		return null;
+	}
 
 	public MethodSelectionResult createSelectionResult(Method method, TypeAssignmentSet typeAssignment, int phase, boolean requiredUncheckedConversion) {
 		return new BasicMethodSelectionResult(method, typeAssignment,phase,requiredUncheckedConversion);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void filter(List<? extends SelectionResult> selected) throws LookupException {
@@ -291,7 +301,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> extends Decla
 	protected void applyOrder(List<MethodSelectionResult> tmp) throws LookupException {
 		order().removeBiggerElements(tmp);
 	}
-	
+
 	public WeakPartialOrder<MethodSelectionResult> order() {
 		return new JavaMostSpecificMethodOrder<MethodSelectionResult>(invocation());
 	}

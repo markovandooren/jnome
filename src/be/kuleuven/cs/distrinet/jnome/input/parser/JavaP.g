@@ -318,7 +318,7 @@ scope TargetScope {
     //String fqn = type.getFullyQualifiedName();
     //if(fqn != null) {
     //  if(type.nonMemberInheritanceRelations().isEmpty() && (! fqn.equals("java.lang.Object"))){
-    //    type.addInheritanceRelation(new SubtypeRelation(createTypeReference(new NamedTarget("java.lang"),"Object")));
+    //    type.addInheritanceRelation(new SubtypeRelation(createTypeReference(expressionFactory().createNamedTarget("java.lang"),"Object")));
     //  }
     //}
 
@@ -1725,7 +1725,7 @@ CrossReferenceTarget old = $TargetScope::target;
 	:	
 	'.' name=identifierRule 
 	        {
-	         retval.element = new NamedTargetExpression($name.text,cloneTarget($TargetScope::target));
+	         retval.element = expressionFactory().createNameExpression($name.text,cloneTarget($TargetScope::target));
 	         stop=name.start;
 	        } 
 	    (args=arguments 
@@ -1810,20 +1810,20 @@ if(! retval.element.descendants().contains(scopeTarget)) {
 }
 }
 	:	id=identifierRule 
-	           {$TargetScope::target = new NamedTarget($id.text);
+	           {$TargetScope::target = expressionFactory().createNamedTarget($id.text);
 	            scopeTarget = $TargetScope::target;  
 	            $TargetScope::start=id.start; 
 	            stop=id.start;
 	            setLocation($TargetScope::target,$TargetScope::start,stop);
 	            }
 	  ('.' idx=identifierRule 
-	       {$TargetScope::target = new NamedTarget($idx.text,$TargetScope::target);
+	       {$TargetScope::target = expressionFactory().createNamedTarget($idx.text,$TargetScope::target);
 	        scopeTarget = $TargetScope::target;
 	        stop=idx.start;
 	        setLocation($TargetScope::target, $TargetScope::start, idx.start);
 	       }
 	  )* 
-	{retval.element = new NamedTargetExpression(((NamedTarget)$TargetScope::target).name(),cloneTargetOfTarget(((NamedTarget)$TargetScope::target)));
+	{retval.element = expressionFactory().createNameExpression(((NamedTarget)$TargetScope::target).name(),cloneTargetOfTarget(((NamedTarget)$TargetScope::target)));
 	 setLocation(retval.element, $TargetScope::start, stop);
 	 //The variable reference is only returned if none of the following subrules match.
 	}
@@ -1856,11 +1856,11 @@ if(! retval.element.descendants().contains(scopeTarget)) {
 
 identifierSuffixRubbush returns [Expression element]
 scope TargetScope;
-	:	'this' {$TargetScope::target = new ThisLiteral();}('.' id=identifierRule {$TargetScope::target = new NamedTarget($id.text,$TargetScope::target);})* 
+	:	'this' {$TargetScope::target = new ThisLiteral();}('.' id=identifierRule {$TargetScope::target = expressionFactory().createNamedTarget($id.text,$TargetScope::target);})* 
 	{if($TargetScope::target instanceof ThisLiteral) {
 	  retval.element = (ThisLiteral)$TargetScope::target;
 	 } else {
-	  retval.element = new NamedTargetExpression(((NamedTarget)$TargetScope::target).name(),cloneTargetOfTarget((NamedTarget)$TargetScope::target));
+	  retval.element = expressionFactory().createNameExpression(((NamedTarget)$TargetScope::target).name(),cloneTargetOfTarget((NamedTarget)$TargetScope::target));
 	 }}
    (
         arr=arrayAccessSuffixRubbish {retval.element = arr.element;}
@@ -1904,7 +1904,7 @@ argumentsSuffixRubbish returns [MethodInvocation element]
 // NEEDS_TARGET
 arrayAccessSuffixRubbish returns [Expression element]
 @after{setLocation(retval.element, $TargetScope::start, retval.stop);}
-	:	{retval.element = new ArrayAccessExpression(new NamedTargetExpression(((NamedTarget)$TargetScope::target).name(),cloneTargetOfTarget((NamedTarget)$TargetScope::target)));} 
+	:	{retval.element = new ArrayAccessExpression(expressionFactory().createNameExpression(((NamedTarget)$TargetScope::target).name(),cloneTargetOfTarget((NamedTarget)$TargetScope::target)));} 
 	        (open='[' arrex=expression close=']' 
 	          { FilledArrayIndex index = new FilledArrayIndex(arrex.element);
 	           ((ArrayAccessExpression)retval.element).addIndex(index);
@@ -1990,7 +1990,7 @@ superSuffix returns [TargetedExpression element]
 }
     :   //arguments
         //|   
-    '.' name=identifierRule {retval.element = new NamedTargetExpression($name.text);
+    '.' name=identifierRule {retval.element = expressionFactory().createNameExpression($name.text);
                          start = name.start;
                          stop = name.start;} 
         (args=arguments

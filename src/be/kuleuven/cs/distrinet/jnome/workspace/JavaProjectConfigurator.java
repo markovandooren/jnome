@@ -53,7 +53,11 @@ public class JavaProjectConfigurator extends ProjectConfiguratorImpl implements 
 	
 	@Override
 	protected void addBaseLibraries(View view, BaseLibraryConfiguration baseLibraryConfiguration) {
-		new JavaBaseLibraryConfigurator(language()).process(view, baseLibraryConfiguration);
+		new JavaBaseLibraryConfigurator(java()).process(view, baseLibraryConfiguration);
+	}
+	
+	protected Java java() {
+		return (Java) language();
 	}
 	
 	public class JavaBaseLibraryConfigurator extends BaseLibraryConfigurator {

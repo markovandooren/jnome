@@ -118,7 +118,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 		TopDown<Element, Nothing> topDown = new TopDown<>(dependencyAnalysis);
 		topDown.traverse(_root, sourceStructure);
 		DependencyResult result = dependencyAnalysis.result();
-		result.prune();
+//		result.prune();
 		return result;
 	}
 	

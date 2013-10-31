@@ -205,7 +205,7 @@ public class Java extends ObjectOrientedLanguage {
   	} 
   	else {
   		try {
-  			if(original.nbTypeParameters(TypeParameter.class) > 0 && (original.parameter(TypeParameter.class,1) instanceof FormalTypeParameter)) {
+  			if(original.nbTypeParameters(TypeParameter.class) > 0 ) { //&& (original.parameter(TypeParameter.class,1) instanceof FormalTypeParameter)
   				result = ((JavaType)original).erasure();
 			} else {
   			result = original;

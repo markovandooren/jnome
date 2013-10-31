@@ -1,8 +1,9 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
-import java.lang.ref.SoftReference;
 import java.util.List;
 import java.util.Set;
+
+import java.lang.ref.SoftReference;
 
 import be.kuleuven.cs.distrinet.chameleon.core.Config;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
@@ -118,6 +119,9 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 	    result = (X) getGenericCache();
 	  }
 	  if(result != null) {
+//    	if(result instanceof JavaDerivedType) {
+//    		result = (X)((JavaDerivedType)result).captureConversion();
+//    	}
 	   	return result;
 	  }
 
@@ -135,6 +139,10 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
     	if(realSelector) {
         setGenericCache((Type)result);
     	}
+			//FIXME This breaks the tests, but the result should be the captured type.
+//    	if(result instanceof JavaDerivedType) {
+//    		result = (X)((JavaDerivedType)result).captureConversion();
+//    	}
       return result;
     } else {
       throw new LookupException("Result of type reference lookup is null: "+signature(),this);
@@ -157,6 +165,7 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 					// selection for 'type' in its parent.
 					// set to the type itself? seems dangerous as well.
 					result.setUniParent(type.parent());
+					
 				} else if(type instanceof RegularType){
 					// create raw type if necessary. The erasure method will check that.
 					result = language.erasure(type);

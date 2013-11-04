@@ -66,7 +66,11 @@ public class JavaMethodInvocation extends RegularMethodInvocation {
 	  if(result != null) {
 	   	return result;
 	  }
-	   
+		synchronized(this) {
+			if(result != null) {
+				return result;
+			}
+
 		DeclarationCollector collector = new DeclarationCollector(selector);
   	CrossReferenceTarget target = getTarget();
   	if(target == null) {
@@ -79,6 +83,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation {
   		setCache((NormalMethod) result);
   	}
   	return result;
+		}
 //		}
 //		else {
 //			//repeat lookup for debugging purposes.

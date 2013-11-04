@@ -131,7 +131,7 @@ public class PropertyFinder extends CommandLineTool {
 				Java lang = type.language(Java.class);
 				count++;
 				for(Method method: type.directlyDeclaredElements(Method.class)) {
-					String name = method.signature().name();
+					String name = method.name();
 					if(name.startsWith(first)) {
 						String X = name.substring(3);
 						for(Method getter: type.directlyDeclaredElements(Method.class)) {

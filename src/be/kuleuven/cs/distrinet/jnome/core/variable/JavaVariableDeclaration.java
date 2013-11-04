@@ -1,6 +1,5 @@
 package be.kuleuven.cs.distrinet.jnome.core.variable;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
@@ -18,10 +17,6 @@ import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
  */
 public class JavaVariableDeclaration extends VariableDeclaration {
 	
-  public JavaVariableDeclaration(SimpleNameSignature sig, Expression expr) {
-		super(sig,expr);
-	}
-
 	public JavaVariableDeclaration(String name, Expression expr) {
 		super(name,expr);
 	}

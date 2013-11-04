@@ -1,26 +1,21 @@
 package be.kuleuven.cs.distrinet.jnome.test;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import java.io.File;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import be.kuleuven.cs.distrinet.chameleon.core.Config;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LexicalLookupContext;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LocalLookupContext;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupContextFactory;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.statement.Block;
+import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.support.test.ExpressionTest;
-import be.kuleuven.cs.distrinet.chameleon.support.variable.LocalVariableDeclarator;
 import be.kuleuven.cs.distrinet.chameleon.test.CompositeTest;
 import be.kuleuven.cs.distrinet.chameleon.test.CrossReferenceTest;
 import be.kuleuven.cs.distrinet.chameleon.test.provider.BasicDescendantProvider;
 import be.kuleuven.cs.distrinet.chameleon.test.provider.ElementProvider;
-import be.kuleuven.cs.distrinet.chameleon.util.Lists;
-import be.kuleuven.cs.distrinet.chameleon.util.profile.Timer;
 import be.kuleuven.cs.distrinet.chameleon.workspace.BootstrapProjectConfig;
 import be.kuleuven.cs.distrinet.chameleon.workspace.ConfigException;
 import be.kuleuven.cs.distrinet.chameleon.workspace.LanguageRepository;
@@ -48,9 +43,16 @@ public abstract class JavaTest extends CompositeTest {
 	
 	@Before
 	public void setMultiThreading() {
-		Config.setSingleThreaded(true);
+		Config.setSingleThreaded(false);
 	}
 	
+  private static ExecutorService threadPool = Executors.newCachedThreadPool();
+
+  @Override
+  protected ExecutorService threadPool() {
+  	return threadPool;
+  }
+  
 	@Override
 	@Test
 	public void testCrossReferences() throws Exception {
@@ -69,9 +71,11 @@ public abstract class JavaTest extends CompositeTest {
 //		Timer.POSTFIX_OPERATOR_INVOCATION.reset();
 //		Lists.LIST_CREATION.reset();
 		Project project = project();
-		ElementProvider<Type> typeProvider = typeProvider();
-		new ExpressionTest(project, typeProvider).testExpressionTypes();
-		new CrossReferenceTest(project, new BasicDescendantProvider<CrossReference>(typeProvider(), CrossReference.class)).testCrossReferences();
+//		ElementProvider<Type> typeProvider = typeProvider();
+		new ExpressionTest(project, namespaceProvider(),threadPool).testExpressionTypes();
+		new CrossReferenceTest(project, namespaceProvider(),threadPool).testCrossReferences();
+//		new CrossReferenceTest(project, new BasicDescendantProvider<CrossReference>(typeProvider(), CrossReference.class),threadPool).testCrossReferences();
+//		System.out.println("Created "+SimpleNameSignature.COUNT+" SimpleNameSignature objects.");
 //		System.out.println("Created "+LexicalLookupContext.CREATED+" lexical lookup contexts.");
 //		System.out.println("Created "+LocalLookupContext.CREATED+" local lookup contexts.");
 //		System.out.println("Block linear context: "+Block.LINEAR.elapsedMillis()+"ms");

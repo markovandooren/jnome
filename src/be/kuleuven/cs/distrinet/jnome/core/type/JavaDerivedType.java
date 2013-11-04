@@ -131,7 +131,7 @@ public class JavaDerivedType extends DerivedType implements JavaType {
 					for(TypeParameter oldParameter: baseParameters) {
 						//If we replace references to the old parameters with references to the captured type parameters, then
 						// why is the capturing done with non-locals pointing to the formal?
-						JavaTypeReference tref = new BasicJavaTypeReference(oldParameter.signature().name());
+						JavaTypeReference tref = new BasicJavaTypeReference(oldParameter.name());
 						tref.setUniParent(newParameter);
 						if(newParameter instanceof CapturedTypeParameter) {
 							List<TypeConstraint> constraints = ((CapturedTypeParameter)newParameter).constraints();

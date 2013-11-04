@@ -24,7 +24,7 @@ import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
  */
 public class ArrayType extends RegularType {
   ArrayType(Type type) {
-    super(new SimpleNameSignature(getArrayName(type.name())));
+    super(getArrayName(type.name()));
     //FIXME: copy the modifiers?
     //addModifier(type.getAccessModifier());
     _type = type;
@@ -33,7 +33,7 @@ public class ArrayType extends RegularType {
 		JavaTypeReference jtr = language.createTypeReference("int");
 		
 		// JLS7 10.7 Array Members
-    RegularMemberVariable var = new RegularMemberVariable(new SimpleNameSignature("length"), jtr);
+    RegularMemberVariable var = new RegularMemberVariable("length", jtr);
     var.addModifier(new Final());
     add(var);
     

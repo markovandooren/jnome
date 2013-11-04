@@ -2,7 +2,6 @@ package be.kuleuven.cs.distrinet.jnome.core.type;
 
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.AbstractInstantiatedTypeParameter;
@@ -22,8 +21,8 @@ import be.kuleuven.cs.distrinet.chameleon.util.Pair;
  */
 public class ErasedTypeParameter extends AbstractInstantiatedTypeParameter {
 
-	public ErasedTypeParameter(SimpleNameSignature signature, ActualTypeArgument argument) {
-		super(signature, argument);
+	public ErasedTypeParameter(String name, ActualTypeArgument argument) {
+		super(name, argument);
 	}
 
 	@Override
@@ -31,7 +30,7 @@ public class ErasedTypeParameter extends AbstractInstantiatedTypeParameter {
 		// We must clone the argument manually because it is not referenced through
 		// a bidirectional association.
 		ActualTypeArgument argument = clone(argument());
-		ErasedTypeParameter result = new ErasedTypeParameter(null,argument);
+		ErasedTypeParameter result = new ErasedTypeParameter(name(),argument);
 		argument.setUniParent(result);
 		return result;
 	}

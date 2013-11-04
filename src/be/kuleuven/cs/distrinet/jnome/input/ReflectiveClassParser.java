@@ -84,7 +84,7 @@ public class ReflectiveClassParser implements BytecodeClassParser {
 	}
 
 	private Type createType(Class clazz) {
-		Type type = _factory.createRegularType(new SimpleNameSignature(clazz.getSimpleName()));
+		Type type = _factory.createRegularType(clazz.getSimpleName());
 		
 		determineInterface(clazz,type);
 		type.addAllInheritanceRelations(getInheritanceRelations(clazz));
@@ -225,7 +225,7 @@ public class ReflectiveClassParser implements BytecodeClassParser {
   				//					if((Util.getLastPart(temp) != null) && (Character.getType(Util.getLastPart(temp).charAt(0)) == Character.DECIMAL_DIGIT_NUMBER)) {
   				//						valid = false;
   				//					}
-  				header.addFormalParameter(new FormalParameter(new SimpleNameSignature("a_r_g_u_m_e_n_t_"+i), tref));
+  				header.addFormalParameter(new FormalParameter("a_r_g_u_m_e_n_t_"+i, tref));
   			}
 
 

@@ -242,12 +242,12 @@ scope TargetScope {
     return result;
   }
   
-  public RegularType createType(SimpleNameSignature signature) {
-     return factory().createRegularType(signature);
+  public RegularType createType(String name) {
+     return factory().createRegularType(name);
   }
   
-  public RegularType createEnum(SimpleNameSignature signature) {
-     return factory().createEnumType(signature);
+  public RegularType createEnum(String name) {
+     return factory().createEnumType(name);
   }
 
   public NormalMethod createNormalMethod(MethodHeader header) {
@@ -345,10 +345,6 @@ scope TargetScope {
     return ((Java)language()).createTypeReference(target,name);
   }
   
-  public JavaTypeReference createTypeReference(CrossReference<? extends TargetDeclaration> target, SimpleNameSignature signature) {
-    return ((Java)language()).createTypeReference(target,signature);
-  }
-
   public JavaTypeReference createTypeReference(NamedTarget target) {
     return ((Java)language()).createTypeReference(target);
   }
@@ -538,7 +534,7 @@ nameAndParams returns [RegularType element]
   ;    
     
 createClassHereBecauseANTLRisAnnoying returns [RegularType element]
-   :  name=identifierRule {retval.element = createType(new SimpleNameSignature($name.text)); setName(retval.element,name.start);}
+   :  name=identifierRule {retval.element = createType($name.text); setName(retval.element,name.start);}
    ;
     
 typeParameters returns [List<FormalTypeParameter> element]
@@ -550,7 +546,7 @@ typeParameter returns [FormalTypeParameter element]
 @init{
 Token stop = null;
 }
-    :   name=identifierRule{retval.element = new FormalTypeParameter(new SimpleNameSignature($name.text)); stop=name.start;} (extkw='extends' bound=typeBound{retval.element.addConstraint(bound.element); stop=bound.stop;})?
+    :   name=identifierRule{retval.element = new FormalTypeParameter($name.text); stop=name.start;} (extkw='extends' bound=typeBound{retval.element.addConstraint(bound.element); stop=bound.stop;})?
         {setKeyword(retval.element,extkw);
          setLocation(retval.element, name.start, stop);
          setName(retval.element,name.start);
@@ -579,7 +575,7 @@ enumDeclaration returns [RegularType element]
 scope{
   Type enumType;
 }
-    :   ENUM name=identifierRule {retval.element = createEnum(new SimpleNameSignature($name.text)); 
+    :   ENUM name=identifierRule {retval.element = createEnum($name.text); 
                               retval.element.addModifier(new Enum()); 
                               $enumDeclaration::enumType=retval.element;
                               setName(retval.element,name.start);}
@@ -611,7 +607,7 @@ enumConstants returns [List<EnumConstant> element]
     ;
     
 enumConstant returns [EnumConstant element]
-    :   annotations? name=identifierRule {retval.element = new EnumConstant(new SimpleNameSignature($name.text));} (args=arguments {retval.element.addAllParameters(args.element);})? (body=classBody {retval.element.setBody(body.element);})?
+    :   annotations? name=identifierRule {retval.element = new EnumConstant($name.text);} (args=arguments {retval.element.addAllParameters(args.element);})? (body=classBody {retval.element.setBody(body.element);})?
     ;
     
 enumBodyDeclarations returns [List<TypeElement> element]
@@ -625,7 +621,7 @@ interfaceDeclaration returns [Type element]
     ;
     
 normalInterfaceDeclaration returns [RegularType element]
-    :   ifkw='interface' name=identifierRule {retval.element = createType(new SimpleNameSignature($name.text)); 
+    :   ifkw='interface' name=identifierRule {retval.element = createType($name.text); 
                                           retval.element.addModifier(new Interface());
                                           setName(retval.element,name.start);} 
          (params=typeParameters{for(TypeParameter par: params.element){retval.element.addParameter(TypeParameter.class,par);}})? 
@@ -1070,14 +1066,14 @@ formalParameterDecls returns [List<FormalParameter> element]
         (',' decls=formalParameterDecls {retval.element=decls.element; })?
         {if(retval.element == null) {
          retval.element=new ArrayList<FormalParameter>();}
-         FormalParameter param = new FormalParameter(new SimpleNameSignature(id.element.name()),myToArray(t.element, id.element));
+         FormalParameter param = new FormalParameter(id.element.name(),myToArray(t.element, id.element));
          param.addAllModifiers(mods.element);
          retval.element.add(0,param);
          setLocation(param, mods.start,id.stop);
          }
     |   modss=variableModifiers tt=type '...' idd=variableDeclaratorId 
         {retval.element = new ArrayList<FormalParameter>(); 
-         FormalParameter param = new MultiFormalParameter(new SimpleNameSignature(idd.element.name()),myToArray(tt.element,idd.element));
+         FormalParameter param = new MultiFormalParameter(idd.element.name(),myToArray(tt.element,idd.element));
          param.addAllModifiers(modss.element);
          retval.element.add(param);
          setLocation(param, modss.start, idd.stop);
@@ -1190,7 +1186,7 @@ elementValueArrayInitializer
 annotationTypeDeclaration returns [ClassWithBody element]
     :   '@' 'interface' name=identifierRule 
              {
-               retval.element = (ClassWithBody)createType(new SimpleNameSignature($name.text));
+               retval.element = (ClassWithBody)createType($name.text);
                retval.element.addModifier(new AnnotationType());
                setName(retval.element,name.start);
              } 
@@ -1365,7 +1361,7 @@ catchClause returns [CatchClause element]
 catchParameter returns [FormalParameter element]
 @after{assert(retval.element != null);}
     :   mods=variableModifiers tref=possibleUnionType name=variableDeclaratorId 
-        {retval.element = new FormalParameter(new SimpleNameSignature(name.element.name()), myToArray(tref.element, name.element));
+        {retval.element = new FormalParameter(name.element.name(), myToArray(tref.element, name.element));
          setLocation(retval.element, mods.start, name.stop);
         }
     ;
@@ -1375,7 +1371,7 @@ catchParameter returns [FormalParameter element]
 formalParameter returns [FormalParameter element]
 @after{assert(retval.element != null);}
     :   mods=variableModifiers tref=type name=variableDeclaratorId 
-        {retval.element = new FormalParameter(new SimpleNameSignature(name.element.name()), myToArray(tref.element, name.element));
+        {retval.element = new FormalParameter(name.element.name(), myToArray(tref.element, name.element));
          setLocation(retval.element, mods.start, name.stop);
         }
     ;

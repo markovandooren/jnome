@@ -35,7 +35,7 @@ public class JavaNormalMethod extends NormalMethod {
 		
 		@Override
 		public boolean containsBasedOnRest(Method first, Method second) throws LookupException {
-			return subSignature(first, second) || subSignature(second, first);
+			return first.name().equals(second.name()) && subSignature(first, second) || subSignature(second, first);
 		}
 
 		protected boolean subSignature(Method first, Method second) throws LookupException {
@@ -55,10 +55,6 @@ public class JavaNormalMethod extends NormalMethod {
 			return result;
 		}
 
-		@Override
-		public boolean containsBasedOnName(Signature first, Signature second) throws LookupException {
-			return first.name().equals(second.name());
-		}
 	};
 
 }

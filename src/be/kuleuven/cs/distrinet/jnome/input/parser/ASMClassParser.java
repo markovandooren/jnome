@@ -211,7 +211,7 @@ public class ASMClassParser {
 		public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
 			if(! isSynthetic(access)) {
 				String n = Util.getLastPart(toDots(name));
-				Type type = factory(_language).createRegularType(new SimpleNameSignature(n));
+				Type type = factory(_language).createRegularType(n);
 				// OK, so ASM only creates a signature when there are generic parameters.
 				// otherwise you only get superName and interfaces (you'll get them as well with generics though).
 				// What a bad design. You're forcing me to write crap code.
@@ -293,7 +293,7 @@ public class ASMClassParser {
 					FormalParameter param = m.lastFormalParameter();
 //					MultiFormalParameter multi = new MultiFormalParameter(param.signature(), ((ArrayTypeReference) param.getTypeReference()).elementTypeReference());
 
-					MultiFormalParameter multi = MultiFormalParameter.createUnsafe(param.signature(), (JavaTypeReference)param.getTypeReference());
+					MultiFormalParameter multi = MultiFormalParameter.createUnsafe(param.name(), (JavaTypeReference)param.getTypeReference());
 					
 					SingleAssociation<Element, Element> parentLink = param.parentLink();
 					parentLink.getOtherRelation().replace(parentLink, multi.parentLink());

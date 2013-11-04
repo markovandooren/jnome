@@ -48,10 +48,6 @@ import com.google.common.collect.ImmutableList.Builder;
  */
 public class EnumType extends RegularJavaType {
 
-	public EnumType(SimpleNameSignature sig) {
-		super(sig);
-	}
-
 	public EnumType(String name) {
 		super(name);
 	}
@@ -94,7 +90,7 @@ public class EnumType extends RegularJavaType {
 		JavaTypeReference tref = java.createTypeReference(name());
 		Method result = createMethod(tref, "valueOf");
 		TypeReference type = java.createTypeReference("java.lang.String");
-		result.header().addFormalParameter(new FormalParameter(new SimpleNameSignature("argument"), type));
+		result.header().addFormalParameter(new FormalParameter("argument", type));
 		return result;
 	}
 	

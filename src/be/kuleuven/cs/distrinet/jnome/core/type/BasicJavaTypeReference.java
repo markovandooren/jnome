@@ -31,10 +31,6 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 	public BasicJavaTypeReference(CrossReferenceTarget target, String name) {
   	super(target,name);
   }
-  public BasicJavaTypeReference(CrossReferenceTarget target, SimpleNameSignature signature) {
-  	super(target,signature);
-  }
-  
   /**
    * THIS ONLY WORKS WHEN THE NAMED TARGET CONSISTS ENTIRELY OF NAMEDTARGETS.
    * @param target
@@ -120,6 +116,10 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 	  if(result != null) {
 	   	return result;
 	  }
+		synchronized(this) {
+			if(result != null) {
+				return result;
+			}
 
     result = super.getElement(selector);
      
@@ -137,8 +137,9 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
     	}
       return result;
     } else {
-      throw new LookupException("Result of type reference lookup is null: "+signature(),this);
+      throw new LookupException("Result of type reference lookup is null: "+name(),this);
     }
+		}
   }
 
   private Type convertGenerics(Type type) throws LookupException {
@@ -171,7 +172,7 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
   }
   
   public BasicJavaTypeReference cloneSelf() {
-  	return new BasicJavaTypeReference( null ,(SimpleNameSignature)null);
+  	return new BasicJavaTypeReference( null ,name());
   }
 
 	@SuppressWarnings("unchecked")
@@ -180,9 +181,9 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 	  CrossReferenceTarget target = getTarget();
 	  if(target instanceof CrossReference) {
 	  	CrossReference<? extends TargetDeclaration> erasure = language(Java.class).erasure((CrossReference)target);
-	  	result = new BasicJavaTypeReference(erasure, (SimpleNameSignature)signature().clone());
+	  	result = new BasicJavaTypeReference(erasure, name());
 	  } else if (target == null) {
-	  	result = new BasicJavaTypeReference(null, (SimpleNameSignature)signature().clone());
+	  	result = new BasicJavaTypeReference(null, name());
 	  }
 	  return result;
 	}

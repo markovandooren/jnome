@@ -38,12 +38,12 @@ public class JavaFactory extends ObjectOrientedFactory implements OOFactory {
 		
 	}
 	
-	public RegularType createRegularType(SimpleNameSignature signature) {
-		return new RegularJavaType(signature);
+	public RegularType createRegularType(String name) {
+		return new RegularJavaType(name);
 	}
 	
-	public RegularType createEnumType(SimpleNameSignature signature) {
-		return new EnumType(signature);
+	public RegularType createEnumType(String name) {
+		return new EnumType(name);
 	}
 	
 	@Override

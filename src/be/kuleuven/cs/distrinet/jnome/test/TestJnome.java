@@ -17,6 +17,8 @@ public class TestJnome extends JavaTest {
 	protected File projectFile() {
 		return new File(TEST_DATA,"testjnome.xml");
 	}
+	
+	//org.jnome.mm.java.LanguageElementFactory
 
 //	public void setLogLevels() {
 //		super.setLogLevels();

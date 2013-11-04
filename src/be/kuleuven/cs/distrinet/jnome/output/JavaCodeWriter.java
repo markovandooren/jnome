@@ -373,7 +373,7 @@ public class JavaCodeWriter extends Syntax {
     if(result.length() > 0) {
       result = result + ".";
     }
-    result = result + typeReference.signature();
+    result = result + typeReference.name();
     return result;
   }
 
@@ -386,7 +386,7 @@ public class JavaCodeWriter extends Syntax {
     if(result.length() > 0) {
       result = result + ".";
     }
-    result = result + typeReference.signature();
+    result = result + typeReference.name();
     return result;
   }
 
@@ -424,7 +424,7 @@ public class JavaCodeWriter extends Syntax {
     if(result.length() > 0) {
       result = result + ".";
     }
-    result = result + typeReference.signature();
+    result = result + typeReference.name();
     	List<ActualTypeArgument> typeArguments = typeReference.typeArguments();
     	if(! typeArguments.isEmpty()) {
     		result = result +"<";
@@ -889,7 +889,7 @@ public class JavaCodeWriter extends Syntax {
     }.applyTo(var.modifiers());
     result.append(toCode(var.getTypeReference()));
     result.append(" ");
-    result.append(var.getName());
+    result.append(var.name());
 //      if(var.getInitialization() != null) {
 //      result.append(" = ");
 //      result.append(toCode(var.getInitialization()));
@@ -1124,7 +1124,7 @@ public class JavaCodeWriter extends Syntax {
     	else {
     		first = false;
     	}
-    	result.append(element.signature().name());
+    	result.append(element.name());
     	Expression initCode = element.initialization();
     	if (initCode != null) {
     		result.append(" = ");

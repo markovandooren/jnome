@@ -17,13 +17,9 @@ public class JavaNameExpression extends NameExpression {
 		super(identifier);
 	}
 	
-	protected JavaNameExpression() {
-		
-	}
-	
 	@Override
 	public NameExpression cloneSelf() {
-		return new JavaNameExpression();
+		return new JavaNameExpression(name());
 	}
 
 	@Override

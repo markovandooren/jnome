@@ -13,13 +13,14 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.SubtypeRelation;
 
 public abstract class AbstractAnonymousInnerClass extends AnonymousType {
 	
-	public AbstractAnonymousInnerClass() {
-	}
-
 	public AbstractAnonymousInnerClass(String name) {
 		super(name);
 	}
 
+	public AbstractAnonymousInnerClass() {
+		this("");
+	}
+	
 	@Override
 	public List<InheritanceRelation> inheritanceRelations() {
 		List<InheritanceRelation> result = new ArrayList<InheritanceRelation>();
@@ -42,11 +43,6 @@ public abstract class AbstractAnonymousInnerClass extends AnonymousType {
   	}
   }
 
-	@Override
-	public void setName(String name) {
-		throw new ChameleonProgrammerException();
-	}
-	
 	@Override
 	public void setSignature(Signature signature) {
 		throw new ChameleonProgrammerException();

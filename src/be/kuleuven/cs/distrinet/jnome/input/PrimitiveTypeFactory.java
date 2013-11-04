@@ -275,10 +275,6 @@ public class PrimitiveTypeFactory {
 	}
 
 	protected static class PrimitiveType extends RegularJavaType {
-		public PrimitiveType(SimpleNameSignature sig) {
-			super(sig);
-		}
-
 		public PrimitiveType(String name) {
 			super(name);
 		}
@@ -455,7 +451,7 @@ public class PrimitiveTypeFactory {
 		op.addModifier(pub);
 
 		TypeReference tr2 = ((Java)language()).createTypeReference(argType);
-		FormalParameter fp = new FormalParameter(new SimpleNameSignature("arg"), tr2);
+		FormalParameter fp = new FormalParameter("arg", tr2);
 		sig.addFormalParameter(fp);
 		op.addModifier(new Native());
 		type.add(op);

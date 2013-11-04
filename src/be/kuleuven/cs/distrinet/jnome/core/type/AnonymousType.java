@@ -2,7 +2,6 @@ package be.kuleuven.cs.distrinet.jnome.core.type;
 
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationSelector;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
@@ -24,18 +23,10 @@ import be.kuleuven.cs.distrinet.rejuse.property.PropertySet;
 
 public abstract class AnonymousType extends RegularType implements JavaType {
 
-	public AnonymousType(SimpleNameSignature sig) {
-		super(sig);
-	}
-	
 	public AnonymousType(String name) {
 		super(name);
 	}
 	
-	public AnonymousType() {
-		
-	}
-
 	public List<Member> localMembers() throws LookupException {
 		List<Member> result = super.localMembers();
 		List<NormalMethod> superMembers = implicitConstructors();
@@ -74,7 +65,7 @@ public abstract class AnonymousType extends RegularType implements JavaType {
 	}
 
 	private NormalMethod defaultDefaultConstructor(TypeReference tref, Type writtenType) {
-		NormalMethod cons = language().plugin(ObjectOrientedFactory.class).createNormalMethod(new SimpleNameMethodHeader(writtenType.signature().name(), clone(tref)));
+		NormalMethod cons = language().plugin(ObjectOrientedFactory.class).createNormalMethod(new SimpleNameMethodHeader(writtenType.name(), clone(tref)));
 		cons.addModifier(new Constructor());
 		cons.addModifier(new Public());
 		cons.setUniParent(this);

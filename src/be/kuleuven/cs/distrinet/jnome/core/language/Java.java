@@ -643,11 +643,6 @@ public class Java extends ObjectOrientedLanguage {
 			return new BasicJavaTypeReference(target, name);
 		}
 
-		@Override
-		public BasicJavaTypeReference createTypeReference(CrossReference<? extends TargetDeclaration> target, SimpleNameSignature signature) {
-			return new BasicJavaTypeReference(target, signature);
-		}
-
 		public BasicJavaTypeReference createTypeReference(NamedTarget target) {
 			return new BasicJavaTypeReference(target);
 		}
@@ -714,7 +709,7 @@ public class Java extends ObjectOrientedLanguage {
 				result = new ArrayTypeReference(reference);
 				result.setUniParent(oldParent);
 			}	else if (type instanceof DerivedType){
-				BasicJavaTypeReference tref = new BasicJavaTypeReference(type.signature().name());
+				BasicJavaTypeReference tref = new BasicJavaTypeReference(type.name());
 				result = new NonLocalJavaTypeReference(tref,type.parent());
 				result.setUniParent(type.parent());
 				// next setup the generic parameters.
@@ -725,11 +720,11 @@ public class Java extends ObjectOrientedLanguage {
 				}
 			} else if (type instanceof FormalParameterType) {
 				//result = new NonLocalJavaTypeReference(new BasicJavaTypeReference(type.signature().name()),type.parent());
-				result = new BasicJavaTypeReference(type.signature().name());
+				result = new BasicJavaTypeReference(type.name());
 				result.setUniParent(((FormalParameterType)type).parameter().parent());
 			} else if (type instanceof InstantiatedParameterType) {
 				//result = new NonLocalJavaTypeReference(new BasicJavaTypeReference(type.signature().name()),type.parent());
-				result = new BasicJavaTypeReference(type.signature().name());
+				result = new BasicJavaTypeReference(type.name());
 				result.setUniParent(((InstantiatedParameterType)type).parameter().parent());
 			} else if (type instanceof AnonymousInnerClass) {
 //				throw new Error();
@@ -745,7 +740,7 @@ public class Java extends ObjectOrientedLanguage {
 //					throw new ChameleonProgrammerException("requesting reference of RegularType with type parameters");
 					for(TypeParameter tpar: type.parameters(TypeParameter.class)) {
 						Element lookupParent = tpar;
-						JavaTypeReference nameref = createTypeReference(tpar.signature().name());
+						JavaTypeReference nameref = createTypeReference(tpar.name());
 						TypeReference tref = new NonLocalJavaTypeReference(nameref, lookupParent);
 						((BasicJavaTypeReference)result).addArgument(createBasicTypeArgument(tref));
 					}

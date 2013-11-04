@@ -12,20 +12,20 @@ public class MultiFormalParameter extends FormalParameter {
 	 * @param sig
 	 * @param T
 	 */
-	public MultiFormalParameter(SimpleNameSignature sig, JavaTypeReference T) {
-		super(sig,T.toArray(1));
+	public MultiFormalParameter(String name, JavaTypeReference T) {
+		super(name,T.toArray(1));
 	}
 	
-	private MultiFormalParameter(SimpleNameSignature sig, JavaTypeReference T, boolean dummy) {
-		super(sig,T);
+	private MultiFormalParameter(String name, JavaTypeReference T, boolean dummy) {
+		super(name,T);
 	}
 
-	public static MultiFormalParameter createUnsafe(SimpleNameSignature sig, JavaTypeReference T) {
-		return new MultiFormalParameter(sig, T, false);
+	public static MultiFormalParameter createUnsafe(String name, JavaTypeReference T) {
+		return new MultiFormalParameter(name, T, false);
 	}
 	
 	@Override
 	protected MultiFormalParameter cloneSelf() {
-		return new MultiFormalParameter(null,null,false);
+		return new MultiFormalParameter(name(),null,false);
 	}
 }

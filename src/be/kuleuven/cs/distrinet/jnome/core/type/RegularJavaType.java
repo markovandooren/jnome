@@ -43,18 +43,13 @@ import com.google.common.collect.ImmutableList.Builder;
 
 public class RegularJavaType extends RegularType implements JavaType {
 
-	public RegularJavaType(SimpleNameSignature sig) {
-		super(sig);
+	public RegularJavaType(String name) {
+		super(name);
 		setDefaultDefaultConstructor(false);
 	}
 
-	public RegularJavaType(String name) {
-		this(new SimpleNameSignature(name));
-	}
-	
 	protected RegularType cloneSelf() {
-		RegularJavaType regularJavaType = new RegularJavaType(clone(signature()));
-		regularJavaType.setSignature(null);
+		RegularJavaType regularJavaType = new RegularJavaType(name());
 		regularJavaType.parameterBlock(TypeParameter.class).disconnect();
 		return regularJavaType;
 	}
@@ -81,7 +76,7 @@ public class RegularJavaType extends RegularType implements JavaType {
 		//       language for the factory. Management of the constructor should be done lazily. When
 		//       the type is actually used, we can assume that a language is attached. Otherwise, we
 		//       throw an exception.
-		JavaNormalMethod cons = new JavaNormalMethod(new SimpleNameMethodHeader(signature().name(), new BasicJavaTypeReference(signature().name())));
+		JavaNormalMethod cons = new JavaNormalMethod(new SimpleNameMethodHeader(name(), new BasicJavaTypeReference(name())));
 		cons.addModifier(new Constructor());
 		Block body = new Block();
 		cons.setImplementation(new RegularImplementation(body));
@@ -262,7 +257,7 @@ public class RegularJavaType extends RegularType implements JavaType {
 					int size = outerTypes.size();
 					ExpressionFactory expressionFactory = language.plugin(ExpressionFactory.class);
 					for(int i = size - 2; i>=0;i--) {
-						SimpleReference<RawType> simpleRef = expressionFactory.createSimpleReference(outerTypes.get(i).signature().name(), RawType.class);
+						SimpleReference<RawType> simpleRef = expressionFactory.createSimpleReference(outerTypes.get(i).name(), RawType.class);
 						simpleRef.setUniParent(current);
 						try {
 							current = simpleRef.getElement();

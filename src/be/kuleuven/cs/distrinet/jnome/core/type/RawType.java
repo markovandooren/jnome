@@ -56,7 +56,7 @@ public class RawType extends ClassWithBody implements JavaType {
 	 */
 	public RawType(Type original) {
 		// first copy everything
-		super((SimpleNameSignature) original.signature().clone());
+		super(original.name());
 		copyContents(original, true);
 //		copyImplicitInheritanceRelations(original);
 		copyImplicitMembers(original);
@@ -103,7 +103,7 @@ public class RawType extends ClassWithBody implements JavaType {
 //	}
 
 	private RawType(Type original, boolean useless) {
-		super((SimpleNameSignature) original.signature().clone());
+		super(original.name());
 		copyContents(original, true);
 		copyImplicitMembers(original);
 		_baseType = original;
@@ -185,7 +185,7 @@ public class RawType extends ClassWithBody implements JavaType {
 			JavaTypeReference upperBoundReference = (JavaTypeReference) param.upperBoundReference();
 			JavaTypeReference erased = upperBoundReference.erasedReference();
 			BasicTypeArgument argument = language.createBasicTypeArgument(erased);
-			ErasedTypeParameter newParameter = new ErasedTypeParameter(clone(typeParameter.signature()),argument);
+			ErasedTypeParameter newParameter = new ErasedTypeParameter(typeParameter.name(),argument);
 			argument.setUniParent(newParameter);
 			SingleAssociation parentLink = typeParameter.parentLink();
 			parentLink.getOtherRelation().replace(parentLink, newParameter.parentLink());

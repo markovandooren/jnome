@@ -176,7 +176,7 @@ public class ConstructorInvocation extends RegularMethodInvocation implements De
 
   @Override
 	public DeclarationSelector<NormalMethod> createSelector() throws LookupException {
-		return new ConstructorSelector(this, getTypeReference().getElement().signature().name());
+		return new ConstructorSelector(this, getTypeReference().getElement().name());
 	}
 
 	public List<? extends Declaration> locallyDeclaredDeclarations() throws LookupException {

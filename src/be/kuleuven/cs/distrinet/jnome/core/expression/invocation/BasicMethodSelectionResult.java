@@ -88,7 +88,7 @@ public class BasicMethodSelectionResult implements MethodSelectionResult {
 				reference.setUniParent(null);
 				BasicTypeArgument argument = language.createBasicTypeArgument(reference);
 				argument.setUniParent(parent);
-				TypeParameter newPar = new InstantiatedTypeParameter(clonedPar.signature(), argument);
+				TypeParameter newPar = new InstantiatedTypeParameter(clonedPar.name(), argument);
 				SingleAssociation parentLink = clonedPar.parentLink();
 				parentLink.getOtherRelation().replace(parentLink, newPar.parentLink());
 			}

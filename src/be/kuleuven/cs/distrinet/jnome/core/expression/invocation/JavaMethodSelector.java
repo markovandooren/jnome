@@ -28,6 +28,10 @@ public class JavaMethodSelector<M extends Method> extends AbstractJavaMethodSele
 			_javaMethodInvocation = javaMethodInvocation;
 		}
 
+		@Override
+		public boolean isGreedy() {
+		  return _javaMethodInvocation.nbActualParameters() == 0;
+		}
 
 
 		protected M selection(Declaration declarator) throws LookupException {

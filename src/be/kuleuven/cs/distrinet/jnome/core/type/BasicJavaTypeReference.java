@@ -91,6 +91,9 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
   }
   
   private Multi<ActualTypeArgument> _typeArguments = new Multi<ActualTypeArgument>(this);
+  {
+  	_typeArguments.enableCache();
+  }
   
   public JavaTypeReference toArray(int arrayDimension) {
   	JavaTypeReference result;

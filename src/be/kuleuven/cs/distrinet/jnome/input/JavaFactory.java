@@ -27,7 +27,7 @@ import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaInfixOperat
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaMethodInvocation;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaPostfixOperatorInvocation;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaPrefixOperatorInvocation;
-import be.kuleuven.cs.distrinet.jnome.core.method.JavaNormalMethod;
+import be.kuleuven.cs.distrinet.jnome.core.method.JavaMethod;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.JavaConstructor;
 import be.kuleuven.cs.distrinet.jnome.core.namespacedeclaration.JavaNamespaceDeclaration;
 import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
@@ -54,7 +54,7 @@ public class JavaFactory extends ObjectOrientedFactory implements OOFactory {
 	
 	@Override
 	public NormalMethod createNormalMethod(MethodHeader header) {
-		return new JavaNormalMethod(header);
+		return new JavaMethod(header);
 	}
 	
 	@Override

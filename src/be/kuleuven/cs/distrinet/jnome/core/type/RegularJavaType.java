@@ -2,9 +2,10 @@ package be.kuleuven.cs.distrinet.jnome.core.type;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.core.modifier.Modifier;
@@ -18,6 +19,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.RegularImplementation;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.SimpleNameMethodHeader;
 import be.kuleuven.cs.distrinet.chameleon.oo.statement.Block;
+import be.kuleuven.cs.distrinet.chameleon.oo.type.DerivedType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeElement;
@@ -30,9 +32,10 @@ import be.kuleuven.cs.distrinet.chameleon.support.modifier.Constructor;
 import be.kuleuven.cs.distrinet.chameleon.support.modifier.Native;
 import be.kuleuven.cs.distrinet.chameleon.support.modifier.Public;
 import be.kuleuven.cs.distrinet.chameleon.support.statement.StatementExpression;
+import be.kuleuven.cs.distrinet.chameleon.util.StackOverflowTracer;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.SuperConstructorDelegation;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.jnome.core.method.JavaNormalMethod;
+import be.kuleuven.cs.distrinet.jnome.core.method.JavaMethod;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.JavaConstructor;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
@@ -47,6 +50,53 @@ public class RegularJavaType extends RegularType implements JavaType {
 		super(name);
 		setDefaultDefaultConstructor(false);
 	}
+	
+//	private StackOverflowTracer _tracer = new StackOverflowTracer(3);
+	
+	public DerivedType createDerivedType(List<ActualTypeArgument> typeArguments) throws LookupException {
+//		if(typeArguments.size() == 1) {
+//			if(_genericCache == null) {
+//				synchronized(this) {
+//					if(_genericCache == null) {
+//						_genericCache = new HashMap<>();
+//					}
+//				}
+//			}
+//			_tracer.push();
+//			Type key = typeArguments.get(0).type();
+//			_tracer.pop();
+//			DerivedType result = _genericCache.get(key);
+//			if(result == null) {
+//				synchronized(this) {
+//					if(result == null) {
+//						result = new JavaDerivedType(this,typeArguments);
+//						_genericCache.put(key, result);
+//					}
+//				}
+//			} else {
+////				System.out.println(++COUNT+" generic cache hit for "+name()+"<"+key.name()+">");
+//			}
+//			return result;
+//		}
+
+//		int size = typeArguments.size();
+//		Integer current = COUNTMAP.get(size);
+//		if(current == null) {
+//			current = new Integer(0);
+//		}
+//		Integer value = new Integer(current.intValue() + 1);
+//		System.out.println("Size: "+size+" count: "+value);
+//		COUNTMAP.put(size,value);
+		return new JavaDerivedType(this,typeArguments);
+	}
+	
+	
+	
+//	private static int COUNT;
+//	private static Map<Integer,Integer> COUNTMAP = new HashMap<>(); 
+	
+	
+//	private Map<Type,DerivedType> _genericCache;
 
 	protected RegularType cloneSelf() {
 		RegularJavaType regularJavaType = new RegularJavaType(name());
@@ -64,19 +114,19 @@ public class RegularJavaType extends RegularType implements JavaType {
 	 * Set the default default constructor.
 	 */
 	protected void setDefaultDefaultConstructor(boolean rebuildCache) {
-		JavaNormalMethod cons = createDefaultConstructorWithoutAccessModifier(rebuildCache);
+		JavaMethod cons = createDefaultConstructorWithoutAccessModifier(rebuildCache);
 		cons.addModifier(new Public());
 	}
 
 	/**
 	 * Create a default default constructor without an access modifier.
 	 */
-	protected JavaNormalMethod createDefaultConstructorWithoutAccessModifier(boolean rebuildCache) {
+	protected JavaMethod createDefaultConstructorWithoutAccessModifier(boolean rebuildCache) {
 		// FIXME Because this code is ran when a regular Java type is constructed, we cannot ask the
 		//       language for the factory. Management of the constructor should be done lazily. When
 		//       the type is actually used, we can assume that a language is attached. Otherwise, we
 		//       throw an exception.
-		JavaNormalMethod cons = new JavaNormalMethod(new SimpleNameMethodHeader(name(), new BasicJavaTypeReference(name())));
+		JavaMethod cons = new JavaMethod(new SimpleNameMethodHeader(name(), new BasicJavaTypeReference(name())));
 		cons.addModifier(new Constructor());
 		Block body = new Block();
 		cons.setImplementation(new RegularImplementation(body));
@@ -90,7 +140,7 @@ public class RegularJavaType extends RegularType implements JavaType {
 		setDefaultDefaultConstructor(null);
 	}
 	
-	private void setDefaultDefaultConstructor(JavaNormalMethod method) {
+	private void setDefaultDefaultConstructor(JavaMethod method) {
 		_defaultDefaultConstructor = method;
 		_implicitMemberCache = null;
 	}

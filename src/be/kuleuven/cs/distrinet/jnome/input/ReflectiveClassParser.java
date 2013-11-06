@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.jnome.core.method.JavaNormalMethod;
+import be.kuleuven.cs.distrinet.jnome.core.method.JavaMethod;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.StrictFP;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.Synchronized;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.Transient;
@@ -206,7 +206,7 @@ public class ReflectiveClassParser implements BytecodeClassParser {
 
   			// Create the method
   			SimpleNameMethodHeader header = new SimpleNameMethodHeader(methodName, returnType);
-  			Method method = new JavaNormalMethod(header);
+  			Method method = new JavaMethod(header);
 
   			// Process the modifiers
   			method.addModifiers(ReflectiveClassParser.this.getModifiers(getModifiers(t)));

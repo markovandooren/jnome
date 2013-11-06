@@ -1,6 +1,5 @@
 package be.kuleuven.cs.distrinet.jnome.core.method;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.Signature;
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
 import be.kuleuven.cs.distrinet.chameleon.oo.member.DeclarationWithParametersSignature;
 import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
@@ -13,14 +12,14 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 
-public class JavaNormalMethod extends NormalMethod {
+public class JavaMethod extends NormalMethod {
 		
-	public JavaNormalMethod(MethodHeader header) {
+	public JavaMethod(MethodHeader header) {
 		super(header);
 	}
 	
-	protected JavaNormalMethod cloneSelf() {
-    return new JavaNormalMethod(null);
+	protected JavaMethod cloneSelf() {
+    return new JavaMethod(null);
   }
 
 	public MemberRelationSelector<Method> overridesSelector() {

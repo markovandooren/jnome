@@ -13,7 +13,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
 import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.jnome.core.method.JavaNormalMethod;
+import be.kuleuven.cs.distrinet.jnome.core.method.JavaMethod;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 
 public class ConstructorSelector extends AbstractConstructorSelector {
@@ -118,8 +118,8 @@ public class ConstructorSelector extends AbstractConstructorSelector {
 		return result;
 	}
 
-	private JavaNormalMethod createDiamondConstructorDummy(Declaration decl) {
-		JavaNormalMethod method = (JavaNormalMethod) decl.clone();
+	private JavaMethod createDiamondConstructorDummy(Declaration decl) {
+		JavaMethod method = (JavaMethod) decl.clone();
 		ConstructorInvocation invocation = invocation();
 		BasicJavaTypeReference returnTypeReference = (BasicJavaTypeReference) method.returnTypeReference();
 		method.setUniParent(decl.parent());

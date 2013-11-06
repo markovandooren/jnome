@@ -21,7 +21,7 @@ import be.kuleuven.cs.distrinet.chameleon.support.modifier.Private;
 import be.kuleuven.cs.distrinet.chameleon.support.modifier.Public;
 import be.kuleuven.cs.distrinet.chameleon.support.modifier.Static;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.jnome.core.method.JavaNormalMethod;
+import be.kuleuven.cs.distrinet.jnome.core.method.JavaMethod;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
@@ -99,7 +99,7 @@ public class EnumType extends RegularJavaType {
 	 */
 	@Override
 	protected void setDefaultDefaultConstructor(boolean rebuildCache) {
-		JavaNormalMethod cons = createDefaultConstructorWithoutAccessModifier(rebuildCache);
+		JavaMethod cons = createDefaultConstructorWithoutAccessModifier(rebuildCache);
 		cons.addModifier(new Private());
 	}
 

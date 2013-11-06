@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import be.kuleuven.cs.distrinet.chameleon.core.Config;
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
 import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 import be.kuleuven.cs.distrinet.chameleon.support.test.ExpressionTest;
 import be.kuleuven.cs.distrinet.chameleon.test.CompositeTest;

@@ -691,7 +691,7 @@ public class JavaCodeWriter extends Syntax {
   
   public String toCodeFormalTypeParameter(FormalTypeParameter param)  {
   	StringBuffer result = new StringBuffer();
-  	result.append(param.signature().name());
+  	result.append(param.name());
   	List<TypeConstraint> constraints = param.constraints();
   	if(! constraints.isEmpty()) {
     	result.append(" ");
@@ -766,7 +766,7 @@ public class JavaCodeWriter extends Syntax {
 	        result.append(" ");
 	      }
 	    
-	    result.append(((SimpleNameDeclarationWithParametersSignature)method.signature()).name());
+	    result.append(method.name());
 //	    result.append(method.name());
 	    result.append("(");
 	    Iterator iter = method.formalParameters().iterator();

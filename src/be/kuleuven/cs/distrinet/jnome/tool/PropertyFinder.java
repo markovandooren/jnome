@@ -43,11 +43,11 @@ public class PropertyFinder extends CommandLineTool {
 		  	Java lang = type.language(Java.class);
 		  	count++;
 		  	for(Method method: type.directlyDeclaredElements(Method.class)) {
-		  		String name = method.signature().name();
+		  		String name = method.name();
 		  		if(name.startsWith(first)) {
 		  			String X = name.substring(3);
 		  			for(Method getter: type.directlyDeclaredElements(Method.class)) {
-		  				String otherName = getter.signature().name();
+		  				String otherName = getter.name();
 		  				if(otherName.equals(second+X)) {
 		  					if(! type.isTrue(lang.INTERFACE)) {
 			  					List<AssignmentExpression> exprs = method.descendants(AssignmentExpression.class);
@@ -100,11 +100,11 @@ public class PropertyFinder extends CommandLineTool {
 		  	Java lang = type.language(Java.class);
 		  		count++;
 		  		for(Method method: type.directlyDeclaredElements(Method.class)) {
-		  			String name = method.signature().name();
+		  			String name = method.name();
 		  			if(name.startsWith(first)) {
 		  				String X = name.substring(3);
 		  				for(Method getter: type.directlyDeclaredElements(Method.class)) {
-		  					String otherName = getter.signature().name();
+		  					String otherName = getter.name();
 		  					if(otherName.equals(second+X)) {
 //				  		  System.out.println(method.nearestAncestor(Type.class).getFullyQualifiedName()+" : "+X);
 		  				  	if(! type.isTrue(lang.INTERFACE)) {
@@ -135,12 +135,12 @@ public class PropertyFinder extends CommandLineTool {
 					if(name.startsWith(first)) {
 						String X = name.substring(3);
 						for(Method getter: type.directlyDeclaredElements(Method.class)) {
-							String otherName = getter.signature().name();
+							String otherName = getter.name();
 							if(otherName.equals(second+X)) {
 			  				boolean foundThird = false;
 
 								for(Method three: type.directlyDeclaredElements(Method.class)) {
-									String thirdName = three.signature().name();
+									String thirdName = three.name();
 									if(thirdName.equals(third+X+"s")) {
 			  						foundThird = true;
 	//				  		  System.out.println(method.nearestAncestor(Type.class).getFullyQualifiedName()+" : "+X);

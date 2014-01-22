@@ -23,7 +23,7 @@ import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalParameterType;
 import be.kuleuven.cs.distrinet.chameleon.oo.variable.Variable;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.LabelProvider;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.PredicateSelector;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.checkbox.CheckboxSelector;
+import be.kuleuven.cs.distrinet.chameleon.ui.widget.checkbox.CheckboxPredicateSelector;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.list.ComboBoxSelector;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.list.ListContentProvider;
 import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.CheckStateProvider;
@@ -173,9 +173,16 @@ public class JavaDependencyOptions extends DependencyOptions {
 			return predicate(_crossReferencePredicate);
 		}
 		
+		protected void addHistoryFilterSelector(HistoryFilterSelector selector) {
+			add(selector);
+			_historyFilters.add(selector);
+		}
+		
+		protected List<HistoryFilterSelector> _historyFilters = new ArrayList<>();
+
+		
 		protected List<PredicateSelector<?>> _crossReferencePredicate = new ArrayList<>();
 	}	
-	
 	
 	private Function mapper() {
 		return new Function<Element,Element,Nothing> (){
@@ -203,7 +210,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 	}
 
 	private PredicateSelector<? super Dependency<? super Element, ? super CrossReference, ? super Declaration>> noSuperTypes() {
-		return new CheckboxSelector<Dependency<?,?,?>>(
+		return new CheckboxPredicateSelector<Dependency<?,?,?>>(
 				
 				new UniversalPredicate<Dependency, Nothing>(Dependency.class) {
 
@@ -223,7 +230,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 	}
 	
 	private PredicateSelector<? super Dependency<? super Element, ? super CrossReference, ? super Declaration>> noDescendants() {
-		return new CheckboxSelector<Dependency<?,?,?>>(
+		return new CheckboxPredicateSelector<Dependency<?,?,?>>(
 				
 				new UniversalPredicate<Dependency, Nothing>(Dependency.class) {
 
@@ -235,7 +242,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 	}
 	
 	private PredicateSelector<? super Dependency<? super Element, ? super CrossReference, ? super Declaration>> noAncestors() {
-		return new CheckboxSelector<Dependency<?,?,?>>(
+		return new CheckboxPredicateSelector<Dependency<?,?,?>>(
 				
 				new UniversalPredicate<Dependency, Nothing>(Dependency.class) {
 
@@ -281,7 +288,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 	}
 
 	private PredicateSelector<Element> noAnonymousClasses() {
-		return new CheckboxSelector<Element>(new UniversalPredicate<Element, Nothing>(Element.class) {
+		return new CheckboxPredicateSelector<Element>(new UniversalPredicate<Element, Nothing>(Element.class) {
 
 			@Override
 			public boolean uncheckedEval(Element t) {
@@ -290,7 +297,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 		}, "Ignore anonymous types", true);
 	}
 	private PredicateSelector<Element> noExceptions() {
-		return new CheckboxSelector<Element>(new UniversalPredicate<Element, Nothing>(Element.class) {
+		return new CheckboxPredicateSelector<Element>(new UniversalPredicate<Element, Nothing>(Element.class) {
 
 			@Override
 			public boolean uncheckedEval(Element t) {

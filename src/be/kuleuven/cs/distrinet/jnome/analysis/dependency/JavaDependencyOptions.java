@@ -9,6 +9,7 @@ import be.kuleuven.cs.distrinet.chameleon.analysis.PredicateOptionGroup;
 import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.Dependency;
 import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.DependencyAnalysis;
 import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.DependencyAnalysis.HistoryFilter;
+import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.DependencyAnalysis.NOOP;
 import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.DependencyOptions;
 import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.DependencyResult;
 import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
@@ -101,6 +102,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 		UniversalPredicate crossReferencePredicate = _dependencies.crossReferencePredicate();
 		UniversalPredicate targetPredicate = _target.predicate();
 		UniversalPredicate dependencyPredicate = _dependencies.predicate();
+		HistoryFilter<Element, Declaration> historyFilter = _dependencies.historyFilter();
 		TristateTreePruner<Object,Element> generator = new LoaderSelectionPredicateGenerator(new NamespaceSelectionPredicateGenerator(null));
 		TreePredicate<? super Element, Nothing> source = generator.create(_source._locationSelector.root(), _source._locationSelector.checked(), _source._locationSelector.grayed());
 		TreePredicate<? super Element, Nothing> targetLocation = generator.create(_target._locationSelector.root(), _target._locationSelector.checked(), _target._locationSelector.grayed());
@@ -112,7 +114,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 				mapper(), 
 				targetPredicate.and(targetLocation), 
 				dependencyPredicate,
-				new RedundantInheritedDependencyFilter());
+				historyFilter);
 		TreeStructure<Element> logicalStructure = _root.logical();
 		PrunedTreeStructure<Element> sourceStructure = new PrunedTreeStructure(logicalStructure, source);
 		TopDown<Element, Nothing> topDown = new TopDown<>(dependencyAnalysis);
@@ -162,6 +164,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 			addPredicateSelector(noAncestors());
 //			addCrossReferenceSelector(new CheckboxSelector<>(new NoSupertypeReferences(), "Ignore Subtype Relations",true));
 			addPredicateSelector(noSuperTypes());
+			addHistoryFilterSelector(new CheckboxHistoryFilterSelector("Prune redundant dependencies on super classes", true, new RedundantInheritedDependencyFilter()));
 		}
 		
 		protected void addCrossReferenceSelector(PredicateSelector<?> selector) {
@@ -176,6 +179,14 @@ public class JavaDependencyOptions extends DependencyOptions {
 		protected void addHistoryFilterSelector(HistoryFilterSelector selector) {
 			add(selector);
 			_historyFilters.add(selector);
+		}
+		
+		protected HistoryFilter<Element, Declaration> historyFilter() {
+			HistoryFilter result = new NOOP();
+			for(HistoryFilterSelector selector: _historyFilters) {
+				result = result.and(selector.filter());
+			}
+			return result;
 		}
 		
 		protected List<HistoryFilterSelector> _historyFilters = new ArrayList<>();
@@ -332,15 +343,6 @@ public class JavaDependencyOptions extends DependencyOptions {
 		return tristateTreeSelector;
 	}
 	
-//	private Selector<Element> namespaceSelector() {
-//		NamespaceContentProvider contentProvider = new NamespaceContentProvider();
-//		
-//		TreeViewNodeLabelProvider labelProvider = new TreeViewNodeLabelProvider();
-////		TristatePredicateGenerator<Object,Element> generator = new NamespaceSelectionPredicateGenerator(null);
-//		TristateTreeSelector<Object, Element> tristateTreeSelector = new TristateTreeSelector<Object,Element>(contentProvider, labelProvider);
-//		return tristateTreeSelector;
-//	}
-
 	public static class RedundantInheritedDependencyFilter extends HistoryFilter<Element,Declaration>{
 		
 		private static class Container {

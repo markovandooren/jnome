@@ -3,7 +3,8 @@
   <dependencies>
     <dependency org="distrinet.cs.kuleuven.be" name="chameleon" rev="latest.integration"/>
     <!-- Used to parse Java class files -->
-    <dependency org="org.ow2.asm" name="asm" rev="4.0"/>
+    <!-- <dependency org="org.ow2.asm" name="asm" rev="4.0"/> -->
+    <dependency org="org.ow2.asm" name="asm" rev="5.0.3"/>
     <dependency org="com.lexicalscope.jewelcli" name="jewelcli" rev="0.8.5"/>
     <dependency org="net.sf.jgrapht" name="jgrapht" rev="latest.integration"/>
   </dependencies>

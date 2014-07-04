@@ -1,6 +1,7 @@
 package be.kuleuven.cs.distrinet.jnome.core.method;
 
 import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
+import be.kuleuven.cs.distrinet.chameleon.oo.member.DeclarationComparator;
 import be.kuleuven.cs.distrinet.chameleon.oo.member.DeclarationWithParametersSignature;
 import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
 import be.kuleuven.cs.distrinet.chameleon.oo.member.MemberRelationSelector;
@@ -34,26 +35,38 @@ public class JavaMethod extends NormalMethod {
 		
 		@Override
 		public boolean containsBasedOnRest(Method first, Method second) throws LookupException {
+			return first.name().equals(second.name()) && (isOverridable(second) && subSignature(first, second)) || (isOverridable(first) && subSignature(second, first));
+		}
+	};
+	
+
+	public MemberRelationSelector<? extends Member> aliasSelector() {
+		return new MemberRelationSelector<Method>(Method.class,this,_aliasRelation);
+	};
+
+	private static DeclarationComparator<Method> _aliasRelation = new DeclarationComparator<Method>(Method.class) {
+		
+		@Override
+		public boolean containsBasedOnRest(Method first, Method second) throws LookupException {
 			return first.name().equals(second.name()) && subSignature(first, second) || subSignature(second, first);
 		}
 
-		protected boolean subSignature(Method first, Method second) throws LookupException {
-			boolean result = isOverridable(second); 
-			if(result) {
-				result =  first.sameKind(second) && ((Type)first.nearestAncestor(Type.class)).subTypeOf((Type)second.nearestAncestor(Type.class));
-				if(result) {
-					DeclarationWithParametersSignature signature1 = first.signature();
-					DeclarationWithParametersSignature signature2 = second.signature();
-					result = signature1.sameParameterBoundsAs(signature2);
-					if(!result) {
-						DeclarationWithParametersSignature erasure2 = signature2.language(Java.class).erasure((SimpleNameDeclarationWithParametersSignature) signature2);
-						result = signature1.sameParameterBoundsAs(erasure2);
-					}
-				}
-			}
-			return result;
-		}
 
 	};
+
+	private static boolean subSignature(Method first, Method second) throws LookupException {
+		boolean result = first.sameKind(second) && ((Type)first.nearestAncestor(Type.class)).subTypeOf((Type)second.nearestAncestor(Type.class));
+		if(result) {
+			DeclarationWithParametersSignature signature1 = first.signature();
+			DeclarationWithParametersSignature signature2 = second.signature();
+			result = signature1.sameParameterBoundsAs(signature2);
+			if(!result) {
+				DeclarationWithParametersSignature erasure2 = signature2.language(Java.class).erasure((SimpleNameDeclarationWithParametersSignature) signature2);
+				result = signature1.sameParameterBoundsAs(erasure2);
+			}
+		}
+		return result;
+	}
+	
 
 }

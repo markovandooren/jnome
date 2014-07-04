@@ -6,8 +6,12 @@ import be.kuleuven.cs.distrinet.chameleon.ui.widget.CheckboxSelector;
 
 public class CheckboxHistoryFilterSelector extends CheckboxSelector implements HistoryFilterSelector {
 
-	public CheckboxHistoryFilterSelector(String message, boolean initialValue) {
+	public CheckboxHistoryFilterSelector(String message, boolean initialValue, HistoryFilter<?, ?> filter) {
 		super(message, initialValue);
+		if(filter == null) {
+			throw new IllegalArgumentException();
+		}
+		_filter = filter;
 	}
 
 	private HistoryFilter<?, ?> _filter;

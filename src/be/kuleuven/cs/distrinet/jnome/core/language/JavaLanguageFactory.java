@@ -16,7 +16,7 @@ import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectConfigurator;
 import be.kuleuven.cs.distrinet.jnome.input.JavaExpressionFactory;
 import be.kuleuven.cs.distrinet.jnome.input.JavaFactory;
 import be.kuleuven.cs.distrinet.jnome.input.JavaModelFactory;
-import be.kuleuven.cs.distrinet.jnome.output.JavaCodeWriter;
+import be.kuleuven.cs.distrinet.jnome.output.JavaSyntax;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaProjectConfigurator;
 
 public class JavaLanguageFactory implements LanguageFactory {
@@ -24,7 +24,7 @@ public class JavaLanguageFactory implements LanguageFactory {
 	public Java create() throws ConfigException {
 		Java result = new Java();
 		result.setPlugin(ModelFactory.class, new JavaModelFactory());
-		result.setPlugin(Syntax.class, new JavaCodeWriter());
+		result.setPlugin(Syntax.class, new JavaSyntax());
 		// FIXME: Stupid and inefficient
 		result.setPlugin(Factory.class, new JavaFactory());
 		result.setPlugin(ObjectOrientedFactory.class, new JavaFactory());

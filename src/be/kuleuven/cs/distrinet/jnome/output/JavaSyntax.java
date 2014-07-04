@@ -1,12 +1,13 @@
 package be.kuleuven.cs.distrinet.jnome.output;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import be.kuleuven.cs.distrinet.chameleon.core.document.Document;
 import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
@@ -18,14 +19,12 @@ import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.Import;
 import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.NamespaceDeclaration;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReferenceTarget;
 import be.kuleuven.cs.distrinet.chameleon.core.reference.ElementReference;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.SimpleReference;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.Literal;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.MethodInvocation;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.NamedTarget;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.NameExpression;
+import be.kuleuven.cs.distrinet.chameleon.oo.expression.NamedTarget;
 import be.kuleuven.cs.distrinet.chameleon.oo.expression.VariableReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.member.SimpleNameDeclarationWithParametersSignature;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.Implementation;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
 import be.kuleuven.cs.distrinet.chameleon.oo.method.NativeImplementation;
@@ -109,6 +108,7 @@ import be.kuleuven.cs.distrinet.chameleon.support.tool.Arguments;
 import be.kuleuven.cs.distrinet.chameleon.support.type.EmptyTypeElement;
 import be.kuleuven.cs.distrinet.chameleon.support.type.StaticInitializer;
 import be.kuleuven.cs.distrinet.chameleon.support.variable.LocalVariableDeclarator;
+import be.kuleuven.cs.distrinet.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayAccessExpression;
 import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayCreationExpression;
 import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayInitializer;
@@ -134,7 +134,7 @@ import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 /**
  * @author Marko van Dooren
  */
-public class JavaCodeWriter extends Syntax {
+public class JavaSyntax extends Syntax {
   
   public String toCode(Element element)  {
     String result = null;
@@ -424,7 +424,8 @@ public class JavaCodeWriter extends Syntax {
     if(result.length() > 0) {
       result = result + ".";
     }
-    result = result + typeReference.name();
+    String name = typeReference.name();
+		result = result + name;
     	List<ActualTypeArgument> typeArguments = typeReference.typeArguments();
     	if(! typeArguments.isEmpty()) {
     		result = result +"<";
@@ -449,11 +450,11 @@ public class JavaCodeWriter extends Syntax {
   }
   
  
-  public JavaCodeWriter(){
+  public JavaSyntax(){
 	  _tabSize = 4;
   }
   
-  public JavaCodeWriter(int tabSize) {
+  public JavaSyntax(int tabSize) {
     _tabSize = tabSize;
   }
   
@@ -1532,7 +1533,7 @@ public class JavaCodeWriter extends Syntax {
 
 
   public static void writeCode(Arguments arguments) throws IOException {
-    JavaCodeWriter writer = new JavaCodeWriter(2);
+    JavaSyntax writer = new JavaSyntax(2);
     List<Type> types = arguments.getTypes();
     new SafePredicate<Type>() {
     	public boolean eval(Type t) {
@@ -1561,7 +1562,7 @@ public class JavaCodeWriter extends Syntax {
   }
 
 	@Override
-	public JavaCodeWriter clone() {
-		return new JavaCodeWriter(_tabSize);
+	public JavaSyntax clone() {
+		return new JavaSyntax(_tabSize);
 	}
 }

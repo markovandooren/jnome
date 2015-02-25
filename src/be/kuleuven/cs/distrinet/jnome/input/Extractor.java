@@ -27,8 +27,9 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import org.aikodi.chameleon.util.Util;
+
 import be.kuleuven.cs.distrinet.rejuse.java.collections.Visitor;
-import be.kuleuven.cs.distrinet.chameleon.util.Util;
 
 /**
  * @author Marko van Dooren

@@ -3,14 +3,15 @@ package be.kuleuven.cs.distrinet.jnome.core.namespacedeclaration;
 import java.util.Collections;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.NamespaceReference;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.RootNamespaceReference;
-import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.Import;
-import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.NamespaceDeclaration;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.SimpleReference;
-import be.kuleuven.cs.distrinet.chameleon.util.association.Single;
+import org.aikodi.chameleon.core.namespace.Namespace;
+import org.aikodi.chameleon.core.namespace.NamespaceReference;
+import org.aikodi.chameleon.core.namespace.RootNamespaceReference;
+import org.aikodi.chameleon.core.namespacedeclaration.Import;
+import org.aikodi.chameleon.core.namespacedeclaration.NamespaceDeclaration;
+import org.aikodi.chameleon.core.reference.CrossReference;
+import org.aikodi.chameleon.core.reference.NameReference;
+import org.aikodi.chameleon.util.association.Single;
+
 import be.kuleuven.cs.distrinet.jnome.core.imports.JavaDemandImport;
 
 public class JavaNamespaceDeclaration extends NamespaceDeclaration {
@@ -24,7 +25,7 @@ public class JavaNamespaceDeclaration extends NamespaceDeclaration {
   }
 
   public JavaNamespaceDeclaration(String fqn) {
-  	this(new SimpleReference<Namespace>(fqn, Namespace.class));
+  	this(new NameReference<Namespace>(fqn, Namespace.class));
   }
   
 	public JavaNamespaceDeclaration(CrossReference<Namespace> ref) {
@@ -35,7 +36,7 @@ public class JavaNamespaceDeclaration extends NamespaceDeclaration {
 	}
 
 	public void verify(CrossReference<Namespace> ref) {
-		if(ref instanceof SimpleReference && ((SimpleReference)ref).name().equals("")) {
+		if(ref instanceof NameReference && ((NameReference)ref).name().equals("")) {
 			throw new IllegalArgumentException("If you want a namespace declaration for the root namespace, use a RootNamespaceReference, or use the default constructor.");
 		}
 	}

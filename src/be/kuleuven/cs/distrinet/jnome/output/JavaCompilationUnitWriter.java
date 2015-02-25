@@ -1,10 +1,10 @@
 package be.kuleuven.cs.distrinet.jnome.output;
 
-import be.kuleuven.cs.distrinet.chameleon.core.document.Document;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.exception.ModelException;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.plugin.build.CompilationUnitWriter;
+import org.aikodi.chameleon.core.document.Document;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.exception.ModelException;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.plugin.build.CompilationUnitWriter;
 
 public class JavaCompilationUnitWriter extends CompilationUnitWriter {
 

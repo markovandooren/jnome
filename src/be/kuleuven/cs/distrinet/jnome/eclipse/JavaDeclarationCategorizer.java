@@ -1,14 +1,14 @@
 package be.kuleuven.cs.distrinet.jnome.eclipse;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
-import be.kuleuven.cs.distrinet.chameleon.eclipse.presentation.treeview.DeclarationCategorizer;
-import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.RegularMethod;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.MemberVariable;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.Operator;
+import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.eclipse.presentation.treeview.DeclarationCategorizer;
+import org.aikodi.chameleon.oo.member.Member;
+import org.aikodi.chameleon.oo.method.Method;
+import org.aikodi.chameleon.oo.method.RegularMethod;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.variable.MemberVariable;
+import org.aikodi.chameleon.support.member.simplename.operator.Operator;
 
 public class JavaDeclarationCategorizer implements DeclarationCategorizer {
 

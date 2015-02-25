@@ -3,17 +3,18 @@ package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 import java.util.ArrayList;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.DeclarationContainer;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.SelectionResult;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
-import be.kuleuven.cs.distrinet.chameleon.util.Util;
+import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.declaration.DeclarationContainer;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.lookup.SelectionResult;
+import org.aikodi.chameleon.oo.method.Method;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
+import org.aikodi.chameleon.util.Util;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.jnome.core.method.JavaNormalMethod;
+import be.kuleuven.cs.distrinet.jnome.core.method.JavaMethod;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 
 public class ConstructorSelector extends AbstractConstructorSelector {
@@ -118,8 +119,8 @@ public class ConstructorSelector extends AbstractConstructorSelector {
 		return result;
 	}
 
-	private JavaNormalMethod createDiamondConstructorDummy(Declaration decl) {
-		JavaNormalMethod method = (JavaNormalMethod) decl.clone();
+	private JavaMethod createDiamondConstructorDummy(Declaration decl) {
+		JavaMethod method = (JavaMethod) decl.clone();
 		ConstructorInvocation invocation = invocation();
 		BasicJavaTypeReference returnTypeReference = (BasicJavaTypeReference) method.returnTypeReference();
 		method.setUniParent(decl.parent());

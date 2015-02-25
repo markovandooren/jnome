@@ -4,24 +4,25 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
-import be.kuleuven.cs.distrinet.chameleon.core.property.ChameleonProperty;
-import be.kuleuven.cs.distrinet.chameleon.core.tag.TagImpl;
-import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
-import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
-import be.kuleuven.cs.distrinet.chameleon.oo.plugin.ObjectOrientedFactory;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.InheritanceRelation;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.SubtypeRelation;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.FormalParameter;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Final;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Private;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Public;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Static;
+import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
+import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.core.property.ChameleonProperty;
+import org.aikodi.chameleon.core.tag.TagImpl;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.member.Member;
+import org.aikodi.chameleon.oo.method.Method;
+import org.aikodi.chameleon.oo.plugin.ObjectOrientedFactory;
+import org.aikodi.chameleon.oo.type.TypeReference;
+import org.aikodi.chameleon.oo.type.inheritance.InheritanceRelation;
+import org.aikodi.chameleon.oo.type.inheritance.SubtypeRelation;
+import org.aikodi.chameleon.oo.variable.FormalParameter;
+import org.aikodi.chameleon.support.modifier.Final;
+import org.aikodi.chameleon.support.modifier.Private;
+import org.aikodi.chameleon.support.modifier.Public;
+import org.aikodi.chameleon.support.modifier.Static;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.jnome.core.method.JavaNormalMethod;
+import be.kuleuven.cs.distrinet.jnome.core.method.JavaMethod;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
@@ -47,10 +48,6 @@ import com.google.common.collect.ImmutableList.Builder;
  * @author Marko van Dooren
  */
 public class EnumType extends RegularJavaType {
-
-	public EnumType(SimpleNameSignature sig) {
-		super(sig);
-	}
 
 	public EnumType(String name) {
 		super(name);
@@ -94,7 +91,7 @@ public class EnumType extends RegularJavaType {
 		JavaTypeReference tref = java.createTypeReference(name());
 		Method result = createMethod(tref, "valueOf");
 		TypeReference type = java.createTypeReference("java.lang.String");
-		result.header().addFormalParameter(new FormalParameter(new SimpleNameSignature("argument"), type));
+		result.header().addFormalParameter(new FormalParameter("argument", type));
 		return result;
 	}
 	
@@ -103,7 +100,7 @@ public class EnumType extends RegularJavaType {
 	 */
 	@Override
 	protected void setDefaultDefaultConstructor(boolean rebuildCache) {
-		JavaNormalMethod cons = createDefaultConstructorWithoutAccessModifier(rebuildCache);
+		JavaMethod cons = createDefaultConstructorWithoutAccessModifier(rebuildCache);
 		cons.addModifier(new Private());
 	}
 

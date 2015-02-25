@@ -1,10 +1,11 @@
 package be.kuleuven.cs.distrinet.jnome.core.language;
 
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
-import be.kuleuven.cs.distrinet.chameleon.core.property.ChameleonProperty;
-import be.kuleuven.cs.distrinet.chameleon.core.property.PropertyRule;
-import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
+import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.core.property.ChameleonProperty;
+import org.aikodi.chameleon.core.property.PropertyRule;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.type.Type;
+
 import be.kuleuven.cs.distrinet.rejuse.property.PropertySet;
 
 public class TypeReferenceByDefault extends PropertyRule<Type> {

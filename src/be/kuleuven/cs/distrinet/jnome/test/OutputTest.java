@@ -12,14 +12,13 @@ import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
 import be.kuleuven.cs.distrinet.jnome.input.EagerJavaFileInputSourceFactory;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 
+import org.aikodi.chameleon.core.namespace.RegularNamespaceFactory;
+import org.aikodi.chameleon.core.namespace.RootNamespace;
+import org.aikodi.chameleon.input.ParseException;
+import org.aikodi.chameleon.support.tool.Arguments;
+import org.aikodi.chameleon.workspace.Project;
 import org.junit.Before;
 import org.junit.Test;
-
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.RegularNamespaceFactory;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.RootNamespace;
-import be.kuleuven.cs.distrinet.chameleon.input.ParseException;
-import be.kuleuven.cs.distrinet.chameleon.support.tool.Arguments;
-import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
 
 /**
  * This is an abstract class to facilitate testing of both the output and the input. These tests output a model,

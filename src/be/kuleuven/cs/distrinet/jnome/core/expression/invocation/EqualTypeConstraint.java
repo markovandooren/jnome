@@ -4,15 +4,16 @@
 package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
 
+import org.aikodi.chameleon.core.declaration.TargetDeclaration;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.oo.expression.NamedTarget;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.generics.FormalParameterType;
+import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
+import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.TargetDeclaration;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.NamedTarget;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalParameterType;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalTypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 
 public class EqualTypeConstraint extends SecondPhaseConstraint {
 

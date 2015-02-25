@@ -1,12 +1,13 @@
 package be.kuleuven.cs.distrinet.jnome.core.statement;
 
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupContext;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.SwitchCase;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.SwitchLabel;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.SwitchStatement;
+import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.core.lookup.LookupContext;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.support.statement.SwitchCase;
+import org.aikodi.chameleon.support.statement.SwitchLabel;
+import org.aikodi.chameleon.support.statement.SwitchStatement;
+
 import be.kuleuven.cs.distrinet.jnome.core.enumeration.EnumType;
 
 public class JavaSwitchCase extends SwitchCase {

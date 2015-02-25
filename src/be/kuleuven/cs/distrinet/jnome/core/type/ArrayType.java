@@ -1,21 +1,22 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.RootNamespace;
-import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
-import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.SimpleNameMethodHeader;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.SubtypeRelation;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.RegularMemberVariable;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Final;
-import be.kuleuven.cs.distrinet.chameleon.workspace.View;
+import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
+import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.namespace.RootNamespace;
+import org.aikodi.chameleon.exception.ChameleonProgrammerException;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.method.Method;
+import org.aikodi.chameleon.oo.method.SimpleNameMethodHeader;
+import org.aikodi.chameleon.oo.type.RegularType;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.inheritance.SubtypeRelation;
+import org.aikodi.chameleon.oo.variable.RegularMemberVariable;
+import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
+import org.aikodi.chameleon.support.modifier.Final;
+import org.aikodi.chameleon.workspace.View;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 
@@ -24,7 +25,7 @@ import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
  */
 public class ArrayType extends RegularType {
   ArrayType(Type type) {
-    super(new SimpleNameSignature(getArrayName(type.name())));
+    super(getArrayName(type.name()));
     //FIXME: copy the modifiers?
     //addModifier(type.getAccessModifier());
     _type = type;
@@ -33,7 +34,7 @@ public class ArrayType extends RegularType {
 		JavaTypeReference jtr = language.createTypeReference("int");
 		
 		// JLS7 10.7 Array Members
-    RegularMemberVariable var = new RegularMemberVariable(new SimpleNameSignature("length"), jtr);
+    RegularMemberVariable var = new RegularMemberVariable("length", jtr);
     var.addModifier(new Final());
     add(var);
     

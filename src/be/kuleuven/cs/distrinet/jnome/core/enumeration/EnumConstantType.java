@@ -1,10 +1,11 @@
 package be.kuleuven.cs.distrinet.jnome.core.enumeration;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
+import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
+import org.aikodi.chameleon.oo.type.RegularType;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.TypeReference;
+import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.AbstractAnonymousInnerClass;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;

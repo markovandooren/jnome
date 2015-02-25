@@ -9,42 +9,43 @@ import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import org.aikodi.chameleon.core.namespace.LazyNamespace;
+import org.aikodi.chameleon.core.namespace.RootNamespace;
+import org.aikodi.chameleon.util.Util;
+import org.aikodi.chameleon.workspace.AbstractZipScanner;
+import org.aikodi.chameleon.workspace.DocumentScanner;
+import org.aikodi.chameleon.workspace.DocumentScannerContainer;
+import org.aikodi.chameleon.workspace.DocumentScannerImpl;
+import org.aikodi.chameleon.workspace.InputException;
+import org.aikodi.chameleon.workspace.ProjectException;
+import org.aikodi.chameleon.workspace.View;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.input.ReflectiveClassParser;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.LazyNamespace;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.RootNamespace;
-import be.kuleuven.cs.distrinet.chameleon.util.Util;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoader;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoaderContainer;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoaderImpl;
-import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.View;
 
 /**
- * A class for loading Java classes from jar files via reflection.
+ * A class for scanning Java classes from jar files via reflection.
  *
- * This class is not part of the {@link ZipLoader} hierarchy because there are too few similarities
+ * This class is not part of the {@link AbstractZipScanner} hierarchy because there are too few similarities
  * and it does not fit in well. Currently, the regular {@link JarLoader} class is recommended, so
- * I'm not going to put in the effort to adapt this class to fit in the {@link ZipLoader} hierarchy.
- * Therefore, it is marked as deprecated, but it does function propertly.
+ * I'm not going to put in the effort to adapt this class to fit in the {@link AbstractZipScanner} hierarchy.
+ * Therefore, it is marked as deprecated, but it does function properly.
  * 
  * @author Marko van Dooren
- * @deprecated
  */
-public class ReflectiveJarLoader extends DocumentLoaderImpl {
+public class ReflectiveJarScanner extends DocumentScannerImpl {
 
-	public ReflectiveJarLoader(String path) throws ProjectException, InputException {
+	public ReflectiveJarScanner(String path) throws ProjectException, InputException {
 		this(path,false);
 	}
-	public ReflectiveJarLoader(String path, boolean isBaseLoader) throws ProjectException, InputException {
+	public ReflectiveJarScanner(String path, boolean isBaseLoader) throws ProjectException, InputException {
 		_path = path;
 	}
 	
 	private String _path;
 	
 	@Override
-	public void notifyContainerConnected(DocumentLoaderContainer container) throws ProjectException {
+	public void notifyContainerConnected(DocumentScannerContainer container) throws ProjectException {
 		View view = view();
 		if(view != null) {
 			_loader = createLoader(view.project().absoluteFile(_path));
@@ -90,7 +91,7 @@ public class ReflectiveJarLoader extends DocumentLoaderImpl {
   			if(validClassName) {
   				String packageName = Util.getAllButLastPart(className);
 						LazyNamespace ns = (LazyNamespace) root.getOrCreateNamespace(packageName);
-						new LazyReflectiveInputSource(_loader, parser, className, ns,this);
+						new LazyReflectiveDocumentLoader(_loader, parser, className, ns,this);
   			}
   		}
   	}
@@ -111,11 +112,11 @@ public class ReflectiveJarLoader extends DocumentLoaderImpl {
 	}
 	
 	@Override
-	public boolean loadsSameAs(DocumentLoader loader) {
+	public boolean scansSameAs(DocumentScanner loader) {
 		if(loader == this) {
 			return true;
-		} else if(loader instanceof ReflectiveJarLoader) {
-			return ((ReflectiveJarLoader) loader)._jarFile.equals(_jarFile);
+		} else if(loader instanceof ReflectiveJarScanner) {
+			return ((ReflectiveJarScanner) loader)._jarFile.equals(_jarFile);
 		}
 		return false;
 	}

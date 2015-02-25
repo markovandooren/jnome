@@ -2,13 +2,12 @@ package be.kuleuven.cs.distrinet.jnome.core.type;
 
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.AbstractInstantiatedTypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgument;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.util.Pair;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.generics.AbstractInstantiatedTypeParameter;
+import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+import org.aikodi.chameleon.util.Pair;
 
 /**
  * The type argument of an erased type argument must always be in the same context as the parameter itself.
@@ -22,8 +21,8 @@ import be.kuleuven.cs.distrinet.chameleon.util.Pair;
  */
 public class ErasedTypeParameter extends AbstractInstantiatedTypeParameter {
 
-	public ErasedTypeParameter(SimpleNameSignature signature, ActualTypeArgument argument) {
-		super(signature, argument);
+	public ErasedTypeParameter(String name, ActualTypeArgument argument) {
+		super(name, argument);
 	}
 
 	@Override
@@ -31,7 +30,7 @@ public class ErasedTypeParameter extends AbstractInstantiatedTypeParameter {
 		// We must clone the argument manually because it is not referenced through
 		// a bidirectional association.
 		ActualTypeArgument argument = clone(argument());
-		ErasedTypeParameter result = new ErasedTypeParameter(null,argument);
+		ErasedTypeParameter result = new ErasedTypeParameter(name(),argument);
 		argument.setUniParent(result);
 		return result;
 	}

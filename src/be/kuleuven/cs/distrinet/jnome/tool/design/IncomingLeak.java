@@ -1,19 +1,20 @@
 package be.kuleuven.cs.distrinet.jnome.tool.design;
 
-import be.kuleuven.cs.distrinet.chameleon.analysis.Analysis;
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;
-import be.kuleuven.cs.distrinet.chameleon.core.validation.AtomicProblem;
-import be.kuleuven.cs.distrinet.chameleon.core.validation.Valid;
-import be.kuleuven.cs.distrinet.chameleon.core.validation.Verification;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.FormalParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.MemberVariable;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.Variable;
-import be.kuleuven.cs.distrinet.chameleon.support.expression.AssignmentExpression;
+import org.aikodi.chameleon.analysis.Analysis;
+import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.reference.CrossReference;
+import org.aikodi.chameleon.core.validation.AtomicProblem;
+import org.aikodi.chameleon.core.validation.Valid;
+import org.aikodi.chameleon.core.validation.Verification;
+import org.aikodi.chameleon.core.variable.Variable;
+import org.aikodi.chameleon.oo.expression.Expression;
+import org.aikodi.chameleon.oo.method.Method;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.variable.FormalParameter;
+import org.aikodi.chameleon.oo.variable.MemberVariable;
+import org.aikodi.chameleon.support.expression.AssignmentExpression;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.tool.IsCollectionType;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;

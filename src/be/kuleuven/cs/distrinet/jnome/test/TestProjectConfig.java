@@ -4,18 +4,18 @@ import static junit.framework.Assert.assertTrue;
 
 import java.io.File;
 
+import org.aikodi.chameleon.workspace.BaseLibraryConfiguration;
+import org.aikodi.chameleon.workspace.BootstrapProjectConfig;
+import org.aikodi.chameleon.workspace.DirectoryScanner;
+import org.aikodi.chameleon.workspace.DocumentScanner;
+import org.aikodi.chameleon.workspace.LanguageRepository;
+import org.aikodi.chameleon.workspace.Project;
+import org.aikodi.chameleon.workspace.ProjectConfigurator;
+import org.aikodi.chameleon.workspace.View;
+import org.aikodi.chameleon.workspace.Workspace;
 import org.junit.Before;
 import org.junit.Test;
 
-import be.kuleuven.cs.distrinet.chameleon.workspace.BaseLibraryConfiguration;
-import be.kuleuven.cs.distrinet.chameleon.workspace.BootstrapProjectConfig;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DirectoryLoader;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoader;
-import be.kuleuven.cs.distrinet.chameleon.workspace.LanguageRepository;
-import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectConfigurator;
-import be.kuleuven.cs.distrinet.chameleon.workspace.View;
-import be.kuleuven.cs.distrinet.chameleon.workspace.Workspace;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
 import be.kuleuven.cs.distrinet.jnome.input.BaseJavaProjectLoader;
@@ -65,8 +65,8 @@ public class TestProjectConfig {
 		// 1. Create a basic project configuration.
 		Project project = createProject("testBasicWrite.xml", "test");
 		View view = getAndTestView(project);
-		assertTrue(view.sourceLoaders().isEmpty());
-		assertTrue(view.binaryLoaders().size() == 1);
+		assertTrue(view.sourceScanners().isEmpty());
+		assertTrue(view.binaryScanners().size() == 1);
 	}
 
 	private View getAndTestView(Project project) {
@@ -75,7 +75,7 @@ public class TestProjectConfig {
 		assertTrue(view.language() instanceof Java);
 		assertTrue(view instanceof JavaView);
 		boolean found = false;
-		for(DocumentLoader loader: view.binaryLoaders()) {
+		for(DocumentScanner loader: view.binaryScanners()) {
 			if(loader instanceof BaseJavaProjectLoader) {
 				// There should not be more that one base java project 
 				// loader in a java project.
@@ -92,12 +92,12 @@ public class TestProjectConfig {
 		Project project = readProject(configFile("one_source_directory.xml"));
 		assertTrue(project.getName().equals("one source directory project"));
 		View view = getAndTestView(project);
-		assertTrue(view.binaryLoaders().size() == 1);
-		assertTrue(view.sourceLoaders().size() == 1);
-		DocumentLoader loader = view.sourceLoaders().get(0);
-		assertTrue(loader instanceof DirectoryLoader);
+		assertTrue(view.binaryScanners().size() == 1);
+		assertTrue(view.sourceScanners().size() == 1);
+		DocumentScanner loader = view.sourceScanners().get(0);
+		assertTrue(loader instanceof DirectoryScanner);
 		assertTrue(loader.project() == project);
-		DirectoryLoader directoryLoader = (DirectoryLoader) loader;
+		DirectoryScanner directoryLoader = (DirectoryScanner) loader;
 		assertTrue(directoryLoader.path().equals("src"));
 	}	
 	

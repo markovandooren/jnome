@@ -1,8 +1,8 @@
 package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.DeclarationContainer;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
+import org.aikodi.chameleon.core.declaration.DeclarationContainer;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
 
 class SuperConstructorDelegatorSelector extends NamelessConstructorSelector {
 
@@ -15,7 +15,7 @@ class SuperConstructorDelegatorSelector extends NamelessConstructorSelector {
 
 	@Override
 	public String selectionName(DeclarationContainer container) {
-		return container.nearestAncestor(Type.class).signature().name();
+		return container.nearestAncestor(Type.class).name();
 	}
 	
 }

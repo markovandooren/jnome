@@ -11,9 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.workspace.InputException;
+import org.aikodi.chameleon.workspace.Project;
+
 import be.kuleuven.cs.distrinet.jnome.tool.Tool;
 import be.kuleuven.cs.distrinet.jnome.tool.design.DesignAnalyzer;
 import be.kuleuven.cs.distrinet.rejuse.io.FileUtils;

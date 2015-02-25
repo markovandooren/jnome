@@ -8,67 +8,68 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.TargetDeclaration;
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationSelector;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupContextFactory;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
-import be.kuleuven.cs.distrinet.chameleon.core.property.ChameleonProperty;
-import be.kuleuven.cs.distrinet.chameleon.core.property.DynamicChameleonProperty;
-import be.kuleuven.cs.distrinet.chameleon.core.property.PropertyRule;
-import be.kuleuven.cs.distrinet.chameleon.core.property.StaticChameleonProperty;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReferenceTarget;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.ElementReference;
-import be.kuleuven.cs.distrinet.chameleon.core.relation.EquivalenceRelation;
-import be.kuleuven.cs.distrinet.chameleon.core.relation.StrictPartialOrder;
-import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.NamedTarget;
-import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
-import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
-import be.kuleuven.cs.distrinet.chameleon.oo.member.SimpleNameDeclarationWithParametersSignature;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.DerivedType;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.IntersectionType;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.IntersectionTypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Parameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.ParameterSubstitution;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeIndirection;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.UnionType;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgument;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.BasicTypeArgument;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.CapturedTypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.EqualityConstraint;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ExtendsWildcard;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ExtendsWildcardType;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalParameterType;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalTypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.InstantiatedParameterType;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.InstantiatedTypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.SuperWildcard;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.SuperWildcardType;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeConstraint;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.AbstractInheritanceRelation;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.MemberVariable;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.VariableDeclarator;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.variable.MemberVariableDeclarator;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.PrivateProperty;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.ProtectedProperty;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.PublicProperty;
-import be.kuleuven.cs.distrinet.chameleon.support.rule.member.MemberInheritableByDefault;
-import be.kuleuven.cs.distrinet.chameleon.support.rule.member.MemberInstanceByDefault;
-import be.kuleuven.cs.distrinet.chameleon.support.rule.member.MemberOverridableByDefault;
-import be.kuleuven.cs.distrinet.chameleon.support.rule.member.TypeExtensibleByDefault;
-import be.kuleuven.cs.distrinet.chameleon.util.Pair;
-import be.kuleuven.cs.distrinet.chameleon.util.Util;
+import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
+import org.aikodi.chameleon.core.declaration.TargetDeclaration;
+import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.core.lookup.DeclarationSelector;
+import org.aikodi.chameleon.core.lookup.LookupContextFactory;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.namespace.Namespace;
+import org.aikodi.chameleon.core.property.ChameleonProperty;
+import org.aikodi.chameleon.core.property.DynamicChameleonProperty;
+import org.aikodi.chameleon.core.property.PropertyRule;
+import org.aikodi.chameleon.core.property.StaticChameleonProperty;
+import org.aikodi.chameleon.core.reference.CrossReference;
+import org.aikodi.chameleon.core.reference.CrossReferenceTarget;
+import org.aikodi.chameleon.core.reference.ElementReference;
+import org.aikodi.chameleon.core.relation.EquivalenceRelation;
+import org.aikodi.chameleon.core.relation.StrictPartialOrder;
+import org.aikodi.chameleon.exception.ChameleonProgrammerException;
+import org.aikodi.chameleon.oo.expression.NamedTarget;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.member.Member;
+import org.aikodi.chameleon.oo.member.SimpleNameDeclarationWithParametersSignature;
+import org.aikodi.chameleon.oo.method.Method;
+import org.aikodi.chameleon.oo.type.DerivedType;
+import org.aikodi.chameleon.oo.type.IntersectionType;
+import org.aikodi.chameleon.oo.type.IntersectionTypeReference;
+import org.aikodi.chameleon.oo.type.Parameter;
+import org.aikodi.chameleon.oo.type.ParameterSubstitution;
+import org.aikodi.chameleon.oo.type.RegularType;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.TypeIndirection;
+import org.aikodi.chameleon.oo.type.TypeReference;
+import org.aikodi.chameleon.oo.type.UnionType;
+import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
+import org.aikodi.chameleon.oo.type.generics.BasicTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.CapturedTypeParameter;
+import org.aikodi.chameleon.oo.type.generics.EqualityConstraint;
+import org.aikodi.chameleon.oo.type.generics.ExtendsWildcard;
+import org.aikodi.chameleon.oo.type.generics.ExtendsWildcardType;
+import org.aikodi.chameleon.oo.type.generics.FormalParameterType;
+import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
+import org.aikodi.chameleon.oo.type.generics.InstantiatedParameterType;
+import org.aikodi.chameleon.oo.type.generics.InstantiatedTypeParameter;
+import org.aikodi.chameleon.oo.type.generics.SuperWildcard;
+import org.aikodi.chameleon.oo.type.generics.SuperWildcardType;
+import org.aikodi.chameleon.oo.type.generics.TypeConstraint;
+import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+import org.aikodi.chameleon.oo.type.inheritance.AbstractInheritanceRelation;
+import org.aikodi.chameleon.oo.variable.MemberVariable;
+import org.aikodi.chameleon.oo.variable.VariableDeclarator;
+import org.aikodi.chameleon.support.member.simplename.variable.MemberVariableDeclarator;
+import org.aikodi.chameleon.support.modifier.PrivateProperty;
+import org.aikodi.chameleon.support.modifier.ProtectedProperty;
+import org.aikodi.chameleon.support.modifier.PublicProperty;
+import org.aikodi.chameleon.support.rule.member.MemberInheritableByDefault;
+import org.aikodi.chameleon.support.rule.member.MemberInstanceByDefault;
+import org.aikodi.chameleon.support.rule.member.MemberOverridableByDefault;
+import org.aikodi.chameleon.support.rule.member.TypeExtensibleByDefault;
+import org.aikodi.chameleon.util.Pair;
+import org.aikodi.chameleon.util.Util;
+
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaExtendsReference;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaSuperReference;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;
@@ -205,7 +206,7 @@ public class Java extends ObjectOrientedLanguage {
   	} 
   	else {
   		try {
-  			if(original.nbTypeParameters(TypeParameter.class) > 0 ) { //&& (original.parameter(TypeParameter.class,1) instanceof FormalTypeParameter)
+  			if(original.nbTypeParameters(TypeParameter.class) > 0 && (original.parameter(TypeParameter.class,1) instanceof FormalTypeParameter)) {
   				result = ((JavaType)original).erasure();
 			} else {
   			result = original;
@@ -643,11 +644,6 @@ public class Java extends ObjectOrientedLanguage {
 			return new BasicJavaTypeReference(target, name);
 		}
 
-		@Override
-		public BasicJavaTypeReference createTypeReference(CrossReference<? extends TargetDeclaration> target, SimpleNameSignature signature) {
-			return new BasicJavaTypeReference(target, signature);
-		}
-
 		public BasicJavaTypeReference createTypeReference(NamedTarget target) {
 			return new BasicJavaTypeReference(target);
 		}
@@ -657,7 +653,8 @@ public class Java extends ObjectOrientedLanguage {
 		}
 		
 		public DerivedType createDerivedType(Type baseType, List<ActualTypeArgument> typeArguments) throws LookupException {
-			return new JavaDerivedType(baseType,typeArguments);
+			return ((RegularJavaType)baseType).createDerivedType(typeArguments);
+//			return new JavaDerivedType(baseType,typeArguments);
 		}
 		
 //		public NormalMethod createNormalMethod(MethodHeader header) {
@@ -714,7 +711,7 @@ public class Java extends ObjectOrientedLanguage {
 				result = new ArrayTypeReference(reference);
 				result.setUniParent(oldParent);
 			}	else if (type instanceof DerivedType){
-				BasicJavaTypeReference tref = new BasicJavaTypeReference(type.signature().name());
+				BasicJavaTypeReference tref = new BasicJavaTypeReference(type.name());
 				result = new NonLocalJavaTypeReference(tref,type.parent());
 				result.setUniParent(type.parent());
 				// next setup the generic parameters.
@@ -725,11 +722,11 @@ public class Java extends ObjectOrientedLanguage {
 				}
 			} else if (type instanceof FormalParameterType) {
 				//result = new NonLocalJavaTypeReference(new BasicJavaTypeReference(type.signature().name()),type.parent());
-				result = new BasicJavaTypeReference(type.signature().name());
+				result = new BasicJavaTypeReference(type.name());
 				result.setUniParent(((FormalParameterType)type).parameter().parent());
 			} else if (type instanceof InstantiatedParameterType) {
 				//result = new NonLocalJavaTypeReference(new BasicJavaTypeReference(type.signature().name()),type.parent());
-				result = new BasicJavaTypeReference(type.signature().name());
+				result = new BasicJavaTypeReference(type.name());
 				result.setUniParent(((InstantiatedParameterType)type).parameter().parent());
 			} else if (type instanceof AnonymousInnerClass) {
 //				throw new Error();
@@ -745,7 +742,7 @@ public class Java extends ObjectOrientedLanguage {
 //					throw new ChameleonProgrammerException("requesting reference of RegularType with type parameters");
 					for(TypeParameter tpar: type.parameters(TypeParameter.class)) {
 						Element lookupParent = tpar;
-						JavaTypeReference nameref = createTypeReference(tpar.signature().name());
+						JavaTypeReference nameref = createTypeReference(tpar.name());
 						TypeReference tref = new NonLocalJavaTypeReference(nameref, lookupParent);
 						((BasicJavaTypeReference)result).addArgument(createBasicTypeArgument(tref));
 					}

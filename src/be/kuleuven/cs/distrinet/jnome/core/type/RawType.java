@@ -6,29 +6,29 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationSelector;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.SelectionResult;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.SimpleReference;
-import be.kuleuven.cs.distrinet.chameleon.core.tag.TagImpl;
-import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.ExpressionFactory;
-import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
-import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.ClassWithBody;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeElement;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.BasicTypeArgument;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalTypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.InheritanceRelation;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.SubtypeRelation;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.FormalParameter;
-import be.kuleuven.cs.distrinet.chameleon.util.Pair;
+import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.core.factory.Factory;
+import org.aikodi.chameleon.core.lookup.DeclarationSelector;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.lookup.SelectionResult;
+import org.aikodi.chameleon.core.reference.NameReference;
+import org.aikodi.chameleon.core.tag.TagImpl;
+import org.aikodi.chameleon.exception.ChameleonProgrammerException;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.member.Member;
+import org.aikodi.chameleon.oo.method.Method;
+import org.aikodi.chameleon.oo.type.ClassWithBody;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.TypeElement;
+import org.aikodi.chameleon.oo.type.TypeReference;
+import org.aikodi.chameleon.oo.type.generics.BasicTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
+import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+import org.aikodi.chameleon.oo.type.inheritance.InheritanceRelation;
+import org.aikodi.chameleon.oo.type.inheritance.SubtypeRelation;
+import org.aikodi.chameleon.oo.variable.FormalParameter;
+import org.aikodi.chameleon.util.Pair;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
@@ -56,7 +56,7 @@ public class RawType extends ClassWithBody implements JavaType {
 	 */
 	public RawType(Type original) {
 		// first copy everything
-		super((SimpleNameSignature) original.signature().clone());
+		super(original.name());
 		copyContents(original, true);
 //		copyImplicitInheritanceRelations(original);
 		copyImplicitMembers(original);
@@ -103,7 +103,7 @@ public class RawType extends ClassWithBody implements JavaType {
 //	}
 
 	private RawType(Type original, boolean useless) {
-		super((SimpleNameSignature) original.signature().clone());
+		super(original.name());
 		copyContents(original, true);
 		copyImplicitMembers(original);
 		_baseType = original;
@@ -185,7 +185,7 @@ public class RawType extends ClassWithBody implements JavaType {
 			JavaTypeReference upperBoundReference = (JavaTypeReference) param.upperBoundReference();
 			JavaTypeReference erased = upperBoundReference.erasedReference();
 			BasicTypeArgument argument = language.createBasicTypeArgument(erased);
-			ErasedTypeParameter newParameter = new ErasedTypeParameter(clone(typeParameter.signature()),argument);
+			ErasedTypeParameter newParameter = new ErasedTypeParameter(typeParameter.name(),argument);
 			argument.setUniParent(newParameter);
 			SingleAssociation parentLink = typeParameter.parentLink();
 			parentLink.getOtherRelation().replace(parentLink, newParameter.parentLink());
@@ -245,9 +245,9 @@ public class RawType extends ClassWithBody implements JavaType {
 					outerTypes.add(0, this);
 
 					int size = outerTypes.size();
-					ExpressionFactory expressionFactory = language().plugin(ExpressionFactory.class);
+					Factory expressionFactory = language().plugin(Factory.class);
 					for(int i = size - 2; i>=0;i--) {
-						SimpleReference<RawType> simpleRef = expressionFactory.createSimpleReference(outerTypes.get(i).signature().name(), RawType.class);
+						NameReference<RawType> simpleRef = expressionFactory.createNameReference(outerTypes.get(i).name(), RawType.class);
 						simpleRef.setUniParent(current);
 						try {
 							current = simpleRef.getElement();

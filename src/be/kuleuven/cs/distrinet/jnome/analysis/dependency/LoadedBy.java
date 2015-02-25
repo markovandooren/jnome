@@ -1,16 +1,17 @@
 package be.kuleuven.cs.distrinet.jnome.analysis.dependency;
 
-import be.kuleuven.cs.distrinet.chameleon.core.document.Document;
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoader;
+import org.aikodi.chameleon.core.document.Document;
+import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.core.namespace.Namespace;
+import org.aikodi.chameleon.workspace.DocumentScanner;
+
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.tree.TreePredicate;
 
 public class LoadedBy extends TreePredicate<Element, Nothing> {
-	private final DocumentLoader currentLoader;
+	private final DocumentScanner currentLoader;
 
-	public LoadedBy(Class<Element> type, DocumentLoader currentLoader) {
+	public LoadedBy(Class<Element> type, DocumentScanner currentLoader) {
 		super(type);
 		this.currentLoader = currentLoader;
 	}
@@ -24,14 +25,14 @@ public class LoadedBy extends TreePredicate<Element, Nothing> {
 			Document document = t.nearestAncestor(Document.class);
 			// The signature of a namespace is not part of document.
 			if(document != null) {
-				DocumentLoader loader = document.inputSource().loader();
+				DocumentScanner loader = document.loader().scanner();
 				while(true) {
 					if(loader == currentLoader) {
 						result = true;
 					}
 					Object o = loader.container();
-					if(o instanceof DocumentLoader) {
-						loader = (DocumentLoader) o;
+					if(o instanceof DocumentScanner) {
+						loader = (DocumentScanner) o;
 					} else {
 						break;
 					}
@@ -60,14 +61,14 @@ public class LoadedBy extends TreePredicate<Element, Nothing> {
 			Document document = node.nearestAncestor(Document.class);
 			// The signature of a namespace is not part of document.
 			if(document != null) {
-				DocumentLoader loader = document.inputSource().loader();
+				DocumentScanner loader = document.loader().scanner();
 				while(true) {
 					if(loader == currentLoader) {
 						result = true;
 					}
 					Object o = loader.container();
-					if(o instanceof DocumentLoader) {
-						loader = (DocumentLoader) o;
+					if(o instanceof DocumentScanner) {
+						loader = (DocumentScanner) o;
 					} else {
 						break;
 					}

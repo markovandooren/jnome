@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import be.kuleuven.cs.distrinet.jnome.tool.dependency.DependencyAnalysisTool;
 import be.kuleuven.cs.distrinet.jnome.tool.design.DesignAnalysisTool;
 import be.kuleuven.cs.distrinet.jnome.tool.syntax.SyntaxAnalysisTool;
-import be.kuleuven.cs.distrinet.jnome.tool.dependency.DependencyAnalysisTool;
 
 public class FrontEnd {
 

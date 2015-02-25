@@ -2,12 +2,12 @@ package be.kuleuven.cs.distrinet.jnome.eclipse;
 
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
-import be.kuleuven.cs.distrinet.chameleon.eclipse.view.outline.ChameleonOutlineSelector;
-import be.kuleuven.cs.distrinet.chameleon.exception.ModelException;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.FormalParameter;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.variable.MemberVariableDeclarator;
+import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.eclipse.view.outline.ChameleonOutlineSelector;
+import org.aikodi.chameleon.exception.ModelException;
+import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+import org.aikodi.chameleon.oo.variable.FormalParameter;
+import org.aikodi.chameleon.support.member.simplename.variable.MemberVariableDeclarator;
 
 public class JavaOutlineSelector extends ChameleonOutlineSelector {
 

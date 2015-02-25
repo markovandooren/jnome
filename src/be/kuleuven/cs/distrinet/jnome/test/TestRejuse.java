@@ -2,7 +2,7 @@ package be.kuleuven.cs.distrinet.jnome.test;
 
 import java.io.File;
 
-import be.kuleuven.cs.distrinet.chameleon.test.provider.BasicNamespaceProvider;
+import org.aikodi.chameleon.test.provider.BasicNamespaceProvider;
 
 /**
  * @author Marko van Dooren

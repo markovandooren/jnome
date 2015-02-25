@@ -3,11 +3,12 @@
  */
 package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 
 public abstract class SecondPhaseConstraint extends Constraint<SecondPhaseConstraint, SecondPhaseConstraintSet> {
 	

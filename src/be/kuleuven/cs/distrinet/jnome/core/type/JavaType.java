@@ -1,6 +1,6 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.Type;
 
 public interface JavaType extends Type {
 

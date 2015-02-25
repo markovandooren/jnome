@@ -3,23 +3,24 @@ package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 import java.util.ArrayList;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
-import be.kuleuven.cs.distrinet.chameleon.core.element.ElementImpl;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationCollector;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationSelector;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReferenceTarget;
-import be.kuleuven.cs.distrinet.chameleon.core.validation.Valid;
-import be.kuleuven.cs.distrinet.chameleon.core.validation.Verification;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.FormalParameter;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.RegularMethodInvocation;
-import be.kuleuven.cs.distrinet.chameleon.util.Util;
-import be.kuleuven.cs.distrinet.chameleon.util.association.Single;
+import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.element.ElementImpl;
+import org.aikodi.chameleon.core.lookup.DeclarationCollector;
+import org.aikodi.chameleon.core.lookup.DeclarationSelector;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.reference.CrossReferenceTarget;
+import org.aikodi.chameleon.core.validation.Valid;
+import org.aikodi.chameleon.core.validation.Verification;
+import org.aikodi.chameleon.oo.method.Method;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.TypeReference;
+import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+import org.aikodi.chameleon.oo.variable.FormalParameter;
+import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
+import org.aikodi.chameleon.support.member.simplename.method.RegularMethodInvocation;
+import org.aikodi.chameleon.util.Util;
+import org.aikodi.chameleon.util.association.Single;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 
@@ -66,7 +67,11 @@ public class JavaMethodInvocation extends RegularMethodInvocation {
 	  if(result != null) {
 	   	return result;
 	  }
-	   
+		synchronized(this) {
+			if(result != null) {
+				return result;
+			}
+
 		DeclarationCollector collector = new DeclarationCollector(selector);
   	CrossReferenceTarget target = getTarget();
   	if(target == null) {
@@ -79,6 +84,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation {
   		setCache((NormalMethod) result);
   	}
   	return result;
+		}
 //		}
 //		else {
 //			//repeat lookup for debugging purposes.

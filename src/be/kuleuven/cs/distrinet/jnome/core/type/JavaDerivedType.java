@@ -6,25 +6,25 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LocalLookupContext;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.tag.TagImpl;
-import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
-import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.DerivedType;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Parameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.ParameterSubstitution;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgument;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.BasicTypeArgument;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.CapturedTypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalTypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.InstantiatedTypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeConstraint;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.InheritanceRelation;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.SubtypeRelation;
-import be.kuleuven.cs.distrinet.chameleon.util.Lists;
+import org.aikodi.chameleon.core.lookup.LocalLookupContext;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.tag.TagImpl;
+import org.aikodi.chameleon.exception.ChameleonProgrammerException;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.type.DerivedType;
+import org.aikodi.chameleon.oo.type.Parameter;
+import org.aikodi.chameleon.oo.type.ParameterSubstitution;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.CapturedTypeParameter;
+import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
+import org.aikodi.chameleon.oo.type.generics.InstantiatedTypeParameter;
+import org.aikodi.chameleon.oo.type.generics.TypeConstraint;
+import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+import org.aikodi.chameleon.oo.type.inheritance.InheritanceRelation;
+import org.aikodi.chameleon.oo.type.inheritance.SubtypeRelation;
+import org.aikodi.chameleon.util.Lists;
+
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 
@@ -103,56 +103,46 @@ public class JavaDerivedType extends DerivedType implements JavaType {
 	public Type captureConversion() throws LookupException {
 		if(_captureConversion == null) {
 			Type result = this;
+
+			List<TypeParameter> typeParameters = Lists.create();
 			if(! (parameter(TypeParameter.class,1) instanceof CapturedTypeParameter)) {
+				Type base = baseType();
+				List<TypeParameter> baseParameters = base.parameters(TypeParameter.class);
+				Iterator<TypeParameter> formals = baseParameters.iterator();
 				List<TypeParameter> actualParameters = parameters(TypeParameter.class);
-				boolean needsCapture = true;
-//				for(TypeParameter actual: actualParameters) {
-//					if(actual instanceof InstantiatedTypeParameter) {
-//						if(! (((InstantiatedTypeParameter) actual).argument() instanceof BasicTypeArgument)) {
-//							needsCapture = true;
-//							break;
-//						}
-//					}
-//				}
-				if(needsCapture) {
-					List<TypeParameter> typeParameters = Lists.create();
-					Type base = baseType();
-					List<TypeParameter> baseParameters = base.parameters(TypeParameter.class);
-					Iterator<TypeParameter> formals = baseParameters.iterator();
-					Iterator<TypeParameter> actuals = actualParameters.iterator();
-					// substitute parameters by their capture bounds.
-					// ITERATOR because we iterate over 'formals' and 'actuals' simultaneously.
-					List<TypeConstraint> toBeSubstituted = Lists.create();
-					while(actuals.hasNext()) {
-						TypeParameter formalParam = formals.next();
-						if(!(formalParam instanceof FormalTypeParameter)) {
-							throw new LookupException("Type parameter of base type is not a formal parameter.");
-						}
-						TypeParameter actualParam = actuals.next();
-						if(!(actualParam instanceof InstantiatedTypeParameter)) {
-							throw new LookupException("Type parameter of type instantiation is not an instantiated parameter: "+actualParam.getClass().getName());
-						}
-						typeParameters.add(((InstantiatedTypeParameter) actualParam).capture((FormalTypeParameter) formalParam,toBeSubstituted));
+				Iterator<TypeParameter> actuals = actualParameters.iterator();
+				// substitute parameters by their capture bounds.
+				// ITERATOR because we iterate over 'formals' and 'actuals' simultaneously.
+				List<TypeConstraint> toBeSubstituted = Lists.create();
+				while(actuals.hasNext()) {
+					TypeParameter formalParam = formals.next();
+					if(!(formalParam instanceof FormalTypeParameter)) {
+						throw new LookupException("Type parameter of base type is not a formal parameter.");
 					}
-					// Everything works as well when we pass 'this' instead of 'base'.
-					result = language(Java.class).createdCapturedType(new ParameterSubstitution(TypeParameter.class,typeParameters), base);
-					result.setUniParent(parent());
-					for(TypeParameter newParameter: typeParameters) {
-						for(TypeParameter oldParameter: baseParameters) {
-							//If we replace references to the old parameters with references to the captured type parameters, then
-							// why is the capturing done with non-locals pointing to the formal?
-							JavaTypeReference tref = new BasicJavaTypeReference(oldParameter.signature().name());
-							tref.setUniParent(newParameter);
-							if(newParameter instanceof CapturedTypeParameter) {
-								List<TypeConstraint> constraints = ((CapturedTypeParameter)newParameter).constraints();
-								for(TypeConstraint constraint : constraints) {
-									if(toBeSubstituted.contains(constraint)) {
-										NonLocalJavaTypeReference.replace(tref, oldParameter, (JavaTypeReference) constraint.typeReference());
-									}
+					TypeParameter actualParam = actuals.next();
+					if(!(actualParam instanceof InstantiatedTypeParameter)) {
+						throw new LookupException("Type parameter of type instantiation is not an instantiated parameter: "+actualParam.getClass().getName());
+					}
+					typeParameters.add(((InstantiatedTypeParameter) actualParam).capture((FormalTypeParameter) formalParam,toBeSubstituted));
+				}
+				// Everything works as well when we pass 'this' instead of 'base'.
+				result = language(Java.class).createdCapturedType(new ParameterSubstitution(TypeParameter.class,typeParameters), base);
+				result.setUniParent(parent());
+				for(TypeParameter newParameter: typeParameters) {
+					for(TypeParameter oldParameter: baseParameters) {
+						//If we replace references to the old parameters with references to the captured type parameters, then
+						// why is the capturing done with non-locals pointing to the formal?
+						JavaTypeReference tref = new BasicJavaTypeReference(oldParameter.name());
+						tref.setUniParent(newParameter);
+						if(newParameter instanceof CapturedTypeParameter) {
+							List<TypeConstraint> constraints = ((CapturedTypeParameter)newParameter).constraints();
+							for(TypeConstraint constraint : constraints) {
+								if(toBeSubstituted.contains(constraint)) {
+									NonLocalJavaTypeReference.replace(tref, oldParameter, (JavaTypeReference) constraint.typeReference());
 								}
-							} else {
-								throw new ChameleonProgrammerException();
 							}
+						} else {
+							throw new ChameleonProgrammerException();
 						}
 					}
 				}

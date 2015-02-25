@@ -2,17 +2,18 @@ package be.kuleuven.cs.distrinet.jnome.analysis.dependency;
 
 import java.util.Set;
 
-import be.kuleuven.cs.distrinet.chameleon.analysis.predicate.IsBinary;
-import be.kuleuven.cs.distrinet.chameleon.analysis.predicate.IsSource;
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.DocumentLoaderContentProvider.BinaryNode;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.DocumentLoaderContentProvider.LoaderGroupNode;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.DocumentLoaderContentProvider.ProjectNode;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.DocumentLoaderContentProvider.SourceNode;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.DocumentLoaderNode;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TreeNode;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TristateTreePruner;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoader;
+import org.aikodi.chameleon.analysis.predicate.IsBinary;
+import org.aikodi.chameleon.analysis.predicate.IsSource;
+import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.ui.widget.tree.DocumentScannerNode;
+import org.aikodi.chameleon.ui.widget.tree.TreeNode;
+import org.aikodi.chameleon.ui.widget.tree.TristateTreePruner;
+import org.aikodi.chameleon.ui.widget.tree.DocumentScannerContentProvider.BinaryNode;
+import org.aikodi.chameleon.ui.widget.tree.DocumentScannerContentProvider.ProjectNode;
+import org.aikodi.chameleon.ui.widget.tree.DocumentScannerContentProvider.ScannerGroupNode;
+import org.aikodi.chameleon.ui.widget.tree.DocumentScannerContentProvider.SourceNode;
+import org.aikodi.chameleon.workspace.DocumentScanner;
+
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
 import be.kuleuven.cs.distrinet.rejuse.tree.TreePredicate;
@@ -30,10 +31,10 @@ public class LoaderSelectionPredicateGenerator extends TristateTreePruner<Object
 			Set<TreeNode<?,Object>> grayed, 
 			TristateTreePruner<Object,Element>  first) {
 		TreePredicate<? super Element, Nothing> result = null;
-		if(node instanceof ProjectNode || node instanceof LoaderGroupNode) {
+		if(node instanceof ProjectNode || node instanceof ScannerGroupNode) {
 			result = first.childrenDisjunction(node, checked, grayed, first);
-		} else if(node instanceof DocumentLoaderNode) {
-			DocumentLoader currentLoader = ((DocumentLoaderNode)node).domainObject();
+		} else if(node instanceof DocumentScannerNode) {
+			DocumentScanner currentLoader = ((DocumentScannerNode)node).domainObject();
 			result = new LoadedBy(Element.class, currentLoader).and((TreePredicate)first.childrenDisjunction(node, checked, grayed, first));
 		} 
 		return result;
@@ -49,8 +50,8 @@ public class LoaderSelectionPredicateGenerator extends TristateTreePruner<Object
 			return new IsSource();
 		} else if(node instanceof BinaryNode) {
 			return new IsBinary();
-		} else if (node instanceof DocumentLoaderNode) {
-			DocumentLoader currentLoader = ((DocumentLoaderNode)node).domainObject();
+		} else if (node instanceof DocumentScannerNode) {
+			DocumentScanner currentLoader = ((DocumentScannerNode)node).domainObject();
 			return new LoadedBy(Element.class, currentLoader);
 		} 
 		return null;

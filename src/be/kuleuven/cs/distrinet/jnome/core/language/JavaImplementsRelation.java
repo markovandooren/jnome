@@ -3,14 +3,15 @@
  */
 package be.kuleuven.cs.distrinet.jnome.core.language;
 
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.relation.StrictPartialOrder;
-import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
-import be.kuleuven.cs.distrinet.chameleon.oo.member.DeclarationWithParametersSignature;
-import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
-import be.kuleuven.cs.distrinet.chameleon.oo.member.SimpleNameDeclarationWithParametersSignature;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.relation.StrictPartialOrder;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.member.DeclarationWithParametersSignature;
+import org.aikodi.chameleon.oo.member.Member;
+import org.aikodi.chameleon.oo.member.SimpleNameDeclarationWithParametersSignature;
+import org.aikodi.chameleon.oo.method.Method;
+import org.aikodi.chameleon.oo.type.Type;
+
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 
 public class JavaImplementsRelation extends StrictPartialOrder<Member> {

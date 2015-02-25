@@ -4,16 +4,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.Config;
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
-import be.kuleuven.cs.distrinet.chameleon.core.language.Language;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
-import be.kuleuven.cs.distrinet.chameleon.support.tool.ModelBuilder;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ConfigException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.LanguageRepository;
-import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
-import be.kuleuven.cs.distrinet.chameleon.workspace.View;
-import be.kuleuven.cs.distrinet.chameleon.workspace.Workspace;
+import org.aikodi.chameleon.core.Config;
+import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.core.language.Language;
+import org.aikodi.chameleon.core.namespace.Namespace;
+import org.aikodi.chameleon.support.tool.ModelBuilder;
+import org.aikodi.chameleon.workspace.ConfigException;
+import org.aikodi.chameleon.workspace.LanguageRepository;
+import org.aikodi.chameleon.workspace.Project;
+import org.aikodi.chameleon.workspace.View;
+import org.aikodi.chameleon.workspace.Workspace;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
 import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;

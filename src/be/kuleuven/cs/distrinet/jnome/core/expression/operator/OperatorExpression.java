@@ -1,7 +1,7 @@
 package be.kuleuven.cs.distrinet.jnome.core.expression.operator;
 
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
-import be.kuleuven.cs.distrinet.chameleon.support.expression.BinaryExpression;
+import org.aikodi.chameleon.oo.expression.Expression;
+import org.aikodi.chameleon.support.expression.BinaryExpression;
 
 public abstract class OperatorExpression extends BinaryExpression {
 

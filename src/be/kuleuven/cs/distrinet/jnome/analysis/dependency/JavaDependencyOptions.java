@@ -4,42 +4,44 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import be.kuleuven.cs.distrinet.chameleon.analysis.OptionGroup;
-import be.kuleuven.cs.distrinet.chameleon.analysis.PredicateOptionGroup;
-import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.Dependency;
-import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.DependencyAnalysis;
-import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.DependencyAnalysis.HistoryFilter;
-import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.DependencyOptions;
-import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.DependencyResult;
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.DerivedType;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalParameterType;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.Variable;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.LabelProvider;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.PredicateSelector;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.checkbox.CheckboxSelector;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.list.ComboBoxSelector;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.list.ListContentProvider;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.CheckStateProvider;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.DocumentLoaderContentProvider;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TreeViewNodeLabelProvider;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TristateTreePruner;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TristateTreeSelector;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.DocumentLoaderContentProvider.SourceNode;
-import be.kuleuven.cs.distrinet.chameleon.util.action.TopDown;
-import be.kuleuven.cs.distrinet.chameleon.workspace.InputSourceImpl;
-import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
-import be.kuleuven.cs.distrinet.chameleon.workspace.StreamInputSource;
+import org.aikodi.chameleon.analysis.OptionGroup;
+import org.aikodi.chameleon.analysis.PredicateOptionGroup;
+import org.aikodi.chameleon.analysis.dependency.Dependency;
+import org.aikodi.chameleon.analysis.dependency.DependencyAnalysis;
+import org.aikodi.chameleon.analysis.dependency.DependencyOptions;
+import org.aikodi.chameleon.analysis.dependency.DependencyResult;
+import org.aikodi.chameleon.analysis.dependency.DependencyAnalysis.HistoryFilter;
+import org.aikodi.chameleon.analysis.dependency.DependencyAnalysis.NOOP;
+import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.namespace.Namespace;
+import org.aikodi.chameleon.core.reference.CrossReference;
+import org.aikodi.chameleon.core.variable.Variable;
+import org.aikodi.chameleon.oo.method.Method;
+import org.aikodi.chameleon.oo.type.DerivedType;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.generics.FormalParameterType;
+import org.aikodi.chameleon.ui.widget.LabelProvider;
+import org.aikodi.chameleon.ui.widget.PredicateSelector;
+import org.aikodi.chameleon.ui.widget.checkbox.CheckboxPredicateSelector;
+import org.aikodi.chameleon.ui.widget.list.ComboBoxSelector;
+import org.aikodi.chameleon.ui.widget.list.ListContentProvider;
+import org.aikodi.chameleon.ui.widget.tree.CheckStateProvider;
+import org.aikodi.chameleon.ui.widget.tree.DocumentScannerContentProvider;
+import org.aikodi.chameleon.ui.widget.tree.TreeViewNodeLabelProvider;
+import org.aikodi.chameleon.ui.widget.tree.TristateTreePruner;
+import org.aikodi.chameleon.ui.widget.tree.TristateTreeSelector;
+import org.aikodi.chameleon.ui.widget.tree.DocumentScannerContentProvider.SourceNode;
+import org.aikodi.chameleon.util.action.TopDown;
+import org.aikodi.chameleon.workspace.DocumentLoaderImpl;
+import org.aikodi.chameleon.workspace.Project;
+import org.aikodi.chameleon.workspace.StreamDocumentLoader;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
-import be.kuleuven.cs.distrinet.jnome.workspace.LazyClassFileInputSource;
+import be.kuleuven.cs.distrinet.jnome.workspace.LazyClassFileDocumentLoader;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.function.Function;
 import be.kuleuven.cs.distrinet.rejuse.graph.Edge;
@@ -94,13 +96,14 @@ public class JavaDependencyOptions extends DependencyOptions {
 		return result;
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	@Override
 	public DependencyResult analyze() {
 		UniversalPredicate sourcePredicate = _source.predicate();
 		UniversalPredicate crossReferencePredicate = _dependencies.crossReferencePredicate();
 		UniversalPredicate targetPredicate = _target.predicate();
 		UniversalPredicate dependencyPredicate = _dependencies.predicate();
+		HistoryFilter<Element, Declaration> historyFilter = _dependencies.historyFilter();
 		TristateTreePruner<Object,Element> generator = new LoaderSelectionPredicateGenerator(new NamespaceSelectionPredicateGenerator(null));
 		TreePredicate<? super Element, Nothing> source = generator.create(_source._locationSelector.root(), _source._locationSelector.checked(), _source._locationSelector.grayed());
 		TreePredicate<? super Element, Nothing> targetLocation = generator.create(_target._locationSelector.root(), _target._locationSelector.checked(), _target._locationSelector.grayed());
@@ -112,7 +115,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 				mapper(), 
 				targetPredicate.and(targetLocation), 
 				dependencyPredicate,
-				new RedundantInheritedDependencyFilter());
+				historyFilter);
 		TreeStructure<Element> logicalStructure = _root.logical();
 		PrunedTreeStructure<Element> sourceStructure = new PrunedTreeStructure(logicalStructure, source);
 		TopDown<Element, Nothing> topDown = new TopDown<>(dependencyAnalysis);
@@ -162,6 +165,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 			addPredicateSelector(noAncestors());
 //			addCrossReferenceSelector(new CheckboxSelector<>(new NoSupertypeReferences(), "Ignore Subtype Relations",true));
 			addPredicateSelector(noSuperTypes());
+			addHistoryFilterSelector(new CheckboxHistoryFilterSelector("Prune redundant dependencies on super classes", true, new RedundantInheritedDependencyFilter()));
 		}
 		
 		protected void addCrossReferenceSelector(PredicateSelector<?> selector) {
@@ -173,9 +177,24 @@ public class JavaDependencyOptions extends DependencyOptions {
 			return predicate(_crossReferencePredicate);
 		}
 		
+		protected void addHistoryFilterSelector(HistoryFilterSelector selector) {
+			add(selector);
+			_historyFilters.add(selector);
+		}
+		
+		protected HistoryFilter<Element, Declaration> historyFilter() {
+			HistoryFilter result = new NOOP();
+			for(HistoryFilterSelector selector: _historyFilters) {
+				result = result.and(selector.filter());
+			}
+			return result;
+		}
+		
+		protected List<HistoryFilterSelector> _historyFilters = new ArrayList<>();
+
+		
 		protected List<PredicateSelector<?>> _crossReferencePredicate = new ArrayList<>();
 	}	
-	
 	
 	private Function mapper() {
 		return new Function<Element,Element,Nothing> (){
@@ -203,7 +222,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 	}
 
 	private PredicateSelector<? super Dependency<? super Element, ? super CrossReference, ? super Declaration>> noSuperTypes() {
-		return new CheckboxSelector<Dependency<?,?,?>>(
+		return new CheckboxPredicateSelector<Dependency<?,?,?>>(
 				
 				new UniversalPredicate<Dependency, Nothing>(Dependency.class) {
 
@@ -223,7 +242,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 	}
 	
 	private PredicateSelector<? super Dependency<? super Element, ? super CrossReference, ? super Declaration>> noDescendants() {
-		return new CheckboxSelector<Dependency<?,?,?>>(
+		return new CheckboxPredicateSelector<Dependency<?,?,?>>(
 				
 				new UniversalPredicate<Dependency, Nothing>(Dependency.class) {
 
@@ -235,7 +254,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 	}
 	
 	private PredicateSelector<? super Dependency<? super Element, ? super CrossReference, ? super Declaration>> noAncestors() {
-		return new CheckboxSelector<Dependency<?,?,?>>(
+		return new CheckboxPredicateSelector<Dependency<?,?,?>>(
 				
 				new UniversalPredicate<Dependency, Nothing>(Dependency.class) {
 
@@ -281,7 +300,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 	}
 
 	private PredicateSelector<Element> noAnonymousClasses() {
-		return new CheckboxSelector<Element>(new UniversalPredicate<Element, Nothing>(Element.class) {
+		return new CheckboxPredicateSelector<Element>(new UniversalPredicate<Element, Nothing>(Element.class) {
 
 			@Override
 			public boolean uncheckedEval(Element t) {
@@ -290,7 +309,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 		}, "Ignore anonymous types", true);
 	}
 	private PredicateSelector<Element> noExceptions() {
-		return new CheckboxSelector<Element>(new UniversalPredicate<Element, Nothing>(Element.class) {
+		return new CheckboxPredicateSelector<Element>(new UniversalPredicate<Element, Nothing>(Element.class) {
 
 			@Override
 			public boolean uncheckedEval(Element t) {
@@ -306,7 +325,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 	}
 	
 	private TristateTreeSelector<Object> loaderSelector() {
-		DocumentLoaderContentProvider contentProvider = new DocumentLoaderContentProvider();
+		DocumentScannerContentProvider contentProvider = new DocumentScannerContentProvider();
 		
 		TreeViewNodeLabelProvider labelProvider = new TreeViewNodeLabelProvider();
 		CheckStateProvider checkStateProvider = new CheckStateProvider<Object>() {
@@ -325,15 +344,6 @@ public class JavaDependencyOptions extends DependencyOptions {
 		return tristateTreeSelector;
 	}
 	
-//	private Selector<Element> namespaceSelector() {
-//		NamespaceContentProvider contentProvider = new NamespaceContentProvider();
-//		
-//		TreeViewNodeLabelProvider labelProvider = new TreeViewNodeLabelProvider();
-////		TristatePredicateGenerator<Object,Element> generator = new NamespaceSelectionPredicateGenerator(null);
-//		TristateTreeSelector<Object, Element> tristateTreeSelector = new TristateTreeSelector<Object,Element>(contentProvider, labelProvider);
-//		return tristateTreeSelector;
-//	}
-
 	public static class RedundantInheritedDependencyFilter extends HistoryFilter<Element,Declaration>{
 		
 		private static class Container {

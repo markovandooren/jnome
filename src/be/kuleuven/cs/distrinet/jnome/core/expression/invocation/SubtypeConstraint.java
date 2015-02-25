@@ -3,8 +3,9 @@
  */
 package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
+import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
 
 public class SubtypeConstraint extends SecondPhaseConstraint {
 

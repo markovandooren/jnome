@@ -3,32 +3,31 @@ package be.kuleuven.cs.distrinet.jnome.core.enumeration;
 import java.util.ArrayList;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupContext;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.validation.Valid;
-import be.kuleuven.cs.distrinet.chameleon.core.validation.Verification;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
-import be.kuleuven.cs.distrinet.chameleon.oo.member.FixedSignatureMember;
-import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.ClassBody;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.ClassWithBody;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.DeclarationWithType;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.util.association.Multi;
-import be.kuleuven.cs.distrinet.chameleon.util.association.Single;
+import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.lookup.LookupContext;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.validation.Valid;
+import org.aikodi.chameleon.core.validation.Verification;
+import org.aikodi.chameleon.oo.expression.Expression;
+import org.aikodi.chameleon.oo.member.Member;
+import org.aikodi.chameleon.oo.member.SimpleNameMember;
+import org.aikodi.chameleon.oo.type.ClassBody;
+import org.aikodi.chameleon.oo.type.ClassWithBody;
+import org.aikodi.chameleon.oo.type.DeclarationWithType;
+import org.aikodi.chameleon.oo.type.RegularType;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.util.association.Multi;
+import org.aikodi.chameleon.util.association.Single;
 
-public class EnumConstant extends FixedSignatureMember implements DeclarationWithType {
+public class EnumConstant extends SimpleNameMember implements DeclarationWithType {
 
-	public EnumConstant(SimpleNameSignature signature) {
-		super(signature);
+	public EnumConstant(String name) {
+		setName(name);
 	}
 	
 	@Override
 	public EnumConstant cloneSelf() {
-		return new EnumConstant(null);
+		return new EnumConstant(name());
 	}
 
 	public List<Member> getIntroducedMembers() {
@@ -109,11 +108,6 @@ public class EnumConstant extends FixedSignatureMember implements DeclarationWit
 		return Valid.create();
 	}
 
-	@Override
-	public Class<SimpleNameSignature> signatureType() {
-		return SimpleNameSignature.class;
-	}
-
 	public Type declarationType() throws LookupException {
 		return nearestAncestor(Type.class);
 	}
@@ -144,10 +138,6 @@ public class EnumConstant extends FixedSignatureMember implements DeclarationWit
 
 	public Declaration declarator() {
 		return this;
-	}
-
-	public void setName(String name) {
-		setSignature(new SimpleNameSignature(name));
 	}
 
 	@Override

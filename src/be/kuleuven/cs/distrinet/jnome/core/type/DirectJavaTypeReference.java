@@ -1,14 +1,15 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
-import be.kuleuven.cs.distrinet.chameleon.core.element.ElementImpl;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupContext;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.IntersectionTypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
+import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.core.element.ElementImpl;
+import org.aikodi.chameleon.core.lookup.LookupContext;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.type.IntersectionTypeReference;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.TypeReference;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 
 public class DirectJavaTypeReference extends ElementImpl implements JavaTypeReference {

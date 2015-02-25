@@ -1,28 +1,28 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
+import java.lang.ref.SoftReference;
 import java.util.List;
 import java.util.Set;
 
-import java.lang.ref.SoftReference;
+import org.aikodi.chameleon.core.Config;
+import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
+import org.aikodi.chameleon.core.declaration.TargetDeclaration;
+import org.aikodi.chameleon.core.lookup.DeclarationSelector;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.namespace.Namespace;
+import org.aikodi.chameleon.core.reference.CrossReference;
+import org.aikodi.chameleon.core.reference.CrossReferenceTarget;
+import org.aikodi.chameleon.core.reference.CrossReferenceWithName;
+import org.aikodi.chameleon.core.reference.MultiTypeReference;
+import org.aikodi.chameleon.oo.expression.NamedTarget;
+import org.aikodi.chameleon.oo.type.BasicTypeReference;
+import org.aikodi.chameleon.oo.type.RegularType;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
+import org.aikodi.chameleon.util.Util;
+import org.aikodi.chameleon.util.association.Multi;
 
-import be.kuleuven.cs.distrinet.chameleon.core.Config;
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.TargetDeclaration;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationSelector;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReferenceTarget;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReferenceWithName;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.MultiTypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.NamedTarget;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.BasicTypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgument;
-import be.kuleuven.cs.distrinet.chameleon.util.Util;
-import be.kuleuven.cs.distrinet.chameleon.util.association.Multi;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 
 import com.google.common.collect.ImmutableSet;
@@ -32,10 +32,6 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 	public BasicJavaTypeReference(CrossReferenceTarget target, String name) {
   	super(target,name);
   }
-  public BasicJavaTypeReference(CrossReferenceTarget target, SimpleNameSignature signature) {
-  	super(target,signature);
-  }
-  
   /**
    * THIS ONLY WORKS WHEN THE NAMED TARGET CONSISTS ENTIRELY OF NAMEDTARGETS.
    * @param target
@@ -96,6 +92,9 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
   }
   
   private Multi<ActualTypeArgument> _typeArguments = new Multi<ActualTypeArgument>(this);
+  {
+  	_typeArguments.enableCache();
+  }
   
   public JavaTypeReference toArray(int arrayDimension) {
   	JavaTypeReference result;
@@ -119,11 +118,12 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 	    result = (X) getGenericCache();
 	  }
 	  if(result != null) {
-//    	if(result instanceof JavaDerivedType) {
-//    		result = (X)((JavaDerivedType)result).captureConversion();
-//    	}
 	   	return result;
 	  }
+		synchronized(this) {
+			if(result != null) {
+				return result;
+			}
 
     result = super.getElement(selector);
      
@@ -139,14 +139,11 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
     	if(realSelector) {
         setGenericCache((Type)result);
     	}
-			//FIXME This breaks the tests, but the result should be the captured type.
-//    	if(result instanceof JavaDerivedType) {
-//    		result = (X)((JavaDerivedType)result).captureConversion();
-//    	}
       return result;
     } else {
-      throw new LookupException("Result of type reference lookup is null: "+signature(),this);
+      throw new LookupException("Result of type reference lookup is null: "+name(),this);
     }
+		}
   }
 
   private Type convertGenerics(Type type) throws LookupException {
@@ -165,7 +162,6 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 					// selection for 'type' in its parent.
 					// set to the type itself? seems dangerous as well.
 					result.setUniParent(type.parent());
-					
 				} else if(type instanceof RegularType){
 					// create raw type if necessary. The erasure method will check that.
 					result = language.erasure(type);
@@ -180,7 +176,7 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
   }
   
   public BasicJavaTypeReference cloneSelf() {
-  	return new BasicJavaTypeReference( null ,(SimpleNameSignature)null);
+  	return new BasicJavaTypeReference( null ,name());
   }
 
 	@SuppressWarnings("unchecked")
@@ -189,9 +185,9 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 	  CrossReferenceTarget target = getTarget();
 	  if(target instanceof CrossReference) {
 	  	CrossReference<? extends TargetDeclaration> erasure = language(Java.class).erasure((CrossReference)target);
-	  	result = new BasicJavaTypeReference(erasure, (SimpleNameSignature)signature().clone());
+	  	result = new BasicJavaTypeReference(erasure, name());
 	  } else if (target == null) {
-	  	result = new BasicJavaTypeReference(null, (SimpleNameSignature)signature().clone());
+	  	result = new BasicJavaTypeReference(null, name());
 	  }
 	  return result;
 	}

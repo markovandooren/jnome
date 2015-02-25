@@ -3,26 +3,27 @@ package be.kuleuven.cs.distrinet.jnome.input;
 import java.util.Collections;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
-import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
-import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.SimpleNameMethodHeader;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.InheritanceRelation;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.SubtypeRelation;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.FormalParameter;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.infix.InfixOperator;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.postfix.PostfixOperator;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.prefix.PrefixOperator;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Native;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Public;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.ValueType;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DirectInputSource;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoader;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoaderImpl;
-import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.View;
+import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
+import org.aikodi.chameleon.exception.ChameleonProgrammerException;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.method.SimpleNameMethodHeader;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.TypeReference;
+import org.aikodi.chameleon.oo.type.inheritance.InheritanceRelation;
+import org.aikodi.chameleon.oo.type.inheritance.SubtypeRelation;
+import org.aikodi.chameleon.oo.variable.FormalParameter;
+import org.aikodi.chameleon.support.member.simplename.operator.infix.InfixOperator;
+import org.aikodi.chameleon.support.member.simplename.operator.postfix.PostfixOperator;
+import org.aikodi.chameleon.support.member.simplename.operator.prefix.PrefixOperator;
+import org.aikodi.chameleon.support.modifier.Native;
+import org.aikodi.chameleon.support.modifier.Public;
+import org.aikodi.chameleon.support.modifier.ValueType;
+import org.aikodi.chameleon.workspace.DirectDocumentLoader;
+import org.aikodi.chameleon.workspace.DocumentScanner;
+import org.aikodi.chameleon.workspace.DocumentScannerImpl;
+import org.aikodi.chameleon.workspace.InputException;
+import org.aikodi.chameleon.workspace.View;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
@@ -43,7 +44,7 @@ public class PrimitiveTypeFactory {
 		return (ObjectOrientedLanguage) _view.language();
 	}
 	
-	public void addPrimitives(String root, DocumentLoader loader) {
+	public void addPrimitives(String root, DocumentScanner loader) {
 		addVoid(root,loader);
 		addDouble(root,loader);
 		addFloat(root,loader);
@@ -55,12 +56,12 @@ public class PrimitiveTypeFactory {
 		addBoolean(root,loader);
 	}
 
-	protected void addBoolean(String mm, DocumentLoader loader) {
+	protected void addBoolean(String mm, DocumentScanner loader) {
 		Public pub = new Public();
 		Type booleanT = new PrimitiveType("boolean");
 		booleanT.addModifier(pub);
 		try {
-			new DirectInputSource(booleanT,mm,view(), loader);
+			new DirectDocumentLoader(booleanT,mm,view(), loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -205,11 +206,11 @@ public class PrimitiveTypeFactory {
 		addPlusString(type);
 	}
 
-	protected void addDouble(String mm, DocumentLoader loader) {
+	protected void addDouble(String mm, DocumentScanner loader) {
 		Public pub = new Public();
 		Type doubleT = new PrimitiveType("double");
 		try {
-			new DirectInputSource(doubleT,mm,view(),loader);
+			new DirectDocumentLoader(doubleT,mm,view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -223,7 +224,7 @@ public class PrimitiveTypeFactory {
 		view().storePrimitiveType("double",doubleT);
 	}
 
-	protected void addLong(String mm, DocumentLoader loader) {
+	protected void addLong(String mm, DocumentScanner loader) {
 		Public pub = new Public();
 
 		Type longT = new PrimitiveType("long") {
@@ -234,7 +235,7 @@ public class PrimitiveTypeFactory {
 			}
 		};
 		try {
-			new DirectInputSource(longT,mm,view(),loader);
+			new DirectDocumentLoader(longT,mm,view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -249,7 +250,7 @@ public class PrimitiveTypeFactory {
 		view().storePrimitiveType("long",longT);
 	}
 
-	protected void addFloat(String mm, DocumentLoader loader) {
+	protected void addFloat(String mm, DocumentScanner loader) {
 		Public pub = new Public();
 
 		Type floatT = new PrimitiveType("float") {
@@ -259,7 +260,7 @@ public class PrimitiveTypeFactory {
 			}
 		};
 		try {
-			new DirectInputSource(floatT,mm,view(),loader);
+			new DirectDocumentLoader(floatT,mm,view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -275,10 +276,6 @@ public class PrimitiveTypeFactory {
 	}
 
 	protected static class PrimitiveType extends RegularJavaType {
-		public PrimitiveType(SimpleNameSignature sig) {
-			super(sig);
-		}
-
 		public PrimitiveType(String name) {
 			super(name);
 		}
@@ -295,7 +292,7 @@ public class PrimitiveTypeFactory {
 
 	}
 
-	protected void addInt(String mm, DocumentLoader loader) {
+	protected void addInt(String mm, DocumentScanner loader) {
 		Public pub = new Public();
 
 		Type intT = new PrimitiveType("int") {
@@ -307,7 +304,7 @@ public class PrimitiveTypeFactory {
 			}
 		};
 		try {
-			new DirectInputSource(intT,mm,view(),loader);
+			new DirectDocumentLoader(intT,mm,view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -322,7 +319,7 @@ public class PrimitiveTypeFactory {
 		view().storePrimitiveType("int",intT);
 	}
 
-	protected void addByte(String mm, DocumentLoader loader) {
+	protected void addByte(String mm, DocumentScanner loader) {
 		Public pub = new Public();
 		Type byteT = new PrimitiveType("byte") {
 			public boolean assignableTo(Type other) {
@@ -336,7 +333,7 @@ public class PrimitiveTypeFactory {
 			}
 		};
 		try {
-			new DirectInputSource(byteT,mm,view(),loader);
+			new DirectDocumentLoader(byteT,mm,view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -352,7 +349,7 @@ public class PrimitiveTypeFactory {
 		view().storePrimitiveType("byte",byteT);
 	}
 
-	protected void addShort(String mm, DocumentLoader loader) {
+	protected void addShort(String mm, DocumentScanner loader) {
 		Public pub = new Public();
 		Type shortT = new PrimitiveType("short") {
 			public boolean assignableTo(Type other) {
@@ -365,7 +362,7 @@ public class PrimitiveTypeFactory {
 			}
 		};
 		try {
-			new DirectInputSource(shortT,mm,view(),loader);
+			new DirectDocumentLoader(shortT,mm,view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -381,7 +378,7 @@ public class PrimitiveTypeFactory {
 		view().storePrimitiveType("short",shortT);
 	}
 
-	protected void addChar(String mm, DocumentLoader loader) {
+	protected void addChar(String mm, DocumentScanner loader) {
 		Public pub = new Public();
 
 		Type charT = new PrimitiveType("char") {
@@ -394,7 +391,7 @@ public class PrimitiveTypeFactory {
 			}
 		};
 		try {
-			new DirectInputSource(charT,mm,view(),loader);
+			new DirectDocumentLoader(charT,mm,view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -409,7 +406,7 @@ public class PrimitiveTypeFactory {
 		view().storePrimitiveType("char",charT);
 	}
 
-	protected void addVoid(String mm, DocumentLoader loader) {
+	protected void addVoid(String mm, DocumentScanner loader) {
 		Public pub = new Public();
 		Type voidT = new PrimitiveType("void") {
 
@@ -419,7 +416,7 @@ public class PrimitiveTypeFactory {
 
 		}; // toevoeging gebeurt door de constructor
 		try {
-			new DirectInputSource(voidT,mm,view(),loader);
+			new DirectDocumentLoader(voidT,mm,view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -455,7 +452,7 @@ public class PrimitiveTypeFactory {
 		op.addModifier(pub);
 
 		TypeReference tr2 = ((Java)language()).createTypeReference(argType);
-		FormalParameter fp = new FormalParameter(new SimpleNameSignature("arg"), tr2);
+		FormalParameter fp = new FormalParameter("arg", tr2);
 		sig.addFormalParameter(fp);
 		op.addModifier(new Native());
 		type.add(op);

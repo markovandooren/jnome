@@ -7,18 +7,17 @@ import java.io.StringBufferInputStream;
 import be.kuleuven.cs.distrinet.jnome.input.parser.JavaLexer;
 import be.kuleuven.cs.distrinet.jnome.input.parser.JavaParser;
 
+import org.aikodi.chameleon.core.document.Document;
+import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.exception.ChameleonProgrammerException;
+import org.aikodi.chameleon.input.ParseException;
+import org.aikodi.chameleon.oo.member.Member;
+import org.aikodi.chameleon.support.input.ChameleonParser;
+import org.aikodi.chameleon.support.input.ModelFactoryUsingANTLR;
+import org.aikodi.chameleon.workspace.View;
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
-
-import be.kuleuven.cs.distrinet.chameleon.core.document.Document;
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
-import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
-import be.kuleuven.cs.distrinet.chameleon.input.ParseException;
-import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
-import be.kuleuven.cs.distrinet.chameleon.support.input.ChameleonParser;
-import be.kuleuven.cs.distrinet.chameleon.support.input.ModelFactoryUsingANTLR;
-import be.kuleuven.cs.distrinet.chameleon.workspace.View;
 
 /**
  * @author Marko van Dooren

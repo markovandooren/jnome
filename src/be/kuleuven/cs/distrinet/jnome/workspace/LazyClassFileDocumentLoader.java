@@ -4,22 +4,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.InputSourceNamespace;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
-import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoader;
-import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.InputSourceImpl;
+import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.namespace.DocumentLoaderNamespace;
+import org.aikodi.chameleon.core.namespace.Namespace;
+import org.aikodi.chameleon.exception.ChameleonProgrammerException;
+import org.aikodi.chameleon.workspace.DocumentLoaderImpl;
+import org.aikodi.chameleon.workspace.DocumentScanner;
+import org.aikodi.chameleon.workspace.InputException;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.input.parser.ASMClassParser;
 
-public class LazyClassFileInputSource extends InputSourceImpl {
+public class LazyClassFileDocumentLoader extends DocumentLoaderImpl {
 
 	private ASMClassParser _parser;
 	
-	public LazyClassFileInputSource(ASMClassParser parser, InputSourceNamespace ns, DocumentLoader loader) throws InputException {
+	public LazyClassFileDocumentLoader(ASMClassParser parser, DocumentLoaderNamespace ns, DocumentScanner loader) throws InputException {
 		if(parser == null) {
 			throw new IllegalArgumentException();
 		}
@@ -74,9 +75,9 @@ public class LazyClassFileInputSource extends InputSourceImpl {
 	}
 
 	@Override
-	public LazyClassFileInputSource clone() {
+	public LazyClassFileDocumentLoader clone() {
 		try {
-			return new LazyClassFileInputSource(parser(),null,null);
+			return new LazyClassFileDocumentLoader(parser(),null,null);
 		} catch (InputException e) {
 			// Won't be connected, so no exception
 			throw new ChameleonProgrammerException(e);

@@ -3,16 +3,17 @@ package be.kuleuven.cs.distrinet.jnome.core.expression;
 import java.util.List;
 import java.util.Set;
 
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.validation.Valid;
-import be.kuleuven.cs.distrinet.chameleon.core.validation.Verification;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
-import be.kuleuven.cs.distrinet.chameleon.support.expression.ArrayIndex;
-import be.kuleuven.cs.distrinet.chameleon.util.Util;
-import be.kuleuven.cs.distrinet.chameleon.util.association.Multi;
-import be.kuleuven.cs.distrinet.chameleon.util.association.Single;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.validation.Valid;
+import org.aikodi.chameleon.core.validation.Verification;
+import org.aikodi.chameleon.oo.expression.Expression;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.TypeReference;
+import org.aikodi.chameleon.support.expression.ArrayIndex;
+import org.aikodi.chameleon.util.Util;
+import org.aikodi.chameleon.util.association.Multi;
+import org.aikodi.chameleon.util.association.Single;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;

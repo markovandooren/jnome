@@ -1,6 +1,6 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
-import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
+import org.aikodi.chameleon.oo.type.TypeReference;
 
 /**
  * A class for Java type references. They add support for array types and generic parameters.

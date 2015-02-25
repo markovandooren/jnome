@@ -1,12 +1,12 @@
 package be.kuleuven.cs.distrinet.jnome.core.variable;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
-import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.Variable;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.VariableDeclaration;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.VariableDeclarator;
+import org.aikodi.chameleon.core.variable.Variable;
+import org.aikodi.chameleon.exception.ChameleonProgrammerException;
+import org.aikodi.chameleon.oo.expression.Expression;
+import org.aikodi.chameleon.oo.type.TypeReference;
+import org.aikodi.chameleon.oo.variable.VariableDeclaration;
+import org.aikodi.chameleon.oo.variable.VariableDeclarator;
+
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 
@@ -18,10 +18,6 @@ import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
  */
 public class JavaVariableDeclaration extends VariableDeclaration {
 	
-  public JavaVariableDeclaration(SimpleNameSignature sig, Expression expr) {
-		super(sig,expr);
-	}
-
 	public JavaVariableDeclaration(String name, Expression expr) {
 		super(name,expr);
 	}

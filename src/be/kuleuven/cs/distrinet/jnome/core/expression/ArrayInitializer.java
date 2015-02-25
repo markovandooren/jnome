@@ -5,15 +5,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.validation.Valid;
-import be.kuleuven.cs.distrinet.chameleon.core.validation.Verification;
-import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.Variable;
-import be.kuleuven.cs.distrinet.chameleon.util.association.Multi;
+import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.validation.Valid;
+import org.aikodi.chameleon.core.validation.Verification;
+import org.aikodi.chameleon.core.variable.Variable;
+import org.aikodi.chameleon.exception.ChameleonProgrammerException;
+import org.aikodi.chameleon.oo.expression.Expression;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.util.association.Multi;
+
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.variable.JavaVariableDeclaration;
 

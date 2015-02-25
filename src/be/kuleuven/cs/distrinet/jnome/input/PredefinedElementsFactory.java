@@ -1,29 +1,30 @@
 package be.kuleuven.cs.distrinet.jnome.input;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.Operator;
-import be.kuleuven.cs.distrinet.chameleon.util.Util;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DirectInputSource;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoader;
-import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.View;
+import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.exception.ChameleonProgrammerException;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.support.member.simplename.operator.Operator;
+import org.aikodi.chameleon.util.Util;
+import org.aikodi.chameleon.workspace.DirectDocumentLoader;
+import org.aikodi.chameleon.workspace.DocumentScanner;
+import org.aikodi.chameleon.workspace.InputException;
+import org.aikodi.chameleon.workspace.View;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.NullType;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 
 public class PredefinedElementsFactory {
 
-	public PredefinedElementsFactory(JavaView view, DocumentLoader loader) {
+	public PredefinedElementsFactory(JavaView view, DocumentScanner loader) {
 		_view = view;
 		_loader = loader;
 	}
 	
-	private DocumentLoader _loader;
+	private DocumentScanner _loader;
 	
-	public DocumentLoader loader() {
+	public DocumentScanner loader() {
 		return _loader;
 	}
 	
@@ -36,9 +37,9 @@ public class PredefinedElementsFactory {
 	  addNullType(loader());
 	}
 
-	protected void addNullType(DocumentLoader loader) {
+	protected void addNullType(DocumentScanner loader) {
     try {
-			new DirectInputSource(new NullType(java()),"",_view,loader);
+			new DirectDocumentLoader(new NullType(java()),"",_view,loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -47,7 +48,7 @@ public class PredefinedElementsFactory {
 	private PrimitiveTypeFactory _factory;
 
 
-	protected void addPrimitives(String root, DocumentLoader loader) {
+	protected void addPrimitives(String root, DocumentScanner loader) {
 		_factory.addPrimitives(root,loader);
   }
 

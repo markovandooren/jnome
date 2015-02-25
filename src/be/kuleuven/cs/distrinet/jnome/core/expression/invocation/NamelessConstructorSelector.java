@@ -2,11 +2,11 @@ package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.DeclarationContainer;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.SelectionResult;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
+import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.declaration.DeclarationContainer;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.lookup.SelectionResult;
+import org.aikodi.chameleon.oo.type.Type;
 
 public class NamelessConstructorSelector extends AbstractConstructorSelector {
 	
@@ -32,6 +32,6 @@ public class NamelessConstructorSelector extends AbstractConstructorSelector {
 
 	@Override
 	public String selectionName(DeclarationContainer container) {
-		return _constructorDelegation.nearestAncestor(Type.class).signature().name();
+		return _constructorDelegation.nearestAncestor(Type.class).name();
 	}
 }

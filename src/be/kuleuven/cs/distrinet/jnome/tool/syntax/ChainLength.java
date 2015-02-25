@@ -3,10 +3,11 @@ package be.kuleuven.cs.distrinet.jnome.tool.syntax;
 import java.util.HashMap;
 import java.util.Map;
 
-import be.kuleuven.cs.distrinet.chameleon.analysis.Analysis;
-import be.kuleuven.cs.distrinet.chameleon.analysis.Result;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReferenceTarget;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.MethodInvocation;
+import org.aikodi.chameleon.analysis.Analysis;
+import org.aikodi.chameleon.analysis.Result;
+import org.aikodi.chameleon.core.reference.CrossReferenceTarget;
+import org.aikodi.chameleon.oo.expression.MethodInvocation;
+
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 
 public class ChainLength extends Analysis<MethodInvocation, ChainLength.LengthResult>{

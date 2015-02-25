@@ -2,40 +2,32 @@ package be.kuleuven.cs.distrinet.jnome.core.type;
 
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationSelector;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.SelectionResult;
-import be.kuleuven.cs.distrinet.chameleon.core.property.ChameleonProperty;
-import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
-import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.SimpleNameMethodHeader;
-import be.kuleuven.cs.distrinet.chameleon.oo.plugin.ObjectOrientedFactory;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Constructor;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Public;
+import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.core.lookup.DeclarationSelector;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.lookup.SelectionResult;
+import org.aikodi.chameleon.core.property.ChameleonProperty;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.member.Member;
+import org.aikodi.chameleon.oo.method.SimpleNameMethodHeader;
+import org.aikodi.chameleon.oo.plugin.ObjectOrientedFactory;
+import org.aikodi.chameleon.oo.type.RegularType;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.TypeReference;
+import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
+import org.aikodi.chameleon.support.modifier.Constructor;
+import org.aikodi.chameleon.support.modifier.Public;
+
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 import be.kuleuven.cs.distrinet.rejuse.property.PropertySet;
 
 public abstract class AnonymousType extends RegularType implements JavaType {
 
-	public AnonymousType(SimpleNameSignature sig) {
-		super(sig);
-	}
-	
 	public AnonymousType(String name) {
 		super(name);
 	}
 	
-	public AnonymousType() {
-		
-	}
-
 	public List<Member> localMembers() throws LookupException {
 		List<Member> result = super.localMembers();
 		List<NormalMethod> superMembers = implicitConstructors();
@@ -74,7 +66,7 @@ public abstract class AnonymousType extends RegularType implements JavaType {
 	}
 
 	private NormalMethod defaultDefaultConstructor(TypeReference tref, Type writtenType) {
-		NormalMethod cons = language().plugin(ObjectOrientedFactory.class).createNormalMethod(new SimpleNameMethodHeader(writtenType.signature().name(), clone(tref)));
+		NormalMethod cons = language().plugin(ObjectOrientedFactory.class).createNormalMethod(new SimpleNameMethodHeader(writtenType.name(), clone(tref)));
 		cons.addModifier(new Constructor());
 		cons.addModifier(new Public());
 		cons.setUniParent(this);

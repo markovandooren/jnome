@@ -1,10 +1,11 @@
 package be.kuleuven.cs.distrinet.jnome.eclipse;
 
+import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.core.modifier.ElementWithModifiers;
+import org.aikodi.chameleon.eclipse.presentation.treeview.PrefixIconDecorator;
+import org.aikodi.chameleon.exception.ModelException;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
-import be.kuleuven.cs.distrinet.chameleon.core.modifier.ElementWithModifiers;
-import be.kuleuven.cs.distrinet.chameleon.eclipse.presentation.treeview.PrefixIconDecorator;
-import be.kuleuven.cs.distrinet.chameleon.exception.ModelException;
 
 public class AccessIconDecorator extends PrefixIconDecorator {
 

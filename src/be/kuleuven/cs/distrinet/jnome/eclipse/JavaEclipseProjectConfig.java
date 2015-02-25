@@ -3,11 +3,12 @@ package be.kuleuven.cs.distrinet.jnome.eclipse;
 import java.io.File;
 import java.util.Map;
 
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.LazyRootNamespace;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ConfigElement;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ConfigException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectException;
+import org.aikodi.chameleon.core.namespace.LazyRootNamespace;
+import org.aikodi.chameleon.workspace.ConfigElement;
+import org.aikodi.chameleon.workspace.ConfigException;
+import org.aikodi.chameleon.workspace.Project;
+import org.aikodi.chameleon.workspace.ProjectException;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;

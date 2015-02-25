@@ -6,9 +6,10 @@ package be.kuleuven.cs.distrinet.jnome.core.method;
 
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.relation.WeakPartialOrder;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.relation.WeakPartialOrder;
+import org.aikodi.chameleon.oo.type.Type;
+
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 
 public class JavaVarargsOrder extends WeakPartialOrder<List<Type>> {

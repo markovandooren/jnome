@@ -3,10 +3,10 @@
  */
 package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ExtendsWildcardType;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.TypeReference;
+import org.aikodi.chameleon.oo.type.generics.ExtendsWildcardType;
 
 public class JavaExtendsReference extends WildCardReference {
 

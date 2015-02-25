@@ -2,10 +2,10 @@ package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
 
 
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationSelector;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReferenceTarget;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.MethodInvocation;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
+import org.aikodi.chameleon.core.lookup.DeclarationSelector;
+import org.aikodi.chameleon.core.reference.CrossReferenceTarget;
+import org.aikodi.chameleon.oo.expression.MethodInvocation;
+import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
 
 /**
  * @author Marko van Dooren

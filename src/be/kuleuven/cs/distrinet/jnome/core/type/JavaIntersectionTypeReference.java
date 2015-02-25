@@ -3,12 +3,12 @@ package be.kuleuven.cs.distrinet.jnome.core.type;
 import java.util.Collections;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.validation.Valid;
-import be.kuleuven.cs.distrinet.chameleon.core.validation.Verification;
-import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.IntersectionTypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgument;
+import org.aikodi.chameleon.core.validation.Valid;
+import org.aikodi.chameleon.core.validation.Verification;
+import org.aikodi.chameleon.exception.ChameleonProgrammerException;
+import org.aikodi.chameleon.oo.type.IntersectionTypeReference;
+import org.aikodi.chameleon.oo.type.TypeReference;
+import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
 
 public class JavaIntersectionTypeReference extends IntersectionTypeReference implements JavaTypeReference {
 	

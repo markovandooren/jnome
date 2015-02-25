@@ -1,9 +1,10 @@
 package be.kuleuven.cs.distrinet.jnome.core.expression;
 
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReferenceTarget;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.NameExpression;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.reference.CrossReferenceTarget;
+import org.aikodi.chameleon.oo.expression.NameExpression;
+import org.aikodi.chameleon.oo.type.Type;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaDerivedType;
 
@@ -17,13 +18,9 @@ public class JavaNameExpression extends NameExpression {
 		super(identifier);
 	}
 	
-	protected JavaNameExpression() {
-		
-	}
-	
 	@Override
 	public NameExpression cloneSelf() {
-		return new JavaNameExpression();
+		return new JavaNameExpression(name());
 	}
 
 	@Override

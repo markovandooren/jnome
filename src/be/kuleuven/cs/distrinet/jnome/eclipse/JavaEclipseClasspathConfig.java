@@ -8,13 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.JarFile;
 
-import be.kuleuven.cs.distrinet.chameleon.workspace.ConfigElement;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ConfigException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DirectoryLoader;
-import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectConfigurator;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.View;
+import org.aikodi.chameleon.workspace.ConfigElement;
+import org.aikodi.chameleon.workspace.ConfigException;
+import org.aikodi.chameleon.workspace.DirectoryScanner;
+import org.aikodi.chameleon.workspace.Project;
+import org.aikodi.chameleon.workspace.ProjectConfigurator;
+import org.aikodi.chameleon.workspace.ProjectException;
+import org.aikodi.chameleon.workspace.View;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
 import be.kuleuven.cs.distrinet.jnome.input.BaseJavaProjectLoader;
@@ -115,7 +116,7 @@ public class JavaEclipseClasspathConfig extends ConfigElement {
 		}
 		
 		private void loadSrc(String path) throws ProjectException {
-			_project.views().get(0).addSource(new DirectoryLoader(path, java().plugin(ProjectConfigurator.class).sourceFileFilter(), new LazyJavaFileInputSourceFactory()));
+			_project.views().get(0).addSource(new DirectoryScanner(path, java().plugin(ProjectConfigurator.class).sourceFileFilter(), new LazyJavaFileInputSourceFactory()));
 		}
 		
 		private void loadBin(String path) throws ProjectException {
@@ -129,7 +130,7 @@ public class JavaEclipseClasspathConfig extends ConfigElement {
 					throw new ProjectException(e);
 				}
 			} else {
-				_project.views().get(0).addBinary(new DirectoryLoader(".", binaryFileFilter, new LazyJavaFileInputSourceFactory()));
+				_project.views().get(0).addBinary(new DirectoryScanner(".", binaryFileFilter, new LazyJavaFileInputSourceFactory()));
 			}
 		}
 	}

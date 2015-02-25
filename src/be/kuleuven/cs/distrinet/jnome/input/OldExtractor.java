@@ -19,9 +19,10 @@ import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.aikodi.chameleon.util.Util;
+
 import be.kuleuven.cs.distrinet.rejuse.java.collections.RobustVisitor;
 import be.kuleuven.cs.distrinet.rejuse.java.collections.Visitor;
-import be.kuleuven.cs.distrinet.chameleon.util.Util;
 
 /**
  * @author marko

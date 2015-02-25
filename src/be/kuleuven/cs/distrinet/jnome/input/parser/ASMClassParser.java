@@ -28,6 +28,45 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
+import org.aikodi.chameleon.core.document.Document;
+import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.core.language.Language;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.modifier.Modifier;
+import org.aikodi.chameleon.core.namespace.LazyRootNamespace;
+import org.aikodi.chameleon.core.namespace.RootNamespaceReference;
+import org.aikodi.chameleon.core.namespacedeclaration.NamespaceDeclaration;
+import org.aikodi.chameleon.exception.ChameleonProgrammerException;
+import org.aikodi.chameleon.oo.method.Method;
+import org.aikodi.chameleon.oo.method.MethodHeader;
+import org.aikodi.chameleon.oo.method.NativeImplementation;
+import org.aikodi.chameleon.oo.method.exception.ExceptionClause;
+import org.aikodi.chameleon.oo.method.exception.TypeExceptionDeclaration;
+import org.aikodi.chameleon.oo.plugin.ObjectOrientedFactory;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.TypeReference;
+import org.aikodi.chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
+import org.aikodi.chameleon.oo.type.generics.ExtendsConstraint;
+import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
+import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+import org.aikodi.chameleon.oo.type.inheritance.SubtypeRelation;
+import org.aikodi.chameleon.oo.variable.FormalParameter;
+import org.aikodi.chameleon.oo.variable.VariableDeclaration;
+import org.aikodi.chameleon.plugin.output.Syntax;
+import org.aikodi.chameleon.support.member.simplename.variable.MemberVariableDeclarator;
+import org.aikodi.chameleon.support.modifier.Abstract;
+import org.aikodi.chameleon.support.modifier.Enum;
+import org.aikodi.chameleon.support.modifier.Final;
+import org.aikodi.chameleon.support.modifier.Interface;
+import org.aikodi.chameleon.support.modifier.Native;
+import org.aikodi.chameleon.support.modifier.Private;
+import org.aikodi.chameleon.support.modifier.Protected;
+import org.aikodi.chameleon.support.modifier.Public;
+import org.aikodi.chameleon.support.modifier.Static;
+import org.aikodi.chameleon.util.Pair;
+import org.aikodi.chameleon.util.Util;
+import org.aikodi.chameleon.workspace.Project;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
@@ -36,45 +75,6 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.signature.SignatureReader;
 import org.objectweb.asm.signature.SignatureVisitor;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
-import be.kuleuven.cs.distrinet.chameleon.core.document.Document;
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
-import be.kuleuven.cs.distrinet.chameleon.core.language.Language;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.modifier.Modifier;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.LazyRootNamespace;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.RootNamespaceReference;
-import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.NamespaceDeclaration;
-import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.MethodHeader;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.NativeImplementation;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.exception.ExceptionClause;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.exception.TypeExceptionDeclaration;
-import be.kuleuven.cs.distrinet.chameleon.oo.plugin.ObjectOrientedFactory;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ExtendsConstraint;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalTypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.SubtypeRelation;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.FormalParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.VariableDeclaration;
-import be.kuleuven.cs.distrinet.chameleon.plugin.output.Syntax;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.variable.MemberVariableDeclarator;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Abstract;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Enum;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Final;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Interface;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Native;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Private;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Protected;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Public;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Static;
-import be.kuleuven.cs.distrinet.chameleon.util.Pair;
-import be.kuleuven.cs.distrinet.chameleon.util.Util;
-import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.StrictFP;
@@ -211,7 +211,7 @@ public class ASMClassParser {
 		public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
 			if(! isSynthetic(access)) {
 				String n = Util.getLastPart(toDots(name));
-				Type type = factory(_language).createRegularType(new SimpleNameSignature(n));
+				Type type = factory(_language).createRegularType(n);
 				// OK, so ASM only creates a signature when there are generic parameters.
 				// otherwise you only get superName and interfaces (you'll get them as well with generics though).
 				// What a bad design. You're forcing me to write crap code.
@@ -293,7 +293,7 @@ public class ASMClassParser {
 					FormalParameter param = m.lastFormalParameter();
 //					MultiFormalParameter multi = new MultiFormalParameter(param.signature(), ((ArrayTypeReference) param.getTypeReference()).elementTypeReference());
 
-					MultiFormalParameter multi = MultiFormalParameter.createUnsafe(param.signature(), (JavaTypeReference)param.getTypeReference());
+					MultiFormalParameter multi = MultiFormalParameter.createUnsafe(param.name(), (JavaTypeReference)param.getTypeReference());
 					
 					SingleAssociation<Element, Element> parentLink = param.parentLink();
 					parentLink.getOtherRelation().replace(parentLink, multi.parentLink());

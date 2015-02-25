@@ -3,10 +3,10 @@ package be.kuleuven.cs.distrinet.jnome.workspace;
 import java.util.HashMap;
 import java.util.Map;
 
-import be.kuleuven.cs.distrinet.chameleon.core.language.Language;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.RootNamespace;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.view.ObjectOrientedView;
+import org.aikodi.chameleon.core.language.Language;
+import org.aikodi.chameleon.core.namespace.RootNamespace;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.view.ObjectOrientedView;
 
 public class JavaView extends ObjectOrientedView {
 

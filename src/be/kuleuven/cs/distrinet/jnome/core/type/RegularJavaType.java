@@ -4,35 +4,36 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.modifier.Modifier;
-import be.kuleuven.cs.distrinet.chameleon.core.property.ChameleonProperty;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.SimpleReference;
-import be.kuleuven.cs.distrinet.chameleon.core.tag.TagImpl;
-import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.ExpressionFactory;
-import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
-import be.kuleuven.cs.distrinet.chameleon.oo.member.Member;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.RegularImplementation;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.SimpleNameMethodHeader;
-import be.kuleuven.cs.distrinet.chameleon.oo.statement.Block;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeElement;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgument;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.InheritanceRelation;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.SubtypeRelation;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Constructor;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Native;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Public;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.StatementExpression;
+import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.core.factory.Factory;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.modifier.Modifier;
+import org.aikodi.chameleon.core.property.ChameleonProperty;
+import org.aikodi.chameleon.core.reference.NameReference;
+import org.aikodi.chameleon.core.tag.TagImpl;
+import org.aikodi.chameleon.exception.ChameleonProgrammerException;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.member.Member;
+import org.aikodi.chameleon.oo.method.RegularImplementation;
+import org.aikodi.chameleon.oo.method.SimpleNameMethodHeader;
+import org.aikodi.chameleon.oo.statement.Block;
+import org.aikodi.chameleon.oo.type.DerivedType;
+import org.aikodi.chameleon.oo.type.RegularType;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.TypeElement;
+import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+import org.aikodi.chameleon.oo.type.inheritance.InheritanceRelation;
+import org.aikodi.chameleon.oo.type.inheritance.SubtypeRelation;
+import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
+import org.aikodi.chameleon.support.modifier.Constructor;
+import org.aikodi.chameleon.support.modifier.Native;
+import org.aikodi.chameleon.support.modifier.Public;
+import org.aikodi.chameleon.support.statement.StatementExpression;
+
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.SuperConstructorDelegation;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.jnome.core.method.JavaNormalMethod;
+import be.kuleuven.cs.distrinet.jnome.core.method.JavaMethod;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.JavaConstructor;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
@@ -43,18 +44,60 @@ import com.google.common.collect.ImmutableList.Builder;
 
 public class RegularJavaType extends RegularType implements JavaType {
 
-	public RegularJavaType(SimpleNameSignature sig) {
-		super(sig);
+	public RegularJavaType(String name) {
+		super(name);
 		setDefaultDefaultConstructor(false);
 	}
+	
+//	private StackOverflowTracer _tracer = new StackOverflowTracer(3);
+	
+	public DerivedType createDerivedType(List<ActualTypeArgument> typeArguments) throws LookupException {
+//		if(typeArguments.size() == 1) {
+//			if(_genericCache == null) {
+//				synchronized(this) {
+//					if(_genericCache == null) {
+//						_genericCache = new HashMap<>();
+//					}
+//				}
+//			}
+//			_tracer.push();
+//			Type key = typeArguments.get(0).type();
+//			_tracer.pop();
+//			DerivedType result = _genericCache.get(key);
+//			if(result == null) {
+//				synchronized(this) {
+//					if(result == null) {
+//						result = new JavaDerivedType(this,typeArguments);
+//						_genericCache.put(key, result);
+//					}
+//				}
+//			} else {
+////				System.out.println(++COUNT+" generic cache hit for "+name()+"<"+key.name()+">");
+//			}
+//			return result;
+//		}
 
-	public RegularJavaType(String name) {
-		this(new SimpleNameSignature(name));
+//		int size = typeArguments.size();
+//		Integer current = COUNTMAP.get(size);
+//		if(current == null) {
+//			current = new Integer(0);
+//		}
+//		Integer value = new Integer(current.intValue() + 1);
+//		System.out.println("Size: "+size+" count: "+value);
+//		COUNTMAP.put(size,value);
+		return new JavaDerivedType(this,typeArguments);
 	}
 	
+	
+	
+//	private static int COUNT;
+//	private static Map<Integer,Integer> COUNTMAP = new HashMap<>(); 
+	
+	
+//	private Map<Type,DerivedType> _genericCache;
+
 	protected RegularType cloneSelf() {
-		RegularJavaType regularJavaType = new RegularJavaType(clone(signature()));
-		regularJavaType.setSignature(null);
+		RegularJavaType regularJavaType = new RegularJavaType(name());
 		regularJavaType.parameterBlock(TypeParameter.class).disconnect();
 		return regularJavaType;
 	}
@@ -69,19 +112,19 @@ public class RegularJavaType extends RegularType implements JavaType {
 	 * Set the default default constructor.
 	 */
 	protected void setDefaultDefaultConstructor(boolean rebuildCache) {
-		JavaNormalMethod cons = createDefaultConstructorWithoutAccessModifier(rebuildCache);
+		JavaMethod cons = createDefaultConstructorWithoutAccessModifier(rebuildCache);
 		cons.addModifier(new Public());
 	}
 
 	/**
 	 * Create a default default constructor without an access modifier.
 	 */
-	protected JavaNormalMethod createDefaultConstructorWithoutAccessModifier(boolean rebuildCache) {
+	protected JavaMethod createDefaultConstructorWithoutAccessModifier(boolean rebuildCache) {
 		// FIXME Because this code is ran when a regular Java type is constructed, we cannot ask the
 		//       language for the factory. Management of the constructor should be done lazily. When
 		//       the type is actually used, we can assume that a language is attached. Otherwise, we
 		//       throw an exception.
-		JavaNormalMethod cons = new JavaNormalMethod(new SimpleNameMethodHeader(signature().name(), new BasicJavaTypeReference(signature().name())));
+		JavaMethod cons = new JavaMethod(new SimpleNameMethodHeader(name(), new BasicJavaTypeReference(name())));
 		cons.addModifier(new Constructor());
 		Block body = new Block();
 		cons.setImplementation(new RegularImplementation(body));
@@ -95,7 +138,7 @@ public class RegularJavaType extends RegularType implements JavaType {
 		setDefaultDefaultConstructor(null);
 	}
 	
-	private void setDefaultDefaultConstructor(JavaNormalMethod method) {
+	private void setDefaultDefaultConstructor(JavaMethod method) {
 		_defaultDefaultConstructor = method;
 		_implicitMemberCache = null;
 	}
@@ -260,9 +303,9 @@ public class RegularJavaType extends RegularType implements JavaType {
 					outerTypes.add(0, this);
 
 					int size = outerTypes.size();
-					ExpressionFactory expressionFactory = language.plugin(ExpressionFactory.class);
+					Factory expressionFactory = language.plugin(Factory.class);
 					for(int i = size - 2; i>=0;i--) {
-						SimpleReference<RawType> simpleRef = expressionFactory.createSimpleReference(outerTypes.get(i).signature().name(), RawType.class);
+						NameReference<RawType> simpleRef = expressionFactory.createNameReference(outerTypes.get(i).name(), (Class)RawType.class);
 						simpleRef.setUniParent(current);
 						try {
 							current = simpleRef.getElement();

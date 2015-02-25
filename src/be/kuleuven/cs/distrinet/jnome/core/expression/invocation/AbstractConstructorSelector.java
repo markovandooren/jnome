@@ -3,10 +3,11 @@ package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 import java.util.ArrayList;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.Signature;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
+import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.declaration.Signature;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 
 public abstract class AbstractConstructorSelector extends AbstractJavaMethodSelector<NormalMethod> {

@@ -3,16 +3,16 @@ package be.kuleuven.cs.distrinet.jnome.core.imports;
 import java.util.Iterator;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.DeclarationContainer;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.DemandImport;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.SimpleReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
+import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.declaration.DeclarationContainer;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.namespacedeclaration.DemandImport;
+import org.aikodi.chameleon.core.reference.NameReference;
+import org.aikodi.chameleon.oo.type.Type;
 
 public class JavaDemandImport extends DemandImport {
 
-	public JavaDemandImport(SimpleReference<? extends DeclarationContainer> ref) {
+	public JavaDemandImport(NameReference<? extends DeclarationContainer> ref) {
 		super(ref);
 	}
 	

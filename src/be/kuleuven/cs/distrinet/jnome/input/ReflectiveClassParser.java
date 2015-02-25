@@ -10,8 +10,43 @@ import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
+import org.aikodi.chameleon.core.document.Document;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.namespace.RootNamespace;
+import org.aikodi.chameleon.core.namespacedeclaration.NamespaceDeclaration;
+import org.aikodi.chameleon.oo.method.Method;
+import org.aikodi.chameleon.oo.method.SimpleNameMethodHeader;
+import org.aikodi.chameleon.oo.method.exception.ExceptionClause;
+import org.aikodi.chameleon.oo.method.exception.TypeExceptionDeclaration;
+import org.aikodi.chameleon.oo.plugin.ObjectOrientedFactory;
+import org.aikodi.chameleon.oo.type.IntersectionTypeReference;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.TypeReference;
+import org.aikodi.chameleon.oo.type.UnionTypeReference;
+import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.ExtendsConstraint;
+import org.aikodi.chameleon.oo.type.generics.ExtendsWildcard;
+import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
+import org.aikodi.chameleon.oo.type.generics.SuperWildcard;
+import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+import org.aikodi.chameleon.oo.type.inheritance.InheritanceRelation;
+import org.aikodi.chameleon.oo.type.inheritance.SubtypeRelation;
+import org.aikodi.chameleon.oo.variable.FormalParameter;
+import org.aikodi.chameleon.oo.variable.VariableDeclaration;
+import org.aikodi.chameleon.support.member.simplename.variable.MemberVariableDeclarator;
+import org.aikodi.chameleon.support.modifier.Abstract;
+import org.aikodi.chameleon.support.modifier.Final;
+import org.aikodi.chameleon.support.modifier.Interface;
+import org.aikodi.chameleon.support.modifier.Native;
+import org.aikodi.chameleon.support.modifier.Private;
+import org.aikodi.chameleon.support.modifier.Protected;
+import org.aikodi.chameleon.support.modifier.Public;
+import org.aikodi.chameleon.support.modifier.Static;
+import org.aikodi.chameleon.util.Util;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.jnome.core.method.JavaNormalMethod;
+import be.kuleuven.cs.distrinet.jnome.core.method.JavaMethod;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.StrictFP;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.Synchronized;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.Transient;
@@ -21,40 +56,6 @@ import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.PureWildcard;
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
-import be.kuleuven.cs.distrinet.chameleon.core.document.Document;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.RootNamespace;
-import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.NamespaceDeclaration;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.SimpleNameMethodHeader;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.exception.ExceptionClause;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.exception.TypeExceptionDeclaration;
-import be.kuleuven.cs.distrinet.chameleon.oo.plugin.ObjectOrientedFactory;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.IntersectionTypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.UnionTypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgument;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ExtendsConstraint;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ExtendsWildcard;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalTypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.SuperWildcard;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.InheritanceRelation;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.SubtypeRelation;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.FormalParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.VariableDeclaration;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.variable.MemberVariableDeclarator;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Abstract;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Final;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Interface;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Native;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Private;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Protected;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Public;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Static;
-import be.kuleuven.cs.distrinet.chameleon.util.Util;
 
 public class ReflectiveClassParser implements BytecodeClassParser {
 
@@ -84,7 +85,7 @@ public class ReflectiveClassParser implements BytecodeClassParser {
 	}
 
 	private Type createType(Class clazz) {
-		Type type = _factory.createRegularType(new SimpleNameSignature(clazz.getSimpleName()));
+		Type type = _factory.createRegularType(clazz.getSimpleName());
 		
 		determineInterface(clazz,type);
 		type.addAllInheritanceRelations(getInheritanceRelations(clazz));
@@ -128,19 +129,19 @@ public class ReflectiveClassParser implements BytecodeClassParser {
 			TypeReference tref = toRef(field.getType());
 			MemberVariableDeclarator decl = new MemberVariableDeclarator(tref);
 			decl.add(new VariableDeclaration(field.getName()));
-			for(be.kuleuven.cs.distrinet.chameleon.core.modifier.Modifier mod: getModifiers(field.getModifiers())) {
+			for(org.aikodi.chameleon.core.modifier.Modifier mod: getModifiers(field.getModifiers())) {
 				decl.addModifier(mod);
 			}
 			type.add(decl);
 		}
 	}
 	
-	protected List<be.kuleuven.cs.distrinet.chameleon.core.modifier.Modifier> getModifiers(Class clazz) {
+	protected List<org.aikodi.chameleon.core.modifier.Modifier> getModifiers(Class clazz) {
 		return getModifiers(clazz.getModifiers());
 	}
 
-  protected List<be.kuleuven.cs.distrinet.chameleon.core.modifier.Modifier> getModifiers(int modifiers) {
-  	List<be.kuleuven.cs.distrinet.chameleon.core.modifier.Modifier> result = new ArrayList<be.kuleuven.cs.distrinet.chameleon.core.modifier.Modifier>();
+  protected List<org.aikodi.chameleon.core.modifier.Modifier> getModifiers(int modifiers) {
+  	List<org.aikodi.chameleon.core.modifier.Modifier> result = new ArrayList<org.aikodi.chameleon.core.modifier.Modifier>();
     if(Modifier.isPublic(modifiers)) {
       result.add(new Public()); 
     }
@@ -206,7 +207,7 @@ public class ReflectiveClassParser implements BytecodeClassParser {
 
   			// Create the method
   			SimpleNameMethodHeader header = new SimpleNameMethodHeader(methodName, returnType);
-  			Method method = new JavaNormalMethod(header);
+  			Method method = new JavaMethod(header);
 
   			// Process the modifiers
   			method.addModifiers(ReflectiveClassParser.this.getModifiers(getModifiers(t)));
@@ -225,7 +226,7 @@ public class ReflectiveClassParser implements BytecodeClassParser {
   				//					if((Util.getLastPart(temp) != null) && (Character.getType(Util.getLastPart(temp).charAt(0)) == Character.DECIMAL_DIGIT_NUMBER)) {
   				//						valid = false;
   				//					}
-  				header.addFormalParameter(new FormalParameter(new SimpleNameSignature("a_r_g_u_m_e_n_t_"+i), tref));
+  				header.addFormalParameter(new FormalParameter("a_r_g_u_m_e_n_t_"+i, tref));
   			}
 
 

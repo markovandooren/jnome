@@ -3,24 +3,25 @@ package be.kuleuven.cs.distrinet.jnome.workspace;
 import java.util.Collections;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
-import be.kuleuven.cs.distrinet.chameleon.core.document.Document;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.LazyNamespace;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.RootNamespace;
-import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.NamespaceDeclaration;
-import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.util.Util;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoader;
-import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.InputSourceImpl;
+import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.document.Document;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.namespace.LazyNamespace;
+import org.aikodi.chameleon.core.namespace.Namespace;
+import org.aikodi.chameleon.core.namespace.RootNamespace;
+import org.aikodi.chameleon.core.namespacedeclaration.NamespaceDeclaration;
+import org.aikodi.chameleon.exception.ChameleonProgrammerException;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.util.Util;
+import org.aikodi.chameleon.workspace.DocumentLoaderImpl;
+import org.aikodi.chameleon.workspace.DocumentScanner;
+import org.aikodi.chameleon.workspace.InputException;
+
 import be.kuleuven.cs.distrinet.jnome.input.ReflectiveClassParser;
 
-public class LazyReflectiveInputSource extends InputSourceImpl {
+public class LazyReflectiveDocumentLoader extends DocumentLoaderImpl {
 
-	public LazyReflectiveInputSource(ClassLoader loader, ReflectiveClassParser parser, String fqn, LazyNamespace ns, DocumentLoader documentLoader) throws InputException {
+	public LazyReflectiveDocumentLoader(ClassLoader loader, ReflectiveClassParser parser, String fqn, LazyNamespace ns, DocumentScanner documentLoader) throws InputException {
 		init(documentLoader);
 		_parser = parser;
 		_fqn = fqn;
@@ -31,9 +32,9 @@ public class LazyReflectiveInputSource extends InputSourceImpl {
 	}
 	
 	@Override
-	public InputSourceImpl clone() {
+	public DocumentLoaderImpl clone() {
 		try {
-			return new LazyReflectiveInputSource(_loader, _parser, _fqn, null, null);
+			return new LazyReflectiveDocumentLoader(_loader, _parser, _fqn, null, null);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}

@@ -1,8 +1,9 @@
 package be.kuleuven.cs.distrinet.jnome.tool.dependency;
 
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.oo.modifier.AnnotationModifier;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.oo.modifier.AnnotationModifier;
+import org.aikodi.chameleon.oo.type.Type;
+
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
 

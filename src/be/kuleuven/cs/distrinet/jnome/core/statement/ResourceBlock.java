@@ -2,10 +2,10 @@ package be.kuleuven.cs.distrinet.jnome.core.statement;
 
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
-import be.kuleuven.cs.distrinet.chameleon.core.element.ElementImpl;
-import be.kuleuven.cs.distrinet.chameleon.support.variable.LocalVariableDeclarator;
-import be.kuleuven.cs.distrinet.chameleon.util.association.Multi;
+import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.core.element.ElementImpl;
+import org.aikodi.chameleon.support.variable.LocalVariableDeclarator;
+import org.aikodi.chameleon.util.association.Multi;
 
 public class ResourceBlock extends ElementImpl {
 

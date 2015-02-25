@@ -1,114 +1,114 @@
 package be.kuleuven.cs.distrinet.jnome.output;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
-import be.kuleuven.cs.distrinet.chameleon.core.document.Document;
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
-import be.kuleuven.cs.distrinet.chameleon.core.modifier.ElementWithModifiers;
-import be.kuleuven.cs.distrinet.chameleon.core.modifier.Modifier;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.NamespaceReference;
-import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.DemandImport;
-import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.Import;
-import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.NamespaceDeclaration;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReferenceTarget;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.ElementReference;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.SimpleReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.Literal;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.MethodInvocation;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.NamedTarget;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.NameExpression;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.VariableReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.member.SimpleNameDeclarationWithParametersSignature;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.Implementation;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.NativeImplementation;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.RegularImplementation;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.exception.ExceptionClause;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.exception.ExceptionDeclaration;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.exception.TypeExceptionDeclaration;
-import be.kuleuven.cs.distrinet.chameleon.oo.modifier.AnnotationModifier;
-import be.kuleuven.cs.distrinet.chameleon.oo.namespacedeclaration.TypeImport;
-import be.kuleuven.cs.distrinet.chameleon.oo.statement.Block;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeElement;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgument;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.BasicTypeArgument;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ExtendsConstraint;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ExtendsWildcard;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.FormalTypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.SuperWildcard;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeConstraint;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.AbstractInheritanceRelation;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.SubtypeRelation;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.FormalParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.VariableDeclaration;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.VariableDeclarator;
-import be.kuleuven.cs.distrinet.chameleon.plugin.output.Syntax;
-import be.kuleuven.cs.distrinet.chameleon.support.expression.ArrayIndex;
-import be.kuleuven.cs.distrinet.chameleon.support.expression.AssignmentExpression;
-import be.kuleuven.cs.distrinet.chameleon.support.expression.ClassCastExpression;
-import be.kuleuven.cs.distrinet.chameleon.support.expression.ConditionalAndExpression;
-import be.kuleuven.cs.distrinet.chameleon.support.expression.ConditionalExpression;
-import be.kuleuven.cs.distrinet.chameleon.support.expression.ConditionalOrExpression;
-import be.kuleuven.cs.distrinet.chameleon.support.expression.EmptyArrayIndex;
-import be.kuleuven.cs.distrinet.chameleon.support.expression.FilledArrayIndex;
-import be.kuleuven.cs.distrinet.chameleon.support.expression.InstanceofExpression;
-import be.kuleuven.cs.distrinet.chameleon.support.expression.SuperTarget;
-import be.kuleuven.cs.distrinet.chameleon.support.expression.ThisLiteral;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.RegularMethodInvocation;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.infix.InfixOperatorInvocation;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.postfix.PostfixOperatorInvocation;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.prefix.PrefixOperatorInvocation;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.variable.MemberVariableDeclarator;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Abstract;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Constructor;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Enum;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Final;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Interface;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Native;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Private;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Protected;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Public;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Static;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.AssertStatement;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.BreakStatement;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.CaseLabel;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.CatchClause;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.ContinueStatement;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.DefaultLabel;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.DoStatement;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.EmptyStatement;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.EnhancedForControl;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.FinallyClause;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.ForStatement;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.IfThenElseStatement;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.LabeledStatement;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.LocalClassStatement;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.ReturnStatement;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.SimpleForControl;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.StatementExprList;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.StatementExpression;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.SwitchCase;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.SwitchLabel;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.SwitchStatement;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.SynchronizedStatement;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.ThrowStatement;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.TryStatement;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.WhileStatement;
-import be.kuleuven.cs.distrinet.chameleon.support.tool.Arguments;
-import be.kuleuven.cs.distrinet.chameleon.support.type.EmptyTypeElement;
-import be.kuleuven.cs.distrinet.chameleon.support.type.StaticInitializer;
-import be.kuleuven.cs.distrinet.chameleon.support.variable.LocalVariableDeclarator;
+import org.aikodi.chameleon.core.document.Document;
+import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.core.modifier.ElementWithModifiers;
+import org.aikodi.chameleon.core.modifier.Modifier;
+import org.aikodi.chameleon.core.namespace.NamespaceReference;
+import org.aikodi.chameleon.core.namespacedeclaration.DemandImport;
+import org.aikodi.chameleon.core.namespacedeclaration.Import;
+import org.aikodi.chameleon.core.namespacedeclaration.NamespaceDeclaration;
+import org.aikodi.chameleon.core.reference.CrossReferenceTarget;
+import org.aikodi.chameleon.core.reference.ElementReference;
+import org.aikodi.chameleon.oo.expression.Expression;
+import org.aikodi.chameleon.oo.expression.Literal;
+import org.aikodi.chameleon.oo.expression.MethodInvocation;
+import org.aikodi.chameleon.oo.expression.NameExpression;
+import org.aikodi.chameleon.oo.expression.NamedTarget;
+import org.aikodi.chameleon.oo.expression.VariableReference;
+import org.aikodi.chameleon.oo.method.Implementation;
+import org.aikodi.chameleon.oo.method.Method;
+import org.aikodi.chameleon.oo.method.NativeImplementation;
+import org.aikodi.chameleon.oo.method.RegularImplementation;
+import org.aikodi.chameleon.oo.method.exception.ExceptionClause;
+import org.aikodi.chameleon.oo.method.exception.ExceptionDeclaration;
+import org.aikodi.chameleon.oo.method.exception.TypeExceptionDeclaration;
+import org.aikodi.chameleon.oo.modifier.AnnotationModifier;
+import org.aikodi.chameleon.oo.namespacedeclaration.TypeImport;
+import org.aikodi.chameleon.oo.statement.Block;
+import org.aikodi.chameleon.oo.type.RegularType;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.TypeElement;
+import org.aikodi.chameleon.oo.type.TypeReference;
+import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.BasicTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.ExtendsConstraint;
+import org.aikodi.chameleon.oo.type.generics.ExtendsWildcard;
+import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
+import org.aikodi.chameleon.oo.type.generics.SuperWildcard;
+import org.aikodi.chameleon.oo.type.generics.TypeConstraint;
+import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+import org.aikodi.chameleon.oo.type.inheritance.AbstractInheritanceRelation;
+import org.aikodi.chameleon.oo.type.inheritance.SubtypeRelation;
+import org.aikodi.chameleon.oo.variable.FormalParameter;
+import org.aikodi.chameleon.oo.variable.VariableDeclaration;
+import org.aikodi.chameleon.oo.variable.VariableDeclarator;
+import org.aikodi.chameleon.plugin.output.Syntax;
+import org.aikodi.chameleon.support.expression.ArrayIndex;
+import org.aikodi.chameleon.support.expression.AssignmentExpression;
+import org.aikodi.chameleon.support.expression.ClassCastExpression;
+import org.aikodi.chameleon.support.expression.ConditionalAndExpression;
+import org.aikodi.chameleon.support.expression.ConditionalExpression;
+import org.aikodi.chameleon.support.expression.ConditionalOrExpression;
+import org.aikodi.chameleon.support.expression.EmptyArrayIndex;
+import org.aikodi.chameleon.support.expression.FilledArrayIndex;
+import org.aikodi.chameleon.support.expression.InstanceofExpression;
+import org.aikodi.chameleon.support.expression.SuperTarget;
+import org.aikodi.chameleon.support.expression.ThisLiteral;
+import org.aikodi.chameleon.support.member.simplename.method.RegularMethodInvocation;
+import org.aikodi.chameleon.support.member.simplename.operator.infix.InfixOperatorInvocation;
+import org.aikodi.chameleon.support.member.simplename.operator.postfix.PostfixOperatorInvocation;
+import org.aikodi.chameleon.support.member.simplename.operator.prefix.PrefixOperatorInvocation;
+import org.aikodi.chameleon.support.member.simplename.variable.MemberVariableDeclarator;
+import org.aikodi.chameleon.support.modifier.Abstract;
+import org.aikodi.chameleon.support.modifier.Constructor;
+import org.aikodi.chameleon.support.modifier.Enum;
+import org.aikodi.chameleon.support.modifier.Final;
+import org.aikodi.chameleon.support.modifier.Interface;
+import org.aikodi.chameleon.support.modifier.Native;
+import org.aikodi.chameleon.support.modifier.Private;
+import org.aikodi.chameleon.support.modifier.Protected;
+import org.aikodi.chameleon.support.modifier.Public;
+import org.aikodi.chameleon.support.modifier.Static;
+import org.aikodi.chameleon.support.statement.AssertStatement;
+import org.aikodi.chameleon.support.statement.BreakStatement;
+import org.aikodi.chameleon.support.statement.CaseLabel;
+import org.aikodi.chameleon.support.statement.CatchClause;
+import org.aikodi.chameleon.support.statement.ContinueStatement;
+import org.aikodi.chameleon.support.statement.DefaultLabel;
+import org.aikodi.chameleon.support.statement.DoStatement;
+import org.aikodi.chameleon.support.statement.EmptyStatement;
+import org.aikodi.chameleon.support.statement.EnhancedForControl;
+import org.aikodi.chameleon.support.statement.FinallyClause;
+import org.aikodi.chameleon.support.statement.ForStatement;
+import org.aikodi.chameleon.support.statement.IfThenElseStatement;
+import org.aikodi.chameleon.support.statement.LabeledStatement;
+import org.aikodi.chameleon.support.statement.LocalClassStatement;
+import org.aikodi.chameleon.support.statement.ReturnStatement;
+import org.aikodi.chameleon.support.statement.SimpleForControl;
+import org.aikodi.chameleon.support.statement.StatementExprList;
+import org.aikodi.chameleon.support.statement.StatementExpression;
+import org.aikodi.chameleon.support.statement.SwitchCase;
+import org.aikodi.chameleon.support.statement.SwitchLabel;
+import org.aikodi.chameleon.support.statement.SwitchStatement;
+import org.aikodi.chameleon.support.statement.SynchronizedStatement;
+import org.aikodi.chameleon.support.statement.ThrowStatement;
+import org.aikodi.chameleon.support.statement.TryStatement;
+import org.aikodi.chameleon.support.statement.WhileStatement;
+import org.aikodi.chameleon.support.tool.Arguments;
+import org.aikodi.chameleon.support.type.EmptyTypeElement;
+import org.aikodi.chameleon.support.type.StaticInitializer;
+import org.aikodi.chameleon.support.variable.LocalVariableDeclarator;
+import org.aikodi.chameleon.util.Util;
+
 import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayAccessExpression;
 import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayCreationExpression;
 import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayInitializer;
@@ -134,7 +134,7 @@ import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 /**
  * @author Marko van Dooren
  */
-public class JavaCodeWriter extends Syntax {
+public class JavaSyntax extends Syntax {
   
   public String toCode(Element element)  {
     String result = null;
@@ -373,7 +373,7 @@ public class JavaCodeWriter extends Syntax {
     if(result.length() > 0) {
       result = result + ".";
     }
-    result = result + typeReference.signature();
+    result = result + typeReference.name();
     return result;
   }
 
@@ -386,7 +386,7 @@ public class JavaCodeWriter extends Syntax {
     if(result.length() > 0) {
       result = result + ".";
     }
-    result = result + typeReference.signature();
+    result = result + typeReference.name();
     return result;
   }
 
@@ -424,7 +424,8 @@ public class JavaCodeWriter extends Syntax {
     if(result.length() > 0) {
       result = result + ".";
     }
-    result = result + typeReference.signature();
+    String name = typeReference.name();
+		result = result + name;
     	List<ActualTypeArgument> typeArguments = typeReference.typeArguments();
     	if(! typeArguments.isEmpty()) {
     		result = result +"<";
@@ -449,11 +450,11 @@ public class JavaCodeWriter extends Syntax {
   }
   
  
-  public JavaCodeWriter(){
+  public JavaSyntax(){
 	  _tabSize = 4;
   }
   
-  public JavaCodeWriter(int tabSize) {
+  public JavaSyntax(int tabSize) {
     _tabSize = tabSize;
   }
   
@@ -691,7 +692,7 @@ public class JavaCodeWriter extends Syntax {
   
   public String toCodeFormalTypeParameter(FormalTypeParameter param)  {
   	StringBuffer result = new StringBuffer();
-  	result.append(param.signature().name());
+  	result.append(param.name());
   	List<TypeConstraint> constraints = param.constraints();
   	if(! constraints.isEmpty()) {
     	result.append(" ");
@@ -766,7 +767,7 @@ public class JavaCodeWriter extends Syntax {
 	        result.append(" ");
 	      }
 	    
-	    result.append(((SimpleNameDeclarationWithParametersSignature)method.signature()).name());
+	    result.append(method.name());
 //	    result.append(method.name());
 	    result.append("(");
 	    Iterator iter = method.formalParameters().iterator();
@@ -889,7 +890,7 @@ public class JavaCodeWriter extends Syntax {
     }.applyTo(var.modifiers());
     result.append(toCode(var.getTypeReference()));
     result.append(" ");
-    result.append(var.getName());
+    result.append(var.name());
 //      if(var.getInitialization() != null) {
 //      result.append(" = ");
 //      result.append(toCode(var.getInitialization()));
@@ -1124,7 +1125,7 @@ public class JavaCodeWriter extends Syntax {
     	else {
     		first = false;
     	}
-    	result.append(element.signature().name());
+    	result.append(element.name());
     	Expression initCode = element.initialization();
     	if (initCode != null) {
     		result.append(" = ");
@@ -1532,7 +1533,7 @@ public class JavaCodeWriter extends Syntax {
 
 
   public static void writeCode(Arguments arguments) throws IOException {
-    JavaCodeWriter writer = new JavaCodeWriter(2);
+    JavaSyntax writer = new JavaSyntax(2);
     List<Type> types = arguments.getTypes();
     new SafePredicate<Type>() {
     	public boolean eval(Type t) {
@@ -1561,7 +1562,7 @@ public class JavaCodeWriter extends Syntax {
   }
 
 	@Override
-	public JavaCodeWriter clone() {
-		return new JavaCodeWriter(_tabSize);
+	public JavaSyntax clone() {
+		return new JavaSyntax(_tabSize);
 	}
 }

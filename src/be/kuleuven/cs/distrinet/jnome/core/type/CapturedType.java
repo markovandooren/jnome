@@ -2,11 +2,11 @@ package be.kuleuven.cs.distrinet.jnome.core.type;
 
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LocalLookupContext;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.DerivedType;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.ParameterSubstitution;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
+import org.aikodi.chameleon.core.lookup.LocalLookupContext;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.oo.type.DerivedType;
+import org.aikodi.chameleon.oo.type.ParameterSubstitution;
+import org.aikodi.chameleon.oo.type.Type;
 
 /**
  * A class that represents a captured type.

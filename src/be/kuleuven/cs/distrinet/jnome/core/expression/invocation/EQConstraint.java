@@ -5,15 +5,16 @@ package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgument;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.BasicTypeArgument;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ExtendsWildcard;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.InstantiatedTypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.SuperWildcard;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
+import org.aikodi.chameleon.oo.type.generics.BasicTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.ExtendsWildcard;
+import org.aikodi.chameleon.oo.type.generics.InstantiatedTypeParameter;
+import org.aikodi.chameleon.oo.type.generics.SuperWildcard;
+import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 
 public class EQConstraint extends FirstPhaseConstraint {

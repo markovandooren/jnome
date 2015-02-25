@@ -7,20 +7,20 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import be.kuleuven.cs.distrinet.chameleon.core.language.Language;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.InputSourceNamespace;
-import be.kuleuven.cs.distrinet.chameleon.util.Pair;
-import be.kuleuven.cs.distrinet.chameleon.util.Util;
-import be.kuleuven.cs.distrinet.chameleon.workspace.AbstractZipLoader;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoader;
-import be.kuleuven.cs.distrinet.chameleon.workspace.FileLoader;
-import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
+import org.aikodi.chameleon.core.language.Language;
+import org.aikodi.chameleon.core.namespace.DocumentLoaderNamespace;
+import org.aikodi.chameleon.util.Pair;
+import org.aikodi.chameleon.util.Util;
+import org.aikodi.chameleon.workspace.AbstractZipScanner;
+import org.aikodi.chameleon.workspace.DocumentScanner;
+import org.aikodi.chameleon.workspace.FileScanner;
+import org.aikodi.chameleon.workspace.InputException;
+
 import be.kuleuven.cs.distrinet.jnome.input.parser.ASMClassParser;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
-import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 
-public class JarLoader extends AbstractZipLoader {
+public class JarLoader extends AbstractZipScanner {
 
 	
 	/**
@@ -79,15 +79,15 @@ public class JarLoader extends AbstractZipLoader {
 				}
 			} else {
 				map.put(key, parser);
-				InputSourceNamespace ns = (InputSourceNamespace) view().namespace().getOrCreateNamespace(packageFQN);
+				DocumentLoaderNamespace ns = (DocumentLoaderNamespace) view().namespace().getOrCreateNamespace(packageFQN);
 				createInputSource(parser, ns);
 			}
   	}
 	}
 
-	protected void createInputSource(ASMClassParser parser, InputSourceNamespace ns) throws InputException {
-		LazyClassFileInputSource result = new LazyClassFileInputSource(parser,ns,this);
-		addInputSource(result);
+	protected void createInputSource(ASMClassParser parser, DocumentLoaderNamespace ns) throws InputException {
+		LazyClassFileDocumentLoader result = new LazyClassFileDocumentLoader(parser,ns,this);
+		add(result);
 	}
 
 	protected Language language() {
@@ -95,12 +95,12 @@ public class JarLoader extends AbstractZipLoader {
 	}
 	
 	@Override
-	public int compareTo(DocumentLoader o) {
+	public int compareTo(DocumentScanner o) {
 		//FIXME Just a hack for now, need proper support for a classpath.
 		//      e.g. put the document loaders in a path like structure.
 		int result = super.compareTo(o);
 		if(result == 0) {
-			result = o instanceof FileLoader ? 1 : 0; 
+			result = o instanceof FileScanner ? 1 : 0; 
 		}
 		return result;
 	}

@@ -1,6 +1,6 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
-import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
+import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 
 public class JavaPureWildcard extends PureWildcard {
 

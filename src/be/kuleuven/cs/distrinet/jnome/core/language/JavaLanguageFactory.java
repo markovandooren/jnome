@@ -5,18 +5,19 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.util.jar.JarFile;
 
-import be.kuleuven.cs.distrinet.chameleon.core.factory.Factory;
-import be.kuleuven.cs.distrinet.chameleon.core.language.LanguageFactory;
-import be.kuleuven.cs.distrinet.chameleon.input.ModelFactory;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.ExpressionFactory;
-import be.kuleuven.cs.distrinet.chameleon.oo.plugin.ObjectOrientedFactory;
-import be.kuleuven.cs.distrinet.chameleon.plugin.output.Syntax;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ConfigException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectConfigurator;
+import org.aikodi.chameleon.core.factory.Factory;
+import org.aikodi.chameleon.core.language.LanguageFactory;
+import org.aikodi.chameleon.input.ModelFactory;
+import org.aikodi.chameleon.oo.expression.ExpressionFactory;
+import org.aikodi.chameleon.oo.plugin.ObjectOrientedFactory;
+import org.aikodi.chameleon.plugin.output.Syntax;
+import org.aikodi.chameleon.workspace.ConfigException;
+import org.aikodi.chameleon.workspace.ProjectConfigurator;
+
 import be.kuleuven.cs.distrinet.jnome.input.JavaExpressionFactory;
 import be.kuleuven.cs.distrinet.jnome.input.JavaFactory;
 import be.kuleuven.cs.distrinet.jnome.input.JavaModelFactory;
-import be.kuleuven.cs.distrinet.jnome.output.JavaCodeWriter;
+import be.kuleuven.cs.distrinet.jnome.output.JavaSyntax;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaProjectConfigurator;
 
 public class JavaLanguageFactory implements LanguageFactory {
@@ -24,7 +25,7 @@ public class JavaLanguageFactory implements LanguageFactory {
 	public Java create() throws ConfigException {
 		Java result = new Java();
 		result.setPlugin(ModelFactory.class, new JavaModelFactory());
-		result.setPlugin(Syntax.class, new JavaCodeWriter());
+		result.setPlugin(Syntax.class, new JavaSyntax());
 		// FIXME: Stupid and inefficient
 		result.setPlugin(Factory.class, new JavaFactory());
 		result.setPlugin(ObjectOrientedFactory.class, new JavaFactory());

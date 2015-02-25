@@ -1,8 +1,8 @@
 package be.kuleuven.cs.distrinet.jnome.input;
 
-import be.kuleuven.cs.distrinet.chameleon.core.document.Document;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.RootNamespace;
+import org.aikodi.chameleon.core.document.Document;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.namespace.RootNamespace;
 
 public interface BytecodeClassParser {
 

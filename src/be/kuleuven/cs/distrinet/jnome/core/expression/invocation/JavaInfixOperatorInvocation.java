@@ -1,9 +1,9 @@
 package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationSelector;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReferenceTarget;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.infix.InfixOperator;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.infix.InfixOperatorInvocation;
+import org.aikodi.chameleon.core.lookup.DeclarationSelector;
+import org.aikodi.chameleon.core.reference.CrossReferenceTarget;
+import org.aikodi.chameleon.support.member.simplename.operator.infix.InfixOperator;
+import org.aikodi.chameleon.support.member.simplename.operator.infix.InfixOperatorInvocation;
 
 public class JavaInfixOperatorInvocation extends InfixOperatorInvocation {
 

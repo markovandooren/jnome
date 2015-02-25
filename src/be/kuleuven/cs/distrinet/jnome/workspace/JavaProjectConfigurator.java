@@ -2,18 +2,19 @@ package be.kuleuven.cs.distrinet.jnome.workspace;
 
 import java.util.jar.JarFile;
 
-import be.kuleuven.cs.distrinet.chameleon.core.language.Language;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.LazyRootNamespace;
-import be.kuleuven.cs.distrinet.chameleon.workspace.BaseLibraryConfiguration;
-import be.kuleuven.cs.distrinet.chameleon.workspace.BaseLibraryConfigurator;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ConfigException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ExtensionPredicate;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectConfiguration;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectConfigurator;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectConfiguratorImpl;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.View;
-import be.kuleuven.cs.distrinet.chameleon.workspace.Workspace;
+import org.aikodi.chameleon.core.language.Language;
+import org.aikodi.chameleon.core.namespace.LazyRootNamespace;
+import org.aikodi.chameleon.workspace.BaseLibraryConfiguration;
+import org.aikodi.chameleon.workspace.BaseLibraryConfigurator;
+import org.aikodi.chameleon.workspace.ConfigException;
+import org.aikodi.chameleon.workspace.ExtensionPredicate;
+import org.aikodi.chameleon.workspace.ProjectConfiguration;
+import org.aikodi.chameleon.workspace.ProjectConfigurator;
+import org.aikodi.chameleon.workspace.ProjectConfiguratorImpl;
+import org.aikodi.chameleon.workspace.ProjectException;
+import org.aikodi.chameleon.workspace.View;
+import org.aikodi.chameleon.workspace.Workspace;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.input.BaseJavaProjectLoader;
 import be.kuleuven.cs.distrinet.jnome.input.LazyJavaFileInputSourceFactory;
@@ -67,7 +68,7 @@ public class JavaProjectConfigurator extends ProjectConfiguratorImpl implements 
 		}
 		
 		@Override
-		protected void addBaseLoader(View view) {
+		protected void addBaseScanner(View view) {
 			try {
 				//Add the base loader.
 				view.addBinary(new BaseJavaProjectLoader(baseJarPath(),(Java)language()));

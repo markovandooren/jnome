@@ -1,9 +1,9 @@
 package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationSelector;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReferenceTarget;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.prefix.PrefixOperator;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.prefix.PrefixOperatorInvocation;
+import org.aikodi.chameleon.core.lookup.DeclarationSelector;
+import org.aikodi.chameleon.core.reference.CrossReferenceTarget;
+import org.aikodi.chameleon.support.member.simplename.operator.prefix.PrefixOperator;
+import org.aikodi.chameleon.support.member.simplename.operator.prefix.PrefixOperatorInvocation;
 
 public class JavaPrefixOperatorInvocation extends PrefixOperatorInvocation {
 

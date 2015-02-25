@@ -2,11 +2,12 @@ package be.kuleuven.cs.distrinet.jnome.analysis.dependency;
 
 import java.util.Set;
 
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.NamespaceNode;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TreeNode;
-import be.kuleuven.cs.distrinet.chameleon.ui.widget.tree.TristateTreePruner;
+import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.core.namespace.Namespace;
+import org.aikodi.chameleon.ui.widget.tree.NamespaceNode;
+import org.aikodi.chameleon.ui.widget.tree.TreeNode;
+import org.aikodi.chameleon.ui.widget.tree.TristateTreePruner;
+
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
 import be.kuleuven.cs.distrinet.rejuse.tree.TreePredicate;

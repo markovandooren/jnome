@@ -3,15 +3,15 @@ package be.kuleuven.cs.distrinet.jnome.tool.design;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-import be.kuleuven.cs.distrinet.chameleon.analysis.Analysis;
-import be.kuleuven.cs.distrinet.chameleon.analysis.Analyzer;
-import be.kuleuven.cs.distrinet.chameleon.analysis.Result;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.validation.AtomicProblem;
-import be.kuleuven.cs.distrinet.chameleon.core.validation.Invalid;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ConfigException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
+import org.aikodi.chameleon.analysis.Analysis;
+import org.aikodi.chameleon.analysis.Analyzer;
+import org.aikodi.chameleon.analysis.Result;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.validation.AtomicProblem;
+import org.aikodi.chameleon.core.validation.Invalid;
+import org.aikodi.chameleon.workspace.ConfigException;
+import org.aikodi.chameleon.workspace.InputException;
+import org.aikodi.chameleon.workspace.Project;
 
 // TODO
 //   0) public void method only invoked from within current class is suspicious

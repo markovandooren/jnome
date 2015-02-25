@@ -1,10 +1,10 @@
 package be.kuleuven.cs.distrinet.jnome.core.expression;
 
-import be.kuleuven.cs.distrinet.chameleon.core.element.ElementImpl;
-import be.kuleuven.cs.distrinet.chameleon.core.validation.Valid;
-import be.kuleuven.cs.distrinet.chameleon.core.validation.Verification;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
-import be.kuleuven.cs.distrinet.chameleon.util.association.Single;
+import org.aikodi.chameleon.core.element.ElementImpl;
+import org.aikodi.chameleon.core.validation.Valid;
+import org.aikodi.chameleon.core.validation.Verification;
+import org.aikodi.chameleon.oo.expression.Expression;
+import org.aikodi.chameleon.util.association.Single;
 
 /**
  * @author Marko van Dooren

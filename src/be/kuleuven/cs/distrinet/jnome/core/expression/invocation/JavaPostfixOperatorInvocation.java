@@ -1,9 +1,9 @@
 package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.DeclarationSelector;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReferenceTarget;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.postfix.PostfixOperator;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.postfix.PostfixOperatorInvocation;
+import org.aikodi.chameleon.core.lookup.DeclarationSelector;
+import org.aikodi.chameleon.core.reference.CrossReferenceTarget;
+import org.aikodi.chameleon.support.member.simplename.operator.postfix.PostfixOperator;
+import org.aikodi.chameleon.support.member.simplename.operator.postfix.PostfixOperatorInvocation;
 
 public class JavaPostfixOperatorInvocation extends PostfixOperatorInvocation {
 

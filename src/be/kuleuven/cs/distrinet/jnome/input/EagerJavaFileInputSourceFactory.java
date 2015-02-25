@@ -2,20 +2,20 @@ package be.kuleuven.cs.distrinet.jnome.input;
 
 import java.io.File;
 
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.InputSourceNamespace;
-import be.kuleuven.cs.distrinet.chameleon.util.Util;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DirectoryLoader;
-import be.kuleuven.cs.distrinet.chameleon.workspace.FileInputSourceFactory;
-import be.kuleuven.cs.distrinet.chameleon.workspace.IFileInputSource;
-import be.kuleuven.cs.distrinet.chameleon.workspace.InputException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.LazyFileInputSource;
+import org.aikodi.chameleon.core.namespace.DocumentLoaderNamespace;
+import org.aikodi.chameleon.util.Util;
+import org.aikodi.chameleon.workspace.DirectoryScanner;
+import org.aikodi.chameleon.workspace.FileDocumentLoaderFactory;
+import org.aikodi.chameleon.workspace.IFileDocumentLoader;
+import org.aikodi.chameleon.workspace.InputException;
+import org.aikodi.chameleon.workspace.LazyFileDocumentLoader;
 
-public class EagerJavaFileInputSourceFactory extends FileInputSourceFactory {
+public class EagerJavaFileInputSourceFactory extends FileDocumentLoaderFactory {
 
 	@Override
-	public IFileInputSource create(File file, DirectoryLoader loader) throws InputException {
+	public IFileDocumentLoader create(File file, DirectoryScanner loader) throws InputException {
 		String declarationName = Util.getAllButLastPart(file.getName());
-		LazyFileInputSource eagerJavaFileInputSource = new LazyFileInputSource(file,declarationName,(InputSourceNamespace) currentNamespace(),loader);
+		LazyFileDocumentLoader eagerJavaFileInputSource = new LazyFileDocumentLoader(file,declarationName,(DocumentLoaderNamespace) currentNamespace(),loader);
 		eagerJavaFileInputSource.load();
 		return eagerJavaFileInputSource;
 	}

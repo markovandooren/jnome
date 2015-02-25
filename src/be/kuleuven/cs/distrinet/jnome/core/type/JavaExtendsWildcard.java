@@ -1,8 +1,8 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
-import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.TypeReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.ExtendsWildcard;
+import org.aikodi.chameleon.exception.ChameleonProgrammerException;
+import org.aikodi.chameleon.oo.type.TypeReference;
+import org.aikodi.chameleon.oo.type.generics.ExtendsWildcard;
 
 public class JavaExtendsWildcard extends ExtendsWildcard {
 

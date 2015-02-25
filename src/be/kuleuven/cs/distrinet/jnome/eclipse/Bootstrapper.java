@@ -1,11 +1,12 @@
 package be.kuleuven.cs.distrinet.jnome.eclipse;
 
-import be.kuleuven.cs.distrinet.chameleon.analysis.dependency.DependencyOptionsFactory;
-import be.kuleuven.cs.distrinet.chameleon.core.language.Language;
-import be.kuleuven.cs.distrinet.chameleon.eclipse.connector.EclipseBootstrapper;
-import be.kuleuven.cs.distrinet.chameleon.eclipse.connector.EclipseEditorExtension;
-import be.kuleuven.cs.distrinet.chameleon.eclipse.connector.EclipseProjectLoader;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectException;
+import org.aikodi.chameleon.analysis.dependency.DependencyOptionsFactory;
+import org.aikodi.chameleon.core.language.Language;
+import org.aikodi.chameleon.eclipse.connector.EclipseBootstrapper;
+import org.aikodi.chameleon.eclipse.connector.EclipseEditorExtension;
+import org.aikodi.chameleon.eclipse.connector.EclipseProjectLoader;
+import org.aikodi.chameleon.workspace.ProjectException;
+
 import be.kuleuven.cs.distrinet.jnome.analysis.dependency.JavaDependencyOptionsFactory;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;

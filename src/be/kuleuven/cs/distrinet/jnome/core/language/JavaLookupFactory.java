@@ -1,15 +1,14 @@
 package be.kuleuven.cs.distrinet.jnome.core.language;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.DeclarationContainer;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupContext;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupContextFactory;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
+import org.aikodi.chameleon.core.declaration.DeclarationContainer;
+import org.aikodi.chameleon.core.lookup.LookupContext;
+import org.aikodi.chameleon.core.lookup.LookupContextFactory;
+import org.aikodi.chameleon.core.namespace.Namespace;
 
 public class JavaLookupFactory extends LookupContextFactory {
 
   public  LookupContext createLocalLookupStrategy(DeclarationContainer element) {
 		if(element instanceof Namespace) {
-//			report(element);
 			return new JavaNonNestedPackageLookupStrategy((Namespace)element);
 		} else {
 			return super.createLocalLookupStrategy(element);

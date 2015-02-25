@@ -1,33 +1,34 @@
 package be.kuleuven.cs.distrinet.jnome.input;
 
-import be.kuleuven.cs.distrinet.chameleon.aspect.oo.weave.factory.OOFactory;
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.Namespace;
-import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.NamespaceDeclaration;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReference;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReferenceTarget;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.MethodInvocation;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.MethodHeader;
-import be.kuleuven.cs.distrinet.chameleon.oo.plugin.ObjectOrientedFactory;
-import be.kuleuven.cs.distrinet.chameleon.oo.statement.Statement;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.inheritance.InheritanceRelation;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.infix.InfixOperatorInvocation;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.postfix.PostfixOperatorInvocation;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.prefix.PrefixOperatorInvocation;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.FinallyClause;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.ReturnStatement;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.TryStatement;
+import org.aikodi.chameleon.aspect.oo.weave.factory.OOFactory;
+import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
+import org.aikodi.chameleon.core.namespace.Namespace;
+import org.aikodi.chameleon.core.namespacedeclaration.NamespaceDeclaration;
+import org.aikodi.chameleon.core.reference.CrossReference;
+import org.aikodi.chameleon.core.reference.CrossReferenceTarget;
+import org.aikodi.chameleon.oo.expression.Expression;
+import org.aikodi.chameleon.oo.expression.MethodInvocation;
+import org.aikodi.chameleon.oo.method.Method;
+import org.aikodi.chameleon.oo.method.MethodHeader;
+import org.aikodi.chameleon.oo.plugin.ObjectOrientedFactory;
+import org.aikodi.chameleon.oo.statement.Statement;
+import org.aikodi.chameleon.oo.type.RegularType;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.inheritance.InheritanceRelation;
+import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
+import org.aikodi.chameleon.support.member.simplename.operator.infix.InfixOperatorInvocation;
+import org.aikodi.chameleon.support.member.simplename.operator.postfix.PostfixOperatorInvocation;
+import org.aikodi.chameleon.support.member.simplename.operator.prefix.PrefixOperatorInvocation;
+import org.aikodi.chameleon.support.statement.FinallyClause;
+import org.aikodi.chameleon.support.statement.ReturnStatement;
+import org.aikodi.chameleon.support.statement.TryStatement;
+
 import be.kuleuven.cs.distrinet.jnome.core.enumeration.EnumType;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaInfixOperatorInvocation;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaMethodInvocation;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaPostfixOperatorInvocation;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaPrefixOperatorInvocation;
-import be.kuleuven.cs.distrinet.jnome.core.method.JavaNormalMethod;
+import be.kuleuven.cs.distrinet.jnome.core.method.JavaMethod;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.JavaConstructor;
 import be.kuleuven.cs.distrinet.jnome.core.namespacedeclaration.JavaNamespaceDeclaration;
 import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
@@ -38,12 +39,12 @@ public class JavaFactory extends ObjectOrientedFactory implements OOFactory {
 		
 	}
 	
-	public RegularType createRegularType(SimpleNameSignature signature) {
-		return new RegularJavaType(signature);
+	public RegularType createRegularType(String name) {
+		return new RegularJavaType(name);
 	}
 	
-	public RegularType createEnumType(SimpleNameSignature signature) {
-		return new EnumType(signature);
+	public RegularType createEnumType(String name) {
+		return new EnumType(name);
 	}
 	
 	@Override
@@ -54,7 +55,7 @@ public class JavaFactory extends ObjectOrientedFactory implements OOFactory {
 	
 	@Override
 	public NormalMethod createNormalMethod(MethodHeader header) {
-		return new JavaNormalMethod(header);
+		return new JavaMethod(header);
 	}
 	
 	@Override

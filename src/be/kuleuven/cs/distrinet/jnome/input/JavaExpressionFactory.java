@@ -1,13 +1,15 @@
 package be.kuleuven.cs.distrinet.jnome.input;
 
-import be.kuleuven.cs.distrinet.chameleon.core.reference.CrossReferenceTarget;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.Expression;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.ExpressionFactory;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.MethodInvocation;
-import be.kuleuven.cs.distrinet.chameleon.oo.expression.NameExpression;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.infix.InfixOperatorInvocation;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.postfix.PostfixOperatorInvocation;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.prefix.PrefixOperatorInvocation;
+import org.aikodi.chameleon.core.reference.CrossReferenceTarget;
+import org.aikodi.chameleon.oo.expression.Expression;
+import org.aikodi.chameleon.oo.expression.ExpressionFactory;
+import org.aikodi.chameleon.oo.expression.MethodInvocation;
+import org.aikodi.chameleon.oo.expression.NameExpression;
+import org.aikodi.chameleon.support.member.simplename.operator.infix.InfixOperatorInvocation;
+import org.aikodi.chameleon.support.member.simplename.operator.postfix.PostfixOperatorInvocation;
+import org.aikodi.chameleon.support.member.simplename.operator.prefix.PrefixOperatorInvocation;
+import org.aikodi.chameleon.util.Util;
+
 import be.kuleuven.cs.distrinet.jnome.core.expression.JavaConditionalExpression;
 import be.kuleuven.cs.distrinet.jnome.core.expression.JavaNameExpression;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaInfixOperatorInvocation;

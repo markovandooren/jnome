@@ -1,10 +1,11 @@
 package be.kuleuven.cs.distrinet.jnome.eclipse;
 
+import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.eclipse.presentation.treeview.AbstractIconProvider;
+import org.aikodi.chameleon.eclipse.presentation.treeview.NameBasedIconDecorator;
+import org.aikodi.chameleon.oo.type.Type;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
-import be.kuleuven.cs.distrinet.chameleon.core.element.Element;
-import be.kuleuven.cs.distrinet.chameleon.eclipse.presentation.treeview.AbstractIconProvider;
-import be.kuleuven.cs.distrinet.chameleon.eclipse.presentation.treeview.NameBasedIconDecorator;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
 
 public class ClassIconProvider extends AbstractIconProvider {
 

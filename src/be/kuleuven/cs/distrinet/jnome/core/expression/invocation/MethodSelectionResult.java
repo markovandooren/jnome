@@ -1,7 +1,7 @@
 package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.SelectionResult;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
+import org.aikodi.chameleon.core.lookup.SelectionResult;
+import org.aikodi.chameleon.oo.method.Method;
 
 /**
  * The result of selecting a method during lookup. Object that implement

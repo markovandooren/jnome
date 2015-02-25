@@ -6,15 +6,14 @@ import java.io.File;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.test.ModelTest;
+import org.aikodi.chameleon.test.provider.BasicNamespaceProvider;
+import org.aikodi.chameleon.workspace.ConfigException;
+import org.aikodi.chameleon.workspace.Project;
+import org.aikodi.chameleon.workspace.ProjectException;
 import org.junit.Test;
-
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.test.ModelTest;
-import be.kuleuven.cs.distrinet.chameleon.test.provider.BasicNamespaceProvider;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ConfigException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectException;
 
 /**
  * @author Marko van Dooren

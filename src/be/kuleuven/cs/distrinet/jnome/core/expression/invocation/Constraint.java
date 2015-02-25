@@ -4,9 +4,10 @@
 package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
 
+import org.aikodi.chameleon.exception.ChameleonProgrammerException;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
-import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
 
 public class Constraint<C extends Constraint, S extends ConstraintSet<C>> {
 	

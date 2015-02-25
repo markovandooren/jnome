@@ -3,26 +3,25 @@ package be.kuleuven.cs.distrinet.jnome.workspace;
 import java.io.IOException;
 import java.util.jar.JarFile;
 
-import be.kuleuven.cs.distrinet.chameleon.workspace.ConfigException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoader;
-import be.kuleuven.cs.distrinet.chameleon.workspace.FileInputSourceFactory;
-import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectConfiguration;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectConfigurator;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.View;
-import be.kuleuven.cs.distrinet.chameleon.workspace.Workspace;
+import org.aikodi.chameleon.workspace.ConfigException;
+import org.aikodi.chameleon.workspace.DocumentScanner;
+import org.aikodi.chameleon.workspace.FileDocumentLoaderFactory;
+import org.aikodi.chameleon.workspace.ProjectConfiguration;
+import org.aikodi.chameleon.workspace.ProjectConfigurator;
+import org.aikodi.chameleon.workspace.ProjectException;
+import org.aikodi.chameleon.workspace.View;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.input.BaseJavaProjectLoader;
 
 public class JavaProjectConfiguration extends ProjectConfiguration {
 
-	public JavaProjectConfiguration(View view, FileInputSourceFactory inputSourceFactory) throws ConfigException {
+	public JavaProjectConfiguration(View view, FileDocumentLoaderFactory inputSourceFactory) throws ConfigException {
 		super(view, inputSourceFactory);
 	}
 	
 	@Override
-	protected void binaryNonBaseLoaderAdded(DocumentLoader loader) throws ConfigException {
+	protected void binaryNonBaseScannerAdded(DocumentScanner loader) throws ConfigException {
 		if(loader instanceof BaseJavaProjectLoader) {
 			return;
 		}
@@ -30,7 +29,7 @@ public class JavaProjectConfiguration extends ProjectConfiguration {
 			BinaryPath p = createOrGetChild(BinaryPath.class);
 			p.createOrUpdateChild(BinaryPath.Jar.class,loader);
 		} else {
-			super.binaryLoaderAdded(loader);
+			super.binaryScannerAdded(loader);
 		}
 	}
 	

@@ -1,8 +1,8 @@
 package be.kuleuven.cs.distrinet.jnome.core.statement;
 
-import be.kuleuven.cs.distrinet.chameleon.oo.statement.Statement;
-import be.kuleuven.cs.distrinet.chameleon.support.statement.TryStatement;
-import be.kuleuven.cs.distrinet.chameleon.util.association.Single;
+import org.aikodi.chameleon.oo.statement.Statement;
+import org.aikodi.chameleon.support.statement.TryStatement;
+import org.aikodi.chameleon.util.association.Single;
 
 public class JavaTryStatement extends TryStatement {
 

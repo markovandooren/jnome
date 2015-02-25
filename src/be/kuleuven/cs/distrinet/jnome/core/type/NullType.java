@@ -2,18 +2,18 @@ package be.kuleuven.cs.distrinet.jnome.core.type;
 
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.SimpleNameSignature;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.SimpleNameMethodHeader;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.RegularType;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.Type;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.UnionType;
-import be.kuleuven.cs.distrinet.chameleon.oo.type.generics.TypeParameter;
-import be.kuleuven.cs.distrinet.chameleon.oo.variable.FormalParameter;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.operator.infix.InfixOperator;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Native;
-import be.kuleuven.cs.distrinet.chameleon.support.modifier.Public;
-import be.kuleuven.cs.distrinet.chameleon.util.Pair;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.oo.method.SimpleNameMethodHeader;
+import org.aikodi.chameleon.oo.type.RegularType;
+import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.UnionType;
+import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+import org.aikodi.chameleon.oo.variable.FormalParameter;
+import org.aikodi.chameleon.support.member.simplename.operator.infix.InfixOperator;
+import org.aikodi.chameleon.support.modifier.Native;
+import org.aikodi.chameleon.support.modifier.Public;
+import org.aikodi.chameleon.util.Pair;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 
 /**
@@ -34,7 +34,7 @@ public class NullType extends RegularType implements JavaType {
   	Public pub = new Public();
   	InfixOperator op = new InfixOperator(new SimpleNameMethodHeader(symbol,jtr));
   	op.addModifier(pub);
-  	op.header().addFormalParameter(new FormalParameter(new SimpleNameSignature("arg"), lang.createTypeReference(argType)));
+  	op.header().addFormalParameter(new FormalParameter("arg", lang.createTypeReference(argType)));
   	op.addModifier(new Native());
   	add(op);
   }

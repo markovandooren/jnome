@@ -3,15 +3,15 @@ package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
 
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.DeclarationContainer;
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.Signature;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.exception.ChameleonProgrammerException;
-import be.kuleuven.cs.distrinet.chameleon.oo.member.SimpleNameDeclarationWithParametersSignature;
-import be.kuleuven.cs.distrinet.chameleon.oo.method.Method;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.SimpleNameMethodInvocation;
-import be.kuleuven.cs.distrinet.chameleon.support.member.simplename.method.NormalMethod;
+import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.declaration.DeclarationContainer;
+import org.aikodi.chameleon.core.declaration.Signature;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.exception.ChameleonProgrammerException;
+import org.aikodi.chameleon.oo.member.SimpleNameDeclarationWithParametersSignature;
+import org.aikodi.chameleon.oo.method.Method;
+import org.aikodi.chameleon.support.member.simplename.SimpleNameMethodInvocation;
+import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
 
 public class JavaMethodSelector<M extends Method> extends AbstractJavaMethodSelector<M> {
 
@@ -28,6 +28,10 @@ public class JavaMethodSelector<M extends Method> extends AbstractJavaMethodSele
 			_javaMethodInvocation = javaMethodInvocation;
 		}
 
+		@Override
+		public boolean isGreedy() {
+		  return _javaMethodInvocation.nbActualParameters() == 0;
+		}
 
 
 		protected M selection(Declaration declarator) throws LookupException {

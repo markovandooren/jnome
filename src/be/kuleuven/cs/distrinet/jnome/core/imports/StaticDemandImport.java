@@ -2,17 +2,18 @@ package be.kuleuven.cs.distrinet.jnome.core.imports;
 
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.Declaration;
-import be.kuleuven.cs.distrinet.chameleon.core.declaration.DeclarationContainer;
-import be.kuleuven.cs.distrinet.chameleon.core.lookup.LookupException;
-import be.kuleuven.cs.distrinet.chameleon.core.namespacedeclaration.DemandImport;
-import be.kuleuven.cs.distrinet.chameleon.core.reference.SimpleReference;
-import be.kuleuven.cs.distrinet.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.declaration.DeclarationContainer;
+import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.namespacedeclaration.DemandImport;
+import org.aikodi.chameleon.core.reference.NameReference;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+
 import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
 
 public class StaticDemandImport extends DemandImport {
 
-	public StaticDemandImport(SimpleReference<? extends DeclarationContainer> ref) {
+	public StaticDemandImport(NameReference<? extends DeclarationContainer> ref) {
 		super(ref);
 	}
 	

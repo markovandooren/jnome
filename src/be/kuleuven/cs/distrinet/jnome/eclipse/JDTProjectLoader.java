@@ -4,6 +4,23 @@ import java.io.File;
 import java.io.IOException;
 import java.util.jar.JarFile;
 
+import org.aikodi.chameleon.core.language.Language;
+import org.aikodi.chameleon.core.namespace.LazyRootNamespace;
+import org.aikodi.chameleon.eclipse.connector.EclipseProjectLoader;
+import org.aikodi.chameleon.eclipse.util.Files;
+import org.aikodi.chameleon.eclipse.util.Projects;
+import org.aikodi.chameleon.eclipse.util.Workspaces;
+import org.aikodi.chameleon.plugin.LanguagePlugin;
+import org.aikodi.chameleon.plugin.LanguagePluginImpl;
+import org.aikodi.chameleon.workspace.CompositeDocumentScanner;
+import org.aikodi.chameleon.workspace.DirectoryScanner;
+import org.aikodi.chameleon.workspace.DocumentScanner;
+import org.aikodi.chameleon.workspace.DocumentScannerContainer;
+import org.aikodi.chameleon.workspace.DocumentScannerImpl;
+import org.aikodi.chameleon.workspace.Project;
+import org.aikodi.chameleon.workspace.ProjectConfigurator;
+import org.aikodi.chameleon.workspace.ProjectException;
+import org.aikodi.chameleon.workspace.View;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -15,23 +32,6 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 
-import be.kuleuven.cs.distrinet.chameleon.core.language.Language;
-import be.kuleuven.cs.distrinet.chameleon.core.namespace.LazyRootNamespace;
-import be.kuleuven.cs.distrinet.chameleon.eclipse.connector.EclipseProjectLoader;
-import be.kuleuven.cs.distrinet.chameleon.eclipse.util.Files;
-import be.kuleuven.cs.distrinet.chameleon.eclipse.util.Projects;
-import be.kuleuven.cs.distrinet.chameleon.eclipse.util.Workspaces;
-import be.kuleuven.cs.distrinet.chameleon.plugin.LanguagePlugin;
-import be.kuleuven.cs.distrinet.chameleon.plugin.LanguagePluginImpl;
-import be.kuleuven.cs.distrinet.chameleon.workspace.CompositeDocumentLoader;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DirectoryLoader;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoader;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoaderContainer;
-import be.kuleuven.cs.distrinet.chameleon.workspace.DocumentLoaderImpl;
-import be.kuleuven.cs.distrinet.chameleon.workspace.Project;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectConfigurator;
-import be.kuleuven.cs.distrinet.chameleon.workspace.ProjectException;
-import be.kuleuven.cs.distrinet.chameleon.workspace.View;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.input.LazyJavaFileInputSourceFactory;
 import be.kuleuven.cs.distrinet.jnome.input.PredefinedElementsFactory;
@@ -69,7 +69,7 @@ public class JDTProjectLoader extends LanguagePluginImpl implements EclipseProje
 			IJavaProject nature = (IJavaProject) jdtProject.getNature(JavaCore.NATURE_ID);
 			IClasspathEntry[] rawClasspath = nature.getRawClasspath();
 			addLoaders(view, jdtProject, rawClasspath,false,false);
-			DocumentLoader loader = new DocumentLoaderImpl() {
+			DocumentScanner loader = new DocumentScannerImpl() {
 				@Override
 				public String label() {
 				  return "Java built-in types";
@@ -91,7 +91,7 @@ public class JDTProjectLoader extends LanguagePluginImpl implements EclipseProje
 		}
 	}
 	
-	protected void addLoaders(DocumentLoaderContainer container, IProject jdtProject, IClasspathEntry[] entries, boolean inContainer, boolean inOtherProject) throws CoreException {
+	protected void addLoaders(DocumentScannerContainer container, IProject jdtProject, IClasspathEntry[] entries, boolean inContainer, boolean inOtherProject) throws CoreException {
 		
 		IJavaProject nature = (IJavaProject) jdtProject.getNature(JavaCore.NATURE_ID);
 		
@@ -109,12 +109,12 @@ public class JDTProjectLoader extends LanguagePluginImpl implements EclipseProje
 				} else {
 					sourceRoot = projectRelativePath.toString();
 				}
-				DirectoryLoader loader = new DirectoryLoader(sourceRoot, sourceFileFilter, new LazyJavaFileInputSourceFactory());
+				DirectoryScanner loader = new DirectoryScanner(sourceRoot, sourceFileFilter, new LazyJavaFileInputSourceFactory());
 				try {
 					if(inOtherProject) {
-						CompositeDocumentLoader composite = (CompositeDocumentLoader) container;
+						CompositeDocumentScanner composite = (CompositeDocumentScanner) container;
 						if(composite.view().canAddBinary(loader)) {
-							composite.addLoader(loader);
+							composite.addScanner(loader);
 						} else {
 							System.out.println("Not adding other project source loader twice.");
 						}
@@ -132,7 +132,7 @@ public class JDTProjectLoader extends LanguagePluginImpl implements EclipseProje
 				break;
 			case IClasspathEntry.CPE_CONTAINER:
 				IClasspathContainer classpathContainer = JavaCore.getClasspathContainer(path, nature);
-				CompositeDocumentLoader composite = new CompositeDocumentLoader(classpathContainer.getDescription());
+				CompositeDocumentScanner composite = new CompositeDocumentScanner(classpathContainer.getDescription());
 				addToContainer(container, composite);
 //				if(container instanceof CompositeDocumentLoader) {
 //					((CompositeDocumentLoader) container).addLoader(composite);
@@ -173,7 +173,7 @@ public class JDTProjectLoader extends LanguagePluginImpl implements EclipseProje
 			case IClasspathEntry.CPE_PROJECT:
 				IProject dependency = Projects.project(path);
 				IJavaProject dependencyJDTProject = (IJavaProject) dependency.getNature(JavaCore.NATURE_ID);
-				CompositeDocumentLoader cc = new CompositeDocumentLoader(dependency.getName());
+				CompositeDocumentScanner cc = new CompositeDocumentScanner(dependency.getName());
 				addToContainer(container, cc);
 				addLoaders(cc, dependency, dependencyJDTProject.getRawClasspath(),false,true);
 				break;
@@ -195,12 +195,12 @@ public class JDTProjectLoader extends LanguagePluginImpl implements EclipseProje
 
 	}
 
-	private void addToContainer(DocumentLoaderContainer container, DocumentLoader loader) {
+	private void addToContainer(DocumentScannerContainer container, DocumentScanner loader) {
 		try {
-			if(container instanceof CompositeDocumentLoader) {
-				CompositeDocumentLoader c = (CompositeDocumentLoader) container;
+			if(container instanceof CompositeDocumentScanner) {
+				CompositeDocumentScanner c = (CompositeDocumentScanner) container;
 				if(c.view().canAddBinary(loader)) {
-					c.addLoader(loader);
+					c.addScanner(loader);
 				}
 			} else {
 				View view = (View) container;

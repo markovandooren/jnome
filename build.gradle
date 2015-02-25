@@ -1,0 +1,59 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+//apply plugin: 'org.akhikhl.wuff.eclipse-ide-bundle'
+
+//dependencies {
+//  compile "${eclipseMavenGroup}:org.eclipse.core.commands:+"
+//}
+
+
+repositories {
+  mavenCentral()
+  maven {
+    url 'http://users.ugent.be/~mcvdoore/repository'
+  }
+}
+
+sourceSets {
+  main {
+    java {
+      srcDir 'src'
+      exclude 'be/kuleuven/cs/distrinet/jnome/eclipse/**'
+      exclude 'be/kuleuven/cs/distrinet/jnome/tool/dependency/**'
+      exclude 'be/kuleuven/cs/distrinet/jnome/tool/**'
+    }
+  }
+}
+
+configurations {
+  deployerJars
+}
+
+dependencies {
+   deployerJars 'org.apache.maven.wagon:wagon-ssh:2.2'
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        configuration = configurations.deployerJars
+        repository(url: "scp://webssh.ugent.be/users/m/mcvdoore/WWW/repository/") {
+            authentication(userName: "mcvdoore")
+        }
+        pom.version = '1.1.0'
+        pom.groupId = 'markovandooren'
+        pom.artifactId = 'jnome'
+    }
+}
+
+
+dependencies {
+   //compile project(':rejuse')
+   //compile project(':chameleon')
+   compile group: 'markovandooren', name: 'rejuse', version: '1.1.0'
+   compile group: 'markovandooren', name: 'chameleon', version: '1.1.6'
+   compile 'org.ow2.asm:asm:5.0.3'
+   compile 'com.lexicalscope.jewelcli:jewelcli:0.8.5'
+   compile 'net.sf.jgrapht:jgrapht:+'
+   compile 'org.antlr:antlr:3.2'
+}

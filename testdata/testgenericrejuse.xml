@@ -1,0 +1,10 @@
+<project name="testgenericrejuse">
+	<language name="java"/>
+	<sourcepath>
+      <source root="rejuse/src" extension=".java"/>
+	</sourcepath>
+    <binarypath>
+        <jar file="lib/jregex1.2_00.jar" />
+        <jar file="lib/junit-4.10.jar" />
+    </binarypath>
+</project>

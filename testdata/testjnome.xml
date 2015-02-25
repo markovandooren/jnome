@@ -1,0 +1,13 @@
+<project name="testjnome">
+	<language name="java"/>
+	<sourcepath>
+      <source root="jnome/src" extension=".java"/>
+	</sourcepath>
+    <binarypath>
+      <source root="antlr-2.7.2/antlr" extension=".java"/>
+      <source root="jutil/src" extension=".java"/>
+        <jar file="lib/junit-3.8.2.jar" />
+        <jar file="lib/log4j-1.2.16.jar" />
+        <jar file="lib/jregex1.2_00.jar" />
+    </binarypath>
+</project>

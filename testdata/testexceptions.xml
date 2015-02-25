@@ -1,0 +1,6 @@
+<project name="testexceptions">
+	<language name="java"/>
+	<sourcepath>
+      <source root="exceptions" extension=".java"/>
+	</sourcepath>
+</project>

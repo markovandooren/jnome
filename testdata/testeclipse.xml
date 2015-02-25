@@ -1,0 +1,6 @@
+<project name="testeclipse">
+	<language name="java" />
+	<sourcepath>
+      <source root="eclipse_source" extension=".java"/>
+	</sourcepath>
+</project>

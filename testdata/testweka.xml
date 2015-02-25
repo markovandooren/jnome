@@ -1,0 +1,10 @@
+<project name="testweka">
+	<language name="java"/>
+	<sourcepath>
+      <source root="weka/" extension=".java"/>
+	</sourcepath>
+    <binarypath>
+        <jar file="lib/jflex.jar" />
+        <jar file="lib/junit-4.10.jar" />
+    </binarypath>
+</project>

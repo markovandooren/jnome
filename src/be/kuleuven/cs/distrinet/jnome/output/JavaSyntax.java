@@ -517,7 +517,7 @@ public class JavaSyntax extends Syntax {
   
   public String toCodeNamespacePart(NamespaceDeclaration part)  {
     StringBuffer result = new StringBuffer();
-    result.append("package "+part.namespace().getFullyQualifiedName() +";\n\n");
+    result.append("package "+part.namespace().fullyQualifiedName() +";\n\n");
     for(Import imp: part.imports()) {
         result.append(toCode(imp));
     }
@@ -1543,7 +1543,7 @@ public class JavaSyntax extends Syntax {
     int i = 1;
     for(Type type:types) {
       String fileName = type.name()+".java";
-      String packageFQN = type.namespace().getFullyQualifiedName();
+      String packageFQN = type.namespace().fullyQualifiedName();
       String relDirName = packageFQN.replace('.', File.separatorChar);
       File out = new File(arguments.getOutputDirName()+File.separatorChar + relDirName + File.separatorChar + fileName);
       

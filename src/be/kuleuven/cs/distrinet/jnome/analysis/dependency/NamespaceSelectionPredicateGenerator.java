@@ -48,7 +48,7 @@ public class NamespaceSelectionPredicateGenerator extends TristateTreePruner<Obj
 
 
 				public String toString() {
-					return "namespace = "+currentNamespace.getFullyQualifiedName();
+					return "namespace = "+currentNamespace.fullyQualifiedName();
 				}
 
 			}.orTree((TreePredicate)childrenDisjunction);
@@ -76,7 +76,7 @@ public class NamespaceSelectionPredicateGenerator extends TristateTreePruner<Obj
 				}
 
 				public String toString() {
-					return "namespace ancestor = "+currentNamespace.getFullyQualifiedName();
+					return "namespace ancestor = "+currentNamespace.fullyQualifiedName();
 				}
 
 				@Override

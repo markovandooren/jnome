@@ -138,7 +138,7 @@ public class DependencyAnalysisTool extends AnalysisTool {
 
 					@Override
 					public boolean uncheckedEval(Type object) {
-						return new GlobPredicate(string,'.').eval(object.namespace().getFullyQualifiedName());
+						return new GlobPredicate(string,'.').eval(object.namespace().fullyQualifiedName());
 					}
 
 				}).makeUniversal(Type.class);

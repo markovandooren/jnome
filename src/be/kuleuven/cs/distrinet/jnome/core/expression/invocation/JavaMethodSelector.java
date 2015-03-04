@@ -8,10 +8,9 @@ import org.aikodi.chameleon.core.declaration.DeclarationContainer;
 import org.aikodi.chameleon.core.declaration.Signature;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.exception.ChameleonProgrammerException;
-import org.aikodi.chameleon.oo.member.SimpleNameDeclarationWithParametersSignature;
+import org.aikodi.chameleon.oo.member.SignatureWithParameters;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.support.member.simplename.SimpleNameMethodInvocation;
-import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
 
 public class JavaMethodSelector<M extends Method> extends AbstractJavaMethodSelector<M> {
 
@@ -42,8 +41,8 @@ public class JavaMethodSelector<M extends Method> extends AbstractJavaMethodSele
   	
     public boolean correctSignature(Signature signature) throws LookupException {
   		boolean result = false;
-  		if(signature instanceof SimpleNameDeclarationWithParametersSignature) {
-  			SimpleNameDeclarationWithParametersSignature sig = (SimpleNameDeclarationWithParametersSignature)signature;
+  		if(signature instanceof SignatureWithParameters) {
+  		 SignatureWithParameters sig = (SignatureWithParameters)signature;
   			result = sig.name().equals(invocation().name());
   		}
   		return result;

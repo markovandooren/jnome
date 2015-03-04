@@ -78,7 +78,7 @@ public class BasicMethodSelectionResult implements MethodSelectionResult {
 		if(nbTypeParameters > 0) {
 			result = clonedMethod();
 			cloned=true;
-			for(int i=1; i <= nbTypeParameters;i++) {
+			for(int i=0; i < nbTypeParameters;i++) {
 				TypeParameter originalPar = _template.typeParameter(i);
 				TypeParameter clonedPar = result.typeParameter(i);
 				// we detach the signature from the clone.

@@ -18,6 +18,7 @@ import org.aikodi.chameleon.support.expression.AssignmentExpression;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.tool.IsCollectionType;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
+import be.kuleuven.cs.distrinet.rejuse.tree.TreeStructure;
 
 public class IncomingLeak extends Analysis<AssignmentExpression, Verification> {
 
@@ -50,7 +51,8 @@ public class IncomingLeak extends Analysis<AssignmentExpression, Verification> {
 	}
 
 	@Override
-	protected void doPerform(AssignmentExpression assignment) throws Nothing {
+	protected <X extends AssignmentExpression> void doPerform(TreeStructure<X> tree) throws Nothing {
+	  AssignmentExpression assignment = tree.node();
 		Verification result = Valid.create();
 		try {
 			Method method = assignment.nearestAncestor(Method.class);

@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.aikodi.chameleon.core.declaration.Declaration;
-import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
 import org.aikodi.chameleon.core.declaration.TargetDeclaration;
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.lookup.DeclarationSelector;
@@ -29,7 +28,7 @@ import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.expression.NamedTarget;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.member.Member;
-import org.aikodi.chameleon.oo.member.SimpleNameDeclarationWithParametersSignature;
+import org.aikodi.chameleon.oo.member.SignatureWithParameters;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.type.DerivedType;
 import org.aikodi.chameleon.oo.type.IntersectionType;
@@ -206,7 +205,7 @@ public class Java extends ObjectOrientedLanguage {
   	} 
   	else {
   		try {
-  			if(original.nbTypeParameters(TypeParameter.class) > 0 && (original.parameter(TypeParameter.class,1) instanceof FormalTypeParameter)) {
+  			if(original.nbTypeParameters(TypeParameter.class) > 0 && (original.parameter(TypeParameter.class,0) instanceof FormalTypeParameter)) {
   				result = ((JavaType)original).erasure();
 			} else {
   			result = original;
@@ -228,8 +227,8 @@ public class Java extends ObjectOrientedLanguage {
   
   private final Set<String> _operatorNames = new HashSet<String>();
   
-	public SimpleNameDeclarationWithParametersSignature erasure(SimpleNameDeclarationWithParametersSignature signature) {
-		SimpleNameDeclarationWithParametersSignature result = new SimpleNameDeclarationWithParametersSignature(signature.name());
+	public SignatureWithParameters erasure(SignatureWithParameters signature) {
+	   SignatureWithParameters result = new SignatureWithParameters(signature.name());
 		result.setUniParent(signature.parent());
 		for(TypeReference tref : signature.typeReferences()) {
 			JavaTypeReference jref = (JavaTypeReference) tref;

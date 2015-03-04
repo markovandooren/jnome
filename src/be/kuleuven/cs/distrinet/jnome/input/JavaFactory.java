@@ -1,7 +1,7 @@
 package be.kuleuven.cs.distrinet.jnome.input;
 
 import org.aikodi.chameleon.aspect.oo.weave.factory.OOFactory;
-import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
+import org.aikodi.chameleon.core.declaration.Name;
 import org.aikodi.chameleon.core.namespace.Namespace;
 import org.aikodi.chameleon.core.namespacedeclaration.NamespaceDeclaration;
 import org.aikodi.chameleon.core.reference.CrossReference;

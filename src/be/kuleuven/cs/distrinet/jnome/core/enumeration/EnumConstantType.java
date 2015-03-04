@@ -1,6 +1,6 @@
 package be.kuleuven.cs.distrinet.jnome.core.enumeration;
 
-import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
+import org.aikodi.chameleon.core.declaration.Name;
 import org.aikodi.chameleon.oo.type.RegularType;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
@@ -29,8 +29,8 @@ public class EnumConstantType extends AbstractAnonymousInnerClass {
 	}
 	
 	@Override
-	public SimpleNameSignature signature() {
-		SimpleNameSignature result = (SimpleNameSignature) nearestAncestor(EnumConstant.class).signature();
+	public Name signature() {
+		Name result = (Name) nearestAncestor(EnumConstant.class).signature();
 		return result;
 	}
 	

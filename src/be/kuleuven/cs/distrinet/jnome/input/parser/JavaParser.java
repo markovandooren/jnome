@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import org.aikodi.chameleon.core.declaration.DeclarationContainer;
-import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
+import org.aikodi.chameleon.core.declaration.Name;
 import org.aikodi.chameleon.core.declaration.TargetDeclaration;
 import org.aikodi.chameleon.core.document.Document;
 import org.aikodi.chameleon.core.element.Element;
@@ -88,7 +88,7 @@ import org.aikodi.chameleon.support.expression.NullLiteral;
 import org.aikodi.chameleon.support.expression.RegularLiteral;
 import org.aikodi.chameleon.support.expression.SuperTarget;
 import org.aikodi.chameleon.support.expression.ThisLiteral;
-import org.aikodi.chameleon.support.input.ChameleonParser;
+import org.aikodi.chameleon.support.input.ChameleonANTLR3Parser;
 import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
 import org.aikodi.chameleon.support.member.simplename.method.RegularMethodInvocation;
 import org.aikodi.chameleon.support.member.simplename.operator.infix.InfixOperatorInvocation;
@@ -147,7 +147,7 @@ import java.util.HashMap;
 
 import org.antlr.runtime.tree.*;
 
-public class JavaParser extends ChameleonParser {
+public class JavaParser extends ChameleonANTLR3Parser {
     public static final String[] tokenNames = new String[] {
         "<invalid>", "<EOR>", "<DOWN>", "<UP>", "DecimalIntegerLiteral", "HexIntegerLiteral", "OctalIntegerLiteral", "BinaryIntegerLiteral", "IntegerLiteral", "DecimalNumeral", "IntegerTypeSuffix", "NonZeroDigit", "Digits", "Digit", "OctalNumeral", "OctalDigits", "OctalDigit", "HexNumeral", "HexDigits", "HexDigit", "BinaryNumeral", "BinaryDigits", "BinaryDigit", "DecimalFloatingPointLiteral", "HexadecimalFloatingPointLiteral", "FloatingPointLiteral", "ExponentPart", "FloatTypeSuffix", "ExponentIndicator", "SignedInteger", "Sign", "HexSignificand", "BinaryExponent", "BinaryExponentIndicator", "EscapeSequence", "CharacterLiteral", "StringLiteral", "UnicodeEscape", "OctalEscape", "ENUM", "ASSERT", "Letter", "JavaIDDigit", "Identifier", "WS", "COMMENT", "LINE_COMMENT", "'package'", "';'", "'import'", "'static'", "'.'", "'*'", "'public'", "'protected'", "'private'", "'abstract'", "'final'", "'strictfp'", "'class'", "'extends'", "'implements'", "'<'", "','", "'>'", "'&'", "'{'", "'}'", "'interface'", "'void'", "'['", "']'", "'throws'", "'='", "'native'", "'synchronized'", "'transient'", "'volatile'", "'|'", "'boolean'", "'char'", "'byte'", "'short'", "'int'", "'long'", "'float'", "'double'", "'?'", "'super'", "'('", "')'", "'...'", "'this'", "'null'", "'true'", "'false'", "'@'", "'default'", "':'", "'if'", "'else'", "'for'", "'while'", "'do'", "'try'", "'finally'", "'switch'", "'return'", "'throw'", "'break'", "'continue'", "'catch'", "'case'", "'+='", "'-='", "'*='", "'/='", "'&='", "'|='", "'^='", "'%='", "'||'", "'&&'", "'^'", "'=='", "'!='", "'instanceof'", "'+'", "'-'", "'/'", "'%'", "'++'", "'--'", "'~'", "'!'", "'new'"
     };

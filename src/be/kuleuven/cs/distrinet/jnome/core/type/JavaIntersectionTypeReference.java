@@ -55,7 +55,7 @@ public class JavaIntersectionTypeReference extends IntersectionTypeReference imp
 	}
 
 	public JavaTypeReference erasedReference() {
-		return ((JavaTypeReference)elementAt(1)).erasedReference();
+		return ((JavaTypeReference)elementAt(0)).erasedReference();
 	}
 
 	public JavaTypeReference componentTypeReference() {

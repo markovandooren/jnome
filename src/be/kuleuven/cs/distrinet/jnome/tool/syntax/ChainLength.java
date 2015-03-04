@@ -9,6 +9,7 @@ import org.aikodi.chameleon.core.reference.CrossReferenceTarget;
 import org.aikodi.chameleon.oo.expression.MethodInvocation;
 
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
+import be.kuleuven.cs.distrinet.rejuse.tree.TreeStructure;
 
 public class ChainLength extends Analysis<MethodInvocation, ChainLength.LengthResult>{
 
@@ -74,7 +75,8 @@ public class ChainLength extends Analysis<MethodInvocation, ChainLength.LengthRe
 
 
 	@Override
-	protected void doPerform(MethodInvocation object) throws Nothing {
+	protected <X extends MethodInvocation> void doPerform(TreeStructure<X> tree) throws Nothing {
+	  MethodInvocation object = tree.node();
 		if(! (object.parent() instanceof MethodInvocation)) {
 			result().add(length(object), 1);
 		}

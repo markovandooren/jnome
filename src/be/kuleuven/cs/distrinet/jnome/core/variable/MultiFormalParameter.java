@@ -1,6 +1,6 @@
 package be.kuleuven.cs.distrinet.jnome.core.variable;
 
-import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
+import org.aikodi.chameleon.core.declaration.Name;
 import org.aikodi.chameleon.oo.variable.FormalParameter;
 
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;

@@ -2,11 +2,10 @@ package be.kuleuven.cs.distrinet.jnome.core.method;
 
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.member.DeclarationComparator;
-import org.aikodi.chameleon.oo.member.DeclarationWithParametersSignature;
 import org.aikodi.chameleon.oo.member.Member;
 import org.aikodi.chameleon.oo.member.MemberRelationSelector;
 import org.aikodi.chameleon.oo.member.OverridesRelation;
-import org.aikodi.chameleon.oo.member.SimpleNameDeclarationWithParametersSignature;
+import org.aikodi.chameleon.oo.member.SignatureWithParameters;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.method.MethodHeader;
 import org.aikodi.chameleon.oo.type.Type;
@@ -58,11 +57,11 @@ public class JavaMethod extends NormalMethod {
 	private static boolean subSignature(Method first, Method second) throws LookupException {
 		boolean result = first.sameKind(second) && ((Type)first.nearestAncestor(Type.class)).subTypeOf((Type)second.nearestAncestor(Type.class));
 		if(result) {
-			DeclarationWithParametersSignature signature1 = first.signature();
-			DeclarationWithParametersSignature signature2 = second.signature();
+			SignatureWithParameters signature1 = first.signature();
+			SignatureWithParameters signature2 = second.signature();
 			result = signature1.sameParameterBoundsAs(signature2);
 			if(!result) {
-				DeclarationWithParametersSignature erasure2 = signature2.language(Java.class).erasure((SimpleNameDeclarationWithParametersSignature) signature2);
+			   SignatureWithParameters erasure2 = signature2.language(Java.class).erasure((SignatureWithParameters) signature2);
 				result = signature1.sameParameterBoundsAs(erasure2);
 			}
 		}

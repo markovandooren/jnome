@@ -59,7 +59,7 @@ import org.aikodi.chameleon.support.expression.NullLiteral;
 import org.aikodi.chameleon.support.expression.RegularLiteral;
 import org.aikodi.chameleon.support.expression.SuperTarget;
 import org.aikodi.chameleon.support.expression.ThisLiteral;
-import org.aikodi.chameleon.support.input.ChameleonParser;
+import org.aikodi.chameleon.support.input.ChameleonANTLR3Parser;
 import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
 import org.aikodi.chameleon.support.member.simplename.operator.infix.InfixOperatorInvocation;
 import org.aikodi.chameleon.support.member.simplename.operator.postfix.PostfixOperatorInvocation;
@@ -292,7 +292,7 @@ import be.kuleuven.cs.distrinet.jnome.input.JavaFactory;
  *      letter-or-digit is a character for which the method 
  *      Character.isJavaidentifierRulePart(int) returns true."
  */
-public class Java_JavaP extends ChameleonParser {
+public class Java_JavaP extends ChameleonANTLR3Parser {
     public static final int EOF=-1;
     public static final int T__47=47;
     public static final int T__48=48;

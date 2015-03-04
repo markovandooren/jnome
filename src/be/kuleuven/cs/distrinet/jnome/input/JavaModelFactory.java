@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 
+import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.input.parser.JavaLexer;
 import be.kuleuven.cs.distrinet.jnome.input.parser.JavaParser;
 
@@ -12,7 +13,7 @@ import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.input.ParseException;
 import org.aikodi.chameleon.oo.member.Member;
-import org.aikodi.chameleon.support.input.ChameleonParser;
+import org.aikodi.chameleon.support.input.ChameleonANTLR3Parser;
 import org.aikodi.chameleon.support.input.ModelFactoryUsingANTLR;
 import org.aikodi.chameleon.workspace.View;
 import org.antlr.runtime.ANTLRInputStream;
@@ -47,7 +48,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR {
 	}
 	
   @Override
-  protected ChameleonParser getParser(InputStream inputStream,View view) throws IOException {
+  protected ChameleonANTLR3Parser<? extends Java> getParser(InputStream inputStream,View view) throws IOException {
       ANTLRInputStream input = new ANTLRInputStream(inputStream);
       JavaLexer lexer = new JavaLexer(input);
       CommonTokenStream tokens = new CommonTokenStream(lexer);

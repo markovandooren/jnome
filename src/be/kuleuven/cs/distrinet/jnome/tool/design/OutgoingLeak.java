@@ -17,6 +17,7 @@ import org.aikodi.chameleon.support.statement.ReturnStatement;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.tool.IsCollectionType;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
+import be.kuleuven.cs.distrinet.rejuse.tree.TreeStructure;
 
 public class OutgoingLeak extends Analysis<ReturnStatement, Verification> {
 
@@ -46,7 +47,8 @@ public class OutgoingLeak extends Analysis<ReturnStatement, Verification> {
 	}
 
 	@Override
-	protected void doPerform(ReturnStatement statement) throws Nothing {
+	protected <X extends ReturnStatement> void doPerform(TreeStructure<X> tree) throws Nothing {
+	  ReturnStatement statement = tree.node();
 		Verification result = Valid.create();
 		Method nearestAncestor = statement.nearestAncestor(Method.class);
 		if(nearestAncestor != null && nearestAncestor.isTrue(statement.language(Java.class).PUBLIC)) {

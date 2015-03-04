@@ -35,7 +35,7 @@ public abstract class ConstraintSet<C extends Constraint> {
 	
 	public <T extends C> T first(Class<T> kind) {
 		int size = _constraints.size();
-		for(int i = 1; i <= size;i++) {
+		for(int i = 0; i < size;i++) {
 		  C elementAt = _constraints.elementAt(i);
 			if(kind.isInstance(elementAt)) {
 		  	return (T) elementAt;

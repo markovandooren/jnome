@@ -34,7 +34,7 @@ import be.kuleuven.cs.distrinet.jnome.core.type.RawType;
 import be.kuleuven.cs.distrinet.jnome.core.variable.MultiFormalParameter;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 
-public abstract class AbstractJavaMethodSelector<M extends Method> extends DeclarationSelector<M> {
+public abstract class AbstractJavaMethodSelector<M extends Method> implements DeclarationSelector<M> {
 
 	public AbstractJavaMethodSelector(Class<M> type) {
 		super();

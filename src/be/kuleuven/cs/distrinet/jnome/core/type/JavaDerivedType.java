@@ -105,7 +105,7 @@ public class JavaDerivedType extends DerivedType implements JavaType {
 			Type result = this;
 
 			List<TypeParameter> typeParameters = Lists.create();
-			if(! (parameter(TypeParameter.class,1) instanceof CapturedTypeParameter)) {
+			if(! (parameter(TypeParameter.class,0) instanceof CapturedTypeParameter)) {
 				Type base = baseType();
 				List<TypeParameter> baseParameters = base.parameters(TypeParameter.class);
 				Iterator<TypeParameter> formals = baseParameters.iterator();

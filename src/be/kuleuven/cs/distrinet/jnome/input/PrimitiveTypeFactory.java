@@ -3,7 +3,7 @@ package be.kuleuven.cs.distrinet.jnome.input;
 import java.util.Collections;
 import java.util.List;
 
-import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
+import org.aikodi.chameleon.core.declaration.Name;
 import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.method.SimpleNameMethodHeader;

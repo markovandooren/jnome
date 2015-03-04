@@ -10,6 +10,7 @@ import org.aikodi.chameleon.oo.variable.VariableDeclaration;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
+import be.kuleuven.cs.distrinet.rejuse.tree.TreeStructure;
 
 public class PublicFieldViolation extends Analysis<VariableDeclaration, Verification> {
 
@@ -18,7 +19,8 @@ public class PublicFieldViolation extends Analysis<VariableDeclaration, Verifica
 	}
 
 	@Override
-	protected void doPerform(VariableDeclaration declaration) throws Nothing {
+	protected <X extends VariableDeclaration> void doPerform(TreeStructure<X> tree) throws Nothing {
+	  VariableDeclaration declaration = tree.node();
 		Verification result = Valid.create();
 		Java language = declaration.language(Java.class);
 		Variable variable = declaration.variable();

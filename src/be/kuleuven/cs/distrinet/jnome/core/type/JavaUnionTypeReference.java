@@ -55,7 +55,7 @@ public class JavaUnionTypeReference extends UnionTypeReference implements JavaTy
 	}
 
 	public JavaTypeReference erasedReference() {
-		return ((JavaTypeReference)elementAt(1)).erasedReference();
+		return ((JavaTypeReference)elementAt(0)).erasedReference();
 	}
 
 	public JavaTypeReference componentTypeReference() {

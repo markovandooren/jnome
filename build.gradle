@@ -51,7 +51,7 @@ dependencies {
    //compile project(':rejuse')
    //compile project(':chameleon')
    compile group: 'markovandooren', name: 'rejuse', version: '1.1.0'
-   compile group: 'markovandooren', name: 'chameleon', version: '1.1.7'
+   compile group: 'markovandooren', name: 'chameleon', version: '1.1.12'
    compile 'org.ow2.asm:asm:5.0.3'
    compile 'com.lexicalscope.jewelcli:jewelcli:0.8.5'
    compile 'net.sf.jgrapht:jgrapht:+'

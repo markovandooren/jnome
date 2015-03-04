@@ -6,9 +6,8 @@ package be.kuleuven.cs.distrinet.jnome.core.language;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.relation.StrictPartialOrder;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
-import org.aikodi.chameleon.oo.member.DeclarationWithParametersSignature;
 import org.aikodi.chameleon.oo.member.Member;
-import org.aikodi.chameleon.oo.member.SimpleNameDeclarationWithParametersSignature;
+import org.aikodi.chameleon.oo.member.SignatureWithParameters;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.type.Type;
 
@@ -27,11 +26,11 @@ public class JavaImplementsRelation extends StrictPartialOrder<Member> {
 	    	result = !checkDefined(method2);
 	    	result = result && first.name().equals(second.name());
 	    	if(result) {
-	    		DeclarationWithParametersSignature signature1 = method1.signature();
-	    		DeclarationWithParametersSignature signature2 = method2.signature();
+	    		SignatureWithParameters signature1 = method1.signature();
+	    		SignatureWithParameters signature2 = method2.signature();
 	    		result = signature1.sameParameterBoundsAs(signature2);
 					if(!result) {
-						DeclarationWithParametersSignature erasure2 = signature2.language(Java.class).erasure((SimpleNameDeclarationWithParametersSignature) signature2);
+						SignatureWithParameters erasure2 = signature2.language(Java.class).erasure((SignatureWithParameters) signature2);
 						result = signature1.sameParameterBoundsAs(erasure2);
 					}
 	    		result = result &&

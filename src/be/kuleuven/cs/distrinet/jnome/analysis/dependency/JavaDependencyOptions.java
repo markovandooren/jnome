@@ -2,18 +2,18 @@ package be.kuleuven.cs.distrinet.jnome.analysis.dependency;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.aikodi.chameleon.analysis.OptionGroup;
 import org.aikodi.chameleon.analysis.PredicateOptionGroup;
 import org.aikodi.chameleon.analysis.dependency.Dependency;
 import org.aikodi.chameleon.analysis.dependency.DependencyAnalysis;
-import org.aikodi.chameleon.analysis.dependency.DependencyOptions;
-import org.aikodi.chameleon.analysis.dependency.DependencyResult;
 import org.aikodi.chameleon.analysis.dependency.DependencyAnalysis.HistoryFilter;
 import org.aikodi.chameleon.analysis.dependency.DependencyAnalysis.NOOP;
+import org.aikodi.chameleon.analysis.dependency.DependencyOptions;
+import org.aikodi.chameleon.analysis.dependency.DependencyResult;
 import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.core.element.Navigator;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.namespace.Namespace;
 import org.aikodi.chameleon.core.reference.CrossReference;
@@ -29,19 +29,16 @@ import org.aikodi.chameleon.ui.widget.list.ComboBoxSelector;
 import org.aikodi.chameleon.ui.widget.list.ListContentProvider;
 import org.aikodi.chameleon.ui.widget.tree.CheckStateProvider;
 import org.aikodi.chameleon.ui.widget.tree.DocumentScannerContentProvider;
+import org.aikodi.chameleon.ui.widget.tree.DocumentScannerContentProvider.SourceNode;
 import org.aikodi.chameleon.ui.widget.tree.TreeViewNodeLabelProvider;
 import org.aikodi.chameleon.ui.widget.tree.TristateTreePruner;
 import org.aikodi.chameleon.ui.widget.tree.TristateTreeSelector;
-import org.aikodi.chameleon.ui.widget.tree.DocumentScannerContentProvider.SourceNode;
 import org.aikodi.chameleon.util.action.TopDown;
-import org.aikodi.chameleon.workspace.DocumentLoaderImpl;
 import org.aikodi.chameleon.workspace.Project;
-import org.aikodi.chameleon.workspace.StreamDocumentLoader;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
-import be.kuleuven.cs.distrinet.jnome.workspace.LazyClassFileDocumentLoader;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.function.Function;
 import be.kuleuven.cs.distrinet.rejuse.graph.Edge;
@@ -52,7 +49,6 @@ import be.kuleuven.cs.distrinet.rejuse.predicate.TypePredicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
 import be.kuleuven.cs.distrinet.rejuse.tree.PrunedTreeStructure;
 import be.kuleuven.cs.distrinet.rejuse.tree.TreePredicate;
-import be.kuleuven.cs.distrinet.rejuse.tree.TreeStructure;
 
 import com.google.common.collect.ImmutableList;
 
@@ -116,10 +112,10 @@ public class JavaDependencyOptions extends DependencyOptions {
 				targetPredicate.and(targetLocation), 
 				dependencyPredicate,
 				historyFilter);
-		TreeStructure<Element> logicalStructure = _root.logical();
+		Navigator logicalStructure = _root.logical();
 		PrunedTreeStructure<Element> sourceStructure = new PrunedTreeStructure(logicalStructure, source);
 		TopDown<Element, Nothing> topDown = new TopDown<>(dependencyAnalysis);
-		topDown.traverse(_root, sourceStructure);
+		topDown.traverse(sourceStructure);
 		DependencyResult result = dependencyAnalysis.result();
 //		result.prune();
 		return result;

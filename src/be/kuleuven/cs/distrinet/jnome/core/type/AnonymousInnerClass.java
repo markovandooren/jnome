@@ -1,6 +1,6 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
-import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
+import org.aikodi.chameleon.core.declaration.Name;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
@@ -14,8 +14,8 @@ public class AnonymousInnerClass extends AbstractAnonymousInnerClass {
 	}
 	
 	@Override
-	public SimpleNameSignature signature() {
-		SimpleNameSignature result = new SimpleNameSignature("");
+	public Name signature() {
+		Name result = new Name("");
 		result.setUniParent(this);
 		return result;
 	}

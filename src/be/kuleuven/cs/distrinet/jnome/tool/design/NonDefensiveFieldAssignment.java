@@ -25,6 +25,7 @@ import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
+import be.kuleuven.cs.distrinet.rejuse.tree.TreeStructure;
 
 /**
  * Check whether a parameter is assigned to a field without being
@@ -66,7 +67,8 @@ public class NonDefensiveFieldAssignment extends Analysis<AssignmentExpression,V
 
 
 	@Override
-	protected void doPerform(AssignmentExpression assignment) throws Nothing {
+	protected <X extends AssignmentExpression> void doPerform(TreeStructure<X> tree) throws Nothing {
+	  AssignmentExpression assignment = tree.node();
 		Verification result = Valid.create();
 		try {
 			final Method method = assignment.nearestAncestor(Method.class);

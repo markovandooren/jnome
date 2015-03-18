@@ -2,6 +2,7 @@ package be.kuleuven.cs.distrinet.jnome.tool.design;
 
 import org.aikodi.chameleon.analysis.Analysis;
 import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.reference.CrossReference;
 import org.aikodi.chameleon.core.validation.AtomicProblem;
@@ -26,9 +27,9 @@ public class IncomingLeak extends Analysis<AssignmentExpression, Verification> {
 		super(AssignmentExpression.class, Valid.create());
 	}
 
-	private static class CollectionEncapsulationViolationResult extends AtomicProblem {
+	private static class IncomingCollectionEncapsulationViolationResult extends AtomicProblem {
 
-		public CollectionEncapsulationViolationResult(Variable member, FormalParameter parameter) {
+		public IncomingCollectionEncapsulationViolationResult(Variable member, FormalParameter parameter) {
 			super(parameter);
 			_member = member;
 			_parameter = parameter;
@@ -51,8 +52,7 @@ public class IncomingLeak extends Analysis<AssignmentExpression, Verification> {
 	}
 
 	@Override
-	protected <X extends AssignmentExpression> void doPerform(TreeStructure<X> tree) throws Nothing {
-	  AssignmentExpression assignment = tree.node();
+	public void analyze(AssignmentExpression assignment) throws Nothing {
 		Verification result = Valid.create();
 		try {
 			Method method = assignment.nearestAncestor(Method.class);
@@ -64,8 +64,8 @@ public class IncomingLeak extends Analysis<AssignmentExpression, Verification> {
 						Declaration rhs = ((CrossReference) e).getElement();
 						if(rhs instanceof FormalParameter) {
 							Type type_of_value = ((FormalParameter)rhs).getType();
-							if(new IsCollectionType().eval(type_of_value)) {
-								result = result.and(new CollectionEncapsulationViolationResult(v,(FormalParameter) rhs));
+              if(IsCollectionType.PREDICATE.eval(type_of_value)) {
+								result = result.and(new IncomingCollectionEncapsulationViolationResult(v,(FormalParameter) rhs));
 							}
 						}
 					}

@@ -1,7 +1,7 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
 
-import org.aikodi.chameleon.core.declaration.Name;
+import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.namespace.RootNamespace;

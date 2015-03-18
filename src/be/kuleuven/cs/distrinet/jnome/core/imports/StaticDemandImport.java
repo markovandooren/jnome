@@ -9,6 +9,7 @@ import org.aikodi.chameleon.core.namespacedeclaration.DemandImport;
 import org.aikodi.chameleon.core.reference.NameReference;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 
+import be.kuleuven.cs.distrinet.rejuse.collection.CollectionOperations;
 import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
 
 public class StaticDemandImport extends DemandImport {
@@ -19,13 +20,7 @@ public class StaticDemandImport extends DemandImport {
 	
 	@Override
 	protected void filterImportedElements(List<Declaration> declarations) throws LookupException {
-		new AbstractPredicate<Declaration, LookupException>() {
-
-			@Override
-			public boolean eval(Declaration object) throws LookupException {
-				return object.isTrue(language(ObjectOrientedLanguage.class).CLASS);
-			}
-		}.filter(declarations);
+	  CollectionOperations.filter(declarations, d-> d.isTrue(language(ObjectOrientedLanguage.class).CLASS));
 	}
 
 }

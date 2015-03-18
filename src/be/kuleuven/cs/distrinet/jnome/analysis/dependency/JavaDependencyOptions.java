@@ -44,6 +44,7 @@ import be.kuleuven.cs.distrinet.rejuse.function.Function;
 import be.kuleuven.cs.distrinet.rejuse.graph.Edge;
 import be.kuleuven.cs.distrinet.rejuse.graph.UniEdge;
 import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
+import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.True;
 import be.kuleuven.cs.distrinet.rejuse.predicate.TypePredicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
@@ -350,42 +351,37 @@ public class JavaDependencyOptions extends DependencyOptions {
 			final Container container = new Container(); 
 			final Element newSource = dependency.source();
 			final Element newTarget = dependency.target();
+			result.<Nothing>filter(object -> {
+        try {
+          if(container.add == false) {
+            return true;
+          }
+          Element oldSource = ((UniEdge<Element>) object).startNode()
+              .object();
+          Element oldTarget = ((UniEdge<Element>) object).endNode().object();
+          if (newSource instanceof Type && oldSource instanceof Type
+              && newTarget instanceof Type && oldTarget instanceof Type) {
+            Type newSourceType = (Type) newSource;
+            Type newTargetType = (Type) newTarget;
+            Type oldSourceType = (Type) oldSource;
+            Type oldTargetType = (Type) oldTarget;
 
-			result.<Nothing>filter(new AbstractPredicate<Edge<Element>, Nothing>() {
-
-				@Override
-				public boolean eval(Edge<Element> object) throws Nothing {
-					try {
-						if(container.add == false) {
-							return true;
-						}
-						Element oldSource = ((UniEdge<Element>) object).startNode()
-								.object();
-						Element oldTarget = ((UniEdge<Element>) object).endNode().object();
-						if (newSource instanceof Type && oldSource instanceof Type
-								&& newTarget instanceof Type && oldTarget instanceof Type) {
-							Type newSourceType = (Type) newSource;
-							Type newTargetType = (Type) newTarget;
-							Type oldSourceType = (Type) oldSource;
-							Type oldTargetType = (Type) oldTarget;
-
-							// We first check if the new dependency is redundant.
-							// That way, if we reach the else branch, we now
-							// for sure that we can remove the old dependency
-							// if the second branch is executed.
-							if (newSourceType.subTypeOf(oldSourceType) && oldTargetType.subTypeOf(newTargetType)) {
-								container.add = false;
-								return true;
-							} else if(oldSourceType.subTypeOf(newSourceType) && newTargetType.subTypeOf(oldTargetType)) {
-								return false;
-							}
-						}
-						return true;
-					} catch (LookupException e) {
-						return true;
-					}
-				}
-			});
+            // We first check if the new dependency is redundant.
+            // That way, if we reach the else branch, we now
+            // for sure that we can remove the old dependency
+            // if the second branch is executed.
+            if (newSourceType.subTypeOf(oldSourceType) && oldTargetType.subTypeOf(newTargetType)) {
+              container.add = false;
+              return true;
+            } else if(oldSourceType.subTypeOf(newSourceType) && newTargetType.subTypeOf(oldTargetType)) {
+              return false;
+            }
+          }
+          return true;
+        } catch (LookupException e) {
+          return true;
+        }
+      });
 			return container.add;
 		}
 	}

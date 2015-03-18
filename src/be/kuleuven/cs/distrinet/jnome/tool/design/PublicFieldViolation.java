@@ -19,8 +19,7 @@ public class PublicFieldViolation extends Analysis<VariableDeclaration, Verifica
 	}
 
 	@Override
-	protected <X extends VariableDeclaration> void doPerform(TreeStructure<X> tree) throws Nothing {
-	  VariableDeclaration declaration = tree.node();
+	protected void analyze(VariableDeclaration declaration) {
 		Verification result = Valid.create();
 		Java language = declaration.language(Java.class);
 		Variable variable = declaration.variable();

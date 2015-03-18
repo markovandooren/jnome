@@ -18,6 +18,7 @@ import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
 import org.aikodi.chameleon.support.modifier.Constructor;
 import org.aikodi.chameleon.support.modifier.Public;
 
+import be.kuleuven.cs.distrinet.rejuse.collection.CollectionOperations;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 import be.kuleuven.cs.distrinet.rejuse.property.PropertySet;
@@ -51,12 +52,7 @@ public abstract class AnonymousType extends RegularType implements JavaType {
 		TypeReference tref = typeReference();
 	  Type writtenType = tref.getType();
 	  List<NormalMethod> superMembers = writtenType.localMembers(NormalMethod.class);
-	  new SafePredicate<NormalMethod>() {
-		  @Override
-		  public boolean eval(NormalMethod object) {
-			  return object.is(language(ObjectOrientedLanguage.class).CONSTRUCTOR) == Ternary.TRUE;
-		  }
-	  }.filter(superMembers);
+	  CollectionOperations.filter(superMembers, m -> m.is(language(ObjectOrientedLanguage.class).CONSTRUCTOR) == Ternary.TRUE);
 	  //if the super type is an interface, there will be no constructor, so we must
 	  //create a default constructor.
 	  if(superMembers.isEmpty()) {

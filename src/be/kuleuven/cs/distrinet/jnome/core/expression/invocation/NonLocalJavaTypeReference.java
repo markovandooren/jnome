@@ -51,12 +51,7 @@ public class NonLocalJavaTypeReference extends NonLocalTypeReference implements 
 	public static <E extends Element> E replace(TypeReference replacement, final Declaration declarator, E in, Class<E> kind) throws LookupException {
 		ObjectOrientedLanguage lang = in.language(ObjectOrientedLanguage.class);
 		E result = in;
-		Predicate<BasicTypeReference, LookupException> predicate = new AbstractPredicate<BasicTypeReference, LookupException>() {
-			@Override
-			public boolean eval(BasicTypeReference object) throws LookupException {
-				return object.getDeclarator().sameAs(declarator);
-			}
-		};
+		Predicate<BasicTypeReference, LookupException> predicate = object -> object.getDeclarator().sameAs(declarator);
 		List<BasicTypeReference> crefs = in.descendants(BasicTypeReference.class, 
 				predicate);
 		if(in instanceof BasicTypeReference) {

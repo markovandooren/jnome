@@ -6,17 +6,16 @@ import org.aikodi.chameleon.workspace.View;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
-import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
+import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
 
-public class IsCollectionType extends AbstractPredicate<Type, LookupException> {
+public class IsCollectionType {
 
-	@Override
-	public boolean eval(Type type) throws LookupException {
-		View view = type.view();
-		Java language = view.language(Java.class);
-		Type collection = language.erasure(language.findType("java.util.Collection",view.namespace()));
-		Type map = language.erasure(language.findType("java.util.Map",view.namespace()));
-		return type instanceof ArrayType || type.subTypeOf(collection) || type.subTypeOf(map);
-	}
-	
+  public final static Predicate<Type, LookupException> PREDICATE = type -> {
+    View view = type.view();
+    Java language = view.language(Java.class);
+    Type collection = language.erasure(language.findType("java.util.Collection",view.namespace()));
+    Type map = language.erasure(language.findType("java.util.Map",view.namespace()));
+    return type instanceof ArrayType || type.subTypeOf(collection) || type.subTypeOf(map);
+  };
+  
 }

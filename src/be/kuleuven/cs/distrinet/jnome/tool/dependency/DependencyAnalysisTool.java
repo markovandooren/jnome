@@ -55,7 +55,7 @@ public class DependencyAnalysisTool extends AnalysisTool {
 		ObjectOrientedView view = (ObjectOrientedView) project.views().get(0);
 		UniversalPredicate<Type,Nothing> filter = hierarchyFilter(options, view)
 			.and(annotationFilter(options, view))
-			.and(annonymousTypeFilter(options,view))
+			.and(anonymousTypeFilter(options,view))
       .and(packageFilter(options,view));
 		UniversalPredicate<CrossReference<?>,Nothing> crossReferenceFilter =
 				crossReferenceSourceFilter()
@@ -81,7 +81,7 @@ public class DependencyAnalysisTool extends AnalysisTool {
 
 }
 
-	protected UniversalPredicate<Type,Nothing> annonymousTypeFilter(AnalysisOptions options, ObjectOrientedView view) {
+	protected UniversalPredicate<Type,Nothing> anonymousTypeFilter(AnalysisOptions options, ObjectOrientedView view) {
 		return new UniversalPredicate<Type,Nothing>(Type.class) {
 
 			@Override

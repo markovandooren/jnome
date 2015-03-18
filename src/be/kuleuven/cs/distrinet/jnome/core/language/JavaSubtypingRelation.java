@@ -3,6 +3,8 @@
  */
 package be.kuleuven.cs.distrinet.jnome.core.language;
 
+import static be.kuleuven.cs.distrinet.rejuse.collection.CollectionOperations.exists;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -44,8 +46,10 @@ import be.kuleuven.cs.distrinet.jnome.core.type.NullType;
 import be.kuleuven.cs.distrinet.jnome.core.type.PureWildcard;
 import be.kuleuven.cs.distrinet.jnome.core.type.RawType;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
+import be.kuleuven.cs.distrinet.rejuse.collection.CollectionOperations;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
+import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
@@ -385,17 +389,8 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 
 	private Set<Type> MEC(List<? extends JavaTypeReference> Us) throws LookupException {
 		final Set<Type> EC = EC(Us);
-		new AbstractPredicate<Type, LookupException>() {
-			@Override
-			public boolean eval(final Type first) throws LookupException {
-				return ! new AbstractPredicate<Type, LookupException>() {
-					@Override
-					public boolean eval(Type second) throws LookupException {
-						return (! first.sameAs(second)) && (second.subTypeOf(first));
-					}
-				}.exists(EC);
-			}
-		}.filter(EC);
+		Predicate<Type, LookupException> predicate = first -> ! exists(EC, second -> (! first.sameAs(second)) && (second.subTypeOf(first)));
+    CollectionOperations.filter(EC, predicate);
 		return EC;
 	}
 

@@ -16,8 +16,6 @@ import org.aikodi.chameleon.support.statement.ReturnStatement;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java;
 import be.kuleuven.cs.distrinet.jnome.tool.IsCollectionType;
-import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
-import be.kuleuven.cs.distrinet.rejuse.tree.TreeStructure;
 
 public class OutgoingLeak extends Analysis<ReturnStatement, Verification> {
 
@@ -47,8 +45,7 @@ public class OutgoingLeak extends Analysis<ReturnStatement, Verification> {
 	}
 
 	@Override
-	protected <X extends ReturnStatement> void doPerform(TreeStructure<X> tree) throws Nothing {
-	  ReturnStatement statement = tree.node();
+	protected void analyze(ReturnStatement statement) {
 		Verification result = Valid.create();
 		Method nearestAncestor = statement.nearestAncestor(Method.class);
 		if(nearestAncestor != null && nearestAncestor.isTrue(statement.language(Java.class).PUBLIC)) {
@@ -58,7 +55,7 @@ public class OutgoingLeak extends Analysis<ReturnStatement, Verification> {
 					Declaration declaration = ((CrossReference) expr).getElement();
 					if(declaration instanceof MemberVariable) {
 						Type type = ((MemberVariable) declaration).getType();
-						if(new IsCollectionType().eval(type)) {
+						if(IsCollectionType.PREDICATE.eval(type)) {
 							result = new OutgoingCollectionEncapsulationViolation(nearestAncestor, (Variable) declaration);
 						}
 					}

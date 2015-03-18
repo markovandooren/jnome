@@ -1,5 +1,7 @@
 package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
+import static be.kuleuven.cs.distrinet.rejuse.collection.CollectionOperations.exists;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -27,6 +29,7 @@ import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaBasicTypeArgument;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
+import be.kuleuven.cs.distrinet.rejuse.collection.CollectionOperations;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
@@ -171,46 +174,21 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 	}
 	
 	public boolean involvesTypeParameter(Type type) throws LookupException {
-		if((type instanceof FormalParameterType) && (parent().typeParameters().contains(((FormalParameterType)type).parameter()))) {
-			return true;
-		} 
-		if((type instanceof ArrayType) && (involvesTypeParameter(((ArrayType)type).elementType()))) {
-			return true;
-		}
-		if((type instanceof DerivedType) && (involvesTypeParameter(type.baseType()))) {
-			return true;
-		}
-		 
-    	return new AbstractPredicate<TypeParameter, LookupException>() {
-
-				@Override
-				public boolean eval(TypeParameter object) throws LookupException {
-					if(object instanceof InstantiatedTypeParameter) {
-						ActualTypeArgument arg = ((InstantiatedTypeParameter)object).argument();
-						return involvesTypeParameter(arg);
-					} else {
-						return false;
-					}
-				}
-			}.exists(type.parameters(TypeParameter.class));
+    return ((type instanceof FormalParameterType) && (parent().typeParameters().contains(((FormalParameterType) type).parameter())))
+        || ((type instanceof ArrayType) && (involvesTypeParameter(((ArrayType) type).elementType())))
+        || ((type instanceof DerivedType) && (involvesTypeParameter(type.baseType())))
+        || exists(type.parameters(TypeParameter.class), object -> (object instanceof InstantiatedTypeParameter)
+            && involvesTypeParameter(((InstantiatedTypeParameter) object).argument()));
 	}
 	
 	public boolean involvesTypeParameter(ActualTypeArgument arg) throws LookupException {
-		if(arg instanceof ActualTypeArgumentWithTypeReference) {
-			return involvesTypeParameter((JavaTypeReference) ((ActualTypeArgumentWithTypeReference)arg).typeReference());
-		} else {
-			return false;
-		}
+		return (arg instanceof ActualTypeArgumentWithTypeReference) &&
+		    involvesTypeParameter((JavaTypeReference) ((ActualTypeArgumentWithTypeReference)arg).typeReference());
 	}
 	
 	public List<TypeParameter> involvedTypeParameters(JavaTypeReference tref) throws LookupException {
-		Predicate<BasicJavaTypeReference, LookupException> predicate = new AbstractPredicate<BasicJavaTypeReference, LookupException>() {
-
-			@Override
-			public boolean eval(BasicJavaTypeReference object) throws LookupException {
-				return parent().typeParameters().contains(object.getDeclarator());
-			}
-		};
+		Predicate<BasicJavaTypeReference, LookupException> predicate = 
+		    object ->  parent().typeParameters().contains(object.getDeclarator());
 		List<BasicJavaTypeReference> list = tref.descendants(BasicJavaTypeReference.class, predicate);
 		if((tref instanceof BasicJavaTypeReference) && predicate.eval((BasicJavaTypeReference) tref)) {
 			list.add((BasicJavaTypeReference) tref);

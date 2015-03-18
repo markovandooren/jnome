@@ -6,6 +6,7 @@ import java.io.OutputStreamWriter;
 import org.aikodi.chameleon.analysis.Analysis;
 import org.aikodi.chameleon.analysis.Analyzer;
 import org.aikodi.chameleon.analysis.Result;
+import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.validation.AtomicProblem;
 import org.aikodi.chameleon.core.validation.Invalid;
@@ -35,7 +36,7 @@ public class DesignAnalyzer extends Analyzer {
 	  analyze(new NonDefensiveFieldAssignment(),writer);
 	}
 	
-	public void analyze(Analysis<?,?> analysis, OutputStreamWriter writer) throws InputException, IOException {
+	public void analyze(Analysis<? extends Element,?> analysis, OutputStreamWriter writer) throws InputException, IOException {
 		Result result = analysisResult(analysis);
 		int index = 1;
 		writer.write("\n");

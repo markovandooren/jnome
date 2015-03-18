@@ -67,8 +67,7 @@ public class NonDefensiveFieldAssignment extends Analysis<AssignmentExpression,V
 
 
 	@Override
-	protected <X extends AssignmentExpression> void doPerform(TreeStructure<X> tree) throws Nothing {
-	  AssignmentExpression assignment = tree.node();
+	protected void analyze(AssignmentExpression assignment) {
 		Verification result = Valid.create();
 		try {
 			final Method method = assignment.nearestAncestor(Method.class);
@@ -94,11 +93,7 @@ public class NonDefensiveFieldAssignment extends Analysis<AssignmentExpression,V
 								Block b = (Block) stat.parent();
 								List<Statement> befores = b.statementsBefore(stat);
 								for(Statement before : befores) {
-									List<CrossReference> crefs = before.descendants(CrossReference.class, new AbstractPredicate<CrossReference,LookupException>(){
-										@Override
-										public boolean eval(CrossReference cref) throws LookupException {
-											return cref.getElement().sameAs(rhs);
-										}});
+									List<CrossReference> crefs = before.descendants(CrossReference.class, cref -> cref.getElement().sameAs(rhs));
 									if(! crefs.isEmpty()) {
 										notMentioned = false; 
 									}

@@ -7,7 +7,7 @@ import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 
 public abstract class SecondPhaseConstraint extends Constraint<SecondPhaseConstraint, SecondPhaseConstraintSet> {
@@ -37,8 +37,8 @@ public abstract class SecondPhaseConstraint extends Constraint<SecondPhaseConstr
 		_typeParameter = parameter;
 	}
 	
-	public Java language() {
-		return URef().language(Java.class);
+	public Java7 language() {
+		return URef().language(Java7.class);
 	}
 	
 	public abstract void process() throws LookupException;

@@ -10,7 +10,7 @@ import org.aikodi.chameleon.oo.type.IntersectionTypeReference;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 
 public class DirectJavaTypeReference extends ElementImpl implements JavaTypeReference {
 
@@ -64,14 +64,14 @@ public class DirectJavaTypeReference extends ElementImpl implements JavaTypeRefe
 
 	@Override
 	public JavaTypeReference erasedReference() {
-		Java java = language(Java.class);
+		Java7 java = language(Java7.class);
 		return java.reference(java.erasure(_type));
 	}
 
 	@Override
 	public JavaTypeReference componentTypeReference() {
 		if(_type instanceof ArrayType) {
-			return language(Java.class).reference(_type).componentTypeReference();
+			return language(Java7.class).reference(_type).componentTypeReference();
 		} else {
 			return this;
 		}

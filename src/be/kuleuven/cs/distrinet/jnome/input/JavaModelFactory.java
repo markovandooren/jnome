@@ -16,7 +16,7 @@ import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.input.parser.JavaLexer;
 import be.kuleuven.cs.distrinet.jnome.input.parser.JavaParser;
 
@@ -37,7 +37,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR3 {
   }
 
   @Override
-  protected ChameleonANTLR3Parser<? extends Java> getParser(InputStream inputStream, View view) throws IOException {
+  protected ChameleonANTLR3Parser<? extends Java7> getParser(InputStream inputStream, View view) throws IOException {
     ANTLRInputStream input = new ANTLRInputStream(inputStream);
     JavaLexer lexer = new JavaLexer(input);
     CommonTokenStream tokens = new CommonTokenStream(lexer);

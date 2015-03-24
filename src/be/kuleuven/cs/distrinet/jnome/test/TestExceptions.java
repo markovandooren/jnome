@@ -4,7 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.type.Type;
@@ -26,9 +26,8 @@ public class TestExceptions extends JavaTest {
 			super(provider);
 		}
 
-		@Test
 		public void testExceptions() throws LookupException {
-				Java java = (Java) view().language();
+				Java7 java = (Java7) view().language();
 				Type exception = java.findType("exception.MyException",view().namespace());
 				assertTrue(java.isCheckedException(exception));
 		}

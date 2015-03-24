@@ -11,7 +11,7 @@ import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.variable.MultiFormalParameter;
 
@@ -54,7 +54,7 @@ public class JavaMostSpecificMethodOrder<M extends MethodSelectionResult> extend
 		Method second = secondResult.template();
 
 		boolean result = true;
-		Java language = (Java) first.language(Java.class);
+		Java7 language = (Java7) first.language(Java7.class);
 		List<Type> firstTypes = first.header().formalParameterTypes();
 		List<Type> secondTypes = second.header().formalParameterTypes();
 		int firstSize = firstTypes.size();
@@ -106,7 +106,7 @@ public class JavaMostSpecificMethodOrder<M extends MethodSelectionResult> extend
 	
 	public boolean containsFixedArity(Method first, Method second) throws LookupException {
 		boolean result = true;
-		Java language = (Java) first.language(Java.class);
+		Java7 language = (Java7) first.language(Java7.class);
 		List<Type> Ts = first.header().formalParameterTypes();
 		List<Type> Us = second.header().formalParameterTypes();
 		int size =Ts.size();

@@ -12,7 +12,7 @@ import org.aikodi.chameleon.oo.type.generics.InstantiatedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.util.Util;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.DirectJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaDerivedType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaType;
@@ -83,7 +83,7 @@ public class BasicMethodSelectionResult implements MethodSelectionResult {
 				TypeParameter clonedPar = result.typeParameter(i);
 				// we detach the signature from the clone.
 				Type assignedType = _assignment.type(originalPar);
-				Java language = _template.language(Java.class);
+				Java7 language = _template.language(Java7.class);
 				JavaTypeReference reference = language.reference(assignedType);
 				Element parent = reference.parent();
 				reference.setUniParent(null);
@@ -98,7 +98,7 @@ public class BasicMethodSelectionResult implements MethodSelectionResult {
 			if(! cloned) {
 				result = clonedMethod();
 			}
-			TypeReference erasure = (TypeReference)method.language(Java.class).erasure(result.returnTypeReference());
+			TypeReference erasure = (TypeReference)method.language(Java7.class).erasure(result.returnTypeReference());
 			result.setReturnTypeReference(erasure);
 		} else {
 			if(nbTypeParameters > 0) {

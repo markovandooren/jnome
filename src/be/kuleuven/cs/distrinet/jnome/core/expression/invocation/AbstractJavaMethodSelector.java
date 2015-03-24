@@ -25,7 +25,7 @@ import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.workspace.View;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.language.JavaSubtypingRelation;
 import be.kuleuven.cs.distrinet.jnome.core.language.JavaSubtypingRelation.UncheckedConversionIndicator;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
@@ -89,7 +89,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 					}
 				}
 			}
-			Java java = invocation().language(Java.class);
+			Java7 java = invocation().language(Java7.class);
 			/**
 			 * JLS 15.12.2.2 Phase 1: Identify Matching Arity Methods Applicable by Subtyping
 			 */
@@ -153,7 +153,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 					typeAssignment.add(new ActualTypeAssignment(parameters.get(i),typeArguments.get(i).upperBound()));
 				}
 			} else {
-				Java language = originalMethod.language(Java.class);
+				Java7 language = originalMethod.language(Java7.class);
 				// perform type inference
 				FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(invocation(),methodHeader);
 				List<Expression> actualParameters = invocation().getActualParameters();
@@ -181,7 +181,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 	/**
 	 * JLS 15.12.2.2 Phase 1: Identify Matching Arity Methods Applicable by Subtyping
 	 */
-	private MethodSelectionResult matchingApplicableBySubtyping(M method, Java java) throws LookupException {
+	private MethodSelectionResult matchingApplicableBySubtyping(M method, Java7 java) throws LookupException {
 		if(method.nbFormalParameters() == invocation().nbActualParameters()) {
 			TypeAssignmentSet actualTypeParameters = actualTypeParameters(method, false);
 			//SLOW We can probably cache the substituted type instead/as well.
@@ -225,7 +225,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 	}
 
 
-	private MethodSelectionResult matchingApplicableByConversion(M method, Java java) throws LookupException {
+	private MethodSelectionResult matchingApplicableByConversion(M method, Java7 java) throws LookupException {
 		if(method.nbFormalParameters() == invocation().nbActualParameters()) {
 		TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true);
 		List<Type> formalParameterTypesInContext = JavaMethodInvocation.formalParameterTypesInContext(method,actualTypeParameters);
@@ -256,7 +256,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 
 
 
-	public MethodSelectionResult variableApplicableBySubtyping(M method, Java java) throws LookupException {
+	public MethodSelectionResult variableApplicableBySubtyping(M method, Java7 java) throws LookupException {
 		boolean match = method.lastFormalParameter() instanceof MultiFormalParameter;
 		if(match) {
 			TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true);

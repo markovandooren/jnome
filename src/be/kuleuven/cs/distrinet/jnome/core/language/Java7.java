@@ -104,7 +104,7 @@ import be.kuleuven.cs.distrinet.rejuse.property.PropertyUniverse;
  * 
  * @author Marko van Dooren
  */
-public class Java extends ObjectOrientedLanguage {
+public class Java7 extends ObjectOrientedLanguage {
 	
 	public static final String NAME = "Java";
 	
@@ -142,12 +142,11 @@ public class Java extends ObjectOrientedLanguage {
 
 	protected static final String SHORT = "short";
 
-	protected Java(String name, Revision version) {
+	protected Java7(String name, Revision version) {
 		this(name,new JavaLookupFactory(),version);
 	}
-	protected Java(String name, LookupContextFactory lookupFactory,Revision version) {
+	protected Java7(String name, LookupContextFactory lookupFactory,Revision version) {
 		super(name, lookupFactory, version);
-//		_nullType = new NullType(this);
 		STRICTFP = new StaticChameleonProperty("strictfp", this, Declaration.class);
 		SYNCHRONIZED = new StaticChameleonProperty("synchronized", this, Method.class);
 		TRANSIENT = new StaticChameleonProperty("transient", this, MemberVariable.class);
@@ -186,12 +185,12 @@ public class Java extends ObjectOrientedLanguage {
   	
 	}
 		
-	public Java() {
+	public Java7() {
 		this("Java", new BasicRevision(1,7,0));
 	}
 	
-	public Java clone() {
-		return new Java();
+	public Java7 clone() {
+		return new Java7();
 	}
 	
   public Type erasure(Type original) {
@@ -238,7 +237,7 @@ public class Java extends ObjectOrientedLanguage {
 		return result;
 	}
 	
-	public <T extends CrossReference<? extends TargetDeclaration>> CrossReference<? extends TargetDeclaration> erasure(T ref) {
+	public <T extends CrossReference<? extends Declaration>> CrossReference<? extends Declaration> erasure(T ref) {
 		CrossReference result = null;
 		if(ref instanceof JavaTypeReference) {
 			result = ((JavaTypeReference) ref).erasedReference();
@@ -639,7 +638,7 @@ public class Java extends ObjectOrientedLanguage {
 		
 		
 		@Override
-		public BasicJavaTypeReference createTypeReference(CrossReference<? extends TargetDeclaration> target, String name) {
+		public BasicJavaTypeReference createTypeReference(CrossReference<? extends Declaration> target, String name) {
 			return new BasicJavaTypeReference(target, name);
 		}
 
@@ -791,7 +790,7 @@ public class Java extends ObjectOrientedLanguage {
 				if(constraints.size() == 1){ 
 					TypeConstraint typeConstraint = constraints.get(0);
 					if(typeConstraint instanceof EqualityConstraint) {
-						result = parameter.language(Java.class).createBasicTypeArgument(Util.clone(typeConstraint.typeReference()));
+						result = parameter.language(Java7.class).createBasicTypeArgument(Util.clone(typeConstraint.typeReference()));
 					} 
 				}
 //					// there are always constraints in a captured type parameter

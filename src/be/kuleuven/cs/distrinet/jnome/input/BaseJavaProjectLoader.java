@@ -7,13 +7,13 @@ import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.workspace.InputException;
 import org.aikodi.chameleon.workspace.ProjectConfigurator;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.workspace.JarLoader;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 
 public class BaseJavaProjectLoader extends JarLoader {
 
-	public BaseJavaProjectLoader(JarFile path, Java java) {
+	public BaseJavaProjectLoader(JarFile path, Java7 java) {
 		super(path, java.plugin(ProjectConfigurator.class).binaryFileFilter(),true);
 	}
 	

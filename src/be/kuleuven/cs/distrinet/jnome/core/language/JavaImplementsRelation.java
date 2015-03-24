@@ -30,7 +30,7 @@ public class JavaImplementsRelation extends StrictPartialOrder<Member> {
 	    		SignatureWithParameters signature2 = method2.signature();
 	    		result = signature1.sameParameterBoundsAs(signature2);
 					if(!result) {
-						SignatureWithParameters erasure2 = signature2.language(Java.class).erasure((SignatureWithParameters) signature2);
+						SignatureWithParameters erasure2 = signature2.language(Java7.class).erasure((SignatureWithParameters) signature2);
 						result = signature1.sameParameterBoundsAs(erasure2);
 					}
 	    		result = result &&

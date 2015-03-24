@@ -16,7 +16,7 @@ import org.aikodi.chameleon.workspace.Workspace;
 import org.junit.Before;
 import org.junit.Test;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
 import be.kuleuven.cs.distrinet.jnome.input.BaseJavaProjectLoader;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaProjectConfiguration;
@@ -54,7 +54,7 @@ public class TestProjectConfig {
 	
 	public JavaProjectConfiguration createProjectConfig(String name) {
 		Workspace workspace = _workspace;
-		ProjectConfigurator configurator = workspace.languageRepository().get(Java.NAME).plugin(ProjectConfigurator.class);
+		ProjectConfigurator configurator = workspace.languageRepository().get(Java7.NAME).plugin(ProjectConfigurator.class);
 		File root = new File(".");
 		BaseLibraryConfiguration baseConfiguration = new BaseLibraryConfiguration(workspace);
 		return (JavaProjectConfiguration) configurator.createConfigElement(name, root, workspace, null, baseConfiguration);
@@ -72,7 +72,7 @@ public class TestProjectConfig {
 	private View getAndTestView(Project project) {
 		assertTrue(project.views().size() == 1);
 		View view = project.views().get(0);
-		assertTrue(view.language() instanceof Java);
+		assertTrue(view.language() instanceof Java7);
 		assertTrue(view instanceof JavaView);
 		boolean found = false;
 		for(DocumentScanner loader: view.binaryScanners()) {

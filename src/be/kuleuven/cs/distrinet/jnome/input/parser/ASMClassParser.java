@@ -75,7 +75,7 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.signature.SignatureReader;
 import org.objectweb.asm.signature.SignatureVisitor;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.StrictFP;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.Synchronized;
@@ -139,7 +139,7 @@ public class ASMClassParser {
 	
 	private ZipEntry _entry;
 		
-	public Document load(Java language) throws FileNotFoundException, IOException, LookupException {
+	public Document load(Java7 language) throws FileNotFoundException, IOException, LookupException {
 		Type t = read(language);
 		Document doc = new Document();
 //		Namespace ns = namespace(language);
@@ -159,7 +159,7 @@ public class ASMClassParser {
 //		return lang.defaultNamespace().getOrCreateNamespace(_packageFQN);
 //	}
 	
-	protected Type read(Java language) throws FileNotFoundException, IOException {
+	protected Type read(Java7 language) throws FileNotFoundException, IOException {
 		InputStream inputStream = new BufferedInputStream(_jarFile.getInputStream(_entry));
 		ClassReader reader = new ClassReader(inputStream);
 		ClassExtractor extractor = new ClassExtractor(language);
@@ -174,7 +174,7 @@ public class ASMClassParser {
 		return result;
 	}
 	
-	protected JavaTypeReference toRef(String tref, Java language) {
+	protected JavaTypeReference toRef(String tref, Java7 language) {
 		return language.createTypeReference(toDots(tref));
 	}
 
@@ -188,7 +188,7 @@ public class ASMClassParser {
 	
 	protected class ClassExtractor extends ClassVisitor {
 
-		private Java _language;
+		private Java7 _language;
 		
 		private Type _type;
 		
@@ -196,7 +196,7 @@ public class ASMClassParser {
 			return _type;
 		}
 		
-		public ClassExtractor(Java language) {
+		public ClassExtractor(Java7 language) {
 			super(Opcodes.ASM4);
 			_language = language;
 			initMethodAccessMap();
@@ -258,7 +258,7 @@ public class ASMClassParser {
 			}
 		}
 		
-		public Java language() {
+		public Java7 language() {
 			return _language;
 		}
 		
@@ -408,7 +408,7 @@ public class ASMClassParser {
 	
 	protected class FieldSignatureExtractor extends TypeReferenceExtractor {
 
-		public FieldSignatureExtractor(MemberVariableDeclarator var, Java language) {
+		public FieldSignatureExtractor(MemberVariableDeclarator var, Java7 language) {
 			super(language);
 			_var = var;
 		}
@@ -425,17 +425,17 @@ public class ASMClassParser {
 	
 	protected class MethodExtractor extends SignatureVisitor {
 
-		public MethodExtractor(Method method, Java language) {
+		public MethodExtractor(Method method, Java7 language) {
 			super(Opcodes.ASM4);
 			_method = method;
 			_language = language;
 		}
 		
-		public Java language() {
+		public Java7 language() {
 			return _language;
 		}
 		
-		protected Java _language;
+		protected Java7 _language;
 		
 		private Method _method;
 		
@@ -484,7 +484,7 @@ public class ASMClassParser {
 	
 	private class ConstructorExtractor extends MethodExtractor {
 
-		public ConstructorExtractor(Method method, Java language) {
+		public ConstructorExtractor(Method method, Java7 language) {
 			super(method,language);
 		}
 		
@@ -499,7 +499,7 @@ public class ASMClassParser {
 		
 		private FormalTypeParameter _param;
 		
-		public TypeParameterBoundExtractor(FormalTypeParameter param, Java language) {
+		public TypeParameterBoundExtractor(FormalTypeParameter param, Java7 language) {
 			super(language);
 			_param = param;
 		}
@@ -514,14 +514,14 @@ public class ASMClassParser {
 	
 	protected class ClassSignatureExtractor extends SignatureVisitor {
 
-		private Java _language;
+		private Java7 _language;
 		
-		public Java language() {
+		public Java7 language() {
 			return _language;
 		}
 
 		private class InheritanceExtractor extends TypeReferenceExtractor {
-			private InheritanceExtractor(Java language) {
+			private InheritanceExtractor(Java7 language) {
 				super(language);
 			}
 
@@ -531,7 +531,7 @@ public class ASMClassParser {
 			}
 		}
 
-		public ClassSignatureExtractor(Type type, Java language) {
+		public ClassSignatureExtractor(Type type, Java7 language) {
 			super(Opcodes.ASM4);
 			_type = type;
 			_language = language;
@@ -574,15 +574,15 @@ public class ASMClassParser {
 	
 	protected class TypeReferenceExtractor extends SignatureVisitor {
 
-		public TypeReferenceExtractor(Java language) {
+		public TypeReferenceExtractor(Java7 language) {
 			super(Opcodes.ASM4);
 			_language = language;
 			initPrimitiveMap();
 		}
 		
-		private Java _language;
+		private Java7 _language;
 		
-		public Java language() {
+		public Java7 language() {
 			return _language;
 		}
 		
@@ -688,7 +688,7 @@ public class ASMClassParser {
   public static void main(String[] args) throws IOException, Exception {
   	String jarPath = args[0];
 		JarFile jar = new JarFile(jarPath);
-  	Java lang = new JavaLanguageFactory().create();
+  	Java7 lang = new JavaLanguageFactory().create();
   	Project project = new Project("test", new File("."), new JavaView(new LazyRootNamespace(), lang));
 
 

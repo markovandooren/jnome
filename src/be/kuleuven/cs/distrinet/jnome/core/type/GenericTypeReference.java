@@ -19,7 +19,7 @@ import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
 import org.aikodi.chameleon.util.association.Multi;
 import org.aikodi.chameleon.util.association.Single;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 
 public class GenericTypeReference extends ElementImpl implements JavaTypeReference {
 
@@ -130,7 +130,7 @@ public class GenericTypeReference extends ElementImpl implements JavaTypeReferen
 		if (type != null) {
 			if(! (type instanceof RawType)) {
 				List<ActualTypeArgument> typeArguments = typeArguments();
-				Java language = language(Java.class);
+				Java7 language = language(Java7.class);
 				if (typeArguments.size() > 0) {
 					result = language.createDerivedType(type, typeArguments);
 //					result = DerivedType.create(type, typeArguments);

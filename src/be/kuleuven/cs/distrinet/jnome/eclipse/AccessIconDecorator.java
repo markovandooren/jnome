@@ -5,7 +5,7 @@ import org.aikodi.chameleon.core.modifier.ElementWithModifiers;
 import org.aikodi.chameleon.eclipse.presentation.treeview.PrefixIconDecorator;
 import org.aikodi.chameleon.exception.ModelException;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 
 public class AccessIconDecorator extends PrefixIconDecorator {
 
@@ -16,7 +16,7 @@ public class AccessIconDecorator extends PrefixIconDecorator {
 
 	@Override
 	public String prefix(Element element) throws ModelException {
-		Java language = element.language(Java.class);
+		Java7 language = element.language(Java7.class);
 		String result;
 		if(element.isTrue(language.PRIVATE)) {
 			result = "private";

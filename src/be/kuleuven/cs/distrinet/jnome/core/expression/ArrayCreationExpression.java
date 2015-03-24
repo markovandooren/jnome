@@ -14,7 +14,7 @@ import org.aikodi.chameleon.util.Util;
 import org.aikodi.chameleon.util.association.Multi;
 import org.aikodi.chameleon.util.association.Single;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.rejuse.association.OrderedMultiAssociation;
@@ -97,7 +97,7 @@ public class ArrayCreationExpression extends Expression {
   }
 
   public Set<Type> getDirectExceptions() throws LookupException {
-  	TypeReference ref = language(Java.class).createTypeReferenceInNamespace("java.lang.NegativeArraySizeException", view().namespace());
+  	TypeReference ref = language(Java7.class).createTypeReferenceInNamespace("java.lang.NegativeArraySizeException", view().namespace());
   	ref.setUniParent(namespace().defaultNamespace());
     return Util.createNonNullSet(ref.getType());
   }

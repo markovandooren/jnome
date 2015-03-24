@@ -14,7 +14,7 @@ import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.variable.MemberVariable;
 import org.aikodi.chameleon.support.statement.ReturnStatement;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.tool.IsCollectionType;
 
 public class OutgoingLeak extends Analysis<ReturnStatement, Verification> {
@@ -48,7 +48,7 @@ public class OutgoingLeak extends Analysis<ReturnStatement, Verification> {
 	protected void analyze(ReturnStatement statement) {
 		Verification result = Valid.create();
 		Method nearestAncestor = statement.nearestAncestor(Method.class);
-		if(nearestAncestor != null && nearestAncestor.isTrue(statement.language(Java.class).PUBLIC)) {
+		if(nearestAncestor != null && nearestAncestor.isTrue(statement.language(Java7.class).PUBLIC)) {
 			try {
 				Expression expr = statement.getExpression();
 				if(expr instanceof CrossReference) {

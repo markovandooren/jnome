@@ -8,7 +8,7 @@ import org.aikodi.chameleon.core.variable.Variable;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.variable.VariableDeclaration;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.tree.TreeStructure;
 
@@ -21,7 +21,7 @@ public class PublicFieldViolation extends Analysis<VariableDeclaration, Verifica
 	@Override
 	protected void analyze(VariableDeclaration declaration) {
 		Verification result = Valid.create();
-		Java language = declaration.language(Java.class);
+		Java7 language = declaration.language(Java7.class);
 		Variable variable = declaration.variable();
 		if(variable.isTrue(language.PUBLIC) && variable.isTrue(language.INSTANCE) && (variable.isFalse(language.FINAL))) {
 			String message = "Error: encapsulation: non-final member variable "+variable.name() +

@@ -24,7 +24,7 @@ import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.util.Util;
 import org.aikodi.chameleon.workspace.View;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaBasicTypeArgument;
@@ -200,8 +200,8 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 		return parameters;
 	}
 
-	public Java language() throws LookupException {
-		return A().language(Java.class);
+	public Java7 language() throws LookupException {
+		return A().language(Java7.class);
 	}
 	
 	public View view() throws LookupException {

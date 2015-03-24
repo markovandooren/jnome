@@ -22,8 +22,8 @@ import be.kuleuven.cs.distrinet.jnome.workspace.JavaProjectConfigurator;
 
 public class JavaLanguageFactory implements LanguageFactory {
 
-	public Java create() throws ConfigException {
-		Java result = new Java();
+	public Java7 create() throws ConfigException {
+		Java7 result = new Java7();
 		result.setPlugin(ModelFactory.class, new JavaModelFactory());
 		result.setPlugin(Syntax.class, new JavaSyntax());
 		// FIXME: Stupid and inefficient

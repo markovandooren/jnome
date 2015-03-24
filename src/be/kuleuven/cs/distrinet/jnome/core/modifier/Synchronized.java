@@ -4,7 +4,7 @@ import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.modifier.ModifierImpl;
 import org.aikodi.chameleon.core.property.ChameleonProperty;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.rejuse.property.PropertySet;
 
 /**
@@ -21,7 +21,7 @@ public class Synchronized extends ModifierImpl {
 	}
 
 	public PropertySet<Element,ChameleonProperty> impliedProperties() {
-		return createSet(((Java)language()).SYNCHRONIZED);
+		return createSet(((Java7)language()).SYNCHRONIZED);
 	}
 	
 }

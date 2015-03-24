@@ -10,7 +10,7 @@ import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.util.association.Single;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaBasicTypeArgument;
 
@@ -25,7 +25,7 @@ public class ClassLiteral extends Expression {
 
   protected Type actualType() throws LookupException {
   	BasicJavaTypeReference tref = (BasicJavaTypeReference) language(ObjectOrientedLanguage.class).createTypeReferenceInNamespace("java.lang.Class", view().namespace());
-  	tref.addArgument(language(Java.class).createBasicTypeArgument(clone(target())));
+  	tref.addArgument(language(Java7.class).createBasicTypeArgument(clone(target())));
   	tref.setUniParent(this);
   	return tref.getElement();
   }

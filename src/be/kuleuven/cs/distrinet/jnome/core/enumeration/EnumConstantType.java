@@ -6,7 +6,7 @@ import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.AbstractAnonymousInnerClass;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 
@@ -23,7 +23,7 @@ public class EnumConstantType extends AbstractAnonymousInnerClass {
 	@Override
 	protected TypeReference typeReference() {
 		EnumType nearestAncestor = nearestAncestor(EnumType.class);
-		BasicJavaTypeReference result = language(Java.class).createTypeReference(nearestAncestor.name());
+		BasicJavaTypeReference result = language(Java7.class).createTypeReference(nearestAncestor.name());
 		result.setUniParent(nearestAncestor);
 		return result;
 	}

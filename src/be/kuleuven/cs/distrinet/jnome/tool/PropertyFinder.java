@@ -7,7 +7,7 @@ import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.support.expression.AssignmentExpression;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 
 public class PropertyFinder extends CommandLineTool {
 
@@ -41,7 +41,7 @@ public class PropertyFinder extends CommandLineTool {
 		  int noAssign=0;
 		  for(Type type:types) {
 		  	//		  	System.out.println("Searching type "+count+" of "+size);
-		  	Java lang = type.language(Java.class);
+		  	Java7 lang = type.language(Java7.class);
 		  	count++;
 		  	for(Method method: type.directlyDeclaredElements(Method.class)) {
 		  		String name = method.name();
@@ -98,7 +98,7 @@ public class PropertyFinder extends CommandLineTool {
 		  int pairsInInterfaces = 0;
 		  for(Type type:types) {
 //		  	System.out.println("Searching type "+count+" of "+size);
-		  	Java lang = type.language(Java.class);
+		  	Java7 lang = type.language(Java7.class);
 		  		count++;
 		  		for(Method method: type.directlyDeclaredElements(Method.class)) {
 		  			String name = method.name();
@@ -129,7 +129,7 @@ public class PropertyFinder extends CommandLineTool {
 			int pairsInInterfaces = 0;
 			for(Type type:types) {
 				//				System.out.println("Searching type "+count+" of "+size);
-				Java lang = type.language(Java.class);
+				Java7 lang = type.language(Java7.class);
 				count++;
 				for(Method method: type.directlyDeclaredElements(Method.class)) {
 					String name = method.name();

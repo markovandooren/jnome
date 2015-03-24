@@ -24,7 +24,7 @@ import org.aikodi.chameleon.workspace.DocumentScannerImpl;
 import org.aikodi.chameleon.workspace.InputException;
 import org.aikodi.chameleon.workspace.View;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 
@@ -427,7 +427,7 @@ public class PrimitiveTypeFactory {
 	}
 
 	protected void addPrefixOperator(Type type, String returnType, String symbol) {
-		TypeReference tr = ((Java)language()).createTypeReference(returnType);
+		TypeReference tr = ((Java7)language()).createTypeReference(returnType);
 		Public pub = new Public();
 		PrefixOperator op = new PrefixOperator(new SimpleNameMethodHeader(symbol, tr));
 		op.addModifier(pub);
@@ -436,7 +436,7 @@ public class PrimitiveTypeFactory {
 	}
 
 	protected void addPostfixOperator(Type type, String returnType, String symbol) {
-		TypeReference tr = ((Java)language()).createTypeReference(returnType);
+		TypeReference tr = ((Java7)language()).createTypeReference(returnType);
 		Public pub = new Public();
 		PostfixOperator op = new PostfixOperator(new SimpleNameMethodHeader(symbol, tr));
 		op.addModifier(pub);
@@ -445,13 +445,13 @@ public class PrimitiveTypeFactory {
 	}
 
 	public void addInfixOperator(Type type, String returnType, String symbol, String argType) {
-		TypeReference tr = ((Java)language()).createTypeReference(returnType);
+		TypeReference tr = ((Java7)language()).createTypeReference(returnType);
 		Public pub = new Public();
 		SimpleNameMethodHeader sig =  new SimpleNameMethodHeader(symbol,tr);
 		InfixOperator op = new InfixOperator(sig);
 		op.addModifier(pub);
 
-		TypeReference tr2 = ((Java)language()).createTypeReference(argType);
+		TypeReference tr2 = ((Java7)language()).createTypeReference(argType);
 		FormalParameter fp = new FormalParameter("arg", tr2);
 		sig.addFormalParameter(fp);
 		op.addModifier(new Native());

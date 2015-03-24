@@ -56,13 +56,13 @@ import com.google.common.collect.ImmutableList.Builder;
 
 public class JavaSubtypingRelation extends SubtypeRelation {
 
-	public JavaSubtypingRelation(Java java) {
+	public JavaSubtypingRelation(Java7 java) {
 		_java = java;
 	}
 
-	private Java _java;
+	private Java7 _java;
 
-	public Java java() {
+	public Java7 java() {
 		return _java;
 	}
 
@@ -517,7 +517,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		List<TypeParameter> parameters = type.parameters(TypeParameter.class);
 		List<ActualTypeArgument> result = new ArrayList<ActualTypeArgument>();
 		for(TypeParameter parameter: parameters) {
-			result.add(Java.argument(parameter));
+			result.add(Java7.argument(parameter));
 		}
 		return result;
 	}

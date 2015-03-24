@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.util.Collection;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 
@@ -34,9 +34,8 @@ public class TestCustomCases extends JavaTest {
 		super(provider);
 	}
 
-	@Test
 	public void testSubtyping() throws LookupException {
-		Java language = (Java)view().language();
+		Java7 language = (Java7)view().language();
 		Namespace ns = view().namespace();
 		BasicJavaTypeReference tref1 = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
 		tref1.addArgument(language.createBasicTypeArgument(language.createTypeReference("java.lang.String")));
@@ -97,22 +96,10 @@ public class TestCustomCases extends JavaTest {
 	}
 	}
 	
-//	@Override
-//	public void setCaching() {
-//    Config.setCaching(true);
-//	}
-	
 	@Test
   public void testGenerics() throws LookupException, ProjectException, ConfigException {
   	new CustomGenericsTest(project()).testSubtyping();
   }
-
-
-//	@Override
-//	public void setLogLevels() {
-//		Logger.getLogger("chameleon.caching").setLevel(Level.DEBUG);
-//		Logger.getRootLogger().setLevel(Level.FATAL);
-//	}
 
 	@Override
 	protected File projectFile() {

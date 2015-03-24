@@ -29,7 +29,7 @@ import org.aikodi.chameleon.oo.type.inheritance.SubtypeRelation;
 import org.aikodi.chameleon.oo.variable.FormalParameter;
 import org.aikodi.chameleon.util.Pair;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 
@@ -133,7 +133,7 @@ public class RawType extends ClassWithBody implements JavaType {
 
 	private void makeDescendantTypesRaw() {
 		List<Type> childTypes = directlyDeclaredElements(Type.class);
-		Java language = language(Java.class);
+		Java7 language = language(Java7.class);
 		for(Type type:childTypes) {
 			if(type.is(language.INSTANCE) == Ternary.TRUE) {
 			  // create raw type that does not erase anything
@@ -179,7 +179,7 @@ public class RawType extends ClassWithBody implements JavaType {
 	}
 
 	protected void eraseTypeParameters(List<TypeParameter> parameters) {
-		Java language = language(Java.class);
+		Java7 language = language(Java7.class);
 		for(TypeParameter typeParameter: parameters) {
 			FormalTypeParameter param = (FormalTypeParameter) typeParameter;
 			JavaTypeReference upperBoundReference = (JavaTypeReference) param.upperBoundReference();
@@ -226,7 +226,7 @@ public class RawType extends ClassWithBody implements JavaType {
    @ post \result == this;
    @*/
 	public Type erasure() {
-		Java language = language(Java.class);
+		Java7 language = language(Java7.class);
 		RawType result = _rawTypeCache;
 		if(result == null) {
 				if(is(language.INSTANCE) == Ternary.TRUE) {

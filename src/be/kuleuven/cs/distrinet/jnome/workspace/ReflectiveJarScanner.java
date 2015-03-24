@@ -20,7 +20,7 @@ import org.aikodi.chameleon.workspace.InputException;
 import org.aikodi.chameleon.workspace.ProjectException;
 import org.aikodi.chameleon.workspace.View;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.input.ReflectiveClassParser;
 
 /**
@@ -73,7 +73,7 @@ public class ReflectiveJarScanner extends DocumentScannerImpl {
   	_jarFile = new JarFile(project().absolutePath(_path));
 		Enumeration<JarEntry> entries = _jarFile.entries();
   	RootNamespace root = view().namespace();
-  	ReflectiveClassParser parser = new ReflectiveClassParser((Java)view().language());
+  	ReflectiveClassParser parser = new ReflectiveClassParser((Java7)view().language());
 		while(entries.hasMoreElements()) {
   		JarEntry entry = entries.nextElement();
   		String name = entry.getName();

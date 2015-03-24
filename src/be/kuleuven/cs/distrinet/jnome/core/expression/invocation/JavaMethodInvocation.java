@@ -21,7 +21,7 @@ import org.aikodi.chameleon.support.member.simplename.method.RegularMethodInvoca
 import org.aikodi.chameleon.util.Util;
 import org.aikodi.chameleon.util.association.Single;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 
 public class JavaMethodInvocation extends RegularMethodInvocation {
@@ -111,7 +111,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation {
 	public static List<Type> formalParameterTypesInContext(Method method,TypeAssignmentSet actualTypeParameters) throws LookupException {
 		List<Type> result;
 		if(method.nbTypeParameters() > 0 && actualTypeParameters!=null) {
-			Java language = method.language(Java.class);
+			Java7 language = method.language(Java7.class);
 			// Substitute
 			List<FormalParameter> formalParameters = method.formalParameters();
 			List<TypeReference> references = new ArrayList<TypeReference>();

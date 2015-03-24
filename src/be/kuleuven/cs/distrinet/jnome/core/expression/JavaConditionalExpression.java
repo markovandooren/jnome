@@ -9,7 +9,7 @@ import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.support.expression.ConditionalExpression;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaDerivedType;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 
@@ -32,7 +32,7 @@ public class JavaConditionalExpression extends ConditionalExpression {
 		if(result == null) {
 			Type first = getFirst().getType();
 			Type second = getSecond().getType();
-			Java java = language(Java.class);
+			Java7 java = language(Java7.class);
 			JavaView view = view(JavaView.class);
 			boolean firstPrimitive = first.isTrue(java.VALUE_TYPE);
 			boolean secondPrimitive = second.isTrue(java.VALUE_TYPE);

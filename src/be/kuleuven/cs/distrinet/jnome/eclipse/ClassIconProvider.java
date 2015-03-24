@@ -5,7 +5,7 @@ import org.aikodi.chameleon.eclipse.presentation.treeview.AbstractIconProvider;
 import org.aikodi.chameleon.eclipse.presentation.treeview.NameBasedIconDecorator;
 import org.aikodi.chameleon.oo.type.Type;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 
 public class ClassIconProvider extends AbstractIconProvider {
 
@@ -20,7 +20,7 @@ public class ClassIconProvider extends AbstractIconProvider {
 	@Override
 	public String baseIconName(Element element) {
 		String result;
-		Java language = element.language(Java.class);
+		Java7 language = element.language(Java7.class);
 		if(element.isTrue(language.INTERFACE)) {
 			result = "interface";
 		} else {

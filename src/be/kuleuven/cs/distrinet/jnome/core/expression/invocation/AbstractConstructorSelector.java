@@ -8,7 +8,7 @@ import org.aikodi.chameleon.core.declaration.Signature;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 
 public abstract class AbstractConstructorSelector extends AbstractJavaMethodSelector<NormalMethod> {
 
@@ -17,7 +17,7 @@ public abstract class AbstractConstructorSelector extends AbstractJavaMethodSele
 	}
 
 	public List<Declaration> withoutNonConstructors(List<? extends Declaration> selectionCandidates) throws LookupException {
-		Java language = invocation().language(Java.class);
+		Java7 language = invocation().language(Java7.class);
 		List<Declaration> tmp = new ArrayList<Declaration>();
 		for(Declaration decl: selectionCandidates) {
 			if(decl.isTrue(language.CONSTRUCTOR)) {

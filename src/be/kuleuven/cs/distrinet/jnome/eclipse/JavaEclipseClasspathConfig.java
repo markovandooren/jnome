@@ -16,7 +16,7 @@ import org.aikodi.chameleon.workspace.ProjectConfigurator;
 import org.aikodi.chameleon.workspace.ProjectException;
 import org.aikodi.chameleon.workspace.View;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
 import be.kuleuven.cs.distrinet.jnome.input.BaseJavaProjectLoader;
 import be.kuleuven.cs.distrinet.jnome.input.LazyJavaFileInputSourceFactory;
@@ -38,8 +38,8 @@ public class JavaEclipseClasspathConfig extends ConfigElement {
 	
 	private Project _project;
 	
-	private Java java() {
-		return (Java) view().language();
+	private Java7 java() {
+		return (Java7) view().language();
 	}
 	
 	private View view() {

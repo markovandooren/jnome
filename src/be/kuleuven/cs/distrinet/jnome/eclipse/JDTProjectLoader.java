@@ -32,7 +32,7 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.input.LazyJavaFileInputSourceFactory;
 import be.kuleuven.cs.distrinet.jnome.input.PredefinedElementsFactory;
 import be.kuleuven.cs.distrinet.jnome.workspace.JarLoader;
@@ -57,7 +57,7 @@ public class JDTProjectLoader extends LanguagePluginImpl implements EclipseProje
 			String projectName = jdtProject.getName();
 			System.out.println("Loading Eclipse project: "+projectName);
 			// 3. Create a Java view
-			Java java = (Java) language();
+			Java7 java = (Java7) language();
 			JavaView view = new JavaView(new LazyRootNamespace(), java);
 			
 			// 4. Create a Chameleon project
@@ -95,7 +95,7 @@ public class JDTProjectLoader extends LanguagePluginImpl implements EclipseProje
 		
 		IJavaProject nature = (IJavaProject) jdtProject.getNature(JavaCore.NATURE_ID);
 		
-		Java java = (Java) language();
+		Java7 java = (Java7) language();
 		Predicate<? super String, Nothing> sourceFileFilter = java.plugin(ProjectConfigurator.class).sourceFileFilter();
 		Predicate<? super String, Nothing> binaryFileFilter = java.plugin(ProjectConfigurator.class).binaryFileFilter();
 		for(IClasspathEntry entry: entries) {

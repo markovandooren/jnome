@@ -21,7 +21,7 @@ import org.aikodi.chameleon.support.modifier.Private;
 import org.aikodi.chameleon.support.modifier.Public;
 import org.aikodi.chameleon.support.modifier.Static;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.method.JavaMethod;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
@@ -72,7 +72,7 @@ public class EnumType extends RegularJavaType {
 	}
 	
 	protected Method values() {
-		JavaTypeReference enumTypeReference = language(Java.class).createTypeReference(name());
+		JavaTypeReference enumTypeReference = language(Java7.class).createTypeReference(name());
 		JavaTypeReference tref = new ArrayTypeReference(enumTypeReference, 1);
 		return createMethod(tref, "values");
 	}
@@ -87,7 +87,7 @@ public class EnumType extends RegularJavaType {
 	}
 	
 	protected Method valueOf() {
-		Java java = language(Java.class);
+		Java7 java = language(Java7.class);
 		JavaTypeReference tref = java.createTypeReference(name());
 		Method result = createMethod(tref, "valueOf");
 		TypeReference type = java.createTypeReference("java.lang.String");
@@ -126,7 +126,7 @@ public class EnumType extends RegularJavaType {
 	@Override
 	public List<InheritanceRelation> implicitNonMemberInheritanceRelations() {
 		List<InheritanceRelation> result = new ArrayList<>();
-		Java language = language(Java.class);
+		Java7 language = language(Java7.class);
 		BasicJavaTypeReference enumReference = (BasicJavaTypeReference) language.createTypeReference("java.lang.Enum");
 		enumReference.addArgument(language.createBasicTypeArgument(language.createTypeReference(getFullyQualifiedName())));
 		InheritanceRelation relation = new SubtypeRelation(enumReference);

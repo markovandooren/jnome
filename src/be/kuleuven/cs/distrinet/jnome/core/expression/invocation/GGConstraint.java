@@ -15,7 +15,7 @@ import org.aikodi.chameleon.oo.type.generics.SuperWildcard;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.util.Util;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 
 /**
@@ -136,7 +136,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 						InstantiatedTypeParameter inst = (InstantiatedTypeParameter) par;
 						BasicTypeArgument basic = (BasicTypeArgument) inst.argument();
 						TypeReference typeReference = basic.typeReference();
-						ExtendsWildcard ext = par.language(Java.class).createExtendsWildcard(Util.clone(typeReference));
+						ExtendsWildcard ext = par.language(Java7.class).createExtendsWildcard(Util.clone(typeReference));
 						ext.setUniParent(typeReference.parent());
 						TypeParameter newP = new InstantiatedTypeParameter(par.name(),ext);
 						V.replaceParameter(TypeParameter.class,par, newP);
@@ -196,7 +196,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 						InstantiatedTypeParameter inst = (InstantiatedTypeParameter) par;
 						BasicTypeArgument basic = (BasicTypeArgument) inst.argument();
 						TypeReference typeReference = basic.typeReference();
-						SuperWildcard ext = par.language(Java.class).createSuperWildcard(Util.clone(typeReference));
+						SuperWildcard ext = par.language(Java7.class).createSuperWildcard(Util.clone(typeReference));
 						ext.setUniParent(typeReference.parent());
 						TypeParameter newP = new InstantiatedTypeParameter(par.name(),ext);
 						V.replaceParameter(TypeParameter.class,par, newP);

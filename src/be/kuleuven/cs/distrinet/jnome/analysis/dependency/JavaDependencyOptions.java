@@ -36,7 +36,7 @@ import org.aikodi.chameleon.ui.widget.tree.TristateTreeSelector;
 import org.aikodi.chameleon.util.action.TopDown;
 import org.aikodi.chameleon.workspace.Project;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
@@ -63,7 +63,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 		} else if(context instanceof Element) {
 			_project = ((Element)context).project();
 		}
-		_java = (Java) _project.views().get(0).language();
+		_java = (Java7) _project.views().get(0).language();
 		_root = _project.views().get(0).namespace();
 		try {
 			_throwable = _java.findType("java.lang.Throwable", _root);
@@ -73,7 +73,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 	
 	private Project _project;
 	private Namespace _root;
-	private Java _java;
+	private Java7 _java;
 	private Type _throwable;
 	
 	public JavaDependencyOptions() {

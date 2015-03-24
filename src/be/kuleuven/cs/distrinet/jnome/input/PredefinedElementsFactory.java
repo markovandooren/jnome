@@ -11,7 +11,7 @@ import org.aikodi.chameleon.workspace.DocumentScanner;
 import org.aikodi.chameleon.workspace.InputException;
 import org.aikodi.chameleon.workspace.View;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.NullType;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 
@@ -53,7 +53,7 @@ public class PredefinedElementsFactory {
   }
 
 	private Type findType(View view, String fqn) throws LookupException {
-		Java lang = (Java) view.language();
+		Java7 lang = (Java7) view.language();
 	 	return lang.findType(fqn,view.namespace());
 	}
 	  
@@ -127,7 +127,7 @@ public class PredefinedElementsFactory {
     	_factory.addPlusString(type);
     }
     
-    protected Java java() {
-    	return (Java) _view.language();
+    protected Java7 java() {
+    	return (Java7) _view.language();
     }
 }

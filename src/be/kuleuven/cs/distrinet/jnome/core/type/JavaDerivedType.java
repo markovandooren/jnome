@@ -26,7 +26,7 @@ import org.aikodi.chameleon.oo.type.inheritance.SubtypeRelation;
 import org.aikodi.chameleon.util.Lists;
 
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 
 public class JavaDerivedType extends DerivedType implements JavaType {
 
@@ -126,7 +126,7 @@ public class JavaDerivedType extends DerivedType implements JavaType {
 					typeParameters.add(((InstantiatedTypeParameter) actualParam).capture((FormalTypeParameter) formalParam,toBeSubstituted));
 				}
 				// Everything works as well when we pass 'this' instead of 'base'.
-				result = language(Java.class).createdCapturedType(new ParameterSubstitution(TypeParameter.class,typeParameters), base);
+				result = language(Java7.class).createdCapturedType(new ParameterSubstitution(TypeParameter.class,typeParameters), base);
 				result.setUniParent(parent());
 				for(TypeParameter newParameter: typeParameters) {
 					for(TypeParameter oldParameter: baseParameters) {

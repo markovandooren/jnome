@@ -45,7 +45,7 @@ import org.aikodi.chameleon.support.modifier.Public;
 import org.aikodi.chameleon.support.modifier.Static;
 import org.aikodi.chameleon.util.Util;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.method.JavaMethod;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.StrictFP;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.Synchronized;
@@ -61,13 +61,13 @@ public class ReflectiveClassParser implements BytecodeClassParser {
 
 	private ObjectOrientedFactory _factory;
 	
-	private Java _language;
+	private Java7 _language;
 	
-	protected Java language() {
+	protected Java7 language() {
 		return _language;
 	}
 
-	public ReflectiveClassParser(Java language) {
+	public ReflectiveClassParser(Java7 language) {
 		_language = language;
 		_factory = language.plugin(ObjectOrientedFactory.class); 
 	}

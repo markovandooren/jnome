@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.declaration.DeclarationContainer;
-import org.aikodi.chameleon.core.declaration.TargetDeclaration;
 import org.aikodi.chameleon.core.document.Document;
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.modifier.Modifier;
@@ -133,7 +133,7 @@ import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.ThisConstructor
 import be.kuleuven.cs.distrinet.jnome.core.imports.JavaDemandImport;
 import be.kuleuven.cs.distrinet.jnome.core.imports.SingleStaticImport;
 import be.kuleuven.cs.distrinet.jnome.core.imports.StaticDemandImport;
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.AnnotationType;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.Implements;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.JavaConstructor;
@@ -607,32 +607,32 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
       }
       
       public JavaTypeReference typeRef(String qn) {
-        return ((Java)language()).createTypeReference(qn);
+        return ((Java7)language()).createTypeReference(qn);
       }
       
       public CrossReferenceTarget createTypeReferenceTarget(String qn) {
-      return ((Java)language()).createTypeReferenceTarget(qn);
+      return ((Java7)language()).createTypeReferenceTarget(qn);
       }
 
-      public JavaTypeReference createTypeReference(CrossReference<? extends TargetDeclaration> target, String name) {
-        return ((Java)language()).createTypeReference(target,name);
+      public JavaTypeReference createTypeReference(CrossReference<? extends Declaration> target, String name) {
+        return ((Java7)language()).createTypeReference(target,name);
       }
       
       public JavaTypeReference createTypeReference(NamedTarget target) {
-        return ((Java)language()).createTypeReference(target);
+        return ((Java7)language()).createTypeReference(target);
       }
       
       public NamespaceDeclaration createNamespaceDeclaration(String ns) {
-        return ((Java)language()).plugin(ObjectOrientedFactory.class).createNamespaceDeclaration(ns);
+        return ((Java7)language()).plugin(ObjectOrientedFactory.class).createNamespaceDeclaration(ns);
       }
       
       public NamespaceDeclaration createNamespaceDeclaration() {
-        return ((Java)language()).plugin(ObjectOrientedFactory.class).createRootNamespaceDeclaration();
+        return ((Java7)language()).plugin(ObjectOrientedFactory.class).createRootNamespaceDeclaration();
       }
       
       
-      public Java java() {
-        return (Java)language();
+      public Java7 java() {
+        return (Java7)language();
       }
 
 

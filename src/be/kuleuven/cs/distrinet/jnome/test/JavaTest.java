@@ -20,7 +20,7 @@ import org.aikodi.chameleon.workspace.Workspace;
 import org.junit.Before;
 import org.junit.Test;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaProjectConfigurator;
 
@@ -106,7 +106,7 @@ public abstract class JavaTest extends CompositeTest {
 		Project project;
 		LanguageRepository repo = new LanguageRepository();
 		Workspace workspace = new Workspace(repo);
-		Java java = new JavaLanguageFactory().create();
+		Java7 java = new JavaLanguageFactory().create();
 		repo.add(java);
 		java.setPlugin(ProjectConfigurator.class, new JavaProjectConfigurator(JavaLanguageFactory.javaBaseJar()));
 		BootstrapProjectConfig config = new BootstrapProjectConfig(workspace);

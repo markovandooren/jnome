@@ -12,7 +12,7 @@ import org.aikodi.chameleon.oo.type.generics.FormalParameterType;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 
 public class EqualTypeConstraint extends SecondPhaseConstraint {
@@ -29,7 +29,7 @@ public class EqualTypeConstraint extends SecondPhaseConstraint {
 			if(parameter.sameAs(typeParameter())) {
 				// Otherwise, if U is Tj, then this constraint carries no information and may be discarded.
 			} else {
-				JavaTypeReference tref = typeParameter().language(Java.class).createTypeReference(parameter.signature().name());
+				JavaTypeReference tref = typeParameter().language(Java7.class).createTypeReference(parameter.signature().name());
 				tref.setUniParent(parameter);
 				substituteRHS(tref);
 				substitute(U.parameter());

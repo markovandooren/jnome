@@ -13,7 +13,7 @@ import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
 import org.aikodi.chameleon.util.Util;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.method.JavaMethod;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 
@@ -115,7 +115,7 @@ public class ConstructorSelector extends AbstractConstructorSelector {
 		method.setUniParent(decl.parent());
 		method.setOrigin(decl);
 		Type type = decl.nearestAncestor(Type.class);
-		Java language = invocation.language(Java.class);
+		Java7 language = invocation.language(Java7.class);
 		for (TypeParameter param : type.parameters(TypeParameter.class)) {
 			method.header().addTypeParameter(Util.clone(param));
 			BasicJavaTypeReference tref = language.createTypeReference(param.name());

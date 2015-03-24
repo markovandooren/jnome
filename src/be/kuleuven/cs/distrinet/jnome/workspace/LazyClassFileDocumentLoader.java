@@ -13,7 +13,7 @@ import org.aikodi.chameleon.workspace.DocumentLoaderImpl;
 import org.aikodi.chameleon.workspace.DocumentScanner;
 import org.aikodi.chameleon.workspace.InputException;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.input.parser.ASMClassParser;
 
 public class LazyClassFileDocumentLoader extends DocumentLoaderImpl {
@@ -63,7 +63,7 @@ public class LazyClassFileDocumentLoader extends DocumentLoaderImpl {
 	public void doRefresh() throws InputException {
 		try {
 			Namespace ns = namespace();
-			setDocument(_parser.load((Java) ns.language()));
+			setDocument(_parser.load((Java7) ns.language()));
 		} catch (Exception e) {
 			throw new InputException(e);
 		}

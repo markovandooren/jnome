@@ -15,7 +15,7 @@ import org.aikodi.chameleon.workspace.ProjectException;
 import org.aikodi.chameleon.workspace.View;
 import org.aikodi.chameleon.workspace.Workspace;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.input.BaseJavaProjectLoader;
 import be.kuleuven.cs.distrinet.jnome.input.LazyJavaFileInputSourceFactory;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
@@ -57,8 +57,8 @@ public class JavaProjectConfigurator extends ProjectConfiguratorImpl implements 
 		new JavaBaseLibraryConfigurator(java()).process(view, baseLibraryConfiguration);
 	}
 	
-	protected Java java() {
-		return (Java) language();
+	protected Java7 java() {
+		return (Java7) language();
 	}
 	
 	public class JavaBaseLibraryConfigurator extends BaseLibraryConfigurator {
@@ -71,7 +71,7 @@ public class JavaProjectConfigurator extends ProjectConfiguratorImpl implements 
 		protected void addBaseScanner(View view) {
 			try {
 				//Add the base loader.
-				view.addBinary(new BaseJavaProjectLoader(baseJarPath(),(Java)language()));
+				view.addBinary(new BaseJavaProjectLoader(baseJarPath(),(Java7)language()));
 			} catch (ProjectException e) {
 				throw new ConfigException(e);
 			}

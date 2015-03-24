@@ -117,7 +117,7 @@ import be.kuleuven.cs.distrinet.jnome.core.expression.DimensionInitializer;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.ConstructorInvocation;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.SuperConstructorDelegation;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.ThisConstructorDelegation;
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.Default;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.StrictFP;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.Synchronized;
@@ -590,14 +590,14 @@ public class JavaSyntax extends Syntax {
   public boolean isClass(Element element) {
   	if (element instanceof RegularType) {
 //  		element.flushCache();
-  		return ((Type)element).is(((Java)language()).INTERFACE) != Ternary.TRUE;
+  		return ((Type)element).is(((Java7)language()).INTERFACE) != Ternary.TRUE;
   	}
   	return false;
   }
   
   public boolean isInterface(Element element) {
     if(element instanceof Type){
-    	return (element).is(((Java)language()).INTERFACE) == Ternary.TRUE;
+    	return (element).is(((Java7)language()).INTERFACE) == Ternary.TRUE;
     }
     return false;
   }
@@ -645,7 +645,7 @@ public class JavaSyntax extends Syntax {
     final List<TypeReference> interfaceRefs = new ArrayList<TypeReference>();
     for(SubtypeRelation relation:superTypes) {
     	TypeReference typeRef = relation.superClassReference();
-      if(relation.is(relation.language(Java.class).IMPLEMENTS_RELATION) == Ternary.TRUE) {
+      if(relation.is(relation.language(Java7.class).IMPLEMENTS_RELATION) == Ternary.TRUE) {
         interfaceRefs.add(typeRef);
       } else {
         classRefs.add(typeRef);
@@ -762,7 +762,7 @@ public class JavaSyntax extends Syntax {
 	    
 	    appendTypeParameters(method.typeParameters(), result);
 	    
-	    if(! (method.is(method.language(Java.class).CONSTRUCTOR) == Ternary.TRUE)) {
+	    if(! (method.is(method.language(Java7.class).CONSTRUCTOR) == Ternary.TRUE)) {
 	        result.append(toCode(method.returnTypeReference()));
 	        result.append(" ");
 	      }
@@ -1537,7 +1537,7 @@ public class JavaSyntax extends Syntax {
     List<Type> types = arguments.getTypes();
     new SafePredicate<Type>() {
     	public boolean eval(Type t) {
-    		return t.is(((Java)t.language()).PUBLIC) == Ternary.TRUE;
+    		return t.is(((Java7)t.language()).PUBLIC) == Ternary.TRUE;
     	}
     }.filter(types);
     int i = 1;

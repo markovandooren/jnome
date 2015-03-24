@@ -5,7 +5,7 @@ import org.aikodi.chameleon.core.reference.CrossReferenceTarget;
 import org.aikodi.chameleon.oo.expression.NameExpression;
 import org.aikodi.chameleon.oo.type.Type;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaDerivedType;
 
 public class JavaNameExpression extends NameExpression {

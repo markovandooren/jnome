@@ -23,7 +23,7 @@ import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
 import org.aikodi.chameleon.util.Util;
 import org.aikodi.chameleon.util.association.Multi;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -150,7 +150,7 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
   	Type result = type;
 		if (type != null) {
 			if(! (type instanceof RawType)) {
-				Java language = language(Java.class);
+				Java7 language = language(Java7.class);
 				
 				//Does not work because there is no distinction yet between a diamond empty list and a non-diamond empty list.
 //				if(type.nbTypeParameters(TypeParameter.class) > 0) {
@@ -184,7 +184,7 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 		JavaTypeReference result = null;
 	  CrossReferenceTarget target = getTarget();
 	  if(target instanceof CrossReference) {
-	  	CrossReference<? extends TargetDeclaration> erasure = language(Java.class).erasure((CrossReference)target);
+	  	CrossReference<? extends Declaration> erasure = language(Java7.class).erasure((CrossReference)target);
 	  	result = new BasicJavaTypeReference(erasure, name());
 	  } else if (target == null) {
 	  	result = new BasicJavaTypeReference(null, name());

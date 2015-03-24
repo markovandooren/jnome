@@ -14,14 +14,14 @@ import org.aikodi.chameleon.support.modifier.Native;
 import org.aikodi.chameleon.support.modifier.Public;
 import org.aikodi.chameleon.util.Pair;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 
 /**
  * @author Marko van Dooren
  */
 public class NullType extends RegularType implements JavaType {
 
-  public NullType(Java lang) {
+  public NullType(Java7 lang) {
     super("null type");
     addModifier(new Public());
     addInfixOperator("boolean", "==", "java.lang.Object",lang);
@@ -29,7 +29,7 @@ public class NullType extends RegularType implements JavaType {
     addInfixOperator("java.lang.String", "+", "java.lang.String",lang);
   }
   
-  private void addInfixOperator(String returnType, String symbol, String argType,Java lang) {
+  private void addInfixOperator(String returnType, String symbol, String argType,Java7 lang) {
   	JavaTypeReference jtr = lang.createTypeReference(returnType);
   	Public pub = new Public();
   	InfixOperator op = new InfixOperator(new SimpleNameMethodHeader(symbol,jtr));
@@ -40,11 +40,11 @@ public class NullType extends RegularType implements JavaType {
   }
 
   public boolean assignableTo(Type other) {
-    return other.isTrue(language(Java.class).REFERENCE_TYPE); 
+    return other.isTrue(language(Java7.class).REFERENCE_TYPE); 
   }
 
   protected NullType cloneThis() {
-    return new NullType((Java) language());
+    return new NullType((Java7) language());
   }
   
   @Override
@@ -54,7 +54,7 @@ public class NullType extends RegularType implements JavaType {
   
   @Override
   public boolean auxSubTypeOf(Type other) throws LookupException {
-  	return other.isTrue(language(Java.class).REFERENCE_TYPE);
+  	return other.isTrue(language(Java7.class).REFERENCE_TYPE);
   }
 
 	/**

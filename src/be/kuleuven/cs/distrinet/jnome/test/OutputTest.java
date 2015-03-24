@@ -7,7 +7,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
 import be.kuleuven.cs.distrinet.jnome.input.EagerJavaFileInputSourceFactory;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
@@ -84,7 +84,7 @@ public abstract class OutputTest {
 	@Before
 	public void setUp() throws MalformedURLException, FileNotFoundException, ParseException, IOException, Exception {
 		addTestFiles();
-		Java language = new JavaLanguageFactory().create();
+		Java7 language = new JavaLanguageFactory().create();
 		Project project = new Project("output test", new File("."),  new JavaView(new RootNamespace(new RegularNamespaceFactory()),language));
 		//FIXME I think this entire test class has to be deleted.
 		throw new Error();

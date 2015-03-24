@@ -17,7 +17,7 @@ import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
 import org.aikodi.chameleon.support.modifier.Final;
 import org.aikodi.chameleon.workspace.View;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 
 /**
@@ -30,7 +30,7 @@ public class ArrayType extends RegularType {
     //addModifier(type.getAccessModifier());
     _type = type;
     setUniParent(type.parent());
-    Java language = type.language(Java.class);
+    Java7 language = type.language(Java7.class);
 		JavaTypeReference jtr = language.createTypeReference("int");
 		
 		// JLS7 10.7 Array Members
@@ -141,7 +141,7 @@ public class ArrayType extends RegularType {
   @Override
   	public boolean auxSubTypeOf(Type second) throws LookupException {
   	 boolean result = false;
-  	 if (second instanceof ArrayType && is(language(Java.class).REFERENCE_TYPE) == Ternary.TRUE) {
+  	 if (second instanceof ArrayType && is(language(Java7.class).REFERENCE_TYPE) == Ternary.TRUE) {
   		 ArrayType second2 = (ArrayType)second;
   		 result = elementType().subTypeOf(second2.elementType());
   	 }

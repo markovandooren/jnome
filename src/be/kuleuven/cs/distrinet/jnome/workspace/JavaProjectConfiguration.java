@@ -11,7 +11,7 @@ import org.aikodi.chameleon.workspace.ProjectConfigurator;
 import org.aikodi.chameleon.workspace.ProjectException;
 import org.aikodi.chameleon.workspace.View;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.input.BaseJavaProjectLoader;
 
 public class JavaProjectConfiguration extends ProjectConfiguration {
@@ -40,7 +40,7 @@ public class JavaProjectConfiguration extends ProjectConfiguration {
 	  	protected void pathChanged() throws ConfigException {
 	  		try {
 	  			JarFile path = new JarFile(project().absoluteFile(_path));
-					view().addBinary(new JarLoader(path, language(Java.NAME).plugin(ProjectConfigurator.class).binaryFileFilter()));
+					view().addBinary(new JarLoader(path, language(Java7.NAME).plugin(ProjectConfigurator.class).binaryFileFilter()));
 	  		} catch (ProjectException | IOException e) {
 	  			throw new ConfigException(e);
 	  		}

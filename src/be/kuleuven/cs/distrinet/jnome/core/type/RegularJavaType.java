@@ -32,7 +32,7 @@ import org.aikodi.chameleon.support.modifier.Public;
 import org.aikodi.chameleon.support.statement.StatementExpression;
 
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.SuperConstructorDelegation;
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.method.JavaMethod;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.JavaConstructor;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
@@ -180,7 +180,7 @@ public class RegularJavaType extends RegularType implements JavaType {
   public NormalMethod getClassMethod() {
   	if(_getClassMethod == null) {
   		if(view(JavaView.class).topLevelType() != this) {
-  			Java language = language(Java.class);
+  			Java7 language = language(Java7.class);
   			BasicJavaTypeReference returnType = language.createTypeReference("java.lang.Class");
   			JavaTypeReference erasedThisType = language.createTypeReference(name());
   			ActualTypeArgument arg = language.createExtendsWildcard(erasedThisType);
@@ -284,7 +284,7 @@ public class RegularJavaType extends RegularType implements JavaType {
 	@Override
 	public Type erasure() {
 		//FIXME this code seems to have been duplicated a number of times.
-		Java language = language(Java.class);
+		Java7 language = language(Java7.class);
 		RawType result = _rawTypeCache;
 		if(result == null) {
 				if(is(language.INSTANCE) == Ternary.TRUE) {

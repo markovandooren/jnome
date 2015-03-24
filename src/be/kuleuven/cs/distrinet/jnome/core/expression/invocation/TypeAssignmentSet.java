@@ -11,7 +11,7 @@ import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.rejuse.association.OrderedMultiAssociation;
 
@@ -62,7 +62,7 @@ public class TypeAssignmentSet {
 			List<TypeAssignment> assignments = assignments();
 			for(TypeAssignment assignment: assignments) {
 				TypeReference upperBoundReference = assignment.parameter().upperBoundReference();
-				Java language = upperBoundReference.language(Java.class);
+				Java7 language = upperBoundReference.language(Java7.class);
 				JavaTypeReference bound = (JavaTypeReference) upperBoundReference.clone();
 				bound.setUniParent(upperBoundReference);
 				for(TypeAssignment nested: assignments) {

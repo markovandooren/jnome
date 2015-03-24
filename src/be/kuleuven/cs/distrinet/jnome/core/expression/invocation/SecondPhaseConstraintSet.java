@@ -19,7 +19,7 @@ import org.aikodi.chameleon.support.expression.AssignmentExpression;
 import org.aikodi.chameleon.util.Util;
 import org.aikodi.chameleon.workspace.View;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 
 import com.google.common.collect.ImmutableSet;
@@ -49,12 +49,12 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 
 
 	
-	private Type leastUpperBound(List<? extends JavaTypeReference> Us, Java language) throws LookupException {
+	private Type leastUpperBound(List<? extends JavaTypeReference> Us, Java7 language) throws LookupException {
 		return language.subtypeRelation().leastUpperBound(Us);
 	}
 
 	private void processSuperTypeConstraints() throws LookupException {
-		Java language = null;
+		Java7 language = null;
 		for(TypeParameter p: typeParameters()) {
 			boolean hasSuperConstraints = false;
 			for(SecondPhaseConstraint constraint: constraints()) {
@@ -66,7 +66,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 			if(hasSuperConstraints) {
 				List<JavaTypeReference> Us = Us(p, SupertypeConstraint.class);
 				if(language == null) {
-					language = p.language(Java.class);
+					language = p.language(Java7.class);
 				}
 				add(new ActualTypeAssignment(p, leastUpperBound(Us,language)));
 			}
@@ -120,7 +120,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
   }
 
   private JavaTypeReference box(JavaTypeReference ref) throws WrongLanguageException, LookupException {
-  	return ref.language(Java.class).box(ref, ref.namespace());
+  	return ref.language(Java7.class).box(ref, ref.namespace());
   }
   
 	private void processUnresolved(JavaTypeReference Sref) throws LookupException {
@@ -130,7 +130,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(invocation(), invokedGenericMethod());
 		View view = RRef.view();
 		JavaTypeReference SprimeRef = box(Sref);
-		Java java = view.language(Java.class);
+		Java7 java = view.language(Java7.class);
 		if(! RRef.getElement().sameAs(java.voidType(RRef.view().namespace()))) {
 		  // the constraint S >> R', provided R is not void	
 			JavaTypeReference RprimeRef = substitutedReference(RRef);
@@ -247,7 +247,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		// Let R' = R[T1=B(T1) ... Tn=B(Tn)] where B(Ti) is the type inferred for Ti in the previous section, or Ti if no type was inferred.
 		for(TypeAssignment assignment: assignments().assignments()) {
 			Type type = assignment.type();
-			JavaTypeReference replacement = RRef.language(Java.class).reference(type);
+			JavaTypeReference replacement = RRef.language(Java7.class).reference(type);
 //			replacement.setUniParent(RRef.language().defaultNamespace()); XXX
 			RprimeRef = (JavaTypeReference) NonLocalJavaTypeReference.replace(replacement, assignment.parameter(), RprimeRef);
 		}
@@ -259,7 +259,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
   		throw new ChameleonProgrammerException();
   	} else {
 //  		return new DirectJavaTypeReference(((AssignmentExpression)invocation().parent()).getVariable().getType());
-  		return ((TypeParameter)typeParameters().get(0)).language(Java.class).reference(((AssignmentExpression)invocation().parent()).getVariableExpression().getType());
+  		return ((TypeParameter)typeParameters().get(0)).language(Java7.class).reference(((AssignmentExpression)invocation().parent()).getVariableExpression().getType());
   	}
   }
   

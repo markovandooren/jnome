@@ -517,8 +517,8 @@ public class JavaSyntax extends Syntax {
   
   public String toCodeNamespacePart(NamespaceDeclaration part)  {
     StringBuffer result = new StringBuffer();
-    result.append("package "+part.namespace().fullyQualifiedName() +";\n\n");
-    for(Import imp: part.imports()) {
+    result.append("package "+toCode(part.namespaceReference())+";\n\n");
+    for(Import imp: part.explicitImports()) {
         result.append(toCode(imp));
     }
     result.append("\n");

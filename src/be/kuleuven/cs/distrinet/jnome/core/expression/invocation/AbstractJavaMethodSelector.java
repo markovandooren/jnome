@@ -163,6 +163,8 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 					// if the formal parameter type is reference type, add a constraint
 					Type argType = actualParameters.get(i).getType();
 					if(includeNonreference || argType.is(language.REFERENCE_TYPE) == Ternary.TRUE) {
+					  //FIXME Check if substitution is every done on the type reference, and
+					  // adapt if necessary.
 						constraints.add(new SSConstraint(language.reference(argType), formalParameters.get(i)));
 					}
 				}

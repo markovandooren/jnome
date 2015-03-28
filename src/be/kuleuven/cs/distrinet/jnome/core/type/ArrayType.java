@@ -38,8 +38,11 @@ public class ArrayType extends RegularType {
     var.addModifier(new Final());
     add(var);
     
-		JavaTypeReference reference = (JavaTypeReference) language.reference(type);
-		reference.setUniParent(null);
+//    JavaTypeReference reference = (JavaTypeReference) language.reference(type);
+//    reference.setUniParent(null);
+    //FIXME: does this work correctly with respect to substitution during type interference?
+    // I think it does.
+    JavaTypeReference reference = new DirectJavaTypeReference(type);
 		JavaTypeReference returnType = new ArrayTypeReference(reference);
     Method clone = new NormalMethod(new SimpleNameMethodHeader("clone", returnType));
     add(clone);

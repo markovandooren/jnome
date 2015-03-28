@@ -1312,7 +1312,7 @@ public class JavaSyntax extends Syntax {
   }
   
   public String toCodeLiteral(Literal literal) {
-    return literal.getValue();
+    return literal.text();
   }
   
   public boolean isNamedTarget(Element element) {

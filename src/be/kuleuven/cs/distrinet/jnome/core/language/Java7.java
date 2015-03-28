@@ -305,7 +305,7 @@ public class Java7 extends ObjectOrientedLanguage {
 		public Ternary selfAppliesTo(Element element) {
 			Ternary result = Ternary.FALSE;
 			if(element instanceof RegularJavaType) {
-				String fqn = ((RegularJavaType)element).getFullyQualifiedName();
+				String fqn = ((RegularJavaType)element).name();
 				if(_primitives.contains(fqn)) {
 					result = Ternary.TRUE;
 				}

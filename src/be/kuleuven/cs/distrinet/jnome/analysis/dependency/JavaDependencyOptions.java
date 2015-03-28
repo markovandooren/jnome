@@ -13,7 +13,6 @@ import org.aikodi.chameleon.analysis.dependency.DependencyOptions;
 import org.aikodi.chameleon.analysis.dependency.DependencyResult;
 import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.element.Element;
-import org.aikodi.chameleon.core.element.Navigator;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.namespace.Namespace;
 import org.aikodi.chameleon.core.reference.CrossReference;
@@ -41,15 +40,13 @@ import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.function.Function;
-import be.kuleuven.cs.distrinet.rejuse.graph.Edge;
 import be.kuleuven.cs.distrinet.rejuse.graph.UniEdge;
-import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
-import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.True;
 import be.kuleuven.cs.distrinet.rejuse.predicate.TypePredicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
 import be.kuleuven.cs.distrinet.rejuse.tree.PrunedTreeStructure;
 import be.kuleuven.cs.distrinet.rejuse.tree.TreePredicate;
+import be.kuleuven.cs.distrinet.rejuse.tree.TreeStructure;
 
 import com.google.common.collect.ImmutableList;
 
@@ -113,7 +110,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 				targetPredicate.and(targetLocation), 
 				dependencyPredicate,
 				historyFilter);
-		Navigator logicalStructure = _root.logical();
+		TreeStructure<Element> logicalStructure = _root.logical();
 		PrunedTreeStructure<Element> sourceStructure = new PrunedTreeStructure(logicalStructure, source);
 		TopDown<Element, Nothing> topDown = new TopDown<>(dependencyAnalysis);
 		topDown.traverse(sourceStructure);

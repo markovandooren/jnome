@@ -49,52 +49,50 @@ public class RegularJavaType extends RegularType implements JavaType {
     setDefaultDefaultConstructor(false);
   }
 
-  //	private StackOverflowTracer _tracer = new StackOverflowTracer(3);
+  // private StackOverflowTracer _tracer = new StackOverflowTracer(3);
 
   public DerivedType createDerivedType(List<ActualTypeArgument> typeArguments) throws LookupException {
-    //		if(typeArguments.size() == 1) {
-    //			if(_genericCache == null) {
-    //				synchronized(this) {
-    //					if(_genericCache == null) {
-    //						_genericCache = new HashMap<>();
-    //					}
-    //				}
-    //			}
-    //			_tracer.push();
-    //			Type key = typeArguments.get(0).type();
-    //			_tracer.pop();
-    //			DerivedType result = _genericCache.get(key);
-    //			if(result == null) {
-    //				synchronized(this) {
-    //					if(result == null) {
-    //						result = new JavaDerivedType(this,typeArguments);
-    //						_genericCache.put(key, result);
-    //					}
-    //				}
-    //			} else {
-    ////				System.out.println(++COUNT+" generic cache hit for "+name()+"<"+key.name()+">");
-    //			}
-    //			return result;
-    //		}
+    // if(typeArguments.size() == 1) {
+    // if(_genericCache == null) {
+    // synchronized(this) {
+    // if(_genericCache == null) {
+    // _genericCache = new HashMap<>();
+    // }
+    // }
+    // }
+    // _tracer.push();
+    // Type key = typeArguments.get(0).type();
+    // _tracer.pop();
+    // DerivedType result = _genericCache.get(key);
+    // if(result == null) {
+    // synchronized(this) {
+    // if(result == null) {
+    // result = new JavaDerivedType(this,typeArguments);
+    // _genericCache.put(key, result);
+    // }
+    // }
+    // } else {
+    // //
+    // System.out.println(++COUNT+" generic cache hit for "+name()+"<"+key.name()+">");
+    // }
+    // return result;
+    // }
 
-    //		int size = typeArguments.size();
-    //		Integer current = COUNTMAP.get(size);
-    //		if(current == null) {
-    //			current = new Integer(0);
-    //		}
-    //		Integer value = new Integer(current.intValue() + 1);
-    //		System.out.println("Size: "+size+" count: "+value);
-    //		COUNTMAP.put(size,value);
-    return new JavaDerivedType(this,typeArguments);
+    // int size = typeArguments.size();
+    // Integer current = COUNTMAP.get(size);
+    // if(current == null) {
+    // current = new Integer(0);
+    // }
+    // Integer value = new Integer(current.intValue() + 1);
+    // System.out.println("Size: "+size+" count: "+value);
+    // COUNTMAP.put(size,value);
+    return new JavaDerivedType(this, typeArguments);
   }
 
+  // private static int COUNT;
+  // private static Map<Integer,Integer> COUNTMAP = new HashMap<>();
 
-
-  //	private static int COUNT;
-  //	private static Map<Integer,Integer> COUNTMAP = new HashMap<>(); 
-
-
-  //	private Map<Type,DerivedType> _genericCache;
+  // private Map<Type,DerivedType> _genericCache;
 
   protected RegularType cloneSelf() {
     RegularJavaType regularJavaType = new RegularJavaType(name());
@@ -120,10 +118,13 @@ public class RegularJavaType extends RegularType implements JavaType {
    * Create a default default constructor without an access modifier.
    */
   protected JavaMethod createDefaultConstructorWithoutAccessModifier(boolean rebuildCache) {
-    // FIXME Because this code is ran when a regular Java type is constructed, we cannot ask the
-    //       language for the factory. Management of the constructor should be done lazily. When
-    //       the type is actually used, we can assume that a language is attached. Otherwise, we
-    //       throw an exception.
+    // FIXME Because this code is ran when a regular Java type is constructed,
+    // we cannot ask the
+    // language for the factory. Management of the constructor should be done
+    // lazily. When
+    // the type is actually used, we can assume that a language is attached.
+    // Otherwise, we
+    // throw an exception.
     JavaMethod cons = new JavaMethod(new SimpleNameMethodHeader(name(), new BasicJavaTypeReference(name())));
     cons.addModifier(new Constructor());
     Block body = new Block();
@@ -144,25 +145,25 @@ public class RegularJavaType extends RegularType implements JavaType {
   }
 
   /**
-   * A Java reference type has a default constructor when
-   * no other constructor is present.
+   * A Java reference type has a default constructor when no other constructor
+   * is present.
    */
   @Override
   public List<Member> implicitMembers() {
-    if(_implicitMemberCache == null) {
+    if (_implicitMemberCache == null) {
       _implicitMemberCache = buildImplicitMembersCache();
     }
     return _implicitMemberCache;
   }
 
   protected List<Member> buildImplicitMembersCache() {
-    Builder<Member> builder = ImmutableList.<Member>builder();
+    Builder<Member> builder = ImmutableList.<Member> builder();
     NormalMethod defaultDefaultConstructor = defaultDefaultConstructor();
-    if(defaultDefaultConstructor != null) {
+    if (defaultDefaultConstructor != null) {
       builder.add(defaultDefaultConstructor);
     }
     NormalMethod classMethod = getClassMethod();
-    if(classMethod != null) {
+    if (classMethod != null) {
       builder.add(classMethod);
     }
     return builder.build();
@@ -171,15 +172,15 @@ public class RegularJavaType extends RegularType implements JavaType {
   private List<Member> _implicitMemberCache;
 
   /**
-   * This is actually cheating because the getClass method in Java
-   * is a member of Object. Maybe we should set the parent to Object
-   * instead of the current class. Anyhow, the Java language specification
-   * cheats as well.
+   * This is actually cheating because the getClass method in Java is a member
+   * of Object. Maybe we should set the parent to Object instead of the current
+   * class. Anyhow, the Java language specification cheats as well.
+   * 
    * @return
    */
   public NormalMethod getClassMethod() {
-    if(_getClassMethod == null) {
-      if(view(JavaView.class).topLevelType() != this) {
+    if (_getClassMethod == null) {
+      if (view(JavaView.class).topLevelType() != this) {
         Java7 language = language(Java7.class);
         BasicJavaTypeReference returnType = language.createTypeReference("java.lang.Class");
         JavaTypeReference erasedThisType = language.createTypeReference(name());
@@ -197,21 +198,20 @@ public class RegularJavaType extends RegularType implements JavaType {
   private NormalMethod _getClassMethod;
 
   /**
-   * If the added element is a constructor, the default default
-   * constructor is removed.
+   * If the added element is a constructor, the default default constructor is
+   * removed.
    */
   public void reactOnDescendantAdded(Element element) {
-    if(element instanceof TypeElement) {
-      if(isConstructor(element)) {
+    if (element instanceof TypeElement) {
+      if (isConstructor(element)) {
         clearDefaultDefaultConstructor();
       }
     }
   }
 
   /**
-   * A Java reference type is not overridable. A such, if B extends A,
-   * and both A and B have a nested class with name C, then B.C does
-   * not override A.C.
+   * A Java reference type is not overridable. A such, if B extends A, and both
+   * A and B have a nested class with name C, then B.C does not override A.C.
    */
   @Override
   public PropertySet<Element, ChameleonProperty> inherentProperties() {
@@ -221,12 +221,13 @@ public class RegularJavaType extends RegularType implements JavaType {
   }
 
   private boolean isConstructor(Element element) {
-    //FIXME element.isTrue(language(Java.class).CONSTRUCTOR) doesn't work since the type
-    //      and the constructor aren't connected to the model during parsing.
+    // FIXME element.isTrue(language(Java.class).CONSTRUCTOR) doesn't work since
+    // the type
+    // and the constructor aren't connected to the model during parsing.
     // The suck is strong in this one
     List<Modifier> mods = ((TypeElement) element).modifiers();
-    for(Modifier mod:mods) {
-      if(mod instanceof JavaConstructor) {
+    for (Modifier mod : mods) {
+      if (mod instanceof JavaConstructor) {
         return true;
       }
     }
@@ -234,15 +235,14 @@ public class RegularJavaType extends RegularType implements JavaType {
   }
 
   /**
-   * If an element is removed, we check whether it is the
-   * last remaining constructor. If it is, we add the
-   * default default constructor.
+   * If an element is removed, we check whether it is the last remaining
+   * constructor. If it is, we add the default default constructor.
    */
   public void reactOnDescendantRemoved(Element element) {
-    if(isConstructor(element)) {
+    if (isConstructor(element)) {
       List<TypeElement> elements = body().elements();
-      for(TypeElement el: elements) {
-        if(isConstructor(el)) {
+      for (TypeElement el : elements) {
+        if (isConstructor(el)) {
           return;
         }
       }
@@ -257,13 +257,12 @@ public class RegularJavaType extends RegularType implements JavaType {
 
   @Override
   public List<InheritanceRelation> implicitNonMemberInheritanceRelations() {
-    //FIXME speed avoid creating collection
-    if(explicitNonMemberInheritanceRelations().isEmpty()) {
+    // FIXME speed avoid creating collection
+    if (explicitNonMemberInheritanceRelations().isEmpty()) {
       JavaView view = view(JavaView.class);
-      if( 
-          view.topLevelType() != this) 
-      {
-        InheritanceRelation relation = new SubtypeRelation(new DirectJavaTypeReference(view(JavaView.class).topLevelType()));
+      Type topLevelType = view.topLevelType();
+      if (topLevelType != this) {
+        InheritanceRelation relation = new SubtypeRelation(new DirectJavaTypeReference(topLevelType));
         relation.setUniParent(this);
         relation.setMetadata(new TagImpl(), IMPLICIT_CHILD);
         List<InheritanceRelation> result = new ArrayList<InheritanceRelation>(1);
@@ -283,17 +282,17 @@ public class RegularJavaType extends RegularType implements JavaType {
 
   @Override
   public Type erasure() {
-    //FIXME this code seems to have been duplicated a number of times.
+    // FIXME this code seems to have been duplicated a number of times.
     Java7 language = language(Java7.class);
     RawType result = _rawTypeCache;
-    if(result == null) {
-      if(is(language.INSTANCE) == Ternary.TRUE) {
+    if (result == null) {
+      if (is(language.INSTANCE) == Ternary.TRUE) {
         Type outmostType = farthestAncestor(Type.class);
-        if(outmostType == null) {
+        if (outmostType == null) {
           outmostType = this;
         }
         RawType outer;
-        if(outmostType instanceof RawType) {
+        if (outmostType instanceof RawType) {
           outer = (RawType) outmostType;
         } else {
           outer = new RawType(outmostType);
@@ -304,14 +303,15 @@ public class RegularJavaType extends RegularType implements JavaType {
 
         int size = outerTypes.size();
         Factory expressionFactory = language.plugin(Factory.class);
-        for(int i = size - 2; i>=0;i--) {
-          NameReference<RawType> simpleRef = expressionFactory.createNameReference(outerTypes.get(i).name(), (Class)RawType.class);
+        for (int i = size - 2; i >= 0; i--) {
+          NameReference<RawType> simpleRef = expressionFactory.createNameReference(outerTypes.get(i).name(),
+              (Class) RawType.class);
           simpleRef.setUniParent(current);
           try {
             current = simpleRef.getElement();
           } catch (LookupException e) {
             e.printStackTrace();
-            throw new ChameleonProgrammerException("An inner type of a newly created outer raw type cannot be found",e);
+            throw new ChameleonProgrammerException("An inner type of a newly created outer raw type cannot be found", e);
           }
         }
         result = current;
@@ -321,13 +321,13 @@ public class RegularJavaType extends RegularType implements JavaType {
       }
       _rawTypeCache = result;
     }
-    return result;	
+    return result;
   }
 
   private RawType _rawTypeCache;
 
   public ArrayType toArray() {
-    if(_arrayType == null) {
+    if (_arrayType == null) {
       _arrayType = new ArrayType(this);
     }
     return _arrayType;

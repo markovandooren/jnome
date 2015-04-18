@@ -11,7 +11,7 @@ import org.aikodi.chameleon.test.CompositeTest;
 import org.aikodi.chameleon.test.CrossReferenceTest;
 import org.aikodi.chameleon.test.provider.BasicDescendantProvider;
 import org.aikodi.chameleon.test.provider.ElementProvider;
-import org.aikodi.chameleon.workspace.BootstrapProjectConfig;
+import org.aikodi.chameleon.workspace.XMLProjectLoader;
 import org.aikodi.chameleon.workspace.ConfigException;
 import org.aikodi.chameleon.workspace.LanguageRepository;
 import org.aikodi.chameleon.workspace.Project;
@@ -21,7 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
-import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7LanguageFactory;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaProjectConfigurator;
 
 public abstract class JavaTest extends CompositeTest {
@@ -106,10 +106,10 @@ public abstract class JavaTest extends CompositeTest {
 		Project project;
 		LanguageRepository repo = new LanguageRepository();
 		Workspace workspace = new Workspace(repo);
-		Java7 java = new JavaLanguageFactory().create();
+		Java7 java = new Java7LanguageFactory().create();
 		repo.add(java);
-		java.setPlugin(ProjectConfigurator.class, new JavaProjectConfigurator(JavaLanguageFactory.javaBaseJar()));
-		BootstrapProjectConfig config = new BootstrapProjectConfig(workspace);
+		java.setPlugin(ProjectConfigurator.class, new JavaProjectConfigurator(Java7LanguageFactory.javaBaseJar()));
+		XMLProjectLoader config = new XMLProjectLoader(workspace);
 		project = config.project(projectFile(),null);
 		return project;
 	}

@@ -152,7 +152,7 @@ import be.kuleuven.cs.distrinet.jnome.core.type.JavaUnionTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.variable.JavaVariableDeclaration;
 import be.kuleuven.cs.distrinet.jnome.core.variable.MultiFormalParameter;
 import be.kuleuven.cs.distrinet.jnome.input.JavaExpressionFactory;
-import be.kuleuven.cs.distrinet.jnome.input.JavaFactory;
+import be.kuleuven.cs.distrinet.jnome.input.Java7Factory;
 
 /** A Java 1.5 grammar for ANTLR v3 derived from the spec
  *
@@ -494,13 +494,13 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         _expressionFactory = expressionFactory;
       }
 
-      private JavaFactory _javaFactory = new JavaFactory();
+      private Java7Factory _javaFactory = new Java7Factory();
       
-      public JavaFactory factory() {
+      public Java7Factory factory() {
         return _javaFactory;
       }
       
-      public void setFactory(JavaFactory factory) {
+      public void setFactory(Java7Factory factory) {
         _javaFactory = factory;
       }
 
@@ -7826,8 +7826,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             	    if ( state.backtracking==0 ) {
 
             	      	           if(target != null) {
-            	      	             retval.element.removeAllMetadata();
-            	      	             for(Element e: retval.element.descendants()) {e.removeAllMetadata();}
+            	      	             //retval.element.removeAllMetadata();
+            	      	             //for(Element e: retval.element.descendants()) {e.removeAllMetadata();}
             	      	             retval.element = createTypeReference(target,(namex!=null?input.toString(namex.start,namex.stop):null));
             	      	             // We must clone the target here, or else it will be removed from the
             	      	             // type reference we just created.
@@ -18098,12 +18098,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             }
             if ( state.backtracking==0 ) {
 
-              if(! retval.element.descendants().contains(scopeTarget)) {
-                scopeTarget.removeAllMetadata();
-                for(Element e: scopeTarget.descendants()) {
-                  e.removeAllMetadata();
-                }
-              }
+//              if(! retval.element.descendants().contains(scopeTarget)) {
+//                scopeTarget.removeAllMetadata();
+//                for(Element e: scopeTarget.descendants()) {
+//                  e.removeAllMetadata();
+//                }
+//              }
 
             }
         }

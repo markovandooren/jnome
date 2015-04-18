@@ -37,10 +37,10 @@ public class LazyClassFileDocumentLoader extends DocumentLoaderImpl {
 		return _parser.name();
 	}
 
-	@Override
-	public List<String> targetDeclarationNames(Namespace ns) {
-		return Collections.singletonList(_parser.name());
-	}
+  @Override
+  public List<String> refreshTargetDeclarationNames(Namespace ns) {
+    return Collections.singletonList(_parser.name());
+  }
 
 	@Override
 	public List<Declaration> targetDeclarations(String name) throws LookupException {

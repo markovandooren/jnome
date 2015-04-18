@@ -342,11 +342,11 @@ public class JavaParser extends ChameleonANTLR3Parser {
         return gJavaP.getDefaultNamespace();
       }
 
-      public void setFactory(JavaFactory factory) {
+      public void setFactory(Java7Factory factory) {
         gJavaP.setFactory(factory);
       }
       
-      public JavaFactory factory() {
+      public Java7Factory factory() {
         return gJavaP.factory();
       }
 

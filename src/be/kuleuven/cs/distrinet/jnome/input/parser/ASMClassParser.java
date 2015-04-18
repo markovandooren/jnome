@@ -76,7 +76,7 @@ import org.objectweb.asm.signature.SignatureReader;
 import org.objectweb.asm.signature.SignatureVisitor;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
-import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7LanguageFactory;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.StrictFP;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.Synchronized;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.Volatile;
@@ -688,7 +688,7 @@ public class ASMClassParser {
   public static void main(String[] args) throws IOException, Exception {
   	String jarPath = args[0];
 		JarFile jar = new JarFile(jarPath);
-  	Java7 lang = new JavaLanguageFactory().create();
+  	Java7 lang = new Java7LanguageFactory().create();
   	Project project = new Project("test", new File("."), new JavaView(new LazyRootNamespace(), lang));
 
 

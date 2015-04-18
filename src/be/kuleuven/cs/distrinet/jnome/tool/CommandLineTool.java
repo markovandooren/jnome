@@ -15,7 +15,7 @@ import org.aikodi.chameleon.workspace.Project;
 import org.aikodi.chameleon.workspace.View;
 import org.aikodi.chameleon.workspace.Workspace;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7LanguageFactory;
 import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 
@@ -28,7 +28,7 @@ public abstract class CommandLineTool {
     Config.setCaching(true);
     LanguageRepository repo = new LanguageRepository();
 		Workspace workspace = new Workspace(repo);
-    repo.add(new JavaLanguageFactory().create());
+    repo.add(new Java7LanguageFactory().create());
 		_provider = new ModelBuilder(args, workspace);
     
 	  _project = _provider.project();

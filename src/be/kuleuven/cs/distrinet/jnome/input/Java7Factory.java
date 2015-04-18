@@ -33,9 +33,9 @@ import be.kuleuven.cs.distrinet.jnome.core.modifier.JavaConstructor;
 import be.kuleuven.cs.distrinet.jnome.core.namespacedeclaration.JavaNamespaceDeclaration;
 import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
 
-public class JavaFactory extends ObjectOrientedFactory implements OOFactory {
+public class Java7Factory extends ObjectOrientedFactory implements OOFactory {
 	
-	public JavaFactory() {
+	public Java7Factory() {
 		
 	}
 	
@@ -64,8 +64,8 @@ public class JavaFactory extends ObjectOrientedFactory implements OOFactory {
 	}
 	
 	@Override
-	public JavaFactory clone() {
-		return new JavaFactory();
+	public Java7Factory clone() {
+		return new Java7Factory();
 	}
 
 	@Override

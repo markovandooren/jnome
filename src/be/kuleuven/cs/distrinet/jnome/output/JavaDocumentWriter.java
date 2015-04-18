@@ -2,14 +2,15 @@ package be.kuleuven.cs.distrinet.jnome.output;
 
 import org.aikodi.chameleon.core.document.Document;
 import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.namespacedeclaration.NamespaceDeclaration;
 import org.aikodi.chameleon.exception.ModelException;
 import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.chameleon.plugin.build.CompilationUnitWriter;
+import org.aikodi.chameleon.plugin.build.DocumentWriter;
 
-public class JavaCompilationUnitWriter extends CompilationUnitWriter {
+public class JavaDocumentWriter extends DocumentWriter {
 
 
-	public JavaCompilationUnitWriter(String extension) {
+	public JavaDocumentWriter(String extension) {
 		super(extension);
 	}
 
@@ -19,8 +20,8 @@ public class JavaCompilationUnitWriter extends CompilationUnitWriter {
 		return name;
 	}
 
-	public String packageFQN(Document compilationUnit) throws LookupException, ModelException {
-		return mainType(compilationUnit).namespace().fullyQualifiedName();
+	public String directoryName(Document compilationUnit) throws LookupException, ModelException {
+		return mainType(compilationUnit).nearestAncestor(NamespaceDeclaration.class).namespaceReference().toString();
 	}
 	
 	private Type mainType(Document compilationUnit) throws LookupException, ModelException {
@@ -34,7 +35,7 @@ public class JavaCompilationUnitWriter extends CompilationUnitWriter {
 	}
 
 	@Override
-	public JavaCompilationUnitWriter clone() {
-		return new JavaCompilationUnitWriter(extension());
+	public JavaDocumentWriter clone() {
+		return new JavaDocumentWriter(extension());
 	}
 }

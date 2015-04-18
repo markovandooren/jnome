@@ -10,7 +10,7 @@ import org.aikodi.chameleon.workspace.Project;
 import org.aikodi.chameleon.workspace.ProjectException;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
-import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7LanguageFactory;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 
 public class JavaEclipseProjectConfig extends ConfigElement {
@@ -39,7 +39,7 @@ public class JavaEclipseProjectConfig extends ConfigElement {
 	
 	@Override
 	protected void $after() throws ConfigException {
-		Java7 java = new JavaLanguageFactory().create();
+		Java7 java = new Java7LanguageFactory().create();
 		_project = new Project(_name, _root, new JavaView(new LazyRootNamespace(), java));
 		try {
 			new JavaEclipseClasspathConfig(_project,_containerConfiguration);

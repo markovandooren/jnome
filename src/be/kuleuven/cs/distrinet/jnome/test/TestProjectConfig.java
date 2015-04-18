@@ -5,7 +5,7 @@ import static junit.framework.Assert.assertTrue;
 import java.io.File;
 
 import org.aikodi.chameleon.workspace.BaseLibraryConfiguration;
-import org.aikodi.chameleon.workspace.BootstrapProjectConfig;
+import org.aikodi.chameleon.workspace.XMLProjectLoader;
 import org.aikodi.chameleon.workspace.DirectoryScanner;
 import org.aikodi.chameleon.workspace.DocumentScanner;
 import org.aikodi.chameleon.workspace.LanguageRepository;
@@ -17,7 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
-import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7LanguageFactory;
 import be.kuleuven.cs.distrinet.jnome.input.BaseJavaProjectLoader;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaProjectConfiguration;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
@@ -48,7 +48,7 @@ public class TestProjectConfig {
 
 	private Workspace createWorkspace() {
 		LanguageRepository repository = new LanguageRepository();
-		repository.add(new JavaLanguageFactory().create());
+		repository.add(new Java7LanguageFactory().create());
 		return new Workspace(repository);
 	}
 	
@@ -121,7 +121,7 @@ public class TestProjectConfig {
 	}
 
 	private Project readProject(File configFile) {
-		BootstrapProjectConfig bootstrapper = new BootstrapProjectConfig(_workspace);
+		XMLProjectLoader bootstrapper = new XMLProjectLoader(_workspace);
 		Project project = bootstrapper.project(configFile, null);
 		return project;
 	}

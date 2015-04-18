@@ -53,7 +53,7 @@ public class LazyReflectiveDocumentLoader extends DocumentLoaderImpl {
 	private String _fqn;
 	
 	@Override
-	public List<String> targetDeclarationNames(Namespace ns) {
+	public List<String> refreshTargetDeclarationNames(Namespace ns) {
 		return Collections.singletonList(_name);
 	}
 

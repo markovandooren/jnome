@@ -17,7 +17,7 @@ import org.aikodi.chameleon.workspace.ProjectException;
 import org.aikodi.chameleon.workspace.View;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
-import be.kuleuven.cs.distrinet.jnome.core.language.JavaLanguageFactory;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7LanguageFactory;
 import be.kuleuven.cs.distrinet.jnome.input.BaseJavaProjectLoader;
 import be.kuleuven.cs.distrinet.jnome.input.LazyJavaFileInputSourceFactory;
 import be.kuleuven.cs.distrinet.jnome.workspace.JarLoader;
@@ -32,7 +32,7 @@ public class JavaEclipseClasspathConfig extends ConfigElement {
 	public JavaEclipseClasspathConfig(Project project, Map<String,String> containerConfiguration) throws ProjectException {
 		_project = project;
 		_loaders.putAll(containerConfiguration);
-		view().addBinary(new BaseJavaProjectLoader(JavaLanguageFactory.javaBaseJar(),java()));
+		view().addBinary(new BaseJavaProjectLoader(Java7LanguageFactory.javaBaseJar(),java()));
 		readFromXML(new File(project.root(),".classpath"));
 	}
 	

@@ -15,36 +15,53 @@ import org.aikodi.chameleon.workspace.ConfigException;
 import org.aikodi.chameleon.workspace.ProjectConfigurator;
 
 import be.kuleuven.cs.distrinet.jnome.input.JavaExpressionFactory;
-import be.kuleuven.cs.distrinet.jnome.input.JavaFactory;
+import be.kuleuven.cs.distrinet.jnome.input.Java7Factory;
 import be.kuleuven.cs.distrinet.jnome.input.JavaModelFactory;
-import be.kuleuven.cs.distrinet.jnome.output.JavaSyntax;
+import be.kuleuven.cs.distrinet.jnome.output.Java7Syntax;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaProjectConfigurator;
 
-public class JavaLanguageFactory implements LanguageFactory {
+/**
+ * A factory for Java7.
+ * 
+ * @author Marko van Dooren
+ */
+public class Java7LanguageFactory implements LanguageFactory {
 
+  /**
+   * {@inheritDoc}
+   * 
+   * <p>The resulting language object has the following plugins:</p>
+   * <ol>
+   *   <li>{@link ModelFactory} : {@link JavaModelFactory}</li>
+   *   <li>{@link Syntax} : {@link Java7Syntax}</li>
+   *   <li>{@link Factory} : {@link Java7Factory}</li>
+   *   <li>{@link ObjectOrientedFactory} : {@link Java7Factory}</li>
+   *   <li>{@link ExpressionFactory} : {@link JavaExpressionFactory}</li>
+   *   <li>{@link ProjectConfigurator} : {@link JavaProjectConfigurator}</li>
+   * </ol>
+   */
 	public Java7 create() throws ConfigException {
 		Java7 result = new Java7();
 		result.setPlugin(ModelFactory.class, new JavaModelFactory());
-		result.setPlugin(Syntax.class, new JavaSyntax());
+		result.setPlugin(Syntax.class, new Java7Syntax());
 		// FIXME: Stupid and inefficient
-		result.setPlugin(Factory.class, new JavaFactory());
-		result.setPlugin(ObjectOrientedFactory.class, new JavaFactory());
+		result.setPlugin(Factory.class, new Java7Factory());
+		result.setPlugin(ObjectOrientedFactory.class, new Java7Factory());
 		result.setPlugin(ExpressionFactory.class, new JavaExpressionFactory());
 		JarFile jarName = javaBaseJar();
 		result.setPlugin(ProjectConfigurator.class, new JavaProjectConfigurator(jarName));
 		return result;
 	}
 
-//	public static JarFile javaBaseJarOld() throws ConfigException {
-//		URL objectLocation = Object.class.getResource("/java/lang/Object.class");
-//		try {
-//			JarURLConnection connection = (JarURLConnection) objectLocation.openConnection();
-//			return connection.getJarFile();
-//		} catch (IOException e) {
-//			throw new ConfigException("Cannot locate the jar file for "+Object.class.getName(),e);
-//		}
-//	}
-
+	/**
+	 * <p>Determine the jar file that contains the base classes from the
+	 * JVM that runs this code.</p>
+	 * 
+	 * @return the jar file that contains the base classes from the
+   * JVM that runs this code.
+   * 
+	 * @throws ConfigException The jar file could not be found.
+	 */
 	public static JarFile javaBaseJar() throws ConfigException {
 		try {
 			URL url = Object.class.getResource("/java/lang/Object.class");

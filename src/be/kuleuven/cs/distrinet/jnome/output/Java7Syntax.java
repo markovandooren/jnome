@@ -1,12 +1,12 @@
 package be.kuleuven.cs.distrinet.jnome.output;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 import org.aikodi.chameleon.core.document.Document;
 import org.aikodi.chameleon.core.element.Element;
@@ -27,7 +27,6 @@ import org.aikodi.chameleon.oo.expression.VariableReference;
 import org.aikodi.chameleon.oo.method.Implementation;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.method.NativeImplementation;
-import org.aikodi.chameleon.oo.method.RegularImplementation;
 import org.aikodi.chameleon.oo.method.exception.ExceptionClause;
 import org.aikodi.chameleon.oo.method.exception.ExceptionDeclaration;
 import org.aikodi.chameleon.oo.method.exception.TypeExceptionDeclaration;
@@ -107,7 +106,6 @@ import org.aikodi.chameleon.support.tool.Arguments;
 import org.aikodi.chameleon.support.type.EmptyTypeElement;
 import org.aikodi.chameleon.support.type.StaticInitializer;
 import org.aikodi.chameleon.support.variable.LocalVariableDeclarator;
-import org.aikodi.chameleon.util.Util;
 
 import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayAccessExpression;
 import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayCreationExpression;
@@ -134,7 +132,7 @@ import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 /**
  * @author Marko van Dooren
  */
-public class JavaSyntax extends Syntax {
+public class Java7Syntax extends Syntax {
   
   public String toCode(Element element)  {
     String result = null;
@@ -255,7 +253,7 @@ public class JavaSyntax extends Syntax {
       else if(isElementReference(element)) {
       result = toCodeElementReference((ElementReference)element);
     } else if(isNamespacePart(element)) {
-    	result = toCodeNamespacePart((NamespaceDeclaration) element);
+    	result = toCodeNamespaceDeclaration((NamespaceDeclaration) element);
     } 
 //    else if(isActualParameter(element)) {
 //    	result = toCodeActualParameter((ActualArgument) element);
@@ -284,6 +282,8 @@ public class JavaSyntax extends Syntax {
     	result = toCodeDemandImport((DemandImport)element);
     } else if(isTypeImport(element)) {
     	result = toCodeTypeImport((TypeImport)element);
+    } else if(isImplementation(element)) {
+      result = toCodeImplementation((Implementation) element);
     }
     // /ASPECTS
     else if(element == null) {
@@ -450,11 +450,11 @@ public class JavaSyntax extends Syntax {
   }
   
  
-  public JavaSyntax(){
+  public Java7Syntax(){
 	  _tabSize = 4;
   }
   
-  public JavaSyntax(int tabSize) {
+  public Java7Syntax(int tabSize) {
     _tabSize = tabSize;
   }
   
@@ -515,7 +515,7 @@ public class JavaSyntax extends Syntax {
 		return "import "+ toCode(((TypeImport)imp).getTypeReference()) +";\n";
   }
   
-  public String toCodeNamespacePart(NamespaceDeclaration part)  {
+  public String toCodeNamespaceDeclaration(NamespaceDeclaration part)  {
     StringBuffer result = new StringBuffer();
     result.append("package "+toCode(part.namespaceReference())+";\n\n");
     for(Import imp: part.explicitImports()) {
@@ -541,7 +541,7 @@ public class JavaSyntax extends Syntax {
   public String toCodeCompilationUnit(Document cu)  {
     StringBuffer result = new StringBuffer();
   	for(NamespaceDeclaration part: cu.namespaceDeclarations()) {
-  		result.append(toCodeNamespacePart(part));
+  		result.append(toCodeNamespaceDeclaration(part));
   	}
   	return result.toString();
   }
@@ -554,7 +554,7 @@ public class JavaSyntax extends Syntax {
     } else if(element instanceof Private) {
       return "private";
     } else if(element instanceof Default) {
-      return "";
+      return "default";
     } else if(element instanceof Abstract) {
       return "abstract";
     } else if(element instanceof Static) {
@@ -640,7 +640,7 @@ public class JavaSyntax extends Syntax {
     result.append("class ");
     result.append(type.name());
     appendTypeParameters(type.parameters(TypeParameter.class), result);
-    List<SubtypeRelation> superTypes = type.nonMemberInheritanceRelations(SubtypeRelation.class);
+    List<SubtypeRelation> superTypes = type.explicitNonMemberInheritanceRelations(SubtypeRelation.class);
     final List<TypeReference> classRefs = new ArrayList<TypeReference>();
     final List<TypeReference> interfaceRefs = new ArrayList<TypeReference>();
     for(SubtypeRelation relation:superTypes) {
@@ -731,7 +731,7 @@ public class JavaSyntax extends Syntax {
     result.append("interface ");
     result.append(type.name());
     appendTypeParameters(type.parameters(TypeParameter.class), result);
-    List<SubtypeRelation> superTypes = new ArrayList<>(type.nonMemberInheritanceRelations(SubtypeRelation.class));
+    List<SubtypeRelation> superTypes = new ArrayList<>(type.explicitNonMemberInheritanceRelations(SubtypeRelation.class));
     new SafePredicate<SubtypeRelation>() {
       public boolean eval(SubtypeRelation rel)  {
         return ! toCode((rel).superClassReference()).equals("java.lang.Object");
@@ -834,12 +834,16 @@ public class JavaSyntax extends Syntax {
 		}.applyTo(element.modifiers());
 	}
   
+	public boolean isImplementation(Element element) {
+	  return element instanceof Implementation;
+	}
+	
   public String toCodeImplementation(Implementation impl)  {
     if((impl == null) || (impl instanceof NativeImplementation)) {
       return ";";
     }
     else {
-      return toCode(((RegularImplementation)impl).getBody());
+      return toCode(((Implementation)impl).getBody());
     }
   }
   
@@ -1533,7 +1537,7 @@ public class JavaSyntax extends Syntax {
 
 
   public static void writeCode(Arguments arguments) throws IOException {
-    JavaSyntax writer = new JavaSyntax(2);
+    Java7Syntax writer = new Java7Syntax(2);
     List<Type> types = arguments.getTypes();
     new SafePredicate<Type>() {
     	public boolean eval(Type t) {
@@ -1562,7 +1566,7 @@ public class JavaSyntax extends Syntax {
   }
 
 	@Override
-	public JavaSyntax clone() {
-		return new JavaSyntax(_tabSize);
+	public Java7Syntax clone() {
+		return new Java7Syntax(_tabSize);
 	}
 }

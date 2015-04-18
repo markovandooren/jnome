@@ -6,7 +6,10 @@ import java.util.Map;
 import org.aikodi.chameleon.core.language.Language;
 import org.aikodi.chameleon.core.namespace.RootNamespace;
 import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.view.ObjectOrientedView;
+
+import be.kuleuven.cs.distrinet.jnome.core.type.DirectJavaTypeReference;
 
 public class JavaView extends ObjectOrientedView {
 
@@ -38,4 +41,8 @@ public class JavaView extends ObjectOrientedView {
   }
   
   private Type _topLevelType;
+  
+  public TypeReference primitiveTypeReference(String name) {
+    return new DirectJavaTypeReference(primitiveType(name));
+  }
 }

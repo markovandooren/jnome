@@ -11,6 +11,7 @@ import java.util.Set;
 import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.declaration.TargetDeclaration;
 import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.core.language.Language;
 import org.aikodi.chameleon.core.lookup.DeclarationSelector;
 import org.aikodi.chameleon.core.lookup.LookupContextFactory;
 import org.aikodi.chameleon.core.lookup.LookupException;
@@ -68,6 +69,7 @@ import org.aikodi.chameleon.support.rule.member.MemberOverridableByDefault;
 import org.aikodi.chameleon.support.rule.member.TypeExtensibleByDefault;
 import org.aikodi.chameleon.util.Pair;
 import org.aikodi.chameleon.util.Util;
+import org.aikodi.chameleon.workspace.View;
 
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaExtendsReference;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaSuperReference;
@@ -161,7 +163,8 @@ public class Java7 extends ObjectOrientedLanguage {
 		REFERENCE_TYPE = PRIMITIVE_TYPE.inverse();
 		UNBOXABLE_TYPE = new UnboxableTypeProperty("unboxable", this);
 		ANNOTATION_TYPE = new StaticChameleonProperty("annotation", this, Type.class); 
-
+		DEFAULT = new StaticChameleonProperty("default", this, Method.class);
+		DEFAULT.addContradiction(ABSTRACT);
 		// In Java, a constructor is a class method
     // CONSTRUCTOR.addImplication(CLASS);
 		// In Java, constructors are not inheritable
@@ -338,6 +341,7 @@ public class Java7 extends ObjectOrientedLanguage {
 	public final ChameleonProperty REFERENCE_TYPE;	
 	public final ChameleonProperty UNBOXABLE_TYPE;
 	public final ChameleonProperty ANNOTATION_TYPE;
+	public final ChameleonProperty DEFAULT;
 	
 	public Type getNullType(Namespace ns) {
 		if(_nullType == null) {
@@ -929,4 +933,8 @@ public class Java7 extends ObjectOrientedLanguage {
 			}
 		}
 
+		@Override
+		public View createView() {
+		  return new JavaView(createRootNamespace(), this);
+		}
 }

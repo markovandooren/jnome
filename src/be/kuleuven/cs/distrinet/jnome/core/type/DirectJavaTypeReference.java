@@ -11,10 +11,12 @@ import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
+import be.kuleuven.cs.distrinet.rejuse.contract.Contracts;
 
 public class DirectJavaTypeReference extends ElementImpl implements JavaTypeReference {
 
 	public DirectJavaTypeReference(Type type) {
+	  Contracts.notNull(type);
 		_type = type;
 	}
 	

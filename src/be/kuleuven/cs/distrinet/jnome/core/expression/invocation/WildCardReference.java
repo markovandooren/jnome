@@ -51,18 +51,8 @@ public abstract class WildCardReference<E extends WildCardReference> extends Ele
 			return getElement();
 		}
 
-		public TypeReference intersection(TypeReference other) {
-			return other.intersectionDoubleDispatch(this);
-		}
-
 		public TypeReference intersectionDoubleDispatch(TypeReference other) {
 			return language(ObjectOrientedLanguage.class).createIntersectionReference(clone(this), clone(other));
-		}
-
-		public TypeReference intersectionDoubleDispatch(IntersectionTypeReference other) {
-			IntersectionTypeReference result = clone(other);
-			result.add(clone(this));
-			return result;
 		}
 
 		public Declaration getDeclarator() throws LookupException {

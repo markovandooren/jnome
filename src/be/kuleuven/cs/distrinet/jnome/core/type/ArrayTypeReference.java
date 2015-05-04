@@ -80,15 +80,6 @@ public class ArrayTypeReference  extends ElementImpl implements JavaTypeReferenc
 		return ArrayType.create(elementTypeReference().getElement());
 	}
 
-	public Type getType() throws LookupException {
-		return getElement();
-	}
-
-	public TypeReference intersectionDoubleDispatch(TypeReference other) {
-		IntersectionTypeReference intersectionTypeReference = language(Java7.class).createIntersectionReference(clone(this), clone(other));
-		return intersectionTypeReference;
-	}
-
 	public Declaration getDeclarator() throws LookupException {
 		return getElement();
 	}

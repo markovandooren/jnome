@@ -47,14 +47,6 @@ public abstract class WildCardReference<E extends WildCardReference> extends Ele
 			throw new ChameleonProgrammerException();
 		}
 
-		public Type getType() throws LookupException {
-			return getElement();
-		}
-
-		public TypeReference intersectionDoubleDispatch(TypeReference other) {
-			return language(ObjectOrientedLanguage.class).createIntersectionReference(clone(this), clone(other));
-		}
-
 		public Declaration getDeclarator() throws LookupException {
 			return getElement();
 		}

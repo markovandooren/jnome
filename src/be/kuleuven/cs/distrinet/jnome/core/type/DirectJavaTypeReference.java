@@ -23,18 +23,8 @@ public class DirectJavaTypeReference extends ElementImpl implements JavaTypeRefe
 	private Type _type;
 	
 	@Override
-	public Type getType() {
-		return _type;
-	}
-
-	@Override
 	public Type getElement() {
 		return _type;
-	}
-
-	@Override
-	public TypeReference intersectionDoubleDispatch(TypeReference other) {
-		return language(ObjectOrientedLanguage.class).createIntersectionReference(clone(this), clone(other));
 	}
 
 	@Override

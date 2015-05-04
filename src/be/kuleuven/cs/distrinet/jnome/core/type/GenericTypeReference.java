@@ -82,14 +82,6 @@ public class GenericTypeReference extends ElementImpl implements JavaTypeReferen
   	return result;
 	}
 
-	public Type getType() throws LookupException {
-		return getElement();
-	}
-
-	public TypeReference intersectionDoubleDispatch(TypeReference other) {
-		return language(ObjectOrientedLanguage.class).createIntersectionReference(clone(this), clone(other));
-	}
-
 	@Override
 	public Verification verifySelf() {
 		Type referencedElement;

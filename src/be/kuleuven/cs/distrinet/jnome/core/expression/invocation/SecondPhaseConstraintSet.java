@@ -134,7 +134,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		if(! RRef.getElement().sameAs(java.voidType(RRef.view().namespace()))) {
 		  // the constraint S >> R', provided R is not void	
 			JavaTypeReference RprimeRef = substitutedReference(RRef);
-			constraints.add(new GGConstraint(SprimeRef, RprimeRef.getType()));
+			constraints.add(new GGConstraint(SprimeRef, RprimeRef.getElement()));
 		}
 		// additional constraints Bi[T1=B(T1) ... Tn=B(Tn)] >> Ti where Bi is the declared bound of Ti
 		for(TypeParameter param: typeParameters()) {

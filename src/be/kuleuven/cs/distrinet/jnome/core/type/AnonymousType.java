@@ -50,7 +50,7 @@ public abstract class AnonymousType extends RegularType implements JavaType {
 
 	protected List<NormalMethod> implicitConstructors() throws LookupException {
 		TypeReference tref = typeReference();
-	  Type writtenType = tref.getType();
+	  Type writtenType = tref.getElement();
 	  List<NormalMethod> superMembers = writtenType.localMembers(NormalMethod.class);
 	  CollectionOperations.filter(superMembers, m -> m.is(language(ObjectOrientedLanguage.class).CONSTRUCTOR) == Ternary.TRUE);
 	  //if the super type is an interface, there will be no constructor, so we must

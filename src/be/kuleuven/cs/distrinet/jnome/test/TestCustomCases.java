@@ -65,15 +65,15 @@ public class TestCustomCases extends JavaTest {
 		tref8.addArgument(language.createSuperWildcard(language.createTypeReference("java.lang.CharSequence")));
 		tref8.setUniParent(ns);
 
-		Type type1 = tref1.getType();
-		Type type2 = tref2.getType();
-		Type type3 = tref3.getType();
-		Type type4 = tref4.getType();
-		Type type5 = tref5.getType();
-		Type type6 = tref6.getType();
-		Type type7 = tref7.getType();
-		Type type7duo = tref7duo.getType();
-		Type type8 = tref8.getType();
+		Type type1 = tref1.getElement();
+		Type type2 = tref2.getElement();
+		Type type3 = tref3.getElement();
+		Type type4 = tref4.getElement();
+		Type type5 = tref5.getElement();
+		Type type6 = tref6.getElement();
+		Type type7 = tref7.getElement();
+		Type type7duo = tref7duo.getElement();
+		Type type8 = tref8.getElement();
 		assertTrue(type2.subTypeOf(type1));
 		assertTrue(type1.sameAs(type2));
 		assertTrue(type1.equals(type2));

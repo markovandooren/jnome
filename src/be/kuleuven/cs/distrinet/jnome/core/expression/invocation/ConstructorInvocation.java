@@ -103,7 +103,7 @@ public class ConstructorInvocation extends RegularMethodInvocation implements De
   protected Type actualType() throws LookupException {
     Type result = getAnonymousInnerType();
 		if (result == null) {
-      result = getTypeReference().getType();
+      result = getTypeReference().getElement();
     }
 		return result;
   }
@@ -111,7 +111,7 @@ public class ConstructorInvocation extends RegularMethodInvocation implements De
   protected Type auxType() throws LookupException {
     Type result = getAnonymousInnerType();
 		if (result == null) {
-      result = getTypeReference().getType();
+      result = getTypeReference().getElement();
       if(isDiamondInvocation()) {
       	result = (Type) result.origin();
       }
@@ -120,7 +120,7 @@ public class ConstructorInvocation extends RegularMethodInvocation implements De
   }
   
   protected Type referencedType() throws LookupException {
-  	Type result = getTypeReference().getType();
+  	Type result = getTypeReference().getElement();
   	if(isDiamondInvocation()) {
   		result = (Type) result.origin();
   	}

@@ -52,6 +52,6 @@ public abstract class WildCardReference<E extends WildCardReference> extends Ele
 		}
 
 		public LookupContext targetContext() throws LookupException {
-			return getType().targetContext();
+			return getElement().targetContext();
 		}
 }

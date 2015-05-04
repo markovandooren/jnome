@@ -630,7 +630,7 @@ public class Java7 extends ObjectOrientedLanguage {
 						if(argument instanceof ActualTypeArgumentWithTypeReference) {
 							ActualTypeArgumentWithTypeReference arg = (ActualTypeArgumentWithTypeReference) argument;
 							TypeReference tref = arg.typeReference();
-							Type t = tref.getType();
+							Type t = tref.getElement();
 							((ActualTypeArgumentWithTypeReference)clone).setTypeReference(createExpandedTypeReference(t));
 						}
 						result.addArgument(clone);

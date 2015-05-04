@@ -34,7 +34,7 @@ public class DirectJavaTypeReference extends ElementImpl implements JavaTypeRefe
 
 	@Override
 	public LookupContext targetContext() throws LookupException {
-		return getType().targetContext();
+		return getElement().targetContext();
 	}
 
 	@Override

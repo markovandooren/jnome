@@ -151,8 +151,4 @@ public class GenericTypeReference extends ElementImpl implements JavaTypeReferen
 		return result.toString();
 	}
 
-	@Override
-	public LookupContext targetContext() throws LookupException {
-		return getElement().targetContext();
-	}
 }

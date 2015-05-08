@@ -7,7 +7,7 @@ import java.util.Map;
 import org.aikodi.chameleon.analysis.dependency.DependencyAnalyzer;
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.reference.CrossReference;
-import org.aikodi.chameleon.oo.type.DerivedType;
+import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.generics.FormalParameterType;
 import org.aikodi.chameleon.workspace.InputException;
@@ -52,7 +52,7 @@ public class JavaDependencyAnalyzer extends DependencyAnalyzer<Type> {
 				while(type instanceof ArrayType) {
 					type = ((ArrayType)type).elementType();
 				}
-				while(type instanceof DerivedType) {
+				while(type instanceof TypeInstantiation) {
 					type = type.baseType();
 				}
 				while(type instanceof FormalParameterType) {

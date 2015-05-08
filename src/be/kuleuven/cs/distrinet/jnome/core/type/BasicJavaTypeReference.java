@@ -197,6 +197,7 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 	}
 
 	protected Type typeConstructor() throws LookupException {
+	  //FIXME Document why this method skips the overwritten version of getElement(DeclarationSelector)!
 		return super.getElement(selector());
 	}
 	

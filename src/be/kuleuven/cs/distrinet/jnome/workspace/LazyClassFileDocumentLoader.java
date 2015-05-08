@@ -12,11 +12,12 @@ import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.workspace.DocumentLoaderImpl;
 import org.aikodi.chameleon.workspace.DocumentScanner;
 import org.aikodi.chameleon.workspace.InputException;
+import org.aikodi.chameleon.workspace.LazyDocumentLoader;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.input.parser.ASMClassParser;
 
-public class LazyClassFileDocumentLoader extends DocumentLoaderImpl {
+public class LazyClassFileDocumentLoader extends DocumentLoaderImpl implements LazyDocumentLoader {
 
 	private ASMClassParser _parser;
 	

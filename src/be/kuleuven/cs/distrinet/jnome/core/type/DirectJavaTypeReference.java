@@ -28,16 +28,6 @@ public class DirectJavaTypeReference extends ElementImpl implements JavaTypeRefe
 	}
 
 	@Override
-	public Declaration getDeclarator() throws LookupException {
-		return _type;
-	}
-
-	@Override
-	public LookupContext targetContext() throws LookupException {
-		return getElement().targetContext();
-	}
-
-	@Override
 	public JavaTypeReference toArray(int dimension) {
 		return new ArrayTypeReference(this, dimension);
 	}

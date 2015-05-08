@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
-import org.aikodi.chameleon.oo.type.DerivedType;
+import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
@@ -176,7 +176,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 	public boolean involvesTypeParameter(Type type) throws LookupException {
     return ((type instanceof FormalParameterType) && (parent().typeParameters().contains(((FormalParameterType) type).parameter())))
         || ((type instanceof ArrayType) && (involvesTypeParameter(((ArrayType) type).elementType())))
-        || ((type instanceof DerivedType) && (involvesTypeParameter(type.baseType())))
+        || ((type instanceof TypeInstantiation) && (involvesTypeParameter(type.baseType())))
         || exists(type.parameters(TypeParameter.class), object -> (object instanceof InstantiatedTypeParameter)
             && involvesTypeParameter(((InstantiatedTypeParameter) object).argument()));
 	}

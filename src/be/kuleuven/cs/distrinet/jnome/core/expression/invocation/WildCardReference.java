@@ -47,11 +47,4 @@ public abstract class WildCardReference<E extends WildCardReference> extends Ele
 			throw new ChameleonProgrammerException();
 		}
 
-		public Declaration getDeclarator() throws LookupException {
-			return getElement();
-		}
-
-		public LookupContext targetContext() throws LookupException {
-			return getElement().targetContext();
-		}
 }

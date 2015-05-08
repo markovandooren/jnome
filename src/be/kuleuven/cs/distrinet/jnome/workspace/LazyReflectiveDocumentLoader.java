@@ -16,10 +16,11 @@ import org.aikodi.chameleon.util.Util;
 import org.aikodi.chameleon.workspace.DocumentLoaderImpl;
 import org.aikodi.chameleon.workspace.DocumentScanner;
 import org.aikodi.chameleon.workspace.InputException;
+import org.aikodi.chameleon.workspace.LazyDocumentLoader;
 
 import be.kuleuven.cs.distrinet.jnome.input.ReflectiveClassParser;
 
-public class LazyReflectiveDocumentLoader extends DocumentLoaderImpl {
+public class LazyReflectiveDocumentLoader extends DocumentLoaderImpl implements LazyDocumentLoader {
 
 	public LazyReflectiveDocumentLoader(ClassLoader loader, ReflectiveClassParser parser, String fqn, LazyNamespace ns, DocumentScanner documentLoader) throws InputException {
 		init(documentLoader);

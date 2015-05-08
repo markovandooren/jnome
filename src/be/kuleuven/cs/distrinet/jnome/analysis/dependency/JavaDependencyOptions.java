@@ -18,7 +18,7 @@ import org.aikodi.chameleon.core.namespace.Namespace;
 import org.aikodi.chameleon.core.reference.CrossReference;
 import org.aikodi.chameleon.core.variable.Variable;
 import org.aikodi.chameleon.oo.method.Method;
-import org.aikodi.chameleon.oo.type.DerivedType;
+import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.generics.FormalParameterType;
 import org.aikodi.chameleon.ui.widget.LabelProvider;
@@ -198,8 +198,8 @@ public class JavaDependencyOptions extends DependencyOptions {
 				while(element instanceof ArrayType) {
 					element = ((ArrayType)element).elementType();
 				}
-				while(element instanceof DerivedType) {
-					element = ((DerivedType)element).baseType();
+				while(element instanceof TypeInstantiation) {
+					element = ((TypeInstantiation)element).baseType();
 				}
 				while(element instanceof FormalParameterType) {
 					element = element.nearestAncestor(Type.class);

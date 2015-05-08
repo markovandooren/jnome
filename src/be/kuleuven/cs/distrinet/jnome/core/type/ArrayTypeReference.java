@@ -80,9 +80,6 @@ public class ArrayTypeReference  extends ElementImpl implements JavaTypeReferenc
 		return ArrayType.create(elementTypeReference().getElement());
 	}
 
-	public Declaration getDeclarator() throws LookupException {
-		return getElement();
-	}
 
 	public JavaTypeReference componentTypeReference() {
 		return elementTypeReference().componentTypeReference();
@@ -93,8 +90,4 @@ public class ArrayTypeReference  extends ElementImpl implements JavaTypeReferenc
 		return elementTypeReference().toString()+"[]";
 	}
 
-	@Override
-	public LookupContext targetContext() throws LookupException {
-		return getElement().targetContext();
-	}
 }

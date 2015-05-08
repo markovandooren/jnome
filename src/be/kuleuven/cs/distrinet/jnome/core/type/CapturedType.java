@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.aikodi.chameleon.core.lookup.LocalLookupContext;
 import org.aikodi.chameleon.core.lookup.LookupException;
-import org.aikodi.chameleon.oo.type.DerivedType;
+import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.ParameterSubstitution;
 import org.aikodi.chameleon.oo.type.Type;
 
@@ -12,7 +12,7 @@ import org.aikodi.chameleon.oo.type.Type;
  * A class that represents a captured type.
  * 
  * 
- * FIXME This should not be a subtype of {@link DerivedType}. Must
+ * FIXME This should not be a subtype of {@link TypeInstantiation}. Must
  *       introduce an intermediate class for code sharing. The current
  *       implementation of{@link #targetContext()} "violates" behavioral subtyping. 
  *       The contract is not written down in DerivedType, but it should be.
@@ -25,11 +25,7 @@ public class CapturedType extends JavaDerivedType {
 		super(substitution, baseType);
 	}
 
-//	public CapturedType(Type baseType, List<ActualTypeArgument> typeParameters) throws LookupException {
-//		super(baseType, typeParameters);
-//	}
-	
-	public CapturedType(List<ParameterSubstitution> parameters, Type baseType) {
+	public CapturedType(List<ParameterSubstitution<?>> parameters, Type baseType) {
 		super(parameters, baseType);
 	}
 
@@ -43,8 +39,4 @@ public class CapturedType extends JavaDerivedType {
 		return localContext();
 	}
 
-//	@Override
-//	public Type captureConversion() throws LookupException {
-//		return this;
-//	}
 }

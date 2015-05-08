@@ -17,7 +17,7 @@ import org.aikodi.chameleon.oo.member.Member;
 import org.aikodi.chameleon.oo.method.RegularImplementation;
 import org.aikodi.chameleon.oo.method.SimpleNameMethodHeader;
 import org.aikodi.chameleon.oo.statement.Block;
-import org.aikodi.chameleon.oo.type.DerivedType;
+import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.RegularType;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeElement;
@@ -51,7 +51,7 @@ public class RegularJavaType extends RegularType implements JavaType {
 
   // private StackOverflowTracer _tracer = new StackOverflowTracer(3);
 
-  public DerivedType createDerivedType(List<ActualTypeArgument> typeArguments) throws LookupException {
+  public TypeInstantiation createDerivedType(List<ActualTypeArgument> typeArguments) throws LookupException {
     // if(typeArguments.size() == 1) {
     // if(_genericCache == null) {
     // synchronized(this) {

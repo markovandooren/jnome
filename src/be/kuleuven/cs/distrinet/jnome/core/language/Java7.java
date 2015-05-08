@@ -31,7 +31,7 @@ import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.member.Member;
 import org.aikodi.chameleon.oo.member.SignatureWithParameters;
 import org.aikodi.chameleon.oo.method.Method;
-import org.aikodi.chameleon.oo.type.DerivedType;
+import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.IntersectionType;
 import org.aikodi.chameleon.oo.type.IntersectionTypeReference;
 import org.aikodi.chameleon.oo.type.Parameter;
@@ -650,11 +650,11 @@ public class Java7 extends ObjectOrientedLanguage {
 			return new BasicJavaTypeReference(target);
 		}
 
-		public <P extends Parameter> DerivedType createDerivedType(Class<P> kind, List<P> parameters, Type baseType) {
+		public <P extends Parameter> TypeInstantiation createDerivedType(Class<P> kind, List<P> parameters, Type baseType) {
 			return new JavaDerivedType(kind, parameters, baseType);
 		}
 		
-		public DerivedType createDerivedType(Type baseType, List<ActualTypeArgument> typeArguments) throws LookupException {
+		public TypeInstantiation createDerivedType(Type baseType, List<ActualTypeArgument> typeArguments) throws LookupException {
 			return ((RegularJavaType)baseType).createDerivedType(typeArguments);
 //			return new JavaDerivedType(baseType,typeArguments);
 		}
@@ -712,7 +712,7 @@ public class Java7 extends ObjectOrientedLanguage {
 				reference.setUniParent(null);
 				result = new ArrayTypeReference(reference);
 				result.setUniParent(oldParent);
-			}	else if (type instanceof DerivedType){
+			}	else if (type instanceof TypeInstantiation){
 				BasicJavaTypeReference tref = new BasicJavaTypeReference(type.name());
 				result = new NonLocalJavaTypeReference(tref,type.parent());
 				result.setUniParent(type.parent());

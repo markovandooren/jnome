@@ -11,7 +11,7 @@ import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.tag.TagImpl;
 import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
-import org.aikodi.chameleon.oo.type.DerivedType;
+import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.Parameter;
 import org.aikodi.chameleon.oo.type.ParameterSubstitution;
 import org.aikodi.chameleon.oo.type.Type;
@@ -28,13 +28,13 @@ import org.aikodi.chameleon.util.Lists;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 
-public class JavaDerivedType extends DerivedType implements JavaType {
+public class JavaDerivedType extends TypeInstantiation implements JavaType {
 
 	public <P extends Parameter> JavaDerivedType(Class<P> kind, List<P> parameters, Type baseType) {
 		super(kind,parameters,baseType);
 	}
 
-	public JavaDerivedType(List<ParameterSubstitution> parameters, Type baseType) {
+	public JavaDerivedType(List<ParameterSubstitution<?>> parameters, Type baseType) {
 		super(parameters, baseType);
 	}
 
@@ -153,7 +153,7 @@ public class JavaDerivedType extends DerivedType implements JavaType {
 	}
 
 	public JavaDerivedType clone() {
-		List<ParameterSubstitution> args = clonedParameters();
+		List<ParameterSubstitution<?>> args = clonedParameters();
 		return new JavaDerivedType(args,baseType());
 	}
 

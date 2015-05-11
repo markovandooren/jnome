@@ -663,10 +663,6 @@ public class Java7 extends ObjectOrientedLanguage {
 //			return new JavaNormalMethod(header);
 //		}
 
-		public TypeReference glb(List<? extends JavaTypeReference> typeReferenceList) {
-			return new JavaIntersectionTypeReference(typeReferenceList);
-		}
-
 		@Override
 		public IntersectionTypeReference createIntersectionReference(TypeReference first, TypeReference second) {
 			List<TypeReference> list = new ArrayList<TypeReference>();

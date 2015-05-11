@@ -44,6 +44,7 @@ import com.google.common.collect.ImmutableList.Builder;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaDerivedType;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaIntersectionTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.NullType;
 import be.kuleuven.cs.distrinet.jnome.core.type.PureWildcard;
@@ -428,6 +429,12 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		}
 		return result;
 	}
+	
+  private TypeReference glb(List<? extends JavaTypeReference> typeReferenceList) {
+    return new JavaIntersectionTypeReference(typeReferenceList);
+  }
+
+
 
 	private ActualTypeArgument lcta(ActualTypeArgument first, ActualTypeArgument second, Binder root) throws LookupException { // , List<List<? extends TypeReference>> trace
 		ActualTypeArgument result;
@@ -451,7 +458,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 			} else if(first instanceof SuperWildcard || second instanceof SuperWildcard) {
 				BasicTypeArgument basic = (BasicTypeArgument) (first instanceof BasicTypeArgument? first : second);
 				SuperWildcard ext = (SuperWildcard)(basic == first ? second : first);
-				result = java().createSuperWildcard(java().glb(typeReferenceList(basic,ext)));
+				result = java().createSuperWildcard(glb(typeReferenceList(basic,ext)));
 			} else {
 				result = null;
 			}
@@ -479,7 +486,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 				result = null;
 			}
 		} else if (first instanceof SuperWildcard && second instanceof SuperWildcard) {
-			result = java().createSuperWildcard(java().glb(typeReferenceList((SuperWildcard)first,(SuperWildcard)second)));
+			result = java().createSuperWildcard(glb(typeReferenceList((SuperWildcard)first,(SuperWildcard)second)));
 		} else {
 			result = null;
 		}

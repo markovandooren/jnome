@@ -665,7 +665,7 @@ public class Java7 extends ObjectOrientedLanguage {
 
 		@Override
 		public IntersectionTypeReference createIntersectionReference(TypeReference first, TypeReference second) {
-			List<TypeReference> list = new ArrayList<TypeReference>();
+			List<TypeReference> list = new ArrayList<TypeReference>(2);
 			list.add(first);
 			list.add(second);
 			return new JavaIntersectionTypeReference(list);

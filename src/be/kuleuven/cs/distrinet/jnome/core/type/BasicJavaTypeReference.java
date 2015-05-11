@@ -110,40 +110,32 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
   	return 0;
   }
   
-  public <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
-    X result = null;
-
-	  boolean realSelector = selector.equals(selector());
-	  if(realSelector) {
-	    result = (X) getGenericCache();
-	  }
-	  if(result != null) {
-	   	return result;
-	  }
-		synchronized(this) {
-			if(result != null) {
-				return result;
-			}
-
-    result = super.getElement(selector);
-     
-    if(realSelector) {
-    	//First cast result to Type, then back to X.
-    	//Because the selector is the connected selector of this Java type reference,
-    	//we know that result is a Type.
-      // FILL IN GENERIC PARAMETERS
-      result = (X) convertGenerics((Type)result);
-    }
-    
+  @Override
+  public Type getElement() throws LookupException {
+    Type result = getGenericCache();
     if(result != null) {
-    	if(realSelector) {
-        setGenericCache((Type)result);
-    	}
       return result;
-    } else {
-      throw new LookupException("Result of type reference lookup is null: "+name(),this);
     }
-		}
+    synchronized(this) {
+      if(result != null) {
+        return result;
+      }
+
+      result = super.getElement();
+
+      //First cast result to Type, then back to X.
+      //Because the selector is the connected selector of this Java type reference,
+      //we know that result is a Type.
+      // FILL IN GENERIC PARAMETERS
+      result =convertGenerics((Type)result);
+
+      if(result != null) {
+        setGenericCache((Type)result);
+        return result;
+      } else {
+        throw new LookupException("Result of type reference lookup is null: "+name(),this);
+      }
+    }
   }
 
   private Type convertGenerics(Type type) throws LookupException {
@@ -198,7 +190,7 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 
 	protected Type typeConstructor() throws LookupException {
 	  //FIXME Document why this method skips the overwritten version of getElement(DeclarationSelector)!
-		return super.getElement(selector());
+		return super.getElement();
 	}
 	
   private SoftReference<Type> _genericCache;

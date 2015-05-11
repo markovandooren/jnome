@@ -197,8 +197,7 @@ public class Java7 extends ObjectOrientedLanguage {
   public Type erasure(Type original) {
   	Type result;
   	if(original instanceof ArrayType) {
-  		ArrayType arrayType = (ArrayType) original;
-  		result = ArrayType.create(erasure(arrayType.elementType()));
+  		result = ((ArrayType) original).erasure();
   	} 
   	else if(original instanceof FormalParameterType){
   		result = original;

@@ -199,25 +199,6 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 
 	@Override
 	public boolean contains(Type first, Type second) throws LookupException {
-		//		Set<Type> zuppas;
-		//		synchronized (this) {
-		//			try {
-		//				zuppas = _cache.get(first);
-		//				// The following code is meant to tunnel a LookupException through the equals method, which is used
-		//				// by the code in java.util.Set. The exception is first wrapped in a ChameleonProgrammerException,
-		//				// and unwrapped when it arrives here.
-		//			} catch(ChameleonProgrammerException exc) {
-		//				Throwable cause = exc.getCause();
-		//				if(cause instanceof LookupException) {
-		//					throw (LookupException)cause;
-		//				} else {
-		//					throw exc;
-		//				}
-		//			}
-		//		}
-		//		if(zuppas != null && zuppas.contains(second)) {
-		//			return true;
-		//		}
 		boolean result = false;
 		//SPEED iterate over the supertype graph 
 		Set<Type> supers = first.getSelfAndAllSuperTypesView();
@@ -226,6 +207,9 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		Iterator<Type> typeIterator = supers.iterator();
 		while((!result) && typeIterator.hasNext()) {
 			Type current = typeIterator.next();
+			/**
+			 * FIXME The raw type condition should be in {@link RawType#properSuperTypeOf} 
+			 **/
 			result = (snd instanceof RawType && second.baseType().sameAs(current.baseType())) || sameBaseTypeWithCompatibleParameters(current, snd, new ArrayList<Pair<Type, TypeParameter>>());
 		}
 		return result;

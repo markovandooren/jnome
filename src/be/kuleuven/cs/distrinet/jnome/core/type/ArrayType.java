@@ -1,9 +1,11 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
 
+import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.lookup.SelectionResult;
 import org.aikodi.chameleon.core.namespace.RootNamespace;
 import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
@@ -23,7 +25,7 @@ import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 /**
  * @author Marko van Dooren
  */
-public class ArrayType extends RegularType {
+public class ArrayType extends RegularType implements JavaType {
   ArrayType(Type type) {
     super(getArrayName(type.name()));
     //FIXME: copy the modifiers?
@@ -149,9 +151,15 @@ public class ArrayType extends RegularType {
   		 result = elementType().subTypeOf(second2.elementType());
   	 }
   	 if(! result) {
-  		 result = super.properSubTypeOf(second);
+  		 result = JavaType.super.properSubTypeOf(second);
   	 }
   	 return result;
   	}
+
+
+  @Override
+  public Type erasure() {
+    return create(((JavaType)elementType()).erasure());
+  }
   
 }

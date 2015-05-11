@@ -277,8 +277,10 @@ public class RawType extends ClassWithBody implements JavaType {
 		return uniSameAs(aliasedType);
 	}
 
+	
 	@Override
-	public boolean auxSuperTypeOf(Type type) throws LookupException {
+	public boolean properSuperTypeOf(Type type) throws LookupException {
+	  
 		//FIXME: this can be made more efficient i think by storing the cache in 'type' ? but then that object's cache
 		// must be cleared when this is garbage collected (or prevents it from being garbage collected).
 		boolean result = false;

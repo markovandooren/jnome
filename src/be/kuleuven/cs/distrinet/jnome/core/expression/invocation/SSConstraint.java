@@ -40,7 +40,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 			// If A is a primitive type, then A is converted to a reference type U via
 			// boxing conversion and this algorithm is applied recursively to the constraint
 			// U << F
-			SSConstraint recursive = new SSConstraint(language().box(ARef(), view().namespace()), F());
+			SSConstraint recursive = new SSConstraint(ARef().box(), F());
 			recursive.setUniParent(parent());
 			result.addAll(recursive.process());
 		} else {

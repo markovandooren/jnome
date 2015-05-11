@@ -9,10 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.aikodi.chameleon.core.declaration.Declaration;
-import org.aikodi.chameleon.core.declaration.TargetDeclaration;
 import org.aikodi.chameleon.core.element.Element;
-import org.aikodi.chameleon.core.language.Language;
-import org.aikodi.chameleon.core.lookup.DeclarationSelector;
 import org.aikodi.chameleon.core.lookup.LookupContextFactory;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.namespace.Namespace;
@@ -22,6 +19,7 @@ import org.aikodi.chameleon.core.property.PropertyRule;
 import org.aikodi.chameleon.core.property.StaticChameleonProperty;
 import org.aikodi.chameleon.core.reference.CrossReference;
 import org.aikodi.chameleon.core.reference.CrossReferenceTarget;
+import org.aikodi.chameleon.core.reference.CrossReferenceWithName;
 import org.aikodi.chameleon.core.reference.ElementReference;
 import org.aikodi.chameleon.core.relation.EquivalenceRelation;
 import org.aikodi.chameleon.core.relation.StrictPartialOrder;
@@ -31,7 +29,6 @@ import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.member.Member;
 import org.aikodi.chameleon.oo.member.SignatureWithParameters;
 import org.aikodi.chameleon.oo.method.Method;
-import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.IntersectionType;
 import org.aikodi.chameleon.oo.type.IntersectionTypeReference;
 import org.aikodi.chameleon.oo.type.Parameter;
@@ -39,6 +36,7 @@ import org.aikodi.chameleon.oo.type.ParameterSubstitution;
 import org.aikodi.chameleon.oo.type.RegularType;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeIndirection;
+import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.UnionType;
 import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
@@ -575,8 +573,9 @@ public class Java7 extends ObjectOrientedLanguage {
 
 		public JavaTypeReference box(JavaTypeReference aRef, Namespace root) throws LookupException {
 			//SLOW SPEED this is horrible
-			String fqn = aRef.getElement().getFullyQualifiedName();
-			String newFqn = _boxMap.get(fqn);
+//			String fqn = aRef.getElement().getFullyQualifiedName();
+			
+			String newFqn = _boxMap.get(((CrossReferenceWithName)aRef).name());
 			if(newFqn == null) {
 				//throw new LookupException("Type "+fqn+" cannot be converted through boxing.");
 				return aRef;
@@ -619,6 +618,7 @@ public class Java7 extends ObjectOrientedLanguage {
 			return result;
 		}
 
+		//TODO Remove this method. It is used only in the deprecated JLo compiler.
 		public BasicJavaTypeReference createExpandedTypeReference(Type type) throws LookupException {
 			BasicJavaTypeReference result = createTypeReference(type.getFullyQualifiedName());
 			if(! (type instanceof TypeIndirection)) {
@@ -656,13 +656,8 @@ public class Java7 extends ObjectOrientedLanguage {
 		
 		public TypeInstantiation createDerivedType(Type baseType, List<ActualTypeArgument> typeArguments) throws LookupException {
 			return ((RegularJavaType)baseType).createDerivedType(typeArguments);
-//			return new JavaDerivedType(baseType,typeArguments);
 		}
 		
-//		public NormalMethod createNormalMethod(MethodHeader header) {
-//			return new JavaNormalMethod(header);
-//		}
-
 		@Override
 		public IntersectionTypeReference createIntersectionReference(TypeReference first, TypeReference second) {
 			List<TypeReference> list = new ArrayList<TypeReference>(2);

@@ -112,4 +112,8 @@ public class NonLocalJavaTypeReference extends NonLocalTypeReference implements 
 		return actualReference().toString();
 	}
 
+	@Override
+	  public JavaTypeReference box() throws LookupException {
+	    return componentTypeReference().box(); 
+	  }
 }

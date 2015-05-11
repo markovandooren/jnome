@@ -120,7 +120,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
   }
 
   private JavaTypeReference box(JavaTypeReference ref) throws WrongLanguageException, LookupException {
-  	return ref.language(Java7.class).box(ref, ref.namespace());
+  	return ref.box();
   }
   
 	private void processUnresolved(JavaTypeReference Sref) throws LookupException {

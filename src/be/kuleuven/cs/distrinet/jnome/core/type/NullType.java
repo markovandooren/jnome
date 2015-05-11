@@ -53,7 +53,7 @@ public class NullType extends RegularType implements JavaType {
   }
   
   @Override
-  public boolean auxSubTypeOf(Type other) throws LookupException {
+  public boolean properSubTypeOf(Type other) throws LookupException {
   	return other.isTrue(language(Java7.class).REFERENCE_TYPE);
   }
 

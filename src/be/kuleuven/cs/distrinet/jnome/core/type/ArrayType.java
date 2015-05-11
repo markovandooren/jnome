@@ -142,14 +142,14 @@ public class ArrayType extends RegularType {
   }
 
   @Override
-  	public boolean auxSubTypeOf(Type second) throws LookupException {
+  	public boolean properSubTypeOf(Type second) throws LookupException {
   	 boolean result = false;
   	 if (second instanceof ArrayType && is(language(Java7.class).REFERENCE_TYPE) == Ternary.TRUE) {
   		 ArrayType second2 = (ArrayType)second;
   		 result = elementType().subTypeOf(second2.elementType());
   	 }
   	 if(! result) {
-  		 result = super.auxSubTypeOf(second);
+  		 result = super.properSubTypeOf(second);
   	 }
   	 return result;
   	}

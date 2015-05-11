@@ -8,7 +8,6 @@ import org.aikodi.chameleon.core.declaration.DeclarationContainer;
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.lookup.DeclarationCollector;
 import org.aikodi.chameleon.core.lookup.DeclarationSelector;
-import org.aikodi.chameleon.core.lookup.DeclaratorSelector;
 import org.aikodi.chameleon.core.lookup.LookupContext;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.lookup.SelectionResult;
@@ -31,174 +30,160 @@ import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 public class ConstructorInvocation extends RegularMethodInvocation implements DeclarationContainer {
 
   /**
-   * @param target
+   * Create a new constructor invocation of the given type.
+   * 
+   * @param type A reference to the type of which an object is constructed.
+   * @param outerObject An expression for the outer object of the object that is constructed (if any).
    */
-  public ConstructorInvocation(BasicJavaTypeReference type, CrossReferenceTarget target) {
-    super(type.name(),target);
+  public ConstructorInvocation(BasicJavaTypeReference type, CrossReferenceTarget outerObject) {
+    super(type.name(),outerObject);
     setTypeReference(type);
   }
 
-  public Expression getTargetExpression() {
-    return (Expression)getTarget();
-  }
-  
   public boolean isDiamondInvocation() {
-  	return _isDiamond;
+    return _isDiamond;
   }
-  
+
   public void setDiamond(boolean value) {
-  	_isDiamond = value;
+    _isDiamond = value;
   }
-  
+
   private boolean _isDiamond;
 
-	/**
-	 * TYPE REFERENCE
-	 */
-	private Single<BasicJavaTypeReference> _typeReference = new Single<BasicJavaTypeReference>(this);
+  /**
+   * TYPE REFERENCE
+   */
+  private Single<BasicJavaTypeReference> _typeReference = new Single<BasicJavaTypeReference>(this);
 
 
   public BasicJavaTypeReference getTypeReference() {
     return _typeReference.getOtherEnd();
   }
 
-    public void setTypeReference(BasicJavaTypeReference type) {
-    	set(_typeReference, type);
-    }
+  public void setTypeReference(BasicJavaTypeReference type) {
+    set(_typeReference, type);
+  }
 
   /******************
    * ANONYMOUS TYPE *
    ******************/
 
-//    public void setAnonymousType(Type type) {
-//      if(type != null) {
-//        _anon.connectTo(type.parentLink());
-//      } else {
-//        _anon.connectTo(null);
-//      }
-//    }
-//
-//    public Type getAnonymousInnerType() {
-//    return _anon.getOtherEnd();
-//  }
+  //    public void setAnonymousType(Type type) {
+  //      if(type != null) {
+  //        _anon.connectTo(type.parentLink());
+  //      } else {
+  //        _anon.connectTo(null);
+  //      }
+  //    }
+  //
+  //    public Type getAnonymousInnerType() {
+  //    return _anon.getOtherEnd();
+  //  }
 
-    
-    
-	private Single<Type> _anonymousType = new Single<Type>(this);
-	
-	public void setBody(ClassBody body) {
-		if(body == null) {
-			_anonymousType.connectTo(null);
-		} else {
-			set(_anonymousType,createAnonymousType(body));
-		}
-	}
+
+
+  private Single<Type> _anonymousType = new Single<Type>(this);
+
+  public void setBody(ClassBody body) {
+    if(body == null) {
+      _anonymousType.connectTo(null);
+    } else {
+      set(_anonymousType,createAnonymousType(body));
+    }
+  }
 
   private Type createAnonymousType(ClassBody body) {
-  	RegularType anon = new AnonymousInnerClass(this);
-	  anon.setBody(body);
-		return anon;
-	}
+    RegularType anon = new AnonymousInnerClass(this);
+    anon.setBody(body);
+    return anon;
+  }
 
   protected Type actualType() throws LookupException {
     Type result = getAnonymousInnerType();
-		if (result == null) {
+    if (result == null) {
       result = getTypeReference().getElement();
     }
-		return result;
+    return result;
   }
-  
+
   protected Type auxType() throws LookupException {
     Type result = getAnonymousInnerType();
-		if (result == null) {
+    if (result == null) {
       result = getTypeReference().getElement();
       if(isDiamondInvocation()) {
-      	result = (Type) result.origin();
+        result = (Type) result.origin();
       }
     }
-		return result;
+    return result;
   }
-  
+
   protected Type referencedType() throws LookupException {
-  	Type result = getTypeReference().getElement();
-  	if(isDiamondInvocation()) {
-  		result = (Type) result.origin();
-  	}
-  	return result;
+    Type result = getTypeReference().getElement();
+    if(isDiamondInvocation()) {
+      result = (Type) result.origin();
+    }
+    return result;
   }
-  
+
   public <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
-  	//FIXME this is wrong. The constructor selector should not redirect to the origin if it is a diamond
-  	//      the constructor invocation should do it.
-//		DeclarationCollector<X> collector = new DeclarationCollector<X>(selector);
-//  	actualType().targetContext().lookUp(collector);
-//  	return collector.result();
-
-  
-		DeclarationCollector<X> collector = new DeclarationCollector<X>(selector);
-  	auxType().targetContext().lookUp(collector);
-  	return collector.result();
-}
-  
-  @Override
-  public Declaration getDeclarator() throws LookupException {
-		DeclarationCollector<Declaration> collector = new DeclarationCollector<Declaration>(new DeclaratorSelector(selector()));
-  	auxType().targetContext().lookUp(collector);
-  	return collector.result();
+    DeclarationCollector<X> collector = new DeclarationCollector<X>(selector);
+    auxType().targetContext().lookUp(collector);
+    return collector.result();
   }
 
-  
+  //  @Override
+  //  public Declaration getDeclarator() throws LookupException {
+  //		DeclarationCollector<Declaration> collector = new DeclarationCollector<Declaration>(new DeclaratorSelector(selector()));
+  //  	auxType().targetContext().lookUp(collector);
+  //  	return collector.result();
+  //  }
+  //
+  //  
   public Type getAnonymousInnerType() {
-  	return _anonymousType.getOtherEnd();
+    return _anonymousType.getOtherEnd();
   }
-  
+
   private void setAnonymousType(Type anonymous) {
-  	set(_anonymousType,anonymous);
+    set(_anonymousType,anonymous);
   }
 
   protected ConstructorInvocation cloneSelf() {
     return new ConstructorInvocation(clone(getTypeReference()), null);
   }
 
-//  public void prefix(InvocationTarget target) throws LookupException {
-//    if(getTarget() != null) {
-//      getTarget().prefixRecursive(target);
-//    }
-//  }
-
   @Override
   public LookupContext lookupContext(Element element) throws LookupException {
-    if ((element == getTypeReference()) && (getTargetExpression() != null)) {
-      return getTargetExpression().targetContext();
+    if ((element == getTypeReference()) && (getTarget() != null)) {
+      return getTarget().targetContext();
     } else {
       return super.lookupContext(element);
     }
   }
 
   @Override
-	public DeclarationSelector<NormalMethod> createSelector() throws LookupException {
-		return new ConstructorSelector(this, getTypeReference().getElement().name());
-	}
+  public DeclarationSelector<NormalMethod> createSelector() throws LookupException {
+    return new ConstructorSelector(this, getTypeReference().getElement().name());
+  }
 
-	public List<? extends Declaration> locallyDeclaredDeclarations() throws LookupException {
-		return declarations();
-	}
+  public List<? extends Declaration> locallyDeclaredDeclarations() throws LookupException {
+    return declarations();
+  }
 
-	public List<? extends Type> declarations() throws LookupException {
-		List<Type> result = new ArrayList<Type>();
-		if(getAnonymousInnerType() != null) {
-			result.add(getAnonymousInnerType());
-		}
-		return result;
-	}
+  public List<? extends Type> declarations() throws LookupException {
+    List<Type> result = new ArrayList<Type>();
+    if(getAnonymousInnerType() != null) {
+      result.add(getAnonymousInnerType());
+    }
+    return result;
+  }
 
-	public <D extends Declaration> List<? extends SelectionResult> declarations(DeclarationSelector<D> selector) throws LookupException {
-		return selector.selection(declarations());
-	}
+  public <D extends Declaration> List<? extends SelectionResult> declarations(DeclarationSelector<D> selector) throws LookupException {
+    return selector.selection(declarations());
+  }
 
-	@Override
-	public LookupContext localContext() throws LookupException {
-		return language().lookupFactory().createLocalLookupStrategy(this);
-	}
+  @Override
+  public LookupContext localContext() throws LookupException {
+    return language().lookupFactory().createLocalLookupStrategy(this);
+  }
 
 }

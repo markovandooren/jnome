@@ -4,6 +4,7 @@
 package be.kuleuven.cs.distrinet.jnome.core.language;
 
 import static be.kuleuven.cs.distrinet.rejuse.collection.CollectionOperations.exists;
+import static be.kuleuven.cs.distrinet.rejuse.collection.CollectionOperations.forAll;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,7 +20,6 @@ import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.language.SubtypeRelation;
 import org.aikodi.chameleon.oo.type.IntersectionType;
-import org.aikodi.chameleon.oo.type.RegularType;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeIndirection;
 import org.aikodi.chameleon.oo.type.TypeReference;
@@ -38,6 +38,9 @@ import org.aikodi.chameleon.oo.type.generics.WildCardType;
 import org.aikodi.chameleon.util.Pair;
 import org.aikodi.chameleon.util.Util;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
+
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaDerivedType;
@@ -48,11 +51,7 @@ import be.kuleuven.cs.distrinet.jnome.core.type.RawType;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 import be.kuleuven.cs.distrinet.rejuse.collection.CollectionOperations;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
-import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableList.Builder;
 
 public class JavaSubtypingRelation extends SubtypeRelation {
 
@@ -66,6 +65,8 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		return _java;
 	}
 
+	//FIXME get rid of this garbage code. The algorithm works, so it should now
+	// be integrated.
 	public boolean upperBoundNotHigherThan(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
 		List<Pair<Type, TypeParameter>> slowTrace = trace;
 		boolean result = false;
@@ -106,8 +107,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		if(first instanceof InstantiatedParameterType) {
 			TypeParameter firstParam = ((InstantiatedParameterType)first).parameter();
 			for(Pair<Type, TypeParameter> pair: slowTrace) {
-				if(firstParam.sameAs(pair.second()) && second.sameAs(pair.first()))
-				{
+				if(firstParam.sameAs(pair.second()) && second.sameAs(pair.first())) {
 					return true;
 				}
 			}
@@ -125,7 +125,6 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 			result = ((WildCardType)first).upperBound().upperBoundNotHigherThan(second,slowTrace);
 		} else if (second instanceof WildCardType) {
 			//TODO Both lines make the tests succeed, but the first line makes no sense.
-			//				result = first.upperBoundNotHigherThan(((WildCardType)second).lowerBound(),slowTrace);
 			result = first.upperBoundNotHigherThan(((WildCardType)second).upperBound(),slowTrace);
 		}
 		// The relations between arrays and object are covered by the subtyping relations
@@ -228,64 +227,13 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 			Type current = typeIterator.next();
 			result = (snd instanceof RawType && second.baseType().sameAs(current.baseType())) || sameBaseTypeWithCompatibleParameters(current, snd, new ArrayList<Pair<Type, TypeParameter>>());
 		}
-		//		if(result) {
-		//			synchronized(this) {
-		//				zuppas = _cache.get(first);
-		//				if(zuppas == null) {
-		//					zuppas = new HashSet<Type>();
-		//					_cache.put(first, zuppas);
-		//				}
-		//				zuppas.add(second);
-		//			}
-		//		}
 		return result;
 	}
 
-	public Type captureConversion(Type type) throws LookupException {
-		// create a derived type
+	private Type captureConversion(Type type) throws LookupException {
 		Type result = type;
 		if(result instanceof JavaDerivedType) {
 			result = ((JavaDerivedType)result).captureConversion();
-//			List<TypeParameter> typeParameters = new ArrayList<TypeParameter>();
-//			if(! (type.parameter(TypeParameter.class,1) instanceof CapturedTypeParameter)) {
-//				Type base = type.baseType();
-//				List<TypeParameter> baseParameters = base.parameters(TypeParameter.class);
-//				Iterator<TypeParameter> formals = baseParameters.iterator();
-//				List<TypeParameter> actualParameters = type.parameters(TypeParameter.class);
-//				Iterator<TypeParameter> actuals = actualParameters.iterator();
-//				// substitute parameters by their capture bounds.
-//				// ITERATOR because we iterate over 'formals' and 'actuals' simultaneously.
-//				List<TypeConstraint> toBeSubstituted = new ArrayList<TypeConstraint>();
-//				while(actuals.hasNext()) {
-//					TypeParameter formalParam = formals.next();
-//					if(!(formalParam instanceof FormalTypeParameter)) {
-//						throw new LookupException("Type parameter of base type is not a formal parameter.");
-//					}
-//					TypeParameter actualParam = actuals.next();
-//					if(!(actualParam instanceof InstantiatedTypeParameter)) {
-//						throw new LookupException("Type parameter of type instantiation is not an instantiated parameter: "+actualParam.getClass().getName());
-//					}
-//					typeParameters.add(((InstantiatedTypeParameter) actualParam).capture((FormalTypeParameter) formalParam,toBeSubstituted));
-//				}
-//				result = java().createdCapturedType(new ParameterSubstitution<>(TypeParameter.class,typeParameters), base);
-//				result.setUniParent(type.parent());
-//				for(TypeParameter newParameter: typeParameters) {
-//					for(TypeParameter oldParameter: baseParameters) {
-//						JavaTypeReference tref = new BasicJavaTypeReference(oldParameter.signature().name());
-//						tref.setUniParent(newParameter);
-//						if(newParameter instanceof CapturedTypeParameter) {
-//							List<TypeConstraint> constraints = ((CapturedTypeParameter)newParameter).constraints();
-//							for(TypeConstraint constraint : constraints) {
-//								if(toBeSubstituted.contains(constraint)) {
-//									NonLocalJavaTypeReference.replace(tref, oldParameter, (JavaTypeReference) constraint.typeReference());
-//								}
-//							}
-//						} else {
-//							throw new ChameleonProgrammerException();
-//						}
-//					}
-//				}
-//			}
 		}
 		return result;
 	}
@@ -308,63 +256,19 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 
 	}
 
-	public boolean sameBaseTypeWithCompatibleParameters(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
-		//		List<Pair<Type, TypeParameter>> slowTrace = new ArrayList<Pair<Type, TypeParameter>>(trace);
-		List<Pair<Type, TypeParameter>> slowTrace = trace;
-		boolean result = false;
-		if(first.baseType().sameAs(second.baseType())) {
-			result = compatibleParameters(first, second, slowTrace);// || rawType(second); equality in formal parameter should take care of this.
-		} else {
-		}
-		return result;
+	private boolean sameBaseTypeWithCompatibleParameters(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
+	  return first.baseType().sameAs(second.baseType()) && compatibleParameters(first, second, trace);
 	}
 
-	public boolean rawType(Type type) {
-		for(TypeParameter parameter: type.parameters(TypeParameter.class)) {
-			if(! (parameter instanceof FormalTypeParameter)) {
-				return false;
-			}
-		}
-		return true;
-	}
+//	public boolean rawType(Type type) {
+//	  return CollectionOperations.forAll(type.parameters(TypeParameter.class), p -> p instanceof FormalTypeParameter);
+//	}
 
 	private boolean compatibleParameters(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
-		//		List<Pair<Type, TypeParameter>> slowTrace = new ArrayList<Pair<Type, TypeParameter>>(trace);
-		List<Pair<Type, TypeParameter>> slowTrace = trace;
-		boolean result;
-		List<TypeParameter> firstFormal= first.parameters(TypeParameter.class);
-		List<TypeParameter> secondFormal= second.parameters(TypeParameter.class);
-		result = true;
-		int size = firstFormal.size();
-		for(int i=0; result && i < size; i++) {
-			result = firstFormal.get(i).compatibleWith(secondFormal.get(i), slowTrace);
-		}
-		//		Iterator<TypeParameter> firstIter = firstFormal.iterator();
-		//		Iterator<TypeParameter> secondIter = secondFormal.iterator();
-		//		while(result && firstIter.hasNext()) {
-		//			TypeParameter firstParam = firstIter.next();
-		//			TypeParameter secondParam = secondIter.next();
-		//			result = firstParam.compatibleWith(secondParam, slowTrace);
-		//		}
-		return result;
+		return forAll(first.parameters(TypeParameter.class), second.parameters(TypeParameter.class), (f,s) -> f.compatibleWith(s, trace));
 	}
 
-	//	private Type leastUpperBoundRecursive(List<? extends TypeReference> Us, List<List<? extends TypeReference>> trace) throws LookupException {
-	//		return leastUpperBound(Us, trace);
-	//	}
-	//	private Type leastUpperBound(List<? extends TypeReference> Us, List<List<? extends TypeReference>> trace) throws LookupException {
-	//		_tracer.push();
-	//		List<Type> MEC = new ArrayList<Type>(MEC((List<? extends JavaTypeReference>) Us));
-	//		List<Type> candidates = new ArrayList<Type>();
-	//		for(Type W:MEC) {
-	//			candidates.add(Candidate(W,(List<? extends JavaTypeReference>) Us));
-	//		}
-	//		_tracer.pop();
-	//		return intersection(candidates);
-	//	}
-
-
-	public Type leastUpperBound(List<? extends TypeReference> Us, Binder root) throws LookupException {
+	private Type leastUpperBound(List<? extends TypeReference> Us, Binder root) throws LookupException {
 		List<Type> MEC = new ArrayList<Type>(MEC((List<? extends JavaTypeReference>) Us));
 		List<Type> candidates = new ArrayList<Type>();
 		for(Type W:MEC) {
@@ -377,14 +281,6 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 	@Override
 	public Type leastUpperBound(List<? extends TypeReference> Us) throws LookupException {
 		return leastUpperBound(Us, null);
-		//		_tracer.push();
-		//		List<Type> MEC = new ArrayList<Type>(MEC((List<? extends JavaTypeReference>) Us));
-		//		List<Type> candidates = new ArrayList<Type>();
-		//		for(Type W:MEC) {
-		//			candidates.add(Candidate(W,(List<? extends JavaTypeReference>) Us));
-		//		}
-		//		_tracer.pop();
-		//		return intersection(candidates);
 	}
 
 	private Set<Type> MEC(List<? extends JavaTypeReference> Us) throws LookupException {
@@ -761,7 +657,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 	}
 
 
-	public boolean convertibleThroughBoxingAndOptionalWidening(Type first, Type second) throws LookupException {
+	private boolean convertibleThroughBoxingAndOptionalWidening(Type first, Type second) throws LookupException {
 		boolean result = false;
 		if(first.is(java().PRIMITIVE_TYPE) == Ternary.TRUE) {
 			Type tmp = java().box(first);
@@ -774,7 +670,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		return result;
 	}
 
-	public boolean convertibleThroughUnboxingAndOptionalWidening(Type first, Type second) throws LookupException {
+	private boolean convertibleThroughUnboxingAndOptionalWidening(Type first, Type second) throws LookupException {
 		boolean result = false;
 		if(first.is(java().UNBOXABLE_TYPE) == Ternary.TRUE) {
 			Type tmp = java().unbox(first);
@@ -787,7 +683,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		return result;
 	}
 
-	public boolean convertibleThroughWideningReferenceConversion(Type first, Type second) throws LookupException {
+	private boolean convertibleThroughWideningReferenceConversion(Type first, Type second) throws LookupException {
 		Collection<Type> referenceWideningConversionCandidates = referenceWideningConversionCandidates(first);
 		for(Type type: referenceWideningConversionCandidates) {
 			if(type.sameAs(second) || type.subTypeOf(second)) {
@@ -797,15 +693,15 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		return false;
 	}
 
-	public Collection<Type> referenceWideningConversionCandidates(Type type) throws LookupException {
+	private Collection<Type> referenceWideningConversionCandidates(Type type) throws LookupException {
 		return type.getSelfAndAllSuperTypesView();
 	}
 
-	public boolean convertibleThroughWideningPrimitiveConversion(Type first, Type second) throws LookupException {
+	private boolean convertibleThroughWideningPrimitiveConversion(Type first, Type second) throws LookupException {
 		return primitiveWideningConversionCandidates(first).contains(second);
 	}
 
-	public Collection<Type> primitiveWideningConversionCandidates(Type type) throws LookupException {
+	private Collection<Type> primitiveWideningConversionCandidates(Type type) throws LookupException {
 		if(_primitiveWideningConversionCandidates == null) {
 			_primitiveWideningConversionCandidates = new HashMap<>();
 			JavaView view = type.view(JavaView.class);
@@ -850,30 +746,6 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 			result = ImmutableList.of();
 		}
 		return result;
-
-		//		Collection<Type> result = new ArrayList<Type>();
-		//		View view = type.view();
-		//		String name = type.getFullyQualifiedName();
-		//		Namespace ns = view.namespace();
-		//		if(type.is(java().NUMERIC_TYPE) == Ternary.TRUE) {
-		//			if(! name.equals("double")) {
-		//				result.add(java().findType("double",ns));
-		//				if(! name.equals("float")) {
-		//					result.add(java().findType("float",ns));
-		//					if(! name.equals("long")) {
-		//						result.add(java().findType("long",ns));
-		//						if(! name.equals("int")) {
-		//							result.add(java().findType("int",ns));
-		//							// char and short do not convert to short via widening.
-		//							if(name.equals("byte")) {
-		//								result.add(java().findType("short",ns));
-		//							}
-		//						}
-		//					}
-		//				}
-		//			}
-		//		}
-		//		return result;
 	}
 
 	private Map<Type, List<Type>> _primitiveWideningConversionCandidates;

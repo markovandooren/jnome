@@ -888,10 +888,6 @@ public class Java7 extends ObjectOrientedLanguage {
 				return _type;
 			}
 			
-			@Override
-			public <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
-				return (X) _type;
-			}
 		}
 	
 		public Type binaryNumericPromotion(Type first, Type second) throws LookupException {

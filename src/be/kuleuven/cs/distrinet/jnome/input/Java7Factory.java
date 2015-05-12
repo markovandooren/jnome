@@ -12,6 +12,7 @@ import org.aikodi.chameleon.oo.statement.Statement;
 import org.aikodi.chameleon.oo.type.RegularType;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
+import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.oo.type.inheritance.InheritanceRelation;
 import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
 import org.aikodi.chameleon.support.statement.FinallyClause;
@@ -23,7 +24,9 @@ import be.kuleuven.cs.distrinet.jnome.core.method.JavaMethod;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.JavaConstructor;
 import be.kuleuven.cs.distrinet.jnome.core.namespacedeclaration.JavaNamespaceDeclaration;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaFormalParameterType;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaInstantiatedParameterType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaLazyFormalAlias;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaLazyInstantiatedAlias;
 import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
 
 public class Java7Factory extends ObjectOrientedFactory implements OOFactory {
@@ -86,5 +89,15 @@ public class Java7Factory extends ObjectOrientedFactory implements OOFactory {
 	@Override
 	public Type createLazyTypeVariable(String name, FormalTypeParameter formalTypeParameter) {
     return new JavaLazyFormalAlias(name, formalTypeParameter);
+	}
+	
+	@Override
+  public Type createInstantiatedTypeVariable(String name, Type upperBound, TypeParameter capturedTypeParameter) {
+	  return new JavaInstantiatedParameterType(name, upperBound, capturedTypeParameter);
+	}
+	
+	@Override
+	public Type createLazyInstantiatedTypeVariable(String name, TypeParameter capturedTypeParameter) {
+    return new JavaLazyInstantiatedAlias(name, capturedTypeParameter);
 	}
 }

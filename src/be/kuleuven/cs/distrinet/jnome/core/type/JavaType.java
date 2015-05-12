@@ -28,15 +28,21 @@ public interface JavaType extends Type {
 	@Override
 	default boolean properSubTypeOf(Type other) throws LookupException {
     boolean result = false;
-    //SPEED iterate over the supertype graph 
-    Set<Type> supers = getSelfAndAllSuperTypesView();
     Type snd = captureConversion(other);
-
-    Iterator<Type> typeIterator = supers.iterator();
-    while((!result) && typeIterator.hasNext()) {
-      Type current = typeIterator.next();
-      result = sameBaseTypeWithCompatibleParameters(current, snd, new ArrayList<Pair<Type, TypeParameter>>()); //(snd instanceof RawType && other.baseType().sameAs(current.baseType())) || 
+    Type baseType = superTypeJudge().get(snd);
+    if(baseType != null) {
+      result = compatibleParameters(baseType, snd, new ArrayList<Pair<Type, TypeParameter>>());
     }
+    
+    
+//    //SPEED iterate over the supertype graph 
+//    Set<Type> supers = getSelfAndAllSuperTypesView();
+//
+//    Iterator<Type> typeIterator = supers.iterator();
+//    while((!result) && typeIterator.hasNext()) {
+//      Type current = typeIterator.next();
+//      result = sameBaseTypeWithCompatibleParameters(current, snd, new ArrayList<Pair<Type, TypeParameter>>()); //(snd instanceof RawType && other.baseType().sameAs(current.baseType())) || 
+//    }
     return result;
 	}
 	

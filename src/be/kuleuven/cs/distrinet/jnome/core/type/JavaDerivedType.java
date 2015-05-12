@@ -87,7 +87,7 @@ public class JavaDerivedType extends TypeInstantiation implements JavaType {
 	}
 
 	@Override
-	public SuperTypeJudge superTypeJudge() throws LookupException {
+	public synchronized SuperTypeJudge superTypeJudge() throws LookupException {
 	  if(_judge == null) {
 	    //FIXME Speed this isn't cached
 	    Type captureConversion = captureConversion();

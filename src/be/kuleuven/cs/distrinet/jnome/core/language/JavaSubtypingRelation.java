@@ -119,11 +119,11 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 //			result = ((InstantiatedParameterType) first).aliasedType().upperBoundNotHigherThan(second, slowTrace);
 //			return result;
 //		}
-		if(first.sameAs(second)) {
-			result = true;
-		} 
-		else if (first instanceof WildCardType) {
-			result = ((WildCardType)first).upperBound().upperBoundNotHigherThan(second,slowTrace);
+//		if(first.sameAs(second)) {
+//			result = true;
+//		} 
+//		else 
+//		  if (first instanceof WildCardType) {
 		} else if (second instanceof WildCardType) {
 			//TODO Both lines make the tests succeed, but the first line makes no sense.
 			result = first.upperBoundNotHigherThan(((WildCardType)second).upperBound(),slowTrace);

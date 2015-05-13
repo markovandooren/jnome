@@ -91,34 +91,34 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 //			}
 //			slowTrace.add(new Pair<Type, TypeParameter>(second, firstParam));
 //		}
-		if(second instanceof InstantiatedParameterType) {
-			TypeParameter secondParam = ((InstantiatedParameterType)second).parameter();
-			for(Pair<Type, TypeParameter> pair: slowTrace) {
-				if(first.sameAs(pair.first()) && secondParam.sameAs(pair.second())) {
-					return true;
-				}
-			}
-			if(first.sameAs(second)) {
-				return true;
-			}
-			slowTrace.add(new Pair<Type, TypeParameter>(first, secondParam));
-			result = first.upperBoundNotHigherThan(((InstantiatedParameterType) second).aliasedType(), slowTrace);
-			return result;
-		}
-		if(first instanceof InstantiatedParameterType) {
-			TypeParameter firstParam = ((InstantiatedParameterType)first).parameter();
-			for(Pair<Type, TypeParameter> pair: slowTrace) {
-				if(firstParam.sameAs(pair.second()) && second.sameAs(pair.first())) {
-					return true;
-				}
-			}
-			if(first.sameAs(second)) {
-				return true;
-			}
-			slowTrace.add(new Pair<Type, TypeParameter>(second, firstParam));
-			result = ((InstantiatedParameterType) first).aliasedType().upperBoundNotHigherThan(second, slowTrace);
-			return result;
-		}
+//		if(second instanceof InstantiatedParameterType) {
+//			TypeParameter secondParam = ((InstantiatedParameterType)second).parameter();
+//			for(Pair<Type, TypeParameter> pair: slowTrace) {
+//				if(first.sameAs(pair.first()) && secondParam.sameAs(pair.second())) {
+//					return true;
+//				}
+//			}
+//			if(first.sameAs(second)) {
+//				return true;
+//			}
+//			slowTrace.add(new Pair<Type, TypeParameter>(first, secondParam));
+//			result = first.upperBoundNotHigherThan(((InstantiatedParameterType) second).aliasedType(), slowTrace);
+//			return result;
+//		}
+//		if(first instanceof InstantiatedParameterType) {
+//			TypeParameter firstParam = ((InstantiatedParameterType)first).parameter();
+//			for(Pair<Type, TypeParameter> pair: slowTrace) {
+//				if(firstParam.sameAs(pair.second()) && second.sameAs(pair.first())) {
+//					return true;
+//				}
+//			}
+//			if(first.sameAs(second)) {
+//				return true;
+//			}
+//			slowTrace.add(new Pair<Type, TypeParameter>(second, firstParam));
+//			result = ((InstantiatedParameterType) first).aliasedType().upperBoundNotHigherThan(second, slowTrace);
+//			return result;
+//		}
 		if(first.sameAs(second)) {
 			result = true;
 		} 

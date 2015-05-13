@@ -166,12 +166,6 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 			}
 		} else if(second instanceof RawType) {
 		  result = first.superTypeJudge().get(second) != null;
-//			Set<Type> supers = first.getSelfAndAllSuperTypesView();
-//			Iterator<Type> typeIterator = supers.iterator();
-//			while((!result) && typeIterator.hasNext()) {
-//				Type current = typeIterator.next();
-//				result = second.baseType().sameAs(current.baseType());
-//			}
 		}
 		else {
 			//SPEED iterate over the supertype graph 

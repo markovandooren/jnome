@@ -71,16 +71,16 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 	public boolean upperBoundNotHigherThan(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
 		List<Pair<Type, TypeParameter>> slowTrace = trace;
 		boolean result = false;
-		if(
-				(second instanceof LazyInstantiatedAlias)) {
-			TypeParameter secondParam = ((LazyInstantiatedAlias)second).parameter();
-			for(Pair<Type, TypeParameter> pair: slowTrace) {
-				if(first.sameAs(pair.first()) && secondParam.sameAs(pair.second())) {
-					return true;
-				}
-			}
-			slowTrace.add(new Pair<Type, TypeParameter>(first, secondParam));
-		}
+//		if(
+//				(second instanceof LazyInstantiatedAlias)) {
+//			TypeParameter secondParam = ((LazyInstantiatedAlias)second).parameter();
+//			for(Pair<Type, TypeParameter> pair: slowTrace) {
+//				if(first.sameAs(pair.first()) && secondParam.sameAs(pair.second())) {
+//					return true;
+//				}
+//			}
+//			slowTrace.add(new Pair<Type, TypeParameter>(first, secondParam));
+//		}
 		if(
 				(first instanceof LazyInstantiatedAlias)) {
 			TypeParameter firstParam = ((LazyInstantiatedAlias)first).parameter();
@@ -175,7 +175,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 			//SPEED iterate over the supertype graph 
 			Type snd = captureConversion(second);
 
-			Type type = first.superTypeJudge().get(snd);
+			Type type = first.getSuperType(snd);
 			result = type != null && (type instanceof RawType || sameBaseTypeWithCompatibleParameters(type, snd, slowTrace));
 //      Set<Type> supers = first.getSelfAndAllSuperTypesView();
 //			Iterator<Type> typeIterator = supers.iterator();
@@ -657,11 +657,12 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		boolean result = false;
 		if(first.is(java().PRIMITIVE_TYPE) == Ternary.TRUE) {
 			Type tmp = java().box(first);
-			if(tmp.sameAs(second)) {
-				result = true;
-			} else {
+//			result = tmp.subTypeOf(second);
+//			if(tmp.sameAs(second)) {
+//				result = true;
+//			} else {
 				result = convertibleThroughWideningReferenceConversion(tmp, second);
-			}
+//			}
 		}
 		return result;
 	}

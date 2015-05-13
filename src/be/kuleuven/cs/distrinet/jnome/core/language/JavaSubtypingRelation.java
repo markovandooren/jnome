@@ -81,16 +81,16 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 //			}
 //			slowTrace.add(new Pair<Type, TypeParameter>(first, secondParam));
 //		}
-		if(
-				(first instanceof LazyInstantiatedAlias)) {
-			TypeParameter firstParam = ((LazyInstantiatedAlias)first).parameter();
-			for(Pair<Type, TypeParameter> pair: slowTrace) {
-				if(second.sameAs(pair.first()) && firstParam.sameAs(pair.second())) {
-					return true;
-				}
-			}
-			slowTrace.add(new Pair<Type, TypeParameter>(second, firstParam));
-		}
+//		if(
+//				(first instanceof LazyInstantiatedAlias)) {
+//			TypeParameter firstParam = ((LazyInstantiatedAlias)first).parameter();
+//			for(Pair<Type, TypeParameter> pair: slowTrace) {
+//				if(second.sameAs(pair.first()) && firstParam.sameAs(pair.second())) {
+//					return true;
+//				}
+//			}
+//			slowTrace.add(new Pair<Type, TypeParameter>(second, firstParam));
+//		}
 		if(second instanceof InstantiatedParameterType) {
 			TypeParameter secondParam = ((InstantiatedParameterType)second).parameter();
 			for(Pair<Type, TypeParameter> pair: slowTrace) {

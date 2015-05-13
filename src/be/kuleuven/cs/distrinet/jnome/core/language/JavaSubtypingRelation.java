@@ -124,13 +124,15 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 //		} 
 //		else 
 //		  if (first instanceof WildCardType) {
-		} else if (second instanceof WildCardType) {
-			//TODO Both lines make the tests succeed, but the first line makes no sense.
-			result = first.upperBoundNotHigherThan(((WildCardType)second).upperBound(),slowTrace);
-		}
+//			result = ((WildCardType)first).upperBound().upperBoundNotHigherThan(second,slowTrace);
+//		} else if (second instanceof WildCardType) {
+//			//TODO Both lines make the tests succeed, but the first line makes no sense.
+//			result = first.upperBoundNotHigherThan(((WildCardType)second).upperBound(),slowTrace);
+//		}
 		// The relations between arrays and object are covered by the subtyping relations
 		// that are added to ArrayType objects.
-		else if (first instanceof ArrayType && second instanceof ArrayType && first.is(java().REFERENCE_TYPE) == Ternary.TRUE) {
+//		else 
+		  if (first instanceof ArrayType && second instanceof ArrayType && first.is(java().REFERENCE_TYPE) == Ternary.TRUE) {
 			ArrayType first2 = (ArrayType)first;
 			ArrayType second2 = (ArrayType)second;
 			result = first2.elementType().upperBoundNotHigherThan(second2.elementType(),slowTrace);

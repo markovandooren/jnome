@@ -86,6 +86,34 @@ public class JavaDerivedType extends TypeInstantiation implements JavaType {
 		}
 	}
 
+	@Override
+	public SuperTypeJudge superTypeJudge() throws LookupException {
+		if(_judge == null) {
+			synchronized(this) {
+				if(_judge == null) {
+					//FIXME Speed this isn't cached
+					Type captureConversion = captureConversion();
+					if(captureConversion != this) {
+						_judge = captureConversion.superTypeJudge();
+					} else {
+						_judge = super.superTypeJudge();
+					}
+				}
+			}
+		}
+		return _judge;
+	}
+	
+	@Override
+	public void accumulateSuperTypeJudge(SuperTypeJudge judge) throws LookupException {
+    Type captureConversion = captureConversion();
+    if(captureConversion != this) {
+      captureConversion.accumulateSuperTypeJudge(judge);
+    } else {
+      super.accumulateSuperTypeJudge(judge);
+    }
+	}
+	
 	public void newAccumulateSelfAndAllSuperTypes(Set<Type> acc) throws LookupException {
 		Type captureConversion = captureConversion();
 		if(captureConversion != this) {
@@ -104,8 +132,8 @@ public class JavaDerivedType extends TypeInstantiation implements JavaType {
 		if(_captureConversion == null) {
 			Type result = this;
 
-			List<TypeParameter> typeParameters = Lists.create();
 			if(! (parameter(TypeParameter.class,0) instanceof CapturedTypeParameter)) {
+			  List<TypeParameter> typeParameters = Lists.create();
 				Type base = baseType();
 				List<TypeParameter> baseParameters = base.parameters(TypeParameter.class);
 				Iterator<TypeParameter> formals = baseParameters.iterator();

@@ -1,6 +1,8 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
 
+import java.util.List;
+
 import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
 import org.aikodi.chameleon.core.element.Element;
@@ -13,10 +15,12 @@ import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.method.SimpleNameMethodHeader;
 import org.aikodi.chameleon.oo.type.RegularType;
 import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.oo.type.inheritance.SubtypeRelation;
 import org.aikodi.chameleon.oo.variable.RegularMemberVariable;
 import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
 import org.aikodi.chameleon.support.modifier.Final;
+import org.aikodi.chameleon.util.Pair;
 import org.aikodi.chameleon.workspace.View;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
@@ -161,5 +165,15 @@ public class ArrayType extends RegularType implements JavaType {
   public Type erasure() {
     return create(((JavaType)elementType()).erasure());
   }
-  
+
+  @Override
+  public boolean upperBoundNotHigherThan(Type other,
+  		List<Pair<Type, TypeParameter>> trace) throws LookupException {
+  	if(other instanceof ArrayType && isTrue(language(Java7.class).REFERENCE_TYPE)) {
+		ArrayType second2 = (ArrayType)other;
+		return this.elementType().upperBoundNotHigherThan(second2.elementType(),trace);
+  	} else {
+  		return super.upperBoundNotHigherThan(other, trace);
+  	}
+  }
 }

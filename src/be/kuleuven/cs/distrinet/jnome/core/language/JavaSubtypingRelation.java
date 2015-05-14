@@ -66,163 +66,6 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		return _java;
 	}
 
-	//FIXME get rid of this garbage code. The algorithm works, so it should now
-	// be integrated.
-	public boolean upperBoundNotHigherThan(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
-		List<Pair<Type, TypeParameter>> slowTrace = trace;
-		boolean result = false;
-		if(
-				(second instanceof LazyInstantiatedAlias)) {
-			TypeParameter secondParam = ((LazyInstantiatedAlias)second).parameter();
-			for(Pair<Type, TypeParameter> pair: slowTrace) {
-				if(first.sameAs(pair.first()) && secondParam.sameAs(pair.second())) {
-					return true;
-				}
-			}
-			slowTrace.add(new Pair<Type, TypeParameter>(first, secondParam));
-		}
-		if(
-				(first instanceof LazyInstantiatedAlias)) {
-			TypeParameter firstParam = ((LazyInstantiatedAlias)first).parameter();
-			for(Pair<Type, TypeParameter> pair: slowTrace) {
-				if(second.sameAs(pair.first()) && firstParam.sameAs(pair.second())) {
-					return true;
-				}
-			}
-			slowTrace.add(new Pair<Type, TypeParameter>(second, firstParam));
-		}
-		if(second instanceof InstantiatedParameterType) {
-			TypeParameter secondParam = ((InstantiatedParameterType)second).parameter();
-			for(Pair<Type, TypeParameter> pair: slowTrace) {
-				if(first.sameAs(pair.first()) && secondParam.sameAs(pair.second())) {
-					return true;
-				}
-			}
-			if(first.sameAs(second)) {
-				return true;
-			}
-			slowTrace.add(new Pair<Type, TypeParameter>(first, secondParam));
-			result = first.upperBoundNotHigherThan(((InstantiatedParameterType) second).aliasedType(), slowTrace);
-			return result;
-		}
-		if(first instanceof InstantiatedParameterType) {
-			TypeParameter firstParam = ((InstantiatedParameterType)first).parameter();
-			for(Pair<Type, TypeParameter> pair: slowTrace) {
-				if(firstParam.sameAs(pair.second()) && second.sameAs(pair.first())) {
-					return true;
-				}
-			}
-			if(first.sameAs(second)) {
-				return true;
-			}
-			slowTrace.add(new Pair<Type, TypeParameter>(second, firstParam));
-			result = ((InstantiatedParameterType) first).aliasedType().upperBoundNotHigherThan(second, slowTrace);
-			return result;
-		}
-		if(first.sameAs(second)) {
-			result = true;
-		} 
-		else if (first instanceof WildCardType) {
-			result = ((WildCardType)first).upperBound().upperBoundNotHigherThan(second,slowTrace);
-		} else if (second instanceof WildCardType) {
-			//TODO Both lines make the tests succeed, but the first line makes no sense.
-			result = first.upperBoundNotHigherThan(((WildCardType)second).upperBound(),slowTrace);
-		}
-		// The relations between arrays and object are covered by the subtyping relations
-		// that are added to ArrayType objects.
-		else if (first instanceof ArrayType && second instanceof ArrayType && first.is(java().REFERENCE_TYPE) == Ternary.TRUE) {
-			ArrayType first2 = (ArrayType)first;
-			ArrayType second2 = (ArrayType)second;
-			result = first2.elementType().upperBoundNotHigherThan(second2.elementType(),slowTrace);
-		} else if(second instanceof IntersectionType) {
-			List<Type> types = ((IntersectionType)second).types();
-			int size = types.size();
-			result = size > 0;
-			for(int i=0; result && i<size;i++) {
-				result = first.upperBoundNotHigherThan(types.get(i),slowTrace);
-			}
-		} else if(first instanceof IntersectionType) {
-			List<Type> types = ((IntersectionType)first).types();
-			int size = types.size();
-			result = false;
-			for(int i=0; (!result) && i<size;i++) {
-				result = types.get(i).upperBoundNotHigherThan(second,slowTrace);
-			}
-		} else if(second instanceof UnionType) {
-			List<Type> types = ((UnionType)second).types();
-			int size = types.size();
-			result = false;
-			for(int i=0; (!result) && i<size;i++) {
-				result = first.upperBoundNotHigherThan(types.get(i),slowTrace);
-			}
-		} else if(first instanceof UnionType) {
-			List<Type> types = ((UnionType)first).types();
-			int size = types.size();
-			result = size > 0;
-			for(int i=0; result && i<size;i++) {
-				result = types.get(i).upperBoundNotHigherThan(second, slowTrace);
-			}
-		} else if(second instanceof RawType) {
-			Set<Type> supers = first.getSelfAndAllSuperTypesView();
-			Iterator<Type> typeIterator = supers.iterator();
-			while((!result) && typeIterator.hasNext()) {
-				Type current = typeIterator.next();
-				result = second.baseType().sameAs(current.baseType());
-			}
-		}
-		else {
-			//SPEED iterate over the supertype graph 
-			Set<Type> supers = first.getSelfAndAllSuperTypesView();
-			Type snd = captureConversion(second);
-
-			Iterator<Type> typeIterator = supers.iterator();
-			while((!result) && typeIterator.hasNext()) {
-				Type current = typeIterator.next();
-				result = (snd instanceof RawType && second.baseType().sameAs(current.baseType())) || sameBaseTypeWithCompatibleParameters(current, snd, slowTrace);
-			}
-		}
-		return result;
-	}
-
-	//	private static Logger _logger = Logger.getLogger("lookup.subtyping");
-	//	
-	//	public static Logger getLogger() {
-	//		return _logger;
-	//	}
-
-	//	public void flushCache() {
-	//		_cache = new HashMap<Type,Set<Type>>();
-	//	}
-
-	// Can't use set for now because hashCode is not OK.
-	//	private Map<Type, Set<Type>> _cache = new HashMap<Type,Set<Type>>();
-
-	@Override
-	public boolean contains(Type first, Type second) throws LookupException {
-		boolean result = false;
-		//SPEED iterate over the supertype graph 
-		Set<Type> supers = first.getSelfAndAllSuperTypesView();
-		Type snd = captureConversion(second);
-
-		Iterator<Type> typeIterator = supers.iterator();
-		while((!result) && typeIterator.hasNext()) {
-			Type current = typeIterator.next();
-			/**
-			 * FIXME The raw type condition should be in {@link RawType#properSuperTypeOf} 
-			 **/
-			result = (snd instanceof RawType && second.baseType().sameAs(current.baseType())) || sameBaseTypeWithCompatibleParameters(current, snd, new ArrayList<Pair<Type, TypeParameter>>());
-		}
-		return result;
-	}
-
-	private Type captureConversion(Type type) throws LookupException {
-		Type result = type;
-		if(result instanceof JavaDerivedType) {
-			result = ((JavaDerivedType)result).captureConversion();
-		}
-		return result;
-	}
-
 	public static class CaptureReference extends NonLocalJavaTypeReference {
 
 		public CaptureReference(JavaTypeReference tref) {
@@ -240,14 +83,6 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		}
 
 	}
-
-	private boolean sameBaseTypeWithCompatibleParameters(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
-	  return first.baseType().sameAs(second.baseType()) && compatibleParameters(first, second, trace);
-	}
-
-//	public boolean rawType(Type type) {
-//	  return CollectionOperations.forAll(type.parameters(TypeParameter.class), p -> p instanceof FormalTypeParameter);
-//	}
 
 	private boolean compatibleParameters(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
 		return forAll(first.parameters(TypeParameter.class), second.parameters(TypeParameter.class), (f,s) -> f.compatibleWith(s, trace));
@@ -576,12 +411,15 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 			ArrayType second2 = (ArrayType)second;
 			result = convertibleThroughUncheckedConversionAndSubtyping(first2.elementType(), second2.elementType());
 		} else {
-			Set<Type> supers = first.getSelfAndAllSuperTypesView();
-			for(Type type: supers) {
-				if(type.baseType().sameAs(second.baseType())) {
-					return true;
-				}
-			}
+		  return first.superTypeJudge().get(second) != null;
+//			Set<Type> supers = first.getSelfAndAllSuperTypesView();
+//			for(Type type: supers) {
+//				if(type.baseType().sameAs(second.baseType())) {
+//					return true;
+//				}
+//			}
+			
+			
 		}
 		return result;
 	}
@@ -620,26 +458,18 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 			result = true;
 		} else {
 			// E) reference widening
-			Collection<Type> candidates = referenceWideningConversionCandidates(first);
-			if(candidates.contains(second)) {
-				result = true;
-			} else {
-				// F) unchecked conversion after reference widening 
-				for(Type type: candidates) {
-					if(convertibleThroughUncheckedConversionAndSubtyping(type, second)) {
-						uncheckedConversion = true;
-						result = true;
-						break;
-					}
-				}
-				if(! result) {
-					// FIXME is this still necessary? first has already been added to the previous check G) unchecked conversion after identity
-					result = convertibleThroughUncheckedConversionAndSubtyping(first, second);
-					if(result) {
-						uncheckedConversion = true;
-					}
-				}
-			}
+		  Type superType = first.getSuperType(second);
+		  if(superType != null) {
+		    if(superType.sameAs(second)) {
+		      result = true;
+		    } else {
+		      if(convertibleThroughUncheckedConversionAndSubtyping(superType, second)) {
+		        uncheckedConversion = true;
+		        result = true;
+		      }
+
+		    }
+		  }
 		}
 		if(uncheckedConversion) {
 			indicator.set();
@@ -652,11 +482,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		boolean result = false;
 		if(first.is(java().PRIMITIVE_TYPE) == Ternary.TRUE) {
 			Type tmp = java().box(first);
-			if(tmp.sameAs(second)) {
-				result = true;
-			} else {
-				result = convertibleThroughWideningReferenceConversion(tmp, second);
-			}
+			result = convertibleThroughWideningReferenceConversion(tmp, second);
 		}
 		return result;
 	}
@@ -675,17 +501,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 	}
 
 	private boolean convertibleThroughWideningReferenceConversion(Type first, Type second) throws LookupException {
-		Collection<Type> referenceWideningConversionCandidates = referenceWideningConversionCandidates(first);
-		for(Type type: referenceWideningConversionCandidates) {
-			if(type.sameAs(second) || type.subTypeOf(second)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private Collection<Type> referenceWideningConversionCandidates(Type type) throws LookupException {
-		return type.getSelfAndAllSuperTypesView();
+	  return first.subTypeOf(second);
 	}
 
 	private boolean convertibleThroughWideningPrimitiveConversion(Type first, Type second) throws LookupException {

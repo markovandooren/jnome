@@ -860,11 +860,11 @@ public class Java7 extends ObjectOrientedLanguage {
 			return new JavaPureWildcard();
 		}
 		
-		@Override
-		public boolean upperBoundNotHigherThan(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
-			JavaSubtypingRelation subtypeRelation = subtypeRelation();
-			return subtypeRelation.upperBoundNotHigherThan(first, second, trace);
-		}
+//		@Override
+//		public boolean upperBoundNotHigherThan(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
+//			JavaSubtypingRelation subtypeRelation = subtypeRelation();
+//			return subtypeRelation.upperBoundNotHigherThan(first, second, trace);
+//		}
 
 		public Type createdCapturedType(ParameterSubstitution parameterSubstitution, Type base) {
 			return new CapturedType(parameterSubstitution, base);

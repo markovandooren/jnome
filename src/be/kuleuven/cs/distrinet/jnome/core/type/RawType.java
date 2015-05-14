@@ -293,4 +293,10 @@ public class RawType extends ClassWithBody implements JavaType {
 //		}
 //		return result;
 	}
+	
+	@Override
+	public boolean lowerBoundAtLeatAsHighAs(Type other,
+			List<Pair<Type, TypeParameter>> trace) throws LookupException {
+	  return other.superTypeJudge().get(this) != null;
+	}
 }

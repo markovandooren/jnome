@@ -68,9 +68,11 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 	public List<? extends SelectionResult> selection(List<? extends Declaration> selectionCandidates) throws LookupException {
 		List<MethodSelectionResult> tmp = new ArrayList<MethodSelectionResult>();
 		if(! selectionCandidates.isEmpty()) {
-			List<M> candidates = new ArrayList<M>();
+			int size = selectionCandidates.size();
+			List<M> candidates = new ArrayList<M>(size);
 			int nbActuals = invocation().nbActualParameters();
-			for(Declaration decl: selectionCandidates) {
+			for(int i = 0; i< size; i++) {
+				Declaration decl = selectionCandidates.get(i);
 				if(_type.isInstance(decl)) {
 					M method = (M) decl;
 					int nbFormals = method.nbFormalParameters();
@@ -93,7 +95,9 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 			/**
 			 * JLS 15.12.2.2 Phase 1: Identify Matching Arity Methods Applicable by Subtyping
 			 */
-			for(M decl: candidates) {
+			size = candidates.size();
+			for(int i = 0; i< size; i++) {
+				M decl = candidates.get(i);
 				MethodSelectionResult matchingApplicableBySubtyping = matchingApplicableBySubtyping(decl,java);
 				if(matchingApplicableBySubtyping != null) {
 					tmp.add(matchingApplicableBySubtyping);
@@ -103,7 +107,8 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 			//                does the search consider other candidates.
 			// conversion
 			if(tmp.isEmpty()) {
-				for(M decl: candidates) {
+				for(int i = 0; i< size; i++) {
+					M decl = candidates.get(i);
 					MethodSelectionResult matchingApplicableByConversion = matchingApplicableByConversion(decl,java);
 					if(matchingApplicableByConversion != null) {
 						tmp.add(matchingApplicableByConversion);
@@ -111,7 +116,8 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 				}
 				// variable arity
 				if(tmp.isEmpty()) {
-					for(M decl: candidates) {
+					for(int i = 0; i< size; i++) {
+						M decl = candidates.get(i);
 						MethodSelectionResult variableApplicableBySubtyping = variableApplicableBySubtyping(decl,java);
 						if(variableApplicableBySubtyping != null) {
 							tmp.add(variableApplicableBySubtyping);

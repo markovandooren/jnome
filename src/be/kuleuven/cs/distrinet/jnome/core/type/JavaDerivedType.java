@@ -87,17 +87,21 @@ public class JavaDerivedType extends TypeInstantiation implements JavaType {
 	}
 
 	@Override
-	public synchronized SuperTypeJudge superTypeJudge() throws LookupException {
-	  if(_judge == null) {
-	    //FIXME Speed this isn't cached
-	    Type captureConversion = captureConversion();
-	    if(captureConversion != this) {
-	      _judge = captureConversion.superTypeJudge();
-	    } else {
-	      _judge = super.superTypeJudge();
-	    }
-	  }
-	  return _judge;
+	public SuperTypeJudge superTypeJudge() throws LookupException {
+		if(_judge == null) {
+			synchronized(this) {
+				if(_judge == null) {
+					//FIXME Speed this isn't cached
+					Type captureConversion = captureConversion();
+					if(captureConversion != this) {
+						_judge = captureConversion.superTypeJudge();
+					} else {
+						_judge = super.superTypeJudge();
+					}
+				}
+			}
+		}
+		return _judge;
 	}
 	
 	@Override

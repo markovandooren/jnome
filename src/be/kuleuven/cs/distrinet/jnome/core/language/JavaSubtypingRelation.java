@@ -71,67 +71,6 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 	public boolean upperBoundNotHigherThan(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
 		List<Pair<Type, TypeParameter>> slowTrace = trace;
 		boolean result = false;
-//		if(
-//				(second instanceof LazyInstantiatedAlias)) {
-//			TypeParameter secondParam = ((LazyInstantiatedAlias)second).parameter();
-//			for(Pair<Type, TypeParameter> pair: slowTrace) {
-//				if(first.sameAs(pair.first()) && secondParam.sameAs(pair.second())) {
-//					return true;
-//				}
-//			}
-//			slowTrace.add(new Pair<Type, TypeParameter>(first, secondParam));
-//		}
-//		if(
-//				(first instanceof LazyInstantiatedAlias)) {
-//			TypeParameter firstParam = ((LazyInstantiatedAlias)first).parameter();
-//			for(Pair<Type, TypeParameter> pair: slowTrace) {
-//				if(second.sameAs(pair.first()) && firstParam.sameAs(pair.second())) {
-//					return true;
-//				}
-//			}
-//			slowTrace.add(new Pair<Type, TypeParameter>(second, firstParam));
-//		}
-//		if(second instanceof InstantiatedParameterType) {
-//			TypeParameter secondParam = ((InstantiatedParameterType)second).parameter();
-//			for(Pair<Type, TypeParameter> pair: slowTrace) {
-//				if(first.sameAs(pair.first()) && secondParam.sameAs(pair.second())) {
-//					return true;
-//				}
-//			}
-//			if(first.sameAs(second)) {
-//				return true;
-//			}
-//			slowTrace.add(new Pair<Type, TypeParameter>(first, secondParam));
-//			result = first.upperBoundNotHigherThan(((InstantiatedParameterType) second).aliasedType(), slowTrace);
-//			return result;
-//		}
-//		if(first instanceof InstantiatedParameterType) {
-//			TypeParameter firstParam = ((InstantiatedParameterType)first).parameter();
-//			for(Pair<Type, TypeParameter> pair: slowTrace) {
-//				if(firstParam.sameAs(pair.second()) && second.sameAs(pair.first())) {
-//					return true;
-//				}
-//			}
-//			if(first.sameAs(second)) {
-//				return true;
-//			}
-//			slowTrace.add(new Pair<Type, TypeParameter>(second, firstParam));
-//			result = ((InstantiatedParameterType) first).aliasedType().upperBoundNotHigherThan(second, slowTrace);
-//			return result;
-//		}
-//		if(first.sameAs(second)) {
-//			result = true;
-//		} 
-//		else 
-//		  if (first instanceof WildCardType) {
-//			result = ((WildCardType)first).upperBound().upperBoundNotHigherThan(second,slowTrace);
-//		} else if (second instanceof WildCardType) {
-//			//TODO Both lines make the tests succeed, but the first line makes no sense.
-//			result = first.upperBoundNotHigherThan(((WildCardType)second).upperBound(),slowTrace);
-//		}
-		// The relations between arrays and object are covered by the subtyping relations
-		// that are added to ArrayType objects.
-//		else 
 		  if (first instanceof ArrayType && second instanceof ArrayType && first.is(java().REFERENCE_TYPE) == Ternary.TRUE) {
 			ArrayType first2 = (ArrayType)first;
 			ArrayType second2 = (ArrayType)second;

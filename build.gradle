@@ -60,17 +60,19 @@ uploadArchives {
         pom.artifactId = 'jnome'
     }
 }
-
+List shared = [
+     'org.ow2.asm:asm:5.0.3',
+     'com.lexicalscope.jewelcli:jewelcli:0.8.5',
+     'net.sf.jgrapht:jgrapht:+',
+     'org.antlr:antlr:3.2'
+]
 
 dependencies {
    //compile project(':rejuse')
    //compile project(':chameleon')
-   compile group: 'markovandooren', name: 'rejuse', version: '1.3.2'
-   compile group: 'markovandooren', name: 'chameleon', version: '1.1.26'
-   compile 'org.ow2.asm:asm:5.0.3'
-   compile 'com.lexicalscope.jewelcli:jewelcli:0.8.5'
-   compile 'net.sf.jgrapht:jgrapht:+'
-   compile 'org.antlr:antlr:3.2'
+   compile group: 'markovandooren', name: 'rejuse', version: '1.3.4'
+   compile group: 'markovandooren', name: 'chameleon', version: '1.1.29'
+   compile shared
 }
 
 
@@ -81,3 +83,13 @@ task copyRuntimeLibs(type: Copy) {
     into "lib"
     from configurations.runtime
   }
+
+configurations {
+  local
+}
+
+dependencies {
+  local project(':rejuse')
+  local project(':chameleon')
+  local shared
+}

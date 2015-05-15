@@ -2,15 +2,10 @@ package be.kuleuven.cs.distrinet.jnome.core.type;
 
 import static be.kuleuven.cs.distrinet.rejuse.collection.CollectionOperations.forAll;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.TypeFixer;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
-import org.aikodi.chameleon.util.Pair;
 
 public interface JavaType extends Type {
 
@@ -31,7 +26,7 @@ public interface JavaType extends Type {
     Type snd = captureConversion(other);
     Type baseType = superTypeJudge().get(snd);
     if(baseType != null) {
-      result = compatibleParameters(baseType, snd, new ArrayList<Pair<Type, TypeParameter>>());
+      result = compatibleParameters(baseType, snd, new TypeFixer());
     }
     return result;
 	}
@@ -48,13 +43,13 @@ public interface JavaType extends Type {
 //	    return CollectionOperations.forAll(type.parameters(TypeParameter.class), p -> p instanceof FormalTypeParameter);
 //	  }
 
-	 public static boolean compatibleParameters(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
+	 public static boolean compatibleParameters(Type first, Type second, TypeFixer trace) throws LookupException {
 	    return forAll(first.parameters(TypeParameter.class), second.parameters(TypeParameter.class), (f,s) -> f.compatibleWith(s, trace));
 	  }
 
 	 @Override
 	public default boolean upperBoundNotHigherThan(Type other,
-			List<Pair<Type, TypeParameter>> trace) throws LookupException {
+			TypeFixer trace) throws LookupException {
 		 boolean result = false;
 		 if(this.sameAs(other)) {
 			 result = true;

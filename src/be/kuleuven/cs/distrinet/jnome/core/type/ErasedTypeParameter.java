@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.TypeFixer;
 import org.aikodi.chameleon.oo.type.generics.AbstractInstantiatedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
@@ -35,7 +36,7 @@ public class ErasedTypeParameter extends AbstractInstantiatedTypeParameter {
 		return result;
 	}
 	
-	public boolean compatibleWith(TypeParameter other,List<Pair<Type, TypeParameter>> trace) throws LookupException {
+	public boolean compatibleWith(TypeParameter other,TypeFixer trace) throws LookupException {
 		return other instanceof ErasedTypeParameter && super.compatibleWith(other, trace);
 	}
 }

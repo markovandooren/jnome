@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,29 +20,21 @@ import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.language.SubtypeRelation;
 import org.aikodi.chameleon.oo.type.IntersectionType;
 import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.TypeFixer;
 import org.aikodi.chameleon.oo.type.TypeIndirection;
 import org.aikodi.chameleon.oo.type.TypeReference;
-import org.aikodi.chameleon.oo.type.UnionType;
 import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
 import org.aikodi.chameleon.oo.type.generics.BasicTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.ExtendsWildcard;
-import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.InstantiatedParameterType;
 import org.aikodi.chameleon.oo.type.generics.InstantiatedTypeParameter;
-import org.aikodi.chameleon.oo.type.generics.LazyInstantiatedAlias;
 import org.aikodi.chameleon.oo.type.generics.SuperWildcard;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
-import org.aikodi.chameleon.oo.type.generics.WildCardType;
-import org.aikodi.chameleon.util.Pair;
 import org.aikodi.chameleon.util.Util;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableList.Builder;
 
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaDerivedType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaIntersectionTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.NullType;
@@ -53,6 +44,9 @@ import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 import be.kuleuven.cs.distrinet.rejuse.collection.CollectionOperations;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
 
 public class JavaSubtypingRelation extends SubtypeRelation {
 
@@ -82,10 +76,6 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 			return new CaptureReference(null);
 		}
 
-	}
-
-	private boolean compatibleParameters(Type first, Type second, List<Pair<Type, TypeParameter>> trace) throws LookupException {
-		return forAll(first.parameters(TypeParameter.class), second.parameters(TypeParameter.class), (f,s) -> f.compatibleWith(s, trace));
 	}
 
 	private Type leastUpperBound(List<? extends TypeReference> Us, Binder root) throws LookupException {
@@ -293,7 +283,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 
 			} else if(first instanceof SuperWildcard || second instanceof SuperWildcard) {
 				ExtendsWildcard ext = (ExtendsWildcard) (first instanceof ExtendsWildcard? first : second);
-				SuperWildcard sup = (SuperWildcard)(ext == first ? second : first);
+//				SuperWildcard sup = (SuperWildcard)(ext == first ? second : first);
 				Type U = ((BasicTypeArgument)first).type();
 				Type V = ((BasicTypeArgument)second).type();
 				if(U.sameAs(V)) {

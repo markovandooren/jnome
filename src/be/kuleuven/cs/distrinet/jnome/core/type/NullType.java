@@ -1,18 +1,15 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
-import java.util.List;
-
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.method.SimpleNameMethodHeader;
 import org.aikodi.chameleon.oo.type.RegularType;
 import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.TypeFixer;
 import org.aikodi.chameleon.oo.type.UnionType;
-import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.oo.variable.FormalParameter;
 import org.aikodi.chameleon.support.member.simplename.operator.infix.InfixOperator;
 import org.aikodi.chameleon.support.modifier.Native;
 import org.aikodi.chameleon.support.modifier.Public;
-import org.aikodi.chameleon.util.Pair;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 
@@ -48,7 +45,7 @@ public class NullType extends RegularType implements JavaType {
   }
   
   @Override
-  public boolean upperBoundNotHigherThan(Type other, List<Pair<Type, TypeParameter>> trace) throws LookupException {
+  public boolean upperBoundNotHigherThan(Type other, TypeFixer trace) throws LookupException {
   	return true;
   }
   

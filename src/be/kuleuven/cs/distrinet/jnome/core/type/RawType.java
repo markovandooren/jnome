@@ -1,10 +1,7 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.factory.Factory;
@@ -20,6 +17,7 @@ import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.type.ClassWithBody;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeElement;
+import org.aikodi.chameleon.oo.type.TypeFixer;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.BasicTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
@@ -295,8 +293,7 @@ public class RawType extends ClassWithBody implements JavaType {
 	}
 	
 	@Override
-	public boolean lowerBoundAtLeatAsHighAs(Type other,
-			List<Pair<Type, TypeParameter>> trace) throws LookupException {
+	public boolean lowerBoundAtLeatAsHighAs(Type other, TypeFixer trace) throws LookupException {
 	  return other.superTypeJudge().get(this) != null;
 	}
 }

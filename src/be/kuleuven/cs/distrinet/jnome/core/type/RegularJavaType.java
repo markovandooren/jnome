@@ -179,20 +179,24 @@ public class RegularJavaType extends RegularType implements JavaType {
    * @return
    */
   public NormalMethod getClassMethod() {
-    if (_getClassMethod == null) {
-      if (view(JavaView.class).topLevelType() != this) {
-        Java7 language = language(Java7.class);
-        BasicJavaTypeReference returnType = language.createTypeReference("java.lang.Class");
-        JavaTypeReference erasedThisType = language.createTypeReference(name());
-        ActualTypeArgument arg = language.createExtendsWildcard(erasedThisType);
-        returnType.addArgument(arg);
-        _getClassMethod = new NormalMethod(new SimpleNameMethodHeader("getClass", returnType));
-        _getClassMethod.addModifier(new Public());
-        _getClassMethod.addModifier(new Native());
-        _getClassMethod.setUniParent(body());
-      }
-    }
-    return _getClassMethod;
+  	if (_getClassMethod == null) {
+  		synchronized(this) {
+  			if (_getClassMethod == null) {
+  				if (view(JavaView.class).topLevelType() != this) {
+  					Java7 language = language(Java7.class);
+  					BasicJavaTypeReference returnType = language.createTypeReference("java.lang.Class");
+  					JavaTypeReference erasedThisType = language.createTypeReference(name());
+  					ActualTypeArgument arg = language.createExtendsWildcard(erasedThisType);
+  					returnType.addArgument(arg);
+  					_getClassMethod = new NormalMethod(new SimpleNameMethodHeader("getClass", returnType));
+  					_getClassMethod.addModifier(new Public());
+  					_getClassMethod.addModifier(new Native());
+  					_getClassMethod.setUniParent(body());
+  				}
+  			}
+  		}
+  	}
+  	return _getClassMethod;
   }
 
   private NormalMethod _getClassMethod;

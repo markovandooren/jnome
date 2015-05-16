@@ -18,4 +18,9 @@ class SuperConstructorDelegatorSelector extends NamelessConstructorSelector {
 		return container.nearestAncestor(Type.class).name();
 	}
 	
+	@Override
+	public boolean isGreedy() {
+		return true;
+	}
+	
 }

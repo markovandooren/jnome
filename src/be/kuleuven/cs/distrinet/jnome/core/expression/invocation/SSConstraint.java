@@ -15,6 +15,8 @@ import org.aikodi.chameleon.oo.type.generics.SuperWildcard;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.util.Util;
 
+import com.google.common.collect.ImmutableSet;
+
 import be.kuleuven.cs.distrinet.jnome.core.type.ErasedTypeParameter;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
@@ -194,8 +196,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 	}
 
 	private Type GsuperTypeOfA() throws LookupException {
-		Set<Type> supers = A().getAllSuperTypes();
-		supers.add(A());
+		Set<Type> supers = ImmutableSet.<Type>builder().addAll(A().getAllSuperTypes()).add(A()).build();
 //		Set<Type> debug = A().getSelfAndAllSuperTypesView();
 //		Util.debug(! debug.containsAll(supers));
 //		Util.debug(! supers.containsAll(debug));

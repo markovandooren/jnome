@@ -123,4 +123,9 @@ public class ConstructorSelector extends AbstractConstructorSelector {
 		}
 		return method;
 	}
+	
+	@Override
+	public boolean isGreedy() {
+		return invocation().nbActualParameters() == 0;
+	}
 }

@@ -15,6 +15,7 @@ import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.Parameter;
 import org.aikodi.chameleon.oo.type.ParameterSubstitution;
 import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.Type.SuperTypeJudge;
 import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.CapturedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
@@ -88,20 +89,45 @@ public class JavaDerivedType extends TypeInstantiation implements JavaType {
 
 	@Override
 	public SuperTypeJudge superTypeJudge() throws LookupException {
-		if(_judge == null) {
-			synchronized(this) {
-				if(_judge == null) {
-					//FIXME Speed this isn't cached
+		SuperTypeJudge result = _judge;
+		if(result == null) {
+			if(_judgeLock.compareAndSet(false, true)) {
+				try {
 					Type captureConversion = captureConversion();
 					if(captureConversion != this) {
-						_judge = captureConversion.superTypeJudge();
-					} else {
-						_judge = super.superTypeJudge();
+						result = captureConversion.superTypeJudge();
 					}
+					else {
+						result = new SuperTypeJudge();
+						accumulateSuperTypeJudge(result);
+					}
+					_judge = result;
+				} catch(LookupException e) {
+					throw e;
+				} finally {
+					_judgeLock.compareAndSet(true, false);
 				}
+
+			} else {
+				//spin lock
+				while((result = _judge) == null) {}
 			}
 		}
-		return _judge;
+		return result;
+//		if(_judge == null) {
+//			synchronized(this) {
+//				if(_judge == null) {
+//					//FIXME Speed this isn't cached
+//					Type captureConversion = captureConversion();
+//					if(captureConversion != this) {
+//						_judge = captureConversion.superTypeJudge();
+//					} else {
+//						_judge = super.superTypeJudge();
+//					}
+//				}
+//			}
+//		}
+//		return _judge;
 	}
 	
 	@Override

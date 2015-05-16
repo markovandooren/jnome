@@ -1,40 +1,27 @@
 package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.declaration.Signature;
 import org.aikodi.chameleon.core.lookup.DeclarationSelector;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.lookup.SelectionResult;
-import org.aikodi.chameleon.core.namespace.Namespace;
-import org.aikodi.chameleon.core.relation.WeakPartialOrder;
 import org.aikodi.chameleon.oo.expression.Expression;
 import org.aikodi.chameleon.oo.expression.MethodInvocation;
-import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.method.MethodHeader;
-import org.aikodi.chameleon.oo.type.RegularType;
 import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.chameleon.oo.type.TypeIndirection;
 import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
-import org.aikodi.chameleon.workspace.View;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.language.JavaSubtypingRelation;
 import be.kuleuven.cs.distrinet.jnome.core.language.JavaSubtypingRelation.UncheckedConversionIndicator;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
-import be.kuleuven.cs.distrinet.jnome.core.type.NullType;
-import be.kuleuven.cs.distrinet.jnome.core.type.RawType;
 import be.kuleuven.cs.distrinet.jnome.core.variable.MultiFormalParameter;
-import be.kuleuven.cs.distrinet.rejuse.logic.relation.PartialOrder;
-import be.kuleuven.cs.distrinet.rejuse.logic.relation.Relation;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 
 public abstract class AbstractJavaMethodSelector<M extends Method> implements DeclarationSelector<M> {
@@ -55,15 +42,6 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 	public boolean isGreedy() {
 		return false;
 	}
-
-//	@Override
-//	public List<? extends SelectionResult> declarators(List<? extends Declaration> selectionCandidates) throws LookupException {
-//		List<SelectionResult> result = new ArrayList<>();
-//		for(SelectionResult r: selection(selectionCandidates)) {
-//			result.add(((MethodSelectionResult)r).template().declarator());
-//		}
-//		return result;
-//	}
 
 	protected abstract MethodInvocation invocation();
 

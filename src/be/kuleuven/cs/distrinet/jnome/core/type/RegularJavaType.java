@@ -86,7 +86,7 @@ public class RegularJavaType extends RegularType implements JavaType {
     // Integer value = new Integer(current.intValue() + 1);
     // System.out.println("Size: "+size+" count: "+value);
     // COUNTMAP.put(size,value);
-    return new JavaDerivedType(this, typeArguments);
+    return new JavaTypeInstantiation(this, typeArguments);
   }
 
   // private static int COUNT;

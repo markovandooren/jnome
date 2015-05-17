@@ -29,21 +29,21 @@ import org.aikodi.chameleon.util.Lists;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 
-public class JavaDerivedType extends TypeInstantiation implements JavaType {
+public class JavaTypeInstantiation extends TypeInstantiation implements JavaType {
 
-	public <P extends Parameter> JavaDerivedType(Class<P> kind, List<P> parameters, Type baseType) {
+	public <P extends Parameter> JavaTypeInstantiation(Class<P> kind, List<P> parameters, Type baseType) {
 		super(kind,parameters,baseType);
 	}
 
-	public JavaDerivedType(List<ParameterSubstitution<?>> parameters, Type baseType) {
+	public JavaTypeInstantiation(List<ParameterSubstitution<?>> parameters, Type baseType) {
 		super(parameters, baseType);
 	}
 
-	public JavaDerivedType(ParameterSubstitution substitution, Type baseType) {
+	public JavaTypeInstantiation(ParameterSubstitution substitution, Type baseType) {
 		super(substitution, baseType);
 	}
 
-	public JavaDerivedType(Type baseType, List<ActualTypeArgument> typeArguments) throws LookupException {
+	public JavaTypeInstantiation(Type baseType, List<ActualTypeArgument> typeArguments) throws LookupException {
 		super(baseType, typeArguments);
 	}
 
@@ -206,9 +206,9 @@ public class JavaDerivedType extends TypeInstantiation implements JavaType {
 		return _captureConversion;
 	}
 
-	public JavaDerivedType clone() {
+	public JavaTypeInstantiation clone() {
 		List<ParameterSubstitution<?>> args = clonedParameters();
-		return new JavaDerivedType(args,baseType());
+		return new JavaTypeInstantiation(args,baseType());
 	}
 
 	public String toString() {

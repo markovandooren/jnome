@@ -79,7 +79,7 @@ import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.CapturedType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaBasicTypeArgument;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaDerivedType;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeInstantiation;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaExtendsWildcard;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaIntersectionTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaPureWildcard;
@@ -647,7 +647,7 @@ public class Java7 extends ObjectOrientedLanguage {
 		}
 
 		public <P extends Parameter> TypeInstantiation createDerivedType(Class<P> kind, List<P> parameters, Type baseType) {
-			return new JavaDerivedType(kind, parameters, baseType);
+			return new JavaTypeInstantiation(kind, parameters, baseType);
 		}
 		
 		public TypeInstantiation createDerivedType(Type baseType, List<ActualTypeArgument> typeArguments) throws LookupException {

@@ -6,7 +6,7 @@ import org.aikodi.chameleon.oo.expression.NameExpression;
 import org.aikodi.chameleon.oo.type.Type;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaDerivedType;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeInstantiation;
 
 public class JavaNameExpression extends NameExpression {
 
@@ -27,8 +27,8 @@ public class JavaNameExpression extends NameExpression {
 	protected Type actualType() throws LookupException {
 		Type result = super.actualType();
 		if(nonInLeftHandSideOfAssignment()) {
-			if(result instanceof JavaDerivedType) {
-				result = ((JavaDerivedType) result).captureConversion();
+			if(result instanceof JavaTypeInstantiation) {
+				result = ((JavaTypeInstantiation) result).captureConversion();
 			}
 		}
 		return result;

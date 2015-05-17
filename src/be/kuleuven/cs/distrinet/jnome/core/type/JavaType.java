@@ -26,15 +26,15 @@ public interface JavaType extends Type {
     Type snd = captureConversion(other);
     Type baseType = superTypeJudge().get(snd);
     if(baseType != null) {
-      result = compatibleParameters(baseType, snd, new TypeFixer());
+      result = baseType.compatibleParameters(snd, new TypeFixer());
     }
     return result;
 	}
 	
 	 public static Type captureConversion(Type type) throws LookupException {
 	    Type result = type;
-	    if(result instanceof JavaDerivedType) {
-	      result = ((JavaDerivedType)result).captureConversion();
+	    if(result instanceof JavaTypeInstantiation) {
+	      result = ((JavaTypeInstantiation)result).captureConversion();
 	    }
 	    return result;
 	  }
@@ -43,10 +43,10 @@ public interface JavaType extends Type {
 //	    return CollectionOperations.forAll(type.parameters(TypeParameter.class), p -> p instanceof FormalTypeParameter);
 //	  }
 
-	 public static boolean compatibleParameters(Type first, Type second, TypeFixer trace) throws LookupException {
-	    return forAll(first.parameters(TypeParameter.class), second.parameters(TypeParameter.class), (f,s) -> f.compatibleWith(s, trace));
-	  }
-
+//	 public static boolean compatibleParameters(Type first, Type second, TypeFixer trace) throws LookupException {
+//	    return forAll(first.parameters(TypeParameter.class), second.parameters(TypeParameter.class), (f,s) -> f.compatibleWith(s, trace));
+//	  }
+//
 	 @Override
 	public default boolean upperBoundNotHigherThan(Type other,
 			TypeFixer trace) throws LookupException {

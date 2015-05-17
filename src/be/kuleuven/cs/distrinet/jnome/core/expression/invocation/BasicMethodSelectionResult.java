@@ -14,7 +14,7 @@ import org.aikodi.chameleon.util.Util;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.DirectJavaTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaDerivedType;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeInstantiation;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
@@ -103,7 +103,7 @@ public class BasicMethodSelectionResult implements MethodSelectionResult {
 		} else {
 			if(nbTypeParameters > 0) {
 				Type returnType = returnType(method);
-				if(returnType instanceof JavaDerivedType) {
+				if(returnType instanceof JavaTypeInstantiation) {
 					TypeReference oldDeclaredReturnTypeReference = result.returnTypeReference();
 					Type declaredReturnType = result.returnType();
 					// The capture conversion may refer to the old return type for the actual type arguments.
@@ -111,7 +111,7 @@ public class BasicMethodSelectionResult implements MethodSelectionResult {
 					// there we can just clone any arguments such that the original return type reference is no longer needed.
 					// FIXME No more substitutions can be done in the new return type reference as it is a direct one. Therefore
 					//       we do need that captured type reference.
-					result.setReturnTypeReference(new DirectJavaTypeReference(((JavaDerivedType)declaredReturnType).captureConversion()));
+					result.setReturnTypeReference(new DirectJavaTypeReference(((JavaTypeInstantiation)declaredReturnType).captureConversion()));
 					oldDeclaredReturnTypeReference.setUniParent(result);
 				}
 			}

@@ -19,7 +19,7 @@ import org.aikodi.chameleon.oo.type.Type;
  * 
  * @author Marko van Dooren
  */
-public class CapturedType extends JavaDerivedType {
+public class CapturedType extends JavaTypeInstantiation {
 
 	public CapturedType(ParameterSubstitution substitution, Type baseType) {
 		super(substitution, baseType);

@@ -571,9 +571,6 @@ public class Java7 extends ObjectOrientedLanguage {
 		}
 
 		public JavaTypeReference box(JavaTypeReference aRef, Namespace root) throws LookupException {
-			//SLOW SPEED this is horrible
-//			String fqn = aRef.getElement().getFullyQualifiedName();
-			
 			String newFqn = _boxMap.get(((CrossReferenceWithName)aRef).name());
 			if(newFqn == null) {
 				//throw new LookupException("Type "+fqn+" cannot be converted through boxing.");

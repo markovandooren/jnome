@@ -43,12 +43,12 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 		return false;
 	}
 
-	protected abstract MethodInvocation invocation();
+	protected abstract MethodInvocation<M> invocation();
 
 	public abstract boolean correctSignature(Signature signature) throws LookupException;
 
-	public List<? extends SelectionResult> selection(List<? extends Declaration> selectionCandidates) throws LookupException {
-		List<MethodSelectionResult> tmp = new ArrayList<MethodSelectionResult>();
+	public List<? extends SelectionResult<M>> selection(List<? extends Declaration> selectionCandidates) throws LookupException {
+		List<MethodSelectionResult<M>> tmp = new ArrayList<>();
 		if(! selectionCandidates.isEmpty()) {
 			int size = selectionCandidates.size();
 			List<M> candidates = new ArrayList<M>(size);
@@ -289,16 +289,16 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 		applyOrder((List)selected);
 	}
 
-	protected void applyOrder(List<MethodSelectionResult> tmp) throws LookupException {
+	protected void applyOrder(List<MethodSelectionResult<M>> tmp) throws LookupException {
 //		if(_order == null) {
 //			_order = new JavaMostSpecificMethodOrder<MethodSelectionResult>(invocation());
 //		}
 		int size = tmp.size();
 		int i=0;
 		outer: while(i< size) {
-			MethodSelectionResult e1 = tmp.get(i);
+			MethodSelectionResult<M> e1 = tmp.get(i);
 			for(int j=i+1; j < size; j++) {
-				MethodSelectionResult e2 = tmp.get(j);
+				MethodSelectionResult<M> e2 = tmp.get(j);
 				if(i != j) {
 					boolean firstSmaller = contains(e1,e2);
 					boolean secondSmaller = contains(e2,e1);

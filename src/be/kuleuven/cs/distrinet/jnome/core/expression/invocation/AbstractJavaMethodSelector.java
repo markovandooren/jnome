@@ -171,7 +171,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 	/**
 	 * JLS 15.12.2.2 Phase 1: Identify Matching Arity Methods Applicable by Subtyping
 	 */
-	private MethodSelectionResult matchingApplicableBySubtyping(M method, Java7 java) throws LookupException {
+	private MethodSelectionResult<M> matchingApplicableBySubtyping(M method, Java7 java) throws LookupException {
 		if(method.nbFormalParameters() == invocation().nbActualParameters()) {
 			TypeAssignmentSet actualTypeParameters = actualTypeParameters(method, false);
 			//SLOW We can probably cache the substituted type instead/as well.
@@ -215,7 +215,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 	}
 
 
-	private MethodSelectionResult matchingApplicableByConversion(M method, Java7 java) throws LookupException {
+	private MethodSelectionResult<M> matchingApplicableByConversion(M method, Java7 java) throws LookupException {
 		if(method.nbFormalParameters() == invocation().nbActualParameters()) {
 		TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true);
 		List<Type> formalParameterTypesInContext = JavaMethodInvocation.formalParameterTypesInContext(method,actualTypeParameters);

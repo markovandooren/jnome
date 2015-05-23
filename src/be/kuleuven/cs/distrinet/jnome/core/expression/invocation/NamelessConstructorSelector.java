@@ -7,10 +7,11 @@ import org.aikodi.chameleon.core.declaration.DeclarationContainer;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.lookup.SelectionResult;
 import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
 
 public class NamelessConstructorSelector extends AbstractConstructorSelector {
 	
-	public List<? extends SelectionResult> selection(List<? extends Declaration> selectionCandidates) throws LookupException {
+	public List<? extends SelectionResult<NormalMethod>> selection(List<? extends Declaration> selectionCandidates) throws LookupException {
 		return super.selection(withoutNonConstructors(selectionCandidates));
 	}
 	

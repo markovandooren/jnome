@@ -12,7 +12,7 @@ import org.aikodi.chameleon.oo.method.Method;
  * 
  * @author Marko van Dooren
  */
-public interface MethodSelectionResult extends SelectionResult {
+public interface MethodSelectionResult<M extends Method> extends SelectionResult<M> {
 	
 	/**
 	 * Return the method that was used during selection.
@@ -31,5 +31,10 @@ public interface MethodSelectionResult extends SelectionResult {
 	 */
 	public TypeAssignmentSet typeAssignment();
 	
+	/**
+	 * Check whether the selected method required an unchecked conversion in 
+	 * order to be selected.
+	 * @return
+	 */
 	public boolean requiredUncheckedConversion();
 }

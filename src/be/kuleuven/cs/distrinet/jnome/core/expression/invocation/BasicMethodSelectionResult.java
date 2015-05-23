@@ -19,9 +19,9 @@ import be.kuleuven.cs.distrinet.jnome.core.type.JavaType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
 
-public class BasicMethodSelectionResult implements MethodSelectionResult {
+public class BasicMethodSelectionResult<M extends Method> implements MethodSelectionResult<M> {
 
-	public BasicMethodSelectionResult(Method template, TypeAssignmentSet assignment,int phase, boolean requiredUncheckedConversion) {
+	public BasicMethodSelectionResult(M template, TypeAssignmentSet assignment,int phase, boolean requiredUncheckedConversion) {
 		_template = template;
 		_assignment = assignment;
 		_phase = phase;
@@ -47,7 +47,7 @@ public class BasicMethodSelectionResult implements MethodSelectionResult {
 	 * behaves as specified in the JLS. 
 	 */
 	@Override
-	public Declaration finalDeclaration() throws LookupException {
+	public M finalDeclaration() throws LookupException {
 		return instantiatedMethodTemplate(_template);
 	}
 	
@@ -58,10 +58,10 @@ public class BasicMethodSelectionResult implements MethodSelectionResult {
 		return new BasicMethodSelectionResult(method, assignment, _phase,_requiredUncheckedConversion);
 	}
 
-	private Method _template;
+	private M _template;
 	
 	@Override
-	public Method template() {
+	public M template() {
 		return _template;
 	}
 	
@@ -71,8 +71,8 @@ public class BasicMethodSelectionResult implements MethodSelectionResult {
 		return _assignment;
 	}
 	
-	protected Method instantiatedMethodTemplate(Method method) throws LookupException {
-		Method result=method;
+	protected M instantiatedMethodTemplate(Method method) throws LookupException {
+		M result=(M) method;
 		int nbTypeParameters = _assignment == null ? 0 : _assignment.nbAssignments();
 		boolean cloned = false;
 		if(nbTypeParameters > 0) {
@@ -123,9 +123,8 @@ public class BasicMethodSelectionResult implements MethodSelectionResult {
 		return method.returnType();
 	}
 
-	protected Method clonedMethod() {
-		Method result;
-		result = Util.clone(_template);
+	protected M clonedMethod() {
+		M result = Util.clone(_template);
 		result.setOrigin(_template);
 		result.setUniParent(_template.parent());
 		return result;

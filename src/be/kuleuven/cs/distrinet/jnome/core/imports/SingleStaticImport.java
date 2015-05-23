@@ -74,7 +74,7 @@ public class SingleStaticImport extends Import {
 //			}
 			
 			@Override
-			protected void applyOrder(List<SelectionResult> tmp) throws LookupException {
+			protected void applyOrder(List<SelectionResult<Member>> tmp) throws LookupException {
 				
 			}
 

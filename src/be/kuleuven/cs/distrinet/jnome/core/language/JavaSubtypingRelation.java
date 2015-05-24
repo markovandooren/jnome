@@ -79,6 +79,9 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 	}
 
 	private Type leastUpperBound(List<? extends TypeReference> Us, Binder root) throws LookupException {
+		if(Us.size() == 1) {
+			return Us.get(0).getElement();
+		}
 		List<Type> MEC = new ArrayList<Type>(MEC((List<? extends JavaTypeReference>) Us));
 		List<Type> candidates = new ArrayList<Type>();
 		for(Type W:MEC) {

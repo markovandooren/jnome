@@ -152,14 +152,31 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		// Take intersection
 	}
 
-	private Set<Type> EST(JavaTypeReference U) throws LookupException {
-		Set<Type> STU = ST(U);
-		Set<Type> result = new HashSet<Type>();
-		for(Type type:STU) {
-			Type erasure = java().erasure(type);
-			result.add(erasure);
-		}
-		return result;
+	/**
+	 * <p>Compute the set of erased super type of the type referenced by the given type
+	 * reference.</p>
+	 * 
+	 * <p>The set of erased super types of a type U is the set of types |W| where
+	 * W is in {@link #ST(JavaTypeReference)} of U and |W| is the {@link JavaType#erasure()}
+	 * of W.</p>
+	 * 
+	 * @param U A type reference that refers to the type of which the set of erased
+	 *          super types is requested. The type reference cannot be null. 
+	 * @return
+	 * @throws LookupException
+	 */
+	protected Set<Type> EST(JavaTypeReference U) throws LookupException {
+//		Set<Type> STU = ST(U);
+//		Set<Type> result = new HashSet<Type>();
+//		for(Type type:STU) {
+//			Type erasure = java().erasure(type);
+//			result.add(erasure);
+//		}
+//		return result;
+
+		// TODO I think that the set of erased super types of a type T is the set of super
+		//      types of the erasure of T.
+		return ((JavaType)U.getElement()).erasure().getSelfAndAllSuperTypesView();
 	}
 
 	private Type intersection(List<Type> candidates)

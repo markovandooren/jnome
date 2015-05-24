@@ -78,6 +78,30 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 
 	}
 
+	/**
+	 * <p>
+	 * Compute the least upper bound according to Section 4.10.4 of the Java
+	 * Language Specification version 8. The given binder is used.
+	 * </p>
+	 * 
+	 * <ol>
+	 * <li>If the list contains only a single type reference, then the result is
+	 * the type referenced by that type reference.</li>
+	 * <li>Otherwise
+	 * <ul>
+	 * <li>Let {@link #ST(JavaTypeReference)} of <code>Us.get(i)</code> be the set
+	 * of super types of <code>Us.get(i)</code>.</li>
+	 * <li>Let {@link #EST(JavaTypeReference)} of <code>Us.get(i)</code> be the
+	 * set of erased super types of <code>Us.get(i)</code></li>
+	 * </ul>
+	 * </li>
+	 * </ol>
+	 * 
+	 * @param Us
+	 * @param root
+	 * @return
+	 * @throws LookupException
+	 */
 	private Type leastUpperBound(List<? extends TypeReference> Us, Binder root) throws LookupException {
 		if(Us.size() == 1) {
 			return Us.get(0).getElement();

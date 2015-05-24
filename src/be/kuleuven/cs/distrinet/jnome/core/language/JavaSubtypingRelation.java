@@ -114,6 +114,12 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		return intersection(candidates);
 	}
 
+ /**
+  * <p>Compute the least upper bound according to Section 4.10.4 of the Java Language Specification
+  * version 8.</p> 
+  * <p>The names of the parameters in this class are chosen to match the names
+  * used in the Java Language Specification.</p>
+  */
 
 	@Override
 	public Type leastUpperBound(List<? extends TypeReference> Us) throws LookupException {

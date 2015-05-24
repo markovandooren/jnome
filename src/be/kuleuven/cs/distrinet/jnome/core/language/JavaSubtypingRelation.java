@@ -107,7 +107,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 			return Us.get(0).getElement();
 		}
 		List<Type> MEC = new ArrayList<Type>(MEC((List<? extends JavaTypeReference>) Us));
-		List<Type> candidates = new ArrayList<Type>();
+		List<Type> candidates = new ArrayList<Type>(MEC.size());
 		for(Type W:MEC) {
 			candidates.add(Candidate(W,(List<? extends JavaTypeReference>) Us,root));
 		}

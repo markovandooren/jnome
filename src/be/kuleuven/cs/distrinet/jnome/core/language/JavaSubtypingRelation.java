@@ -36,6 +36,7 @@ import org.aikodi.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaIntersectionTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.NullType;
 import be.kuleuven.cs.distrinet.jnome.core.type.PureWildcard;
@@ -120,36 +121,32 @@ public class JavaSubtypingRelation extends SubtypeRelation {
   * <p>The names of the parameters in this class are chosen to match the names
   * used in the Java Language Specification.</p>
   */
-
 	@Override
 	public Type leastUpperBound(List<? extends TypeReference> Us) throws LookupException {
 		return leastUpperBound(Us, null);
 	}
 
 	private Set<Type> MEC(List<? extends JavaTypeReference> Us) throws LookupException {
-		final Set<Type> EC = EC(Us);
+		Set<Type> EC = EC(Us);
 		Predicate<Type, LookupException> predicate = first -> ! exists(EC, second -> (! first.sameAs(second)) && (second.subTypeOf(first)));
     CollectionOperations.filter(EC, predicate);
 		return EC;
 	}
 
 	private Set<Type> EC(List<? extends JavaTypeReference> Us) throws LookupException {
-		List<Set<Type>> ESTs = new ArrayList<Set<Type>>();
-		for(JavaTypeReference URef: Us) {
-			ESTs.add(EST(URef));
-		}
-		Set<Type> result;
-		int size = ESTs.size();
-		if(size > 0) {
-			result = ESTs.get(0);
+		Set<Type> result = EST(Us.get(0));
+		// At this point, usually is immutable.
+		int size = Us.size();
+		if(size > 1) {
+			// only copy if we have to
+			result = new HashSet<>(result);
 			for(int i = 1; i< size; i++) {
-				result.retainAll(ESTs.get(i));
+				// no need to copy the usually immutable sets since we use them only
+				// to remove values from result.
+				result.retainAll(EST(Us.get(i)));
 			}
-		} else {
-			result = new HashSet<Type>();
 		}
 		return result;
-		// Take intersection
 	}
 
 	/**
@@ -192,52 +189,54 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 
 
 
-	private Set<Type> ST(JavaTypeReference U) throws LookupException {
+	protected Set<Type> ST(JavaTypeReference U) throws LookupException {
 		return U.getElement().getSelfAndAllSuperTypesView();
 	}
 
 	private Type CandidateInvocation(Type G, List<? extends JavaTypeReference> Us, Binder root) throws LookupException {
-		return lci(Inv(G,Us),root);
+		return lci(relevant(G,Us),root);
 	}
 
 	private Type Candidate(Type W, List<? extends JavaTypeReference> Us, Binder root) throws LookupException {
 		if(W.parameters(TypeParameter.class).size() > 0) {
+			//Relevant
 			return CandidateInvocation(W, Us,root);
 		} else {
 			return W;
 		}
 	}
 
-	private Set<Type> Inv(Type G, List<? extends JavaTypeReference> Us) throws LookupException {
-		Set<Type> result = new HashSet<Type>();
+	private List<Type> relevant(Type G, List<? extends JavaTypeReference> Us) throws LookupException {
+		List<Type> result = new ArrayList<Type>();
 		for(JavaTypeReference U: Us) {
-			result.addAll(Inv(G, U));
+			result.add(relevant(G, U));
 		}
 		return result;
 	}
 
-	private Set<Type> Inv(Type G, JavaTypeReference U) throws LookupException {
-		Type base = G.baseType();
-		Set<Type> superTypes = ST(U);
-		//FIXME: Because we use a set, bugs may seem to disappear when debugging.
-		//       Do we have to use a set anyway? The operations applied to it
-		//       further on should work exactly the same whether there are duplicates or not
-		Set<Type> result = new HashSet<Type>();
-		for(Type superType: superTypes) {
-			if(superType.baseType().sameAs(base)) {
-				while(superType instanceof InstantiatedParameterType) {
-					superType = ((InstantiatedParameterType) superType).aliasedType();
-				}
-				result.add(superType);
-			}
-		}
-		return result; 
+	private Type relevant(Type G, JavaTypeReference U) throws LookupException {
+		return U.getElement().superTypeJudge().get(G);
+//		Type base = G.baseType();
+//		Set<Type> superTypes = ST(U);
+//		//FIXME: Because we use a set, bugs may seem to disappear when debugging.
+//		//       Do we have to use a set anyway? The operations applied to it
+//		//       further on should work exactly the same whether there are duplicates or not
+//		Set<Type> result = new HashSet<Type>();
+//		for(Type superType: superTypes) {
+//			if(superType.baseType().sameAs(base)) {
+//				while(superType instanceof InstantiatedParameterType) {
+//					superType = ((InstantiatedParameterType) superType).aliasedType();
+//				}
+//				result.add(superType);
+//			}
+//		}
+//		return result; 
 	}
 
-	private Type lci(Set<Type> types, Binder root) throws LookupException {
-		List<Type> list = new ArrayList<Type>(types);
-		return lci(list,root);
-	}
+//	private Type lci(Set<Type> types, Binder root) throws LookupException {
+//		List<Type> list = new ArrayList<Type>(types);
+//		return lci(list,root);
+//	}
 
 	private Type lci(List<Type> types, Binder root) throws LookupException {
 		int size = types.size();

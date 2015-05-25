@@ -52,10 +52,10 @@ public class BasicMethodSelectionResult<M extends Method> implements MethodSelec
 	}
 	
 	@Override
-	public SelectionResult updatedTo(Declaration declaration) {
+	public SelectionResult<M> updatedTo(Declaration declaration) {
 		Method method = (Method) declaration;
 		TypeAssignmentSet assignment = _assignment == null ? null : _assignment.updatedTo(method.typeParameters());
-		return new BasicMethodSelectionResult(method, assignment, _phase,_requiredUncheckedConversion);
+		return new BasicMethodSelectionResult<M>((M) method, assignment, _phase,_requiredUncheckedConversion);
 	}
 
 	private M _template;

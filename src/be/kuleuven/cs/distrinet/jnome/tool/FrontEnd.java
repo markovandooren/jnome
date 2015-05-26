@@ -12,6 +12,9 @@ import be.kuleuven.cs.distrinet.jnome.tool.syntax.SyntaxAnalysisTool;
 
 public class FrontEnd {
 
+  /**
+   * @param args The first argument determines the analysis that is performed.
+   */
 	public static void main(String[] args) {
 		new FrontEnd().process(args);
 	}
@@ -29,6 +32,7 @@ public class FrontEnd {
 	public void process(String[] args) {
 		if(args.length == 0) {
 			System.out.println("Please provide the name of the tool and its arguments.");
+			_tools.keySet().forEach(s -> System.out.println(s));
 		} else {
 			//Arrays.asList is immutable.
 			List<String> arguments = new ArrayList(Arrays.asList(args));

@@ -129,10 +129,16 @@ public class ASMClassParser {
       _children.put(qn,child);
     } else {
       ASMClassParser c = _children.get(Util.getFirstPart(qn));
-      c.add(child, next);
+      if(c != null) {
+        c.add(child, next);
+      }
     }
   }
 
+  /**
+   * A map that keeps track of the names of the inner classes, and the
+   * files that they read.
+   */
   private Map<String,ASMClassParser> _children;
 
   private ZipFile _jarFile;

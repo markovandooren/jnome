@@ -36,6 +36,7 @@ import org.aikodi.chameleon.util.Util;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaIntersectionTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.NullType;
 import be.kuleuven.cs.distrinet.jnome.core.type.PureWildcard;
@@ -78,55 +79,103 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 
 	}
 
+	/**
+	 * <p>
+	 * Compute the least upper bound according to Section 4.10.4 of the Java
+	 * Language Specification version 8. The given binder is used.
+	 * </p>
+	 * 
+	 * <ol>
+	 * <li>If the list contains only a single type reference, then the result is
+	 * the type referenced by that type reference.</li>
+	 * <li>Otherwise
+	 * <ul>
+	 * <li>Let {@link #ST(JavaTypeReference)} of <code>Us.get(i)</code> be the set
+	 * of super types of <code>Us.get(i)</code>.</li>
+	 * <li>Let {@link #EST(JavaTypeReference)} of <code>Us.get(i)</code> be the
+	 * set of erased super types of <code>Us.get(i)</code></li>
+	 * </ul>
+	 * </li>
+	 * </ol>
+	 * 
+	 * @param Us
+	 * @param root
+	 * @return
+	 * @throws LookupException
+	 */
 	private Type leastUpperBound(List<? extends TypeReference> Us, Binder root) throws LookupException {
+		if(Us.size() == 1) {
+			return Us.get(0).getElement();
+		}
 		List<Type> MEC = new ArrayList<Type>(MEC((List<? extends JavaTypeReference>) Us));
-		List<Type> candidates = new ArrayList<Type>();
-		for(Type W:MEC) {
-			candidates.add(Candidate(W,(List<? extends JavaTypeReference>) Us,root));
+		List<Type> candidates = new ArrayList<Type>(MEC.size());
+		int size = MEC.size();
+		for(int i=0; i<size;i++) {
+			Type W = MEC.get(i);
+			candidates.add(Best(W,(List<? extends JavaTypeReference>) Us,root));
 		}
 		return intersection(candidates);
 	}
 
-
+ /**
+  * <p>Compute the least upper bound according to Section 4.10.4 of the Java Language Specification
+  * version 8.</p> 
+  * <p>The names of the parameters in this class are chosen to match the names
+  * used in the Java Language Specification.</p>
+  */
 	@Override
 	public Type leastUpperBound(List<? extends TypeReference> Us) throws LookupException {
 		return leastUpperBound(Us, null);
 	}
 
 	private Set<Type> MEC(List<? extends JavaTypeReference> Us) throws LookupException {
-		final Set<Type> EC = EC(Us);
+		Set<Type> EC = EC(Us);
 		Predicate<Type, LookupException> predicate = first -> ! exists(EC, second -> (! first.sameAs(second)) && (second.subTypeOf(first)));
     CollectionOperations.filter(EC, predicate);
 		return EC;
 	}
 
 	private Set<Type> EC(List<? extends JavaTypeReference> Us) throws LookupException {
-		List<Set<Type>> ESTs = new ArrayList<Set<Type>>();
-		for(JavaTypeReference URef: Us) {
-			ESTs.add(EST(URef));
-		}
-		Set<Type> result;
-		int size = ESTs.size();
-		if(size > 0) {
-			result = ESTs.get(0);
+		Set<Type> result = EST(Us.get(0));
+		// At this point, usually is immutable.
+		int size = Us.size();
+		if(size > 1) {
+			// only copy if we have to
+			result = new HashSet<>(result);
 			for(int i = 1; i< size; i++) {
-				result.retainAll(ESTs.get(i));
+				// no need to copy the usually immutable sets since we use them only
+				// to remove values from result.
+				result.retainAll(EST(Us.get(i)));
 			}
-		} else {
-			result = new HashSet<Type>();
 		}
 		return result;
-		// Take intersection
 	}
 
-	private Set<Type> EST(JavaTypeReference U) throws LookupException {
-		Set<Type> STU = ST(U);
-		Set<Type> result = new HashSet<Type>();
-		for(Type type:STU) {
-			Type erasure = java().erasure(type);
-			result.add(erasure);
-		}
-		return result;
+	/**
+	 * <p>Compute the set of erased super type of the type referenced by the given type
+	 * reference.</p>
+	 * 
+	 * <p>The set of erased super types of a type U is the set of types |W| where
+	 * W is in {@link #ST(JavaTypeReference)} of U and |W| is the {@link JavaType#erasure()}
+	 * of W.</p>
+	 * 
+	 * @param U A type reference that refers to the type of which the set of erased
+	 *          super types is requested. The type reference cannot be null. 
+	 * @return
+	 * @throws LookupException
+	 */
+	protected Set<Type> EST(JavaTypeReference U) throws LookupException {
+//		Set<Type> STU = ST(U);
+//		Set<Type> result = new HashSet<Type>();
+//		for(Type type:STU) {
+//			Type erasure = java().erasure(type);
+//			result.add(erasure);
+//		}
+//		return result;
+
+		// TODO I think that the set of erased super types of a type T is the set of super
+		//      types of the erasure of T.
+		return ((JavaType)U.getElement()).erasure().getSelfAndAllSuperTypesView();
 	}
 
 	private Type intersection(List<Type> candidates)
@@ -142,54 +191,56 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 
 
 
-	private Set<Type> ST(JavaTypeReference U) throws LookupException {
+	protected Set<Type> ST(JavaTypeReference U) throws LookupException {
 		return U.getElement().getSelfAndAllSuperTypesView();
 	}
 
-	private Type CandidateInvocation(Type G, List<? extends JavaTypeReference> Us, Binder root) throws LookupException {
-		return lci(Inv(G,Us),root);
+	private Type Candidate(Type G, List<? extends JavaTypeReference> Us, Binder root) throws LookupException {
+		return lcp(relevant(G,Us),root);
 	}
 
-	private Type Candidate(Type W, List<? extends JavaTypeReference> Us, Binder root) throws LookupException {
+	private Type Best(Type W, List<? extends JavaTypeReference> Us, Binder root) throws LookupException {
 		if(W.parameters(TypeParameter.class).size() > 0) {
-			return CandidateInvocation(W, Us,root);
+			//Relevant
+			return Candidate(W, Us,root);
 		} else {
 			return W;
 		}
 	}
 
-	private Set<Type> Inv(Type G, List<? extends JavaTypeReference> Us) throws LookupException {
-		Set<Type> result = new HashSet<Type>();
+	private List<Type> relevant(Type G, List<? extends JavaTypeReference> Us) throws LookupException {
+		List<Type> result = new ArrayList<Type>();
 		for(JavaTypeReference U: Us) {
-			result.addAll(Inv(G, U));
+			result.add(relevant(G, U));
 		}
 		return result;
 	}
 
-	private Set<Type> Inv(Type G, JavaTypeReference U) throws LookupException {
-		Type base = G.baseType();
-		Set<Type> superTypes = ST(U);
-		//FIXME: Because we use a set, bugs may seem to disappear when debugging.
-		//       Do we have to use a set anyway? The operations applied to it
-		//       further on should work exactly the same whether there are duplicates or not
-		Set<Type> result = new HashSet<Type>();
-		for(Type superType: superTypes) {
-			if(superType.baseType().sameAs(base)) {
-				while(superType instanceof InstantiatedParameterType) {
-					superType = ((InstantiatedParameterType) superType).aliasedType();
-				}
-				result.add(superType);
-			}
-		}
-		return result; 
+	private Type relevant(Type G, JavaTypeReference U) throws LookupException {
+		return U.getElement().superTypeJudge().get(G);
+//		Type base = G.baseType();
+//		Set<Type> superTypes = ST(U);
+//		//FIXME: Because we use a set, bugs may seem to disappear when debugging.
+//		//       Do we have to use a set anyway? The operations applied to it
+//		//       further on should work exactly the same whether there are duplicates or not
+//		Set<Type> result = new HashSet<Type>();
+//		for(Type superType: superTypes) {
+//			if(superType.baseType().sameAs(base)) {
+//				while(superType instanceof InstantiatedParameterType) {
+//					superType = ((InstantiatedParameterType) superType).aliasedType();
+//				}
+//				result.add(superType);
+//			}
+//		}
+//		return result; 
 	}
 
-	private Type lci(Set<Type> types, Binder root) throws LookupException {
-		List<Type> list = new ArrayList<Type>(types);
-		return lci(list,root);
-	}
+//	private Type lci(Set<Type> types, Binder root) throws LookupException {
+//		List<Type> list = new ArrayList<Type>(types);
+//		return lci(list,root);
+//	}
 
-	private Type lci(List<Type> types, Binder root) throws LookupException {
+	private Type lcp(List<Type> types, Binder root) throws LookupException {
 		int size = types.size();
 		if(size > 0) {
 			Type lci = types.get(0);
@@ -252,8 +303,10 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 				Type U = ((BasicTypeArgument)first).type();
 				Type V = ((BasicTypeArgument)second).type();
 				if(U.sameAs(V)) {
+					// lcta(U,V) = U if U = V
 					result = Util.clone(first);
 				} else {
+					// otherwise ? extends lub(U,V)
 					List<JavaTypeReference> list = new ArrayList<JavaTypeReference>();
 					list.add((JavaTypeReference) ((BasicTypeArgument)first).typeReference());
 					list.add((JavaTypeReference) ((BasicTypeArgument)second).typeReference());
@@ -262,7 +315,6 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 			} else if(first instanceof ExtendsWildcard || second instanceof ExtendsWildcard) {
 				BasicTypeArgument basic = (BasicTypeArgument) (first instanceof BasicTypeArgument? first : second);
 				ExtendsWildcard ext = (ExtendsWildcard)(basic == first ? second : first);
-				//				Type leastUpperBound = leastUpperBound(typeReferenceList(basic,ext));
 				result = new Binder(typeReferenceList(basic,ext),root).argument();
 			} else if(first instanceof SuperWildcard || second instanceof SuperWildcard) {
 				BasicTypeArgument basic = (BasicTypeArgument) (first instanceof BasicTypeArgument? first : second);
@@ -276,14 +328,10 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 				List<JavaTypeReference> list = new ArrayList<JavaTypeReference>();
 				list.add((JavaTypeReference) ((ExtendsWildcard)first).typeReference());
 				list.add((JavaTypeReference) ((ExtendsWildcard)second).typeReference());
-				//				Java java = first.language(Java.class);
-				//				Type leastUpperBound = leastUpperBound(list);
-				//				result = java.createExtendsWildcard(java.reference(leastUpperBound));
 				result = new Binder(list,root).argument();
 
 			} else if(first instanceof SuperWildcard || second instanceof SuperWildcard) {
 				ExtendsWildcard ext = (ExtendsWildcard) (first instanceof ExtendsWildcard? first : second);
-//				SuperWildcard sup = (SuperWildcard)(ext == first ? second : first);
 				Type U = ((BasicTypeArgument)first).type();
 				Type V = ((BasicTypeArgument)second).type();
 				if(U.sameAs(V)) {

@@ -27,6 +27,11 @@ import com.lexicalscope.jewel.cli.Option;
 
 public abstract class AnalysisTool extends Tool {
 
+  /**
+   * Create a new analysis tool with the given name.
+   * 
+   * @param name The name of the analysis.
+   */
 	protected AnalysisTool(String name) {
 		super(name);
 	}

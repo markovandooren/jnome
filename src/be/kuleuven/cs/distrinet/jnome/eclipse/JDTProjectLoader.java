@@ -134,13 +134,6 @@ public class JDTProjectLoader extends LanguagePluginImpl implements EclipseProje
 				IClasspathContainer classpathContainer = JavaCore.getClasspathContainer(path, nature);
 				CompositeDocumentScanner composite = new CompositeDocumentScanner(classpathContainer.getDescription());
 				addToContainer(container, composite);
-//				if(container instanceof CompositeDocumentLoader) {
-//					((CompositeDocumentLoader) container).addLoader(composite);
-//				} else if (container instanceof View){
-//					((View) container).addBinary(composite);
-//				} else {
-//					return;
-//				}
 				addLoaders(composite, jdtProject, classpathContainer.getClasspathEntries(),true,false);
 				break;
 			case IClasspathEntry.CPE_LIBRARY:
@@ -181,18 +174,6 @@ public class JDTProjectLoader extends LanguagePluginImpl implements EclipseProje
 				break;
 			}
 		}
-		
-		
-//		IClasspathEntry junit = entries[2];
-//		IPath path = junit.getPath();
-//		IClasspathEntry referencingEntry = junit.getReferencingEntry();
-//		IPath outputLocation = junit.getOutputLocation();
-//		IClasspathContainer classpathContainer = JavaCore.getClasspathContainer(path, nature);
-//		IClasspathEntry[] classpathEntries = classpathContainer.getClasspathEntries();
-//		IPath path2 = classpathEntries[0].getPath();
-//		IPath path3 = classpathEntries[1].getPath();
-//		System.out.println("debug");
-
 	}
 
 	private void addToContainer(DocumentScannerContainer container, DocumentScanner loader) {

@@ -997,8 +997,9 @@ classOrInterfaceType returns [JavaTypeReference element]
 	           // so we se the target to the current type reference.
              target = (CrossReferenceWithTarget)retval.element;
 	           stop = argsx.stop;
-	          })? {setLocation(retval.element,name.start,stop);}
-	        )*
+	          })? 
+	        )* ('&' nttt=classOrInterfaceType { retval.element = (JavaTypeReference)retval.element.intersection(nttt.element); stop=nttt.stop;})?
+	        {setLocation(retval.element,name.start,stop);}
 	;
 
 primitiveType returns [JavaTypeReference element]
@@ -1797,35 +1798,37 @@ Token stop = null;
 CrossReferenceTarget scopeTarget = null;
 }
 @after {
-if(! retval.element.descendants().contains(scopeTarget)) {
-  scopeTarget.removeAllMetadata();
-  for(Element e: scopeTarget.descendants()) {
-    e.removeAllMetadata();
-  }
-}
+//if(! retval.element.descendants().contains(scopeTarget)) {
+//  scopeTarget.removeAllMetadata();
+//  for(Element e: scopeTarget.descendants()) {
+//    e.removeAllMetadata();
+//  }
+//}
 }
 	:	id=identifierRule
 	           {$TargetScope::target = expressionFactory().createNamedTarget($id.text);
 	            scopeTarget = $TargetScope::target;
 	            $TargetScope::start=id.start;
 	            stop=id.start;
-	            setLocation($TargetScope::target,$TargetScope::start,stop);
+	            //setLocation($TargetScope::target,$TargetScope::start,stop);
 	            }
 	  ('.' idx=identifierRule
 	       {$TargetScope::target = expressionFactory().createNamedTarget($idx.text,$TargetScope::target);
 	        scopeTarget = $TargetScope::target;
 	        stop=idx.start;
-	        setLocation($TargetScope::target, $TargetScope::start, idx.start);
+	        //setLocation($TargetScope::target, $TargetScope::start, idx.start);
 	       }
 	  )*
 	{retval.element = expressionFactory().createNameExpression(((NamedTarget)$TargetScope::target).name(),cloneTargetOfTarget(((NamedTarget)$TargetScope::target)));
-	 setLocation(retval.element, $TargetScope::start, stop);
+	 //setLocation(retval.element, $TargetScope::start, stop);
 	 //The variable reference is only returned if none of the following subrules match.
 	}
 (       ('[' ']')+ '.' 'class'
     |
         arr=arrayAccessSuffixRubbish {retval.element = arr.element;}
-    |   arg=argumentsSuffixRubbish {retval.element.removeAllMetadata(); retval.element = arg.element;} // REMOVE VARIABLE REFERENCE POSITION!
+    |   arg=argumentsSuffixRubbish {
+       //retval.element.removeAllMetadata(); 
+       retval.element = arg.element;} // REMOVE VARIABLE REFERENCE POSITION!
     |   '.' clkw='class'
          {retval.element.removeAllMetadata();
          retval.element = new ClassLiteral(createTypeReference((NamedTarget)$TargetScope::target));
@@ -1833,13 +1836,14 @@ if(! retval.element.descendants().contains(scopeTarget)) {
          }
     |   '.' gen=explicitGenericInvocation {retval.element.removeAllMetadata(); retval.element = gen.element;} // REMOVE VARIABLE REFERENCE POSITION!
     |   '.' thiskw='this'
-        {retval.element.removeAllMetadata();
+        {
+          //retval.element.removeAllMetadata();
           retval.element = new ThisLiteral(createTypeReference((NamedTarget)$TargetScope::target));
           setLocation(retval.element, $TargetScope::start, thiskw);
         }
     |   '.' supkw='super'
             supsuf=superSuffix {
-               retval.element.removeAllMetadata();
+    //           retval.element.removeAllMetadata();
                CrossReferenceTarget tar = new SuperTarget($TargetScope::target);
                setKeyword(tar,supkw);
                setLocation(tar,$TargetScope::start,supkw);

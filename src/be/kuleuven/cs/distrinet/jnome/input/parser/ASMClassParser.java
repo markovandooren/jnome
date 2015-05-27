@@ -591,7 +591,26 @@ public class ASMClassParser {
     public Java7 language() {
       return _language;
     }
-
+    
+    /**
+     * For some reason, inner classes are presented via a different method.
+     * For now, we simply discard the existing type reference since
+     * for the following code:
+     * <code>
+     * class A extends B {
+     *   class C extends X&lt;C&gt;
+     * }
+     * </code> 
+     * 
+     * the super class of C is presented as B.X&lt;C&gt;.
+     * {@inheritDoc}
+     */
+    @Override
+    public void visitInnerClassType(String name) {
+      _tref = toRef(name,_language);
+      connect(_tref);
+    }
+    
     private void initPrimitiveMap() {
       _primitiveMap = new HashMap<Character, String>();
       _primitiveMap.put('C', "char");

@@ -30,12 +30,14 @@ public class JavaDependencyAnalyzer extends DependencyAnalyzer<Type> {
 
 	public JavaDependencyAnalyzer(Project project, 
 			                      UniversalPredicate<Type,Nothing> elementPredicate, 
-			                      UniversalPredicate<? super CrossReference<?>,Nothing> crossReferencePredicate) {
+			                      UniversalPredicate<? super CrossReference<?>,Nothing> crossReferencePredicate,
+			                      UniversalPredicate<Type,Nothing> declarationPredicate) {
 		super(project);
 		Contracts.notNull(elementPredicate, "The declaration predicate cannot be null");
 		Contracts.notNull(crossReferencePredicate, "The cross reference predicate cannot be null");
 		_elementPredicate = elementPredicate;
 		_crossReferencePredicate = crossReferencePredicate;
+		_declarationPredicate = declarationPredicate;
 	}
 	
 	@Override
@@ -73,7 +75,10 @@ public class JavaDependencyAnalyzer extends DependencyAnalyzer<Type> {
 			@Override
 			public String getVertexName(Element arg0) {
 				if(arg0 instanceof Type) {
-					return ((Type)arg0).getFullyQualifiedName().replace('.', '_');
+					String result = ((Type)arg0).getFullyQualifiedName().replace('.', '_');
+          result = result.replace(',', '_');
+					result = result.replace(' ', '_');
+					return result;
 				} else {
 					throw new IllegalArgumentException();
 				}
@@ -82,9 +87,11 @@ public class JavaDependencyAnalyzer extends DependencyAnalyzer<Type> {
 
 			@Override
 			public String getVertexName(Element arg0) {
-//				return arg0.getFullyQualifiedName().replace('.', '_');
 				if(arg0 instanceof Type) {
-					return ((Type)arg0).name().replace('.', '_');
+					String result = ((Type)arg0).name().replace('.', '_');
+          result = result.replace(',', '_');
+          result = result.replace(' ', '_');
+          return result;
 				} else {
 					throw new IllegalArgumentException();
 				}
@@ -132,6 +139,8 @@ public class JavaDependencyAnalyzer extends DependencyAnalyzer<Type> {
 
 			@Override
 			public void addEdge(Element first, Element second) {
+			  addVertex(first);
+        addVertex(second);
 				graph.addEdge(first, second);
 			}
 		};

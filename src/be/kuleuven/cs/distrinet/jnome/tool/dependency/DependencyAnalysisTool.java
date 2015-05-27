@@ -179,7 +179,7 @@ public class DependencyAnalysisTool extends AnalysisTool {
 
 	
 	protected UniversalPredicate<Type,Nothing> hierarchyPredicate(AnalysisOptions options, ObjectOrientedView view) throws LookupException {
-		UniversalPredicate<Type,Nothing> filter = new SourceType();
+		UniversalPredicate<Type,Nothing> filter = SOURCE_TYPE;
 		List<String> ignored = ignoredHierarchies((DependencyOptions) options);
 		for(String fqn: ignored) {
 				Type type = view.findType(fqn);
@@ -206,18 +206,7 @@ public class DependencyAnalysisTool extends AnalysisTool {
 		}
 	}
 
-	protected static class SourceType extends UniversalPredicate<Type,Nothing> {
-
-		public SourceType() {
-			super(Type.class);
-		}
-
-		@Override
-		public boolean uncheckedEval(Type type) {
-			return type.view().isSource(type);
-		}
-		
-	}
+	public final static UniversalPredicate<Type,Nothing> SOURCE_TYPE = UniversalPredicate.of(Type.class, t -> t.view().isSource(t));
 	
 	protected List<String> ignoredAnnotationTypes(DependencyOptions options) {
 		List<String> result = new ArrayList<String>();

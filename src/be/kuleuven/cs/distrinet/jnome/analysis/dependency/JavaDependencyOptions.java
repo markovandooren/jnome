@@ -97,19 +97,24 @@ public class JavaDependencyOptions extends DependencyOptions {
 		UniversalPredicate crossReferencePredicate = _dependencies.crossReferencePredicate();
 		UniversalPredicate targetPredicate = _target.predicate();
 		UniversalPredicate dependencyPredicate = _dependencies.predicate();
-		HistoryFilter<Element, Declaration> historyFilter = _dependencies.historyFilter();
+		HistoryFilter<Declaration, Declaration> historyFilter = _dependencies.historyFilter();
 		TristateTreePruner<Object,Element> generator = new LoaderSelectionPredicateGenerator(new NamespaceSelectionPredicateGenerator(null));
 		TreePredicate<? super Element, Nothing> source = generator.create(_source._locationSelector.root(), _source._locationSelector.checked(), _source._locationSelector.grayed());
 		TreePredicate<? super Element, Nothing> targetLocation = generator.create(_target._locationSelector.root(), _target._locationSelector.checked(), _target._locationSelector.grayed());
-		DependencyAnalysis<Element, Declaration> dependencyAnalysis = new DependencyAnalysis<Element,Declaration>(
-				Declaration.class,
-				sourcePredicate.and(source), 
+		Class<Declaration> class1 = Declaration.class;
+    UniversalPredicate and = sourcePredicate.and(source);
+    UniversalPredicate and2 = targetPredicate.and(targetLocation);
+    UniversalPredicate dependencyPredicate2 = dependencyPredicate;
+    HistoryFilter<Declaration, Declaration> historyFilter2 = historyFilter;
+    DependencyAnalysis<Declaration, Declaration> dependencyAnalysis = new DependencyAnalysis<Declaration,Declaration>(
+				class1,
+				and, 
 				crossReferencePredicate,
-				Declaration.class,
+				class1,
 				mapper(), 
-				targetPredicate.and(targetLocation), 
-				dependencyPredicate,
-				historyFilter);
+				and2, 
+				dependencyPredicate2,
+				historyFilter2);
 		TreeStructure<Element> logicalStructure = _root.logical();
 		PrunedTreeStructure<Element> sourceStructure = new PrunedTreeStructure(logicalStructure, source);
 		TopDown<Element, Nothing> topDown = new TopDown<>(dependencyAnalysis);
@@ -143,7 +148,6 @@ public class JavaDependencyOptions extends DependencyOptions {
 		public TargetOptionGroup() {
 			super("Target");
 			addPredicateSelector(declarationTypeSelector());
-//			addPredicateSelector(namespaceSelector());
 			_locationSelector = loaderSelector();
 			add(_locationSelector);
 			addPredicateSelector(noExceptions());
@@ -157,7 +161,6 @@ public class JavaDependencyOptions extends DependencyOptions {
 			super("Dependency");
 			addPredicateSelector(noDescendants());
 			addPredicateSelector(noAncestors());
-//			addCrossReferenceSelector(new CheckboxSelector<>(new NoSupertypeReferences(), "Ignore Subtype Relations",true));
 			addPredicateSelector(noSuperTypes());
 			addHistoryFilterSelector(new CheckboxHistoryFilterSelector("Prune redundant dependencies on super classes", true, new RedundantInheritedDependencyFilter()));
 		}
@@ -176,7 +179,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 			_historyFilters.add(selector);
 		}
 		
-		protected HistoryFilter<Element, Declaration> historyFilter() {
+		protected HistoryFilter<Declaration, Declaration> historyFilter() {
 			HistoryFilter result = new NOOP();
 			for(HistoryFilterSelector selector: _historyFilters) {
 				result = result.and(selector.filter());

@@ -89,7 +89,7 @@ configurations {
 }
 
 dependencies {
-  local project(':rejuse')
-  local project(':chameleon')
-  local shared
+  //local project(':rejuse')
+  //local project(':chameleon')
+  //local shared
 }

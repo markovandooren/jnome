@@ -15,22 +15,18 @@ import org.aikodi.chameleon.oo.analysis.dependency.NoSubtypeOf;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.inheritance.InheritanceRelation;
 import org.aikodi.chameleon.oo.view.ObjectOrientedView;
-import org.aikodi.chameleon.util.Pair;
 import org.aikodi.chameleon.workspace.InputException;
 import org.aikodi.chameleon.workspace.Project;
+
+import com.lexicalscope.jewel.cli.Option;
 
 import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
 import be.kuleuven.cs.distrinet.jnome.eclipse.AnalysisTool;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
-import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.False;
 import be.kuleuven.cs.distrinet.rejuse.predicate.GlobPredicate;
-import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
-import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.True;
 import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
-
-import com.lexicalscope.jewel.cli.Option;
 
 public class DependencyAnalysisTool extends AnalysisTool {
 
@@ -52,6 +48,7 @@ public class DependencyAnalysisTool extends AnalysisTool {
 
 	@Override
 	protected void check(Project project, OutputStreamWriter writer, AnalysisOptions options) throws LookupException, InputException, IOException {
+	  UniversalPredicate<Type,Nothing> troo = UniversalPredicate.of(Type.class, t->true);
 		ObjectOrientedView view = (ObjectOrientedView) project.views().get(0);
 		UniversalPredicate<Type,Nothing> filter = hierarchyFilter(options, view)
 			.and(annotationFilter(options, view))
@@ -61,7 +58,7 @@ public class DependencyAnalysisTool extends AnalysisTool {
 				crossReferenceSourceFilter()
 				.and(crossReferenceNonInheritanceFilter())
 				.and(crossReferenceHierarchyFilter(options,view));
-		new JavaDependencyAnalyzer(project,filter,crossReferenceFilter).visualize(writer);
+    new JavaDependencyAnalyzer(project,filter,crossReferenceFilter, troo).visualize(writer);
 	}
 
 	protected UniversalPredicate<CrossReference<?>,Nothing> crossReferenceSourceFilter() {

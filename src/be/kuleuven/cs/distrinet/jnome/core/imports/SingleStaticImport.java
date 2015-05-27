@@ -17,6 +17,8 @@ import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.member.Member;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
+import org.aikodi.chameleon.util.Lists;
+import org.aikodi.chameleon.util.Util;
 import org.aikodi.chameleon.util.association.Single;
 
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
@@ -57,7 +59,13 @@ public class SingleStaticImport extends Import {
 	@Override
 	public <D extends Declaration> List<? extends SelectionResult> directImports(DeclarationSelector<D> selector) throws LookupException {
 		Type type = typeReference().getElement();
-		return selector.selection(type.declarations());
+		List<? extends SelectionResult> result;
+		if(selector.selectionName(type).equals(name())) {
+		  result = type.declarations(selector);
+		} else {
+		  result = Lists.create();
+		}
+		return result;
 	}
 	
 	public List<? extends SelectionResult> members() throws LookupException {

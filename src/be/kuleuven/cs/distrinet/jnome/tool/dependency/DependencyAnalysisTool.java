@@ -115,16 +115,6 @@ public class DependencyAnalysisTool extends AnalysisTool {
 		};
 	}
 	
-//	protected Predicate<CrossReference> packageFilter(final AnalysisOptions options) {
-//		return new AbstractPredicate<CrossReference>() {
-//
-//			@Override
-//			public boolean eval(CrossReference object) throws Exception {
-//				return packagePredicate(options).eval(object.getElement());
-//			}Set<
-//		};
-//	}
-	
 	protected UniversalPredicate<? super Type,Nothing> packagePredicate(AnalysisOptions options) {
 		List<String> packageNames = packageNames((DependencyOptions) options);
 		UniversalPredicate<? super Type,Nothing> result;

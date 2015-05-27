@@ -99,9 +99,6 @@ public class ASMClassParser {
     if(className == null) {
       throw new ChameleonProgrammerException();
     }
-    //		if(packageFQN == null) {
-    //			throw new ChameleonProgrammerException();
-    //		}
     _jarFile = file;
     _entry = entry;
     _name = className;
@@ -148,7 +145,6 @@ public class ASMClassParser {
   public Document load(Java7 language) throws FileNotFoundException, IOException, LookupException {
     Type t = read(language);
     Document doc = new Document();
-    //		Namespace ns = namespace(language);
 
     NamespaceDeclaration decl;
     if(packageFQN() != null) {
@@ -160,10 +156,6 @@ public class ASMClassParser {
     decl.add(t);
     return doc;
   }
-
-  //	public Namespace namespace(Language lang) throws LookupException {
-  //		return lang.defaultNamespace().getOrCreateNamespace(_packageFQN);
-  //	}
 
   protected Type read(Java7 language) throws FileNotFoundException, IOException {
     InputStream inputStream = new BufferedInputStream(_jarFile.getInputStream(_entry));
@@ -297,10 +289,7 @@ public class ASMClassParser {
         }
         if(isVarargs(access)) {
           FormalParameter param = m.lastFormalParameter();
-          //					MultiFormalParameter multi = new MultiFormalParameter(param.signature(), ((ArrayTypeReference) param.getTypeReference()).elementTypeReference());
-
           MultiFormalParameter multi = MultiFormalParameter.createUnsafe(param.name(), (JavaTypeReference)param.getTypeReference());
-
           SingleAssociation<Element, Element> parentLink = param.parentLink();
           parentLink.getOtherRelation().replace(parentLink, multi.parentLink());
         }
@@ -554,10 +543,6 @@ public class ASMClassParser {
     public SignatureVisitor visitInterface() {
       return new InheritanceExtractor(language());
     }
-
-    //		@Override
-    //		public void visitFo(String name) {
-    //		}
 
     @Override
     public void visitFormalTypeParameter(String name) {

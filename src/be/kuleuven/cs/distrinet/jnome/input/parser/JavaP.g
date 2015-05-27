@@ -970,15 +970,14 @@ classOrInterfaceType returns [JavaTypeReference element]
 	           ((BasicJavaTypeReference)retval.element).addAllArguments(args.element);
 	           // In this case, we know that the current element must be a type reference,
 	           // so we set the target to null, and only create type references afterwards.
-	           target = null;
+	           target = (CrossReferenceWithTarget)retval.element;
 	           stop=args.stop;
 	          })?
-	          {setLocation(retval.element,name.start,stop);}
 	        ('.' namex=identifierRule
 	          {
 	           if(target != null) {
-	             retval.element.removeAllMetadata();
-	             for(Element e: retval.element.descendants()) {e.removeAllMetadata();}
+	             //retval.element.removeAllMetadata();
+	             //for(Element e: retval.element.descendants()) {e.removeAllMetadata();}
 	             retval.element = createTypeReference(target,$namex.text);
 	             // We must clone the target here, or else it will be removed from the
 	             // type reference we just created.
@@ -996,7 +995,7 @@ classOrInterfaceType returns [JavaTypeReference element]
              ((BasicJavaTypeReference)retval.element).addAllArguments(argsx.element);
 	           // In this case, we know that the current element must be a type reference,
 	           // so we se the target to the current type reference.
-	           target = null;
+             target = (CrossReferenceWithTarget)retval.element;
 	           stop = argsx.stop;
 	          })? {setLocation(retval.element,name.start,stop);}
 	        )*
@@ -1307,7 +1306,7 @@ setLocation(retval.element, (CommonToken)retval.start, (CommonToken)retval.stop)
         |   finnkey='finally' trybll=block
            {((TryStatement)retval.element).setFinallyClause(new FinallyClause(trybll.element));
            setKeyword(retval.element,finnkey);}
-        )
+        )?
     |   switchkey='switch' swexpr=parExpression
           {retval.element = new SwitchStatement(swexpr.element);
           setKeyword(retval.element,switchkey);}

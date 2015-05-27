@@ -1,4 +1,4 @@
-// $ANTLR 3.3 Nov 30, 2010 12:50:56 be/kuleuven/cs/distrinet/jnome/input/parser/Java.g 2015-05-22 20:36:48
+// $ANTLR 3.3 Nov 30, 2010 12:50:56 be/kuleuven/cs/distrinet/jnome/input/parser/Java.g 2015-05-26 23:52:06
 
 package be.kuleuven.cs.distrinet.jnome.input.parser;
 
@@ -334,7 +334,7 @@ public class JavaParser extends ChameleonANTLR3Parser {
         }
         public JavaParser(TokenStream input, RecognizerSharedState state) {
             super(input, state);
-            this.state.ruleMemo = new HashMap[416+1];
+            this.state.ruleMemo = new HashMap[417+1];
              
             gJavaP = new Java_JavaP(input, state, this);         
         }
@@ -409,7 +409,7 @@ public class JavaParser extends ChameleonANTLR3Parser {
         Object Identifier1_tree=null;
 
         try {
-            if ( state.backtracking>0 && alreadyParsedRule(input, 416) ) { return retval; }
+            if ( state.backtracking>0 && alreadyParsedRule(input, 417) ) { return retval; }
             // be/kuleuven/cs/distrinet/jnome/input/parser/Java.g:225:7: ( Identifier )
             // be/kuleuven/cs/distrinet/jnome/input/parser/Java.g:225:9: Identifier
             {
@@ -438,158 +438,158 @@ public class JavaParser extends ChameleonANTLR3Parser {
 
         }
         finally {
-            if ( state.backtracking>0 ) { memoize(input, 416, stuff_StartIndex); }
+            if ( state.backtracking>0 ) { memoize(input, 417, stuff_StartIndex); }
         }
         return retval;
     }
     // $ANTLR end "stuff"
 
     // Delegated rules
-    public Java_JavaP.arrayAccessSuffixRubbish_return arrayAccessSuffixRubbish() throws RecognitionException { return gJavaP.arrayAccessSuffixRubbish(); }
-    public Java_JavaP.typeBound_return typeBound() throws RecognitionException { return gJavaP.typeBound(); }
-    public Java_JavaP.variableDeclaratorId_return variableDeclaratorId() throws RecognitionException { return gJavaP.variableDeclaratorId(); }
-    public Java_JavaP.enumBodyDeclarations_return enumBodyDeclarations() throws RecognitionException { return gJavaP.enumBodyDeclarations(); }
-    public Java_JavaP.primitiveType_return primitiveType() throws RecognitionException { return gJavaP.primitiveType(); }
-    public Java_JavaP.exclusiveOrExpression_return exclusiveOrExpression() throws RecognitionException { return gJavaP.exclusiveOrExpression(); }
-    public Java_JavaP.typeName_return typeName() throws RecognitionException { return gJavaP.typeName(); }
-    public Java_JavaP.catchClause_return catchClause() throws RecognitionException { return gJavaP.catchClause(); }
-    public Java_JavaP.normalInterfaceDeclaration_return normalInterfaceDeclaration() throws RecognitionException { return gJavaP.normalInterfaceDeclaration(); }
-    public Java_JavaP.resources_return resources() throws RecognitionException { return gJavaP.resources(); }
-    public Java_JavaP.typeDeclaration_return typeDeclaration() throws RecognitionException { return gJavaP.typeDeclaration(); }
-    public Java_JavaP.explicitConstructorInvocation_return explicitConstructorInvocation() throws RecognitionException { return gJavaP.explicitConstructorInvocation(); }
-    public Java_JavaP.typeArgument_return typeArgument() throws RecognitionException { return gJavaP.typeArgument(); }
-    public Java_JavaP.innerCreator_return innerCreator() throws RecognitionException { return gJavaP.innerCreator(); }
-    public Java_JavaP.multiplicativeExpression_return multiplicativeExpression() throws RecognitionException { return gJavaP.multiplicativeExpression(); }
-    public Java_JavaP.typeParameters_return typeParameters() throws RecognitionException { return gJavaP.typeParameters(); }
-    public Java_JavaP.moreidentifierRuleSuffixRubbish_return moreidentifierRuleSuffixRubbish() throws RecognitionException { return gJavaP.moreidentifierRuleSuffixRubbish(); }
-    public Java_JavaP.variableInitializer_return variableInitializer() throws RecognitionException { return gJavaP.variableInitializer(); }
-    public Java_JavaP.expression_return expression() throws RecognitionException { return gJavaP.expression(); }
-    public Java_JavaP.literal_return literal() throws RecognitionException { return gJavaP.literal(); }
-    public Java_JavaP.classCreatorRest_return classCreatorRest() throws RecognitionException { return gJavaP.classCreatorRest(); }
-    public Java_JavaP.memberDeclaration_return memberDeclaration() throws RecognitionException { return gJavaP.memberDeclaration(); }
-    public Java_JavaP.equalityExpression_return equalityExpression() throws RecognitionException { return gJavaP.equalityExpression(); }
-    public Java_JavaP.statement_return statement() throws RecognitionException { return gJavaP.statement(); }
-    public Java_JavaP.catchParameter_return catchParameter() throws RecognitionException { return gJavaP.catchParameter(); }
-    public Java_JavaP.classDeclaration_return classDeclaration() throws RecognitionException { return gJavaP.classDeclaration(); }
-    public Java_JavaP.blockStatement_return blockStatement() throws RecognitionException { return gJavaP.blockStatement(); }
-    public Java_JavaP.annotationMethodOrConstantRest_return annotationMethodOrConstantRest(TypeReference type) throws RecognitionException { return gJavaP.annotationMethodOrConstantRest(type); }
-    public Java_JavaP.arrayInitializer_return arrayInitializer() throws RecognitionException { return gJavaP.arrayInitializer(); }
-    public Java_JavaP.argumentsSuffixRubbish_return argumentsSuffixRubbish() throws RecognitionException { return gJavaP.argumentsSuffixRubbish(); }
-    public Java_JavaP.constantExpression_return constantExpression() throws RecognitionException { return gJavaP.constantExpression(); }
-    public Java_JavaP.formalParameterDecls_return formalParameterDecls() throws RecognitionException { return gJavaP.formalParameterDecls(); }
-    public Java_JavaP.unaryExpressionNotPlusMinus_return unaryExpressionNotPlusMinus() throws RecognitionException { return gJavaP.unaryExpressionNotPlusMinus(); }
-    public Java_JavaP.interfaceDeclaration_return interfaceDeclaration() throws RecognitionException { return gJavaP.interfaceDeclaration(); }
-    public Java_JavaP.booleanLiteral_return booleanLiteral() throws RecognitionException { return gJavaP.booleanLiteral(); }
-    public Java_JavaP.variableDeclarators_return variableDeclarators() throws RecognitionException { return gJavaP.variableDeclarators(); }
-    public Java_JavaP.annotationTypeBody_return annotationTypeBody() throws RecognitionException { return gJavaP.annotationTypeBody(); }
-    public Java_JavaP.packageDeclaration_return packageDeclaration() throws RecognitionException { return gJavaP.packageDeclaration(); }
-    public Java_JavaP.localVariableDeclarationStatement_return localVariableDeclarationStatement() throws RecognitionException { return gJavaP.localVariableDeclarationStatement(); }
-    public Java_JavaP.variableModifiers_return variableModifiers() throws RecognitionException { return gJavaP.variableModifiers(); }
-    public Java_JavaP.classBody_return classBody() throws RecognitionException { return gJavaP.classBody(); }
-    public Java_JavaP.annotationTypeElementRest_return annotationTypeElementRest() throws RecognitionException { return gJavaP.annotationTypeElementRest(); }
-    public Java_JavaP.nameAndParams_return nameAndParams() throws RecognitionException { return gJavaP.nameAndParams(); }
-    public Java_JavaP.block_return block() throws RecognitionException { return gJavaP.block(); }
-    public Java_JavaP.annotationTypeElementDeclaration_return annotationTypeElementDeclaration() throws RecognitionException { return gJavaP.annotationTypeElementDeclaration(); }
-    public Java_JavaP.forUpdate_return forUpdate() throws RecognitionException { return gJavaP.forUpdate(); }
-    public Java_JavaP.interfaceConstant_return interfaceConstant() throws RecognitionException { return gJavaP.interfaceConstant(); }
-    public Java_JavaP.genericMethodOrConstructorDecl_return genericMethodOrConstructorDecl() throws RecognitionException { return gJavaP.genericMethodOrConstructorDecl(); }
-    public Java_JavaP.methodDeclaration_return methodDeclaration() throws RecognitionException { return gJavaP.methodDeclaration(); }
-    public Java_JavaP.creator_return creator() throws RecognitionException { return gJavaP.creator(); }
     public Java_JavaP.selector_return selector() throws RecognitionException { return gJavaP.selector(); }
-    public Java_JavaP.conditionalAndExpression_return conditionalAndExpression() throws RecognitionException { return gJavaP.conditionalAndExpression(); }
+    public Java_JavaP.interfaceBodyDeclaration_return interfaceBodyDeclaration() throws RecognitionException { return gJavaP.interfaceBodyDeclaration(); }
+    public Java_JavaP.classOrInterfaceDeclaration_return classOrInterfaceDeclaration() throws RecognitionException { return gJavaP.classOrInterfaceDeclaration(); }
     public Java_JavaP.conditionalOrExpression_return conditionalOrExpression() throws RecognitionException { return gJavaP.conditionalOrExpression(); }
-    public Java_JavaP.conditionalExpression_return conditionalExpression() throws RecognitionException { return gJavaP.conditionalExpression(); }
-    public Java_JavaP.arguments_return arguments() throws RecognitionException { return gJavaP.arguments(); }
-    public Java_JavaP.createClassHereBecauseANTLRisAnnoying_return createClassHereBecauseANTLRisAnnoying() throws RecognitionException { return gJavaP.createClassHereBecauseANTLRisAnnoying(); }
-    public Java_JavaP.interfaceBody_return interfaceBody() throws RecognitionException { return gJavaP.interfaceBody(); }
-    public Java_JavaP.andExpression_return andExpression() throws RecognitionException { return gJavaP.andExpression(); }
+    public Java_JavaP.primitiveType_return primitiveType() throws RecognitionException { return gJavaP.primitiveType(); }
+    public Java_JavaP.variableModifier_return variableModifier() throws RecognitionException { return gJavaP.variableModifier(); }
+    public Java_JavaP.elementValue_return elementValue() throws RecognitionException { return gJavaP.elementValue(); }
+    public Java_JavaP.type_return type() throws RecognitionException { return gJavaP.type(); }
+    public Java_JavaP.catchParameter_return catchParameter() throws RecognitionException { return gJavaP.catchParameter(); }
+    public Java_JavaP.typeArgument_return typeArgument() throws RecognitionException { return gJavaP.typeArgument(); }
+    public Java_JavaP.interfaceDeclaration_return interfaceDeclaration() throws RecognitionException { return gJavaP.interfaceDeclaration(); }
+    public Java_JavaP.unaryExpressionNotPlusMinus_return unaryExpressionNotPlusMinus() throws RecognitionException { return gJavaP.unaryExpressionNotPlusMinus(); }
     public Java_JavaP.interfaceMethodOrFieldDecl_return interfaceMethodOrFieldDecl() throws RecognitionException { return gJavaP.interfaceMethodOrFieldDecl(); }
-    public Java_JavaP.elementValueArrayInitializer_return elementValueArrayInitializer() throws RecognitionException { return gJavaP.elementValueArrayInitializer(); }
-    public Java_JavaP.formalParameter_return formalParameter() throws RecognitionException { return gJavaP.formalParameter(); }
-    public Java_JavaP.typeList_return typeList() throws RecognitionException { return gJavaP.typeList(); }
-    public Java_JavaP.methodDeclaratorRest_return methodDeclaratorRest() throws RecognitionException { return gJavaP.methodDeclaratorRest(); }
+    public Java_JavaP.superSuffix_return superSuffix() throws RecognitionException { return gJavaP.superSuffix(); }
+    public Java_JavaP.annotationMethodOrConstantRest_return annotationMethodOrConstantRest(TypeReference type) throws RecognitionException { return gJavaP.annotationMethodOrConstantRest(type); }
+    public Java_JavaP.compilationUnit_return compilationUnit() throws RecognitionException { return gJavaP.compilationUnit(); }
+    public Java_JavaP.variableInitializer_return variableInitializer() throws RecognitionException { return gJavaP.variableInitializer(); }
+    public Java_JavaP.voidType_return voidType() throws RecognitionException { return gJavaP.voidType(); }
+    public Java_JavaP.annotationTypeBody_return annotationTypeBody() throws RecognitionException { return gJavaP.annotationTypeBody(); }
+    public Java_JavaP.equalityExpression_return equalityExpression() throws RecognitionException { return gJavaP.equalityExpression(); }
+    public Java_JavaP.switchLabel_return switchLabel() throws RecognitionException { return gJavaP.switchLabel(); }
+    public Java_JavaP.statement_return statement() throws RecognitionException { return gJavaP.statement(); }
+    public Java_JavaP.typeDeclaration_return typeDeclaration() throws RecognitionException { return gJavaP.typeDeclaration(); }
     public Java_JavaP.forInit_return forInit() throws RecognitionException { return gJavaP.forInit(); }
+    public Java_JavaP.constructorBody_return constructorBody() throws RecognitionException { return gJavaP.constructorBody(); }
+    public Java_JavaP.createClassHereBecauseANTLRisAnnoying_return createClassHereBecauseANTLRisAnnoying() throws RecognitionException { return gJavaP.createClassHereBecauseANTLRisAnnoying(); }
+    public Java_JavaP.typeBound_return typeBound() throws RecognitionException { return gJavaP.typeBound(); }
+    public Java_JavaP.shiftExpression_return shiftExpression() throws RecognitionException { return gJavaP.shiftExpression(); }
+    public Java_JavaP.voidMethodDeclaration_return voidMethodDeclaration() throws RecognitionException { return gJavaP.voidMethodDeclaration(); }
+    public Java_JavaP.classOrInterfaceModifiers_return classOrInterfaceModifiers() throws RecognitionException { return gJavaP.classOrInterfaceModifiers(); }
+    public Java_JavaP.integerLiteral_return integerLiteral() throws RecognitionException { return gJavaP.integerLiteral(); }
+    public Java_JavaP.enumConstant_return enumConstant() throws RecognitionException { return gJavaP.enumConstant(); }
+    public Java_JavaP.typeName_return typeName() throws RecognitionException { return gJavaP.typeName(); }
+    public Java_JavaP.unaryExpression_return unaryExpression() throws RecognitionException { return gJavaP.unaryExpression(); }
+    public Java_JavaP.block_return block() throws RecognitionException { return gJavaP.block(); }
+    public Java_JavaP.typeList_return typeList() throws RecognitionException { return gJavaP.typeList(); }
+    public Java_JavaP.exclusiveOrExpression_return exclusiveOrExpression() throws RecognitionException { return gJavaP.exclusiveOrExpression(); }
+    public Java_JavaP.interfaceMethodDeclaratorRest_return interfaceMethodDeclaratorRest() throws RecognitionException { return gJavaP.interfaceMethodDeclaratorRest(); }
+    public Java_JavaP.normalInterfaceDeclaration_return normalInterfaceDeclaration() throws RecognitionException { return gJavaP.normalInterfaceDeclaration(); }
+    public Java_JavaP.methodBody_return methodBody() throws RecognitionException { return gJavaP.methodBody(); }
+    public Java_JavaP.moreidentifierRuleSuffixRubbish_return moreidentifierRuleSuffixRubbish() throws RecognitionException { return gJavaP.moreidentifierRuleSuffixRubbish(); }
+    public Java_JavaP.memberDecl_return memberDecl() throws RecognitionException { return gJavaP.memberDecl(); }
+    public Java_JavaP.typeParameters_return typeParameters() throws RecognitionException { return gJavaP.typeParameters(); }
+    public Java_JavaP.annotation_return annotation() throws RecognitionException { return gJavaP.annotation(); }
+    public Java_JavaP.modifier_return modifier() throws RecognitionException { return gJavaP.modifier(); }
+    public Java_JavaP.importDeclaration_return importDeclaration() throws RecognitionException { return gJavaP.importDeclaration(); }
+    public Java_JavaP.typeArguments_return typeArguments() throws RecognitionException { return gJavaP.typeArguments(); }
+    public Java_JavaP.classCreatorRest_return classCreatorRest() throws RecognitionException { return gJavaP.classCreatorRest(); }
+    public Java_JavaP.resources_return resources() throws RecognitionException { return gJavaP.resources(); }
+    public Java_JavaP.interfaceMemberDecl_return interfaceMemberDecl() throws RecognitionException { return gJavaP.interfaceMemberDecl(); }
+    public Java_JavaP.localVariableDeclaration_return localVariableDeclaration() throws RecognitionException { return gJavaP.localVariableDeclaration(); }
+    public Java_JavaP.switchCase_return switchCase() throws RecognitionException { return gJavaP.switchCase(); }
+    public Java_JavaP.annotationConstantRest_return annotationConstantRest(TypeReference type) throws RecognitionException { return gJavaP.annotationConstantRest(type); }
+    public Java_JavaP.nonTargetPrimary_return nonTargetPrimary() throws RecognitionException { return gJavaP.nonTargetPrimary(); }
+    public Java_JavaP.constructorDeclaratorRest_return constructorDeclaratorRest() throws RecognitionException { return gJavaP.constructorDeclaratorRest(); }
+    public Java_JavaP.relationalExpression_return relationalExpression() throws RecognitionException { return gJavaP.relationalExpression(); }
+    public Java_JavaP.genericMethodOrConstructorRest_return genericMethodOrConstructorRest() throws RecognitionException { return gJavaP.genericMethodOrConstructorRest(); }
+    public Java_JavaP.annotationName_return annotationName() throws RecognitionException { return gJavaP.annotationName(); }
+    public Java_JavaP.annotationTypeDeclaration_return annotationTypeDeclaration() throws RecognitionException { return gJavaP.annotationTypeDeclaration(); }
+    public Java_JavaP.voidInterfaceMethodDeclaratorRest_return voidInterfaceMethodDeclaratorRest() throws RecognitionException { return gJavaP.voidInterfaceMethodDeclaratorRest(); }
+    public Java_JavaP.additiveExpression_return additiveExpression() throws RecognitionException { return gJavaP.additiveExpression(); }
+    public Java_JavaP.relationalOp_return relationalOp() throws RecognitionException { return gJavaP.relationalOp(); }
+    public Java_JavaP.instanceOfExpression_return instanceOfExpression() throws RecognitionException { return gJavaP.instanceOfExpression(); }
+    public Java_JavaP.switchBlockStatementGroups_return switchBlockStatementGroups() throws RecognitionException { return gJavaP.switchBlockStatementGroups(); }
+    public Java_JavaP.enhancedForControl_return enhancedForControl() throws RecognitionException { return gJavaP.enhancedForControl(); }
+    public Java_JavaP.catches_return catches() throws RecognitionException { return gJavaP.catches(); }
+    public Java_JavaP.typeParameter_return typeParameter() throws RecognitionException { return gJavaP.typeParameter(); }
+    public Java_JavaP.variableDeclarators_return variableDeclarators() throws RecognitionException { return gJavaP.variableDeclarators(); }
+    public Java_JavaP.fieldDeclaration_return fieldDeclaration() throws RecognitionException { return gJavaP.fieldDeclaration(); }
+    public Java_JavaP.qualifiedNameList_return qualifiedNameList() throws RecognitionException { return gJavaP.qualifiedNameList(); }
+    public Java_JavaP.shiftOp_return shiftOp() throws RecognitionException { return gJavaP.shiftOp(); }
+    public Java_JavaP.arrayInitializer_return arrayInitializer() throws RecognitionException { return gJavaP.arrayInitializer(); }
+    public Java_JavaP.conditionalExpression_return conditionalExpression() throws RecognitionException { return gJavaP.conditionalExpression(); }
     public Java_JavaP.voidMethodDeclaratorRest_return voidMethodDeclaratorRest() throws RecognitionException { return gJavaP.voidMethodDeclaratorRest(); }
     public Java_JavaP.enumConstants_return enumConstants() throws RecognitionException { return gJavaP.enumConstants(); }
-    public Java_JavaP.interfaceBodyDeclaration_return interfaceBodyDeclaration() throws RecognitionException { return gJavaP.interfaceBodyDeclaration(); }
-    public Java_JavaP.unaryExpression_return unaryExpression() throws RecognitionException { return gJavaP.unaryExpression(); }
-    public Java_JavaP.typeParameter_return typeParameter() throws RecognitionException { return gJavaP.typeParameter(); }
-    public Java_JavaP.shiftExpression_return shiftExpression() throws RecognitionException { return gJavaP.shiftExpression(); }
-    public Java_JavaP.forControl_return forControl() throws RecognitionException { return gJavaP.forControl(); }
-    public Java_JavaP.constructorDeclaration_return constructorDeclaration() throws RecognitionException { return gJavaP.constructorDeclaration(); }
-    public Java_JavaP.voidType_return voidType() throws RecognitionException { return gJavaP.voidType(); }
-    public Java_JavaP.type_return type() throws RecognitionException { return gJavaP.type(); }
-    public Java_JavaP.genericMethodOrConstructorRest_return genericMethodOrConstructorRest() throws RecognitionException { return gJavaP.genericMethodOrConstructorRest(); }
-    public Java_JavaP.enumConstantName_return enumConstantName() throws RecognitionException { return gJavaP.enumConstantName(); }
-    public Java_JavaP.enumDeclaration_return enumDeclaration() throws RecognitionException { return gJavaP.enumDeclaration(); }
-    public Java_JavaP.superSuffix_return superSuffix() throws RecognitionException { return gJavaP.superSuffix(); }
-    public Java_JavaP.nonTargetPrimary_return nonTargetPrimary() throws RecognitionException { return gJavaP.nonTargetPrimary(); }
-    public Java_JavaP.defaultValue_return defaultValue() throws RecognitionException { return gJavaP.defaultValue(); }
-    public Java_JavaP.constructorDeclaratorRest_return constructorDeclaratorRest() throws RecognitionException { return gJavaP.constructorDeclaratorRest(); }
-    public Java_JavaP.variableModifier_return variableModifier() throws RecognitionException { return gJavaP.variableModifier(); }
-    public Java_JavaP.localVariableDeclaration_return localVariableDeclaration() throws RecognitionException { return gJavaP.localVariableDeclaration(); }
-    public Java_JavaP.enumConstant_return enumConstant() throws RecognitionException { return gJavaP.enumConstant(); }
-    public Java_JavaP.interfaceMethodDeclaratorRest_return interfaceMethodDeclaratorRest() throws RecognitionException { return gJavaP.interfaceMethodDeclaratorRest(); }
-    public Java_JavaP.additiveExpression_return additiveExpression() throws RecognitionException { return gJavaP.additiveExpression(); }
-    public Java_JavaP.classOrInterfaceModifiers_return classOrInterfaceModifiers() throws RecognitionException { return gJavaP.classOrInterfaceModifiers(); }
-    public Java_JavaP.variableDeclarator_return variableDeclarator() throws RecognitionException { return gJavaP.variableDeclarator(); }
-    public Java_JavaP.annotationMethodRest_return annotationMethodRest(TypeReference type) throws RecognitionException { return gJavaP.annotationMethodRest(type); }
-    public Java_JavaP.switchCase_return switchCase() throws RecognitionException { return gJavaP.switchCase(); }
-    public Java_JavaP.elementValuePairs_return elementValuePairs() throws RecognitionException { return gJavaP.elementValuePairs(); }
-    public Java_JavaP.castExpression_return castExpression() throws RecognitionException { return gJavaP.castExpression(); }
-    public Java_JavaP.voidInterfaceMethodDeclaratorRest_return voidInterfaceMethodDeclaratorRest() throws RecognitionException { return gJavaP.voidInterfaceMethodDeclaratorRest(); }
-    public Java_JavaP.instanceOfExpression_return instanceOfExpression() throws RecognitionException { return gJavaP.instanceOfExpression(); }
     public Java_JavaP.interfaceMethod_return interfaceMethod() throws RecognitionException { return gJavaP.interfaceMethod(); }
-    public Java_JavaP.annotationConstantRest_return annotationConstantRest(TypeReference type) throws RecognitionException { return gJavaP.annotationConstantRest(type); }
-    public Java_JavaP.memberDecl_return memberDecl() throws RecognitionException { return gJavaP.memberDecl(); }
-    public Java_JavaP.voidInterfaceMethodDeclaration_return voidInterfaceMethodDeclaration() throws RecognitionException { return gJavaP.voidInterfaceMethodDeclaration(); }
-    public Java_JavaP.identifierRule_return identifierRule() throws RecognitionException { return gJavaP.identifierRule(); }
-    public Java_JavaP.shiftOp_return shiftOp() throws RecognitionException { return gJavaP.shiftOp(); }
-    public Java_JavaP.methodBody_return methodBody() throws RecognitionException { return gJavaP.methodBody(); }
-    public Java_JavaP.explicitGenericInvocation_return explicitGenericInvocation() throws RecognitionException { return gJavaP.explicitGenericInvocation(); }
-    public Java_JavaP.enumBody_return enumBody() throws RecognitionException { return gJavaP.enumBody(); }
-    public Java_JavaP.compilationUnit_return compilationUnit() throws RecognitionException { return gJavaP.compilationUnit(); }
-    public Java_JavaP.formalParameters_return formalParameters() throws RecognitionException { return gJavaP.formalParameters(); }
-    public Java_JavaP.elementValuePair_return elementValuePair() throws RecognitionException { return gJavaP.elementValuePair(); }
-    public Java_JavaP.importDeclaration_return importDeclaration() throws RecognitionException { return gJavaP.importDeclaration(); }
-    public Java_JavaP.createdName_return createdName() throws RecognitionException { return gJavaP.createdName(); }
-    public Java_JavaP.enhancedForControl_return enhancedForControl() throws RecognitionException { return gJavaP.enhancedForControl(); }
-    public Java_JavaP.statementExpression_return statementExpression() throws RecognitionException { return gJavaP.statementExpression(); }
-    public Java_JavaP.parExpression_return parExpression() throws RecognitionException { return gJavaP.parExpression(); }
-    public Java_JavaP.nonWildcardTypeArguments_return nonWildcardTypeArguments() throws RecognitionException { return gJavaP.nonWildcardTypeArguments(); }
-    public Java_JavaP.classBodyDeclaration_return classBodyDeclaration() throws RecognitionException { return gJavaP.classBodyDeclaration(); }
-    public Java_JavaP.integerLiteral_return integerLiteral() throws RecognitionException { return gJavaP.integerLiteral(); }
-    public Java_JavaP.catches_return catches() throws RecognitionException { return gJavaP.catches(); }
-    public Java_JavaP.switchLabel_return switchLabel() throws RecognitionException { return gJavaP.switchLabel(); }
-    public Java_JavaP.classOrInterfaceType_return classOrInterfaceType() throws RecognitionException { return gJavaP.classOrInterfaceType(); }
-    public Java_JavaP.classOrInterfaceDeclaration_return classOrInterfaceDeclaration() throws RecognitionException { return gJavaP.classOrInterfaceDeclaration(); }
-    public Java_JavaP.annotations_return annotations() throws RecognitionException { return gJavaP.annotations(); }
-    public Java_JavaP.modifiers_return modifiers() throws RecognitionException { return gJavaP.modifiers(); }
-    public Java_JavaP.primary_return primary() throws RecognitionException { return gJavaP.primary(); }
-    public Java_JavaP.expressionList_return expressionList() throws RecognitionException { return gJavaP.expressionList(); }
+    public Java_JavaP.multiplicativeExpression_return multiplicativeExpression() throws RecognitionException { return gJavaP.multiplicativeExpression(); }
     public Java_JavaP.inclusiveOrExpression_return inclusiveOrExpression() throws RecognitionException { return gJavaP.inclusiveOrExpression(); }
-    public Java_JavaP.relationalOp_return relationalOp() throws RecognitionException { return gJavaP.relationalOp(); }
-    public Java_JavaP.modifier_return modifier() throws RecognitionException { return gJavaP.modifier(); }
-    public Java_JavaP.switchBlockStatementGroups_return switchBlockStatementGroups() throws RecognitionException { return gJavaP.switchBlockStatementGroups(); }
-    public Java_JavaP.constructorBody_return constructorBody() throws RecognitionException { return gJavaP.constructorBody(); }
-    public Java_JavaP.identifierSuffixRubbush_return identifierSuffixRubbush() throws RecognitionException { return gJavaP.identifierSuffixRubbush(); }
-    public Java_JavaP.annotation_return annotation() throws RecognitionException { return gJavaP.annotation(); }
-    public Java_JavaP.assignmentOperator_return assignmentOperator() throws RecognitionException { return gJavaP.assignmentOperator(); }
-    public Java_JavaP.qualifiedNameList_return qualifiedNameList() throws RecognitionException { return gJavaP.qualifiedNameList(); }
-    public Java_JavaP.elementValue_return elementValue() throws RecognitionException { return gJavaP.elementValue(); }
-    public Java_JavaP.relationalExpression_return relationalExpression() throws RecognitionException { return gJavaP.relationalExpression(); }
-    public Java_JavaP.normalClassDeclaration_return normalClassDeclaration() throws RecognitionException { return gJavaP.normalClassDeclaration(); }
-    public Java_JavaP.constantDeclarator_return constantDeclarator() throws RecognitionException { return gJavaP.constantDeclarator(); }
-    public Java_JavaP.interfaceMemberDecl_return interfaceMemberDecl() throws RecognitionException { return gJavaP.interfaceMemberDecl(); }
-    public Java_JavaP.voidMethodDeclaration_return voidMethodDeclaration() throws RecognitionException { return gJavaP.voidMethodDeclaration(); }
-    public Java_JavaP.typeArguments_return typeArguments() throws RecognitionException { return gJavaP.typeArguments(); }
-    public Java_JavaP.qualifiedName_return qualifiedName() throws RecognitionException { return gJavaP.qualifiedName(); }
-    public Java_JavaP.annotationTypeDeclaration_return annotationTypeDeclaration() throws RecognitionException { return gJavaP.annotationTypeDeclaration(); }
-    public Java_JavaP.fieldDeclaration_return fieldDeclaration() throws RecognitionException { return gJavaP.fieldDeclaration(); }
-    public Java_JavaP.classOrInterfaceModifier_return classOrInterfaceModifier() throws RecognitionException { return gJavaP.classOrInterfaceModifier(); }
-    public Java_JavaP.possibleUnionType_return possibleUnionType() throws RecognitionException { return gJavaP.possibleUnionType(); }
+    public Java_JavaP.interfaceConstant_return interfaceConstant() throws RecognitionException { return gJavaP.interfaceConstant(); }
+    public Java_JavaP.defaultValue_return defaultValue() throws RecognitionException { return gJavaP.defaultValue(); }
+    public Java_JavaP.nonWildcardTypeArguments_return nonWildcardTypeArguments() throws RecognitionException { return gJavaP.nonWildcardTypeArguments(); }
     public Java_JavaP.interfaceGenericMethodDecl_return interfaceGenericMethodDecl() throws RecognitionException { return gJavaP.interfaceGenericMethodDecl(); }
-    public Java_JavaP.annotationName_return annotationName() throws RecognitionException { return gJavaP.annotationName(); }
+    public Java_JavaP.variableDeclarator_return variableDeclarator() throws RecognitionException { return gJavaP.variableDeclarator(); }
+    public Java_JavaP.constructorDeclaration_return constructorDeclaration() throws RecognitionException { return gJavaP.constructorDeclaration(); }
+    public Java_JavaP.modifiers_return modifiers() throws RecognitionException { return gJavaP.modifiers(); }
+    public Java_JavaP.possibleUnionType_return possibleUnionType() throws RecognitionException { return gJavaP.possibleUnionType(); }
+    public Java_JavaP.argumentsSuffixRubbish_return argumentsSuffixRubbish() throws RecognitionException { return gJavaP.argumentsSuffixRubbish(); }
+    public Java_JavaP.classOrInterfaceModifier_return classOrInterfaceModifier() throws RecognitionException { return gJavaP.classOrInterfaceModifier(); }
+    public Java_JavaP.localVariableDeclarationStatement_return localVariableDeclarationStatement() throws RecognitionException { return gJavaP.localVariableDeclarationStatement(); }
+    public Java_JavaP.booleanLiteral_return booleanLiteral() throws RecognitionException { return gJavaP.booleanLiteral(); }
+    public Java_JavaP.forControl_return forControl() throws RecognitionException { return gJavaP.forControl(); }
+    public Java_JavaP.explicitGenericInvocation_return explicitGenericInvocation() throws RecognitionException { return gJavaP.explicitGenericInvocation(); }
+    public Java_JavaP.assignmentOperator_return assignmentOperator() throws RecognitionException { return gJavaP.assignmentOperator(); }
+    public Java_JavaP.classBody_return classBody() throws RecognitionException { return gJavaP.classBody(); }
+    public Java_JavaP.expressionList_return expressionList() throws RecognitionException { return gJavaP.expressionList(); }
+    public Java_JavaP.methodDeclaratorRest_return methodDeclaratorRest() throws RecognitionException { return gJavaP.methodDeclaratorRest(); }
+    public Java_JavaP.enumConstantName_return enumConstantName() throws RecognitionException { return gJavaP.enumConstantName(); }
+    public Java_JavaP.explicitConstructorInvocation_return explicitConstructorInvocation() throws RecognitionException { return gJavaP.explicitConstructorInvocation(); }
+    public Java_JavaP.identifierSuffixRubbush_return identifierSuffixRubbush() throws RecognitionException { return gJavaP.identifierSuffixRubbush(); }
+    public Java_JavaP.packageDeclaration_return packageDeclaration() throws RecognitionException { return gJavaP.packageDeclaration(); }
+    public Java_JavaP.annotations_return annotations() throws RecognitionException { return gJavaP.annotations(); }
+    public Java_JavaP.enumBodyDeclarations_return enumBodyDeclarations() throws RecognitionException { return gJavaP.enumBodyDeclarations(); }
+    public Java_JavaP.catchClause_return catchClause() throws RecognitionException { return gJavaP.catchClause(); }
+    public Java_JavaP.constantDeclarator_return constantDeclarator() throws RecognitionException { return gJavaP.constantDeclarator(); }
+    public Java_JavaP.annotationTypeElementDeclaration_return annotationTypeElementDeclaration() throws RecognitionException { return gJavaP.annotationTypeElementDeclaration(); }
+    public Java_JavaP.elementValuePairs_return elementValuePairs() throws RecognitionException { return gJavaP.elementValuePairs(); }
+    public Java_JavaP.voidInterfaceMethodDeclaration_return voidInterfaceMethodDeclaration() throws RecognitionException { return gJavaP.voidInterfaceMethodDeclaration(); }
+    public Java_JavaP.annotationTypeElementRest_return annotationTypeElementRest() throws RecognitionException { return gJavaP.annotationTypeElementRest(); }
+    public Java_JavaP.methodDeclaration_return methodDeclaration() throws RecognitionException { return gJavaP.methodDeclaration(); }
+    public Java_JavaP.conditionalAndExpression_return conditionalAndExpression() throws RecognitionException { return gJavaP.conditionalAndExpression(); }
+    public Java_JavaP.enumDeclaration_return enumDeclaration() throws RecognitionException { return gJavaP.enumDeclaration(); }
+    public Java_JavaP.statementExpression_return statementExpression() throws RecognitionException { return gJavaP.statementExpression(); }
+    public Java_JavaP.arrayAccessSuffixRubbish_return arrayAccessSuffixRubbish() throws RecognitionException { return gJavaP.arrayAccessSuffixRubbish(); }
+    public Java_JavaP.nameAndParams_return nameAndParams() throws RecognitionException { return gJavaP.nameAndParams(); }
+    public Java_JavaP.expression_return expression() throws RecognitionException { return gJavaP.expression(); }
+    public Java_JavaP.arguments_return arguments() throws RecognitionException { return gJavaP.arguments(); }
+    public Java_JavaP.classBodyDeclaration_return classBodyDeclaration() throws RecognitionException { return gJavaP.classBodyDeclaration(); }
+    public Java_JavaP.blockStatement_return blockStatement() throws RecognitionException { return gJavaP.blockStatement(); }
+    public Java_JavaP.constantExpression_return constantExpression() throws RecognitionException { return gJavaP.constantExpression(); }
+    public Java_JavaP.variableModifiers_return variableModifiers() throws RecognitionException { return gJavaP.variableModifiers(); }
+    public Java_JavaP.createdName_return createdName() throws RecognitionException { return gJavaP.createdName(); }
+    public Java_JavaP.identifierRule_return identifierRule() throws RecognitionException { return gJavaP.identifierRule(); }
+    public Java_JavaP.interfaceBody_return interfaceBody() throws RecognitionException { return gJavaP.interfaceBody(); }
+    public Java_JavaP.literal_return literal() throws RecognitionException { return gJavaP.literal(); }
+    public Java_JavaP.variableDeclaratorId_return variableDeclaratorId() throws RecognitionException { return gJavaP.variableDeclaratorId(); }
+    public Java_JavaP.memberDeclaration_return memberDeclaration() throws RecognitionException { return gJavaP.memberDeclaration(); }
+    public Java_JavaP.castExpression_return castExpression() throws RecognitionException { return gJavaP.castExpression(); }
+    public Java_JavaP.genericMethodOrConstructorDecl_return genericMethodOrConstructorDecl() throws RecognitionException { return gJavaP.genericMethodOrConstructorDecl(); }
+    public Java_JavaP.qualifiedName_return qualifiedName() throws RecognitionException { return gJavaP.qualifiedName(); }
+    public Java_JavaP.annotationMethodRest_return annotationMethodRest(TypeReference type) throws RecognitionException { return gJavaP.annotationMethodRest(type); }
+    public Java_JavaP.formalParameterDecls_return formalParameterDecls() throws RecognitionException { return gJavaP.formalParameterDecls(); }
+    public Java_JavaP.normalClassDeclaration_return normalClassDeclaration() throws RecognitionException { return gJavaP.normalClassDeclaration(); }
+    public Java_JavaP.elementValueArrayInitializer_return elementValueArrayInitializer() throws RecognitionException { return gJavaP.elementValueArrayInitializer(); }
+    public Java_JavaP.classDeclaration_return classDeclaration() throws RecognitionException { return gJavaP.classDeclaration(); }
+    public Java_JavaP.forUpdate_return forUpdate() throws RecognitionException { return gJavaP.forUpdate(); }
+    public Java_JavaP.formalParameters_return formalParameters() throws RecognitionException { return gJavaP.formalParameters(); }
+    public Java_JavaP.andExpression_return andExpression() throws RecognitionException { return gJavaP.andExpression(); }
+    public Java_JavaP.elementValuePair_return elementValuePair() throws RecognitionException { return gJavaP.elementValuePair(); }
+    public Java_JavaP.parExpression_return parExpression() throws RecognitionException { return gJavaP.parExpression(); }
+    public Java_JavaP.enumBody_return enumBody() throws RecognitionException { return gJavaP.enumBody(); }
+    public Java_JavaP.primary_return primary() throws RecognitionException { return gJavaP.primary(); }
+    public Java_JavaP.classOrInterfaceType_return classOrInterfaceType() throws RecognitionException { return gJavaP.classOrInterfaceType(); }
+    public Java_JavaP.innerCreator_return innerCreator() throws RecognitionException { return gJavaP.innerCreator(); }
+    public Java_JavaP.creator_return creator() throws RecognitionException { return gJavaP.creator(); }
+    public Java_JavaP.formalParameter_return formalParameter() throws RecognitionException { return gJavaP.formalParameter(); }
 
 
  

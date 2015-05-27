@@ -147,7 +147,11 @@ public class EnumConstant extends SimpleNameMember implements DeclarationWithTyp
 	
 	@Override
 	public LookupContext targetContext() throws LookupException {
-		return getAnonymousType().targetContext();
+		Type type = getAnonymousType();
+		if(type == null) {
+		  return nearestAncestor(EnumType.class).targetContext();
+		}
+    return type.targetContext();
 	}
 	
 //	@Override

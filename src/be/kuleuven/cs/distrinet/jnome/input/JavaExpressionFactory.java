@@ -5,11 +5,13 @@ import org.aikodi.chameleon.oo.expression.Expression;
 import org.aikodi.chameleon.oo.expression.ExpressionFactory;
 import org.aikodi.chameleon.oo.expression.MethodInvocation;
 import org.aikodi.chameleon.oo.expression.NameExpression;
+import org.aikodi.chameleon.support.expression.AssignmentExpression;
 import org.aikodi.chameleon.support.member.simplename.operator.infix.InfixOperatorInvocation;
 import org.aikodi.chameleon.support.member.simplename.operator.postfix.PostfixOperatorInvocation;
 import org.aikodi.chameleon.support.member.simplename.operator.prefix.PrefixOperatorInvocation;
 import org.aikodi.chameleon.util.Util;
 
+import be.kuleuven.cs.distrinet.jnome.core.expression.JavaAssignmentExpression;
 import be.kuleuven.cs.distrinet.jnome.core.expression.JavaConditionalExpression;
 import be.kuleuven.cs.distrinet.jnome.core.expression.JavaNameExpression;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaInfixOperatorInvocation;
@@ -58,5 +60,10 @@ public class JavaExpressionFactory extends ExpressionFactory {
 	@Override
 	public NameExpression createNameExpression(String name,	CrossReferenceTarget target) {
 		return new JavaNameExpression(name,target);
+	}
+	
+	@Override
+	public AssignmentExpression createAssignmentExpression(Expression variableReference, Expression value) {
+	  return new JavaAssignmentExpression(variableReference, value);
 	}
 }

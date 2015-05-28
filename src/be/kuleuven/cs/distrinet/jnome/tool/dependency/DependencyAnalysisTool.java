@@ -50,7 +50,7 @@ public class DependencyAnalysisTool extends AnalysisTool {
 	protected void check(Project project, OutputStreamWriter writer, AnalysisOptions options) throws LookupException, InputException, IOException {
 	  UniversalPredicate<Type,Nothing> troo = UniversalPredicate.of(Type.class, t->true);
 		ObjectOrientedView view = (ObjectOrientedView) project.views().get(0);
-		UniversalPredicate<Type,Nothing> filter = hierarchyFilter(options, view)
+    UniversalPredicate<Type,Nothing> filter = hierarchyPredicate(options, view)
 			.and(annotationFilter(options, view))
 			.and(anonymousTypeFilter(options,view))
       .and(packageFilter(options,view));
@@ -132,17 +132,6 @@ public class DependencyAnalysisTool extends AnalysisTool {
 			}
 		}
 		return result;
-	}
-	
-	protected UniversalPredicate<Type,Nothing> hierarchyFilter(final AnalysisOptions options, final ObjectOrientedView view) throws LookupException {
-		final UniversalPredicate<Type, Nothing> hierarchyPredicate = hierarchyPredicate(options, view);
-		return new UniversalPredicate<Type,Nothing>(Type.class) {
-
-			@Override
-			public boolean uncheckedEval(Type type)  {
-				return hierarchyPredicate.eval(type);
-			}
-		};
 	}
 	
 	protected UniversalPredicate<CrossReference,Nothing> crossReferenceHierarchyFilter(final AnalysisOptions options, final ObjectOrientedView view) throws LookupException {

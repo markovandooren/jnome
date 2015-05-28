@@ -34,11 +34,11 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
    * @param target
    */
   public BasicJavaTypeReference(NamedTarget target) {
-  	super(target.getTarget() == null ? null : typeReferenceTarget((NamedTarget) target.getTarget()), target.name());
+  	this(target.getTarget() == null ? null : typeReferenceTarget((NamedTarget) target.getTarget()), target.name());
   }
   
   public BasicJavaTypeReference(String fqn) {
-  	super(typeReferenceTarget(Util.getAllButLastPart(fqn)),Util.getLastPart(fqn));
+  	this(typeReferenceTarget(Util.getAllButLastPart(fqn)),Util.getLastPart(fqn));
   }
   
   protected static CrossReferenceTarget typeReferenceTarget(NamedTarget target) {

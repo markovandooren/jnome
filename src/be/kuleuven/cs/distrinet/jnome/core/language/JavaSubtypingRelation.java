@@ -436,7 +436,11 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		}
 
 		protected ActualTypeArgument createArgument(Type type) throws LookupException {
-			return java().createExtendsWildcard(java().reference(type));
+		  final JavaTypeReference reference = java().reference(type);
+		  Element parent = reference.parent();
+		  reference.setUniParent(null);
+		  final NonLocalJavaTypeReference nonLocal = new NonLocalJavaTypeReference(reference,parent);
+      return java().createExtendsWildcard(nonLocal);
 		}
 
 		private Binder _next;

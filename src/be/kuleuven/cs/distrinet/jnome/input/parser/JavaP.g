@@ -905,6 +905,7 @@ modifier returns [Modifier element]
     |   'synchronized' {retval.element = new Synchronized();}
     |   'transient' {retval.element = new Transient();}
     |   'volatile' {retval.element = new Volatile();}
+    |   'default' {retval.element = new Default();}
     ;
 
 enumConstantName returns [String element]

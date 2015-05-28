@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.AbstractInstantiatedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.BasicTypeArgument;
@@ -173,14 +174,20 @@ public class SSConstraint extends FirstPhaseConstraint {
 						recursive.setUniParent(parent());
 						result.addAll(recursive.process());
 					} else if(arg instanceof ExtendsWildcard) {
-						JavaTypeReference V = new JavaExtendsReference(((ExtendsWildcard)arg).typeReference());
+						final JavaTypeReference typeReference = (JavaTypeReference) ((ExtendsWildcard)arg).typeReference();
+						JavaTypeReference clone = Util.clone(typeReference);
+						final NonLocalJavaTypeReference nonLocal = new NonLocalJavaTypeReference(clone, typeReference.parent());
+            JavaTypeReference V = new JavaExtendsReference(nonLocal);
 						V.setUniParent(ithTypeParameterOfG);
 						EQConstraint recursive = new EQConstraint(V, U.getElement());
 						parent().addGenerated(recursive);
 						recursive.setUniParent(parent());
 						result.addAll(recursive.process());
 					} else if(arg instanceof SuperWildcard) {
-						JavaTypeReference V = new JavaSuperReference(((SuperWildcard)arg).typeReference());
+            final JavaTypeReference typeReference = (JavaTypeReference) ((SuperWildcard)arg).typeReference();
+            JavaTypeReference clone = Util.clone(typeReference);
+            final NonLocalJavaTypeReference nonLocal = new NonLocalJavaTypeReference(clone, typeReference.parent());
+						JavaTypeReference V = new JavaSuperReference(nonLocal);
 						V.setUniParent(ithTypeParameterOfG);
 						EQConstraint recursive = new EQConstraint(V, U.getElement());
 						parent().addGenerated(recursive);

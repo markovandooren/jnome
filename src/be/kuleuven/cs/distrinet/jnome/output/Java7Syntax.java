@@ -1496,7 +1496,7 @@ public class Java7Syntax extends Syntax {
   }
   
   public String toCodeAssignment(AssignmentExpression expr)  {
-    return toCode((Element)expr.getVariableExpression()) + " = " + toCode(expr.getValue());
+    return toCode((Element)expr.variableExpression()) + " = " + toCode(expr.getValue());
   }
   
 	public boolean isEmptyArrayIndex(Element element) {

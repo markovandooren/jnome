@@ -293,7 +293,7 @@ public class RawType extends ClassWithBody implements JavaType {
 	}
 	
 	@Override
-	public boolean lowerBoundAtLeatAsHighAs(Type other, TypeFixer trace) throws LookupException {
+	public boolean lowerBoundAtLeastAsHighAs(Type other, TypeFixer trace) throws LookupException {
 	  return other.superTypeJudge().get(this) != null;
 	}
 }

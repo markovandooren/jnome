@@ -1,4 +1,4 @@
-// $ANTLR 3.3 Nov 30, 2010 12:50:56 JavaP.g 2015-05-28 11:17:25
+// $ANTLR 3.3 Nov 30, 2010 12:50:56 JavaP.g 2015-05-28 15:36:57
 
 package be.kuleuven.cs.distrinet.jnome.input.parser;
 
@@ -516,13 +516,13 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         return expressionFactory().createPostfixOperatorInvocation(name,target);
       }
 
-      private ExpressionFactory _expressionFactory = new JavaExpressionFactory();
+      private JavaExpressionFactory _expressionFactory = new JavaExpressionFactory();
 
-      public ExpressionFactory expressionFactory() {
+      public JavaExpressionFactory expressionFactory() {
         return _expressionFactory;
       }
 
-      public void setExpressionFactory(ExpressionFactory expressionFactory) {
+      public void setExpressionFactory(JavaExpressionFactory expressionFactory) {
         _expressionFactory = expressionFactory;
       }
 
@@ -14429,7 +14429,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     if ( state.backtracking==0 ) {
                       String txt = (op!=null?input.toString(op.start,op.stop):null);
                                if(txt.equals("=")) {
-                                 retval.element = new AssignmentExpression(ex.element,exx.element);
+                                 retval.element = expressionFactory().createAssignmentExpression(ex.element,exx.element);
                                } else {
                                  retval.element = createInfixOperatorInvocation((op!=null?input.toString(op.start,op.stop):null),ex.element);
                                  ((InfixOperatorInvocation)retval.element).addArgument(exx.element);

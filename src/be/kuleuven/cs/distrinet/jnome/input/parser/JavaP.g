@@ -211,13 +211,13 @@ scope TargetScope {
     return expressionFactory().createPostfixOperatorInvocation(name,target);
   }
 
-  private ExpressionFactory _expressionFactory = new JavaExpressionFactory();
+  private JavaExpressionFactory _expressionFactory = new JavaExpressionFactory();
 
-  public ExpressionFactory expressionFactory() {
+  public JavaExpressionFactory expressionFactory() {
     return _expressionFactory;
   }
 
-  public void setExpressionFactory(ExpressionFactory expressionFactory) {
+  public void setExpressionFactory(JavaExpressionFactory expressionFactory) {
     _expressionFactory = expressionFactory;
   }
 
@@ -1457,7 +1457,7 @@ expression returns [Expression element]
     :   ex=conditionalExpression {retval.element=ex.element;} (op=assignmentOperator exx=expression
         {String txt = $op.text;
          if(txt.equals("=")) {
-           retval.element = new AssignmentExpression(ex.element,exx.element);
+           retval.element = expressionFactory().createAssignmentExpression(ex.element,exx.element);
          } else {
            retval.element = createInfixOperatorInvocation($op.text,ex.element);
            ((InfixOperatorInvocation)retval.element).addArgument(exx.element);

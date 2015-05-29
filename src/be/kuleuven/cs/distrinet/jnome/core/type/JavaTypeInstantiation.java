@@ -220,14 +220,6 @@ public class JavaTypeInstantiation extends TypeInstantiation implements JavaType
 			Iterator<TypeParameter> iter = parameters.iterator();
 			while(iter.hasNext()) {
 				TypeParameter parameter = iter.next();
-				//				TypeParameter clone = clone(parameter);
-				//				for(BasicJavaTypeReference tref: clone.descendants(BasicJavaTypeReference.class)) {
-				//					Type element = tref.getElement();
-				//					if(parameters.contains(element)) {
-				//						
-				//					}
-				//				}
-
 				result.append(parameter.toString());
 				if(iter.hasNext()) {
 					result.append(",");

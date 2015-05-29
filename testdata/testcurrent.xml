@@ -1,0 +1,6 @@
+<project name="testcurrent">
+  <language name="java"/>
+	<sourcepath>
+      <source root="current" extension=".java"/>
+	</sourcepath>
+</project>

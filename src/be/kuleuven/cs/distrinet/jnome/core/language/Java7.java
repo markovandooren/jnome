@@ -706,9 +706,7 @@ public class Java7 extends ObjectOrientedLanguage {
 				result.setUniParent(type.parent());
 				// next setup the generic parameters.
 				for(TypeParameter parameter: type.parameters(TypeParameter.class)) {
-					ActualTypeArgument arg = argument(parameter);
-					arg.setUniParent(null);
-					tref.addArgument(arg);
+					cloneActualTypeArguments(parameter,tref);
 				}
 			} else if (type instanceof FormalParameterType) {
 				//result = new NonLocalJavaTypeReference(new BasicJavaTypeReference(type.signature().name()),type.parent());
@@ -768,6 +766,34 @@ public class Java7 extends ObjectOrientedLanguage {
 		
 		
     public static void cloneActualTypeArguments(TypeParameter parameter, BasicJavaTypeReference tref) {
+      ActualTypeArgument result = null;
+      if(parameter instanceof InstantiatedTypeParameter) {
+        ActualTypeArgument argument = ((InstantiatedTypeParameter)parameter).argument();
+        result = Util.clone(argument);
+        if(result instanceof ActualTypeArgumentWithTypeReference) {
+          ActualTypeArgumentWithTypeReference argWithRef = (ActualTypeArgumentWithTypeReference) result;
+          //it will be detached from the cloned argument automatically
+          NonLocalJavaTypeReference ref = new NonLocalJavaTypeReference((JavaTypeReference) argWithRef.typeReference(),argument);
+          argWithRef.setTypeReference(ref);
+        }
+        tref.addArgument(result);
+      } else {
+        List<TypeConstraint> constraints = ((CapturedTypeParameter)parameter).constraints();
+//        if(constraints.size() == 1){ 
+        for(TypeConstraint typeConstraint: constraints) {
+//          TypeConstraint typeConstraint = constraints.get(0);
+          if(typeConstraint instanceof EqualityConstraint) {
+            result = parameter.language(Java7.class).createBasicTypeArgument(Util.clone(typeConstraint.typeReference()));
+          } else if(typeConstraint instanceof ExtendsConstraint) {
+            result = parameter.language(Java7.class).createExtendsWildcard(Util.clone(typeConstraint.typeReference()));
+          } else if(typeConstraint instanceof SuperConstraint) {
+            result = parameter.language(Java7.class).createSuperWildcard(Util.clone(typeConstraint.typeReference()));
+          }
+          tref.addArgument(result);
+        }       
+      }
+    }
+    
 		public static ActualTypeArgument cloneActualTypeArgument(TypeParameter parameter) {
 			ActualTypeArgument result = null;
 			if(parameter instanceof InstantiatedTypeParameter) {
@@ -790,14 +816,7 @@ public class Java7 extends ObjectOrientedLanguage {
 					} else if(typeConstraint instanceof SuperConstraint) {
             result = parameter.language(Java7.class).createSuperWildcard(Util.clone(typeConstraint.typeReference()));
          }
-				}
-//					// there are always constraints in a captured type parameter
-//					for(TypeConstraint constraint: constraints) {
-//						if(constraints instanceof ExtendsConstraint) {
-//							
-//						}
-//					}
-				
+				}				
 			}
 			if(result != null) {
 				result.setUniParent(parameter);

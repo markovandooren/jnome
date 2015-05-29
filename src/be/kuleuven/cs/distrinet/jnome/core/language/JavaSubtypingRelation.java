@@ -291,7 +291,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		List<TypeParameter> parameters = type.parameters(TypeParameter.class);
 		List<ActualTypeArgument> result = new ArrayList<ActualTypeArgument>();
 		for(TypeParameter parameter: parameters) {
-			result.add(Java7.argument(parameter));
+			result.add(Java7.cloneActualTypeArgument(parameter));
 		}
 		return result;
 	}

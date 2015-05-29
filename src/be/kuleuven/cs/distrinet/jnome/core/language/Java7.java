@@ -765,8 +765,10 @@ public class Java7 extends ObjectOrientedLanguage {
 			}
 			return result;
 		}
-
-		public static ActualTypeArgument argument(TypeParameter parameter) {
+		
+		
+    public static void cloneActualTypeArguments(TypeParameter parameter, BasicJavaTypeReference tref) {
+		public static ActualTypeArgument cloneActualTypeArgument(TypeParameter parameter) {
 			ActualTypeArgument result = null;
 			if(parameter instanceof InstantiatedTypeParameter) {
 				ActualTypeArgument argument = ((InstantiatedTypeParameter)parameter).argument();

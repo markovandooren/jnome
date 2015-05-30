@@ -33,8 +33,8 @@ public class ArrayTypeReference  extends ElementImpl implements JavaTypeReferenc
 		}
 	}
 	
-	public ArrayTypeReference(JavaTypeReference componentType) {
-		set(_elementType,componentType);
+	public ArrayTypeReference(JavaTypeReference elementType) {
+		this(elementType,1);
 	}
 	
   public JavaTypeReference elementTypeReference() {

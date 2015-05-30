@@ -1,29 +1,34 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
-import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.element.ElementImpl;
-import org.aikodi.chameleon.core.lookup.LookupContext;
 import org.aikodi.chameleon.core.lookup.LookupException;
-import org.aikodi.chameleon.core.validation.Valid;
-import org.aikodi.chameleon.core.validation.Verification;
-import org.aikodi.chameleon.oo.type.IntersectionTypeReference;
 import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.util.association.Single;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
-
+/**
+ * A class of references to array types.
+ * 
+ * @author Marko van Dooren
+ */
 public class ArrayTypeReference  extends ElementImpl implements JavaTypeReference {
 	
 	/**
-	 * If the given a
-	 * @param elementType
-	 * @param arrayDimension
+	 * <p>Create a new reference to an array with the given dimension of objects of 
+	 * the given element type.</p>
+	 * 
+	 * <p>If the array dimension is N, and N is greater than 1, N-1 additional
+	 * array type references will be created such that each array dimension
+	 * is represented by one array type reference.</p>
+	 * 
+	 * @param elementType A reference to the type of the elements in the array. 
+	 *                    The reference cannot be null. 
+	 * @param arrayDimension The dimension of the array. The dimension must be
+	 *                    greater than 0.
 	 */
  /*@
    @ public behavior
    @
-   @ pre arrayDimension >= 1;
+   @ pre arrayDimension > 0;
    @*/
 	public ArrayTypeReference(JavaTypeReference elementType, int arrayDimension) {
 		if(arrayDimension > 1) {

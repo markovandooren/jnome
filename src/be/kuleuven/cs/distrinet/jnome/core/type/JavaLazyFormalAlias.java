@@ -32,7 +32,14 @@ public class JavaLazyFormalAlias extends LazyFormalAlias implements JavaType {
       return true;
     }
     trace.add(other, parameter());
-    return super.upperBoundNotHigherThan(other, trace);
+    boolean result = aliasedType().upperBoundNotHigherThan(other, trace);
+    return result;
+//    return JavaType.super.upperBoundNotHigherThan(other, trace);
+  }
+  
+  @Override
+  public boolean lowerBoundAtLeastAsHighAs(Type other, TypeFixer trace) throws LookupException {
+    return other.upperBoundNotHigherThan(aliasedType(), trace);
   }
 
 }

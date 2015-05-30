@@ -470,22 +470,15 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 			ArrayType second2 = (ArrayType)second;
 			result = convertibleThroughUncheckedConversionAndSubtyping(first2.elementType(), second2.elementType());
 		} else {
-		  if(first.subTypeOf(second) != (first.superTypeJudge().get(second) != null)) {
+		  final boolean a1 = first.subTypeOf(second);
+      final boolean a2 = first.superTypeJudge().get(second) != null;
+      if(a1 != a2) {
 		    boolean b1 = first.subTypeOf(second);
-		    boolean b2 = (first.superTypeJudge().get(second) != null);
+		    boolean b2 = a2;
 		    System.out.println(b1 && b2);
 		  }
 //		  return first.subTypeOf(second);
-		  return first.superTypeJudge().get(second) != null;
-		  
-//			Set<Type> supers = first.getSelfAndAllSuperTypesView();
-//			for(Type type: supers) {
-//				if(type.baseType().sameAs(second.baseType())) {
-//					return true;
-//				}
-//			}
-			
-			
+		  return a2;
 		}
 		return result;
 	}

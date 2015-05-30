@@ -10,10 +10,6 @@ public class JavaSuperWildcard extends SuperWildcard {
 		super(ref);
 	}
 
-	public JavaTypeReference toArray(int dimension) {
-		throw new ChameleonProgrammerException();
-	}
-
 	@Override
 	protected JavaSuperWildcard cloneSelf() {
 		return new JavaSuperWildcard(null);

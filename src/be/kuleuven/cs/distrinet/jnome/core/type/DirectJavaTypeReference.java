@@ -28,11 +28,6 @@ public class DirectJavaTypeReference extends ElementImpl implements JavaTypeRefe
 	}
 
 	@Override
-	public JavaTypeReference toArray(int dimension) {
-		return new ArrayTypeReference(this, dimension);
-	}
-
-	@Override
 	public JavaTypeReference erasedReference() {
 		Java7 java = language(Java7.class);
 		return java.reference(java.erasure(_type));

@@ -72,16 +72,6 @@ public class GenericTypeReference extends ElementImpl implements JavaTypeReferen
 		return target().erasedReference();
 	}
 
-	public JavaTypeReference toArray(int dimension) {
-  	JavaTypeReference result;
-  	if(dimension > 0) {
-  	  result = new ArrayTypeReference(clone(this), dimension);
-  	} else {
-  		result = this;
-  	}
-  	return result;
-	}
-
 	@Override
 	public Verification verifySelf() {
 		Type referencedElement;

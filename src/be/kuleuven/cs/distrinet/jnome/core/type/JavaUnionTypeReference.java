@@ -46,10 +46,6 @@ public class JavaUnionTypeReference extends UnionTypeReference implements JavaTy
 		return 0;
 	}
 
-	public JavaTypeReference toArray(int dimension) {
-		throw new ChameleonProgrammerException("Cannot change the dimension of an intersection type reference");
-	}
-
 	public List<ActualTypeArgument> typeArguments() {
 		return Collections.EMPTY_LIST;
 	}

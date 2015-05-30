@@ -12,18 +12,6 @@ public class JavaBasicTypeArgument extends BasicTypeArgument {
 		super(ref);
 	}
 
-//	public JavaTypeReference componentTypeReference() {
-//		return this;
-//	}
-//
-//	public JavaTypeReference erasedReference() {
-//		return new JavaBasicTypeArgument(((JavaTypeReference)typeReference()).erasedReference());
-//	}
-
-	public JavaTypeReference toArray(int dimension) {
-		throw new ChameleonProgrammerException();
-	}
-
 	@Override
 	protected JavaBasicTypeArgument cloneSelf() {
 		return new JavaBasicTypeArgument(null);

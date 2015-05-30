@@ -93,16 +93,6 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
   	_typeArguments.enableCache();
   }
   
-  public JavaTypeReference toArray(int arrayDimension) {
-  	JavaTypeReference result;
-  	if(arrayDimension > 0) {
-  	  result = new ArrayTypeReference(clone(this), arrayDimension);
-  	} else {
-  		result = this;
-  	}
-  	return result;
-  }
-
   public int arrayDimension() {
   	return 0;
   }

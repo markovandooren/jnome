@@ -79,6 +79,7 @@ import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.CapturedType;
+import be.kuleuven.cs.distrinet.jnome.core.type.ConstrainedTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaBasicTypeArgument;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaExtendsWildcard;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaIntersectionTypeReference;
@@ -779,18 +780,23 @@ public class Java7 extends ObjectOrientedLanguage {
         tref.addArgument(result);
       } else {
         List<TypeConstraint> constraints = ((CapturedTypeParameter)parameter).constraints();
-//        if(constraints.size() == 1){ 
-        for(TypeConstraint typeConstraint: constraints) {
-//          TypeConstraint typeConstraint = constraints.get(0);
+        if(constraints.size() == 1){ 
+//        for(TypeConstraint typeConstraint: constraints) {
+          TypeConstraint typeConstraint = constraints.get(0);
+          final TypeReference clone = Util.clone(typeConstraint.typeReference());
           if(typeConstraint instanceof EqualityConstraint) {
-            result = parameter.language(Java7.class).createBasicTypeArgument(Util.clone(typeConstraint.typeReference()));
+            result = parameter.language(Java7.class).createBasicTypeArgument(clone);
           } else if(typeConstraint instanceof ExtendsConstraint) {
-            result = parameter.language(Java7.class).createExtendsWildcard(Util.clone(typeConstraint.typeReference()));
+            result = parameter.language(Java7.class).createExtendsWildcard(clone);
           } else if(typeConstraint instanceof SuperConstraint) {
-            result = parameter.language(Java7.class).createSuperWildcard(Util.clone(typeConstraint.typeReference()));
+            result = parameter.language(Java7.class).createSuperWildcard(clone);
           }
           tref.addArgument(result);
-        }       
+        } else {
+          ConstrainedTypeReference constrainedTypeReference = new ConstrainedTypeReference();
+          constraints.forEach(c -> constrainedTypeReference.addConstraint(c.clone(c)));
+          result = parameter.language(Java7.class).createBasicTypeArgument(constrainedTypeReference);
+        }
       }
     }
     
@@ -809,12 +815,13 @@ public class Java7 extends ObjectOrientedLanguage {
 				List<TypeConstraint> constraints = ((CapturedTypeParameter)parameter).constraints();
 				if(constraints.size() == 1){ 
 					TypeConstraint typeConstraint = constraints.get(0);
-					if(typeConstraint instanceof EqualityConstraint) {
-						result = parameter.language(Java7.class).createBasicTypeArgument(Util.clone(typeConstraint.typeReference()));
+					final TypeReference clone = Util.clone(typeConstraint.typeReference());
+          if(typeConstraint instanceof EqualityConstraint) {
+						result = parameter.language(Java7.class).createBasicTypeArgument(clone);
 					} else if(typeConstraint instanceof ExtendsConstraint) {
-	           result = parameter.language(Java7.class).createExtendsWildcard(Util.clone(typeConstraint.typeReference()));
+	           result = parameter.language(Java7.class).createExtendsWildcard(clone);
 					} else if(typeConstraint instanceof SuperConstraint) {
-            result = parameter.language(Java7.class).createSuperWildcard(Util.clone(typeConstraint.typeReference()));
+            result = parameter.language(Java7.class).createSuperWildcard(clone);
          }
 				}				
 			}

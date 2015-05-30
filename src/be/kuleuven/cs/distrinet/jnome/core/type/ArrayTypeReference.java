@@ -37,10 +37,6 @@ public class ArrayTypeReference  extends ElementImpl implements JavaTypeReferenc
 		set(_elementType,componentType);
 	}
 	
-//  public int arrayDimension() {
-//  	return 1+elementTypeReference().arrayDimension();
-//  }
-  
   public JavaTypeReference elementTypeReference() {
   	return _elementType.getOtherEnd();
   }
@@ -53,27 +49,8 @@ public class ArrayTypeReference  extends ElementImpl implements JavaTypeReferenc
 		return result;
 	}
 
-//	public Type erasure() throws LookupException {
-//		return new ArrayType(elementTypeReference().erasure());
-//	}
-
-	public JavaTypeReference toArray(int dimension) {
-  	JavaTypeReference result;
-  	if(dimension > 0) {
-  	  result = new ArrayTypeReference(clone(this), dimension);
-  	} else {
-  		result = this;
-  	}
-  	return result;
-	}
-
 	protected ArrayTypeReference cloneSelf() {
 		return new ArrayTypeReference(null);
-	}
-
-	@Override
-	public Verification verifySelf() {
-		return Valid.create();
 	}
 
 	public Type getElement() throws LookupException {

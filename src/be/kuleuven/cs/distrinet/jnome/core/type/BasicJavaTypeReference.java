@@ -6,9 +6,6 @@ import java.util.Set;
 
 import org.aikodi.chameleon.core.Config;
 import org.aikodi.chameleon.core.declaration.Declaration;
-import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
-import org.aikodi.chameleon.core.declaration.TargetDeclaration;
-import org.aikodi.chameleon.core.lookup.DeclarationSelector;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.namespace.Namespace;
 import org.aikodi.chameleon.core.reference.CrossReference;
@@ -23,9 +20,9 @@ import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
 import org.aikodi.chameleon.util.Util;
 import org.aikodi.chameleon.util.association.Multi;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
-
 import com.google.common.collect.ImmutableSet;
+
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 
 public class BasicJavaTypeReference extends BasicTypeReference implements JavaTypeReference, CrossReferenceWithName<Type> {
 
@@ -37,11 +34,11 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
    * @param target
    */
   public BasicJavaTypeReference(NamedTarget target) {
-  	super(target.getTarget() == null ? null : typeReferenceTarget((NamedTarget) target.getTarget()), target.name());
+  	this(target.getTarget() == null ? null : typeReferenceTarget((NamedTarget) target.getTarget()), target.name());
   }
   
   public BasicJavaTypeReference(String fqn) {
-  	super(typeReferenceTarget(Util.getAllButLastPart(fqn)),Util.getLastPart(fqn));
+  	this(typeReferenceTarget(Util.getAllButLastPart(fqn)),Util.getLastPart(fqn));
   }
   
   protected static CrossReferenceTarget typeReferenceTarget(NamedTarget target) {

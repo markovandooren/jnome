@@ -259,7 +259,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
   		throw new ChameleonProgrammerException();
   	} else {
 //  		return new DirectJavaTypeReference(((AssignmentExpression)invocation().parent()).getVariable().getType());
-  		return ((TypeParameter)typeParameters().get(0)).language(Java7.class).reference(((AssignmentExpression)invocation().parent()).getVariableExpression().getType());
+  		return ((TypeParameter)typeParameters().get(0)).language(Java7.class).reference(((AssignmentExpression)invocation().parent()).variableExpression().getType());
   	}
   }
   

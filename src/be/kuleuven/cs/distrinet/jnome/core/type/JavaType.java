@@ -60,6 +60,6 @@ public interface JavaType extends Type {
 				Type sameBase = getSuperType(snd);
 				result = sameBase != null && (sameBase instanceof RawType || sameBase.compatibleParameters(snd, trace));
 			}
-			return result || other.lowerBoundAtLeatAsHighAs(this, trace);
+			return result || other.lowerBoundAtLeastAsHighAs(this, trace);
 	}
 }

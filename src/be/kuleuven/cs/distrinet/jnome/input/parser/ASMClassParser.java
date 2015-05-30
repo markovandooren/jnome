@@ -99,9 +99,6 @@ public class ASMClassParser {
     if(className == null) {
       throw new ChameleonProgrammerException();
     }
-    //		if(packageFQN == null) {
-    //			throw new ChameleonProgrammerException();
-    //		}
     _jarFile = file;
     _entry = entry;
     _name = className;
@@ -129,10 +126,16 @@ public class ASMClassParser {
       _children.put(qn,child);
     } else {
       ASMClassParser c = _children.get(Util.getFirstPart(qn));
-      c.add(child, next);
+      if(c != null) {
+        c.add(child, next);
+      }
     }
   }
 
+  /**
+   * A map that keeps track of the names of the inner classes, and the
+   * files that they read.
+   */
   private Map<String,ASMClassParser> _children;
 
   private ZipFile _jarFile;
@@ -142,7 +145,6 @@ public class ASMClassParser {
   public Document load(Java7 language) throws FileNotFoundException, IOException, LookupException {
     Type t = read(language);
     Document doc = new Document();
-    //		Namespace ns = namespace(language);
 
     NamespaceDeclaration decl;
     if(packageFQN() != null) {
@@ -154,10 +156,6 @@ public class ASMClassParser {
     decl.add(t);
     return doc;
   }
-
-  //	public Namespace namespace(Language lang) throws LookupException {
-  //		return lang.defaultNamespace().getOrCreateNamespace(_packageFQN);
-  //	}
 
   protected Type read(Java7 language) throws FileNotFoundException, IOException {
     InputStream inputStream = new BufferedInputStream(_jarFile.getInputStream(_entry));
@@ -291,10 +289,7 @@ public class ASMClassParser {
         }
         if(isVarargs(access)) {
           FormalParameter param = m.lastFormalParameter();
-          //					MultiFormalParameter multi = new MultiFormalParameter(param.signature(), ((ArrayTypeReference) param.getTypeReference()).elementTypeReference());
-
           MultiFormalParameter multi = MultiFormalParameter.createUnsafe(param.name(), (JavaTypeReference)param.getTypeReference());
-
           SingleAssociation<Element, Element> parentLink = param.parentLink();
           parentLink.getOtherRelation().replace(parentLink, multi.parentLink());
         }
@@ -549,10 +544,6 @@ public class ASMClassParser {
       return new InheritanceExtractor(language());
     }
 
-    //		@Override
-    //		public void visitFo(String name) {
-    //		}
-
     @Override
     public void visitFormalTypeParameter(String name) {
       _param = new FormalTypeParameter(name);
@@ -585,7 +576,26 @@ public class ASMClassParser {
     public Java7 language() {
       return _language;
     }
-
+    
+    /**
+     * For some reason, inner classes are presented via a different method.
+     * For now, we simply discard the existing type reference since
+     * for the following code:
+     * <code>
+     * class A extends B {
+     *   class C extends X&lt;C&gt;
+     * }
+     * </code> 
+     * 
+     * the super class of C is presented as B.X&lt;C&gt;.
+     * {@inheritDoc}
+     */
+    @Override
+    public void visitInnerClassType(String name) {
+      _tref = toRef(name,_language);
+      connect(_tref);
+    }
+    
     private void initPrimitiveMap() {
       _primitiveMap = new HashMap<Character, String>();
       _primitiveMap.put('C', "char");

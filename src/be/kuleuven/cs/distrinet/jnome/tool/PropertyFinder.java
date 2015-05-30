@@ -55,8 +55,8 @@ public class PropertyFinder extends CommandLineTool {
 			  					if(exprs.size() == 1) {
 			  						AssignmentExpression e = exprs.get(0);
 			  						String varName = null;
-			  						if(e.getVariableExpression() instanceof NameExpression) {
-			  							varName = ((NameExpression)e.getVariableExpression()).name();
+			  						if(e.variableExpression() instanceof NameExpression) {
+			  							varName = ((NameExpression)e.variableExpression()).name();
 			  						} 
 			  						boolean found = false;
 			  						List<NameExpression> reads = method.descendants(NameExpression.class);

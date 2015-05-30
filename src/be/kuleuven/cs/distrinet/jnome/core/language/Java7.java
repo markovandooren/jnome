@@ -44,12 +44,14 @@ import org.aikodi.chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference
 import org.aikodi.chameleon.oo.type.generics.BasicTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.CapturedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.EqualityConstraint;
+import org.aikodi.chameleon.oo.type.generics.ExtendsConstraint;
 import org.aikodi.chameleon.oo.type.generics.ExtendsWildcard;
 import org.aikodi.chameleon.oo.type.generics.ExtendsWildcardType;
 import org.aikodi.chameleon.oo.type.generics.FormalParameterType;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.InstantiatedParameterType;
 import org.aikodi.chameleon.oo.type.generics.InstantiatedTypeParameter;
+import org.aikodi.chameleon.oo.type.generics.SuperConstraint;
 import org.aikodi.chameleon.oo.type.generics.SuperWildcard;
 import org.aikodi.chameleon.oo.type.generics.SuperWildcardType;
 import org.aikodi.chameleon.oo.type.generics.TypeConstraint;
@@ -65,7 +67,6 @@ import org.aikodi.chameleon.support.rule.member.MemberInheritableByDefault;
 import org.aikodi.chameleon.support.rule.member.MemberInstanceByDefault;
 import org.aikodi.chameleon.support.rule.member.MemberOverridableByDefault;
 import org.aikodi.chameleon.support.rule.member.TypeExtensibleByDefault;
-import org.aikodi.chameleon.util.Pair;
 import org.aikodi.chameleon.util.Util;
 import org.aikodi.chameleon.workspace.View;
 
@@ -79,12 +80,12 @@ import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.CapturedType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaBasicTypeArgument;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeInstantiation;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaExtendsWildcard;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaIntersectionTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaPureWildcard;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaSuperWildcard;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaType;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeInstantiation;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaUnionTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.PureWildCardType;
@@ -782,7 +783,11 @@ public class Java7 extends ObjectOrientedLanguage {
 					TypeConstraint typeConstraint = constraints.get(0);
 					if(typeConstraint instanceof EqualityConstraint) {
 						result = parameter.language(Java7.class).createBasicTypeArgument(Util.clone(typeConstraint.typeReference()));
-					} 
+					} else if(typeConstraint instanceof ExtendsConstraint) {
+	           result = parameter.language(Java7.class).createExtendsWildcard(Util.clone(typeConstraint.typeReference()));
+					} else if(typeConstraint instanceof SuperConstraint) {
+            result = parameter.language(Java7.class).createSuperWildcard(Util.clone(typeConstraint.typeReference()));
+         }
 				}
 //					// there are always constraints in a captured type parameter
 //					for(TypeConstraint constraint: constraints) {

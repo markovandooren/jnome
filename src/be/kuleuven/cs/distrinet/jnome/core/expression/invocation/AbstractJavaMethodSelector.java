@@ -16,6 +16,7 @@ import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+import org.aikodi.chameleon.util.Util;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.language.JavaSubtypingRelation;
@@ -55,6 +56,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 			int nbActuals = invocation().nbActualParameters();
 			for(int i = 0; i< size; i++) {
 				Declaration decl = selectionCandidates.get(i);
+//				Util.debug(decl.name().equals("antMatchers") && invocation() instanceof JavaMethodInvocation && ((JavaMethodInvocation)invocation()).name().equals("antMatchers"));
 				if(_type.isInstance(decl)) {
 					M method = (M) decl;
 					int nbFormals = method.nbFormalParameters();
@@ -129,38 +131,44 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 		MethodHeader methodHeader = (MethodHeader) originalMethod.header().clone();
 		methodHeader.setOrigin(originalMethod.header());
 		methodHeader.setUniParent(originalMethod.parent());
-		List<TypeParameter> parameters = methodHeader.typeParameters();
+		List<TypeParameter> typeParameters = methodHeader.typeParameters();
 		TypeAssignmentSet typeAssignment;
-		int size = parameters.size();
-		if(size > 0 && (parameters.get(0) instanceof FormalTypeParameter)) {
+		int size = typeParameters.size();
+		if(size > 0 && (typeParameters.get(0) instanceof FormalTypeParameter)) {
 			if(invocation().hasTypeArguments()) {
 				List<ActualTypeArgument> typeArguments = invocation().typeArguments();
-				typeAssignment = new TypeAssignmentSet(parameters);
-				int theSize = typeArguments.size();
-				for(int i=0; i< theSize; i++) {
-					typeAssignment.add(new ActualTypeAssignment(parameters.get(i),typeArguments.get(i).upperBound()));
+				typeAssignment = new TypeAssignmentSet(typeParameters);
+				int nbActualTypeArguments = typeArguments.size();
+				for(int i=0; i< nbActualTypeArguments; i++) {
+					typeAssignment.add(new ActualTypeAssignment(typeParameters.get(i),typeArguments.get(i).upperBound()));
 				}
 			} else {
 				Java7 language = originalMethod.language(Java7.class);
 				// perform type inference
 				FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(invocation(),methodHeader);
-				List<Expression> actualParameters = invocation().getActualParameters();
-				List<Type> formalParameters = methodHeader.formalParameterTypes();
-				int theSize = actualParameters.size();
-				for(int i=0; i< theSize; i++) {
+				List<Expression> actualArguments = invocation().getActualParameters();
+				List<Type> formalParameterTypes = methodHeader.formalParameterTypes();
+				int maxFormalParameterIndex = formalParameterTypes.size() - 1;
+				int nbActualParameters = actualArguments.size();
+				for(int i=0; i< nbActualParameters; i++) {
 					// if the formal parameter type is reference type, add a constraint
-					Type argType = actualParameters.get(i).getType();
+					Type argType = actualArguments.get(i).getType();
 					if(includeNonreference || argType.is(language.REFERENCE_TYPE) == Ternary.TRUE) {
-					  //FIXME Check if substitution is every done on the type reference, and
+					  //FIXME Check if substitution is ever done on the type reference, and
 					  // adapt if necessary.
-						constraints.add(new SSConstraint(language.reference(argType), formalParameters.get(i)));
+					  int index = i;
+//					  Util.debug(index > maxFormalParameterIndex);
+					  if(index > maxFormalParameterIndex) {
+					    index = maxFormalParameterIndex;
+					  }
+						constraints.add(new SSConstraint(language.reference(argType), formalParameterTypes.get(index)));
 					}
 				}
 				typeAssignment = constraints.resolve();
 			}
 			List<TypeParameter> originalParameters = originalMethod.typeParameters();
 			for(int i = 0; i < size; i++) {
-				typeAssignment.substitute(parameters.get(i), originalParameters.get(i));
+				typeAssignment.substitute(typeParameters.get(i), originalParameters.get(i));
 			}
 		} else {
 			typeAssignment = null;

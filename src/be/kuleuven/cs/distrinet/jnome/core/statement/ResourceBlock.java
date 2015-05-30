@@ -1,13 +1,17 @@
 package be.kuleuven.cs.distrinet.jnome.core.statement;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.declaration.DeclarationContainer;
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.element.ElementImpl;
+import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.support.variable.LocalVariableDeclarator;
 import org.aikodi.chameleon.util.association.Multi;
 
-public class ResourceBlock extends ElementImpl {
+public class ResourceBlock extends ElementImpl implements DeclarationContainer {
 
 	@Override
 	protected Element cloneSelf() {
@@ -26,5 +30,12 @@ public class ResourceBlock extends ElementImpl {
 
 	public void removeResource(LocalVariableDeclarator decl) {
 		remove(_resources, decl);
+	}
+	
+	@Override
+	public List<? extends Declaration> locallyDeclaredDeclarations() throws LookupException {
+	  List<Declaration> result = new ArrayList<>();
+	  resources().forEach(d -> result.addAll(d.variables()));
+	  return result;
 	}
 }

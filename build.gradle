@@ -61,9 +61,9 @@ uploadArchives {
     }
 }
 List shared = [
-     'org.ow2.asm:asm:5.0.3',
+     'org.ow2.asm:asm-debug-all:5.0.3',
      'com.lexicalscope.jewelcli:jewelcli:0.8.5',
-     'net.sf.jgrapht:jgrapht:+',
+     'net.sf.jgrapht:jgrapht:0.9.1',
      'org.antlr:antlr:3.2'
 ]
 
@@ -89,7 +89,7 @@ configurations {
 }
 
 dependencies {
-  local project(':rejuse')
-  local project(':chameleon')
-  local shared
+  //local project(':rejuse')
+  //local project(':chameleon')
+  //local shared
 }

@@ -28,8 +28,7 @@ public class JavaNameExpression extends NameExpression {
 	protected Type actualType() throws LookupException {
 		Type result = super.actualType();
 		final MethodInvocation method = nearestAncestor(MethodInvocation.class);
-		if(false) { // works
-//		if(method != null) { // does not work yet because of bug in Java7.reference(Type) with multiple constraints
+		if(method != null) { // does not work yet because of bug in Java7.reference(Type) with multiple constraints
 		  final Declaration declaration = nearestAncestor(Declaration.class);
 		  if(method.hasAncestor(declaration)) 
 		    if(result instanceof JavaTypeInstantiation) {

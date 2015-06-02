@@ -5,6 +5,8 @@ import java.util.List;
 import org.aikodi.chameleon.core.lookup.LocalLookupContext;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.type.TypeInstantiation;
+import org.aikodi.chameleon.oo.type.generics.CapturedTypeParameter;
+import org.aikodi.chameleon.util.Util;
 import org.aikodi.chameleon.oo.type.ParameterSubstitution;
 import org.aikodi.chameleon.oo.type.Type;
 
@@ -23,9 +25,10 @@ public class CapturedType extends JavaTypeInstantiation {
 
 	public CapturedType(ParameterSubstitution substitution, Type baseType) {
 		super(substitution, baseType);
+		Util.debug(!substitution.parameters().stream().allMatch(p -> p instanceof CapturedTypeParameter));
 	}
 
-	public CapturedType(List<ParameterSubstitution<?>> parameters, Type baseType) {
+	protected CapturedType(List<ParameterSubstitution<?>> parameters, Type baseType) {
 		super(parameters, baseType);
 	}
 
@@ -39,4 +42,5 @@ public class CapturedType extends JavaTypeInstantiation {
 		return localContext();
 	}
 
+	
 }

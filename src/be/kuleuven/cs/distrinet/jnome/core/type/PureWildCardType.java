@@ -9,7 +9,7 @@ import org.aikodi.chameleon.oo.type.generics.IntervalType;
 public class PureWildCardType extends IntervalType {
 
 	public PureWildCardType(Type type) throws LookupException {
-		super("?",type ,type.language(ObjectOrientedLanguage.class).getNullType(type.view().namespace()));
+		super("?",type.language(ObjectOrientedLanguage.class).getNullType(type.view().namespace()),type);
 	}
 
 	protected PureWildCardType(String name, Type lowerBound, Type upperBound) {

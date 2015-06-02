@@ -128,7 +128,7 @@ public class EnumType extends RegularJavaType {
 		List<InheritanceRelation> result = new ArrayList<>();
 		Java7 language = language(Java7.class);
 		BasicJavaTypeReference enumReference = (BasicJavaTypeReference) language.createTypeReference("java.lang.Enum");
-		enumReference.addArgument(language.createBasicTypeArgument(language.createTypeReference(getFullyQualifiedName())));
+		enumReference.addArgument(language.createEqualityTypeArgument(language.createTypeReference(getFullyQualifiedName())));
 		InheritanceRelation relation = new SubtypeRelation(enumReference);
   	relation.setUniParent(this);
   	relation.setMetadata(new TagImpl(), IMPLICIT_CHILD);

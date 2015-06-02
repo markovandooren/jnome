@@ -8,8 +8,8 @@ import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.AbstractInstantiatedTypeParameter;
-import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
-import org.aikodi.chameleon.oo.type.generics.BasicTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.TypeArgument;
+import org.aikodi.chameleon.oo.type.generics.EqualityTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.ExtendsWildcard;
 import org.aikodi.chameleon.oo.type.generics.InstantiatedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.SuperWildcard;
@@ -93,10 +93,10 @@ public class SSConstraint extends FirstPhaseConstraint {
 			TypeParameter ithTypeParameterOfG = G.parameters(TypeParameter.class).get(index);
 			if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
 //				Util.debug(ithTypeParameterOfG instanceof ErasedTypeParameter);
-				ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
+				TypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 				// 1)
-				if(arg instanceof BasicTypeArgument) {
-					JavaTypeReference V = (JavaTypeReference) ((BasicTypeArgument)arg).typeReference();
+				if(arg instanceof EqualityTypeArgument) {
+					JavaTypeReference V = (JavaTypeReference) ((EqualityTypeArgument)arg).typeReference();
 					GGConstraint recursive = new GGConstraint(V, U.getElement());
 					parent().addGenerated(recursive);
 					recursive.setUniParent(parent());
@@ -130,10 +130,10 @@ public class SSConstraint extends FirstPhaseConstraint {
 			TypeParameter ithTypeParameterOfG = G.parameters(TypeParameter.class).get(index);
 			if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
 //				Util.debug(ithTypeParameterOfG instanceof ErasedTypeParameter);
-				ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
+				TypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 				// 1)
-				if(arg instanceof BasicTypeArgument) {
-					JavaTypeReference V = (JavaTypeReference) ((BasicTypeArgument)arg).typeReference();
+				if(arg instanceof EqualityTypeArgument) {
+					JavaTypeReference V = (JavaTypeReference) ((EqualityTypeArgument)arg).typeReference();
 					SSConstraint recursive = new SSConstraint(V, U.getElement());
 					recursive.setUniParent(parent());
 					result.addAll(recursive.process());
@@ -166,9 +166,9 @@ public class SSConstraint extends FirstPhaseConstraint {
 				if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
 //					Util.debug(ithTypeParameterOfG instanceof ErasedTypeParameter);
 					// Get the i-th type parameter of zuppa: V.
-					ActualTypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
-					if(arg instanceof BasicTypeArgument) {
-						JavaTypeReference V = (JavaTypeReference) ((BasicTypeArgument)arg).typeReference();
+					TypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
+					if(arg instanceof EqualityTypeArgument) {
+						JavaTypeReference V = (JavaTypeReference) ((EqualityTypeArgument)arg).typeReference();
 						EQConstraint recursive = new EQConstraint(V, U.getElement());
 						parent().addGenerated(recursive);
 						recursive.setUniParent(parent());

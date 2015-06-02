@@ -18,14 +18,15 @@ import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.language.SubtypeRelation;
+import org.aikodi.chameleon.oo.plugin.ObjectOrientedFactory;
 import org.aikodi.chameleon.oo.type.IntersectionType;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeFixer;
 import org.aikodi.chameleon.oo.type.TypeIndirection;
 import org.aikodi.chameleon.oo.type.TypeReference;
-import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
-import org.aikodi.chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
-import org.aikodi.chameleon.oo.type.generics.BasicTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.TypeArgument;
+import org.aikodi.chameleon.oo.type.generics.TypeArgumentWithTypeReference;
+import org.aikodi.chameleon.oo.type.generics.EqualityTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.ExtendsWildcard;
 import org.aikodi.chameleon.oo.type.generics.InstantiatedParameterType;
 import org.aikodi.chameleon.oo.type.generics.InstantiatedTypeParameter;
@@ -151,6 +152,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 				  for(Type e: est) {
 				    boolean add = r.sameAs(e);
             if(! add) {
+            	// TODO get rid of dependency on the bounds
               add = e.upperBound().upperBoundNotHigherThan(r.upperBound(),new TypeFixer()) && 
                   e.lowerBound().upperBoundNotHigherThan(r.lowerBound(),new TypeFixer()) && 
                   r.upperBound().upperBoundNotHigherThan(e.upperBound(),new TypeFixer()) && 
@@ -199,10 +201,8 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 			throws LookupException {
 		if(candidates.isEmpty()) {
 			throw new LookupException("No candidates for the inferred type");
-		} else if(candidates.size() == 1) {
-			return candidates.get(0);
-		} else {
-			return IntersectionType.create(candidates);
+		}  else {
+			return java().plugin(ObjectOrientedFactory.class).createIntersectionType(candidates);
 		}
 	}
 
@@ -275,8 +275,8 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		if(first.nbTypeParameters(TypeParameter.class) > 0) {
 			result = Util.clone(first);
 			result.setUniParent(first.parent());
-			List<ActualTypeArgument> firstArguments = arguments(first);
-			List<ActualTypeArgument> secondArguments = arguments(second);
+			List<TypeArgument> firstArguments = arguments(first);
+			List<TypeArgument> secondArguments = arguments(second);
 			int size = firstArguments.size();
 			if(secondArguments.size() != size) {
 				throw new ChameleonProgrammerException("The number of type parameters from the first list: "+size+" is different from the number of type parameters in the second list: "+secondArguments.size());
@@ -287,20 +287,20 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		return result;
 	}
 
-	private List<ActualTypeArgument> arguments(Type type) {
+	private List<TypeArgument> arguments(Type type) {
 		List<TypeParameter> parameters = type.parameters(TypeParameter.class);
-		List<ActualTypeArgument> result = new ArrayList<ActualTypeArgument>();
+		List<TypeArgument> result = new ArrayList<TypeArgument>();
 		for(TypeParameter parameter: parameters) {
 			result.add(Java7.cloneActualTypeArgument(parameter));
 		}
 		return result;
 	}
 
-	private List<TypeParameter> lcta(List<ActualTypeArgument> firsts, List<ActualTypeArgument> seconds, Binder root) throws LookupException {
+	private List<TypeParameter> lcta(List<TypeArgument> firsts, List<TypeArgument> seconds, Binder root) throws LookupException {
 		List<TypeParameter> result = new ArrayList<TypeParameter>();
 		int size = firsts.size();
 		for(int i=0; i<size;i++) {
-			ActualTypeArgument ith = firsts.get(i);
+			TypeArgument ith = firsts.get(i);
 			Element parent = ith.parent();
 			result.add(new InstantiatedTypeParameter(((TypeParameter)parent).name(),lcta(ith, seconds.get(i),root)));
 		}
@@ -313,28 +313,28 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 
 
 
-	private ActualTypeArgument lcta(ActualTypeArgument first, ActualTypeArgument second, Binder root) throws LookupException { // , List<List<? extends TypeReference>> trace
-		ActualTypeArgument result;
-		if(first instanceof BasicTypeArgument || second instanceof BasicTypeArgument) {
-			if(first instanceof BasicTypeArgument && second instanceof BasicTypeArgument) {
-				Type U = ((BasicTypeArgument)first).type();
-				Type V = ((BasicTypeArgument)second).type();
+	private TypeArgument lcta(TypeArgument first, TypeArgument second, Binder root) throws LookupException { // , List<List<? extends TypeReference>> trace
+		TypeArgument result;
+		if(first instanceof EqualityTypeArgument || second instanceof EqualityTypeArgument) {
+			if(first instanceof EqualityTypeArgument && second instanceof EqualityTypeArgument) {
+				Type U = ((EqualityTypeArgument)first).type();
+				Type V = ((EqualityTypeArgument)second).type();
 				if(U.sameAs(V)) {
 					// lcta(U,V) = U if U = V
 					result = Util.clone(first);
 				} else {
 					// otherwise ? extends lub(U,V)
 					List<JavaTypeReference> list = new ArrayList<JavaTypeReference>();
-					list.add((JavaTypeReference) ((BasicTypeArgument)first).typeReference());
-					list.add((JavaTypeReference) ((BasicTypeArgument)second).typeReference());
+					list.add((JavaTypeReference) ((EqualityTypeArgument)first).typeReference());
+					list.add((JavaTypeReference) ((EqualityTypeArgument)second).typeReference());
 					result = new Binder(list,root).argument();
 				}
 			} else if(first instanceof ExtendsWildcard || second instanceof ExtendsWildcard) {
-				BasicTypeArgument basic = (BasicTypeArgument) (first instanceof BasicTypeArgument? first : second);
+				EqualityTypeArgument basic = (EqualityTypeArgument) (first instanceof EqualityTypeArgument? first : second);
 				ExtendsWildcard ext = (ExtendsWildcard)(basic == first ? second : first);
 				result = new Binder(typeReferenceList(basic,ext),root).argument();
 			} else if(first instanceof SuperWildcard || second instanceof SuperWildcard) {
-				BasicTypeArgument basic = (BasicTypeArgument) (first instanceof BasicTypeArgument? first : second);
+				EqualityTypeArgument basic = (EqualityTypeArgument) (first instanceof EqualityTypeArgument? first : second);
 				SuperWildcard ext = (SuperWildcard)(basic == first ? second : first);
 				result = java().createSuperWildcard(glb(typeReferenceList(basic,ext)));
 			} else {
@@ -349,10 +349,10 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 
 			} else if(first instanceof SuperWildcard || second instanceof SuperWildcard) {
 				ExtendsWildcard ext = (ExtendsWildcard) (first instanceof ExtendsWildcard? first : second);
-				Type U = ((BasicTypeArgument)first).type();
-				Type V = ((BasicTypeArgument)second).type();
+				Type U = ((EqualityTypeArgument)first).type();
+				Type V = ((EqualityTypeArgument)second).type();
 				if(U.sameAs(V)) {
-					result = java().createBasicTypeArgument(Util.clone(ext.typeReference()));
+					result = java().createEqualityTypeArgument(Util.clone(ext.typeReference()));
 				} else {
 					result = java().createPureWildcard();
 				}
@@ -371,7 +371,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		return result;
 	}
 
-	private List<JavaTypeReference> typeReferenceList(ActualTypeArgumentWithTypeReference first, ActualTypeArgumentWithTypeReference second) throws LookupException {
+	private List<JavaTypeReference> typeReferenceList(TypeArgumentWithTypeReference first, TypeArgumentWithTypeReference second) throws LookupException {
 		List<JavaTypeReference> list = new ArrayList<JavaTypeReference>();
 		list.add((JavaTypeReference) first.typeReference());
 		list.add((JavaTypeReference) second.typeReference());
@@ -386,7 +386,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 			_next = next;
 		}
 
-		public ActualTypeArgument argument() throws LookupException {
+		public TypeArgument argument() throws LookupException {
 			return argument(_refs, this);
 		}
 
@@ -394,7 +394,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 
 		private boolean _looped;
 
-		protected ActualTypeArgument argument(List<? extends JavaTypeReference> refs, Binder root) throws LookupException {
+		protected TypeArgument argument(List<? extends JavaTypeReference> refs, Binder root) throws LookupException {
 			if(_active && equal(refs,_refs)) {
 				_looped = true;
 				return loop();
@@ -431,11 +431,11 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 			return result;
 		}
 
-		protected ActualTypeArgument loop() {
+		protected TypeArgument loop() {
 			return new PureWildcard();
 		}
 
-		protected ActualTypeArgument createArgument(Type type) throws LookupException {
+		protected TypeArgument createArgument(Type type) throws LookupException {
 		  final JavaTypeReference reference = java().reference(type);
 		  Element parent = reference.parent();
 		  reference.setUniParent(null);
@@ -478,7 +478,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		    System.out.println(b1 && b2);
 		  }
 //		  return first.subTypeOf(second);
-		  return a2;
+		  result = a1;
 		}
 		return result;
 	}

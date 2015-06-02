@@ -119,7 +119,7 @@ public class ConstructorSelector extends AbstractConstructorSelector {
 		for (TypeParameter param : type.parameters(TypeParameter.class)) {
 			method.header().addTypeParameter(Util.clone(param));
 			BasicJavaTypeReference tref = language.createTypeReference(param.name());
-			returnTypeReference.addArgument(language.createBasicTypeArgument(tref));
+			returnTypeReference.addArgument(language.createEqualityTypeArgument(tref));
 		}
 		return method;
 	}

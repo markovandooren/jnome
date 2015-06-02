@@ -36,7 +36,7 @@ public class JavaLazyFormalAlias extends LazyFormalAlias implements JavaType {
   }
   
   @Override
-  public boolean lowerBoundAtLeastAsHighAs(Type other, TypeFixer trace) throws LookupException {
+  public boolean upperBoundAtLeastAsHighAs(Type other, TypeFixer trace) throws LookupException {
     if(trace.contains(other, parameter())) {
       return true;
     }

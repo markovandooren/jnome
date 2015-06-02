@@ -1,5 +1,9 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.element.ElementImpl;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.type.Type;
@@ -68,8 +72,12 @@ public class ArrayTypeReference  extends ElementImpl implements JavaTypeReferenc
 	}
 
 	@Override
+	public String toString(Set<Element> visited) {
+		return elementTypeReference().toString(visited)+"[]";
+	}
+
 	public String toString() {
-		return elementTypeReference().toString()+"[]";
+		return toString(new HashSet<>());
 	}
 
 }

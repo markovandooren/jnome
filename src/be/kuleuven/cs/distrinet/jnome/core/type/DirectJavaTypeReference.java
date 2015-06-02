@@ -1,5 +1,7 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
+import java.util.Set;
+
 import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.element.ElementImpl;
@@ -9,6 +11,7 @@ import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.type.IntersectionTypeReference;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
+import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.rejuse.contract.Contracts;
@@ -47,4 +50,11 @@ public class DirectJavaTypeReference extends ElementImpl implements JavaTypeRefe
 		return new DirectJavaTypeReference(_type);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.aikodi.chameleon.oo.type.TypeReference#toString(java.util.Set)
+	 */
+	@Override
+	public String toString(Set<Element> visited) {
+		return language(Java7.class).reference(getElement()).toString(visited);
+	}
 }

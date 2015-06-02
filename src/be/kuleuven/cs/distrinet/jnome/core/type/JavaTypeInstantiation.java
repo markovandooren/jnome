@@ -6,8 +6,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.lookup.DeclarationSelector;
 import org.aikodi.chameleon.core.lookup.LocalLookupContext;
 import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.lookup.SelectionResult;
 import org.aikodi.chameleon.core.tag.TagImpl;
 import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
@@ -16,7 +19,7 @@ import org.aikodi.chameleon.oo.type.Parameter;
 import org.aikodi.chameleon.oo.type.ParameterSubstitution;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.Type.SuperTypeJudge;
-import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.TypeArgument;
 import org.aikodi.chameleon.oo.type.generics.CapturedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.InstantiatedTypeParameter;
@@ -25,6 +28,8 @@ import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.oo.type.inheritance.InheritanceRelation;
 import org.aikodi.chameleon.oo.type.inheritance.SubtypeRelation;
 import org.aikodi.chameleon.util.Lists;
+import org.aikodi.chameleon.util.StackOverflowTracer;
+import org.aikodi.chameleon.util.Util;
 
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
@@ -43,7 +48,7 @@ public class JavaTypeInstantiation extends TypeInstantiation implements JavaType
 		super(substitution, baseType);
 	}
 
-	public JavaTypeInstantiation(Type baseType, List<ActualTypeArgument> typeArguments) throws LookupException {
+	public JavaTypeInstantiation(Type baseType, List<TypeArgument> typeArguments) throws LookupException {
 		super(baseType, typeArguments);
 	}
 
@@ -114,32 +119,32 @@ public class JavaTypeInstantiation extends TypeInstantiation implements JavaType
 			}
 		}
 		return result;
-//		if(_judge == null) {
-//			synchronized(this) {
-//				if(_judge == null) {
-//					//FIXME Speed this isn't cached
-//					Type captureConversion = captureConversion();
-//					if(captureConversion != this) {
-//						_judge = captureConversion.superTypeJudge();
-//					} else {
-//						_judge = super.superTypeJudge();
-//					}
-//				}
-//			}
-//		}
-//		return _judge;
+		//		if(_judge == null) {
+		//			synchronized(this) {
+		//				if(_judge == null) {
+		//					//FIXME Speed this isn't cached
+		//					Type captureConversion = captureConversion();
+		//					if(captureConversion != this) {
+		//						_judge = captureConversion.superTypeJudge();
+		//					} else {
+		//						_judge = super.superTypeJudge();
+		//					}
+		//				}
+		//			}
+		//		}
+		//		return _judge;
 	}
-	
+
 	@Override
 	public void accumulateSuperTypeJudge(SuperTypeJudge judge) throws LookupException {
-    Type captureConversion = captureConversion();
-    if(captureConversion != this) {
-      captureConversion.accumulateSuperTypeJudge(judge);
-    } else {
-      super.accumulateSuperTypeJudge(judge);
-    }
+		Type captureConversion = captureConversion();
+		if(captureConversion != this) {
+			captureConversion.accumulateSuperTypeJudge(judge);
+		} else {
+			super.accumulateSuperTypeJudge(judge);
+		}
 	}
-	
+
 	public void newAccumulateSelfAndAllSuperTypes(Set<Type> acc) throws LookupException {
 		Type captureConversion = captureConversion();
 		if(captureConversion != this) {
@@ -159,15 +164,16 @@ public class JavaTypeInstantiation extends TypeInstantiation implements JavaType
 			Type result = this;
 
 			if(! (parameter(TypeParameter.class,0) instanceof CapturedTypeParameter)) {
-			  List<TypeParameter> typeParameters = Lists.create();
-				Type base = baseType();
-				List<TypeParameter> baseParameters = base.parameters(TypeParameter.class);
-				Iterator<TypeParameter> formals = baseParameters.iterator();
 				List<TypeParameter> actualParameters = parameters(TypeParameter.class);
+				List<TypeParameter> typeParameters = Lists.create();
+				Type base = baseType();
+				List<TypeParameter> formalParameters = base.parameters(TypeParameter.class);
+				Iterator<TypeParameter> formals = formalParameters.iterator();
 				Iterator<TypeParameter> actuals = actualParameters.iterator();
 				// substitute parameters by their capture bounds.
 				// ITERATOR because we iterate over 'formals' and 'actuals' simultaneously.
 				List<TypeConstraint> toBeSubstituted = Lists.create();
+				boolean doCapture = false;
 				while(actuals.hasNext()) {
 					TypeParameter formalParam = formals.next();
 					if(!(formalParam instanceof FormalTypeParameter)) {
@@ -177,29 +183,38 @@ public class JavaTypeInstantiation extends TypeInstantiation implements JavaType
 					if(!(actualParam instanceof InstantiatedTypeParameter)) {
 						throw new LookupException("Type parameter of type instantiation is not an instantiated parameter: "+actualParam.getClass().getName());
 					}
-					typeParameters.add(((InstantiatedTypeParameter) actualParam).capture((FormalTypeParameter) formalParam,toBeSubstituted));
+					InstantiatedTypeParameter instantiatedTypeParameter = (InstantiatedTypeParameter) actualParam;
+					if(instantiatedTypeParameter.hasWildCardBound()) {
+						doCapture = true;
+					}
+					typeParameters.add(instantiatedTypeParameter.capture((FormalTypeParameter) formalParam,toBeSubstituted));
 				}
-				// Everything works as well when we pass 'this' instead of 'base'.
-				result = language(Java7.class).createdCapturedType(new ParameterSubstitution(TypeParameter.class,typeParameters), base);
-				result.setUniParent(parent());
-				for(TypeParameter newParameter: typeParameters) {
-					for(TypeParameter oldParameter: baseParameters) {
-						//If we replace references to the old parameters with references to the captured type parameters, then
-						// why is the capturing done with non-locals pointing to the formal?
-						JavaTypeReference tref = new BasicJavaTypeReference(oldParameter.name());
-						tref.setUniParent(newParameter);
-						if(newParameter instanceof CapturedTypeParameter) {
-							List<TypeConstraint> constraints = ((CapturedTypeParameter)newParameter).constraints();
-							for(TypeConstraint constraint : constraints) {
-								if(toBeSubstituted.contains(constraint)) {
-									NonLocalJavaTypeReference.replace(tref, oldParameter, (JavaTypeReference) constraint.typeReference());
+				if(doCapture) {
+					// Everything works as well when we pass 'this' instead of 'base'.
+					result = language(Java7.class).createdCapturedType(new ParameterSubstitution(TypeParameter.class,typeParameters), base);
+					result.setUniParent(parent());
+					for(TypeParameter newParameter: typeParameters) {
+						for(TypeParameter oldParameter: formalParameters) {
+							//If we replace references to the old parameters with references to the captured type parameters, then
+							// why is the capturing done with non-locals pointing to the formal?
+							JavaTypeReference tref = new BasicJavaTypeReference(oldParameter.name());
+							tref.setUniParent(newParameter);
+							if(newParameter instanceof CapturedTypeParameter) {
+								List<TypeConstraint> constraints = ((CapturedTypeParameter)newParameter).constraints();
+								for(TypeConstraint constraint : constraints) {
+									if(toBeSubstituted.contains(constraint)) {
+										NonLocalJavaTypeReference.replace(tref, oldParameter, (JavaTypeReference) constraint.typeReference());
+									}
 								}
+							} else {
+								throw new ChameleonProgrammerException();
 							}
-						} else {
-							throw new ChameleonProgrammerException();
 						}
 					}
-				}
+				} 
+//				else {
+//					Util.debug(true);
+//				}
 			}
 			_captureConversion = result;
 		}
@@ -232,9 +247,40 @@ public class JavaTypeInstantiation extends TypeInstantiation implements JavaType
 
 	@Override
 	public LocalLookupContext<?> targetContext() throws LookupException {
-		return captureConversion().targetContext();
+		Type captureConversion = captureConversion();
+		if(captureConversion != this) {
+			return captureConversion.targetContext();
+		} else {
+			return super.targetContext();
+		}
 	}
 
 	private Type _captureConversion;
+
+
+	@Override
+	public <D extends Declaration> List<? extends SelectionResult> declarations(DeclarationSelector<D> selector)
+			throws LookupException {
+		Type captureConversion = captureConversion();
+		List<? extends SelectionResult> result;
+		if(captureConversion != this) {
+			result = captureConversion.declarations(selector);
+		} else {
+			result = super.declarations(selector);
+		}
+		return result;
+	}
+
+	@Override
+	public List<? extends Declaration> declarations() throws LookupException {
+		Type captureConversion = captureConversion();
+		List<? extends Declaration> result;
+		if(captureConversion != this) {
+			result = captureConversion.declarations();
+		} else {
+			result = super.declarations();
+		}
+		return result;
+	}
 
 }

@@ -10,9 +10,9 @@ import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
-import org.aikodi.chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
-import org.aikodi.chameleon.oo.type.generics.BasicTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.TypeArgument;
+import org.aikodi.chameleon.oo.type.generics.TypeArgumentWithTypeReference;
+import org.aikodi.chameleon.oo.type.generics.EqualityTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.CapturedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.EqualityConstraint;
 import org.aikodi.chameleon.oo.type.generics.ExtendsWildcard;
@@ -27,7 +27,7 @@ import org.aikodi.chameleon.workspace.View;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaBasicTypeArgument;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaEqualityTypeArgument;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.rejuse.collection.CollectionOperations;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
@@ -112,7 +112,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 		} else if(A().is(language().PRIMITIVE_TYPE) != Ternary.TRUE){
 				// i is the index of the parameter we are processing.
 				// V= the type reference of the i-th type parameter of some supertype G of A.
-			List<ActualTypeArgument> actualsOfF = new ArrayList<ActualTypeArgument>();
+			List<TypeArgument> actualsOfF = new ArrayList<TypeArgument>();
 			for(TypeParameter par: F().parameters(TypeParameter.class)) {
 				if(par instanceof InstantiatedTypeParameter) {
 				  actualsOfF.add(((InstantiatedTypeParameter)par).argument());
@@ -121,16 +121,16 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 					List<TypeConstraint> constraints = ((CapturedTypeParameter) par).constraints();
 					if(constraints.size() == 1 && constraints.get(0) instanceof EqualityConstraint) {
 						EqualityConstraint eq = (EqualityConstraint) constraints.get(0);
-						BasicTypeArgument arg = language().createBasicTypeArgument(Util.clone(eq.typeReference()));
+						EqualityTypeArgument arg = language().createEqualityTypeArgument(Util.clone(eq.typeReference()));
 						arg.setUniParent(eq);
 						actualsOfF.add(arg);
 					}
 				}
 			}
 				int i = 0;
-				for(ActualTypeArgument typeArgumentOfFormalParameter: actualsOfF) {
-					if(typeArgumentOfFormalParameter instanceof BasicTypeArgument) {
-						JavaTypeReference U = (JavaTypeReference) ((BasicTypeArgument)typeArgumentOfFormalParameter).typeReference();
+				for(TypeArgument typeArgumentOfFormalParameter: actualsOfF) {
+					if(typeArgumentOfFormalParameter instanceof EqualityTypeArgument) {
+						JavaTypeReference U = (JavaTypeReference) ((EqualityTypeArgument)typeArgumentOfFormalParameter).typeReference();
 						if(involvesTypeParameter(U)) {
 						  caseSSFormalBasic(result, U, i);
 						}
@@ -181,9 +181,9 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
             && involvesTypeParameter(((InstantiatedTypeParameter) object).argument()));
 	}
 	
-	public boolean involvesTypeParameter(ActualTypeArgument arg) throws LookupException {
-		return (arg instanceof ActualTypeArgumentWithTypeReference) &&
-		    involvesTypeParameter((JavaTypeReference) ((ActualTypeArgumentWithTypeReference)arg).typeReference());
+	public boolean involvesTypeParameter(TypeArgument arg) throws LookupException {
+		return (arg instanceof TypeArgumentWithTypeReference) &&
+		    involvesTypeParameter((JavaTypeReference) ((TypeArgumentWithTypeReference)arg).typeReference());
 	}
 	
 	public List<TypeParameter> involvedTypeParameters(JavaTypeReference tref) throws LookupException {

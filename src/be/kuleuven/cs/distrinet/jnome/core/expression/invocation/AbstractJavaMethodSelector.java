@@ -13,7 +13,7 @@ import org.aikodi.chameleon.oo.expression.MethodInvocation;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.method.MethodHeader;
 import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.TypeArgument;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.util.Util;
@@ -136,7 +136,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 		int size = typeParameters.size();
 		if(size > 0 && (typeParameters.get(0) instanceof FormalTypeParameter)) {
 			if(invocation().hasTypeArguments()) {
-				List<ActualTypeArgument> typeArguments = invocation().typeArguments();
+				List<TypeArgument> typeArguments = invocation().typeArguments();
 				typeAssignment = new TypeAssignmentSet(typeParameters);
 				int nbActualTypeArguments = typeArguments.size();
 				for(int i=0; i< nbActualTypeArguments; i++) {

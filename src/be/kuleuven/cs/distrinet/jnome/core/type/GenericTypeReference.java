@@ -1,21 +1,20 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.element.ElementImpl;
-import org.aikodi.chameleon.core.lookup.LookupContext;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.reference.UnresolvableCrossReference;
 import org.aikodi.chameleon.core.validation.Valid;
 import org.aikodi.chameleon.core.validation.Verification;
-import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
-import org.aikodi.chameleon.oo.type.IntersectionTypeReference;
 import org.aikodi.chameleon.oo.type.RegularType;
 import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.chameleon.oo.type.TypeReference;
-import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.TypeArgument;
 import org.aikodi.chameleon.util.association.Multi;
 import org.aikodi.chameleon.util.association.Single;
 
@@ -23,30 +22,30 @@ import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 
 public class GenericTypeReference extends ElementImpl implements JavaTypeReference {
 
-	public GenericTypeReference(BasicJavaTypeReference target,List<ActualTypeArgument> arguments) {
+	public GenericTypeReference(BasicJavaTypeReference target,List<TypeArgument> arguments) {
 		setTarget(target);
 		addAllArguments(arguments);
 	}
 	
-  public List<ActualTypeArgument> typeArguments() {
+  public List<TypeArgument> typeArguments() {
   	return _genericParameters.getOtherEnds();
   }
   
-  public void addArgument(ActualTypeArgument arg) {
+  public void addArgument(TypeArgument arg) {
   	add(_genericParameters,arg);
   }
   
-  public void addAllArguments(List<ActualTypeArgument> args) {
-  	for(ActualTypeArgument argument : args) {
+  public void addAllArguments(List<TypeArgument> args) {
+  	for(TypeArgument argument : args) {
   		addArgument(argument);
   	}
   }
   
-  public void removeArgument(ActualTypeArgument arg) {
+  public void removeArgument(TypeArgument arg) {
   	remove(_genericParameters,arg);
   }
   
-  private Multi<ActualTypeArgument> _genericParameters = new Multi<ActualTypeArgument>(this);
+  private Multi<TypeArgument> _genericParameters = new Multi<TypeArgument>(this);
 
   private Single<BasicJavaTypeReference> _target = new Single<BasicJavaTypeReference>(this,true);
 
@@ -101,7 +100,7 @@ public class GenericTypeReference extends ElementImpl implements JavaTypeReferen
   	Type result = type;
 		if (type != null) {
 			if(! (type instanceof RawType)) {
-				List<ActualTypeArgument> typeArguments = typeArguments();
+				List<TypeArgument> typeArguments = typeArguments();
 				Java7 language = language(Java7.class);
 				if (typeArguments.size() > 0) {
 					result = language.createDerivedType(type, typeArguments);
@@ -124,15 +123,19 @@ public class GenericTypeReference extends ElementImpl implements JavaTypeReferen
 		return target().getElement();
 	}
 
-	@Override
 	public String toString() {
-		StringBuffer result = new StringBuffer();
-		result.append(target().toString());
+		return toString(new HashSet<>());
+	}
+	
+	@Override
+	public String toString(Set<Element> visited) {
+		StringBuilder result = new StringBuilder();
+		result.append(target().toString(visited));
 		result.append('<');
-		List<ActualTypeArgument> args = typeArguments();
+		List<TypeArgument> args = typeArguments();
 		int size = args.size();
 		for(int i=0; i<size;i++) {
-			result.append(args.get(i).toString());
+			result.append(args.get(i).toString(visited));
 			if(i < size - 1) {
 				result.append(',');
 			}

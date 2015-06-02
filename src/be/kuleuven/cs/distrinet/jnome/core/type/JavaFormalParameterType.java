@@ -23,7 +23,7 @@ public class JavaFormalParameterType extends FormalParameterType implements Java
   }
 
   @Override
-  public boolean lowerBoundAtLeastAsHighAs(Type other, TypeFixer trace) throws LookupException {
+  public boolean upperBoundAtLeastAsHighAs(Type other, TypeFixer trace) throws LookupException {
     if(trace.contains(other, parameter())) {
       return true;
     }
@@ -31,5 +31,13 @@ public class JavaFormalParameterType extends FormalParameterType implements Java
     return other.upperBoundNotHigherThan(aliasedType(), trace);
   }
 
-
+//  @Override
+//  public Type upperBound() throws LookupException {
+//    return parameter().upperBound();
+//  }
+//
+//  @Override
+//  public Type lowerBound() throws LookupException {
+//    return parameter().lowerBound();
+//  }
 }

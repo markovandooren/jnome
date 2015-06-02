@@ -8,14 +8,14 @@ import org.aikodi.chameleon.core.validation.Valid;
 import org.aikodi.chameleon.core.validation.Verification;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.TypeArgument;
 import org.aikodi.chameleon.oo.type.generics.CapturedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeConstraint;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.workspace.View;
 
-public class PureWildcard extends ActualTypeArgument {
+public class PureWildcard extends TypeArgument {
 
 	public PureWildcard() {
 		
@@ -55,7 +55,7 @@ public class PureWildcard extends ActualTypeArgument {
 	
 	public Type parameterBound() throws LookupException {
 		BasicJavaTypeReference nearestAncestor = nearestAncestor(BasicJavaTypeReference.class);
-		List<ActualTypeArgument> args = nearestAncestor.typeArguments();
+		List<TypeArgument> args = nearestAncestor.typeArguments();
 		int index = args.indexOf(this);
 		Type base = nearestAncestor.typeConstructor();
 		TypeParameter parameter = base.parameter(TypeParameter.class,index);
@@ -79,7 +79,13 @@ public class PureWildcard extends ActualTypeArgument {
 		return Valid.create();
 	}
 
-	public String toString() {
+	public String toString(java.util.Set<Element> visited) {
 		return "?";
 	}
+	
+	@Override
+	public boolean isWildCardBound() {
+		return true;
+	}
+
 }

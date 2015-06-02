@@ -7,7 +7,7 @@ import org.aikodi.chameleon.oo.expression.MethodInvocation;
 import org.aikodi.chameleon.oo.expression.NameExpression;
 import org.aikodi.chameleon.oo.type.Type;
 
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeInstantiation;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaType;
 
 public class JavaNameExpression extends NameExpression {
 
@@ -31,9 +31,7 @@ public class JavaNameExpression extends NameExpression {
 		if(method != null) { // does not work yet because of bug in Java7.reference(Type) with multiple constraints
 		  final Declaration declaration = nearestAncestor(Declaration.class);
 		  if(method.hasAncestor(declaration)) 
-		    if(result instanceof JavaTypeInstantiation) {
-		      result = ((JavaTypeInstantiation) result).captureConversion();
-		    }
+		  	result = ((JavaType) result).captureConversion();
 		}
 		return result;
 	}

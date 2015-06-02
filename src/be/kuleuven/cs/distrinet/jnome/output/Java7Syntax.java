@@ -37,8 +37,8 @@ import org.aikodi.chameleon.oo.type.RegularType;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeElement;
 import org.aikodi.chameleon.oo.type.TypeReference;
-import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
-import org.aikodi.chameleon.oo.type.generics.BasicTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.TypeArgument;
+import org.aikodi.chameleon.oo.type.generics.EqualityTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.ExtendsConstraint;
 import org.aikodi.chameleon.oo.type.generics.ExtendsWildcard;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
@@ -263,7 +263,7 @@ public class Java7Syntax extends Syntax {
     } else if(isEnhancedForControl(element)) {
     	result = toCodeEnhancedForControl((EnhancedForControl) element);
     } else if(isBasicTypeArgument(element)) {
-    	result = toCodeBasicTypeArgument((BasicTypeArgument) element);
+    	result = toCodeBasicTypeArgument((EqualityTypeArgument) element);
     } else if(isFormalTypeParameter(element)) {
     	result = toCodeFormalTypeParameter((FormalTypeParameter) element);
     } else if(isExtendsConstraint(element)) {
@@ -335,12 +335,12 @@ public class Java7Syntax extends Syntax {
   	return "assert(" + toCode(element.getExpression()) +");";
   }
   
-  public String toCodeBasicTypeArgument(BasicTypeArgument element)  {
+  public String toCodeBasicTypeArgument(EqualityTypeArgument element)  {
 		return toCode(element.typeReference());
 	}
 
 	public boolean isBasicTypeArgument(Element element) {
-		return element instanceof BasicTypeArgument;
+		return element instanceof EqualityTypeArgument;
 	}
 
 //	public boolean isActualParameter(Element element) {
@@ -426,10 +426,10 @@ public class Java7Syntax extends Syntax {
     }
     String name = typeReference.name();
 		result = result + name;
-    	List<ActualTypeArgument> typeArguments = typeReference.typeArguments();
+    	List<TypeArgument> typeArguments = typeReference.typeArguments();
     	if(! typeArguments.isEmpty()) {
     		result = result +"<";
-    		Iterator<ActualTypeArgument> iter = typeArguments.iterator();
+    		Iterator<TypeArgument> iter = typeArguments.iterator();
     		while(iter.hasNext()) {
     			result = result + toCode(iter.next());
     			if(iter.hasNext()) {

@@ -4,24 +4,20 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.util.Collection;
-
-import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
-import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
-import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.namespace.Namespace;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.test.ModelTest;
-import org.aikodi.chameleon.test.provider.BasicDescendantProvider;
 import org.aikodi.chameleon.test.provider.BasicNamespaceProvider;
-import org.aikodi.chameleon.test.provider.ElementProvider;
 import org.aikodi.chameleon.workspace.ConfigException;
 import org.aikodi.chameleon.workspace.Project;
 import org.aikodi.chameleon.workspace.ProjectException;
-import org.aikodi.chameleon.workspace.View;
 import org.junit.Test;
+
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
+import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaType;
 
 /**
  * @author Marko van Dooren
@@ -38,16 +34,16 @@ public class TestCustomCases extends JavaTest {
 		Java7 language = (Java7)view().language();
 		Namespace ns = view().namespace();
 		BasicJavaTypeReference tref1 = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
-		tref1.addArgument(language.createBasicTypeArgument(language.createTypeReference("java.lang.String")));
+		tref1.addArgument(language.createEqualityTypeArgument(language.createTypeReference("java.lang.String")));
 		tref1.setUniParent(ns);
 		BasicJavaTypeReference tref2 = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
-		tref2.addArgument(language.createBasicTypeArgument(language.createTypeReference("java.lang.String")));
+		tref2.addArgument(language.createEqualityTypeArgument(language.createTypeReference("java.lang.String")));
 		tref2.setUniParent(ns);
 		BasicJavaTypeReference tref3 = (BasicJavaTypeReference) language.createTypeReference("test.generics.SubList");
-		tref3.addArgument(language.createBasicTypeArgument(language.createTypeReference("java.lang.String")));
+		tref3.addArgument(language.createEqualityTypeArgument(language.createTypeReference("java.lang.String")));
 		tref3.setUniParent(ns);
 		BasicJavaTypeReference tref4 = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
-		tref4.addArgument(language.createBasicTypeArgument(language.createTypeReference("java.lang.Object")));
+		tref4.addArgument(language.createEqualityTypeArgument(language.createTypeReference("java.lang.Object")));
 		tref4.setUniParent(ns);
 		BasicJavaTypeReference tref5 = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
 		tref5.addArgument(language.createExtendsWildcard(language.createTypeReference("java.lang.CharSequence")));
@@ -65,14 +61,16 @@ public class TestCustomCases extends JavaTest {
 		tref8.addArgument(language.createSuperWildcard(language.createTypeReference("java.lang.CharSequence")));
 		tref8.setUniParent(ns);
 
-		Type type1 = tref1.getElement();
+		Type type1 = tref1.getElement(); // test.generics.List<java.lang.String>
 		Type type2 = tref2.getElement();
 		Type type3 = tref3.getElement();
-		Type type4 = tref4.getElement();
+		Type type4 = tref4.getElement(); // test.generics.List<java.lang.Object>
 		Type type5 = tref5.getElement();
 		Type type6 = tref6.getElement();
-		Type type7 = tref7.getElement();
-		Type type7duo = tref7duo.getElement();
+		JavaType type7 = (JavaType) tref7.getElement();
+		JavaType type7duo = (JavaType) tref7duo.getElement();
+		Type type7Captured = type7.captureConversion();
+		Type type7DuoCaptured = type7duo.captureConversion();
 		Type type8 = tref8.getElement();
 		assertTrue(type2.subTypeOf(type1));
 		assertTrue(type1.sameAs(type2));
@@ -93,6 +91,8 @@ public class TestCustomCases extends JavaTest {
 		assertFalse(type5.subTypeOf(type7));
 		assertFalse(type6.subTypeOf(type8));
 		assertFalse(type6.subTypeOf(type7));
+		assertTrue(type7.subTypeOf(type7duo));
+//		assertFalse(type7Captured.subTypeOf(type7DuoCaptured));
 	}
 	}
 	

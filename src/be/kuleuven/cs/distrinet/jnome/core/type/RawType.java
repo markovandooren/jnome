@@ -19,7 +19,7 @@ import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeElement;
 import org.aikodi.chameleon.oo.type.TypeFixer;
 import org.aikodi.chameleon.oo.type.TypeReference;
-import org.aikodi.chameleon.oo.type.generics.BasicTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.EqualityTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.oo.type.inheritance.InheritanceRelation;
@@ -182,7 +182,7 @@ public class RawType extends ClassWithBody implements JavaType {
 			FormalTypeParameter param = (FormalTypeParameter) typeParameter;
 			JavaTypeReference upperBoundReference = (JavaTypeReference) param.upperBoundReference();
 			JavaTypeReference erased = upperBoundReference.erasedReference();
-			BasicTypeArgument argument = language.createBasicTypeArgument(erased);
+			EqualityTypeArgument argument = language.createEqualityTypeArgument(erased);
 			ErasedTypeParameter newParameter = new ErasedTypeParameter(typeParameter.name(),argument);
 			argument.setUniParent(newParameter);
 			SingleAssociation parentLink = typeParameter.parentLink();
@@ -272,7 +272,8 @@ public class RawType extends ClassWithBody implements JavaType {
 		_rawTypeCache = null;
 	}
 
-	public boolean uniSameAs(Type aliasedType, List<Pair<TypeParameter, TypeParameter>> trace) throws LookupException {
+	@Override
+	public boolean uniSameAs(Type aliasedType, TypeFixer trace) throws LookupException {
 		return uniSameAs(aliasedType);
 	}
 
@@ -293,7 +294,7 @@ public class RawType extends ClassWithBody implements JavaType {
 	}
 	
 	@Override
-	public boolean lowerBoundAtLeastAsHighAs(Type other, TypeFixer trace) throws LookupException {
+	public boolean upperBoundAtLeastAsHighAs(Type other, TypeFixer trace) throws LookupException {
 	  return other.superTypeJudge().get(this) != null;
 	}
 }

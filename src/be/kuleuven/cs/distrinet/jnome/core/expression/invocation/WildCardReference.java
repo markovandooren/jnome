@@ -3,10 +3,14 @@
  */
 package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.aikodi.chameleon.core.element.ElementImpl;
 import org.aikodi.chameleon.core.validation.Valid;
 import org.aikodi.chameleon.core.validation.Verification;
 import org.aikodi.chameleon.oo.type.TypeReference;
+import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.util.association.Single;
 
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
@@ -34,6 +38,11 @@ public abstract class WildCardReference<E extends WildCardReference> extends Ele
 
 		public JavaTypeReference erasedReference() {
 			return this;
+		}
+
+		@Override
+		public String toString() {
+			return toString(new HashSet<>());
 		}
 
 }

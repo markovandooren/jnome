@@ -998,7 +998,7 @@ classOrInterfaceType returns [JavaTypeReference element]
 	           // so we se the target to the current type reference.
              target = (CrossReferenceWithTarget)retval.element;
 	           stop = argsx.stop;
-	          })? 
+	          })?
 	        )* ('&' nttt=classOrInterfaceType { retval.element = (JavaTypeReference)retval.element.intersection(nttt.element); stop=nttt.stop;})?
 	        {setLocation(retval.element,name.start,stop);}
 	;
@@ -1033,7 +1033,7 @@ typeArgument returns [ActualTypeArgument element]
 boolean pure=true;
 boolean ext=true;
 }
-    :   t=type {retval.element = java().createBasicTypeArgument(t.element);}
+    :   t=type {retval.element = java().createEqualityTypeArgument(t.element);}
     |   '?'
         (
           {pure=false;}
@@ -1828,7 +1828,7 @@ CrossReferenceTarget scopeTarget = null;
     |
         arr=arrayAccessSuffixRubbish {retval.element = arr.element;}
     |   arg=argumentsSuffixRubbish {
-       //retval.element.removeAllMetadata(); 
+       //retval.element.removeAllMetadata();
        retval.element = arg.element;} // REMOVE VARIABLE REFERENCE POSITION!
     |   '.' clkw='class'
          {retval.element.removeAllMetadata();
@@ -1976,7 +1976,7 @@ explicitGenericInvocation returns [Expression element]
     ;
 
 nonWildcardTypeArguments returns [List<ActualTypeArgument> element]
-    :   '<' list=typeList {retval.element = new ArrayList<ActualTypeArgument>();for(TypeReference tref:list.element){retval.element.add(java().createBasicTypeArgument(tref));}}'>'
+    :   '<' list=typeList {retval.element = new ArrayList<ActualTypeArgument>();for(TypeReference tref:list.element){retval.element.add(java().createEqualityTypeArgument(tref));}}'>'
     ;
 
 // NEEDS_TARGET

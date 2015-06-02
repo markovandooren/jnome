@@ -6,7 +6,7 @@ import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeFixer;
 import org.aikodi.chameleon.oo.type.generics.AbstractInstantiatedTypeParameter;
-import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.TypeArgument;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.util.Pair;
 
@@ -22,7 +22,7 @@ import org.aikodi.chameleon.util.Pair;
  */
 public class ErasedTypeParameter extends AbstractInstantiatedTypeParameter {
 
-	public ErasedTypeParameter(String name, ActualTypeArgument argument) {
+	public ErasedTypeParameter(String name, TypeArgument argument) {
 		super(name, argument);
 	}
 
@@ -30,13 +30,18 @@ public class ErasedTypeParameter extends AbstractInstantiatedTypeParameter {
 	protected ErasedTypeParameter cloneSelf() {
 		// We must clone the argument manually because it is not referenced through
 		// a bidirectional association.
-		ActualTypeArgument argument = clone(argument());
+		TypeArgument argument = clone(argument());
 		ErasedTypeParameter result = new ErasedTypeParameter(name(),argument);
 		argument.setUniParent(result);
 		return result;
 	}
 	
-	public boolean compatibleWith(TypeParameter other,TypeFixer trace) throws LookupException {
-		return other instanceof ErasedTypeParameter && super.compatibleWith(other, trace);
+//	public boolean compatibleWith(TypeParameter other,TypeFixer trace) throws LookupException {
+//		return other instanceof ErasedTypeParameter && super.compatibleWith(other, trace);
+//	}
+	
+	@Override
+	public boolean contains(TypeParameter other, TypeFixer trace) throws LookupException {
+		return other instanceof ErasedTypeParameter && super.contains(other, trace);
 	}
 }

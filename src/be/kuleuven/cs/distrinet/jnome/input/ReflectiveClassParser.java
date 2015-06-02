@@ -24,7 +24,7 @@ import org.aikodi.chameleon.oo.type.IntersectionTypeReference;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.UnionTypeReference;
-import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.TypeArgument;
 import org.aikodi.chameleon.oo.type.generics.ExtendsConstraint;
 import org.aikodi.chameleon.oo.type.generics.ExtendsWildcard;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
@@ -360,10 +360,10 @@ public class ReflectiveClassParser implements BytecodeClassParser {
 		return result;
 	}
 	
-	private ActualTypeArgument toTypeArg(java.lang.reflect.Type type) {
-		ActualTypeArgument result;
+	private TypeArgument toTypeArg(java.lang.reflect.Type type) {
+		TypeArgument result;
 		if(type instanceof Class || type instanceof TypeVariable) {
-  		result = language().createBasicTypeArgument(toRef(type));
+  		result = language().createEqualityTypeArgument(toRef(type));
   	} else if (type instanceof WildcardType) {
   		WildcardType wild = (WildcardType) type;
   		java.lang.reflect.Type[] lower = wild.getLowerBounds();

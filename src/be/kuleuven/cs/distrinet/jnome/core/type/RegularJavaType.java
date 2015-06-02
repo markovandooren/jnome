@@ -21,7 +21,7 @@ import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.RegularType;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeElement;
-import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.TypeArgument;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.oo.type.inheritance.InheritanceRelation;
 import org.aikodi.chameleon.oo.type.inheritance.SubtypeRelation;
@@ -51,7 +51,7 @@ public class RegularJavaType extends RegularType implements JavaType {
 
   // private StackOverflowTracer _tracer = new StackOverflowTracer(3);
 
-  public TypeInstantiation createDerivedType(List<ActualTypeArgument> typeArguments) throws LookupException {
+  public TypeInstantiation createDerivedType(List<TypeArgument> typeArguments) throws LookupException {
     // if(typeArguments.size() == 1) {
     // if(_genericCache == null) {
     // synchronized(this) {
@@ -186,7 +186,7 @@ public class RegularJavaType extends RegularType implements JavaType {
   					Java7 language = language(Java7.class);
   					BasicJavaTypeReference returnType = language.createTypeReference("java.lang.Class");
   					JavaTypeReference erasedThisType = language.createTypeReference(name());
-  					ActualTypeArgument arg = language.createExtendsWildcard(erasedThisType);
+  					TypeArgument arg = language.createExtendsWildcard(erasedThisType);
   					returnType.addArgument(arg);
   					_getClassMethod = new NormalMethod(new SimpleNameMethodHeader("getClass", returnType));
   					_getClassMethod.addModifier(new Public());

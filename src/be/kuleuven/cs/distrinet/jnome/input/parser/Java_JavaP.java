@@ -60,8 +60,8 @@ import org.aikodi.chameleon.oo.type.TypeElement;
 
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
-import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
-import org.aikodi.chameleon.oo.type.generics.BasicTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.TypeArgument;
+import org.aikodi.chameleon.oo.type.generics.EqualityTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.TypeConstraint;
 import org.aikodi.chameleon.oo.type.generics.ExtendsConstraint;
 import org.aikodi.chameleon.oo.type.generics.ExtendsWildcard;
@@ -8346,7 +8346,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     // $ANTLR end "variableModifier"
 
     public static class typeArguments_return extends ParserRuleReturnScope {
-        public List<ActualTypeArgument> element;
+        public List<TypeArgument> element;
         Object tree;
         public Object getTree() { return tree; }
     };
@@ -8371,7 +8371,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Object char_literal92_tree=null;
         Object char_literal93_tree=null;
 
-        retval.element = new ArrayList<ActualTypeArgument>();
+        retval.element = new ArrayList<TypeArgument>();
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 63) ) { return retval; }
             // JavaP.g:1025:5: ( '<' arg= typeArgument ( ',' argx= typeArgument )* '>' )
@@ -8461,7 +8461,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     // $ANTLR end "typeArguments"
 
     public static class typeArgument_return extends ParserRuleReturnScope {
-        public ActualTypeArgument element;
+        public TypeArgument element;
         Object tree;
         public Object getTree() { return tree; }
     };
@@ -8520,7 +8520,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, t.getTree());
                     if ( state.backtracking==0 ) {
-                      retval.element = java().createBasicTypeArgument(t.element);
+                      retval.element = java().createEqualityTypeArgument(t.element);
                     }
 
                     }
@@ -19382,7 +19382,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     // $ANTLR end "explicitGenericInvocation"
 
     public static class nonWildcardTypeArguments_return extends ParserRuleReturnScope {
-        public List<ActualTypeArgument> element;
+        public List<TypeArgument> element;
         Object tree;
         public Object getTree() { return tree; }
     };
@@ -19422,7 +19422,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             if (state.failed) return retval;
             if ( state.backtracking==0 ) adaptor.addChild(root_0, list.getTree());
             if ( state.backtracking==0 ) {
-              retval.element = new ArrayList<ActualTypeArgument>();for(TypeReference tref:list.element){retval.element.add(java().createBasicTypeArgument(tref));}
+              retval.element = new ArrayList<TypeArgument>();for(TypeReference tref:list.element){retval.element.add(java().createEqualityTypeArgument(tref));}
             }
             char_literal255=(Token)match(input,64,FOLLOW_64_in_nonWildcardTypeArguments9887); if (state.failed) return retval;
             if ( state.backtracking==0 ) {

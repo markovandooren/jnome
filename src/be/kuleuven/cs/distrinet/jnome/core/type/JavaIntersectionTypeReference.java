@@ -8,7 +8,7 @@ import org.aikodi.chameleon.core.validation.Verification;
 import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.type.IntersectionTypeReference;
 import org.aikodi.chameleon.oo.type.TypeReference;
-import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.TypeArgument;
 
 public class JavaIntersectionTypeReference extends IntersectionTypeReference implements JavaTypeReference {
 	
@@ -30,11 +30,11 @@ public class JavaIntersectionTypeReference extends IntersectionTypeReference imp
     return Valid.create();
 	}
 
-	public void addAllArguments(List<ActualTypeArgument> arguments) {
+	public void addAllArguments(List<TypeArgument> arguments) {
 		throw new ChameleonProgrammerException("Cannot add arguments to an intersection type reference");
 	}
 
-	public void addArgument(ActualTypeArgument argument) {
+	public void addArgument(TypeArgument argument) {
 		throw new ChameleonProgrammerException("Cannot add an argument to an intersection type reference");
 	}
 
@@ -46,7 +46,7 @@ public class JavaIntersectionTypeReference extends IntersectionTypeReference imp
 		return 0;
 	}
 
-	public List<ActualTypeArgument> typeArguments() {
+	public List<TypeArgument> typeArguments() {
 		return Collections.EMPTY_LIST;
 	}
 

@@ -1,5 +1,7 @@
 package be.kuleuven.cs.distrinet.jnome.input;
 
+import java.util.List;
+
 import org.aikodi.chameleon.aspect.oo.weave.factory.OOFactory;
 import org.aikodi.chameleon.core.namespace.Namespace;
 import org.aikodi.chameleon.core.namespacedeclaration.NamespaceDeclaration;
@@ -9,9 +11,11 @@ import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.method.MethodHeader;
 import org.aikodi.chameleon.oo.plugin.ObjectOrientedFactory;
 import org.aikodi.chameleon.oo.statement.Statement;
+import org.aikodi.chameleon.oo.type.IntersectionType;
 import org.aikodi.chameleon.oo.type.RegularType;
 import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.chameleon.oo.type.generics.CapturedTypeParameter;
+import org.aikodi.chameleon.oo.type.UnionType;
+import org.aikodi.chameleon.oo.type.generics.ConstrainedType;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.oo.type.inheritance.InheritanceRelation;
@@ -24,10 +28,13 @@ import be.kuleuven.cs.distrinet.jnome.core.enumeration.EnumType;
 import be.kuleuven.cs.distrinet.jnome.core.method.JavaMethod;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.JavaConstructor;
 import be.kuleuven.cs.distrinet.jnome.core.namespacedeclaration.JavaNamespaceDeclaration;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaConstrainedType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaFormalParameterType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaInstantiatedParameterType;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaIntersectionType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaLazyFormalAlias;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaLazyInstantiatedAlias;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaUnionType;
 import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
 
 public class Java7Factory extends ObjectOrientedFactory implements OOFactory {
@@ -101,4 +108,19 @@ public class Java7Factory extends ObjectOrientedFactory implements OOFactory {
 	public Type createLazyInstantiatedTypeVariable(String name, TypeParameter capturedTypeParameter) {
     return new JavaLazyInstantiatedAlias(name, capturedTypeParameter);
 	}
+	
+	@Override
+	protected IntersectionType doCreateIntersectionType(List<Type> types) {
+	  return new JavaIntersectionType(types);
+	}
+	
+	@Override
+	protected UnionType doCreateUnionType(List<Type> types) {
+	  return new JavaUnionType(types);
+	}
+	
+	public ConstrainedType reallyCreateConstrainedType(Type lowerBound, Type upperBound) {
+		return new JavaConstrainedType(lowerBound, upperBound);
+	}
+
 }

@@ -10,6 +10,7 @@ import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.expression.MethodInvocation;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.method.MethodHeader;
+import org.aikodi.chameleon.oo.plugin.ObjectOrientedFactory;
 import org.aikodi.chameleon.oo.type.IntersectionType;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
@@ -218,7 +219,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 			Us.add(URef.getElement());
 		}
 		if(! recursive) {
-			Type intersectionType = IntersectionType.create(Us);
+			Type intersectionType = Tj.language().plugin(ObjectOrientedFactory.class).createIntersectionType(Us);
 			return intersectionType;
 		} else {
 			return TjType;

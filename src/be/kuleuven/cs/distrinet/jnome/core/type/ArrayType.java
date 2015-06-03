@@ -145,7 +145,7 @@ public class ArrayType extends RegularType implements JavaType {
   }
 
   @Override
-  public boolean uniSubtypeOf(Type other, TypeFixer trace) throws LookupException {
+  public boolean subtypeOf(Type other, TypeFixer trace) throws LookupException {
   	if(other instanceof ArrayType && isTrue(language(Java7.class).REFERENCE_TYPE)) {
   		ArrayType second2 = (ArrayType)other;
   		return this.elementType().subtypeOf(second2.elementType(),trace);

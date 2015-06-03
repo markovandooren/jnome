@@ -236,7 +236,7 @@ public class JavaDependencyOptions extends DependencyOptions {
             Element source = (Element)t.source();
             if(source instanceof Type && target instanceof Type) {
               try {
-                return ! ((Type)source).subTypeOf((Type) target);
+                return ! ((Type)source).subtypeOf((Type) target);
               } catch (LookupException e) {
               }
             }
@@ -311,7 +311,7 @@ public class JavaDependencyOptions extends DependencyOptions {
       public boolean uncheckedEval(Element t) {
         if(t instanceof Type) {
           try {
-            return _throwable != null && (! ((Type)t).subTypeOf(_throwable));
+            return _throwable != null && (! ((Type)t).subtypeOf(_throwable));
           } catch (LookupException e) {
           }
         }
@@ -369,10 +369,10 @@ public class JavaDependencyOptions extends DependencyOptions {
             // That way, if we reach the else branch, we now
             // for sure that we can remove the old dependency
             // if the second branch is executed.
-            if (newSourceType.subTypeOf(oldSourceType) && oldTargetType.subTypeOf(newTargetType)) {
+            if (newSourceType.subtypeOf(oldSourceType) && oldTargetType.subtypeOf(newTargetType)) {
               container.add = false;
               return true;
-            } else if(oldSourceType.subTypeOf(newSourceType) && newTargetType.subTypeOf(oldTargetType)) {
+            } else if(oldSourceType.subtypeOf(newSourceType) && newTargetType.subtypeOf(oldTargetType)) {
               return false;
             }
           }

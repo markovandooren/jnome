@@ -52,7 +52,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 			} else {
 				Type G = F().baseType();
 				Type H = A().baseType();
-				if(G.subTypeOf(H)) {
+				if(G.subtypeOf(H)) {
 					if(! G.sameAs(H)) {
 						// No need to include F() itself since the base types aren't equal. 
 						// G(S1,..,Sindex-1,U,Sindex+1,...,Sn) -> H
@@ -70,7 +70,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 						TypeParameter newParameter = new InstantiatedTypeParameter(oldParameter.name(), actual);
 					  GG.replaceParameter(TypeParameter.class,oldParameter, newParameter);
 						Type V=typeWithSameBaseTypeAs(H, GG.getAllSuperTypes());
-						if(F().subTypeOf(V)) {
+						if(F().subtypeOf(V)) {
 						  GGConstraint recursive = new GGConstraint(ARef(), V);
 						  parent().addGenerated(recursive);
 							recursive.setUniParent(parent());
@@ -141,7 +141,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 						TypeParameter newP = new InstantiatedTypeParameter(par.name(),ext);
 						V.replaceParameter(TypeParameter.class,par, newP);
 					}
-					if(F().subTypeOf(V)) {
+					if(F().subtypeOf(V)) {
 					  GGConstraint recursive = new GGConstraint(ARef(), V);
 					  parent().addGenerated(recursive);
 						recursive.setUniParent(parent());
@@ -201,7 +201,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 						TypeParameter newP = new InstantiatedTypeParameter(par.name(),ext);
 						V.replaceParameter(TypeParameter.class,par, newP);
 					}
-					if(F().subTypeOf(V)) {
+					if(F().subtypeOf(V)) {
 					  GGConstraint recursive = new GGConstraint(ARef(), V);
 					  parent().addGenerated(recursive);
 						recursive.setUniParent(parent());

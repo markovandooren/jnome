@@ -69,7 +69,7 @@ public class TypeAssignmentSet {
 					bound = (JavaTypeReference) NonLocalJavaTypeReference.replace(language.reference(nested.type()), nested.parameter(), bound);
 				}
 				Type type = assignment.type();
-				if(! type.subTypeOf(bound.getElement())) {
+				if(! type.subtypeOf(bound.getElement())) {
 					result = false;
 					break;
 				}

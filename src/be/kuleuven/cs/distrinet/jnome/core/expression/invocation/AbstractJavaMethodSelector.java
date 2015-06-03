@@ -198,7 +198,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 					formalType = formalParameterTypesInContext.get(i);
 				}
 				Type actualType = actualParameters.get(i).getType();
-				match = actualType.subTypeOf(formalType);
+				match = actualType.subtypeOf(formalType);
 				if(! match) {
 					match = subtypeRelation.convertibleThroughUncheckedConversionAndSubtyping(actualType, formalType);
 					if(match) {
@@ -409,15 +409,15 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 			Ss = new ArrayList<Type>(secondTypes);
 		}
 		for(int i=0; result && i<k-1;i++) {
-			result = firstTypes.get(i).subTypeOf(Ss.get(i));
+			result = firstTypes.get(i).subtypeOf(Ss.get(i));
 		}
 		if(result && firstSize >= secondSize) {
 			for(int i=k-1; result && i<n;i++) {
-				result = firstTypes.get(i).subTypeOf(Ss.get(k-1));
+				result = firstTypes.get(i).subtypeOf(Ss.get(k-1));
 			}
 		} else {
 			for(int i=k-1; result && i<n;i++) {
-				result = firstTypes.get(k-1).subTypeOf(Ss.get(i));
+				result = firstTypes.get(k-1).subtypeOf(Ss.get(i));
 			}
 		}
 		return result;
@@ -455,7 +455,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 			Ss = new ArrayList<Type>(Us);
 		}
 		for(int i=0; result && i<size;i++) {
-			result = Ts.get(i).subTypeOf(Ss.get(i));
+			result = Ts.get(i).subtypeOf(Ss.get(i));
 		}
 		
 		return result;

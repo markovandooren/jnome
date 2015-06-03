@@ -55,7 +55,7 @@ public class JavaMethod extends NormalMethod {
 	};
 
 	private static boolean subSignature(Method first, Method second) throws LookupException {
-		boolean result = first.sameKind(second) && ((Type)first.nearestAncestor(Type.class)).subTypeOf((Type)second.nearestAncestor(Type.class));
+		boolean result = first.sameKind(second) && ((Type)first.nearestAncestor(Type.class)).subtypeOf((Type)second.nearestAncestor(Type.class));
 		if(result) {
 			SignatureWithParameters signature1 = first.signature();
 			SignatureWithParameters signature2 = second.signature();

@@ -75,26 +75,26 @@ public class TestCustomCases extends JavaTest {
 			Type type7Captured = type7.captureConversion();
 			Type type7DuoCaptured = type7duo.captureConversion();
 			Type type8 = tref8.getElement();
-			assertTrue(type2.subTypeOf(type1));
+			assertTrue(type2.subtypeOf(type1));
 			assertTrue(type1.sameAs(type2));
 			assertTrue(type1.equals(type2));
-			assertTrue(type3.subTypeOf(type1));
-			assertFalse(type4.subTypeOf(type1));
-			assertFalse(type1.subTypeOf(type4));
-			assertTrue(type1.subTypeOf(type5));
-			assertFalse(type4.subTypeOf(type5));
-			assertFalse(type5.subTypeOf(type1));
-			assertTrue(type6.subTypeOf(type5));
-			assertTrue(type2.subTypeOf(type6));
-			assertFalse(type5.subTypeOf(type6));
-			assertTrue(type4.subTypeOf(type7));
-			assertTrue(type4.subTypeOf(type8));
-			assertTrue(type8.subTypeOf(type7));
-			assertFalse(type5.subTypeOf(type8));
-			assertFalse(type5.subTypeOf(type7));
-			assertFalse(type6.subTypeOf(type8));
-			assertFalse(type6.subTypeOf(type7));
-			assertTrue(type7.subTypeOf(type7duo));
+			assertTrue(type3.subtypeOf(type1));
+			assertFalse(type4.subtypeOf(type1));
+			assertFalse(type1.subtypeOf(type4));
+			assertTrue(type1.subtypeOf(type5));
+			assertFalse(type4.subtypeOf(type5));
+			assertFalse(type5.subtypeOf(type1));
+			assertTrue(type6.subtypeOf(type5));
+			assertTrue(type2.subtypeOf(type6));
+			assertFalse(type5.subtypeOf(type6));
+			assertTrue(type4.subtypeOf(type7));
+			assertTrue(type4.subtypeOf(type8));
+			assertTrue(type8.subtypeOf(type7));
+			assertFalse(type5.subtypeOf(type8));
+			assertFalse(type5.subtypeOf(type7));
+			assertFalse(type6.subtypeOf(type8));
+			assertFalse(type6.subtypeOf(type7));
+			assertTrue(type7.subtypeOf(type7duo));
 		}
 
 		public void testWildcards() throws LookupException {
@@ -118,8 +118,8 @@ public class TestCustomCases extends JavaTest {
 			Type listSuperString = listSuperStringRef.getElement();
 			Type listSuperCharSequence = listSuperCharSequenceRef.getElement();
 
-			assertTrue(listString.subTypeOf(listSuperString));
-			assertFalse(listString.subTypeOf(listSuperCharSequence));
+			assertTrue(listString.subtypeOf(listSuperString));
+			assertFalse(listString.subtypeOf(listSuperCharSequence));
 
 			{
 			MethodInvocation invocation = java.plugin(ExpressionFactory.class).createInvocation("add", new StubExpression(listSuperString));

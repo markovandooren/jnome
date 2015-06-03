@@ -23,12 +23,12 @@ public class JavaFormalParameterType extends FormalParameterType implements Java
   }
 
   @Override
-  public boolean upperBoundAtLeastAsHighAs(Type other, TypeFixer trace) throws LookupException {
+  public boolean uniSupertypeOf(Type other, TypeFixer trace) throws LookupException {
     if(trace.contains(other, parameter())) {
       return true;
     }
     trace.add(other, parameter());
-    return other.upperBoundNotHigherThan(aliasedType(), trace);
+    return other.subtypeOf(aliasedType(), trace);
   }
 
 //  @Override

@@ -131,7 +131,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 
 	private Set<Type> MEC(List<? extends JavaTypeReference> Us) throws LookupException {
 		Set<Type> EC = EC(Us);
-		Predicate<Type, LookupException> predicate = first -> ! exists(EC, second -> (! first.sameAs(second)) && (second.subTypeOf(first)));
+		Predicate<Type, LookupException> predicate = first -> ! exists(EC, second -> (! first.sameAs(second)) && (second.subtypeOf(first)));
     CollectionOperations.filter(EC, predicate);
 		return EC;
 	}
@@ -153,10 +153,10 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 				    boolean add = r.sameAs(e);
             if(! add) {
             	// TODO get rid of dependency on the bounds
-              add = e.upperBound().upperBoundNotHigherThan(r.upperBound(),new TypeFixer()) && 
-                  e.lowerBound().upperBoundNotHigherThan(r.lowerBound(),new TypeFixer()) && 
-                  r.upperBound().upperBoundNotHigherThan(e.upperBound(),new TypeFixer()) && 
-                  r.lowerBound().upperBoundNotHigherThan(e.lowerBound(),new TypeFixer());
+              add = e.upperBound().subtypeOf(r.upperBound()) && 
+                  e.lowerBound().subtypeOf(r.lowerBound()) && 
+                  r.upperBound().subtypeOf(e.upperBound()) && 
+                  r.lowerBound().subtypeOf(e.lowerBound());
 				    }
             if(add) {
 				      tmp.add(e);
@@ -470,10 +470,10 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 			ArrayType second2 = (ArrayType)second;
 			result = convertibleThroughUncheckedConversionAndSubtyping(first2.elementType(), second2.elementType());
 		} else {
-		  final boolean a1 = first.subTypeOf(second);
+		  final boolean a1 = first.subtypeOf(second);
       final boolean a2 = first.superTypeJudge().get(second) != null;
       if(a1 != a2) {
-		    boolean b1 = first.subTypeOf(second);
+		    boolean b1 = first.subtypeOf(second);
 		    boolean b2 = a2;
 		    System.out.println(b1 && b2);
 		  }
@@ -560,7 +560,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 	}
 
 	private boolean convertibleThroughWideningReferenceConversion(Type first, Type second) throws LookupException {
-	  return first.subTypeOf(second);
+	  return first.subtypeOf(second);
 	}
 
 	private boolean convertibleThroughWideningPrimitiveConversion(Type first, Type second) throws LookupException {

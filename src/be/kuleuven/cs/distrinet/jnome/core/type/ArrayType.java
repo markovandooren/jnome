@@ -124,12 +124,12 @@ public class ArrayType extends RegularType implements JavaType {
 		Type objType = language.getDefaultSuperClass(view.namespace());
     return super.assignableTo(other) ||
            ( // Reference type
-             elementType().subTypeOf(objType) &&
+             elementType().subtypeOf(objType) &&
              (other instanceof ArrayType) &&
              elementType().assignableTo(((ArrayType)other).elementType())
            ) ||           
            ( // Primitive type
-             (! elementType().subTypeOf(objType)) &&
+             (! elementType().subtypeOf(objType)) &&
              (other instanceof ArrayType) &&
              elementType().equals(((ArrayType)other).elementType())
            );
@@ -140,31 +140,17 @@ public class ArrayType extends RegularType implements JavaType {
   }
 
   @Override
-  	public boolean properSubTypeOf(Type second) throws LookupException {
-  	 boolean result = false;
-  	 if (second instanceof ArrayType && is(language(Java7.class).REFERENCE_TYPE) == Ternary.TRUE) {
-  		 ArrayType second2 = (ArrayType)second;
-  		 result = elementType().subTypeOf(second2.elementType());
-  	 }
-  	 if(! result) {
-  		 result = JavaType.super.properSubTypeOf(second);
-  	 }
-  	 return result;
-  	}
-
-
-  @Override
   public Type erasure() {
     return create(((JavaType)elementType()).erasure());
   }
 
   @Override
-  public boolean upperBoundNotHigherThan(Type other, TypeFixer trace) throws LookupException {
+  public boolean uniSubtypeOf(Type other, TypeFixer trace) throws LookupException {
   	if(other instanceof ArrayType && isTrue(language(Java7.class).REFERENCE_TYPE)) {
-		ArrayType second2 = (ArrayType)other;
-		return this.elementType().upperBoundNotHigherThan(second2.elementType(),trace);
+  		ArrayType second2 = (ArrayType)other;
+  		return this.elementType().subtypeOf(second2.elementType(),trace);
   	} else {
-  		return super.upperBoundNotHigherThan(other, trace);
+  		return JavaType.super.subtypeOf(other, trace);
   	}
   }
 }

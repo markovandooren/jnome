@@ -196,7 +196,7 @@ public class RawType extends ClassWithBody implements JavaType {
 	}
 	
 	public boolean uniSameAs(Element otherType) throws LookupException {
-		return (otherType instanceof RawType) && (baseType().sameAs(((RawType)otherType).baseType()));
+		return (otherType instanceof RawType) && uniSameAs(((RawType)otherType).baseType(), new TypeFixer());
 	}
 	
 	@Override
@@ -273,28 +273,13 @@ public class RawType extends ClassWithBody implements JavaType {
 	}
 
 	@Override
-	public boolean uniSameAs(Type aliasedType, TypeFixer trace) throws LookupException {
-		return uniSameAs(aliasedType);
+	public boolean uniSameAs(Type otherType, TypeFixer trace) throws LookupException {
+		return (otherType instanceof RawType) && (baseType().sameAs(((RawType)otherType).baseType(), trace));
 	}
 
 	
 	@Override
-	public boolean properSuperTypeOf(Type type) throws LookupException {
-	  return type.superTypeJudge().get(this) != null;
-		//FIXME: this can be made more efficient i think by storing the cache in 'type' ? but then that object's cache
-		// must be cleared when this is garbage collected (or prevents it from being garbage collected).
-//		boolean result = false;
-//		Set<Type> supers = type.getSelfAndAllSuperTypesView();
-//		Iterator<Type> typeIterator = supers.iterator();
-//		while((!result) && typeIterator.hasNext()) {
-//			Type current = typeIterator.next();
-//			result = baseType().sameAs(current.baseType());
-//		}
-//		return result;
-	}
-	
-	@Override
-	public boolean upperBoundAtLeastAsHighAs(Type other, TypeFixer trace) throws LookupException {
+	public boolean uniSupertypeOf(Type other, TypeFixer trace) throws LookupException {
 	  return other.superTypeJudge().get(this) != null;
 	}
 }

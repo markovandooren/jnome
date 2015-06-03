@@ -10,5 +10,8 @@ public class List<T> {
 	public int size() {
 		return 17;
 	}
+
+    public void add(T t) {
+    }
 	
 }

@@ -36,9 +36,9 @@ public class TestCustomCases extends JavaTest {
 		public void testSubtyping() throws LookupException {
 			Java7 language = (Java7)view().language();
 			Namespace ns = view().namespace();
-			BasicJavaTypeReference tref1 = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
-			tref1.addArgument(language.createEqualityTypeArgument(language.createTypeReference("java.lang.String")));
-			tref1.setUniParent(ns);
+			BasicJavaTypeReference listOfString = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
+			listOfString.addArgument(language.createEqualityTypeArgument(language.createTypeReference("java.lang.String")));
+			listOfString.setUniParent(ns);
 			BasicJavaTypeReference tref2 = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
 			tref2.addArgument(language.createEqualityTypeArgument(language.createTypeReference("java.lang.String")));
 			tref2.setUniParent(ns);
@@ -48,32 +48,32 @@ public class TestCustomCases extends JavaTest {
 			BasicJavaTypeReference tref4 = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
 			tref4.addArgument(language.createEqualityTypeArgument(language.createTypeReference("java.lang.Object")));
 			tref4.setUniParent(ns);
-			BasicJavaTypeReference tref5 = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
-			tref5.addArgument(language.createExtendsWildcard(language.createTypeReference("java.lang.CharSequence")));
-			tref5.setUniParent(ns);
+			BasicJavaTypeReference listOfExtendsCharSequence = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
+			listOfExtendsCharSequence.addArgument(language.createExtendsWildcard(language.createTypeReference("java.lang.CharSequence")));
+			listOfExtendsCharSequence.setUniParent(ns);
 			BasicJavaTypeReference tref6 = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
 			tref6.addArgument(language.createExtendsWildcard(language.createTypeReference("java.lang.String")));
 			tref6.setUniParent(ns);
-			BasicJavaTypeReference tref7 = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
-			tref7.addArgument(language.createSuperWildcard(language.createTypeReference("java.lang.String")));
-			tref7.setUniParent(ns);
-			BasicJavaTypeReference tref7duo = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
-			tref7duo.addArgument(language.createSuperWildcard(language.createTypeReference("java.lang.String")));
-			tref7duo.setUniParent(ns);
+			BasicJavaTypeReference listOfSuperOfStringRef = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
+			listOfSuperOfStringRef.addArgument(language.createSuperWildcard(language.createTypeReference("java.lang.String")));
+			listOfSuperOfStringRef.setUniParent(ns);
+			BasicJavaTypeReference listOfSuperOfStringRefDuo = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
+			listOfSuperOfStringRefDuo.addArgument(language.createSuperWildcard(language.createTypeReference("java.lang.String")));
+			listOfSuperOfStringRefDuo.setUniParent(ns);
 			BasicJavaTypeReference tref8 = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
 			tref8.addArgument(language.createSuperWildcard(language.createTypeReference("java.lang.CharSequence")));
 			tref8.setUniParent(ns);
 
-			Type type1 = tref1.getElement(); // test.generics.List<java.lang.String>
+			Type type1 = listOfString.getElement(); // test.generics.List<java.lang.String>
 			Type type2 = tref2.getElement();
 			Type type3 = tref3.getElement();
 			Type type4 = tref4.getElement(); // test.generics.List<java.lang.Object>
-			Type type5 = tref5.getElement();
+			Type type5 = listOfExtendsCharSequence.getElement();
 			Type type6 = tref6.getElement();
-			JavaType type7 = (JavaType) tref7.getElement();
-			JavaType type7duo = (JavaType) tref7duo.getElement();
-			Type type7Captured = type7.captureConversion();
-			Type type7DuoCaptured = type7duo.captureConversion();
+			JavaType listOfSuperOfString = (JavaType) listOfSuperOfStringRef.getElement();
+			JavaType listOfSuperOfStringDuo = (JavaType) listOfSuperOfStringRefDuo.getElement();
+			Type listOfSuperOfStringCaptured = listOfSuperOfString.captureConversion();
+			Type listOfSuperOfStringDuoCaptured = listOfSuperOfStringDuo.captureConversion();
 			Type type8 = tref8.getElement();
 			assertTrue(type2.subtypeOf(type1));
 			assertTrue(type1.sameAs(type2));
@@ -87,14 +87,19 @@ public class TestCustomCases extends JavaTest {
 			assertTrue(type6.subtypeOf(type5));
 			assertTrue(type2.subtypeOf(type6));
 			assertFalse(type5.subtypeOf(type6));
-			assertTrue(type4.subtypeOf(type7));
+			assertTrue(type4.subtypeOf(listOfSuperOfString));
 			assertTrue(type4.subtypeOf(type8));
-			assertTrue(type8.subtypeOf(type7));
+			assertTrue(type8.subtypeOf(listOfSuperOfString));
 			assertFalse(type5.subtypeOf(type8));
-			assertFalse(type5.subtypeOf(type7));
+			assertFalse(type5.subtypeOf(listOfSuperOfString));
 			assertFalse(type6.subtypeOf(type8));
-			assertFalse(type6.subtypeOf(type7));
-			assertTrue(type7.subtypeOf(type7duo));
+			assertFalse(type6.subtypeOf(listOfSuperOfString));
+			assertTrue(listOfSuperOfString.subtypeOf(listOfSuperOfStringDuo));
+			assertFalse(listOfSuperOfStringCaptured.subtypeOf(listOfSuperOfStringDuoCaptured));
+			assertTrue(listOfSuperOfStringCaptured.subtypeOf(listOfSuperOfString));
+			assertTrue(listOfSuperOfStringCaptured.subtypeOf(listOfSuperOfStringDuo));
+			assertTrue(listOfSuperOfStringDuoCaptured.subtypeOf(listOfSuperOfString));
+			assertTrue(listOfSuperOfStringDuoCaptured.subtypeOf(listOfSuperOfStringDuo));
 		}
 
 		public void testWildcards() throws LookupException {
@@ -112,33 +117,51 @@ public class TestCustomCases extends JavaTest {
 			listSuperCharSequenceRef.addArgument(java.createSuperWildcard(java.createTypeReference("java.lang.CharSequence")));
 			listSuperCharSequenceRef.setUniParent(ns);
 
+			BasicJavaTypeReference listExtendsCharSequenceRef = java.createTypeReference("test.generics.List");
+			listExtendsCharSequenceRef.addArgument(java.createExtendsWildcard(java.createTypeReference("java.lang.CharSequence")));
+			listExtendsCharSequenceRef.setUniParent(ns);
+
 
 			Type string = ns.find("java.lang.String", Type.class);
 			Type listString = listStringRef.getElement();
 			Type listSuperString = listSuperStringRef.getElement();
 			Type listSuperCharSequence = listSuperCharSequenceRef.getElement();
+			Type listExtendsCharSequence = listExtendsCharSequenceRef.getElement();
 
 			assertTrue(listString.subtypeOf(listSuperString));
 			assertFalse(listString.subtypeOf(listSuperCharSequence));
 
 			{
-			MethodInvocation invocation = java.plugin(ExpressionFactory.class).createInvocation("add", new StubExpression(listSuperString));
-			invocation.addArgument(new StubExpression(string));
-			invocation.setUniParent(ns);
-			try {
-				invocation.getElement();
-			} catch(LookupException exc) {
-				assertTrue(false);
-			}
+				MethodInvocation<?> invocation = java.plugin(ExpressionFactory.class).createInvocation("add", new StubExpression(listSuperString));
+				invocation.addArgument(new StubExpression(string));
+				invocation.setUniParent(ns);
+				try {
+					invocation.getElement();
+				} catch(LookupException exc) {
+					assertTrue(false);
+				}
 			}
 
-			MethodInvocation invocationWrong = java.plugin(ExpressionFactory.class).createInvocation("add", new StubExpression(listSuperCharSequence));
-			invocationWrong.addArgument(new StubExpression(string));
-			invocationWrong.setUniParent(ns);
-			try {
-				invocationWrong.getElement();
-				assertTrue(false);
-			} catch(LookupException exc) {
+			{
+				MethodInvocation invocationSuper = java.plugin(ExpressionFactory.class).createInvocation("add", new StubExpression(listSuperCharSequence));
+				invocationSuper.addArgument(new StubExpression(string));
+				invocationSuper.setUniParent(ns);
+				try {
+					invocationSuper.getElement();
+				} catch(LookupException exc) {
+					assertTrue(false);
+				}
+			}
+
+			{
+				MethodInvocation invocationExtends = java.plugin(ExpressionFactory.class).createInvocation("add", new StubExpression(listExtendsCharSequence));
+				invocationExtends.addArgument(new StubExpression(string));
+				invocationExtends.setUniParent(ns);
+				try {
+					invocationExtends.getElement();
+					assertTrue(false);
+				} catch(LookupException exc) {
+				}
 			}
 		}
 

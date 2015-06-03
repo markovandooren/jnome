@@ -29,7 +29,7 @@ import be.kuleuven.cs.distrinet.jnome.core.method.JavaMethod;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.JavaConstructor;
 import be.kuleuven.cs.distrinet.jnome.core.namespacedeclaration.JavaNamespaceDeclaration;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaConstrainedType;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaFormalParameterType;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeVariable;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaInstantiatedParameterType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaIntersectionType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaLazyFormalAlias;
@@ -91,7 +91,7 @@ public class Java7Factory extends ObjectOrientedFactory implements OOFactory {
 	
 	@Override
 	public Type createTypeVariable(String name, Type upperBound, FormalTypeParameter formalTypeParameter) {
-	  return new JavaFormalParameterType(name, upperBound, formalTypeParameter);
+	  return new JavaTypeVariable(name, upperBound, formalTypeParameter);
 	}
 	
 	@Override

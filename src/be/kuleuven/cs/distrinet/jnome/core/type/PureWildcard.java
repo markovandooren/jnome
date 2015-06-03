@@ -8,19 +8,23 @@ import org.aikodi.chameleon.core.validation.Valid;
 import org.aikodi.chameleon.core.validation.Verification;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.chameleon.oo.type.generics.TypeArgument;
+import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.CapturedTypeParameter;
+import org.aikodi.chameleon.oo.type.generics.ExtendsConstraint;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
+import org.aikodi.chameleon.oo.type.generics.TypeArgument;
 import org.aikodi.chameleon.oo.type.generics.TypeConstraint;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.workspace.View;
 
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
+
 public class PureWildcard extends TypeArgument {
 
 	public PureWildcard() {
-		
+
 	}
-	
+
 	public TypeParameter capture(FormalTypeParameter formal, List<TypeConstraint> accumulator) {
 		CapturedTypeParameter newParameter = new CapturedTypeParameter(formal.name());
 		for(TypeConstraint constraint: formal.constraints()) {
@@ -28,7 +32,15 @@ public class PureWildcard extends TypeArgument {
 			newParameter.addConstraint(clone);
 			accumulator.add(clone);
 		}
-   return newParameter;
+		
+		//FIXME This should actually be determined by the type parameter itself.
+		//      perhaps it should compute its own upper bound reference.
+		Java7 java = language(Java7.class);
+		BasicJavaTypeReference objectRef = java.createTypeReference(java.getDefaultSuperClassFQN());
+		TypeReference tref = java.createNonLocalTypeReference(objectRef,namespace().defaultNamespace());
+		newParameter.addConstraint(new ExtendsConstraint(tref));
+
+		return newParameter;
 	}
 
 	@Override
@@ -52,7 +64,7 @@ public class PureWildcard extends TypeArgument {
 		pureWildCardType.setUniParent(this);
 		return pureWildCardType;
 	}
-	
+
 	public Type parameterBound() throws LookupException {
 		BasicJavaTypeReference nearestAncestor = nearestAncestor(BasicJavaTypeReference.class);
 		List<TypeArgument> args = nearestAncestor.typeArguments();
@@ -67,7 +79,7 @@ public class PureWildcard extends TypeArgument {
 	public boolean uniSameAs(Element other) throws LookupException {
 		return other instanceof PureWildcard;
 	}
-	
+
 	@Override
 	public Type upperBound() throws LookupException {
 		//return language(ObjectOrientedLanguage.class).getDefaultSuperClass();
@@ -82,7 +94,7 @@ public class PureWildcard extends TypeArgument {
 	public String toString(java.util.Set<Element> visited) {
 		return "?";
 	}
-	
+
 	@Override
 	public boolean isWildCardBound() {
 		return true;

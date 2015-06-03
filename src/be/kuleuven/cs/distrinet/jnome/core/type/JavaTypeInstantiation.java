@@ -119,20 +119,6 @@ public class JavaTypeInstantiation extends TypeInstantiation implements JavaType
 			}
 		}
 		return result;
-		//		if(_judge == null) {
-		//			synchronized(this) {
-		//				if(_judge == null) {
-		//					//FIXME Speed this isn't cached
-		//					Type captureConversion = captureConversion();
-		//					if(captureConversion != this) {
-		//						_judge = captureConversion.superTypeJudge();
-		//					} else {
-		//						_judge = super.superTypeJudge();
-		//					}
-		//				}
-		//			}
-		//		}
-		//		return _judge;
 	}
 
 	@Override
@@ -187,7 +173,8 @@ public class JavaTypeInstantiation extends TypeInstantiation implements JavaType
 					if(instantiatedTypeParameter.hasWildCardBound()) {
 						doCapture = true;
 					}
-					typeParameters.add(instantiatedTypeParameter.capture((FormalTypeParameter) formalParam,toBeSubstituted));
+					TypeParameter capturedParameter = instantiatedTypeParameter.capture((FormalTypeParameter) formalParam,toBeSubstituted);
+					typeParameters.add(capturedParameter);
 				}
 				if(doCapture) {
 					// Everything works as well when we pass 'this' instead of 'base'.
@@ -212,9 +199,6 @@ public class JavaTypeInstantiation extends TypeInstantiation implements JavaType
 						}
 					}
 				} 
-//				else {
-//					Util.debug(true);
-//				}
 			}
 			_captureConversion = result;
 		}

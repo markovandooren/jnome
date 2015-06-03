@@ -3,7 +3,7 @@ package be.kuleuven.cs.distrinet.jnome.core.type;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeFixer;
-import org.aikodi.chameleon.oo.type.generics.FormalParameterType;
+import org.aikodi.chameleon.oo.type.generics.TypeVariable;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.LazyFormalAlias;
 import org.aikodi.chameleon.util.StackOverflowTracer;
@@ -20,7 +20,7 @@ public class JavaLazyFormalAlias extends LazyFormalAlias implements JavaType {
 	}
 
 	@Override
-	public FormalParameterType cloneSelf() {
+	public TypeVariable cloneSelf() {
 		return new JavaLazyFormalAlias(name(), parameter());
 	}
 

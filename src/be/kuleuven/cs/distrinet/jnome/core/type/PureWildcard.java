@@ -27,19 +27,21 @@ public class PureWildcard extends TypeArgument {
 
 	public TypeParameter capture(FormalTypeParameter formal, List<TypeConstraint> accumulator) {
 		CapturedTypeParameter newParameter = new CapturedTypeParameter(formal.name());
-		for(TypeConstraint constraint: formal.constraints()) {
+		List<TypeConstraint> constraints = formal.constraints();
+		for(TypeConstraint constraint: constraints) {
 			TypeConstraint clone = cloneAndResetTypeReference(constraint,constraint);
 			newParameter.addConstraint(clone);
 			accumulator.add(clone);
 		}
-		
-		//FIXME This should actually be determined by the type parameter itself.
-		//      perhaps it should compute its own upper bound reference.
-		Java7 java = language(Java7.class);
-		BasicJavaTypeReference objectRef = java.createTypeReference(java.getDefaultSuperClassFQN());
-		TypeReference tref = java.createNonLocalTypeReference(objectRef,namespace().defaultNamespace());
-		newParameter.addConstraint(new ExtendsConstraint(tref));
 
+		//FIXME This should actually be determined by the type parameter itself.
+		//      perhaps it should compute its own upper bound reference
+		if(constraints.size() == 0) {
+			Java7 java = language(Java7.class);
+			BasicJavaTypeReference objectRef = java.createTypeReference(java.getDefaultSuperClassFQN());
+			TypeReference tref = java.createNonLocalTypeReference(objectRef,namespace().defaultNamespace());
+			newParameter.addConstraint(new ExtendsConstraint(tref));
+		}
 		return newParameter;
 	}
 

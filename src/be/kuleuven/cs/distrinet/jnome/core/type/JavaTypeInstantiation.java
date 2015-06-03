@@ -193,8 +193,6 @@ public class JavaTypeInstantiation extends TypeInstantiation implements JavaType
 										NonLocalJavaTypeReference.replace(tref, oldParameter, (JavaTypeReference) constraint.typeReference());
 									}
 								}
-							} else {
-								throw new ChameleonProgrammerException();
 							}
 						}
 					}

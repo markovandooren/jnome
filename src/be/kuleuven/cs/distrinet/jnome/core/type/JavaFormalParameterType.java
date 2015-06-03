@@ -3,10 +3,10 @@ package be.kuleuven.cs.distrinet.jnome.core.type;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeFixer;
-import org.aikodi.chameleon.oo.type.generics.FormalParameterType;
+import org.aikodi.chameleon.oo.type.generics.TypeVariable;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 
-public class JavaFormalParameterType extends FormalParameterType implements JavaType {
+public class JavaFormalParameterType extends TypeVariable implements JavaType {
 
   public JavaFormalParameterType(String name, Type aliasedType, FormalTypeParameter param) {
     super(name, aliasedType, param);
@@ -18,7 +18,7 @@ public class JavaFormalParameterType extends FormalParameterType implements Java
   }
   
   @Override
-  public FormalParameterType cloneSelf() {
+  public TypeVariable cloneSelf() {
     return new JavaFormalParameterType(name(), aliasedType(), parameter());
   }
 

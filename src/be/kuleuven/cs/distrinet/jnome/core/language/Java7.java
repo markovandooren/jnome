@@ -47,7 +47,7 @@ import org.aikodi.chameleon.oo.type.generics.EqualityConstraint;
 import org.aikodi.chameleon.oo.type.generics.ExtendsConstraint;
 import org.aikodi.chameleon.oo.type.generics.ExtendsWildcard;
 import org.aikodi.chameleon.oo.type.generics.ExtendsWildcardType;
-import org.aikodi.chameleon.oo.type.generics.FormalParameterType;
+import org.aikodi.chameleon.oo.type.generics.TypeVariable;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.InstantiatedParameterType;
 import org.aikodi.chameleon.oo.type.generics.InstantiatedTypeParameter;
@@ -201,7 +201,7 @@ public class Java7 extends ObjectOrientedLanguage {
   	if(original instanceof ArrayType) {
   		result = ((ArrayType) original).erasure();
   	} 
-  	else if(original instanceof FormalParameterType){
+  	else if(original instanceof TypeVariable){
   		result = original;
   	} 
   	else {
@@ -709,10 +709,10 @@ public class Java7 extends ObjectOrientedLanguage {
 				for(TypeParameter parameter: type.parameters(TypeParameter.class)) {
 					cloneActualTypeArguments(parameter,tref);
 				}
-			} else if (type instanceof FormalParameterType) {
+			} else if (type instanceof TypeVariable) {
 				//result = new NonLocalJavaTypeReference(new BasicJavaTypeReference(type.signature().name()),type.parent());
 				result = new BasicJavaTypeReference(type.name());
-				result.setUniParent(((FormalParameterType)type).parameter().parent());
+				result.setUniParent(((TypeVariable)type).parameter().parent());
 			} else if (type instanceof InstantiatedParameterType) {
 				//result = new NonLocalJavaTypeReference(new BasicJavaTypeReference(type.signature().name()),type.parent());
 				result = new BasicJavaTypeReference(type.name());

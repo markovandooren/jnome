@@ -25,7 +25,6 @@ public class CapturedType extends JavaTypeInstantiation {
 
 	public CapturedType(ParameterSubstitution substitution, Type baseType) {
 		super(substitution, baseType);
-		Util.debug(!substitution.parameters().stream().allMatch(p -> p instanceof CapturedTypeParameter));
 	}
 
 	protected CapturedType(List<ParameterSubstitution<?>> parameters, Type baseType) {
@@ -42,5 +41,12 @@ public class CapturedType extends JavaTypeInstantiation {
 		return localContext();
 	}
 
+	/**
+	 * @{inheritDoc}
+	 */
+	@Override
+	public Type captureConversion() throws LookupException {
+		return this;
+	}
 	
 }

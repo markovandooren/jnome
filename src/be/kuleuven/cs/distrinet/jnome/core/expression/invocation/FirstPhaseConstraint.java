@@ -16,7 +16,7 @@ import org.aikodi.chameleon.oo.type.generics.EqualityTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.CapturedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.EqualityConstraint;
 import org.aikodi.chameleon.oo.type.generics.ExtendsWildcard;
-import org.aikodi.chameleon.oo.type.generics.FormalParameterType;
+import org.aikodi.chameleon.oo.type.generics.TypeVariable;
 import org.aikodi.chameleon.oo.type.generics.InstantiatedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.SuperWildcard;
 import org.aikodi.chameleon.oo.type.generics.TypeConstraint;
@@ -90,9 +90,9 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 	public List<SecondPhaseConstraint> processFirstLevel() throws LookupException {
 		List<SecondPhaseConstraint> result = new ArrayList<SecondPhaseConstraint>();
 //		Declaration declarator = typeReference().getDeclarator();
-		if(F() instanceof FormalParameterType && parent().typeParameters().contains(((FormalParameterType)F()).parameter())) {
+		if(F() instanceof TypeVariable && parent().typeParameters().contains(((TypeVariable)F()).parameter())) {
 			// Otherwise, if F=Tj, then the constraint Tj :> A is implied.
-				result.add(FequalsTj(((FormalParameterType)F()).parameter(), ARef()));
+				result.add(FequalsTj(((TypeVariable)F()).parameter(), ARef()));
 		}
 		else if(F() instanceof ArrayType) {
 			// If F=U[], where the type U involves Tj, then if A is an array type V[], or
@@ -174,7 +174,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 	}
 	
 	public boolean involvesTypeParameter(Type type) throws LookupException {
-    return ((type instanceof FormalParameterType) && (parent().typeParameters().contains(((FormalParameterType) type).parameter())))
+    return ((type instanceof TypeVariable) && (parent().typeParameters().contains(((TypeVariable) type).parameter())))
         || ((type instanceof ArrayType) && (involvesTypeParameter(((ArrayType) type).elementType())))
         || ((type instanceof TypeInstantiation) && (involvesTypeParameter(type.baseType())))
         || exists(type.parameters(TypeParameter.class), object -> (object instanceof InstantiatedTypeParameter)

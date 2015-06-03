@@ -20,7 +20,7 @@ import org.aikodi.chameleon.core.variable.Variable;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.chameleon.oo.type.generics.FormalParameterType;
+import org.aikodi.chameleon.oo.type.generics.TypeVariable;
 import org.aikodi.chameleon.ui.widget.LabelProvider;
 import org.aikodi.chameleon.ui.widget.PredicateSelector;
 import org.aikodi.chameleon.ui.widget.checkbox.CheckboxPredicateSelector;
@@ -211,7 +211,7 @@ public class JavaDependencyOptions extends DependencyOptions {
         while(element instanceof TypeInstantiation) {
           element = ((TypeInstantiation)element).baseType();
         }
-        while(element instanceof FormalParameterType) {
+        while(element instanceof TypeVariable) {
           element = element.nearestAncestor(Type.class);
         }
         if(element instanceof Type) {

@@ -11,10 +11,12 @@ import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.CapturedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.ExtendsConstraint;
+import org.aikodi.chameleon.oo.type.generics.ExtendsWildcardType;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeArgument;
 import org.aikodi.chameleon.oo.type.generics.TypeConstraint;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+import org.aikodi.chameleon.oo.view.ObjectOrientedView;
 import org.aikodi.chameleon.workspace.View;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
@@ -62,29 +64,32 @@ public class PureWildcard extends TypeArgument {
 
 	@Override
 	public Type type() throws LookupException {
-		PureWildCardType pureWildCardType = new PureWildCardType(parameterBound());
-		pureWildCardType.setUniParent(this);
-		return pureWildCardType;
+      ExtendsWildcardType result = new ExtendsWildcardType(upperBound());
+      result.setUniParent(namespace().defaultNamespace());
+      return result;
+//		PureWildCardType pureWildCardType = new PureWildCardType(parameterBound());
+//		pureWildCardType.setUniParent(this);
+//		return pureWildCardType;
 	}
 
-	public Type parameterBound() throws LookupException {
-		BasicJavaTypeReference nearestAncestor = nearestAncestor(BasicJavaTypeReference.class);
-		List<TypeArgument> args = nearestAncestor.typeArguments();
-		int index = args.indexOf(this);
-		// Wrong, this should not be the type constructor, we need to take into account the 
-		// type instance
-		Type typeConstructor = nearestAncestor.typeConstructor();
-		Type typeInstance = nearestAncestor.getElement();
-		TypeParameter formalParameter = typeConstructor.parameter(TypeParameter.class,index);
-		TypeParameter actualParameter = typeInstance.parameter(TypeParameter.class, index);
-		TypeReference formalUpperBoundReference = formalParameter.upperBoundReference();
-		TypeReference clonedUpperBoundReference = clone(formalUpperBoundReference);
-		clonedUpperBoundReference.setUniParent(actualParameter);
-		
-//		Type result = formalParameter.upperBound(); // This fixes testGenericRejuse
-		Type result = clonedUpperBoundReference.getElement();
-		return result;
-	}
+//	public Type parameterBound() throws LookupException {
+////		BasicJavaTypeReference nearestAncestor = nearestAncestor(BasicJavaTypeReference.class);
+////		List<TypeArgument> args = nearestAncestor.typeArguments();
+////		int index = args.indexOf(this);
+////		// Wrong, this should not be the type constructor, we need to take into account the 
+////		// type instance
+////		Type typeConstructor = nearestAncestor.typeConstructor();
+////		Type typeInstance = nearestAncestor.getElement();
+////		TypeParameter formalParameter = typeConstructor.parameter(TypeParameter.class,index);
+////		TypeParameter actualParameter = typeInstance.parameter(TypeParameter.class, index);
+////		TypeReference formalUpperBoundReference = formalParameter.upperBoundReference();
+////		TypeReference clonedUpperBoundReference = clone(formalUpperBoundReference);
+////		clonedUpperBoundReference.setUniParent(actualParameter);
+////		
+//////		Type result = formalParameter.upperBound(); // This fixes testGenericRejuse
+////		Type result = clonedUpperBoundReference.getElement();
+////		return result;
+//	}
 
 	@Override
 	public boolean uniSameAs(Element other) throws LookupException {
@@ -94,7 +99,7 @@ public class PureWildcard extends TypeArgument {
 	@Override
 	public Type upperBound() throws LookupException {
 		//return language(ObjectOrientedLanguage.class).getDefaultSuperClass();
-		return parameterBound();
+		return view(ObjectOrientedView.class).topLevelType();
 	}
 
 	@Override

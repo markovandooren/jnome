@@ -4,6 +4,7 @@ import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.TypeFixer;
 import org.aikodi.chameleon.oo.type.generics.IntervalType;
 
 public class PureWildCardType extends IntervalType {
@@ -26,5 +27,13 @@ public class PureWildCardType extends IntervalType {
 	@Override
 	protected Element cloneSelf() {
 	  return new PureWildCardType(name(),lowerBound(),upperBound());
+	}
+	
+	/**
+	* @{inheritDoc}
+	*/
+	@Override
+	public boolean uniSupertypeOf(Type other, TypeFixer trace) throws LookupException {
+	  return true;
 	}
 }

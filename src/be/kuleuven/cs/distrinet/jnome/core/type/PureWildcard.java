@@ -71,9 +71,18 @@ public class PureWildcard extends TypeArgument {
 		BasicJavaTypeReference nearestAncestor = nearestAncestor(BasicJavaTypeReference.class);
 		List<TypeArgument> args = nearestAncestor.typeArguments();
 		int index = args.indexOf(this);
-		Type base = nearestAncestor.typeConstructor();
-		TypeParameter parameter = base.parameter(TypeParameter.class,index);
-		Type result = parameter.upperBound();
+		// Wrong, this should not be the type constructor, we need to take into account the 
+		// type instance
+		Type typeConstructor = nearestAncestor.typeConstructor();
+		Type typeInstance = nearestAncestor.getElement();
+		TypeParameter formalParameter = typeConstructor.parameter(TypeParameter.class,index);
+		TypeParameter actualParameter = typeInstance.parameter(TypeParameter.class, index);
+		TypeReference formalUpperBoundReference = formalParameter.upperBoundReference();
+		TypeReference clonedUpperBoundReference = clone(formalUpperBoundReference);
+		clonedUpperBoundReference.setUniParent(actualParameter);
+		
+//		Type result = formalParameter.upperBound(); // This fixes testGenericRejuse
+		Type result = clonedUpperBoundReference.getElement();
 		return result;
 	}
 

@@ -54,18 +54,6 @@ public class JavaTypeInstantiation extends TypeInstantiation implements JavaType
 
 	@Override
 	public List<InheritanceRelation> implicitNonMemberInheritanceRelations() {
-		//  	//FIXME cache and put listener on inheritance relations to remove the default one if an explicit one is added.
-		//    if(explicitNonMemberInheritanceRelations().isEmpty() && (! "Object".equals(name())) && (! getFullyQualifiedName().equals("java.lang.Object"))) {
-		//    	InheritanceRelation relation = new SubtypeRelation(language(ObjectOrientedLanguage.class).createTypeReference(new NamedTarget("java.lang"),"Object"));
-		//    	relation.setUniParent(this);
-		//    	relation.setMetadata(new TagImpl(), IMPLICIT_CHILD);
-		//    	List<InheritanceRelation> result = new ArrayList<InheritanceRelation>();
-		//    	result.add(relation);
-		//    	return result;
-		//    } else {
-		//    	return Collections.EMPTY_LIST;
-		//    }
-
 		//FIXME speed avoid creating collection
 		String defaultSuperClassFQN = language(ObjectOrientedLanguage.class).getDefaultSuperClassFQN();
 		if(explicitNonMemberInheritanceRelations().isEmpty() && 

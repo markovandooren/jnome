@@ -36,21 +36,21 @@ public class TestCustomCases extends JavaTest {
 		public void testSubtyping() throws LookupException {
 			Java7 language = (Java7)view().language();
 			Namespace ns = view().namespace();
-			BasicJavaTypeReference listOfString = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
-			listOfString.addArgument(language.createEqualityTypeArgument(language.createTypeReference("java.lang.String")));
-			listOfString.setUniParent(ns);
+			BasicJavaTypeReference listOfStringRef = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
+			listOfStringRef.addArgument(language.createEqualityTypeArgument(language.createTypeReference("java.lang.String")));
+			listOfStringRef.setUniParent(ns);
 			BasicJavaTypeReference tref2 = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
 			tref2.addArgument(language.createEqualityTypeArgument(language.createTypeReference("java.lang.String")));
 			tref2.setUniParent(ns);
 			BasicJavaTypeReference tref3 = (BasicJavaTypeReference) language.createTypeReference("test.generics.SubList");
 			tref3.addArgument(language.createEqualityTypeArgument(language.createTypeReference("java.lang.String")));
 			tref3.setUniParent(ns);
-			BasicJavaTypeReference tref4 = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
-			tref4.addArgument(language.createEqualityTypeArgument(language.createTypeReference("java.lang.Object")));
-			tref4.setUniParent(ns);
-			BasicJavaTypeReference listOfExtendsCharSequence = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
-			listOfExtendsCharSequence.addArgument(language.createExtendsWildcard(language.createTypeReference("java.lang.CharSequence")));
-			listOfExtendsCharSequence.setUniParent(ns);
+			BasicJavaTypeReference listOfObjectRef = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
+			listOfObjectRef.addArgument(language.createEqualityTypeArgument(language.createTypeReference("java.lang.Object")));
+			listOfObjectRef.setUniParent(ns);
+			BasicJavaTypeReference listOfExtendsCharSequenceRef = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
+			listOfExtendsCharSequenceRef.addArgument(language.createExtendsWildcard(language.createTypeReference("java.lang.CharSequence")));
+			listOfExtendsCharSequenceRef.setUniParent(ns);
 			BasicJavaTypeReference tref6 = (BasicJavaTypeReference) language.createTypeReference("test.generics.List");
 			tref6.addArgument(language.createExtendsWildcard(language.createTypeReference("java.lang.String")));
 			tref6.setUniParent(ns);
@@ -64,34 +64,34 @@ public class TestCustomCases extends JavaTest {
 			tref8.addArgument(language.createSuperWildcard(language.createTypeReference("java.lang.CharSequence")));
 			tref8.setUniParent(ns);
 
-			Type type1 = listOfString.getElement(); // test.generics.List<java.lang.String>
+			Type listOfString = listOfStringRef.getElement(); // test.generics.List<java.lang.String>
 			Type type2 = tref2.getElement();
 			Type type3 = tref3.getElement();
-			Type type4 = tref4.getElement(); // test.generics.List<java.lang.Object>
-			Type type5 = listOfExtendsCharSequence.getElement();
+			Type listOfObject = listOfObjectRef.getElement(); // test.generics.List<java.lang.Object>
+			Type listOfExtendsCharSequence = listOfExtendsCharSequenceRef.getElement(); // test.generics.List<? extends CharSequence>
 			Type type6 = tref6.getElement();
 			JavaType listOfSuperOfString = (JavaType) listOfSuperOfStringRef.getElement();
 			JavaType listOfSuperOfStringDuo = (JavaType) listOfSuperOfStringRefDuo.getElement();
 			Type listOfSuperOfStringCaptured = listOfSuperOfString.captureConversion();
 			Type listOfSuperOfStringDuoCaptured = listOfSuperOfStringDuo.captureConversion();
 			Type type8 = tref8.getElement();
-			assertTrue(type2.subtypeOf(type1));
-			assertTrue(type1.sameAs(type2));
-			assertTrue(type1.equals(type2));
-			assertTrue(type3.subtypeOf(type1));
-			assertFalse(type4.subtypeOf(type1));
-			assertFalse(type1.subtypeOf(type4));
-			assertTrue(type1.subtypeOf(type5));
-			assertFalse(type4.subtypeOf(type5));
-			assertFalse(type5.subtypeOf(type1));
-			assertTrue(type6.subtypeOf(type5));
+			assertTrue(type2.subtypeOf(listOfString));
+			assertTrue(listOfString.sameAs(type2));
+			assertTrue(listOfString.equals(type2));
+			assertTrue(type3.subtypeOf(listOfString));
+			assertFalse(listOfObject.subtypeOf(listOfString));
+			assertFalse(listOfString.subtypeOf(listOfObject));
+			assertTrue(listOfString.subtypeOf(listOfExtendsCharSequence));
+			assertFalse(listOfObject.subtypeOf(listOfExtendsCharSequence));
+			assertFalse(listOfExtendsCharSequence.subtypeOf(listOfString));
+			assertTrue(type6.subtypeOf(listOfExtendsCharSequence));
 			assertTrue(type2.subtypeOf(type6));
-			assertFalse(type5.subtypeOf(type6));
-			assertTrue(type4.subtypeOf(listOfSuperOfString));
-			assertTrue(type4.subtypeOf(type8));
+			assertFalse(listOfExtendsCharSequence.subtypeOf(type6));
+			assertTrue(listOfObject.subtypeOf(listOfSuperOfString));
+			assertTrue(listOfObject.subtypeOf(type8));
 			assertTrue(type8.subtypeOf(listOfSuperOfString));
-			assertFalse(type5.subtypeOf(type8));
-			assertFalse(type5.subtypeOf(listOfSuperOfString));
+			assertFalse(listOfExtendsCharSequence.subtypeOf(type8));
+			assertFalse(listOfExtendsCharSequence.subtypeOf(listOfSuperOfString));
 			assertFalse(type6.subtypeOf(type8));
 			assertFalse(type6.subtypeOf(listOfSuperOfString));
 			assertTrue(listOfSuperOfString.subtypeOf(listOfSuperOfStringDuo));

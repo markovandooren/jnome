@@ -40,8 +40,8 @@ public class ErasedTypeParameter extends AbstractInstantiatedTypeParameter {
 //		return other instanceof ErasedTypeParameter && super.compatibleWith(other, trace);
 //	}
 	
-	@Override
-	public boolean contains(TypeParameter other, TypeFixer trace) throws LookupException {
-		return other instanceof ErasedTypeParameter && super.contains(other, trace);
-	}
+//	@Override
+//	public boolean contains(TypeParameter other, TypeFixer trace) throws LookupException {
+//		return other instanceof ErasedTypeParameter && super.contains(other, trace);
+//	}
 }

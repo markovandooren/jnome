@@ -21,13 +21,4 @@ public class JavaInstantiatedParameterType extends InstantiatedParameterType imp
     return this;
   }
   
-//  @Override
-//  public Type lowerBound() throws LookupException {
-//    return aliasedType().lowerBound();
-//  }
-//
-//  @Override
-//  public Type upperBound() throws LookupException {
-//    return aliasedType().upperBound();
-//  }
 }

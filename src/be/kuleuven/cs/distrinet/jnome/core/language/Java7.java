@@ -39,23 +39,23 @@ import org.aikodi.chameleon.oo.type.TypeIndirection;
 import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.UnionType;
-import org.aikodi.chameleon.oo.type.generics.TypeArgument;
-import org.aikodi.chameleon.oo.type.generics.TypeArgumentWithTypeReference;
-import org.aikodi.chameleon.oo.type.generics.EqualityTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.CapturedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.EqualityConstraint;
+import org.aikodi.chameleon.oo.type.generics.EqualityTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.ExtendsConstraint;
 import org.aikodi.chameleon.oo.type.generics.ExtendsWildcard;
 import org.aikodi.chameleon.oo.type.generics.ExtendsWildcardType;
-import org.aikodi.chameleon.oo.type.generics.TypeVariable;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.InstantiatedParameterType;
 import org.aikodi.chameleon.oo.type.generics.InstantiatedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.SuperConstraint;
 import org.aikodi.chameleon.oo.type.generics.SuperWildcard;
 import org.aikodi.chameleon.oo.type.generics.SuperWildcardType;
+import org.aikodi.chameleon.oo.type.generics.TypeArgument;
+import org.aikodi.chameleon.oo.type.generics.TypeArgumentWithTypeReference;
 import org.aikodi.chameleon.oo.type.generics.TypeConstraint;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+import org.aikodi.chameleon.oo.type.generics.TypeVariable;
 import org.aikodi.chameleon.oo.type.inheritance.AbstractInheritanceRelation;
 import org.aikodi.chameleon.oo.variable.MemberVariable;
 import org.aikodi.chameleon.oo.variable.VariableDeclarator;
@@ -89,7 +89,6 @@ import be.kuleuven.cs.distrinet.jnome.core.type.JavaType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeInstantiation;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaUnionTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.type.PureWildCardType;
 import be.kuleuven.cs.distrinet.jnome.core.type.PureWildcard;
 import be.kuleuven.cs.distrinet.jnome.core.type.RawType;
 import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
@@ -750,12 +749,13 @@ public class Java7 extends ObjectOrientedLanguage {
 				reference.setUniParent(null);
 				result = new JavaSuperReference(reference);
 				result.setUniParent(parent);
-			} else if (type instanceof PureWildCardType) {
-				result = (JavaTypeReference) createPureWildcard();
-				// A pure wildcard type has the original pure wildcard as its parent. The parent of the new reference is the parent of
-				// the original pure wildcard.
-				result.setUniParent(type.parent().parent());
-			}
+			} 
+//			else if (type instanceof PureWildCardType) {
+//				result = (JavaTypeReference) createPureWildcard();
+//				// A pure wildcard type has the original pure wildcard as its parent. The parent of the new reference is the parent of
+//				// the original pure wildcard.
+//				result.setUniParent(type.parent().parent());
+//			}
 			else {
 				throw new ChameleonProgrammerException("Type of type is "+type.getClass().getName());
 			}
@@ -796,6 +796,7 @@ public class Java7 extends ObjectOrientedLanguage {
           JavaConstrainedTypeReference constrainedTypeReference = createConstrainedTypeReference();
           constraints.forEach(c -> constrainedTypeReference.addConstraint(c.clone(c)));
           result = parameter.language(Java7.class).createEqualityTypeArgument(constrainedTypeReference);
+          tref.addArgument(result);
         }
       }
     }

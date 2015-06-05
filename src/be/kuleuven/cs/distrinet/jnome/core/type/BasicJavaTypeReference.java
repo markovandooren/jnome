@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.aikodi.chameleon.core.Config;
 import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.namespace.Namespace;
 import org.aikodi.chameleon.core.reference.CrossReference;
@@ -16,7 +17,7 @@ import org.aikodi.chameleon.oo.expression.NamedTarget;
 import org.aikodi.chameleon.oo.type.BasicTypeReference;
 import org.aikodi.chameleon.oo.type.RegularType;
 import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.TypeArgument;
 import org.aikodi.chameleon.util.Util;
 import org.aikodi.chameleon.util.association.Multi;
 
@@ -70,39 +71,29 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 //  	_trace = new CreationStackTrace();
 //  }
   
-  public List<ActualTypeArgument> typeArguments() {
+  public List<TypeArgument> typeArguments() {
   	return _typeArguments.getOtherEnds();
   }
   
-  public void addArgument(ActualTypeArgument arg) {
+  public void addArgument(TypeArgument arg) {
   	add(_typeArguments,arg);
   }
   
-  public void addAllArguments(List<ActualTypeArgument> args) {
-  	for(ActualTypeArgument argument : args) {
+  public void addAllArguments(List<TypeArgument> args) {
+  	for(TypeArgument argument : args) {
   		addArgument(argument);
   	}
   }
   
-  public void removeArgument(ActualTypeArgument arg) {
+  public void removeArgument(TypeArgument arg) {
   	remove(_typeArguments,arg);
   }
   
-  private Multi<ActualTypeArgument> _typeArguments = new Multi<ActualTypeArgument>(this);
+  private Multi<TypeArgument> _typeArguments = new Multi<TypeArgument>(this);
   {
   	_typeArguments.enableCache();
   }
   
-  public JavaTypeReference toArray(int arrayDimension) {
-  	JavaTypeReference result;
-  	if(arrayDimension > 0) {
-  	  result = new ArrayTypeReference(clone(this), arrayDimension);
-  	} else {
-  		result = this;
-  	}
-  	return result;
-  }
-
   public int arrayDimension() {
   	return 0;
   }
@@ -212,14 +203,14 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
     	}
   }
   
-  public String toString() {
-  	StringBuffer result = new StringBuffer(super.toString());
-  	List<ActualTypeArgument> arguments = typeArguments();
+  public String toString(Set<Element> visited) {
+  	StringBuffer result = new StringBuffer(super.toString(visited));
+  	List<TypeArgument> arguments = typeArguments();
   	if(! arguments.isEmpty()) {
   		result.append('<');
   		int size = arguments.size();
   		for(int i =0; i<size;i++) {
-  			result.append(arguments.get(i).toString());
+  			result.append(arguments.get(i).toString(visited));
   			if(i<size-1) {
   				result.append(',');
   			}

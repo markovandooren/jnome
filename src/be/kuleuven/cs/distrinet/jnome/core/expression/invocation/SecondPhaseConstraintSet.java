@@ -10,10 +10,11 @@ import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.expression.MethodInvocation;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.method.MethodHeader;
+import org.aikodi.chameleon.oo.plugin.ObjectOrientedFactory;
 import org.aikodi.chameleon.oo.type.IntersectionType;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
-import org.aikodi.chameleon.oo.type.generics.FormalParameterType;
+import org.aikodi.chameleon.oo.type.generics.TypeVariable;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.support.expression.AssignmentExpression;
 import org.aikodi.chameleon.util.Util;
@@ -207,7 +208,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 			descendants.add(URef);
 			for(TypeReference tref: descendants) {
 				Type type = tref.getElement();
-				if(type instanceof FormalParameterType && ((FormalParameterType) type).parameter().origin() == Tj) {
+				if(type instanceof TypeVariable && ((TypeVariable) type).parameter().origin() == Tj) {
 					TjType = type;
 					recursive = true;
 				}
@@ -218,7 +219,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 			Us.add(URef.getElement());
 		}
 		if(! recursive) {
-			Type intersectionType = IntersectionType.create(Us);
+			Type intersectionType = Tj.language().plugin(ObjectOrientedFactory.class).createIntersectionType(Us);
 			return intersectionType;
 		} else {
 			return TjType;

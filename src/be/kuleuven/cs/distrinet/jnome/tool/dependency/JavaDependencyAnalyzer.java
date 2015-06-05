@@ -15,7 +15,7 @@ import org.aikodi.chameleon.oo.type.IntersectionType;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.UnionType;
-import org.aikodi.chameleon.oo.type.generics.FormalParameterType;
+import org.aikodi.chameleon.oo.type.generics.TypeVariable;
 import org.aikodi.chameleon.util.Lists;
 import org.aikodi.chameleon.workspace.InputException;
 import org.aikodi.chameleon.workspace.Project;
@@ -81,7 +81,7 @@ public class JavaDependencyAnalyzer extends DependencyAnalyzer<Type> {
           while(type instanceof TypeInstantiation) {
             type = ((TypeInstantiation)type).baseType();
           }
-          while(type instanceof FormalParameterType) {
+          while(type instanceof TypeVariable) {
             type = type.nearestAncestor(Type.class);
           }
           AnonymousType anon = type.farthestAncestorOrSelf(AnonymousType.class);

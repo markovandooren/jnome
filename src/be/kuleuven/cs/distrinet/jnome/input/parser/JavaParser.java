@@ -60,8 +60,8 @@ import org.aikodi.chameleon.oo.type.TypeElement;
 
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
-import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
-import org.aikodi.chameleon.oo.type.generics.BasicTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.TypeArgument;
+import org.aikodi.chameleon.oo.type.generics.EqualityTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.TypeConstraint;
 import org.aikodi.chameleon.oo.type.generics.ExtendsConstraint;
 import org.aikodi.chameleon.oo.type.generics.ExtendsWildcard;

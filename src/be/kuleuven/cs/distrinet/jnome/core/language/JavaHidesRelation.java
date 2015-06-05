@@ -20,14 +20,14 @@ public class JavaHidesRelation extends StrictPartialOrder<Member> {
 		Member second = snd;
 		boolean result = false;
 		if((first instanceof NormalMethod) && (second instanceof NormalMethod)) {
-			result = first.nearestAncestor(Type.class).subTypeOf(second.nearestAncestor(Type.class)) &&
+			result = first.nearestAncestor(Type.class).subtypeOf(second.nearestAncestor(Type.class)) &&
 			         (first.is(first.language(ObjectOrientedLanguage.class).CLASS) == Ternary.TRUE) && 
 			          first.sameSignatureAs(second);
 		} else if(first instanceof RegularMemberVariable && second instanceof RegularMemberVariable) {
-			 result = first.nearestAncestor(Type.class).subTypeOf(second.nearestAncestor(Type.class)) &&
+			 result = first.nearestAncestor(Type.class).subtypeOf(second.nearestAncestor(Type.class)) &&
 			          first.sameSignatureAs(second);
 		} else if(first instanceof Type && second instanceof Type) {
-			result = first.nearestAncestor(Type.class).subTypeOf(second.nearestAncestor(Type.class)) &&
+			result = first.nearestAncestor(Type.class).subtypeOf(second.nearestAncestor(Type.class)) &&
       first.sameSignatureAs(second);
 		}
 		return result;

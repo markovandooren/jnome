@@ -34,7 +34,7 @@ public class JavaImplementsRelation extends StrictPartialOrder<Member> {
 						result = signature1.sameParameterBoundsAs(erasure2);
 					}
 	    		result = result &&
-	    		(! method2.nearestAncestor(Type.class).subTypeOf(method1.nearestAncestor(Type.class))) &&
+	    		(! method2.nearestAncestor(Type.class).subtypeOf(method1.nearestAncestor(Type.class))) &&
 	    		method1.sameKind(method2);
 	    	} 
 //	    } 

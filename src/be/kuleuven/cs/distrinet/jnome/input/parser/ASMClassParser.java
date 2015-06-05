@@ -46,7 +46,7 @@ import org.aikodi.chameleon.oo.method.exception.TypeExceptionDeclaration;
 import org.aikodi.chameleon.oo.plugin.ObjectOrientedFactory;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
-import org.aikodi.chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
+import org.aikodi.chameleon.oo.type.generics.TypeArgumentWithTypeReference;
 import org.aikodi.chameleon.oo.type.generics.ExtendsConstraint;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
@@ -83,7 +83,7 @@ import be.kuleuven.cs.distrinet.jnome.core.modifier.Volatile;
 import be.kuleuven.cs.distrinet.jnome.core.namespacedeclaration.JavaNamespaceDeclaration;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaBasicTypeArgument;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaEqualityTypeArgument;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaExtendsWildcard;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaPureWildcard;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaSuperWildcard;
@@ -662,9 +662,9 @@ public class ASMClassParser {
     @Override
     public SignatureVisitor visitTypeArgument(char kind) {
       // create visitor with 'this' as its parent.
-      final ActualTypeArgumentWithTypeReference arg;
+      final TypeArgumentWithTypeReference arg;
       if(kind == SignatureVisitor.INSTANCEOF) {
-        arg = _language.createBasicTypeArgument(null);
+        arg = _language.createEqualityTypeArgument(null);
       } else if(kind == SignatureVisitor.EXTENDS) {
         arg = _language.createExtendsWildcard(null);
       } else if(kind == SignatureVisitor.SUPER) {

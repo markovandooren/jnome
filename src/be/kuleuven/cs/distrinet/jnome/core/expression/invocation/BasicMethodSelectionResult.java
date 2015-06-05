@@ -7,7 +7,7 @@ import org.aikodi.chameleon.core.lookup.SelectionResult;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
-import org.aikodi.chameleon.oo.type.generics.BasicTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.EqualityTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.InstantiatedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.util.Util;
@@ -87,7 +87,7 @@ public class BasicMethodSelectionResult<M extends Method> implements MethodSelec
 				JavaTypeReference reference = language.reference(assignedType);
 				Element parent = reference.parent();
 				reference.setUniParent(null);
-				BasicTypeArgument argument = language.createBasicTypeArgument(reference);
+				EqualityTypeArgument argument = language.createEqualityTypeArgument(reference);
 				argument.setUniParent(parent);
 				TypeParameter newPar = new InstantiatedTypeParameter(clonedPar.name(), argument);
 				SingleAssociation parentLink = clonedPar.parentLink();

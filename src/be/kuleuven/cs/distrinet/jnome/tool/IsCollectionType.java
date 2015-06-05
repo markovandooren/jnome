@@ -15,7 +15,7 @@ public class IsCollectionType {
     Java7 language = view.language(Java7.class);
     Type collection = language.erasure(language.findType("java.util.Collection",view.namespace()));
     Type map = language.erasure(language.findType("java.util.Map",view.namespace()));
-    return type instanceof ArrayType || type.subTypeOf(collection) || type.subTypeOf(map);
+    return type instanceof ArrayType || type.subtypeOf(collection) || type.subtypeOf(map);
   };
   
 }

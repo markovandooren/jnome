@@ -23,7 +23,15 @@ public interface JavaTypeReference extends TypeReference {
 	
 //	public List<ActualTypeArgument> typeArguments();
 	
-	public JavaTypeReference toArray(int dimension);
+  public default JavaTypeReference toArray(int arrayDimension) {
+    JavaTypeReference result;
+    if(arrayDimension > 0) {
+      result = new ArrayTypeReference(clone(this), arrayDimension);
+    } else {
+      result = this;
+    }
+    return result;
+  }
 	
 	public JavaTypeReference erasedReference();
 	

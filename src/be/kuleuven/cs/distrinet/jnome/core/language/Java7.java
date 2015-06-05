@@ -29,6 +29,7 @@ import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.member.Member;
 import org.aikodi.chameleon.oo.member.SignatureWithParameters;
 import org.aikodi.chameleon.oo.method.Method;
+import org.aikodi.chameleon.oo.type.ConstrainedTypeReference;
 import org.aikodi.chameleon.oo.type.IntersectionType;
 import org.aikodi.chameleon.oo.type.IntersectionTypeReference;
 import org.aikodi.chameleon.oo.type.Parameter;
@@ -39,23 +40,24 @@ import org.aikodi.chameleon.oo.type.TypeIndirection;
 import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.UnionType;
-import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
-import org.aikodi.chameleon.oo.type.generics.ActualTypeArgumentWithTypeReference;
-import org.aikodi.chameleon.oo.type.generics.BasicTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.CapturedTypeParameter;
+import org.aikodi.chameleon.oo.type.generics.ConstrainedType;
 import org.aikodi.chameleon.oo.type.generics.EqualityConstraint;
+import org.aikodi.chameleon.oo.type.generics.EqualityTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.ExtendsConstraint;
 import org.aikodi.chameleon.oo.type.generics.ExtendsWildcard;
 import org.aikodi.chameleon.oo.type.generics.ExtendsWildcardType;
-import org.aikodi.chameleon.oo.type.generics.FormalParameterType;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.InstantiatedParameterType;
 import org.aikodi.chameleon.oo.type.generics.InstantiatedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.SuperConstraint;
 import org.aikodi.chameleon.oo.type.generics.SuperWildcard;
 import org.aikodi.chameleon.oo.type.generics.SuperWildcardType;
+import org.aikodi.chameleon.oo.type.generics.TypeArgument;
+import org.aikodi.chameleon.oo.type.generics.TypeArgumentWithTypeReference;
 import org.aikodi.chameleon.oo.type.generics.TypeConstraint;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+import org.aikodi.chameleon.oo.type.generics.TypeVariable;
 import org.aikodi.chameleon.oo.type.inheritance.AbstractInheritanceRelation;
 import org.aikodi.chameleon.oo.variable.MemberVariable;
 import org.aikodi.chameleon.oo.variable.VariableDeclarator;
@@ -79,7 +81,9 @@ import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.CapturedType;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaBasicTypeArgument;
+import be.kuleuven.cs.distrinet.jnome.core.type.DirectJavaTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaConstrainedTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaEqualityTypeArgument;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaExtendsWildcard;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaIntersectionTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaPureWildcard;
@@ -88,7 +92,7 @@ import be.kuleuven.cs.distrinet.jnome.core.type.JavaType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeInstantiation;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaUnionTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.type.PureWildCardType;
+import be.kuleuven.cs.distrinet.jnome.core.type.NullType;
 import be.kuleuven.cs.distrinet.jnome.core.type.PureWildcard;
 import be.kuleuven.cs.distrinet.jnome.core.type.RawType;
 import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
@@ -200,7 +204,7 @@ public class Java7 extends ObjectOrientedLanguage {
   	if(original instanceof ArrayType) {
   		result = ((ArrayType) original).erasure();
   	} 
-  	else if(original instanceof FormalParameterType){
+  	else if(original instanceof TypeVariable){
   		result = original;
   	} 
   	else {
@@ -622,13 +626,13 @@ public class Java7 extends ObjectOrientedLanguage {
 				for(TypeParameter par: type.parameters(TypeParameter.class)) {
 					if(par instanceof InstantiatedTypeParameter) {
 						InstantiatedTypeParameter inst = (InstantiatedTypeParameter) par;
-						ActualTypeArgument argument = inst.argument();
-						ActualTypeArgument clone = Util.clone(argument);
-						if(argument instanceof ActualTypeArgumentWithTypeReference) {
-							ActualTypeArgumentWithTypeReference arg = (ActualTypeArgumentWithTypeReference) argument;
+						TypeArgument argument = inst.argument();
+						TypeArgument clone = Util.clone(argument);
+						if(argument instanceof TypeArgumentWithTypeReference) {
+							TypeArgumentWithTypeReference arg = (TypeArgumentWithTypeReference) argument;
 							TypeReference tref = arg.typeReference();
 							Type t = tref.getElement();
-							((ActualTypeArgumentWithTypeReference)clone).setTypeReference(createExpandedTypeReference(t));
+							((TypeArgumentWithTypeReference)clone).setTypeReference(createExpandedTypeReference(t));
 						}
 						result.addArgument(clone);
 					}
@@ -651,7 +655,7 @@ public class Java7 extends ObjectOrientedLanguage {
 			return new JavaTypeInstantiation(kind, parameters, baseType);
 		}
 		
-		public TypeInstantiation createDerivedType(Type baseType, List<ActualTypeArgument> typeArguments) throws LookupException {
+		public TypeInstantiation createDerivedType(Type baseType, List<TypeArgument> typeArguments) throws LookupException {
 			return ((RegularJavaType)baseType).createDerivedType(typeArguments);
 		}
 		
@@ -669,7 +673,9 @@ public class Java7 extends ObjectOrientedLanguage {
 		public JavaTypeReference reference(Type type) {
 			JavaTypeReference result;
 			Namespace rootNamespace = type.view().namespace();
-			if(type instanceof IntersectionType) {
+			if(type instanceof NullType) {
+			  return new DirectJavaTypeReference(type);
+			} else if(type instanceof IntersectionType) {
 				IntersectionType intersection = (IntersectionType) type;
 				result = new JavaIntersectionTypeReference();
 				result.setUniParent(rootNamespace);
@@ -706,14 +712,12 @@ public class Java7 extends ObjectOrientedLanguage {
 				result.setUniParent(type.parent());
 				// next setup the generic parameters.
 				for(TypeParameter parameter: type.parameters(TypeParameter.class)) {
-					ActualTypeArgument arg = argument(parameter);
-					arg.setUniParent(null);
-					tref.addArgument(arg);
+					cloneActualTypeArguments(parameter,tref);
 				}
-			} else if (type instanceof FormalParameterType) {
+			} else if (type instanceof TypeVariable) {
 				//result = new NonLocalJavaTypeReference(new BasicJavaTypeReference(type.signature().name()),type.parent());
 				result = new BasicJavaTypeReference(type.name());
-				result.setUniParent(((FormalParameterType)type).parameter().parent());
+				result.setUniParent(((TypeVariable)type).parameter().parent());
 			} else if (type instanceof InstantiatedParameterType) {
 				//result = new NonLocalJavaTypeReference(new BasicJavaTypeReference(type.signature().name()),type.parent());
 				result = new BasicJavaTypeReference(type.name());
@@ -734,7 +738,7 @@ public class Java7 extends ObjectOrientedLanguage {
 						Element lookupParent = tpar;
 						JavaTypeReference nameref = createTypeReference(tpar.name());
 						TypeReference tref = new NonLocalJavaTypeReference(nameref, lookupParent);
-						((BasicJavaTypeReference)result).addArgument(createBasicTypeArgument(tref));
+						((BasicJavaTypeReference)result).addArgument(createEqualityTypeArgument(tref));
 					}
 				}
 			} else if (type instanceof RawType) {
@@ -751,12 +755,25 @@ public class Java7 extends ObjectOrientedLanguage {
 				reference.setUniParent(null);
 				result = new JavaSuperReference(reference);
 				result.setUniParent(parent);
-			} else if (type instanceof PureWildCardType) {
-				result = (JavaTypeReference) createPureWildcard();
-				// A pure wildcard type has the original pure wildcard as its parent. The parent of the new reference is the parent of
-				// the original pure wildcard.
-				result.setUniParent(type.parent().parent());
+			} else if (type instanceof ConstrainedType) {
+			  result = new JavaConstrainedTypeReference();
+			  ConstrainedType constrainedType = (ConstrainedType) type;
+			  Type up = constrainedType.upperBound();
+			  TypeReference upRef = reference(up);
+			  upRef.setUniParent(null);
+			  Type low = constrainedType.lowerBound();
+			  TypeReference lowRef = reference(low);
+			  lowRef.setUniParent(null);
+			  ((ConstrainedTypeReference)result).addConstraint(new ExtendsConstraint(upRef));
+              ((ConstrainedTypeReference)result).addConstraint(new SuperConstraint(lowRef));
+              result.setUniParent(rootNamespace);
 			}
+//			else if (type instanceof PureWildCardType) {
+//				result = (JavaTypeReference) createPureWildcard();
+//				// A pure wildcard type has the original pure wildcard as its parent. The parent of the new reference is the parent of
+//				// the original pure wildcard.
+//				result.setUniParent(type.parent().parent());
+//			}
 			else {
 				throw new ChameleonProgrammerException("Type of type is "+type.getClass().getName());
 			}
@@ -765,14 +782,55 @@ public class Java7 extends ObjectOrientedLanguage {
 			}
 			return result;
 		}
-
-		public static ActualTypeArgument argument(TypeParameter parameter) {
-			ActualTypeArgument result = null;
+		
+		
+    public void cloneActualTypeArguments(TypeParameter parameter, BasicJavaTypeReference tref) {
+      TypeArgument result = null;
+      if(parameter instanceof InstantiatedTypeParameter) {
+        TypeArgument argument = ((InstantiatedTypeParameter)parameter).argument();
+        result = Util.clone(argument);
+        if(result instanceof TypeArgumentWithTypeReference) {
+          TypeArgumentWithTypeReference argWithRef = (TypeArgumentWithTypeReference) result;
+          //it will be detached from the cloned argument automatically
+          NonLocalJavaTypeReference ref = new NonLocalJavaTypeReference((JavaTypeReference) argWithRef.typeReference(),argument);
+          argWithRef.setTypeReference(ref);
+        }
+        tref.addArgument(result);
+      } else {
+        List<TypeConstraint> constraints = ((CapturedTypeParameter)parameter).constraints();
+        if(constraints.size() == 1){ 
+//        for(TypeConstraint typeConstraint: constraints) {
+          TypeConstraint typeConstraint = constraints.get(0);
+          final TypeReference clone = Util.clone(typeConstraint.typeReference());
+          if(typeConstraint instanceof EqualityConstraint) {
+            result = parameter.language(Java7.class).createEqualityTypeArgument(clone);
+          } else if(typeConstraint instanceof ExtendsConstraint) {
+            result = parameter.language(Java7.class).createExtendsWildcard(clone);
+          } else if(typeConstraint instanceof SuperConstraint) {
+            result = parameter.language(Java7.class).createSuperWildcard(clone);
+          }
+          tref.addArgument(result);
+        } else {
+          JavaConstrainedTypeReference constrainedTypeReference = createConstrainedTypeReference();
+          constraints.forEach(c -> constrainedTypeReference.addConstraint(c.clone(c)));
+          result = parameter.language(Java7.class).createEqualityTypeArgument(constrainedTypeReference);
+          tref.addArgument(result);
+        }
+      }
+    }
+    
+	@Override
+	public JavaConstrainedTypeReference createConstrainedTypeReference() {
+		return new JavaConstrainedTypeReference();
+	}
+    
+		public static TypeArgument cloneActualTypeArgument(TypeParameter parameter) {
+			TypeArgument result = null;
 			if(parameter instanceof InstantiatedTypeParameter) {
-				ActualTypeArgument argument = ((InstantiatedTypeParameter)parameter).argument();
+				TypeArgument argument = ((InstantiatedTypeParameter)parameter).argument();
 				result = Util.clone(argument);
-				if(result instanceof ActualTypeArgumentWithTypeReference) {
-					ActualTypeArgumentWithTypeReference argWithRef = (ActualTypeArgumentWithTypeReference) result;
+				if(result instanceof TypeArgumentWithTypeReference) {
+					TypeArgumentWithTypeReference argWithRef = (TypeArgumentWithTypeReference) result;
 					//it will be detached from the cloned argument automatically
 					NonLocalJavaTypeReference ref = new NonLocalJavaTypeReference((JavaTypeReference) argWithRef.typeReference(),argument);
 					argWithRef.setTypeReference(ref);
@@ -781,21 +839,15 @@ public class Java7 extends ObjectOrientedLanguage {
 				List<TypeConstraint> constraints = ((CapturedTypeParameter)parameter).constraints();
 				if(constraints.size() == 1){ 
 					TypeConstraint typeConstraint = constraints.get(0);
-					if(typeConstraint instanceof EqualityConstraint) {
-						result = parameter.language(Java7.class).createBasicTypeArgument(Util.clone(typeConstraint.typeReference()));
+					final TypeReference clone = Util.clone(typeConstraint.typeReference());
+          if(typeConstraint instanceof EqualityConstraint) {
+						result = parameter.language(Java7.class).createEqualityTypeArgument(clone);
 					} else if(typeConstraint instanceof ExtendsConstraint) {
-	           result = parameter.language(Java7.class).createExtendsWildcard(Util.clone(typeConstraint.typeReference()));
+	           result = parameter.language(Java7.class).createExtendsWildcard(clone);
 					} else if(typeConstraint instanceof SuperConstraint) {
-            result = parameter.language(Java7.class).createSuperWildcard(Util.clone(typeConstraint.typeReference()));
+            result = parameter.language(Java7.class).createSuperWildcard(clone);
          }
-				}
-//					// there are always constraints in a captured type parameter
-//					for(TypeConstraint constraint: constraints) {
-//						if(constraints instanceof ExtendsConstraint) {
-//							
-//						}
-//					}
-				
+				}				
 			}
 			if(result != null) {
 				result.setUniParent(parameter);
@@ -814,46 +866,18 @@ public class Java7 extends ObjectOrientedLanguage {
 			return new NonLocalJavaTypeReference((JavaTypeReference) tref, lookupParent);
 		}
 		
-		public BasicTypeArgument createBasicTypeArgument(TypeReference tref) {
-//			if(tref == null) {
-//				throw new ChameleonProgrammerException();
-//			}
-			JavaBasicTypeArgument result = new JavaBasicTypeArgument(tref);
-//			tref.parentLink().getOtherRelation().addListener(new AssociationListener<Element>() {
-//
-//				private void printTrace() {
-//					try {
-//						throw new Exception();
-//					} catch (Exception e) {
-//						e.printStackTrace();
-//					}
-//				}
-//				
-//				public void notifyElementAdded(Element element) {
-//					System.out.println("+++++ ADDED +++++");
-//					printTrace();
-//				}
-//
-//				public void notifyElementRemoved(Element element) {
-//					System.out.println("+++++ REMOVED +++++ ");
-////					printTrace();
-//				}
-//
-//				public void notifyElementReplaced(Element oldElement, Element newElement) {
-//					JavaBasicTypeArgument javaBasicTypeArgument = (JavaBasicTypeArgument)newElement.nearestAncestor(JavaBasicTypeArgument.class);
-//					if(javaBasicTypeArgument != null) {
-//					  javaBasicTypeArgument._trace = new CreationStackTrace();
-//					}
-//					System.out.println("+++++ REPLACED +++++");
-//				}
-//			});
+		@Override
+		public EqualityTypeArgument createEqualityTypeArgument(TypeReference tref) {
+			JavaEqualityTypeArgument result = new JavaEqualityTypeArgument(tref);
 			return result;
 		}
 		
+		@Override
 		public ExtendsWildcard createExtendsWildcard(TypeReference tref) {
 			return new JavaExtendsWildcard(tref);
 		}
 		
+		@Override
 		public SuperWildcard createSuperWildcard(TypeReference tref) {
 			return new JavaSuperWildcard(tref);
 		}

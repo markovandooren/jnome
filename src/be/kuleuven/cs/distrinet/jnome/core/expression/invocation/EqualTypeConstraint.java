@@ -8,7 +8,7 @@ import org.aikodi.chameleon.core.declaration.TargetDeclaration;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.expression.NamedTarget;
 import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.chameleon.oo.type.generics.FormalParameterType;
+import org.aikodi.chameleon.oo.type.generics.TypeVariable;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 
@@ -23,8 +23,8 @@ public class EqualTypeConstraint extends SecondPhaseConstraint {
 	
 	public void process() throws LookupException {
 		Type Utype = U();
-		if(Utype instanceof FormalParameterType && parent().typeParameters().contains(((FormalParameterType)Utype).parameter())) {
-			FormalParameterType U = (FormalParameterType) Utype;
+		if(Utype instanceof TypeVariable && parent().typeParameters().contains(((TypeVariable)Utype).parameter())) {
+			TypeVariable U = (TypeVariable) Utype;
 			FormalTypeParameter parameter = U.parameter();
 			if(parameter.sameAs(typeParameter())) {
 				// Otherwise, if U is Tj, then this constraint carries no information and may be discarded.

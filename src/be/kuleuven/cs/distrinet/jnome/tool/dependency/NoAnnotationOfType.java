@@ -21,7 +21,7 @@ public class NoAnnotationOfType extends UniversalPredicate<Type,Nothing> {
 	public boolean uncheckedEval(Type object) {
 		for(AnnotationModifier mod: object.descendants(AnnotationModifier.class)) {
 			try {
-				if(mod.type().subTypeOf(_type)) {
+				if(mod.type().subtypeOf(_type)) {
 					return false;
 				}
 			} catch (LookupException e) {

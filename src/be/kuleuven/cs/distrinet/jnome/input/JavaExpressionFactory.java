@@ -5,15 +5,17 @@ import org.aikodi.chameleon.oo.expression.Expression;
 import org.aikodi.chameleon.oo.expression.ExpressionFactory;
 import org.aikodi.chameleon.oo.expression.MethodInvocation;
 import org.aikodi.chameleon.oo.expression.NameExpression;
+import org.aikodi.chameleon.oo.expression.NamedTarget;
 import org.aikodi.chameleon.support.expression.AssignmentExpression;
+import org.aikodi.chameleon.support.expression.ConditionalExpression;
 import org.aikodi.chameleon.support.member.simplename.operator.infix.InfixOperatorInvocation;
 import org.aikodi.chameleon.support.member.simplename.operator.postfix.PostfixOperatorInvocation;
 import org.aikodi.chameleon.support.member.simplename.operator.prefix.PrefixOperatorInvocation;
-import org.aikodi.chameleon.util.Util;
 
 import be.kuleuven.cs.distrinet.jnome.core.expression.JavaAssignmentExpression;
 import be.kuleuven.cs.distrinet.jnome.core.expression.JavaConditionalExpression;
 import be.kuleuven.cs.distrinet.jnome.core.expression.JavaNameExpression;
+import be.kuleuven.cs.distrinet.jnome.core.expression.JavaNamedTarget;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaInfixOperatorInvocation;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaMethodInvocation;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaPostfixOperatorInvocation;
@@ -48,7 +50,7 @@ public class JavaExpressionFactory extends ExpressionFactory {
 	}
 
 	@Override
-	public Expression createConditionalExpression(Expression condition, Expression firstOperand, Expression secondOperand) {
+	public ConditionalExpression createConditionalExpression(Expression condition, Expression firstOperand, Expression secondOperand) {
 		return new JavaConditionalExpression(condition, firstOperand, secondOperand);
 	}
 	
@@ -62,6 +64,15 @@ public class JavaExpressionFactory extends ExpressionFactory {
 		return new JavaNameExpression(name,target);
 	}
 	
+	@Override
+	public NamedTarget createNamedTarget(String fqn) {
+		return new JavaNamedTarget(fqn, this);
+	}
+	
+	@Override
+	public NamedTarget createNamedTarget(String fqn, CrossReferenceTarget target) {
+		return new JavaNamedTarget(fqn, target);
+	}
 	@Override
 	public AssignmentExpression createAssignmentExpression(Expression variableReference, Expression value) {
 	  return new JavaAssignmentExpression(variableReference, value);

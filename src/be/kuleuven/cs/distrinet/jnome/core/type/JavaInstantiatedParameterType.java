@@ -20,4 +20,5 @@ public class JavaInstantiatedParameterType extends InstantiatedParameterType imp
   public Type erasure() {
     return this;
   }
+  
 }

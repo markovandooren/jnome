@@ -45,15 +45,10 @@ public class NullType extends RegularType implements JavaType {
   }
   
   @Override
-  public boolean upperBoundNotHigherThan(Type other, TypeFixer trace) throws LookupException {
-  	return true;
-  }
-  
-  @Override
-  public boolean properSubTypeOf(Type other) throws LookupException {
+  public boolean uniSubtypeOf(Type other, TypeFixer trace) throws LookupException {
   	return other.isTrue(language(Java7.class).REFERENCE_TYPE);
   }
-
+  
 	/**
 	 * The erasure of a null type is the null type itself.
 	 */

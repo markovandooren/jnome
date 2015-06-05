@@ -3,17 +3,14 @@ package be.kuleuven.cs.distrinet.jnome.core.expression;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.namespace.Namespace;
 import org.aikodi.chameleon.oo.expression.Expression;
-import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
-import org.aikodi.chameleon.oo.type.IntersectionType;
 import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.support.expression.ConditionalExpression;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeInstantiation;
-import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
-
 import com.google.common.collect.ImmutableList;
+
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaType;
+import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 
 public class JavaConditionalExpression extends ConditionalExpression {
 
@@ -80,10 +77,7 @@ public class JavaConditionalExpression extends ConditionalExpression {
 				}
 				if(result == null) {
 					result = java.subtypeRelation().leastUpperBound(ImmutableList.of(java.reference(boxFirst), java.reference(boxSecond)));
-//					result = IntersectionType.create(ImmutableList.of(boxFirst, boxSecond));
-					if(result instanceof JavaTypeInstantiation) {
-						result = ((JavaTypeInstantiation)result).captureConversion();
-					}
+					result = ((JavaType)result).captureConversion();
 				}
 			} 
 		}

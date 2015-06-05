@@ -3,6 +3,9 @@
  */
 package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
+import java.util.Set;
+
+import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
@@ -26,7 +29,7 @@ public class JavaSuperReference extends WildCardReference<JavaSuperReference> {
 	}
 
 	@Override
-	public String toString() {
-		return "? super "+typeReference().toString();
+	public String toString(Set<Element> visited) {
+		return "? super "+typeReference().toString(visited);
 	}
 }

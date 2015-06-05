@@ -1,12 +1,13 @@
 package be.kuleuven.cs.distrinet.jnome.core.expression;
 
+import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.reference.CrossReferenceTarget;
+import org.aikodi.chameleon.oo.expression.MethodInvocation;
 import org.aikodi.chameleon.oo.expression.NameExpression;
 import org.aikodi.chameleon.oo.type.Type;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeInstantiation;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaType;
 
 public class JavaNameExpression extends NameExpression {
 
@@ -26,10 +27,11 @@ public class JavaNameExpression extends NameExpression {
 	@Override
 	protected Type actualType() throws LookupException {
 		Type result = super.actualType();
-		if(nonInLeftHandSideOfAssignment()) {
-			if(result instanceof JavaTypeInstantiation) {
-				result = ((JavaTypeInstantiation) result).captureConversion();
-			}
+		final MethodInvocation method = nearestAncestor(MethodInvocation.class);
+		if(method != null) { // does not work yet because of bug in Java7.reference(Type) with multiple constraints
+		  final Declaration declaration = nearestAncestor(Declaration.class);
+		  if(method.hasAncestor(declaration)) 
+		  	result = ((JavaType) result).captureConversion();
 		}
 		return result;
 	}

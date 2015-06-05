@@ -41,7 +41,7 @@ public abstract class JavaTest extends CompositeTest {
 	
 	@Before
 	public void setMultiThreading() {
-		Config.setSingleThreaded(true);
+		Config.setSingleThreaded(false);
 	}
 	
   private static ExecutorService threadPool = Executors.newCachedThreadPool();

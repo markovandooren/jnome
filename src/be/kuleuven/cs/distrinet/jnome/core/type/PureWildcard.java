@@ -27,13 +27,12 @@ public class PureWildcard extends TypeArgument {
 
 	}
 
-	public TypeParameter capture(FormalTypeParameter formal, List<TypeConstraint> accumulator) {
+	public TypeParameter capture(FormalTypeParameter formal) {
 		CapturedTypeParameter newParameter = new CapturedTypeParameter(formal.name());
 		List<TypeConstraint> constraints = formal.constraints();
 		for(TypeConstraint constraint: constraints) {
 			TypeConstraint clone = cloneAndResetTypeReference(constraint,constraint);
 			newParameter.addConstraint(clone);
-			accumulator.add(clone);
 		}
 
 		//FIXME This should actually be determined by the type parameter itself.

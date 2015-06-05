@@ -12,24 +12,22 @@ import org.aikodi.chameleon.core.lookup.LocalLookupContext;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.lookup.SelectionResult;
 import org.aikodi.chameleon.core.tag.TagImpl;
-import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
-import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.Parameter;
 import org.aikodi.chameleon.oo.type.ParameterSubstitution;
 import org.aikodi.chameleon.oo.type.SuperTypeJudge;
 import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.chameleon.oo.type.generics.TypeArgument;
+import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.generics.CapturedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.InstantiatedTypeParameter;
+import org.aikodi.chameleon.oo.type.generics.TypeArgument;
 import org.aikodi.chameleon.oo.type.generics.TypeConstraint;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.oo.type.inheritance.InheritanceRelation;
 import org.aikodi.chameleon.oo.type.inheritance.SubtypeRelation;
 import org.aikodi.chameleon.util.Lists;
 import org.aikodi.chameleon.util.StackOverflowTracer;
-import org.aikodi.chameleon.util.Util;
 
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
@@ -133,7 +131,14 @@ public class JavaTypeInstantiation extends TypeInstantiation implements JavaType
 		return ((JavaType)origin()).erasure();
 	}
 
+	  private static ThreadLocal<StackOverflowTracer> tracer = new ThreadLocal<StackOverflowTracer>() {
+	    protected StackOverflowTracer initialValue() {
+	      return new StackOverflowTracer(30);
+	    };
+	  }; // thread local tracer
+
 	public Type captureConversion() throws LookupException {
+	  tracer.get().push();
 		if(_captureConversion == null) {
 			Type result = this;
 
@@ -146,7 +151,6 @@ public class JavaTypeInstantiation extends TypeInstantiation implements JavaType
 				Iterator<TypeParameter> actuals = actualParameters.iterator();
 				// substitute parameters by their capture bounds.
 				// ITERATOR because we iterate over 'formals' and 'actuals' simultaneously.
-				List<TypeConstraint> toBeSubstituted = Lists.create();
 				boolean doCapture = false;
 				while(actuals.hasNext()) {
 					TypeParameter formalParam = formals.next();
@@ -161,33 +165,18 @@ public class JavaTypeInstantiation extends TypeInstantiation implements JavaType
 					if(instantiatedTypeParameter.hasWildCardBound()) {
 						doCapture = true;
 					}
-					TypeParameter capturedParameter = instantiatedTypeParameter.capture((FormalTypeParameter) formalParam,toBeSubstituted);
+					TypeParameter capturedParameter = instantiatedTypeParameter.capture((FormalTypeParameter) formalParam);
 					typeParameters.add(capturedParameter);
 				}
 				if(doCapture) {
 					// Everything works as well when we pass 'this' instead of 'base'.
 					result = language(Java7.class).createdCapturedType(new ParameterSubstitution(TypeParameter.class,typeParameters), base);
 					result.setUniParent(parent());
-					for(TypeParameter newParameter: typeParameters) {
-						for(TypeParameter oldParameter: formalParameters) {
-							//If we replace references to the old parameters with references to the captured type parameters, then
-							// why is the capturing done with non-locals pointing to the formal?
-							JavaTypeReference tref = new BasicJavaTypeReference(oldParameter.name());
-							tref.setUniParent(newParameter);
-							if(newParameter instanceof CapturedTypeParameter) {
-								List<TypeConstraint> constraints = ((CapturedTypeParameter)newParameter).constraints();
-								for(TypeConstraint constraint : constraints) {
-									if(toBeSubstituted.contains(constraint)) {
-										NonLocalJavaTypeReference.replace(tref, oldParameter, (JavaTypeReference) constraint.typeReference());
-									}
-								}
-							}
-						}
-					}
 				} 
 			}
 			_captureConversion = result;
 		}
+		tracer.get().pop();
 		return _captureConversion;
 	}
 

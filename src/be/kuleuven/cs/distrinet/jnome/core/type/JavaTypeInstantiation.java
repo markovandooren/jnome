@@ -131,14 +131,7 @@ public class JavaTypeInstantiation extends TypeInstantiation implements JavaType
 		return ((JavaType)origin()).erasure();
 	}
 
-	  private static ThreadLocal<StackOverflowTracer> tracer = new ThreadLocal<StackOverflowTracer>() {
-	    protected StackOverflowTracer initialValue() {
-	      return new StackOverflowTracer(30);
-	    };
-	  }; // thread local tracer
-
 	public Type captureConversion() throws LookupException {
-	  tracer.get().push();
 		if(_captureConversion == null) {
 			Type result = this;
 
@@ -176,7 +169,6 @@ public class JavaTypeInstantiation extends TypeInstantiation implements JavaType
 			}
 			_captureConversion = result;
 		}
-		tracer.get().pop();
 		return _captureConversion;
 	}
 

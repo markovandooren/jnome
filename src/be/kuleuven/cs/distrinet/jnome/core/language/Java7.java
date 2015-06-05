@@ -29,6 +29,7 @@ import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.member.Member;
 import org.aikodi.chameleon.oo.member.SignatureWithParameters;
 import org.aikodi.chameleon.oo.method.Method;
+import org.aikodi.chameleon.oo.type.ConstrainedTypeReference;
 import org.aikodi.chameleon.oo.type.IntersectionType;
 import org.aikodi.chameleon.oo.type.IntersectionTypeReference;
 import org.aikodi.chameleon.oo.type.Parameter;
@@ -40,6 +41,7 @@ import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.UnionType;
 import org.aikodi.chameleon.oo.type.generics.CapturedTypeParameter;
+import org.aikodi.chameleon.oo.type.generics.ConstrainedType;
 import org.aikodi.chameleon.oo.type.generics.EqualityConstraint;
 import org.aikodi.chameleon.oo.type.generics.EqualityTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.ExtendsConstraint;
@@ -79,6 +81,7 @@ import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.CapturedType;
+import be.kuleuven.cs.distrinet.jnome.core.type.DirectJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaConstrainedTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaEqualityTypeArgument;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaExtendsWildcard;
@@ -89,6 +92,7 @@ import be.kuleuven.cs.distrinet.jnome.core.type.JavaType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeInstantiation;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaUnionTypeReference;
+import be.kuleuven.cs.distrinet.jnome.core.type.NullType;
 import be.kuleuven.cs.distrinet.jnome.core.type.PureWildcard;
 import be.kuleuven.cs.distrinet.jnome.core.type.RawType;
 import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
@@ -669,7 +673,9 @@ public class Java7 extends ObjectOrientedLanguage {
 		public JavaTypeReference reference(Type type) {
 			JavaTypeReference result;
 			Namespace rootNamespace = type.view().namespace();
-			if(type instanceof IntersectionType) {
+			if(type instanceof NullType) {
+			  return new DirectJavaTypeReference(type);
+			} else if(type instanceof IntersectionType) {
 				IntersectionType intersection = (IntersectionType) type;
 				result = new JavaIntersectionTypeReference();
 				result.setUniParent(rootNamespace);
@@ -749,7 +755,19 @@ public class Java7 extends ObjectOrientedLanguage {
 				reference.setUniParent(null);
 				result = new JavaSuperReference(reference);
 				result.setUniParent(parent);
-			} 
+			} else if (type instanceof ConstrainedType) {
+			  result = new JavaConstrainedTypeReference();
+			  ConstrainedType constrainedType = (ConstrainedType) type;
+			  Type up = constrainedType.upperBound();
+			  TypeReference upRef = reference(up);
+			  upRef.setUniParent(null);
+			  Type low = constrainedType.lowerBound();
+			  TypeReference lowRef = reference(low);
+			  lowRef.setUniParent(null);
+			  ((ConstrainedTypeReference)result).addConstraint(new ExtendsConstraint(upRef));
+              ((ConstrainedTypeReference)result).addConstraint(new SuperConstraint(lowRef));
+              result.setUniParent(rootNamespace);
+			}
 //			else if (type instanceof PureWildCardType) {
 //				result = (JavaTypeReference) createPureWildcard();
 //				// A pure wildcard type has the original pure wildcard as its parent. The parent of the new reference is the parent of

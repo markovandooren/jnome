@@ -126,7 +126,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation {
 			for(TypeReference tref: references) {
 				TypeReference subst = tref;
 				for(TypeParameter par: actualTypeParameters.assigned()) {
-					subst = NonLocalJavaTypeReference.replace(language.reference(actualTypeParameters.type(par)), par, (JavaTypeReference) tref);
+					subst = NonLocalJavaTypeReference.replace(language.reference(actualTypeParameters.type(par)), par, (JavaTypeReference) subst);
 				}
 				result.add(subst.getElement());
 			}

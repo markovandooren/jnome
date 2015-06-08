@@ -82,7 +82,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 			size = candidates.size();
 			for(int i = 0; i< size; i++) {
 				M decl = candidates.get(i);
-				MethodSelectionResult matchingApplicableBySubtyping = matchingApplicableBySubtyping(decl,java);
+				MethodSelectionResult<M> matchingApplicableBySubtyping = matchingApplicableBySubtyping(decl,java);
 				if(matchingApplicableBySubtyping != null) {
 					tmp.add(matchingApplicableBySubtyping);
 				}
@@ -93,7 +93,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 			if(tmp.isEmpty()) {
 				for(int i = 0; i< size; i++) {
 					M decl = candidates.get(i);
-					MethodSelectionResult matchingApplicableByConversion = matchingApplicableByConversion(decl,java);
+					MethodSelectionResult<M> matchingApplicableByConversion = matchingApplicableByConversion(decl,java);
 					if(matchingApplicableByConversion != null) {
 						tmp.add(matchingApplicableByConversion);
 					}
@@ -102,7 +102,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 				if(tmp.isEmpty()) {
 					for(int i = 0; i< size; i++) {
 						M decl = candidates.get(i);
-						MethodSelectionResult variableApplicableBySubtyping = variableApplicableBySubtyping(decl,java);
+						MethodSelectionResult<M> variableApplicableBySubtyping = variableApplicableBySubtyping(decl,java);
 						if(variableApplicableBySubtyping != null) {
 							tmp.add(variableApplicableBySubtyping);
 						}

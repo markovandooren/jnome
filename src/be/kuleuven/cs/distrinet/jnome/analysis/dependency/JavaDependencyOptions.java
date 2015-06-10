@@ -18,9 +18,7 @@ import org.aikodi.chameleon.core.namespace.Namespace;
 import org.aikodi.chameleon.core.reference.CrossReference;
 import org.aikodi.chameleon.core.variable.Variable;
 import org.aikodi.chameleon.oo.method.Method;
-import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.chameleon.oo.type.generics.TypeVariable;
 import org.aikodi.chameleon.ui.widget.LabelProvider;
 import org.aikodi.chameleon.ui.widget.PredicateSelector;
 import org.aikodi.chameleon.ui.widget.checkbox.CheckboxPredicateSelector;
@@ -35,9 +33,10 @@ import org.aikodi.chameleon.ui.widget.tree.TristateTreeSelector;
 import org.aikodi.chameleon.util.action.TopDown;
 import org.aikodi.chameleon.workspace.Project;
 
-import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
+import com.google.common.collect.ImmutableList;
+
 import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
-import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
+import be.kuleuven.cs.distrinet.jnome.tool.dependency.JavaDeclarationDecomposer;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.function.Function;
 import be.kuleuven.cs.distrinet.rejuse.graph.UniEdge;
@@ -47,8 +46,6 @@ import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
 import be.kuleuven.cs.distrinet.rejuse.tree.PrunedTreeStructure;
 import be.kuleuven.cs.distrinet.rejuse.tree.TreePredicate;
 import be.kuleuven.cs.distrinet.rejuse.tree.TreeStructure;
-
-import com.google.common.collect.ImmutableList;
 
 public class JavaDependencyOptions extends DependencyOptions {
   
@@ -96,24 +93,23 @@ public class JavaDependencyOptions extends DependencyOptions {
   @SuppressWarnings({"rawtypes", "unchecked"})
   @Override
   public DependencyResult analyze() {
-    UniversalPredicate sourcePredicate = _source.predicate();
+    TristateTreePruner<Object,Element> generator = new LoaderSelectionPredicateGenerator(new NamespaceSelectionPredicateGenerator(null));
+    TreePredicate<? super Element, Nothing> source = generator.create(_source._locationSelector.root(), _source._locationSelector.checked(), _source._locationSelector.grayed());
+    UniversalPredicate sourcePredicate = _source.predicate().and(source);
     UniversalPredicate crossReferencePredicate = _dependencies.crossReferencePredicate();
     UniversalPredicate targetPredicate = _target.predicate();
     UniversalPredicate dependencyPredicate = _dependencies.predicate();
     HistoryFilter<Declaration, Declaration> historyFilter = _dependencies.historyFilter();
-    TristateTreePruner<Object,Element> generator = new LoaderSelectionPredicateGenerator(new NamespaceSelectionPredicateGenerator(null));
-    TreePredicate<? super Element, Nothing> source = generator.create(_source._locationSelector.root(), _source._locationSelector.checked(), _source._locationSelector.grayed());
     TreePredicate<? super Element, Nothing> targetLocation = generator.create(_target._locationSelector.root(), _target._locationSelector.checked(), _target._locationSelector.grayed());
-    Class<Declaration> class1 = Declaration.class;
-    UniversalPredicate and = sourcePredicate.and(source);
+    Class<Declaration> sourceType = Declaration.class;
     UniversalPredicate and2 = targetPredicate.and(targetLocation);
     UniversalPredicate dependencyPredicate2 = dependencyPredicate;
     HistoryFilter<Declaration, Declaration> historyFilter2 = historyFilter;
     DependencyAnalysis<Declaration, Declaration> dependencyAnalysis = new DependencyAnalysis<Declaration,Declaration>(
-        class1,
-        and, 
+        sourceType,
+        sourcePredicate, 
         crossReferencePredicate,
-        class1,
+        sourceType,
         mapper(), 
         and2, 
         dependencyPredicate2,
@@ -200,29 +196,8 @@ public class JavaDependencyOptions extends DependencyOptions {
 
   }	
 
-  private Function mapper() {
-    return new Function<Element,Element,Nothing> (){
-      @Override
-      public Element apply(Element element) {
-        element = element.origin();
-        while(element instanceof ArrayType) {
-          element = ((ArrayType)element).elementType();
-        }
-        while(element instanceof TypeInstantiation) {
-          element = ((TypeInstantiation)element).baseType();
-        }
-        while(element instanceof TypeVariable) {
-          element = element.nearestAncestor(Type.class);
-        }
-        if(element instanceof Type) {
-          AnonymousType anon = element.farthestAncestorOrSelf(AnonymousType.class);
-          if(anon != null) {
-            element = anon.nearestAncestor(Type.class);
-          }
-        }
-        return element;
-      }
-    };
+  private Function<Declaration,List<Declaration>,Nothing> mapper() {
+    return new JavaDeclarationDecomposer();
   }
 
   private PredicateSelector<? super Dependency<? super Element, ? super CrossReference, ? super Declaration>> noSuperTypes() {

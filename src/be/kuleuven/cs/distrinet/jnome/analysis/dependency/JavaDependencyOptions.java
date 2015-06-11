@@ -344,11 +344,13 @@ public class JavaDependencyOptions extends DependencyOptions {
             // That way, if we reach the else branch, we now
             // for sure that we can remove the old dependency
             // if the second branch is executed.
-            if (newSourceType.subtypeOf(oldSourceType) && oldTargetType.subtypeOf(newTargetType)) {
-              container.add = false;
-              return true;
-            } else if(oldSourceType.subtypeOf(newSourceType) && newTargetType.subtypeOf(oldTargetType)) {
-              return false;
+            if(newSourceType != oldSourceType) {
+              if (newSourceType.subtypeOf(oldSourceType) && oldTargetType.subtypeOf(newTargetType)) {
+                container.add = false;
+                return true;
+              } else if(oldSourceType.subtypeOf(newSourceType) && newTargetType.subtypeOf(oldTargetType)) {
+                return false;
+              }
             }
           }
           return true;

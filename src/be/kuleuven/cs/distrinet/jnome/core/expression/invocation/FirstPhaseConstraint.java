@@ -8,30 +8,27 @@ import java.util.List;
 
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
-import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.chameleon.oo.type.generics.TypeArgument;
-import org.aikodi.chameleon.oo.type.generics.TypeArgumentWithTypeReference;
-import org.aikodi.chameleon.oo.type.generics.EqualityTypeArgument;
+import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.generics.CapturedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.EqualityConstraint;
+import org.aikodi.chameleon.oo.type.generics.EqualityTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.ExtendsWildcard;
-import org.aikodi.chameleon.oo.type.generics.TypeVariable;
 import org.aikodi.chameleon.oo.type.generics.InstantiatedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.SuperWildcard;
+import org.aikodi.chameleon.oo.type.generics.TypeArgument;
+import org.aikodi.chameleon.oo.type.generics.TypeArgumentWithTypeReference;
 import org.aikodi.chameleon.oo.type.generics.TypeConstraint;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+import org.aikodi.chameleon.oo.type.generics.TypeVariable;
 import org.aikodi.chameleon.util.Util;
 import org.aikodi.chameleon.workspace.View;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
-import be.kuleuven.cs.distrinet.jnome.core.type.JavaEqualityTypeArgument;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
-import be.kuleuven.cs.distrinet.rejuse.collection.CollectionOperations;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
-import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
 
 /**
@@ -208,14 +205,14 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 		return A().view();
 	}
 	
-  protected Type typeWithSameBaseTypeAs(Type example, Collection<Type> toBeSearched) {
-		Type baseType = example.baseType();
-  	for(Type type:toBeSearched) {
-			if(type.baseType().equals(baseType)) {
-  			return type;
-  		}
-  	}
-  	return null;
+	protected Type typeWithSameBaseTypeAs(Type example, Collection<Type> toBeSearched) {
+	  Type baseType = example.baseType();
+	  for(Type type:toBeSearched) {
+	    if(type.baseType().equals(baseType)) {
+	      return type;
+	    }
+	  }
+	  return null;
   }
 
 }

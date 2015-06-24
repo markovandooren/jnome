@@ -26,6 +26,7 @@ import org.aikodi.chameleon.workspace.View;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
+import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
@@ -99,7 +100,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 			if(A() instanceof ArrayType && involvesTypeParameter(F())) {
 				Type componentType = ((ArrayType)A()).elementType();
 				if(componentType.is(language().REFERENCE_TYPE) == Ternary.TRUE) {
-					JavaTypeReference componentTypeReference = Util.clone(ARef()).componentTypeReference();
+					JavaTypeReference componentTypeReference = ((ArrayTypeReference)Util.clone(ARef())).elementTypeReference();
 					componentTypeReference.setUniParent(ARef().parent());
 					FirstPhaseConstraint recursive = Array(componentTypeReference, ((ArrayType)F()).elementType());
 					result.addAll(recursive.process());

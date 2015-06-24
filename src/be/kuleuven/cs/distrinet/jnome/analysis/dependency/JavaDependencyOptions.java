@@ -36,7 +36,7 @@ import org.aikodi.chameleon.workspace.Project;
 import com.google.common.collect.ImmutableList;
 
 import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
-import be.kuleuven.cs.distrinet.jnome.tool.dependency.JavaDeclarationDecomposer;
+import be.kuleuven.cs.distrinet.jnome.tool.JavaDeclarationDecomposer;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.function.Function;
 import be.kuleuven.cs.distrinet.rejuse.graph.UniEdge;

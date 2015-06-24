@@ -21,7 +21,7 @@ import org.aikodi.chameleon.workspace.Project;
 import com.lexicalscope.jewel.cli.Option;
 
 import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
-import be.kuleuven.cs.distrinet.jnome.eclipse.AnalysisTool;
+import be.kuleuven.cs.distrinet.jnome.tool.AnalysisTool;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.predicate.False;
 import be.kuleuven.cs.distrinet.rejuse.predicate.GlobPredicate;

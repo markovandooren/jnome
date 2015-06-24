@@ -1,4 +1,4 @@
-package be.kuleuven.cs.distrinet.jnome.tool.dependency;
+package be.kuleuven.cs.distrinet.jnome.tool;
 
 import java.util.ArrayList;
 import java.util.List;

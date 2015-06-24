@@ -21,6 +21,7 @@ import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.ListenableDirectedGraph;
 
 import be.kuleuven.cs.distrinet.jnome.analysis.dependency.JavaDependencyOptions;
+import be.kuleuven.cs.distrinet.jnome.tool.JavaDeclarationDecomposer;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.contract.Contracts;
 import be.kuleuven.cs.distrinet.rejuse.function.Function;

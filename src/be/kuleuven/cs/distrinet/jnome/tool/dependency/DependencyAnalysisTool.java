@@ -21,7 +21,8 @@ import org.aikodi.chameleon.workspace.Project;
 import com.lexicalscope.jewel.cli.Option;
 
 import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
-import be.kuleuven.cs.distrinet.jnome.eclipse.AnalysisTool;
+import be.kuleuven.cs.distrinet.jnome.tool.AnalysisTool;
+import be.kuleuven.cs.distrinet.jnome.tool.AnalysisTool.AnalysisOptions;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.predicate.False;
 import be.kuleuven.cs.distrinet.rejuse.predicate.GlobPredicate;
@@ -48,7 +49,19 @@ public class DependencyAnalysisTool extends AnalysisTool {
 
 	@Override
 	protected void check(Project project, OutputStreamWriter writer, AnalysisOptions options) throws LookupException, InputException, IOException {
-	  UniversalPredicate<Type,Nothing> troo = UniversalPredicate.of(Type.class, t->true);
+	  JavaDependencyAnalyzer analyzer = analyzer(project, options);
+    analyzer.visualize(writer);
+	}
+
+
+  /**
+   * @param project
+   * @param options
+   * @return
+   * @throws LookupException
+   */
+  private JavaDependencyAnalyzer analyzer(Project project, AnalysisOptions options) throws LookupException {
+    UniversalPredicate<Type,Nothing> troo = UniversalPredicate.of(Type.class, t->true);
 		ObjectOrientedView view = (ObjectOrientedView) project.views().get(0);
     UniversalPredicate<Type,Nothing> filter = hierarchyPredicate(options, view)
 			.and(annotationFilter(options, view))
@@ -58,8 +71,14 @@ public class DependencyAnalysisTool extends AnalysisTool {
 				crossReferenceSourceFilter()
 				.and(crossReferenceNonInheritanceFilter())
 				.and(crossReferenceHierarchyFilter(options,view));
-    new JavaDependencyAnalyzer(project,filter,crossReferenceFilter, troo).visualize(writer);
-	}
+    JavaDependencyAnalyzer analyzer = new JavaDependencyAnalyzer(project,filter,crossReferenceFilter, troo);
+    return analyzer;
+  }
+
+	  protected void computeStats(Project project, OutputStreamWriter writer, OutputStreamWriter cycleWriter, AnalysisOptions options) throws LookupException, InputException, IOException {
+	     JavaDependencyAnalyzer analyzer = analyzer(project, options);
+	     analyzer.computeStats(writer, cycleWriter);
+	  }
 
 	protected UniversalPredicate<CrossReference<?>,Nothing> crossReferenceSourceFilter() {
 //		return new True<>();

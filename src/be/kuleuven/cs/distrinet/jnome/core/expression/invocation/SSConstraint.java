@@ -209,6 +209,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 //		Util.debug(! supers.containsAll(debug));
 		Type G = typeWithSameBaseTypeAs(F(), supers);
 //		Type Q = typeWithSameBaseTypeAs(F(), debug);
+//		Util.debug(G!= null && !G.sameAs(Q));
 		return G;
 	}
 	

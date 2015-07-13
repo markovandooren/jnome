@@ -69,7 +69,8 @@ public class GGConstraint extends FirstPhaseConstraint {
 					  EqualityTypeArgument actual = (EqualityTypeArgument) U.parent();
 						TypeParameter newParameter = new InstantiatedTypeParameter(oldParameter.name(), actual);
 					  GG.replaceParameter(TypeParameter.class,oldParameter, newParameter);
-						Type V=typeWithSameBaseTypeAs(H, GG.getAllSuperTypes());
+//						Type V=typeWithSameBaseTypeAs(H, GG.getAllSuperTypes());
+						Type V= GG.superTypeJudge().get(H);
 						if(F().subtypeOf(V)) {
 						  GGConstraint recursive = new GGConstraint(ARef(), V);
 						  parent().addGenerated(recursive);
@@ -130,7 +131,8 @@ public class GGConstraint extends FirstPhaseConstraint {
 				  EqualityTypeArgument actual = (EqualityTypeArgument) U.parent();
 					TypeParameter newParameter = new InstantiatedTypeParameter(oldParameter.name(), actual);
 				  GG.replaceParameter(TypeParameter.class,oldParameter, newParameter);
-					Type V=typeWithSameBaseTypeAs(H, GG.getAllSuperTypes());
+//					Type V=typeWithSameBaseTypeAs(H, GG.getAllSuperTypes());
+					Type V= GG.superTypeJudge().get(H);
 					// Replace actual parameters with extends wildcards
 					for(TypeParameter par: V.parameters(TypeParameter.class)) {
 						InstantiatedTypeParameter inst = (InstantiatedTypeParameter) par;
@@ -190,7 +192,8 @@ public class GGConstraint extends FirstPhaseConstraint {
 				  EqualityTypeArgument actual = (EqualityTypeArgument) U.parent();
 					TypeParameter newParameter = new InstantiatedTypeParameter(oldParameter.name(), actual);
 				  GG.replaceParameter(TypeParameter.class,oldParameter, newParameter);
-					Type V=typeWithSameBaseTypeAs(H, GG.getAllSuperTypes());
+//					Type V=typeWithSameBaseTypeAs(H, GG.getAllSuperTypes());
+					Type V= GG.superTypeJudge().get(H);
 					// Replace actual parameters with extends wildcards
 					for(TypeParameter par: V.parameters(TypeParameter.class)) {
 						InstantiatedTypeParameter inst = (InstantiatedTypeParameter) par;

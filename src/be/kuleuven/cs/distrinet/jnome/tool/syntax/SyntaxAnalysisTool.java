@@ -20,4 +20,13 @@ public class SyntaxAnalysisTool extends AnalysisTool {
 		new SyntaxAnalyzer(project).analyseSyntax(writer);
 	}
 
+  /**
+   * @{inheritDoc}
+   */
+  @Override
+  protected void computeStats(Project project, OutputStreamWriter writer,OutputStreamWriter cycleWriter,  AnalysisOptions options)
+      throws LookupException, InputException, IOException {
+    
+  }
+
 }

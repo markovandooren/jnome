@@ -15,6 +15,7 @@ import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.workspace.InputException;
 import org.aikodi.chameleon.workspace.Project;
 
+import com.google.common.io.FileBackedOutputStream;
 import com.lexicalscope.jewel.cli.ArgumentValidationException;
 import com.lexicalscope.jewel.cli.Cli;
 import com.lexicalscope.jewel.cli.CliFactory;
@@ -54,8 +55,31 @@ public abstract class AnalysisTool extends Tool {
         stream = System.out;
       }
       OutputStreamWriter writer = new OutputStreamWriter(stream);
+      OutputStream statStream;
+      if(options.isStats()) {
+        File output = new File(options.getStats());
+        statStream = new FileOutputStream(output);
+      } else {
+        statStream = System.out;
+      }
+      OutputStreamWriter statWriter = new OutputStreamWriter(statStream);
+      OutputStream cycleStream;
+      if(options.isCycles()) {
+        File output = new File(options.getCycles());
+        cycleStream = new FileOutputStream(output);
+      } else {
+        cycleStream = System.out;
+      }
+      OutputStreamWriter cycleWriter = new OutputStreamWriter(cycleStream);
+
+      
       writeProjectInfo(root, writer);
       check(project, writer, options);
+      
+      
+      
+      
+      computeStats(project,statWriter,cycleWriter,options);
       writer.close();
       stream.close();
     }
@@ -86,6 +110,18 @@ public abstract class AnalysisTool extends Tool {
   }
 
   protected abstract void check(Project project, OutputStreamWriter writer, AnalysisOptions options) throws LookupException, InputException, IOException;
+
+  /**
+   * FIXME TODO This is an ugly short-term hack.
+   * @param project
+   * @param writer
+   * @param cycleWriter
+   * @param options
+   * @throws LookupException
+   * @throws InputException
+   * @throws IOException
+   */
+  protected abstract void computeStats(Project project, OutputStreamWriter writer, OutputStreamWriter cycleWriter, AnalysisOptions options) throws LookupException, InputException, IOException;
 
   private void printHelp() {
     Cli<? extends AnalysisOptions> cli = createCLI();
@@ -133,9 +169,17 @@ public abstract class AnalysisTool extends Tool {
     String getContainers();
     boolean isContainers();
 
-    @Option(description="The name of the output file. If no file is given, the output is written to the standard output stream.") 
+    @Option(description="The name of the output file for the dependency graph. If no file is given, the output is written to the standard output stream.") 
     String getOut();
     boolean isOut();
+
+    @Option(description="The name of the output file for the statistics. If no file is given, the output is written to the standard output stream.") 
+    String getStats();
+    boolean isStats();
+
+    @Option(description="The name of the output file for the dependency cycles. If no file is given, the output is written to the standard output stream.") 
+    String getCycles();
+    boolean isCycles();
 
     @Option(description="Display this help and exit.")
     boolean isHelp();

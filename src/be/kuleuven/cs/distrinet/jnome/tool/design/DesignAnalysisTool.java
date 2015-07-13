@@ -20,4 +20,13 @@ public class DesignAnalysisTool extends AnalysisTool {
 		new DesignAnalyzer(project).analyze(writer);
 	}
 
+  /**
+   * @{inheritDoc}
+   */
+  @Override
+  protected void computeStats(Project project, OutputStreamWriter writer, OutputStreamWriter cycleWriter, AnalysisOptions options)
+      throws LookupException, InputException, IOException {
+    new DesignAnalyzer(project).analyze(writer);
+  }
+
 }

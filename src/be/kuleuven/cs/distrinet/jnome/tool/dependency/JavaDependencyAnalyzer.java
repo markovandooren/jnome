@@ -1,9 +1,13 @@
 package be.kuleuven.cs.distrinet.jnome.tool.dependency;
 
+import static java.util.stream.DoubleStream.of;
+
+import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.DoubleStream;
 
 import org.aikodi.chameleon.analysis.dependency.DependencyAnalyzer;
 import org.aikodi.chameleon.analysis.dependency.DependencyAnalysis.HistoryFilter;
@@ -25,6 +29,8 @@ import be.kuleuven.cs.distrinet.jnome.tool.JavaDeclarationDecomposer;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.contract.Contracts;
 import be.kuleuven.cs.distrinet.rejuse.function.Function;
+import be.kuleuven.cs.distrinet.rejuse.graph.Graph;
+import be.kuleuven.cs.distrinet.rejuse.graph.Path;
 import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
 
 public class JavaDependencyAnalyzer extends DependencyAnalyzer<Type> {
@@ -109,6 +115,23 @@ public class JavaDependencyAnalyzer extends DependencyAnalyzer<Type> {
     ListenableDirectedGraph<Element, DefaultEdge> graph = buildDependencyGraph();
     DOTExporter<Element,DefaultEdge> exporter = createExporter();
     exporter.export(writer, graph);
+  }
+  
+  public void computeStats(Writer writer, Writer cycleWriter) throws InputException, IOException {
+    Graph<Element> graph = dependencyResult().graph();
+    double[] dependencies = graph.nodes().stream().mapToDouble(n -> n.nbOutgoingEdges()).toArray();
+    double averageDependencies = of(dependencies).average().orElse(0);
+    double maxDependencies = of(dependencies).max().orElse(0);
+    List<Path<Element>> simpleCycles = graph.simpleCycles();
+    int nbSimpleCycles = simpleCycles.size();
+    writer.write("Average dependencies: "+averageDependencies+"\n");
+    writer.write("Max dependencies: "+maxDependencies+"\n");
+    writer.write("Number of simple cycles: "+nbSimpleCycles+"\n");
+    writer.close();
+    for(Path<Element> cycle: simpleCycles) {
+      cycleWriter.write(""+cycle+"\n");
+    }
+    cycleWriter.close();
   }
 
   private GraphBuilder<Element> createGraphBuilder(final ListenableDirectedGraph<Element, DefaultEdge> graph) {

@@ -48,15 +48,15 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
   	} else {
   		CrossReferenceTarget t = target.getTarget();
   		if(t == null) {
-  			return new MultiTypeReference<Declaration>(target.name(), _typeReferenceTargetTypes);
+  			return new MultiTypeReference<Declaration>(target.name(), _typeReferenceTargetTypes,Declaration.class,Declaration.class);
   		} else {
-  			return new MultiTypeReference<Declaration>(typeReferenceTarget((NamedTarget) t),target.name(), _typeReferenceTargetTypes);
+  			return new MultiTypeReference<Declaration>(typeReferenceTarget((NamedTarget) t),target.name(), _typeReferenceTargetTypes,Declaration.class);
   		}
   	}
   }
   
   public static CrossReferenceTarget typeReferenceTarget(String fqn) {
-		return fqn == null ? null : new MultiTypeReference<Declaration>(fqn, _typeReferenceTargetTypes);
+		return fqn == null ? null : new MultiTypeReference<Declaration>(fqn, _typeReferenceTargetTypes,Declaration.class,Declaration.class);
   }
   
 	private static Set _typeReferenceTargetTypes = ImmutableSet.<Class>builder().add(Type.class).add(Namespace.class).build();

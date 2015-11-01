@@ -117,14 +117,14 @@ public class ConstructorInvocation extends RegularMethodInvocation implements De
     return result;
   }
 
-  protected Type referencedType() throws LookupException {
-    Type result = getTypeReference().getElement();
-    if(isDiamondInvocation()) {
-      result = (Type) result.origin();
-    }
-    return result;
-  }
-
+//  protected Type constructedType() throws LookupException {
+//    Type result = getTypeReference().getElement();
+//    if(isDiamondInvocation()) {
+//      result = (Type) result.origin();
+//    }
+//    return result;
+//  }
+//
   public <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
     DeclarationCollector<X> collector = new DeclarationCollector<X>(selector);
     auxType().targetContext().lookUp(collector);

@@ -22,4 +22,11 @@ public abstract class ConstructorDelegation extends MethodInvocation<NormalMetho
     return new NamelessConstructorSelector(this);
   }
 
+  /**
+   * @{inheritDoc}
+   */
+  @Override
+  public Class<NormalMethod> referencedType() {
+    return NormalMethod.class;
+  }
 }

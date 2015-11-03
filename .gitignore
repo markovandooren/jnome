@@ -1,4 +1,8 @@
 dist
+*.launch
+*.iml
+*.iws
+*.ipr
 output
 bin
 .classpath

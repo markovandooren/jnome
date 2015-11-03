@@ -1,5 +1,8 @@
 package be.kuleuven.cs.distrinet.jnome.tool.design;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
@@ -30,14 +33,23 @@ public class DesignAnalyzer extends Analyzer {
 	}
 	
 	public void analyze(OutputStreamWriter writer) throws LookupException, InputException, IOException {
-	  analyze(new IncomingLeak(),writer);
-	  analyze(new OutgoingLeak(),writer);
-	  analyze(new PublicFieldViolation(),writer);
-	  analyze(new NonDefensiveFieldAssignment(),writer);
+		List<Analysis<?,?>> analyses = new ArrayList<>();
+	  analyses.add(new IncomingLeak());
+	  analyses.add(new OutgoingLeak());
+	  analyses.add(new PublicFieldViolation());
+	  analyses.add(new NonDefensiveFieldAssignment());
+	  analyses.add(new AssignmentAsExpression());
+	  analyze(analyses, writer);
+	}
+	
+	private void analyze(List<Analysis<?,?>> analyses, OutputStreamWriter writer) throws LookupException, InputException, IOException {
+		for(Analysis<?,?> analysis: analyses) {
+			analyze(analysis, writer);
+		}
 	}
 	
 	public void analyze(Analysis<? extends Element,?> analysis, OutputStreamWriter writer) throws InputException, IOException {
-		Result result = analysisResult(analysis);
+		Result<?> result = analysisResult(analysis);
 		int index = 1;
 		writer.write("\n");
 		if(result instanceof Invalid) {

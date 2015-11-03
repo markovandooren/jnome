@@ -7,7 +7,6 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.DoubleStream;
 
 import org.aikodi.chameleon.analysis.dependency.DependencyAnalyzer;
 import org.aikodi.chameleon.analysis.dependency.DependencyAnalysis.HistoryFilter;

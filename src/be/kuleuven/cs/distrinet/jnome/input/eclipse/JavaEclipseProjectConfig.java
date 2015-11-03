@@ -1,4 +1,4 @@
-package be.kuleuven.cs.distrinet.jnome.eclipse;
+package be.kuleuven.cs.distrinet.jnome.input.eclipse;
 
 import java.io.File;
 import java.util.Map;

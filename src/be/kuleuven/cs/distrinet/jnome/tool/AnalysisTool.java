@@ -15,14 +15,13 @@ import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.workspace.InputException;
 import org.aikodi.chameleon.workspace.Project;
 
-import com.google.common.io.FileBackedOutputStream;
 import com.lexicalscope.jewel.cli.ArgumentValidationException;
 import com.lexicalscope.jewel.cli.Cli;
 import com.lexicalscope.jewel.cli.CliFactory;
 import com.lexicalscope.jewel.cli.CommandLineInterface;
 import com.lexicalscope.jewel.cli.Option;
 
-import be.kuleuven.cs.distrinet.jnome.eclipse.JavaEclipseProjectConfig;
+import be.kuleuven.cs.distrinet.jnome.input.eclipse.JavaEclipseProjectConfig;
 import be.kuleuven.cs.distrinet.rejuse.io.FileUtils;
 
 public abstract class AnalysisTool extends Tool {

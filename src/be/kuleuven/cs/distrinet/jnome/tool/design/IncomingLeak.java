@@ -2,7 +2,6 @@ package be.kuleuven.cs.distrinet.jnome.tool.design;
 
 import org.aikodi.chameleon.analysis.Analysis;
 import org.aikodi.chameleon.core.declaration.Declaration;
-import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.reference.CrossReference;
 import org.aikodi.chameleon.core.validation.AtomicProblem;
@@ -19,7 +18,6 @@ import org.aikodi.chameleon.support.expression.AssignmentExpression;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.tool.IsCollectionType;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
-import be.kuleuven.cs.distrinet.rejuse.tree.TreeStructure;
 
 public class IncomingLeak extends Analysis<AssignmentExpression, Verification> {
 

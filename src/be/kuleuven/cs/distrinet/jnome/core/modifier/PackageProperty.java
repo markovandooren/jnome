@@ -15,12 +15,12 @@ public class PackageProperty extends ScopeProperty {
 	
 	public final static String ID = "accessibility.package";
 	
-	public PackageProperty(PropertyUniverse<ChameleonProperty> universe, PropertyMutex<ChameleonProperty> family) {
-		super(ID, universe, family);
+	public PackageProperty(PropertyMutex<ChameleonProperty> family) {
+		super(ID, family);
 	}
 
-	public PackageProperty(String name, PropertyUniverse<ChameleonProperty> universe, PropertyMutex<ChameleonProperty> family) {
-		super(name, universe, family);
+	public PackageProperty(String name, PropertyMutex<ChameleonProperty> family) {
+		super(name, family);
 	}
 
 	public Scope scope(Element element) throws LookupException {

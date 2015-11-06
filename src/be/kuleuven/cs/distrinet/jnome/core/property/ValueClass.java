@@ -25,17 +25,17 @@ import be.kuleuven.cs.distrinet.rejuse.property.PropertyUniverse;
  */
 public class ValueClass extends DynamicChameleonProperty {
 
-  public ValueClass(PropertyUniverse<ChameleonProperty> universe) {
-    super("value", universe, Type.class);
+  public ValueClass() {
+    super("value", Type.class);
   }
 
-  public ValueClass(PropertyUniverse<ChameleonProperty> universe, PropertyMutex<ChameleonProperty> mutex,
+  public ValueClass(PropertyMutex<ChameleonProperty> mutex,
       ChameleonProperty inverse) {
-    super("value", universe, mutex, inverse, Type.class);
+    super("value", mutex, inverse, Type.class);
   }
 
-  public ValueClass(PropertyUniverse<ChameleonProperty> universe, PropertyMutex<ChameleonProperty> mutex) {
-    super("value", universe, mutex, Type.class);
+  public ValueClass(PropertyMutex<ChameleonProperty> mutex) {
+    super("value", mutex, Type.class);
   }
 
   /**

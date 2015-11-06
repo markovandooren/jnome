@@ -153,21 +153,21 @@ public class Java7 extends ObjectOrientedLanguage {
   }
   protected Java7(String name, LookupContextFactory lookupFactory,Revision version) {
     super(name, lookupFactory, version);
-    STRICTFP = new StaticChameleonProperty("strictfp", this, Declaration.class);
-    SYNCHRONIZED = new StaticChameleonProperty("synchronized", this, Method.class);
-    TRANSIENT = new StaticChameleonProperty("transient", this, MemberVariable.class);
-    VOLATILE = new StaticChameleonProperty("volatile", this, MemberVariable.class);
-    IMPLEMENTS_RELATION = new StaticChameleonProperty("implements", this, AbstractInheritanceRelation.class);
-    PROTECTED = new ProtectedProperty(this, SCOPE_MUTEX);
-    PRIVATE = new PrivateProperty(this, SCOPE_MUTEX);
-    PUBLIC = new PublicProperty(this, SCOPE_MUTEX);
-    PACKAGE_ACCESSIBLE = new PackageProperty(this, SCOPE_MUTEX);
-    PRIMITIVE_TYPE = new PrimitiveTypeProperty("primitive", this);
-    NUMERIC_TYPE = new NumericTypeProperty("numeric", this);
+    STRICTFP = add(new StaticChameleonProperty("strictfp", Declaration.class));
+    SYNCHRONIZED = add(new StaticChameleonProperty("synchronized", Method.class));
+    TRANSIENT = add(new StaticChameleonProperty("transient", MemberVariable.class));
+    VOLATILE = add(new StaticChameleonProperty("volatile", MemberVariable.class));
+    IMPLEMENTS_RELATION = add(new StaticChameleonProperty("implements", AbstractInheritanceRelation.class));
+    PROTECTED = add(new ProtectedProperty(SCOPE_MUTEX));
+    PRIVATE = add(new PrivateProperty(SCOPE_MUTEX));
+    PUBLIC = add(new PublicProperty(SCOPE_MUTEX));
+    PACKAGE_ACCESSIBLE = add(new PackageProperty(SCOPE_MUTEX));
+    PRIMITIVE_TYPE = add(new PrimitiveTypeProperty("primitive"));
+    NUMERIC_TYPE = add(new NumericTypeProperty("numeric"));
     REFERENCE_TYPE = PRIMITIVE_TYPE.inverse();
-    UNBOXABLE_TYPE = new UnboxableTypeProperty("unboxable", this);
-    ANNOTATION_TYPE = new StaticChameleonProperty("annotation", this, Type.class); 
-    DEFAULT = new StaticChameleonProperty("default", this, Method.class);
+    UNBOXABLE_TYPE = add(new UnboxableTypeProperty("unboxable"));
+    ANNOTATION_TYPE = add(new StaticChameleonProperty("annotation", Type.class)); 
+    DEFAULT = add(new StaticChameleonProperty("default", Method.class));
     DEFAULT.addContradiction(ABSTRACT);
     // In Java, a constructor is a class method
     // CONSTRUCTOR.addImplication(CLASS);
@@ -185,7 +185,7 @@ public class Java7 extends ObjectOrientedLanguage {
     REFINABLE.addValidElementType(MemberVariableDeclarator.class);
     FINAL.addValidElementType(MemberVariableDeclarator.class);
 
-    VALUE_CLASS = new ValueClass(this);
+    VALUE_CLASS = add(new ValueClass());
     
     for(String string: new String[]{"==","!=","+","++","-","--","*","/","+=","-=","*=","/=","&","&&","|","||","^","!","&=","|=","^=","<<=",">>=",">>>+","%","<",">","<=",">=","%=","<<",">>",">>>"}) {
       _operatorNames.add(string);
@@ -269,8 +269,8 @@ public class Java7 extends ObjectOrientedLanguage {
   }
 
   private class NumericTypeProperty extends DynamicChameleonProperty {
-    private NumericTypeProperty(String name, PropertyUniverse<ChameleonProperty> universe) {
-      super(name, universe, Type.class);
+    private NumericTypeProperty(String name) {
+      super(name, Type.class);
     }
 
     @Override
@@ -287,8 +287,8 @@ public class Java7 extends ObjectOrientedLanguage {
   }
 
   private class UnboxableTypeProperty extends DynamicChameleonProperty {
-    private UnboxableTypeProperty(String name, PropertyUniverse<ChameleonProperty> universe) {
-      super(name, universe, Type.class);
+    private UnboxableTypeProperty(String name) {
+      super(name, Type.class);
     }
 
     @Override
@@ -305,8 +305,8 @@ public class Java7 extends ObjectOrientedLanguage {
   }
 
   private class PrimitiveTypeProperty extends DynamicChameleonProperty {
-    private PrimitiveTypeProperty(String name, PropertyUniverse<ChameleonProperty> universe) {
-      super(name, universe, Type.class);
+    private PrimitiveTypeProperty(String name) {
+      super(name, Type.class);
     }
 
     @Override

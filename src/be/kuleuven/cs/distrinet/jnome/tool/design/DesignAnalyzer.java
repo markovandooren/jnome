@@ -1,21 +1,20 @@
 package be.kuleuven.cs.distrinet.jnome.tool.design;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.aikodi.chameleon.analysis.Analysis;
 import org.aikodi.chameleon.analysis.Analyzer;
 import org.aikodi.chameleon.analysis.Result;
-import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.validation.AtomicProblem;
 import org.aikodi.chameleon.core.validation.Invalid;
 import org.aikodi.chameleon.workspace.ConfigException;
 import org.aikodi.chameleon.workspace.InputException;
 import org.aikodi.chameleon.workspace.Project;
+import org.aikodi.rejuse.exception.Handler;
 
 // TODO
 //   0) public void method only invoked from within current class is suspicious
@@ -32,34 +31,40 @@ public class DesignAnalyzer extends Analyzer {
 		super(project);
 	}
 	
-	public void analyze(OutputStreamWriter writer) throws LookupException, InputException, IOException {
-		List<Analysis<?,?>> analyses = new ArrayList<>();
+	public void analyze(OutputStreamWriter writer, MessageFormatter formatter) throws LookupException, InputException, IOException {
+		List<Analysis<?,?,? extends Exception>> analyses = new ArrayList<>();
 	  analyses.add(new IncomingLeak());
 	  analyses.add(new OutgoingLeak());
-	  analyses.add(new PublicFieldViolation());
+//	  analyses.add(new PublicFieldViolation());
+	  analyses.add(new NonPrivateNonFinalField());
 	  analyses.add(new NonDefensiveFieldAssignment());
 	  analyses.add(new AssignmentAsExpression());
-	  analyze(analyses, writer);
+	  analyses.add(new EqualsWithoutHashCode());
+	  analyze(analyses, writer,formatter, Handler.<Exception>resume(), Handler.<InputException>resume());
 	}
 	
-	private void analyze(List<Analysis<?,?>> analyses, OutputStreamWriter writer) throws LookupException, InputException, IOException {
-		for(Analysis<?,?> analysis: analyses) {
-			analyze(analysis, writer);
+	private <E extends Exception, A extends Exception, I extends Exception> void analyze(
+	    List<Analysis<?,?,? extends E>> analyses, 
+	    OutputStreamWriter writer, 
+	    MessageFormatter formatter,
+	    Handler<? super E,A> analysisGuard,
+	    Handler<InputException,I> handler) throws A, I , IOException {
+		for(Analysis<?,?,? extends E> analysis: analyses) {
+			analyze(analysis, writer,formatter, analysisGuard, handler);
 		}
 	}
 	
-	public void analyze(Analysis<? extends Element,?> analysis, OutputStreamWriter writer) throws InputException, IOException {
-		Result<?> result = analysisResult(analysis);
-		int index = 1;
-		writer.write("\n");
+	public <E extends Exception,A extends Exception, I extends Exception> void analyze(Analysis<?,?,E> analysis, 
+	    OutputStreamWriter writer, 
+	    MessageFormatter formatter,
+	    Handler<? super E,A> analysisGuard,
+	    Handler<InputException,I> handler) throws A,I, IOException {
+		Result<?> result = analysisResult(analysis, analysisGuard, handler);
 		if(result instanceof Invalid) {
 		  for(AtomicProblem problem: ((Invalid)result).problems()) {
-		  	writer.write(""+index);
-		  	writer.write(" ");
-		  	writer.write(problem.message());
+		  	writer.write(formatter.format(problem));
 		  	writer.write("\n");
 		  	writer.flush();
-		  	index++;
 		  }
 		}
 	}

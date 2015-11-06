@@ -12,7 +12,7 @@ import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.tree.TreeStructure;
 
-public class PublicFieldViolation extends Analysis<VariableDeclaration, Verification> {
+public class PublicFieldViolation extends Analysis<VariableDeclaration, Verification,Nothing> {
 
 	public PublicFieldViolation() {
 		super(VariableDeclaration.class, Valid.create());

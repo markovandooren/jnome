@@ -8,6 +8,7 @@ import org.aikodi.chameleon.core.validation.AtomicProblem;
 import org.aikodi.chameleon.core.validation.Valid;
 import org.aikodi.chameleon.core.validation.Verification;
 import org.aikodi.chameleon.core.variable.Variable;
+import org.aikodi.chameleon.exception.ModelException;
 import org.aikodi.chameleon.oo.expression.Expression;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.type.Type;
@@ -18,61 +19,59 @@ import org.aikodi.chameleon.support.expression.AssignmentExpression;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.tool.IsCollectionType;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
+import org.aikodi.rejuse.exception.Handler;
 
-public class IncomingLeak extends Analysis<AssignmentExpression, Verification> {
 
-	public IncomingLeak() {
-		super(AssignmentExpression.class, Valid.create());
-	}
+public class IncomingLeak extends Analysis<AssignmentExpression, Verification, ModelException> {
 
-	private static class IncomingCollectionEncapsulationViolationResult extends AtomicProblem {
+  public IncomingLeak() {
+    super(AssignmentExpression.class, Valid.create());
+  }
 
-		public IncomingCollectionEncapsulationViolationResult(Variable member, FormalParameter parameter) {
-			super(parameter);
-			_member = member;
-			_parameter = parameter;
-		}
-		
-		private Variable _member;
-		
-		private FormalParameter _parameter;
+  private static class IncomingCollectionEncapsulationViolationResult extends AtomicProblem {
 
-		@Override
-		public String message() {
-			Method m = _parameter.nearestAncestor(Method.class);
-			Type t = m.nearestAncestor(Type.class);
-			String msg = "Warning: encapsulation: potential incoming leak of internal state: collection parameter "+_parameter.name()+ 
-					         " of public method "+m.name()+" in "+t.getFullyQualifiedName()+ 
-					         " is directly assigned to field "+_member.name();
-			return msg;
-		}
-		
-	}
+    public IncomingCollectionEncapsulationViolationResult(Variable member, FormalParameter parameter) {
+      super(parameter);
+      _member = member;
+      _parameter = parameter;
+    }
 
-	@Override
-	public void analyze(AssignmentExpression assignment) throws Nothing {
-		Verification result = Valid.create();
-		try {
-			Method method = assignment.nearestAncestor(Method.class);
-			if(method != null && method.isTrue(method.language(Java7.class).PUBLIC)) {
-				Variable v = assignment.variable();
-				if(v instanceof MemberVariable) {
-					Expression e = assignment.getValue();
-					if(e instanceof CrossReference) {
-						Declaration rhs = ((CrossReference) e).getElement();
-						if(rhs instanceof FormalParameter) {
-							Type type_of_value = ((FormalParameter)rhs).getType();
-              if(IsCollectionType.PREDICATE.eval(type_of_value)) {
-								result = result.and(new IncomingCollectionEncapsulationViolationResult(v,(FormalParameter) rhs));
-							}
-						}
-					}
-				}
-			}
-		}
-		catch(LookupException exc) {
-			// swallow for now.
-		}
-		setResult(result().and(result));
-	}
+    private Variable _member;
+
+    private FormalParameter _parameter;
+
+    @Override
+    public String message() {
+      Method m = _parameter.nearestAncestor(Method.class);
+      Type t = m.nearestAncestor(Type.class);
+      String msg = "Warning: encapsulation: potential incoming leak of internal state: collection parameter "+_parameter.name()+ 
+          " of public method "+m.name()+" in "+t.getFullyQualifiedName()+ 
+          " is directly assigned to field "+_member.name();
+      return msg;
+    }
+
+  }
+
+  @Override
+  public void analyze(AssignmentExpression assignment) throws LookupException {
+    Verification result = Valid.create();
+    Method method = assignment.nearestAncestor(Method.class);
+    if(method != null && method.isTrue(method.language(Java7.class).PUBLIC)) {
+      Variable v = assignment.variable();
+      if(v instanceof MemberVariable) {
+        Expression e = assignment.getValue();
+        if(e instanceof CrossReference) {
+          Declaration rhs = ((CrossReference) e).getElement();
+          if(rhs instanceof FormalParameter) {
+            Type type_of_value = ((FormalParameter)rhs).getType();
+            if(IsCollectionType.PREDICATE.eval(type_of_value)) {
+              result = result.and(new IncomingCollectionEncapsulationViolationResult(v,(FormalParameter) rhs));
+            }
+          }
+        }
+      }
+    }
+
+    setResult(result().and(result));
+  }
 }

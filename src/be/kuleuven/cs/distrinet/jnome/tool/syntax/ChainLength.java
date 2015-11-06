@@ -7,10 +7,11 @@ import org.aikodi.chameleon.analysis.Analysis;
 import org.aikodi.chameleon.analysis.Result;
 import org.aikodi.chameleon.core.reference.CrossReferenceTarget;
 import org.aikodi.chameleon.oo.expression.MethodInvocation;
+import org.aikodi.rejuse.exception.Handler;
 
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 
-public class ChainLength extends Analysis<MethodInvocation, ChainLength.LengthResult> {
+public class ChainLength extends Analysis<MethodInvocation, ChainLength.LengthResult,Nothing> {
 
   public ChainLength() {
     super(MethodInvocation.class, new LengthResult());
@@ -73,8 +74,11 @@ public class ChainLength extends Analysis<MethodInvocation, ChainLength.LengthRe
     return 0;
   }
 
+  /**
+   * @{inheritDoc}
+   */
   @Override
-  public void analyze(MethodInvocation invocation) throws Nothing {
+  protected void analyze(MethodInvocation invocation) {
     if (!(invocation.parent() instanceof MethodInvocation)) {
       result().add(length(invocation), 1);
     }

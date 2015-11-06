@@ -8,12 +8,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.aikodi.chameleon.analysis.dependency.DependencyAnalyzer;
 import org.aikodi.chameleon.analysis.dependency.DependencyAnalysis.HistoryFilter;
+import org.aikodi.chameleon.analysis.dependency.DependencyAnalyzer;
 import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.reference.CrossReference;
 import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.rejuse.exception.Handler;
 import org.aikodi.chameleon.workspace.InputException;
 import org.aikodi.chameleon.workspace.Project;
 import org.jgrapht.ext.ComponentAttributeProvider;
@@ -116,8 +117,8 @@ public class JavaDependencyAnalyzer extends DependencyAnalyzer<Type> {
     exporter.export(writer, graph);
   }
   
-  public void computeStats(Writer writer, Writer cycleWriter) throws InputException, IOException {
-    Graph<Element> graph = dependencyResult().graph();
+  public void computeStats(Writer writer, Writer cycleWriter) throws IOException {
+    Graph<Element> graph = dependencyResult(Handler.resume(), Handler.resume()).graph();
     double[] dependencies = graph.nodes().stream().mapToDouble(n -> n.nbOutgoingEdges()).toArray();
     double averageDependencies = of(dependencies).average().orElse(0);
     double maxDependencies = of(dependencies).max().orElse(0);
@@ -153,7 +154,7 @@ public class JavaDependencyAnalyzer extends DependencyAnalyzer<Type> {
   private ListenableDirectedGraph<Element, DefaultEdge> buildDependencyGraph() throws InputException {
     ListenableDirectedGraph<Element, DefaultEdge> graph = new ListenableDirectedGraph<>(DefaultEdge.class);
     GraphBuilder<Element> builder = createGraphBuilder(graph);
-    buildGraph(builder);
+    buildGraph(builder, Handler.resume(), Handler.resume());
     return graph;
   }
 

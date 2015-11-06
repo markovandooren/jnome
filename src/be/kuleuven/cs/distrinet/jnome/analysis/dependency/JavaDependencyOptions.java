@@ -30,8 +30,11 @@ import org.aikodi.chameleon.ui.widget.tree.DocumentScannerContentProvider.Source
 import org.aikodi.chameleon.ui.widget.tree.TreeViewNodeLabelProvider;
 import org.aikodi.chameleon.ui.widget.tree.TristateTreePruner;
 import org.aikodi.chameleon.ui.widget.tree.TristateTreeSelector;
+import org.aikodi.chameleon.util.action.GuardedTreeWalker;
 import org.aikodi.chameleon.util.action.TopDown;
 import org.aikodi.chameleon.workspace.Project;
+import org.aikodi.rejuse.exception.Guard;
+import org.aikodi.rejuse.exception.Handler;
 
 import com.google.common.collect.ImmutableList;
 
@@ -116,10 +119,10 @@ public class JavaDependencyOptions extends DependencyOptions {
         historyFilter2);
     TreeStructure<Element> logicalStructure = _root.logical();
     PrunedTreeStructure<Element> sourceStructure = new PrunedTreeStructure(logicalStructure, source);
-    TopDown<Element, Nothing> topDown = new TopDown<>(dependencyAnalysis);
+    GuardedTreeWalker<Element, LookupException, Nothing> guardedTreeWalker = new GuardedTreeWalker<>(dependencyAnalysis, Handler.resume());
+    TopDown<Element, Nothing> topDown = new TopDown<>(guardedTreeWalker);
     topDown.traverse(sourceStructure);
     DependencyResult result = dependencyAnalysis.result();
-    //		result.prune();
     return result;
   }
 

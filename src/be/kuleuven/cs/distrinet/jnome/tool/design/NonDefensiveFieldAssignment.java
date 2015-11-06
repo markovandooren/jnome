@@ -33,7 +33,7 @@ import be.kuleuven.cs.distrinet.rejuse.tree.TreeStructure;
  * 
  * @author Marko van Dooren
  */
-public class NonDefensiveFieldAssignment extends Analysis<AssignmentExpression,Verification> {
+public class NonDefensiveFieldAssignment extends Analysis<AssignmentExpression,Verification, LookupException> {
 
 	public NonDefensiveFieldAssignment() {
 		super(AssignmentExpression.class, Valid.create());
@@ -67,9 +67,8 @@ public class NonDefensiveFieldAssignment extends Analysis<AssignmentExpression,V
 
 
 	@Override
-	protected void analyze(AssignmentExpression assignment) {
+	protected void analyze(AssignmentExpression assignment) throws LookupException {
 		Verification result = Valid.create();
-		try {
 			final Method method = assignment.nearestAncestor(Method.class);
 			if(method != null && method.isTrue(method.language(Java7.class).PUBLIC)) {
 				Variable v = assignment.variable();
@@ -106,10 +105,6 @@ public class NonDefensiveFieldAssignment extends Analysis<AssignmentExpression,V
 					}
 				}
 			}
-		}
-		catch(LookupException exc) {
-			// swallow for now.
-		}
 		setResult(result().and(result));
 	}
 	

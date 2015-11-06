@@ -1,7 +1,7 @@
 /**
  * 
  */
-package be.kuleuven.cs.distrinet.jnome.tool.design;
+package be.kuleuven.cs.distrinet.jnome.core.property;
 
 import java.util.List;
 
@@ -25,19 +25,17 @@ import be.kuleuven.cs.distrinet.rejuse.property.PropertyUniverse;
  */
 public class ValueClass extends DynamicChameleonProperty {
 
-  public ValueClass(PropertyUniverse<ChameleonProperty> universe,
-      Class<? extends Element> validElementType) {
-    super("value", universe, validElementType);
+  public ValueClass(PropertyUniverse<ChameleonProperty> universe) {
+    super("value", universe, Type.class);
   }
 
   public ValueClass(PropertyUniverse<ChameleonProperty> universe, PropertyMutex<ChameleonProperty> mutex,
-      ChameleonProperty inverse, Class<? extends Element> validElementType) {
-    super("value", universe, mutex, inverse, validElementType);
+      ChameleonProperty inverse) {
+    super("value", universe, mutex, inverse, Type.class);
   }
 
-  public ValueClass(PropertyUniverse<ChameleonProperty> universe, PropertyMutex<ChameleonProperty> mutex,
-      Class<? extends Element> validElementType) {
-    super("value", universe, mutex, validElementType);
+  public ValueClass(PropertyUniverse<ChameleonProperty> universe, PropertyMutex<ChameleonProperty> mutex) {
+    super("value", universe, mutex, Type.class);
   }
 
   /**

@@ -6,6 +6,7 @@ import java.util.Set;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.validation.Valid;
 import org.aikodi.chameleon.core.validation.Verification;
+import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.expression.Expression;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
@@ -88,7 +89,7 @@ public class ArrayCreationExpression extends Expression {
     if(tref != null) {
 		  return new ArrayType(tref.getElement(), _dimensionInitializers.size());
     } else {
-    	throw new LookupException("Type reference of array creation expression is null.");
+    	throw new ChameleonProgrammerException("Type reference of array creation expression is null.");
     }
   }
 

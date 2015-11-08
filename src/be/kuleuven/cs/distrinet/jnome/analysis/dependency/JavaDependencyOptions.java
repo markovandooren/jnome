@@ -33,7 +33,6 @@ import org.aikodi.chameleon.ui.widget.tree.TristateTreeSelector;
 import org.aikodi.chameleon.util.action.GuardedTreeWalker;
 import org.aikodi.chameleon.util.action.TopDown;
 import org.aikodi.chameleon.workspace.Project;
-import org.aikodi.rejuse.exception.Guard;
 import org.aikodi.rejuse.exception.Handler;
 
 import com.google.common.collect.ImmutableList;

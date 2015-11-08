@@ -8,25 +8,30 @@ import org.aikodi.chameleon.core.validation.Verification;
 import org.aikodi.chameleon.support.expression.AssignmentExpression;
 import org.aikodi.chameleon.support.statement.StatementExpression;
 
-public class AssignmentAsExpression extends Analysis<AssignmentExpression, Verification>{
+import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 
-	public AssignmentAsExpression() {
-		super(AssignmentExpression.class, Valid.create());
-	}
+public class AssignmentAsExpression extends Analysis<AssignmentExpression, Verification,Nothing>{
 
-	public static class AssignmentUsedAsExpression extends BasicProblem {
+  public AssignmentAsExpression() {
+    super(AssignmentExpression.class, Valid.create());
+  }
 
-	public AssignmentUsedAsExpression(Element element) {
-		super(element, "The assignment is used as an expression. This can have unintented effects.");
-	}
-		
-	}
-	
-	@Override
-	protected void analyze(AssignmentExpression element) {
-		if(!(element.parent() instanceof StatementExpression)) {
-			setResult(result().and(new AssignmentUsedAsExpression(element)));
-		}
-	}
+  public static class AssignmentUsedAsExpression extends BasicProblem {
+
+    public AssignmentUsedAsExpression(Element element) {
+      super(element, "The assignment is used as an expression. This can have unintented effects.");
+    }
+
+  }
+
+  /**
+   * @{inheritDoc}
+   */
+  @Override
+  protected void analyze(AssignmentExpression element) {
+    if(!(element.parent() instanceof StatementExpression)) {
+      setResult(result().and(new AssignmentUsedAsExpression(element)));
+    }
+  }
 
 }

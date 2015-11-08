@@ -13,7 +13,10 @@ import java.util.Properties;
 
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.workspace.InputException;
+import org.aikodi.chameleon.workspace.LanguageRepository;
 import org.aikodi.chameleon.workspace.Project;
+import org.aikodi.chameleon.workspace.Workspace;
+import org.aikodi.chameleon.workspace.XMLProjectLoader;
 
 import com.lexicalscope.jewel.cli.ArgumentValidationException;
 import com.lexicalscope.jewel.cli.Cli;
@@ -21,6 +24,8 @@ import com.lexicalscope.jewel.cli.CliFactory;
 import com.lexicalscope.jewel.cli.CommandLineInterface;
 import com.lexicalscope.jewel.cli.Option;
 
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
+import be.kuleuven.cs.distrinet.jnome.core.language.Java7LanguageFactory;
 import be.kuleuven.cs.distrinet.jnome.input.eclipse.JavaEclipseProjectConfig;
 import be.kuleuven.cs.distrinet.rejuse.io.FileUtils;
 
@@ -43,9 +48,24 @@ public abstract class AnalysisTool extends Tool {
         printHelp();
         System.exit(0);
       }
+      LanguageRepository repository = new LanguageRepository();
+      repository.add(new Java7LanguageFactory().create());
+      Workspace workspace = new Workspace(repository);
       File root = new File(options.getRoot());
       Map containerConfiguration = getContainerConfiguration(options);
-      Project project = new JavaEclipseProjectConfig(root, containerConfiguration).project();
+      Project project;
+      if(options.isConfiguration()) {
+        if(options.getConfiguration().equals("eclipse")) {
+          project= new JavaEclipseProjectConfig(root, containerConfiguration).project();
+        } else if(options.getConfiguration().equals("xml")) {
+          File xmlFile = new File(root,"project.xml");
+          project = new XMLProjectLoader(workspace).project(xmlFile, null);
+        } else {
+          throw new IllegalArgumentException();
+        }
+      } else {
+        project= new JavaEclipseProjectConfig(root, containerConfiguration).project();
+      }
       OutputStream stream;
       if(options.isOut()) {
         File output = new File(options.getOut());
@@ -182,5 +202,10 @@ public abstract class AnalysisTool extends Tool {
 
     @Option(description="Display this help and exit.")
     boolean isHelp();
+    
+    @Option(description="The project configuration method: xml, eclipse") 
+    String getConfiguration();
+    boolean isConfiguration();
+    
   }
 }

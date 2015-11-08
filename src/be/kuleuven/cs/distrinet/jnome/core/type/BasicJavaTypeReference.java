@@ -117,18 +117,18 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
       // FILL IN GENERIC PARAMETERS
       result =convertGenerics((Type)result);
 
-      if(result != null) {
+//      if(result != null) {
         setGenericCache((Type)result);
         return result;
-      } else {
-        throw new LookupException("Result of type reference lookup is null: "+name(),this);
-      }
+//      } else {
+//        throw new LookupException("Result of type reference lookup is null: "+name(),this);
+//      }
     }
   }
 
   private Type convertGenerics(Type type) throws LookupException {
   	Type result = type;
-		if (type != null) {
+//		if (type != null) {
 			if(! (type instanceof RawType)) {
 				Java7 language = language(Java7.class);
 				
@@ -147,7 +147,7 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 					result = language.erasure(type);
 				}
 			}
-		}
+//		}
 		return result;
 	}
 

@@ -13,11 +13,13 @@ import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.variable.MemberVariable;
 import org.aikodi.chameleon.support.statement.ReturnStatement;
+import org.aikodi.rejuse.exception.Handler;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.tool.IsCollectionType;
+import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 
-public class OutgoingLeak extends Analysis<ReturnStatement, Verification> {
+public class OutgoingLeak extends Analysis<ReturnStatement, Verification,Nothing> {
 
 	public OutgoingLeak() {
 		super(ReturnStatement.class, Valid.create());
@@ -44,27 +46,30 @@ public class OutgoingLeak extends Analysis<ReturnStatement, Verification> {
 		
 	}
 
-	@Override
-	protected void analyze(ReturnStatement statement) {
-		Verification result = Valid.create();
-		Method nearestAncestor = statement.nearestAncestor(Method.class);
-		if(nearestAncestor != null && nearestAncestor.isTrue(statement.language(Java7.class).PUBLIC)) {
-			try {
-				Expression expr = statement.getExpression();
-				if(expr instanceof CrossReference) {
-					Declaration declaration = ((CrossReference) expr).getElement();
-					if(declaration instanceof MemberVariable) {
-						Type type = ((MemberVariable) declaration).getType();
-						if(IsCollectionType.PREDICATE.eval(type)) {
-							result = new OutgoingCollectionEncapsulationViolation(nearestAncestor, (Variable) declaration);
-						}
-					}
-				}
-			}catch(LookupException exc) {
-				exc.printStackTrace();
-			}
-		}
-		setResult(result().and(result));
-	}
+  /**
+   * @{inheritDoc}
+   */
+  @Override
+  protected void analyze(ReturnStatement statement) {
+    Verification result = Valid.create();
+    Method nearestAncestor = statement.nearestAncestor(Method.class);
+    if(nearestAncestor != null && nearestAncestor.isTrue(statement.language(Java7.class).PUBLIC)) {
+        try {
+            Expression expr = statement.getExpression();
+            if(expr instanceof CrossReference) {
+                Declaration declaration = ((CrossReference) expr).getElement();
+                if(declaration instanceof MemberVariable) {
+                    Type type = ((MemberVariable) declaration).getType();
+                    if(IsCollectionType.PREDICATE.eval(type)) {
+                        result = new OutgoingCollectionEncapsulationViolation(nearestAncestor, (Variable) declaration);
+                    }
+                }
+            }
+        }catch(LookupException exc) {
+            exc.printStackTrace();
+        }
+    }
+    setResult(result().and(result));
+  }
 	
 }

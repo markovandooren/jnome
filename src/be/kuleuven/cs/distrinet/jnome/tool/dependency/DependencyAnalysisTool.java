@@ -15,6 +15,7 @@ import org.aikodi.chameleon.oo.analysis.dependency.NoSubtypeOf;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.inheritance.InheritanceRelation;
 import org.aikodi.chameleon.oo.view.ObjectOrientedView;
+import org.aikodi.chameleon.util.exception.Handler;
 import org.aikodi.chameleon.workspace.InputException;
 import org.aikodi.chameleon.workspace.Project;
 

@@ -16,7 +16,7 @@ public class BBCodeFormatter implements MessageFormatter {
    */
   @Override
   public String format(Invalid problem) {
-    return "TEXT:1:[error] "+problem.message();
+    return "TEXT:1:[error] "+problem.message().replace(":","");
   }
 
 }

@@ -37,7 +37,7 @@ public class DesignAnalyzer extends Analyzer {
 	  analyses.add(new OutgoingLeak());
 //	  analyses.add(new PublicFieldViolation());
 	  analyses.add(new NonPrivateNonFinalField());
-	  analyses.add(new NonDefensiveFieldAssignment());
+	  //analyses.add(new NonDefensiveFieldAssignment());
 	  analyses.add(new AssignmentAsExpression());
 	  analyses.add(new EqualsWithoutHashCode());
 	  analyze(analyses, writer,formatter, Handler.<Exception>resume(), Handler.<InputException>resume());

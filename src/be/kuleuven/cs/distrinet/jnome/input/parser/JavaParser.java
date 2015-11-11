@@ -72,7 +72,7 @@ import org.aikodi.chameleon.oo.type.inheritance.SubtypeRelation;
 import org.aikodi.chameleon.oo.variable.*;
 
 import org.aikodi.chameleon.input.InputProcessor;
-import org.aikodi.chameleon.input.Position2D;
+import org.aikodi.chameleon.input.TextPosition;
 
 import org.aikodi.chameleon.support.expression.RegularLiteral;
 import org.aikodi.chameleon.support.expression.NullLiteral;

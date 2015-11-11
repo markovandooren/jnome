@@ -30,7 +30,7 @@ protected void analyze(VariableDeclaration declaration) {
     Java7 language = declaration.language(Java7.class);
     Variable variable = declaration.variable();
     if(variable.isFalse(language.PRIVATE) && (variable.isFalse(language.FINAL))) {
-        String message = "Encapsulation: non-final member variable "+variable.name() +
+        String message = "Encapsulation error. Non-final instance variable "+variable.name() +
                 " in class "+variable.nearestAncestor(Type.class).getFullyQualifiedName()+" is not private.";
         result = new BasicProblem(declaration, message);
     }

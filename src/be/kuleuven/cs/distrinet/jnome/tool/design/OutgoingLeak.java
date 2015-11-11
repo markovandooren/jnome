@@ -39,9 +39,9 @@ public class OutgoingLeak extends Analysis<ReturnStatement, Verification,Nothing
 		@Override
 		public String message() {
 			Type t = _method.nearestAncestor(Type.class);
-			return "Error: encapsulation: outgoing leak of internal state: public method "+_method.name()+ 
+			return "Encapsulation error. Outgoing leak of internal state. Method "+_method.name()+ 
 					   " in "+t.getFullyQualifiedName()+
-					   " directly returns the collection stored in field "+_member.name();
+					   " is accessible from outside the type hierarchy, and directly returns the collection stored in field "+_member.name();
 		}
 		
 	}
@@ -53,7 +53,8 @@ public class OutgoingLeak extends Analysis<ReturnStatement, Verification,Nothing
   protected void analyze(ReturnStatement statement) {
     Verification result = Valid.create();
     Method nearestAncestor = statement.nearestAncestor(Method.class);
-    if(nearestAncestor != null && nearestAncestor.isTrue(statement.language(Java7.class).PUBLIC)) {
+    if(nearestAncestor != null && 
+    		externallyAccessible(statement, nearestAncestor)) {
         try {
             Expression expr = statement.getExpression();
             if(expr instanceof CrossReference) {
@@ -71,5 +72,11 @@ public class OutgoingLeak extends Analysis<ReturnStatement, Verification,Nothing
     }
     setResult(result().and(result));
   }
+
+	private boolean externallyAccessible(ReturnStatement statement, Method nearestAncestor) {
+	Java7 language = statement.language(Java7.class);
+	return nearestAncestor.isTrue(language.PUBLIC) ||
+			   nearestAncestor.isTrue(language.PACKAGE_ACCESSIBLE);
+	}
 	
 }

@@ -13,13 +13,11 @@ import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.variable.MemberVariable;
 import org.aikodi.chameleon.support.statement.ReturnStatement;
-import org.aikodi.rejuse.exception.Handler;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
-import be.kuleuven.cs.distrinet.jnome.tool.IsCollectionType;
-import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
+import be.kuleuven.cs.distrinet.jnome.tool.Predicates;
 
-public class OutgoingLeak extends Analysis<ReturnStatement, Verification,Nothing> {
+public class OutgoingLeak extends Analysis<ReturnStatement, Verification,LookupException> {
 
 	public OutgoingLeak() {
 		super(ReturnStatement.class, Valid.create());
@@ -50,33 +48,24 @@ public class OutgoingLeak extends Analysis<ReturnStatement, Verification,Nothing
    * @{inheritDoc}
    */
   @Override
-  protected void analyze(ReturnStatement statement) {
+  protected void analyze(ReturnStatement statement) throws LookupException {
     Verification result = Valid.create();
     Method nearestAncestor = statement.nearestAncestor(Method.class);
     if(nearestAncestor != null && 
-    		externallyAccessible(statement, nearestAncestor)) {
-        try {
+    		Predicates.EXTERNALLY_ACCESSIBLE.eval(nearestAncestor)) {
             Expression expr = statement.getExpression();
             if(expr instanceof CrossReference) {
                 Declaration declaration = ((CrossReference) expr).getElement();
-                if(declaration instanceof MemberVariable) {
+            		Java7 language = statement.language(Java7.class);
+                if(declaration instanceof MemberVariable && declaration.isTrue(language.INSTANCE)) {
                     Type type = ((MemberVariable) declaration).getType();
-                    if(IsCollectionType.PREDICATE.eval(type)) {
+                    if((!Predicates.IMMUTABLE_COLLECTION.eval(type)) && Predicates.COLLECTION.eval(type)) {
                         result = new OutgoingCollectionEncapsulationViolation(nearestAncestor, (Variable) declaration);
                     }
                 }
             }
-        }catch(LookupException exc) {
-            exc.printStackTrace();
-        }
     }
     setResult(result().and(result));
   }
 
-	private boolean externallyAccessible(ReturnStatement statement, Method nearestAncestor) {
-	Java7 language = statement.language(Java7.class);
-	return nearestAncestor.isTrue(language.PUBLIC) ||
-			   nearestAncestor.isTrue(language.PACKAGE_ACCESSIBLE);
-	}
-	
 }

@@ -39,7 +39,7 @@ public class JavaProjectConfiguration extends ProjectConfiguration {
 	  	
 	  	protected void pathChanged() throws ConfigException {
 	  		try {
-	  			JarFile path = new JarFile(project().absoluteFile(_path));
+	  			JarFile path = new JarFile(project().absoluteFile(path()));
 					view().addBinary(new JarLoader(path, language(Java7.NAME).plugin(ProjectConfigurator.class).binaryFileFilter()));
 	  		} catch (ProjectException | IOException e) {
 	  			throw new ConfigException(e);

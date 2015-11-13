@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.lookup.LocalLookupContext;
 import org.aikodi.chameleon.core.lookup.LookupContext;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.validation.Valid;
@@ -146,7 +147,7 @@ public class EnumConstant extends SimpleNameMember implements DeclarationWithTyp
 	}
 	
 	@Override
-	public LookupContext targetContext() throws LookupException {
+	public LocalLookupContext<?> targetContext() throws LookupException {
 		Type type = getAnonymousType();
 		if(type == null) {
 		  return nearestAncestor(EnumType.class).targetContext();

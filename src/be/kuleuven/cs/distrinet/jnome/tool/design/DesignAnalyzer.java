@@ -35,8 +35,10 @@ public class DesignAnalyzer extends Analyzer {
 		List<Analysis<?,?,? extends Exception>> analyses = new ArrayList<>();
 	  analyses.add(new IncomingLeak());
 	  analyses.add(new OutgoingLeak());
+	  analyses.add(new SuspiciousCastAnalysis());
 //	  analyses.add(new PublicFieldViolation());
 	  analyses.add(new NonPrivateNonFinalField());
+	  analyses.add(new EmptyAbstractType());
 	  //analyses.add(new NonDefensiveFieldAssignment());
 	  analyses.add(new AssignmentAsExpression());
 	  analyses.add(new EqualsWithoutHashCode());

@@ -57,7 +57,7 @@ uploadArchives {
         repository(url: "scp://webssh.ugent.be/users/m/mcvdoore/WWW/repository/") {
             authentication(userName: "mcvdoore")
         }
-        pom.version = '1.2.6'
+        pom.version = '1.2.7'
         pom.groupId = 'markovandooren'
         pom.artifactId = 'jnome'
     }

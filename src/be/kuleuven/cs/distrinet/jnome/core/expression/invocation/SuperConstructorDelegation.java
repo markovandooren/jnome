@@ -37,13 +37,14 @@ public class SuperConstructorDelegation extends ConstructorDelegation {
     return new SuperConstructorDelegation();
   }
 
-  public <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
+  @Override
+  public NormalMethod getElement() throws LookupException {
   	Type parent = nearestAncestor(Type.class);
   	if(parent == null) {
   		throw new ChameleonProgrammerException("The super constructor delegation is not inside a type.");
   	}
   	List<Type> types = parent.getDirectSuperTypes();
-		DeclarationCollector<X> collector = new DeclarationCollector<X>(selector);
+		DeclarationCollector<NormalMethod> collector = new DeclarationCollector<NormalMethod>(selector());
   	for(Type type: types) {
   		type.targetContext().lookUp(collector);
   		if(!collector.willProceed()) {

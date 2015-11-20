@@ -185,7 +185,8 @@ public class Java7 extends ObjectOrientedLanguage {
     REFINABLE.addValidElementType(MemberVariableDeclarator.class);
     FINAL.addValidElementType(MemberVariableDeclarator.class);
 
-    VALUE_CLASS = add(new ValueClass());
+    TYPE_WITH_VALUE_SEMANTICS = add(new ValueClass());
+    TYPE_WITH_REFERENCE_SEMANTICS = TYPE_WITH_VALUE_SEMANTICS.inverse();
     
     for(String string: new String[]{"==","!=","+","++","-","--","*","/","+=","-=","*=","/=","&","&&","|","||","^","!","&=","|=","^=","<<=",">>=",">>>+","%","<",">","<=",">=","%=","<<",">>",">>>"}) {
       _operatorNames.add(string);
@@ -347,7 +348,8 @@ public class Java7 extends ObjectOrientedLanguage {
   public final ChameleonProperty UNBOXABLE_TYPE;
   public final ChameleonProperty ANNOTATION_TYPE;
   public final ChameleonProperty DEFAULT;
-  public final DynamicChameleonProperty VALUE_CLASS;
+  public final ChameleonProperty TYPE_WITH_VALUE_SEMANTICS;
+  public final ChameleonProperty TYPE_WITH_REFERENCE_SEMANTICS;
 
 
   public Type getNullType(Namespace ns) {

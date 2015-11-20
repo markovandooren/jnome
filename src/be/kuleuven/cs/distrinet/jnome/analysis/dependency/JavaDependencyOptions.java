@@ -265,7 +265,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 
       @Override
       public UniversalPredicate<? super Element, Nothing> apply(Class argument) throws Nothing {
-        return new TypePredicate<>(argument);
+        return new TypePredicate(argument);
       }
     };
     ComboBoxSelector<Class,Element> selector = new ComboBoxSelector<>(contentProvider, labelProvider,function,2);

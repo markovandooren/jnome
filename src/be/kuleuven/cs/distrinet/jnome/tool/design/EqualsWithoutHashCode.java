@@ -35,7 +35,7 @@ public class EqualsWithoutHashCode extends Analysis<Type,Verification, LookupExc
   @Override
   protected void analyze(Type element) throws LookupException {
     Java7 java = element.language(Java7.class);
-    boolean equals = element.isTrue(java.VALUE_CLASS);
+    boolean equals = element.isTrue(java.TYPE_WITH_VALUE_SEMANTICS);
     boolean isInterface = element.isTrue(java.INTERFACE);
     if(equals && ! isInterface) {
       boolean hasHashCode = false;

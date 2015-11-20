@@ -28,78 +28,60 @@ public class JavaMethodInvocation extends RegularMethodInvocation {
 
 	public JavaMethodInvocation(String name, CrossReferenceTarget target) {
 		super(name, target);
-//  	parentLink().addListener(new AssociationListener<Element>() {
-//      
-//  		public void notifyElementAdded(Element element) {
-//  			_trace = new CreationStackTrace();
-//  		}
-//  
-//  		public void notifyElementRemoved(Element element) {
-//  			_trace = new CreationStackTrace();
-//  		}
-//  
-//  		public void notifyElementReplaced(Element oldElement, Element newElement) {
-//  			_trace = new CreationStackTrace();
-//  		}
-//  		
-//  	});
+		//  	parentLink().addListener(new AssociationListener<Element>() {
+		//      
+		//  		public void notifyElementAdded(Element element) {
+		//  			_trace = new CreationStackTrace();
+		//  		}
+		//  
+		//  		public void notifyElementRemoved(Element element) {
+		//  			_trace = new CreationStackTrace();
+		//  		}
+		//  
+		//  		public void notifyElementReplaced(Element oldElement, Element newElement) {
+		//  			_trace = new CreationStackTrace();
+		//  		}
+		//  		
+		//  	});
 
 	}
 
 	@Override
-  protected JavaMethodInvocation cloneSelf() {
+	protected JavaMethodInvocation cloneSelf() {
 		return new JavaMethodInvocation(name(), null);
-  }
+	}
 
-  @Override
-  protected DeclarationSelector<NormalMethod> createSelector() {
-  	return new JavaMethodSelector<NormalMethod>(this,NormalMethod.class);
-  }
+	@Override
+	protected DeclarationSelector<NormalMethod> createSelector() {
+		return new JavaMethodSelector<NormalMethod>(this,NormalMethod.class);
+	}
 
-  public <X extends Declaration> X getElement(DeclarationSelector<X> selector) throws LookupException {
-  	X result = null;
-  	
-  	//OPTIMISATION
-  	boolean cache = selector.equals(selector());
-  	if(cache) {
-  		result = (X) getCache();
-  	}
-	  if(result != null) {
-	   	return result;
-	  }
+	@Override
+	public NormalMethod getElement() throws LookupException {
+		NormalMethod result = (NormalMethod) getCache();
+		if(result != null) {
+			return result;
+		}
 		synchronized(this) {
 			if(result != null) {
 				return result;
 			}
 
-		DeclarationCollector collector = new DeclarationCollector(selector);
-  	CrossReferenceTarget target = getTarget();
-  	if(target == null) {
-      lexicalContext().lookUp(collector);
-  	} else {
-  		target.targetContext().lookUp(collector);
-  	}
-  	result = (X) collector.result();
-  	if(cache) {
-  		setCache((NormalMethod) result);
-  	}
-  	return result;
+			DeclarationCollector collector = new DeclarationCollector(selector());
+			CrossReferenceTarget target = getTarget();
+			if(target == null) {
+				lexicalContext().lookUp(collector);
+			} else {
+				target.targetContext().lookUp(collector);
+			}
+			result = (NormalMethod) collector.result();
+			setCache((NormalMethod) result);
+			return result;
 		}
-//		}
-//		else {
-//			//repeat lookup for debugging purposes.
-//			//Config.setCaching(false);
-//	  	if(target == null) {
-//	      result = lookupContext().lookUp(selector);
-//	  	} else {
-//	  		result = target.targetContext().lookUp(selector);
-//	  	}
-//			throw new LookupException("Method returned by invocation of "+ name()+" is null", this);
-//		}
-  }
+	}
 
-	
-  /**
+
+	/**
 	 * Determine the types of the formal parameter of the given method in the context of the enclosing method invocation.
 	 * This involves substituting the formal type parameters in the type of the formal parameters
 	 * with the actual type arguments.
@@ -130,29 +112,29 @@ public class JavaMethodInvocation extends RegularMethodInvocation {
 				}
 				result.add(subst.getElement());
 			}
-			
+
 		} else {
 			result = method.header().formalParameterTypes();
 		}
 		return result;
 	}
-	
+
 	private static class ReferenceStub extends ElementImpl {
 
 		public ReferenceStub(TypeReference tref) {
 			setTypeReference(tref);
 		}
-		
+
 		private Single<TypeReference> _tref = new Single<TypeReference>(this);
-		
+
 		public TypeReference typeReference() {
 			return _tref.getOtherEnd();
 		}
-		
+
 		public void setTypeReference(TypeReference tref) {
 			set(_tref, tref);
 		}
-		
+
 		@Override
 		public ReferenceStub cloneSelf() {
 			return new ReferenceStub(null);

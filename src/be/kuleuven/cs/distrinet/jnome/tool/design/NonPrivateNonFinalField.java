@@ -22,19 +22,19 @@ public class NonPrivateNonFinalField extends Analysis<VariableDeclaration, Verif
 
   public NonPrivateNonFinalField() {
     super(VariableDeclaration.class, Valid.create());
-}
+  }
 
-@Override
-protected void analyze(VariableDeclaration declaration) {
+  @Override
+  protected void analyze(VariableDeclaration declaration) {
     Verification result = Valid.create();
     Java7 language = declaration.language(Java7.class);
     Variable variable = declaration.variable();
     if(variable.isFalse(language.PRIVATE) && (variable.isFalse(language.FINAL))) {
-        String message = "Encapsulation: non-final member variable "+variable.name() +
-                " in class "+variable.nearestAncestor(Type.class).getFullyQualifiedName()+" is not private.";
-        result = new BasicProblem(declaration, message);
+      String message = "Encapsulation: non-final member variable "+variable.name() +
+          " in class "+variable.nearestAncestor(Type.class).getFullyQualifiedName()+" is not private.";
+      result = new BasicProblem(declaration, message);
     }
     setResult(result().and(result));
-}
+  }
 
 }

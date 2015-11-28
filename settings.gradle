@@ -1,0 +1,4 @@
+include 'chameleon'
+project(':chameleon').projectDir = file('../chameleon')
+
+rootProject.name = 'jnome'

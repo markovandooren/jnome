@@ -67,8 +67,8 @@ import org.aikodi.chameleon.oo.type.TypeElement;
 
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
-import org.aikodi.chameleon.oo.type.generics.ActualTypeArgument;
-import org.aikodi.chameleon.oo.type.generics.BasicTypeArgument;
+import org.aikodi.chameleon.oo.type.generics.TypeArgument;
+import org.aikodi.chameleon.oo.type.generics.EqualityTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.TypeConstraint;
 import org.aikodi.chameleon.oo.type.generics.ExtendsConstraint;
 import org.aikodi.chameleon.oo.type.generics.ExtendsWildcard;
@@ -79,7 +79,7 @@ import org.aikodi.chameleon.oo.type.inheritance.SubtypeRelation;
 import org.aikodi.chameleon.oo.variable.*;
 
 import org.aikodi.chameleon.input.InputProcessor;
-import org.aikodi.chameleon.input.Position2D;
+import org.aikodi.chameleon.input.TextPosition;
 
 import org.aikodi.chameleon.support.expression.RegularLiteral;
 import org.aikodi.chameleon.support.expression.NullLiteral;

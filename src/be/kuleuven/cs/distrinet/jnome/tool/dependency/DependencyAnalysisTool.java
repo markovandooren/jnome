@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.namespacedeclaration.NamespaceDeclaration;
 import org.aikodi.chameleon.core.reference.CrossReference;
 import org.aikodi.chameleon.oo.analysis.dependency.NoSubtypeOf;
 import org.aikodi.chameleon.oo.type.Type;
@@ -145,7 +146,7 @@ public class DependencyAnalysisTool extends AnalysisTool {
 
 					@Override
 					public boolean uncheckedEval(Type object) {
-						return new GlobPredicate(string,'.').eval(object.namespace().fullyQualifiedName());
+						return new GlobPredicate(string,'.').eval(object.nearestAncestor(NamespaceDeclaration.class).namespace().fullyQualifiedName());
 					}
 
 				}).makeUniversal(Type.class);

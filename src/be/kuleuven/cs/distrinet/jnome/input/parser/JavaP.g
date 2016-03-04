@@ -1020,15 +1020,15 @@ variableModifier returns [Modifier element]
     |   a=annotation {retval.element = a.element;}
     ;
 
-typeArguments returns [List<ActualTypeArgument> element]
-@init{retval.element = new ArrayList<ActualTypeArgument>();}
+typeArguments returns [List<TypeArgument> element]
+@init{retval.element = new ArrayList<TypeArgument>();}
     :   '<'
         arg=typeArgument {retval.element.add(arg.element);}
         (',' argx=typeArgument {retval.element.add(argx.element);})*
         '>'
     ;
 
-typeArgument returns [ActualTypeArgument element]
+typeArgument returns [TypeArgument element]
 @init{
 boolean pure=true;
 boolean ext=true;
@@ -1975,8 +1975,8 @@ explicitGenericInvocation returns [Expression element]
           }
     ;
 
-nonWildcardTypeArguments returns [List<ActualTypeArgument> element]
-    :   '<' list=typeList {retval.element = new ArrayList<ActualTypeArgument>();for(TypeReference tref:list.element){retval.element.add(java().createEqualityTypeArgument(tref));}}'>'
+nonWildcardTypeArguments returns [List<TypeArgument> element]
+    :   '<' list=typeList {retval.element = new ArrayList<TypeArgument>();for(TypeReference tref:list.element){retval.element.add(java().createEqualityTypeArgument(tref));}}'>'
     ;
 
 // NEEDS_TARGET

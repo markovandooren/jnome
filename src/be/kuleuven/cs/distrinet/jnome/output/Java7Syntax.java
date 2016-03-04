@@ -106,6 +106,7 @@ import org.aikodi.chameleon.support.tool.Arguments;
 import org.aikodi.chameleon.support.type.EmptyTypeElement;
 import org.aikodi.chameleon.support.type.StaticInitializer;
 import org.aikodi.chameleon.support.variable.LocalVariableDeclarator;
+import org.aikodi.chameleon.util.Util;
 
 import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayAccessExpression;
 import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayCreationExpression;
@@ -1547,7 +1548,7 @@ public class Java7Syntax extends Syntax {
     int i = 1;
     for(Type type:types) {
       String fileName = type.name()+".java";
-      String packageFQN = type.namespace().fullyQualifiedName();
+      String packageFQN = type.nearestAncestor(NamespaceDeclaration.class).namespace().fullyQualifiedName();
       String relDirName = packageFQN.replace('.', File.separatorChar);
       File out = new File(arguments.getOutputDirName()+File.separatorChar + relDirName + File.separatorChar + fileName);
       

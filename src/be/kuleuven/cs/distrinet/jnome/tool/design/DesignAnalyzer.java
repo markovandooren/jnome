@@ -42,7 +42,7 @@ public class DesignAnalyzer extends Analyzer {
 	  //analyses.add(new NonDefensiveFieldAssignment());
 	  analyses.add(new AssignmentAsExpression());
 	  analyses.add(new EqualsWithoutHashCode());
-	  analyze(analyses, writer,formatter, Handler.<Exception>resume(), Handler.<InputException>resume());
+	  analyze(analyses, writer,formatter, Handler.<Exception>resume(), Handler.<Exception>resume());
 	}
 	
 	private <E extends Exception, A extends Exception, I extends Exception> void analyze(
@@ -50,7 +50,7 @@ public class DesignAnalyzer extends Analyzer {
 	    OutputStreamWriter writer, 
 	    MessageFormatter formatter,
 	    Handler<? super E,A> analysisGuard,
-	    Handler<InputException,I> handler) throws A, I , IOException {
+	    Handler<Exception,I> handler) throws A, I , IOException {
 		for(Analysis<?,?,? extends E> analysis: analyses) {
 			analyze(analysis, writer,formatter, analysisGuard, handler);
 		}
@@ -60,7 +60,7 @@ public class DesignAnalyzer extends Analyzer {
 	    OutputStreamWriter writer, 
 	    MessageFormatter formatter,
 	    Handler<? super E,A> analysisGuard,
-	    Handler<InputException,I> handler) throws A,I, IOException {
+	    Handler<Exception,I> handler) throws A,I, IOException {
 		Result<?> result = analysisResult(analysis, analysisGuard, handler);
 		if(result instanceof Invalid) {
 		  for(AtomicProblem problem: ((Invalid)result).problems()) {

@@ -2,6 +2,7 @@ package be.kuleuven.cs.distrinet.jnome.core.expression;
 
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.namespace.Namespace;
+import org.aikodi.chameleon.core.namespacedeclaration.NamespaceDeclaration;
 import org.aikodi.chameleon.oo.expression.Expression;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.support.expression.ConditionalExpression;
@@ -46,8 +47,8 @@ public class JavaConditionalExpression extends ConditionalExpression {
 			}
 			if(result == null) {
 				if(java.convertibleToNumeric(first) && java.convertibleToNumeric(second)) {
-					Namespace root = namespace().defaultNamespace();
-					Type tByte = java.findType("java.lang.Byte", root);
+					Namespace root = root();
+					Type tByte = root.find("java.lang.Byte", Type.class);
 					Type tbyte = view.primitiveType("byte");
 					Type tShort = java.findType("java.lang.Short", root);
 					Type tshort = view.primitiveType("short");

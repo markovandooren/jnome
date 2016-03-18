@@ -184,16 +184,6 @@ public class JavaSubtypingRelation extends SubtypeRelation {
    * @throws LookupException
    */
   protected Set<Type> EST(JavaTypeReference U) throws LookupException {
-    //		Set<Type> STU = ST(U);
-    //		Set<Type> result = new HashSet<Type>();
-    //		for(Type type:STU) {
-    //			Type erasure = java().erasure(type);
-    //			result.add(erasure);
-    //		}
-    //		return result;
-
-    // TODO I think that the set of erased super types of a type T is the set of super
-    //      types of the erasure of T.
     return ((JavaType)U.getElement()).erasure().getSelfAndAllSuperTypesView();
   }
 
@@ -235,27 +225,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 
   private Type relevant(Type G, JavaTypeReference U) throws LookupException {
     return U.getElement().superTypeJudge().get(G);
-    //		Type base = G.baseType();
-    //		Set<Type> superTypes = ST(U);
-    //		//FIXME: Because we use a set, bugs may seem to disappear when debugging.
-    //		//       Do we have to use a set anyway? The operations applied to it
-    //		//       further on should work exactly the same whether there are duplicates or not
-    //		Set<Type> result = new HashSet<Type>();
-    //		for(Type superType: superTypes) {
-    //			if(superType.baseType().sameAs(base)) {
-    //				while(superType instanceof InstantiatedParameterType) {
-    //					superType = ((InstantiatedParameterType) superType).aliasedType();
-    //				}
-    //				result.add(superType);
-    //			}
-    //		}
-    //		return result; 
   }
-
-  //	private Type lci(Set<Type> types, Binder root) throws LookupException {
-  //		List<Type> list = new ArrayList<Type>(types);
-  //		return lci(list,root);
-  //	}
 
   private Type lcp(List<Type> types, Binder root) throws LookupException {
     int size = types.size();

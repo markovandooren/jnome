@@ -1,6 +1,9 @@
 package be.kuleuven.cs.distrinet.jnome.core.method;
 
+import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.language.WrongLanguageException;
 import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.member.DeclarationComparator;
 import org.aikodi.chameleon.oo.member.Member;
 import org.aikodi.chameleon.oo.member.MemberRelationSelector;
@@ -35,9 +38,18 @@ public class JavaMethod extends NormalMethod {
 		
 		@Override
 		public boolean containsBasedOnRest(Method first, Method second) throws LookupException {
-			return first.name().equals(second.name()) && (isOverridable(second) && subSignature(first, second)) || (isOverridable(first) && subSignature(second, first));
+			throw new Error();
+//			return first.name().equals(second.name()) && (isOverridable(second) && subSignature(first, second)) || (isOverridable(first) && subSignature(second, first));
 		}
 	};
+	
+	@Override
+	public boolean canOverride(Declaration declaration) throws LookupException {
+		return declaration instanceof Method && name().equals(declaration.name()) && 
+				(declaration.isTrue(declaration.language(ObjectOrientedLanguage.class).OVERRIDABLE) && 
+						subSignature(this, (Method) declaration)) || 
+				(isTrue(declaration.language(ObjectOrientedLanguage.class).OVERRIDABLE) && subSignature((Method) declaration, this));
+	}
 	
 
 	public MemberRelationSelector<? extends Member> aliasSelector() {

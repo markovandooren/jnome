@@ -29,8 +29,9 @@ public class JavaEclipseClasspathConfig extends ConfigElement {
 
 	public final String JUNIT4 = "org.eclipse.jdt.junit.JUNIT_CONTAINER/4";
 	
-	public JavaEclipseClasspathConfig(Project project, Map<String,String> containerConfiguration) throws ProjectException {
+	public JavaEclipseClasspathConfig(Project project, Map<String,String> containerConfiguration, Map<String, String> environment) throws ProjectException {
 		_project = project;
+		_environment = new HashMap<>(environment);
 		_loaders.putAll(containerConfiguration);
 		view().addBinary(new BaseJavaProjectLoader(Java7LanguageFactory.javaBaseJar(),java()));
 		readFromXML(new File(project.root(),".classpath"));
@@ -79,6 +80,18 @@ public class JavaEclipseClasspathConfig extends ConfigElement {
 			_path = path;
 		}
 		
+		private String finalPath() {
+			String[] box = new String[1];
+			box[0] = _path;
+			_environment.forEach((k,v) ->{
+				if(box[0] != null) {
+				  box[0] = box[0].replace(k, v);
+				}
+			});
+			return box[0];
+		}
+		
+		
 		public String path() {
 			return _path;
 		}
@@ -95,20 +108,28 @@ public class JavaEclipseClasspathConfig extends ConfigElement {
 		protected void $after() throws ConfigException {
 			try {
 				if(_kind.equals("src")) {
-					loadSrc(_path);
-				} else if(_kind.equals("lib")) {
-					loadBin(_path);
+					loadSrc(finalPath());
+				} else if(_kind.equals("lib") || _kind.equals("var")) {
+					loadBin(finalPath());
 				} else if(_kind.equals("con")) {
-					if(_path == null) {
+					if(finalPath() == null) {
 						throw new IllegalStateException("The container has not path attribute.");
 					}
-					if(! _path.startsWith("org.eclipse.jdt.launching.JRE_CONTAINER")) {
-						String path = _loaders.get(_path);
-						if(path == null) {
-							throw new IllegalStateException("No container with key "+path+" is registered.");
+					if(! finalPath().startsWith("org.eclipse.jdt.launching.JRE_CONTAINER")) {
+						String path = _loaders.get(finalPath());
+//						if(path == null) {
+//							throw new IllegalStateException("No container with key "+_path+" is registered.");
+//						}
+						if(path != null) {
+						  loadBin(path);
 						}
-						loadBin(path);
 					}
+				} else if(_kind.equals("output")) {
+					//FIXME Do we need to support the output option? It is tool dependeny, but since
+					// this configuration is for Eclipse, we should set the corresponding (currently
+					// non-existing) option for the (non-existing) compiler.
+				} else {
+					throw new IllegalStateException("Unknown classpath entry kind: "+_kind);
 				}
 			} catch (ProjectException e) {
 				throw new ConfigException(e);
@@ -136,4 +157,5 @@ public class JavaEclipseClasspathConfig extends ConfigElement {
 	}
 	
 	private final Map<String, String> _loaders = new HashMap<String,String>();
+	private final Map<String, String> _environment;
 }

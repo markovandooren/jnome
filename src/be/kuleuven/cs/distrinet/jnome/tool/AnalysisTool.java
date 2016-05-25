@@ -10,6 +10,7 @@ import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.function.Function;
 
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.workspace.InputException;
@@ -52,11 +53,12 @@ public abstract class AnalysisTool extends Tool {
       repository.add(new Java7LanguageFactory().create());
       Workspace workspace = new Workspace(repository);
       File root = new File(options.getRoot());
-      Map containerConfiguration = getContainerConfiguration(options);
+      Map<String,String> containerConfiguration = getConfiguration(options.getContainers());
+      Map<String,String> environmentConfiguration = getConfiguration(options.getEnvironment());
       Project project;
       if(options.isConfiguration()) {
         if(options.getConfiguration().equals("eclipse")) {
-          project= new JavaEclipseProjectConfig(root, containerConfiguration).project();
+          project= new JavaEclipseProjectConfig(root, containerConfiguration,environmentConfiguration).project();
         } else if(options.getConfiguration().equals("xml")) {
           File xmlFile = new File(root,"project.xml");
           project = new XMLProjectLoader(workspace).project(xmlFile, null);
@@ -64,7 +66,7 @@ public abstract class AnalysisTool extends Tool {
           throw new IllegalArgumentException();
         }
       } else {
-        project= new JavaEclipseProjectConfig(root, containerConfiguration).project();
+        project= new JavaEclipseProjectConfig(root, containerConfiguration,environmentConfiguration).project();
       }
       OutputStream stream;
       if(options.isOut()) {
@@ -90,13 +92,10 @@ public abstract class AnalysisTool extends Tool {
         cycleStream = System.out;
       }
       OutputStreamWriter cycleWriter = new OutputStreamWriter(cycleStream);
-
       
       writeProjectInfo(root, writer);
+      
       check(project, writer, options);
-      
-      
-      
       
       computeStats(project,statWriter,cycleWriter,options);
       writer.close();
@@ -147,18 +146,18 @@ public abstract class AnalysisTool extends Tool {
     System.out.println(cli.getHelpMessage());
   }
 
-  private Map getContainerConfiguration(AnalysisOptions result) {
-    Map containerConfiguration = new HashMap<String,String>();
-    if(result.getContainers() != null) {
-      File containerConfigFile = new File(result.getContainers());
+  private Map<String,String> getConfiguration(String fileName) {
+    Map<String,String> containerConfiguration = new HashMap<String,String>();
+		if(fileName != null) {
+      File containerConfigFile = new File(fileName);
       Properties properties = new Properties();
       try {
         properties.load(new FileInputStream(containerConfigFile));
-        containerConfiguration = properties;
+        properties.forEach((k,v) -> {containerConfiguration.put((String)k,(String)v);}); 
       } catch (FileNotFoundException e) {
-        throw new IllegalArgumentException("The given container configuration file is not found.");
+        throw new IllegalArgumentException("The given configuration file is not found: " + fileName);
       } catch (IOException e) {
-        throw new IllegalArgumentException("The given container configuration file was found, but could not be read.");
+        throw new IllegalArgumentException("The given container configuration file was found, but could not be read: "+ fileName);
       }
       File parentFile = containerConfigFile.getParentFile();
       if(parentFile == null) {
@@ -169,10 +168,10 @@ public abstract class AnalysisTool extends Tool {
     return containerConfiguration;
   }
 
-  private void makeRelativePathsAbsoluteRelativeToConfigFile(Map<Object,Object> map, File rootForRelativePaths) {
-    for(Map.Entry entry: map.entrySet()) {
-      String path = (String) entry.getValue();
-      String key = (String) entry.getKey();
+  private void makeRelativePathsAbsoluteRelativeToConfigFile(Map<String,String> map, File rootForRelativePaths) {
+    for(Map.Entry<String,String> entry: map.entrySet()) {
+      String path = entry.getValue();
+      String key = entry.getKey();
       String newPath = FileUtils.absolutePath(path, rootForRelativePaths);
       map.put(key, newPath);
     }
@@ -188,6 +187,10 @@ public abstract class AnalysisTool extends Tool {
     String getContainers();
     boolean isContainers();
 
+    @Option(description="File that contains the mapping of the environment variables")
+    String getEnvironment();
+    boolean isEnvironment();
+    
     @Option(description="The name of the output file for the dependency graph. If no file is given, the output is written to the standard output stream.") 
     String getOut();
     boolean isOut();
@@ -206,6 +209,7 @@ public abstract class AnalysisTool extends Tool {
     @Option(description="The project configuration method: xml, eclipse") 
     String getConfiguration();
     boolean isConfiguration();
+    
     
   }
 }

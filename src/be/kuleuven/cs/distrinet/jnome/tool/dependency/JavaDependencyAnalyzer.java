@@ -118,7 +118,7 @@ public class JavaDependencyAnalyzer extends DependencyAnalyzer<Type> {
   }
   
   public void computeStats(Writer writer, Writer cycleWriter) throws IOException {
-    Graph<Element> graph = dependencyResult(Handler.resume(), Handler.resume()).graph();
+    Graph<Element> graph = dependencyResult(Handler.printer(System.out), Handler.printer(System.out)).graph();
     double[] dependencies = graph.nodes().stream().mapToDouble(n -> n.nbOutgoingEdges()).toArray();
     double averageDependencies = of(dependencies).average().orElse(0);
     double maxDependencies = of(dependencies).max().orElse(0);
@@ -154,7 +154,7 @@ public class JavaDependencyAnalyzer extends DependencyAnalyzer<Type> {
   private ListenableDirectedGraph<Element, DefaultEdge> buildDependencyGraph() throws InputException {
     ListenableDirectedGraph<Element, DefaultEdge> graph = new ListenableDirectedGraph<>(DefaultEdge.class);
     GraphBuilder<Element> builder = createGraphBuilder(graph);
-    buildGraph(builder, Handler.resume(), Handler.resume());
+    buildGraph(builder, Handler.printer(System.out), Handler.printer(System.out));
     return graph;
   }
 

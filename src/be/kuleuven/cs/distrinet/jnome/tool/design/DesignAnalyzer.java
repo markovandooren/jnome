@@ -42,7 +42,7 @@ public class DesignAnalyzer extends Analyzer {
 	  //analyses.add(new NonDefensiveFieldAssignment());
 	  analyses.add(new AssignmentAsExpression());
 	  analyses.add(new EqualsWithoutHashCode());
-	  analyze(analyses, writer,formatter, Handler.<Exception>resume(), Handler.<Exception>resume());
+	  analyze(analyses, writer,formatter, Handler.<Exception>printer(System.out), Handler.<Exception>printer(System.out));
 	}
 	
 	private <E extends Exception, A extends Exception, I extends Exception> void analyze(

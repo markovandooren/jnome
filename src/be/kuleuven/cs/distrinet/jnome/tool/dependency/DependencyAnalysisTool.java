@@ -72,7 +72,9 @@ public class DependencyAnalysisTool extends AnalysisTool {
 		UniversalPredicate<CrossReference<?>,Nothing> crossReferenceFilter =
 				crossReferenceSourceFilter()
 				.and(crossReferenceNonInheritanceFilter())
-				.and(crossReferenceHierarchyFilter(options,view));
+				.and(crossReferenceHierarchyFilter(options,view))
+				.and(crossReferenceTargetType(options,view))
+				;
     JavaDependencyAnalyzer analyzer = new JavaDependencyAnalyzer(project,filter,crossReferenceFilter, troo);
     return analyzer;
   }
@@ -174,13 +176,48 @@ public class DependencyAnalysisTool extends AnalysisTool {
 		return result;
 	}
 
-	
+	protected UniversalPredicate<CrossReference,Nothing> crossReferenceTargetType(final AnalysisOptions options, final ObjectOrientedView view) throws LookupException {
+		final UniversalPredicate<Type, Nothing> targetPredicate = targetTypePredicate(options, view);
+		UniversalPredicate<CrossReference,LookupException> unguarded = new UniversalPredicate<CrossReference,LookupException>(CrossReference.class) {
+
+			@Override
+			public boolean uncheckedEval(CrossReference object) throws LookupException{
+				Declaration element = object.getElement();
+				Type t = element.nearestAncestorOrSelf(Type.class);
+				if(t != null) {
+					return targetPredicate.eval(t);
+				} else {
+					return true;
+				}
+			}
+		};
+		UniversalPredicate<CrossReference, Nothing> result = unguarded.guard(true);
+		return result;
+	}
+
 	protected UniversalPredicate<Type,Nothing> hierarchyPredicate(AnalysisOptions options, ObjectOrientedView view) throws LookupException {
 		UniversalPredicate<Type,Nothing> filter = SOURCE_TYPE;
 		List<String> ignored = ignoredHierarchies((DependencyOptions) options);
 		for(String fqn: ignored) {
 				Type type = view.findType(fqn);
 				filter = filter.and(new NoSubtypeOf(type));
+		}
+		return filter;
+	}
+
+	protected UniversalPredicate<Type,Nothing> targetTypePredicate(AnalysisOptions options, ObjectOrientedView view) throws LookupException {
+		UniversalPredicate<Type,Nothing> filter = SOURCE_TYPE;
+		List<String> ignored = ignoredTargets((DependencyOptions) options);
+		for(String fqn: ignored) {
+				Type type = view.findType(fqn);
+				filter = filter.and(new UniversalPredicate<Type,Nothing>(Type.class) {
+
+					@Override
+					public boolean uncheckedEval(Type t) throws Nothing {
+						return ! t.getFullyQualifiedName().equals(fqn);
+					}
+					
+				});
 		}
 		return filter;
 	}
@@ -197,7 +234,6 @@ public class DependencyAnalysisTool extends AnalysisTool {
 				d = ((CrossReference<?>)object).getElement();
 				return d.view().isSource(d);
 			} catch(Exception e) {
-				e.printStackTrace();
 				return true;
 			}
 		}
@@ -213,6 +249,15 @@ public class DependencyAnalysisTool extends AnalysisTool {
 		}
 		return result;
 
+	}
+
+	protected List<String> ignoredTargets(DependencyOptions options) {
+		List<String> result = new ArrayList<String>();
+		if(options.isIgnoreTargets()) {
+			File file = options.getIgnoreTargets();
+			result = readLines(file);
+		}
+		return result;
 	}
 
 	protected List<String> ignoredHierarchies(DependencyOptions options) {
@@ -270,6 +315,10 @@ public class DependencyAnalysisTool extends AnalysisTool {
 		@Option(description="A file that contains the fully qualified name of annotation types that cause a container to be ignored.") 
 		File getIgnoreAnnotations();
 		boolean isIgnoreAnnotations();
+
+    @Option(description="File that contains the fully qualified names of ignored targets.")
+    File getIgnoreTargets();
+    boolean isIgnoreTargets();
 
 		@Option(description="A file that contains the fully qualified names of the packages that must be processed.") 
 		File getPackages();

@@ -71,6 +71,9 @@ public class JavaProjectConfigurator extends ProjectConfiguratorImpl implements 
 		protected void addBaseScanner(View view) {
 			try {
 				//Add the base loader.
+				// FIXME The loader waits until it is added and then creates the predefined elements
+				// This does not work with the IBM VM, which splits the base jar in two parts.
+				// Object and Integer are in separate jar files, so Integer isn't loaded right now.
 				view.addBinary(new BaseJavaProjectLoader(baseJarPath(),(Java7)language()));
 			} catch (ProjectException e) {
 				throw new ConfigException(e);

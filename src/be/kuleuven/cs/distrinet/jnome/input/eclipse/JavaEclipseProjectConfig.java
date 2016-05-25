@@ -1,7 +1,9 @@
 package be.kuleuven.cs.distrinet.jnome.input.eclipse;
 
-import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
+
+import java.io.File;
 
 import org.aikodi.chameleon.core.namespace.LazyRootNamespace;
 import org.aikodi.chameleon.workspace.ConfigElement;
@@ -13,15 +15,26 @@ import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7LanguageFactory;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 
+/**
+ * A class for parsing the eclipse .project and .class path files and creating a corresponding
+ * Chameleon project.
+ * 
+ * @author Marko van Dooren
+ */
 public class JavaEclipseProjectConfig extends ConfigElement {
 
-	public JavaEclipseProjectConfig(File root, Map<String,String> containerConfiguration) {
+	public JavaEclipseProjectConfig(File root, Map<String,String> containerConfiguration, Map<String, String> environment) {
+		if(root == null) {
+			throw new IllegalArgumentException("The root directory for the Eclipse project must be given.");
+		}
 		_root = root;
-		_containerConfiguration = containerConfiguration;
+		_containerConfiguration = new HashMap<>(containerConfiguration);
+		_environment = new HashMap<>(environment);
 		readFromXML(new File(_root,".project"));
 	}
 	
 	private Map<String,String> _containerConfiguration;
+  private Map<String, String> _environment;
 	
 	@Override
 	public String nodeName() {
@@ -42,7 +55,7 @@ public class JavaEclipseProjectConfig extends ConfigElement {
 		Java7 java = new Java7LanguageFactory().create();
 		_project = new Project(_name, _root, new JavaView(new LazyRootNamespace(), java));
 		try {
-			new JavaEclipseClasspathConfig(_project,_containerConfiguration);
+			new JavaEclipseClasspathConfig(_project,_containerConfiguration,_environment);
 		} catch (ProjectException e) {
 			throw new ConfigException(e);
 		}

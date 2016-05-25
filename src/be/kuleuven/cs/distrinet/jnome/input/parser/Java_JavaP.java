@@ -7974,7 +7974,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, nttt.getTree());
                     if ( state.backtracking==0 ) {
-                       retval.element = (JavaTypeReference)retval.element.intersection(nttt.element); stop=nttt.stop;
+                    	 List refs = new ArrayList();
+                    	 refs.add(retval.element);
+                    	 refs.add(nttt.element);
+                    	 retval.element = new JavaIntersectionTypeReference(refs);
+//                       retval.element = (JavaTypeReference)retval.element.intersection(nttt.element); 
+                       stop=nttt.stop;
                     }
 
                     }

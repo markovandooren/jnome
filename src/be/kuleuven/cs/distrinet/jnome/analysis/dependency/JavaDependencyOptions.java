@@ -166,7 +166,7 @@ public class JavaDependencyOptions extends DependencyOptions {
       addPredicateSelector(noDescendants());
       addPredicateSelector(noAncestors());
       addPredicateSelector(noSuperTypes());
-      addHistoryFilterSelector(new CheckboxHistoryFilterSelector("Prune redundant dependencies on super classes", true, REDUNDANT_INHERITED_DEPENDENCY_FILTER));
+      addHistoryFilterSelector(new CheckboxHistoryFilterSelector("Prune redundant dependencies on super classes", true, (HistoryFilter<?, ?>) REDUNDANT_INHERITED_DEPENDENCY_FILTER));
     }
 
     protected void addCrossReferenceSelector(PredicateSelector<?> selector) {
@@ -318,7 +318,7 @@ public class JavaDependencyOptions extends DependencyOptions {
     return tristateTreeSelector;
   }
 
-  public static class RedundantInheritedDependencyFilter extends HistoryFilter<Element,Declaration>{
+  public static class RedundantInheritedDependencyFilter implements HistoryFilter<Element,Declaration>{
 
     private static class Container {
       public boolean add = true;

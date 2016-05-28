@@ -1,6 +1,0 @@
-include 'chameleon'
-include 'chameleonsupport'
-project(':chameleon').projectDir = file('../chameleon')
-project(':chameleonsupport').projectDir = file('../ChameleonSupport')
-
-rootProject.name = 'jnome'

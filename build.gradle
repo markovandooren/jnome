@@ -71,8 +71,7 @@ List shared = [
 
 dependencies {
    //compile project(':rejuse')
-   compile project(':chameleon')
-    compile project(':ChameleonSupport')
+   //compile project(':chameleon')
    //compile group: 'markovandooren', name: 'rejuse', version: '1.3.8'
    compile group: 'markovandooren', name: 'chameleon', version: '1.2.19'
    compile shared

@@ -35,22 +35,15 @@ import be.kuleuven.cs.distrinet.jnome.core.modifier.Default;
  */
 public class JavaEditorExtension extends EclipseEditorExtension {
 
-	private String pluginId;
-	
-	public JavaEditorExtension(String pluginID) {
-		this.pluginId = pluginID;
+	public JavaEditorExtension() {
 		ACCESS_ICON_DECORATOR = new AccessIconDecorator();
 		CLASS_ICON_PROVIDER = new ClassIconProvider(ACCESS_ICON_DECORATOR);
 		FIELD_ICON_PROVIDER = new DefaultIconProvider("field", MemberVariable.class,ACCESS_ICON_DECORATOR);
 		MEMBER_ICON_PROVIDER = new DefaultIconProvider("member", Member.class,ACCESS_ICON_DECORATOR);
 	}
 
-	public String pluginID() {
-		return pluginId;
-	}
-
 	public JavaEditorExtension clone() {
-		return new JavaEditorExtension(pluginID());
+		return new JavaEditorExtension();
 	}
 
 	public String getLabel(Element element) {

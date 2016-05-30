@@ -20,3 +20,9 @@ testdata/apache-log4j-1.2.15
 testdata/antlr-3.2
 testdata/jakarta-log4j-1.2.8
 testdata/hamcrest-1.2
+.gradle
+*.class
+testdata/
+build/
+tmp/
+garbage.log

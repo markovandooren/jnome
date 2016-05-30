@@ -547,7 +547,7 @@ public class Java7Syntax extends Syntax {
   	return result.toString();
   }
 
-  private String toCodeModifier(Modifier element) {
+  protected String toCodeModifier(Modifier element) {
     if(element instanceof Public) {
       return "public";
     } else if(element instanceof Protected) {

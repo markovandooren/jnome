@@ -55,7 +55,7 @@ public class JavaExpressionFactory extends ExpressionFactory {
 	}
 	
 	@Override
-	public JavaNameExpression createNameExpression(String name) {
+	public NameExpression createNameExpression(String name) {
 		return new JavaNameExpression(name);
 	}
 	

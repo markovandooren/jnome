@@ -42,10 +42,6 @@ public class JavaEditorExtension extends EclipseEditorExtension {
 		MEMBER_ICON_PROVIDER = new DefaultIconProvider("member", Member.class,ACCESS_ICON_DECORATOR);
 	}
 
-	public String pluginID() {
-		return Bootstrapper.PLUGIN_ID;
-	}
-
 	public JavaEditorExtension clone() {
 		return new JavaEditorExtension();
 	}

@@ -17,7 +17,7 @@ public class Bootstrapper extends EclipseBootstrapper {
 	
 	public Language createLanguage() throws ProjectException {
 		Java7 result = new Java7LanguageFactory().create();
-		result.setPlugin(EclipseEditorExtension.class, new JavaEditorExtension());
+		result.setPlugin(EclipseEditorExtension.class, new JavaEditorExtension(PLUGIN_ID));
 		result.setPlugin(EclipseProjectLoader.class, new JDTProjectLoader());
 		result.setPlugin(DependencyOptionsFactory.class, new JavaDependencyOptionsFactory());
 		return result;

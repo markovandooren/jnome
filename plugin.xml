@@ -60,7 +60,7 @@
 
   <extension point="org.eclipse.ui.handlers">
     <handler
-            class="be.kuleuven.cs.distrinet.chameleon.eclipse.nature.AddBackgroundNature"
+            class="org.aikodi.chameleon.eclipse.nature.AddBackgroundNature"
             commandId="be.kuleuven.cs.distrinet.jnome.actions.project.AddChameleonNature">
     </handler>
   </extension>

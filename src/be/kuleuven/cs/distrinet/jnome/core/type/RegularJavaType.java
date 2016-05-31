@@ -33,6 +33,7 @@ import org.aikodi.chameleon.support.statement.StatementExpression;
 
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.SuperConstructorDelegation;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
+import be.kuleuven.cs.distrinet.jnome.core.language.JavaSubtypingRelation;
 import be.kuleuven.cs.distrinet.jnome.core.method.JavaMethod;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.JavaConstructor;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
@@ -49,6 +50,15 @@ public class RegularJavaType extends RegularType implements JavaType {
     setDefaultDefaultConstructor(false);
   }
 
+  @Override
+  public boolean assignableTo(Type other) throws LookupException {
+  	boolean result = super.assignableTo(other);
+  	if(! result) {
+  		result = language(Java7.class).subtypeRelation().convertibleThroughUncheckedConversionAndSubtyping(this, other);
+  	}
+  	return result;
+  }
+  
   // private StackOverflowTracer _tracer = new StackOverflowTracer(3);
 
   public TypeInstantiation createDerivedType(List<TypeArgument> typeArguments) throws LookupException {

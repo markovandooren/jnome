@@ -1,9 +1,9 @@
 package be.kuleuven.cs.distrinet.jnome.input;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
 import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.method.SimpleNameMethodHeader;
@@ -20,9 +20,7 @@ import org.aikodi.chameleon.support.modifier.Public;
 import org.aikodi.chameleon.support.modifier.ValueType;
 import org.aikodi.chameleon.workspace.DirectDocumentLoader;
 import org.aikodi.chameleon.workspace.DocumentScanner;
-import org.aikodi.chameleon.workspace.DocumentScannerImpl;
 import org.aikodi.chameleon.workspace.InputException;
-import org.aikodi.chameleon.workspace.View;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
@@ -127,6 +125,10 @@ public class PrimitiveTypeFactory {
 		else
 			return "int";
 	}
+	
+	protected String getWrapperFQN(String primitiveTypeName) {
+		return view().language(Java7.class).boxName(primitiveTypeName);
+	}
 
 	protected String getUniProm(String type) {
 		if (type.equals("double") || type.equals("float")
@@ -140,6 +142,39 @@ public class PrimitiveTypeFactory {
 	
 	protected void addStringConcatenation(Type type) {
 		addInfixOperator(type, "java.lang.String", "+", "java.lang.Object");
+	}
+
+	protected void addWrapperOperators(Type type) {
+		binaryNumericOperatorNames.forEach(o -> addWrapperOperators(type, o));
+	}
+	private final static List<String> binaryNumericOperatorNames = new ArrayList<>();
+	static {
+		binaryNumericOperatorNames.add("+");
+		binaryNumericOperatorNames.add("-");
+		binaryNumericOperatorNames.add("*");
+		binaryNumericOperatorNames.add("/");
+		binaryNumericOperatorNames.add("%");
+	}
+	
+	protected void addWrapperOperators(Type type, String operator) {
+		numericTypeNames.forEach(n -> {
+			addWrapperOperator(type, operator, n);
+		});
+	}
+	
+	private final static List<String> numericTypeNames = new ArrayList<>();
+	static {
+		numericTypeNames.add("char");
+		numericTypeNames.add("byte");
+		numericTypeNames.add("short");
+		numericTypeNames.add("int");
+		numericTypeNames.add("long");
+		numericTypeNames.add("float");
+		numericTypeNames.add("double");
+	}
+	
+	protected void addWrapperOperator(Type type, String operator, String argumentType) {
+		addInfixOperator(type, getWrapperFQN(getBinProm(type.name(), argumentType)), operator, getWrapperFQN(argumentType));
 	}
 
 	protected void addBinComp(Type type, String operator) {
@@ -221,6 +256,7 @@ public class PrimitiveTypeFactory {
 		addUniProm(doubleT);
 		addBinNumOps(doubleT);
 		addStringConcatenation(doubleT);
+		addWrapperOperators(doubleT);
 		view().storePrimitiveType("double",doubleT);
 	}
 
@@ -247,6 +283,7 @@ public class PrimitiveTypeFactory {
 
 		addBinNumOpsIntegral(longT);
 		addStringConcatenation(longT);
+		addWrapperOperators(longT);
 		view().storePrimitiveType("long",longT);
 	}
 
@@ -272,6 +309,7 @@ public class PrimitiveTypeFactory {
 
 		addBinNumOps(floatT);
 		addStringConcatenation(floatT);
+		addWrapperOperators(floatT);
 		view().storePrimitiveType("float",floatT);
 	}
 
@@ -316,6 +354,7 @@ public class PrimitiveTypeFactory {
 
 		addBinNumOpsIntegral(intT);
 		addStringConcatenation(intT);
+		addWrapperOperators(intT);
 		view().storePrimitiveType("int",intT);
 	}
 
@@ -346,6 +385,7 @@ public class PrimitiveTypeFactory {
 
 		addBinNumOpsIntegral(byteT);
 		addStringConcatenation(byteT);
+		addWrapperOperators(byteT);
 		view().storePrimitiveType("byte",byteT);
 	}
 
@@ -375,6 +415,7 @@ public class PrimitiveTypeFactory {
 
 		addBinNumOpsIntegral(shortT);
 		addStringConcatenation(shortT);
+		addWrapperOperators(shortT);
 		view().storePrimitiveType("short",shortT);
 	}
 
@@ -403,6 +444,7 @@ public class PrimitiveTypeFactory {
 
 		addBinNumOpsIntegral(charT);
 		addStringConcatenation(charT);
+		addWrapperOperators(charT);
 		view().storePrimitiveType("char",charT);
 	}
 

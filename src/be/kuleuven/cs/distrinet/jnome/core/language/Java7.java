@@ -562,6 +562,10 @@ public class Java7 extends ObjectOrientedLanguage {
       return type;
     }
   }
+  
+  public String boxName(String fqn) {
+  	return _boxMap.get(fqn);
+  }
 
   public Type unbox(Type type) throws LookupException {
     //SPEED this is horrible

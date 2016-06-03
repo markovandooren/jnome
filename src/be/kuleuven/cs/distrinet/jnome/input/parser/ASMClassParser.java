@@ -158,6 +158,7 @@ public class ASMClassParser {
   }
 
   protected Type read(Java7 language) throws FileNotFoundException, IOException {
+  	
     InputStream inputStream = new BufferedInputStream(_jarFile.getInputStream(_entry));
     ClassReader reader = new ClassReader(inputStream);
     ClassExtractor extractor = new ClassExtractor(language);
@@ -760,4 +761,8 @@ public class ASMClassParser {
   private static String packageFQN(String entryName) {
     return Util.getAllButLastPart(Util.getAllButLastPart(entryName).replace('/', '.'));
   }
+
+	public String resourceName() {
+		return _jarFile.getName() + " : " +_entry.getName();
+	}
 }

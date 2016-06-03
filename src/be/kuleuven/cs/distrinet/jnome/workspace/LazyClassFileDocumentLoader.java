@@ -85,4 +85,8 @@ public class LazyClassFileDocumentLoader extends DocumentLoaderImpl implements L
 		}
 	}
 
+	@Override
+	protected String resourceName() {
+		return _parser.resourceName();
+	}
 }

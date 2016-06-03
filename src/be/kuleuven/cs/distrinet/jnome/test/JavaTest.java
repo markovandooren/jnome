@@ -2,6 +2,7 @@ package be.kuleuven.cs.distrinet.jnome.test;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 import java.io.File;
 
 import org.aikodi.chameleon.core.Config;
@@ -11,12 +12,13 @@ import org.aikodi.chameleon.test.CompositeTest;
 import org.aikodi.chameleon.test.CrossReferenceTest;
 import org.aikodi.chameleon.test.provider.BasicDescendantProvider;
 import org.aikodi.chameleon.test.provider.ElementProvider;
-import org.aikodi.chameleon.workspace.XMLProjectLoader;
 import org.aikodi.chameleon.workspace.ConfigException;
+import org.aikodi.chameleon.workspace.DocumentScanner;
 import org.aikodi.chameleon.workspace.LanguageRepository;
 import org.aikodi.chameleon.workspace.Project;
 import org.aikodi.chameleon.workspace.ProjectConfigurator;
 import org.aikodi.chameleon.workspace.Workspace;
+import org.aikodi.chameleon.workspace.XMLProjectLoader;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,41 +56,15 @@ public abstract class JavaTest extends CompositeTest {
 	@Override
 	@Test
 	public void testCrossReferences() throws Exception {
-//		ElementImpl.elementsCreated = 0;
-//		ElementImpl.elementsOnWhichParentInvoked = 0;
-//		LexicalLookupContext.CREATED = 0;
-//		LocalLookupContext.CREATED = 0;
-//		Block.LINEAR.reset();
-//		LocalVariableDeclarator.LINEAR.reset();
-//		LookupContextFactory.LEXICAL_ALLOCATORS.clear();
-//		LookupContextFactory.LEXICAL_DONE.clear();
-//		LocalLookupContext.ALLOCATORS.clear();
-//		LocalLookupContext.DONE.clear();
-//		Timer.INFIX_OPERATOR_INVOCATION.reset();
-//		Timer.PREFIX_OPERATOR_INVOCATION.reset();
-//		Timer.POSTFIX_OPERATOR_INVOCATION.reset();
-//		Lists.LIST_CREATION.reset();
 		Project project = project();
-//		ElementProvider<Type> typeProvider = typeProvider();
 		new ExpressionTest(project, namespaceProvider(),threadPool).testExpressionTypes();
 		new CrossReferenceTest(project, namespaceProvider(),threadPool).testCrossReferences();
-//		new CrossReferenceTest(project, new BasicDescendantProvider<CrossReference>(typeProvider(), CrossReference.class),threadPool).testCrossReferences();
-//		System.out.println("Created "+SimpleNameSignature.COUNT+" SimpleNameSignature objects.");
-//		System.out.println("Created "+LexicalLookupContext.CREATED+" lexical lookup contexts.");
-//		System.out.println("Created "+LocalLookupContext.CREATED+" local lookup contexts.");
-//		System.out.println("Block linear context: "+Block.LINEAR.elapsedMillis()+"ms");
-//		System.out.println("Local variable declarator linear context: "+LocalVariableDeclarator.LINEAR.elapsedMillis()+"ms");
-//		System.out.println("Local context allocations per class:");
-//		for(Map.Entry<Class, Integer> entry: LocalLookupContext.ALLOCATORS.entrySet()) {
-//			System.out.println(entry.getKey().getName()+" : "+entry.getValue());
-//		}
-//		System.out.println("infix operator invocations: "+Timer.INFIX_OPERATOR_INVOCATION.elapsedMillis()+"ms");
-//		System.out.println("prefix operator invocations: "+Timer.PREFIX_OPERATOR_INVOCATION.elapsedMillis()+"ms");
-//		System.out.println("postfix operator invocations: "+Timer.POSTFIX_OPERATOR_INVOCATION.elapsedMillis()+"ms");
-//		System.out.println("list creation: "+Lists.LIST_CREATION.elapsedMillis()+"ms");
-//		System.out.println("Elements created: "+ElementImpl.elementsCreated);
-//		System.out.println("Elements on which parent was invoked: "+ElementImpl.elementsOnWhichParentInvoked);
-//		System.out.println("Elements ratio: "+(double)ElementImpl.elementsOnWhichParentInvoked/(double)ElementImpl.elementsCreated);
+		Logger.trace("Total loading time {} ms", () -> 
+		(double)project.views().stream()
+		  .flatMap(v -> v.scanners(DocumentScanner.class).stream())
+		  .flatMap(s -> s.documentLoaders().stream())
+		  .mapToLong(l -> l.loadTime()).sum()/1000000); 
+		
 	}
 
 	public ElementProvider<Type> typeProvider() {

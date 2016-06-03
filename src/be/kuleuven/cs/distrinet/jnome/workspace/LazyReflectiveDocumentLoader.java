@@ -86,4 +86,8 @@ public class LazyReflectiveDocumentLoader extends DocumentLoaderImpl implements 
 
 	private ClassLoader _loader;
 	
+	@Override
+	protected String resourceName() {
+		return "via reflection: "+_fqn;
+	}
 }

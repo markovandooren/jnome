@@ -46,7 +46,8 @@ public class JavaEditorExtension extends EclipseEditorExtension {
 		return new JavaEditorExtension();
 	}
 
-	public String getLabel(Element element) {
+	@Override
+	public String label(Element element) {
 		try {
 			String result;
 			if (element instanceof Method) {
@@ -69,7 +70,7 @@ public class JavaEditorExtension extends EclipseEditorExtension {
 					}
 				}
 				result += ")";
-			} else result = super.getLabel(element);
+			} else result = super.label(element);
 			return result;
 		} catch(Exception exc) {
 			return "";

@@ -12,7 +12,7 @@ import be.kuleuven.cs.distrinet.jnome.core.language.Java7LanguageFactory;
 import be.kuleuven.cs.distrinet.jnome.input.EagerJavaFileInputSourceFactory;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 
-import org.aikodi.chameleon.core.namespace.RegularNamespaceFactory;
+import org.aikodi.chameleon.core.namespace.EagerNamespaceFactory;
 import org.aikodi.chameleon.core.namespace.RootNamespace;
 import org.aikodi.chameleon.input.ParseException;
 import org.aikodi.chameleon.support.tool.Arguments;
@@ -85,7 +85,7 @@ public abstract class OutputTest {
 	public void setUp() throws MalformedURLException, FileNotFoundException, ParseException, IOException, Exception {
 		addTestFiles();
 		Java7 language = new Java7LanguageFactory().create();
-		Project project = new Project("output test", new File("."),  new JavaView(new RootNamespace(new RegularNamespaceFactory()),language));
+		Project project = new Project("output test", new File("."),  new JavaView(new RootNamespace(new EagerNamespaceFactory()),language));
 		//FIXME I think this entire test class has to be deleted.
 		throw new Error();
 //		_args = new ArgumentParser(project,true).parse(arguments(), _extension,inputSourceFactory);

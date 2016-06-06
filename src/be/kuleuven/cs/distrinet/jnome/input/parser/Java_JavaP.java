@@ -1,4 +1,4 @@
-// $ANTLR 3.3 Nov 30, 2010 12:50:56 JavaP.g 2016-03-03 12:18:51
+// $ANTLR 3.3 Nov 30, 2010 12:50:56 JavaP.g 2016-06-06 22:43:51
 
 package be.kuleuven.cs.distrinet.jnome.input.parser;
 
@@ -7974,12 +7974,15 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, nttt.getTree());
                     if ( state.backtracking==0 ) {
-                    	 List refs = new ArrayList();
-                    	 refs.add(retval.element);
-                    	 refs.add(nttt.element);
-                    	 retval.element = new JavaIntersectionTypeReference(refs);
-//                       retval.element = (JavaTypeReference)retval.element.intersection(nttt.element); 
-                       stop=nttt.stop;
+                       
+                                          	 List refs = new ArrayList();
+                                          	 refs.add(retval.element);
+                                          	 refs.add(nttt.element);
+                                          	 retval.element = new JavaIntersectionTypeReference(refs);
+                      //                       retval.element = (JavaTypeReference)retval.element.intersection(nttt.element); 
+                                             stop=nttt.stop;
+                      	           
+                      	           
                     }
 
                     }
@@ -8021,7 +8024,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "primitiveType"
-    // JavaP.g:1006:1: primitiveType returns [JavaTypeReference element] : ( 'boolean' | 'char' | 'byte' | 'short' | 'int' | 'long' | 'float' | 'double' );
+    // JavaP.g:1014:1: primitiveType returns [JavaTypeReference element] : ( 'boolean' | 'char' | 'byte' | 'short' | 'int' | 'long' | 'float' | 'double' );
     public final Java_JavaP.primitiveType_return primitiveType() throws RecognitionException {
         Java_JavaP.primitiveType_return retval = new Java_JavaP.primitiveType_return();
         retval.start = input.LT(1);
@@ -8048,7 +8051,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 61) ) { return retval; }
-            // JavaP.g:1008:5: ( 'boolean' | 'char' | 'byte' | 'short' | 'int' | 'long' | 'float' | 'double' )
+            // JavaP.g:1016:5: ( 'boolean' | 'char' | 'byte' | 'short' | 'int' | 'long' | 'float' | 'double' )
             int alt75=8;
             switch ( input.LA(1) ) {
             case 80:
@@ -8101,7 +8104,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
             switch (alt75) {
                 case 1 :
-                    // JavaP.g:1008:9: 'boolean'
+                    // JavaP.g:1016:9: 'boolean'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -8117,7 +8120,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1009:9: 'char'
+                    // JavaP.g:1017:9: 'char'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -8133,7 +8136,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 3 :
-                    // JavaP.g:1010:9: 'byte'
+                    // JavaP.g:1018:9: 'byte'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -8149,7 +8152,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 4 :
-                    // JavaP.g:1011:9: 'short'
+                    // JavaP.g:1019:9: 'short'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -8165,7 +8168,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 5 :
-                    // JavaP.g:1012:9: 'int'
+                    // JavaP.g:1020:9: 'int'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -8181,7 +8184,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 6 :
-                    // JavaP.g:1013:9: 'long'
+                    // JavaP.g:1021:9: 'long'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -8197,7 +8200,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 7 :
-                    // JavaP.g:1014:9: 'float'
+                    // JavaP.g:1022:9: 'float'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -8213,7 +8216,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 8 :
-                    // JavaP.g:1015:9: 'double'
+                    // JavaP.g:1023:9: 'double'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -8261,7 +8264,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "variableModifier"
-    // JavaP.g:1018:1: variableModifier returns [Modifier element] : ( 'final' | a= annotation );
+    // JavaP.g:1026:1: variableModifier returns [Modifier element] : ( 'final' | a= annotation );
     public final Java_JavaP.variableModifier_return variableModifier() throws RecognitionException {
         Java_JavaP.variableModifier_return retval = new Java_JavaP.variableModifier_return();
         retval.start = input.LT(1);
@@ -8276,7 +8279,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 62) ) { return retval; }
-            // JavaP.g:1019:5: ( 'final' | a= annotation )
+            // JavaP.g:1027:5: ( 'final' | a= annotation )
             int alt76=2;
             int LA76_0 = input.LA(1);
 
@@ -8295,7 +8298,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             }
             switch (alt76) {
                 case 1 :
-                    // JavaP.g:1019:9: 'final'
+                    // JavaP.g:1027:9: 'final'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -8311,7 +8314,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1020:9: a= annotation
+                    // JavaP.g:1028:9: a= annotation
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -8357,7 +8360,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "typeArguments"
-    // JavaP.g:1023:1: typeArguments returns [List<TypeArgument> element] : '<' arg= typeArgument ( ',' argx= typeArgument )* '>' ;
+    // JavaP.g:1031:1: typeArguments returns [List<TypeArgument> element] : '<' arg= typeArgument ( ',' argx= typeArgument )* '>' ;
     public final Java_JavaP.typeArguments_return typeArguments() throws RecognitionException {
         Java_JavaP.typeArguments_return retval = new Java_JavaP.typeArguments_return();
         retval.start = input.LT(1);
@@ -8379,8 +8382,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         retval.element = new ArrayList<TypeArgument>();
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 63) ) { return retval; }
-            // JavaP.g:1025:5: ( '<' arg= typeArgument ( ',' argx= typeArgument )* '>' )
-            // JavaP.g:1025:9: '<' arg= typeArgument ( ',' argx= typeArgument )* '>'
+            // JavaP.g:1033:5: ( '<' arg= typeArgument ( ',' argx= typeArgument )* '>' )
+            // JavaP.g:1033:9: '<' arg= typeArgument ( ',' argx= typeArgument )* '>'
             {
             root_0 = (Object)adaptor.nil();
 
@@ -8398,7 +8401,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             if ( state.backtracking==0 ) {
               retval.element.add(arg.element);
             }
-            // JavaP.g:1027:9: ( ',' argx= typeArgument )*
+            // JavaP.g:1035:9: ( ',' argx= typeArgument )*
             loop77:
             do {
                 int alt77=2;
@@ -8411,7 +8414,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt77) {
             	case 1 :
-            	    // JavaP.g:1027:10: ',' argx= typeArgument
+            	    // JavaP.g:1035:10: ',' argx= typeArgument
             	    {
             	    char_literal92=(Token)match(input,63,FOLLOW_63_in_typeArguments4163); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
@@ -8472,7 +8475,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "typeArgument"
-    // JavaP.g:1031:1: typeArgument returns [TypeArgument element] : (t= type | '?' ( ( 'extends' | 'super' ) t= type )? );
+    // JavaP.g:1039:1: typeArgument returns [TypeArgument element] : (t= type | '?' ( ( 'extends' | 'super' ) t= type )? );
     public final Java_JavaP.typeArgument_return typeArgument() throws RecognitionException {
         Java_JavaP.typeArgument_return retval = new Java_JavaP.typeArgument_return();
         retval.start = input.LT(1);
@@ -8495,7 +8498,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 64) ) { return retval; }
-            // JavaP.g:1036:5: (t= type | '?' ( ( 'extends' | 'super' ) t= type )? )
+            // JavaP.g:1044:5: (t= type | '?' ( ( 'extends' | 'super' ) t= type )? )
             int alt80=2;
             int LA80_0 = input.LA(1);
 
@@ -8514,7 +8517,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             }
             switch (alt80) {
                 case 1 :
-                    // JavaP.g:1036:9: t= type
+                    // JavaP.g:1044:9: t= type
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -8531,7 +8534,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1037:9: '?' ( ( 'extends' | 'super' ) t= type )?
+                    // JavaP.g:1045:9: '?' ( ( 'extends' | 'super' ) t= type )?
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -8540,7 +8543,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     char_literal94_tree = (Object)adaptor.create(char_literal94);
                     adaptor.addChild(root_0, char_literal94_tree);
                     }
-                    // JavaP.g:1038:9: ( ( 'extends' | 'super' ) t= type )?
+                    // JavaP.g:1046:9: ( ( 'extends' | 'super' ) t= type )?
                     int alt79=2;
                     int LA79_0 = input.LA(1);
 
@@ -8549,12 +8552,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     switch (alt79) {
                         case 1 :
-                            // JavaP.g:1039:11: ( 'extends' | 'super' ) t= type
+                            // JavaP.g:1047:11: ( 'extends' | 'super' ) t= type
                             {
                             if ( state.backtracking==0 ) {
                               pure=false;
                             }
-                            // JavaP.g:1040:11: ( 'extends' | 'super' )
+                            // JavaP.g:1048:11: ( 'extends' | 'super' )
                             int alt78=2;
                             int LA78_0 = input.LA(1);
 
@@ -8573,7 +8576,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                             }
                             switch (alt78) {
                                 case 1 :
-                                    // JavaP.g:1040:12: 'extends'
+                                    // JavaP.g:1048:12: 'extends'
                                     {
                                     string_literal95=(Token)match(input,60,FOLLOW_60_in_typeArgument4257); if (state.failed) return retval;
                                     if ( state.backtracking==0 ) {
@@ -8584,7 +8587,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                                     }
                                     break;
                                 case 2 :
-                                    // JavaP.g:1040:24: 'super'
+                                    // JavaP.g:1048:24: 'super'
                                     {
                                     string_literal96=(Token)match(input,89,FOLLOW_89_in_typeArgument4261); if (state.failed) return retval;
                                     if ( state.backtracking==0 ) {
@@ -8659,7 +8662,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "qualifiedNameList"
-    // JavaP.g:1055:1: qualifiedNameList returns [List<String> element] : q= qualifiedName ( ',' qn= qualifiedName )* ;
+    // JavaP.g:1063:1: qualifiedNameList returns [List<String> element] : q= qualifiedName ( ',' qn= qualifiedName )* ;
     public final Java_JavaP.qualifiedNameList_return qualifiedNameList() throws RecognitionException {
         Java_JavaP.qualifiedNameList_return retval = new Java_JavaP.qualifiedNameList_return();
         retval.start = input.LT(1);
@@ -8677,8 +8680,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         retval.element = new ArrayList<String>();
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 65) ) { return retval; }
-            // JavaP.g:1057:5: (q= qualifiedName ( ',' qn= qualifiedName )* )
-            // JavaP.g:1057:9: q= qualifiedName ( ',' qn= qualifiedName )*
+            // JavaP.g:1065:5: (q= qualifiedName ( ',' qn= qualifiedName )* )
+            // JavaP.g:1065:9: q= qualifiedName ( ',' qn= qualifiedName )*
             {
             root_0 = (Object)adaptor.nil();
 
@@ -8691,7 +8694,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             if ( state.backtracking==0 ) {
               retval.element.add((q!=null?input.toString(q.start,q.stop):null));
             }
-            // JavaP.g:1057:56: ( ',' qn= qualifiedName )*
+            // JavaP.g:1065:56: ( ',' qn= qualifiedName )*
             loop81:
             do {
                 int alt81=2;
@@ -8704,7 +8707,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt81) {
             	case 1 :
-            	    // JavaP.g:1057:57: ',' qn= qualifiedName
+            	    // JavaP.g:1065:57: ',' qn= qualifiedName
             	    {
             	    char_literal97=(Token)match(input,63,FOLLOW_63_in_qualifiedNameList4343); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
@@ -8760,7 +8763,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "formalParameters"
-    // JavaP.g:1060:1: formalParameters returns [List<FormalParameter> element] : '(' (pars= formalParameterDecls )? ')' ;
+    // JavaP.g:1068:1: formalParameters returns [List<FormalParameter> element] : '(' (pars= formalParameterDecls )? ')' ;
     public final Java_JavaP.formalParameters_return formalParameters() throws RecognitionException {
         Java_JavaP.formalParameters_return retval = new Java_JavaP.formalParameters_return();
         retval.start = input.LT(1);
@@ -8778,8 +8781,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         retval.element = new ArrayList<FormalParameter>();
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 66) ) { return retval; }
-            // JavaP.g:1062:5: ( '(' (pars= formalParameterDecls )? ')' )
-            // JavaP.g:1062:9: '(' (pars= formalParameterDecls )? ')'
+            // JavaP.g:1070:5: ( '(' (pars= formalParameterDecls )? ')' )
+            // JavaP.g:1070:9: '(' (pars= formalParameterDecls )? ')'
             {
             root_0 = (Object)adaptor.nil();
 
@@ -8788,7 +8791,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             char_literal98_tree = (Object)adaptor.create(char_literal98);
             adaptor.addChild(root_0, char_literal98_tree);
             }
-            // JavaP.g:1062:13: (pars= formalParameterDecls )?
+            // JavaP.g:1070:13: (pars= formalParameterDecls )?
             int alt82=2;
             int LA82_0 = input.LA(1);
 
@@ -8797,7 +8800,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             }
             switch (alt82) {
                 case 1 :
-                    // JavaP.g:1062:14: pars= formalParameterDecls
+                    // JavaP.g:1070:14: pars= formalParameterDecls
                     {
                     pushFollow(FOLLOW_formalParameterDecls_in_formalParameters4383);
                     pars=formalParameterDecls();
@@ -8850,7 +8853,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "formalParameterDecls"
-    // JavaP.g:1065:1: formalParameterDecls returns [List<FormalParameter> element] : (mods= variableModifiers t= type id= variableDeclaratorId ( ',' decls= formalParameterDecls )? | modss= variableModifiers tt= type '...' idd= variableDeclaratorId );
+    // JavaP.g:1073:1: formalParameterDecls returns [List<FormalParameter> element] : (mods= variableModifiers t= type id= variableDeclaratorId ( ',' decls= formalParameterDecls )? | modss= variableModifiers tt= type '...' idd= variableDeclaratorId );
     public final Java_JavaP.formalParameterDecls_return formalParameterDecls() throws RecognitionException {
         Java_JavaP.formalParameterDecls_return retval = new Java_JavaP.formalParameterDecls_return();
         retval.start = input.LT(1);
@@ -8879,12 +8882,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 67) ) { return retval; }
-            // JavaP.g:1066:5: (mods= variableModifiers t= type id= variableDeclaratorId ( ',' decls= formalParameterDecls )? | modss= variableModifiers tt= type '...' idd= variableDeclaratorId )
+            // JavaP.g:1074:5: (mods= variableModifiers t= type id= variableDeclaratorId ( ',' decls= formalParameterDecls )? | modss= variableModifiers tt= type '...' idd= variableDeclaratorId )
             int alt84=2;
             alt84 = dfa84.predict(input);
             switch (alt84) {
                 case 1 :
-                    // JavaP.g:1066:9: mods= variableModifiers t= type id= variableDeclaratorId ( ',' decls= formalParameterDecls )?
+                    // JavaP.g:1074:9: mods= variableModifiers t= type id= variableDeclaratorId ( ',' decls= formalParameterDecls )?
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -8906,7 +8909,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     state._fsp--;
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, id.getTree());
-                    // JavaP.g:1067:9: ( ',' decls= formalParameterDecls )?
+                    // JavaP.g:1075:9: ( ',' decls= formalParameterDecls )?
                     int alt83=2;
                     int LA83_0 = input.LA(1);
 
@@ -8915,7 +8918,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     switch (alt83) {
                         case 1 :
-                            // JavaP.g:1067:10: ',' decls= formalParameterDecls
+                            // JavaP.g:1075:10: ',' decls= formalParameterDecls
                             {
                             char_literal100=(Token)match(input,63,FOLLOW_63_in_formalParameterDecls4433); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
@@ -8950,7 +8953,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1075:9: modss= variableModifiers tt= type '...' idd= variableDeclaratorId
+                    // JavaP.g:1083:9: modss= variableModifiers tt= type '...' idd= variableDeclaratorId
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -9018,7 +9021,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "methodBody"
-    // JavaP.g:1085:1: methodBody returns [Block element] : b= block ;
+    // JavaP.g:1093:1: methodBody returns [Block element] : b= block ;
     public final Java_JavaP.methodBody_return methodBody() throws RecognitionException {
         Java_JavaP.methodBody_return retval = new Java_JavaP.methodBody_return();
         retval.start = input.LT(1);
@@ -9031,8 +9034,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 68) ) { return retval; }
-            // JavaP.g:1086:5: (b= block )
-            // JavaP.g:1086:9: b= block
+            // JavaP.g:1094:5: (b= block )
+            // JavaP.g:1094:9: b= block
             {
             root_0 = (Object)adaptor.nil();
 
@@ -9076,7 +9079,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "constructorBody"
-    // JavaP.g:1089:1: constructorBody returns [Block element] : '{' (inv= explicitConstructorInvocation )? (bs= blockStatement )* '}' ;
+    // JavaP.g:1097:1: constructorBody returns [Block element] : '{' (inv= explicitConstructorInvocation )? (bs= blockStatement )* '}' ;
     public final Java_JavaP.constructorBody_return constructorBody() throws RecognitionException {
         Java_JavaP.constructorBody_return retval = new Java_JavaP.constructorBody_return();
         retval.start = input.LT(1);
@@ -9095,8 +9098,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 69) ) { return retval; }
-            // JavaP.g:1090:5: ( '{' (inv= explicitConstructorInvocation )? (bs= blockStatement )* '}' )
-            // JavaP.g:1090:9: '{' (inv= explicitConstructorInvocation )? (bs= blockStatement )* '}'
+            // JavaP.g:1098:5: ( '{' (inv= explicitConstructorInvocation )? (bs= blockStatement )* '}' )
+            // JavaP.g:1098:9: '{' (inv= explicitConstructorInvocation )? (bs= blockStatement )* '}'
             {
             root_0 = (Object)adaptor.nil();
 
@@ -9108,12 +9111,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             if ( state.backtracking==0 ) {
               retval.element = new Block();
             }
-            // JavaP.g:1091:10: (inv= explicitConstructorInvocation )?
+            // JavaP.g:1099:10: (inv= explicitConstructorInvocation )?
             int alt85=2;
             alt85 = dfa85.predict(input);
             switch (alt85) {
                 case 1 :
-                    // JavaP.g:1091:11: inv= explicitConstructorInvocation
+                    // JavaP.g:1099:11: inv= explicitConstructorInvocation
                     {
                     pushFollow(FOLLOW_explicitConstructorInvocation_in_constructorBody4550);
                     inv=explicitConstructorInvocation();
@@ -9130,7 +9133,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
             }
 
-            // JavaP.g:1092:10: (bs= blockStatement )*
+            // JavaP.g:1100:10: (bs= blockStatement )*
             loop86:
             do {
                 int alt86=2;
@@ -9143,7 +9146,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt86) {
             	case 1 :
-            	    // JavaP.g:1092:11: bs= blockStatement
+            	    // JavaP.g:1100:11: bs= blockStatement
             	    {
             	    pushFollow(FOLLOW_blockStatement_in_constructorBody4568);
             	    bs=blockStatement();
@@ -9199,7 +9202,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "explicitConstructorInvocation"
-    // JavaP.g:1095:1: explicitConstructorInvocation returns [MethodInvocation element] : ( ( nonWildcardTypeArguments )? 'this' args= arguments ';' | (prim= primary '.' )? ( nonWildcardTypeArguments )? 'super' argsx= arguments ';' );
+    // JavaP.g:1103:1: explicitConstructorInvocation returns [MethodInvocation element] : ( ( nonWildcardTypeArguments )? 'this' args= arguments ';' | (prim= primary '.' )? ( nonWildcardTypeArguments )? 'super' argsx= arguments ';' );
     public final Java_JavaP.explicitConstructorInvocation_return explicitConstructorInvocation() throws RecognitionException {
         Java_JavaP.explicitConstructorInvocation_return retval = new Java_JavaP.explicitConstructorInvocation_return();
         retval.start = input.LT(1);
@@ -9231,16 +9234,16 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Expression target=null;
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 70) ) { return retval; }
-            // JavaP.g:1097:5: ( ( nonWildcardTypeArguments )? 'this' args= arguments ';' | (prim= primary '.' )? ( nonWildcardTypeArguments )? 'super' argsx= arguments ';' )
+            // JavaP.g:1105:5: ( ( nonWildcardTypeArguments )? 'this' args= arguments ';' | (prim= primary '.' )? ( nonWildcardTypeArguments )? 'super' argsx= arguments ';' )
             int alt90=2;
             alt90 = dfa90.predict(input);
             switch (alt90) {
                 case 1 :
-                    // JavaP.g:1097:9: ( nonWildcardTypeArguments )? 'this' args= arguments ';'
+                    // JavaP.g:1105:9: ( nonWildcardTypeArguments )? 'this' args= arguments ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    // JavaP.g:1097:9: ( nonWildcardTypeArguments )?
+                    // JavaP.g:1105:9: ( nonWildcardTypeArguments )?
                     int alt87=2;
                     int LA87_0 = input.LA(1);
 
@@ -9287,11 +9290,11 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1100:7: (prim= primary '.' )? ( nonWildcardTypeArguments )? 'super' argsx= arguments ';'
+                    // JavaP.g:1108:7: (prim= primary '.' )? ( nonWildcardTypeArguments )? 'super' argsx= arguments ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    // JavaP.g:1100:7: (prim= primary '.' )?
+                    // JavaP.g:1108:7: (prim= primary '.' )?
                     int alt88=2;
                     int LA88_0 = input.LA(1);
 
@@ -9307,7 +9310,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     switch (alt88) {
                         case 1 :
-                            // JavaP.g:1100:8: prim= primary '.'
+                            // JavaP.g:1108:8: prim= primary '.'
                             {
                             pushFollow(FOLLOW_primary_in_explicitConstructorInvocation4630);
                             prim=primary();
@@ -9329,7 +9332,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                     }
 
-                    // JavaP.g:1100:50: ( nonWildcardTypeArguments )?
+                    // JavaP.g:1108:50: ( nonWildcardTypeArguments )?
                     int alt89=2;
                     int LA89_0 = input.LA(1);
 
@@ -9409,7 +9412,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "qualifiedName"
-    // JavaP.g:1110:1: qualifiedName returns [String element] : id= identifierRule ( '.' idx= identifierRule )* ;
+    // JavaP.g:1118:1: qualifiedName returns [String element] : id= identifierRule ( '.' idx= identifierRule )* ;
     public final Java_JavaP.qualifiedName_return qualifiedName() throws RecognitionException {
         Java_JavaP.qualifiedName_return retval = new Java_JavaP.qualifiedName_return();
         retval.start = input.LT(1);
@@ -9427,8 +9430,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         StringBuffer buffer = new StringBuffer();
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 71) ) { return retval; }
-            // JavaP.g:1112:5: (id= identifierRule ( '.' idx= identifierRule )* )
-            // JavaP.g:1112:9: id= identifierRule ( '.' idx= identifierRule )*
+            // JavaP.g:1120:5: (id= identifierRule ( '.' idx= identifierRule )* )
+            // JavaP.g:1120:9: id= identifierRule ( '.' idx= identifierRule )*
             {
             root_0 = (Object)adaptor.nil();
 
@@ -9441,7 +9444,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             if ( state.backtracking==0 ) {
               buffer.append((id!=null?input.toString(id.start,id.stop):null));
             }
-            // JavaP.g:1112:53: ( '.' idx= identifierRule )*
+            // JavaP.g:1120:53: ( '.' idx= identifierRule )*
             loop91:
             do {
                 int alt91=2;
@@ -9460,7 +9463,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt91) {
             	case 1 :
-            	    // JavaP.g:1112:54: '.' idx= identifierRule
+            	    // JavaP.g:1120:54: '.' idx= identifierRule
             	    {
             	    char_literal111=(Token)match(input,51,FOLLOW_51_in_qualifiedName4689); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
@@ -9516,7 +9519,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "literal"
-    // JavaP.g:1115:1: literal returns [Literal element] : (intl= integerLiteral | fl= FloatingPointLiteral | charl= CharacterLiteral | strl= StringLiteral | booll= booleanLiteral | 'null' );
+    // JavaP.g:1123:1: literal returns [Literal element] : (intl= integerLiteral | fl= FloatingPointLiteral | charl= CharacterLiteral | strl= StringLiteral | booll= booleanLiteral | 'null' );
     public final Java_JavaP.literal_return literal() throws RecognitionException {
         Java_JavaP.literal_return retval = new Java_JavaP.literal_return();
         retval.start = input.LT(1);
@@ -9539,7 +9542,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 72) ) { return retval; }
-            // JavaP.g:1116:5: (intl= integerLiteral | fl= FloatingPointLiteral | charl= CharacterLiteral | strl= StringLiteral | booll= booleanLiteral | 'null' )
+            // JavaP.g:1124:5: (intl= integerLiteral | fl= FloatingPointLiteral | charl= CharacterLiteral | strl= StringLiteral | booll= booleanLiteral | 'null' )
             int alt92=6;
             switch ( input.LA(1) ) {
             case IntegerLiteral:
@@ -9583,7 +9586,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
             switch (alt92) {
                 case 1 :
-                    // JavaP.g:1116:9: intl= integerLiteral
+                    // JavaP.g:1124:9: intl= integerLiteral
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -9600,7 +9603,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1117:9: fl= FloatingPointLiteral
+                    // JavaP.g:1125:9: fl= FloatingPointLiteral
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -9623,7 +9626,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 3 :
-                    // JavaP.g:1125:9: charl= CharacterLiteral
+                    // JavaP.g:1133:9: charl= CharacterLiteral
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -9639,7 +9642,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 4 :
-                    // JavaP.g:1126:9: strl= StringLiteral
+                    // JavaP.g:1134:9: strl= StringLiteral
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -9655,7 +9658,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 5 :
-                    // JavaP.g:1127:9: booll= booleanLiteral
+                    // JavaP.g:1135:9: booll= booleanLiteral
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -9672,7 +9675,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 6 :
-                    // JavaP.g:1128:9: 'null'
+                    // JavaP.g:1136:9: 'null'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -9717,7 +9720,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "integerLiteral"
-    // JavaP.g:1137:1: integerLiteral returns [Literal element] : hexl= IntegerLiteral ;
+    // JavaP.g:1145:1: integerLiteral returns [Literal element] : hexl= IntegerLiteral ;
     public final Java_JavaP.integerLiteral_return integerLiteral() throws RecognitionException {
         Java_JavaP.integerLiteral_return retval = new Java_JavaP.integerLiteral_return();
         retval.start = input.LT(1);
@@ -9730,8 +9733,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 73) ) { return retval; }
-            // JavaP.g:1138:5: (hexl= IntegerLiteral )
-            // JavaP.g:1138:9: hexl= IntegerLiteral
+            // JavaP.g:1146:5: (hexl= IntegerLiteral )
+            // JavaP.g:1146:9: hexl= IntegerLiteral
             {
             root_0 = (Object)adaptor.nil();
 
@@ -9781,7 +9784,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "booleanLiteral"
-    // JavaP.g:1149:1: booleanLiteral returns [Literal element] : ( 'true' | 'false' );
+    // JavaP.g:1157:1: booleanLiteral returns [Literal element] : ( 'true' | 'false' );
     public final Java_JavaP.booleanLiteral_return booleanLiteral() throws RecognitionException {
         Java_JavaP.booleanLiteral_return retval = new Java_JavaP.booleanLiteral_return();
         retval.start = input.LT(1);
@@ -9796,7 +9799,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 74) ) { return retval; }
-            // JavaP.g:1150:5: ( 'true' | 'false' )
+            // JavaP.g:1158:5: ( 'true' | 'false' )
             int alt93=2;
             int LA93_0 = input.LA(1);
 
@@ -9815,7 +9818,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             }
             switch (alt93) {
                 case 1 :
-                    // JavaP.g:1150:9: 'true'
+                    // JavaP.g:1158:9: 'true'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -9831,7 +9834,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1151:9: 'false'
+                    // JavaP.g:1159:9: 'false'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -9876,7 +9879,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "annotations"
-    // JavaP.g:1156:1: annotations returns [List<AnnotationModifier> element] : (a= annotation )+ ;
+    // JavaP.g:1164:1: annotations returns [List<AnnotationModifier> element] : (a= annotation )+ ;
     public final Java_JavaP.annotations_return annotations() throws RecognitionException {
         Java_JavaP.annotations_return retval = new Java_JavaP.annotations_return();
         retval.start = input.LT(1);
@@ -9890,12 +9893,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         retval.element = new ArrayList<AnnotationModifier>();
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 75) ) { return retval; }
-            // JavaP.g:1158:5: ( (a= annotation )+ )
-            // JavaP.g:1158:9: (a= annotation )+
+            // JavaP.g:1166:5: ( (a= annotation )+ )
+            // JavaP.g:1166:9: (a= annotation )+
             {
             root_0 = (Object)adaptor.nil();
 
-            // JavaP.g:1158:9: (a= annotation )+
+            // JavaP.g:1166:9: (a= annotation )+
             int cnt94=0;
             loop94:
             do {
@@ -9921,7 +9924,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt94) {
             	case 1 :
-            	    // JavaP.g:1158:10: a= annotation
+            	    // JavaP.g:1166:10: a= annotation
             	    {
             	    pushFollow(FOLLOW_annotation_in_annotations4894);
             	    a=annotation();
@@ -9977,7 +9980,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "annotation"
-    // JavaP.g:1161:1: annotation returns [AnnotationModifier element] : '@' a= annotationName ( '(' ( elementValuePairs | elementValue )? ')' )? ;
+    // JavaP.g:1169:1: annotation returns [AnnotationModifier element] : '@' a= annotationName ( '(' ( elementValuePairs | elementValue )? ')' )? ;
     public final Java_JavaP.annotation_return annotation() throws RecognitionException {
         Java_JavaP.annotation_return retval = new Java_JavaP.annotation_return();
         retval.start = input.LT(1);
@@ -10000,8 +10003,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 76) ) { return retval; }
-            // JavaP.g:1162:5: ( '@' a= annotationName ( '(' ( elementValuePairs | elementValue )? ')' )? )
-            // JavaP.g:1162:9: '@' a= annotationName ( '(' ( elementValuePairs | elementValue )? ')' )?
+            // JavaP.g:1170:5: ( '@' a= annotationName ( '(' ( elementValuePairs | elementValue )? ')' )? )
+            // JavaP.g:1170:9: '@' a= annotationName ( '(' ( elementValuePairs | elementValue )? ')' )?
             {
             root_0 = (Object)adaptor.nil();
 
@@ -10019,7 +10022,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             if ( state.backtracking==0 ) {
               retval.element=new AnnotationModifier(typeRef((a!=null?input.toString(a.start,a.stop):null)));
             }
-            // JavaP.g:1162:89: ( '(' ( elementValuePairs | elementValue )? ')' )?
+            // JavaP.g:1170:89: ( '(' ( elementValuePairs | elementValue )? ')' )?
             int alt96=2;
             int LA96_0 = input.LA(1);
 
@@ -10028,14 +10031,14 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             }
             switch (alt96) {
                 case 1 :
-                    // JavaP.g:1162:91: '(' ( elementValuePairs | elementValue )? ')'
+                    // JavaP.g:1170:91: '(' ( elementValuePairs | elementValue )? ')'
                     {
                     char_literal116=(Token)match(input,90,FOLLOW_90_in_annotation4931); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal116_tree = (Object)adaptor.create(char_literal116);
                     adaptor.addChild(root_0, char_literal116_tree);
                     }
-                    // JavaP.g:1162:95: ( elementValuePairs | elementValue )?
+                    // JavaP.g:1170:95: ( elementValuePairs | elementValue )?
                     int alt95=3;
                     int LA95_0 = input.LA(1);
 
@@ -10054,7 +10057,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     switch (alt95) {
                         case 1 :
-                            // JavaP.g:1162:97: elementValuePairs
+                            // JavaP.g:1170:97: elementValuePairs
                             {
                             pushFollow(FOLLOW_elementValuePairs_in_annotation4935);
                             elementValuePairs117=elementValuePairs();
@@ -10066,7 +10069,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                             }
                             break;
                         case 2 :
-                            // JavaP.g:1162:117: elementValue
+                            // JavaP.g:1170:117: elementValue
                             {
                             pushFollow(FOLLOW_elementValue_in_annotation4939);
                             elementValue118=elementValue();
@@ -10121,7 +10124,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "annotationName"
-    // JavaP.g:1165:1: annotationName : identifierRule ( '.' identifierRule )* ;
+    // JavaP.g:1173:1: annotationName : identifierRule ( '.' identifierRule )* ;
     public final Java_JavaP.annotationName_return annotationName() throws RecognitionException {
         Java_JavaP.annotationName_return retval = new Java_JavaP.annotationName_return();
         retval.start = input.LT(1);
@@ -10138,8 +10141,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 77) ) { return retval; }
-            // JavaP.g:1166:5: ( identifierRule ( '.' identifierRule )* )
-            // JavaP.g:1166:7: identifierRule ( '.' identifierRule )*
+            // JavaP.g:1174:5: ( identifierRule ( '.' identifierRule )* )
+            // JavaP.g:1174:7: identifierRule ( '.' identifierRule )*
             {
             root_0 = (Object)adaptor.nil();
 
@@ -10149,7 +10152,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             state._fsp--;
             if (state.failed) return retval;
             if ( state.backtracking==0 ) adaptor.addChild(root_0, identifierRule120.getTree());
-            // JavaP.g:1166:22: ( '.' identifierRule )*
+            // JavaP.g:1174:22: ( '.' identifierRule )*
             loop97:
             do {
                 int alt97=2;
@@ -10162,7 +10165,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt97) {
             	case 1 :
-            	    // JavaP.g:1166:23: '.' identifierRule
+            	    // JavaP.g:1174:23: '.' identifierRule
             	    {
             	    char_literal121=(Token)match(input,51,FOLLOW_51_in_annotationName4967); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
@@ -10214,7 +10217,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "elementValuePairs"
-    // JavaP.g:1169:1: elementValuePairs : elementValuePair ( ',' elementValuePair )* ;
+    // JavaP.g:1177:1: elementValuePairs : elementValuePair ( ',' elementValuePair )* ;
     public final Java_JavaP.elementValuePairs_return elementValuePairs() throws RecognitionException {
         Java_JavaP.elementValuePairs_return retval = new Java_JavaP.elementValuePairs_return();
         retval.start = input.LT(1);
@@ -10231,8 +10234,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 78) ) { return retval; }
-            // JavaP.g:1170:5: ( elementValuePair ( ',' elementValuePair )* )
-            // JavaP.g:1170:9: elementValuePair ( ',' elementValuePair )*
+            // JavaP.g:1178:5: ( elementValuePair ( ',' elementValuePair )* )
+            // JavaP.g:1178:9: elementValuePair ( ',' elementValuePair )*
             {
             root_0 = (Object)adaptor.nil();
 
@@ -10242,7 +10245,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             state._fsp--;
             if (state.failed) return retval;
             if ( state.backtracking==0 ) adaptor.addChild(root_0, elementValuePair123.getTree());
-            // JavaP.g:1170:26: ( ',' elementValuePair )*
+            // JavaP.g:1178:26: ( ',' elementValuePair )*
             loop98:
             do {
                 int alt98=2;
@@ -10255,7 +10258,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt98) {
             	case 1 :
-            	    // JavaP.g:1170:27: ',' elementValuePair
+            	    // JavaP.g:1178:27: ',' elementValuePair
             	    {
             	    char_literal124=(Token)match(input,63,FOLLOW_63_in_elementValuePairs4993); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
@@ -10307,7 +10310,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "elementValuePair"
-    // JavaP.g:1173:1: elementValuePair : identifierRule '=' elementValue ;
+    // JavaP.g:1181:1: elementValuePair : identifierRule '=' elementValue ;
     public final Java_JavaP.elementValuePair_return elementValuePair() throws RecognitionException {
         Java_JavaP.elementValuePair_return retval = new Java_JavaP.elementValuePair_return();
         retval.start = input.LT(1);
@@ -10324,8 +10327,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 79) ) { return retval; }
-            // JavaP.g:1174:5: ( identifierRule '=' elementValue )
-            // JavaP.g:1174:9: identifierRule '=' elementValue
+            // JavaP.g:1182:5: ( identifierRule '=' elementValue )
+            // JavaP.g:1182:9: identifierRule '=' elementValue
             {
             root_0 = (Object)adaptor.nil();
 
@@ -10376,7 +10379,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "elementValue"
-    // JavaP.g:1177:1: elementValue : ( conditionalExpression | annotation | elementValueArrayInitializer );
+    // JavaP.g:1185:1: elementValue : ( conditionalExpression | annotation | elementValueArrayInitializer );
     public final Java_JavaP.elementValue_return elementValue() throws RecognitionException {
         Java_JavaP.elementValue_return retval = new Java_JavaP.elementValue_return();
         retval.start = input.LT(1);
@@ -10393,7 +10396,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 80) ) { return retval; }
-            // JavaP.g:1178:5: ( conditionalExpression | annotation | elementValueArrayInitializer )
+            // JavaP.g:1186:5: ( conditionalExpression | annotation | elementValueArrayInitializer )
             int alt99=3;
             switch ( input.LA(1) ) {
             case IntegerLiteral:
@@ -10447,7 +10450,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
             switch (alt99) {
                 case 1 :
-                    // JavaP.g:1178:9: conditionalExpression
+                    // JavaP.g:1186:9: conditionalExpression
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -10461,7 +10464,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1179:9: annotation
+                    // JavaP.g:1187:9: annotation
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -10475,7 +10478,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 3 :
-                    // JavaP.g:1180:9: elementValueArrayInitializer
+                    // JavaP.g:1188:9: elementValueArrayInitializer
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -10517,7 +10520,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "elementValueArrayInitializer"
-    // JavaP.g:1183:1: elementValueArrayInitializer : '{' ( elementValue ( ',' elementValue )* )? ( ',' )? '}' ;
+    // JavaP.g:1191:1: elementValueArrayInitializer : '{' ( elementValue ( ',' elementValue )* )? ( ',' )? '}' ;
     public final Java_JavaP.elementValueArrayInitializer_return elementValueArrayInitializer() throws RecognitionException {
         Java_JavaP.elementValueArrayInitializer_return retval = new Java_JavaP.elementValueArrayInitializer_return();
         retval.start = input.LT(1);
@@ -10540,8 +10543,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 81) ) { return retval; }
-            // JavaP.g:1184:5: ( '{' ( elementValue ( ',' elementValue )* )? ( ',' )? '}' )
-            // JavaP.g:1184:9: '{' ( elementValue ( ',' elementValue )* )? ( ',' )? '}'
+            // JavaP.g:1192:5: ( '{' ( elementValue ( ',' elementValue )* )? ( ',' )? '}' )
+            // JavaP.g:1192:9: '{' ( elementValue ( ',' elementValue )* )? ( ',' )? '}'
             {
             root_0 = (Object)adaptor.nil();
 
@@ -10550,7 +10553,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             char_literal132_tree = (Object)adaptor.create(char_literal132);
             adaptor.addChild(root_0, char_literal132_tree);
             }
-            // JavaP.g:1184:13: ( elementValue ( ',' elementValue )* )?
+            // JavaP.g:1192:13: ( elementValue ( ',' elementValue )* )?
             int alt101=2;
             int LA101_0 = input.LA(1);
 
@@ -10559,7 +10562,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             }
             switch (alt101) {
                 case 1 :
-                    // JavaP.g:1184:14: elementValue ( ',' elementValue )*
+                    // JavaP.g:1192:14: elementValue ( ',' elementValue )*
                     {
                     pushFollow(FOLLOW_elementValue_in_elementValueArrayInitializer5081);
                     elementValue133=elementValue();
@@ -10567,7 +10570,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     state._fsp--;
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, elementValue133.getTree());
-                    // JavaP.g:1184:27: ( ',' elementValue )*
+                    // JavaP.g:1192:27: ( ',' elementValue )*
                     loop100:
                     do {
                         int alt100=2;
@@ -10586,7 +10589,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                         switch (alt100) {
                     	case 1 :
-                    	    // JavaP.g:1184:28: ',' elementValue
+                    	    // JavaP.g:1192:28: ',' elementValue
                     	    {
                     	    char_literal134=(Token)match(input,63,FOLLOW_63_in_elementValueArrayInitializer5084); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
@@ -10614,7 +10617,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
             }
 
-            // JavaP.g:1184:49: ( ',' )?
+            // JavaP.g:1192:49: ( ',' )?
             int alt102=2;
             int LA102_0 = input.LA(1);
 
@@ -10623,7 +10626,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             }
             switch (alt102) {
                 case 1 :
-                    // JavaP.g:1184:50: ','
+                    // JavaP.g:1192:50: ','
                     {
                     char_literal136=(Token)match(input,63,FOLLOW_63_in_elementValueArrayInitializer5093); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
@@ -10672,7 +10675,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "annotationTypeDeclaration"
-    // JavaP.g:1187:1: annotationTypeDeclaration returns [ClassWithBody element] : '@' 'interface' name= identifierRule body= annotationTypeBody ;
+    // JavaP.g:1195:1: annotationTypeDeclaration returns [ClassWithBody element] : '@' 'interface' name= identifierRule body= annotationTypeBody ;
     public final Java_JavaP.annotationTypeDeclaration_return annotationTypeDeclaration() throws RecognitionException {
         Java_JavaP.annotationTypeDeclaration_return retval = new Java_JavaP.annotationTypeDeclaration_return();
         retval.start = input.LT(1);
@@ -10691,8 +10694,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 82) ) { return retval; }
-            // JavaP.g:1188:5: ( '@' 'interface' name= identifierRule body= annotationTypeBody )
-            // JavaP.g:1188:9: '@' 'interface' name= identifierRule body= annotationTypeBody
+            // JavaP.g:1196:5: ( '@' 'interface' name= identifierRule body= annotationTypeBody )
+            // JavaP.g:1196:9: '@' 'interface' name= identifierRule body= annotationTypeBody
             {
             root_0 = (Object)adaptor.nil();
 
@@ -10759,7 +10762,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "annotationTypeBody"
-    // JavaP.g:1197:1: annotationTypeBody returns [ClassBody element] : '{' ( annotationTypeElementDeclaration )* '}' ;
+    // JavaP.g:1205:1: annotationTypeBody returns [ClassBody element] : '{' ( annotationTypeElementDeclaration )* '}' ;
     public final Java_JavaP.annotationTypeBody_return annotationTypeBody() throws RecognitionException {
         Java_JavaP.annotationTypeBody_return retval = new Java_JavaP.annotationTypeBody_return();
         retval.start = input.LT(1);
@@ -10777,8 +10780,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         retval.element = new ClassBody();
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 83) ) { return retval; }
-            // JavaP.g:1199:5: ( '{' ( annotationTypeElementDeclaration )* '}' )
-            // JavaP.g:1199:9: '{' ( annotationTypeElementDeclaration )* '}'
+            // JavaP.g:1207:5: ( '{' ( annotationTypeElementDeclaration )* '}' )
+            // JavaP.g:1207:9: '{' ( annotationTypeElementDeclaration )* '}'
             {
             root_0 = (Object)adaptor.nil();
 
@@ -10787,7 +10790,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             char_literal140_tree = (Object)adaptor.create(char_literal140);
             adaptor.addChild(root_0, char_literal140_tree);
             }
-            // JavaP.g:1199:13: ( annotationTypeElementDeclaration )*
+            // JavaP.g:1207:13: ( annotationTypeElementDeclaration )*
             loop103:
             do {
                 int alt103=2;
@@ -10800,7 +10803,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt103) {
             	case 1 :
-            	    // JavaP.g:1199:14: annotationTypeElementDeclaration
+            	    // JavaP.g:1207:14: annotationTypeElementDeclaration
             	    {
             	    pushFollow(FOLLOW_annotationTypeElementDeclaration_in_annotationTypeBody5190);
             	    annotationTypeElementDeclaration141=annotationTypeElementDeclaration();
@@ -10853,7 +10856,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "annotationTypeElementDeclaration"
-    // JavaP.g:1202:1: annotationTypeElementDeclaration returns [TypeElement element] : mods= modifiers rest= annotationTypeElementRest ;
+    // JavaP.g:1210:1: annotationTypeElementDeclaration returns [TypeElement element] : mods= modifiers rest= annotationTypeElementRest ;
     public final Java_JavaP.annotationTypeElementDeclaration_return annotationTypeElementDeclaration() throws RecognitionException {
         Java_JavaP.annotationTypeElementDeclaration_return retval = new Java_JavaP.annotationTypeElementDeclaration_return();
         retval.start = input.LT(1);
@@ -10868,8 +10871,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 84) ) { return retval; }
-            // JavaP.g:1203:5: (mods= modifiers rest= annotationTypeElementRest )
-            // JavaP.g:1203:9: mods= modifiers rest= annotationTypeElementRest
+            // JavaP.g:1211:5: (mods= modifiers rest= annotationTypeElementRest )
+            // JavaP.g:1211:9: mods= modifiers rest= annotationTypeElementRest
             {
             root_0 = (Object)adaptor.nil();
 
@@ -10924,7 +10927,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "annotationTypeElementRest"
-    // JavaP.g:1212:1: annotationTypeElementRest returns [TypeElement element] : (t= type ann= annotationMethodOrConstantRest[$t.element] ';' | cd= normalClassDeclaration ( ';' )? | id= normalInterfaceDeclaration ( ';' )? | en= enumDeclaration ( ';' )? | an= annotationTypeDeclaration ( ';' )? );
+    // JavaP.g:1220:1: annotationTypeElementRest returns [TypeElement element] : (t= type ann= annotationMethodOrConstantRest[$t.element] ';' | cd= normalClassDeclaration ( ';' )? | id= normalInterfaceDeclaration ( ';' )? | en= enumDeclaration ( ';' )? | an= annotationTypeDeclaration ( ';' )? );
     public final Java_JavaP.annotationTypeElementRest_return annotationTypeElementRest() throws RecognitionException {
         Java_JavaP.annotationTypeElementRest_return retval = new Java_JavaP.annotationTypeElementRest_return();
         retval.start = input.LT(1);
@@ -10957,7 +10960,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 85) ) { return retval; }
-            // JavaP.g:1213:5: (t= type ann= annotationMethodOrConstantRest[$t.element] ';' | cd= normalClassDeclaration ( ';' )? | id= normalInterfaceDeclaration ( ';' )? | en= enumDeclaration ( ';' )? | an= annotationTypeDeclaration ( ';' )? )
+            // JavaP.g:1221:5: (t= type ann= annotationMethodOrConstantRest[$t.element] ';' | cd= normalClassDeclaration ( ';' )? | id= normalInterfaceDeclaration ( ';' )? | en= enumDeclaration ( ';' )? | an= annotationTypeDeclaration ( ';' )? )
             int alt108=5;
             switch ( input.LA(1) ) {
             case Identifier:
@@ -11003,7 +11006,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
             switch (alt108) {
                 case 1 :
-                    // JavaP.g:1213:9: t= type ann= annotationMethodOrConstantRest[$t.element] ';'
+                    // JavaP.g:1221:9: t= type ann= annotationMethodOrConstantRest[$t.element] ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -11031,7 +11034,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1216:9: cd= normalClassDeclaration ( ';' )?
+                    // JavaP.g:1224:9: cd= normalClassDeclaration ( ';' )?
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -11044,7 +11047,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     if ( state.backtracking==0 ) {
                        retval.element = cd.element; 
                     }
-                    // JavaP.g:1216:67: ( ';' )?
+                    // JavaP.g:1224:67: ( ';' )?
                     int alt104=2;
                     int LA104_0 = input.LA(1);
 
@@ -11070,7 +11073,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 3 :
-                    // JavaP.g:1217:9: id= normalInterfaceDeclaration ( ';' )?
+                    // JavaP.g:1225:9: id= normalInterfaceDeclaration ( ';' )?
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -11083,7 +11086,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     if ( state.backtracking==0 ) {
                        retval.element = id.element; 
                     }
-                    // JavaP.g:1217:71: ( ';' )?
+                    // JavaP.g:1225:71: ( ';' )?
                     int alt105=2;
                     int LA105_0 = input.LA(1);
 
@@ -11109,7 +11112,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 4 :
-                    // JavaP.g:1218:9: en= enumDeclaration ( ';' )?
+                    // JavaP.g:1226:9: en= enumDeclaration ( ';' )?
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -11122,7 +11125,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     if ( state.backtracking==0 ) {
                       retval.element = en.element;
                     }
-                    // JavaP.g:1218:59: ( ';' )?
+                    // JavaP.g:1226:59: ( ';' )?
                     int alt106=2;
                     int LA106_0 = input.LA(1);
 
@@ -11148,7 +11151,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 5 :
-                    // JavaP.g:1219:9: an= annotationTypeDeclaration ( ';' )?
+                    // JavaP.g:1227:9: an= annotationTypeDeclaration ( ';' )?
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -11161,7 +11164,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     if ( state.backtracking==0 ) {
                       retval.element = an.element;
                     }
-                    // JavaP.g:1219:69: ( ';' )?
+                    // JavaP.g:1227:69: ( ';' )?
                     int alt107=2;
                     int LA107_0 = input.LA(1);
 
@@ -11216,7 +11219,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "annotationMethodOrConstantRest"
-    // JavaP.g:1222:1: annotationMethodOrConstantRest[TypeReference type] returns [TypeElement element] : (a= annotationMethodRest[$type] | aa= annotationConstantRest[$type] );
+    // JavaP.g:1230:1: annotationMethodOrConstantRest[TypeReference type] returns [TypeElement element] : (a= annotationMethodRest[$type] | aa= annotationConstantRest[$type] );
     public final Java_JavaP.annotationMethodOrConstantRest_return annotationMethodOrConstantRest(TypeReference type) throws RecognitionException {
         Java_JavaP.annotationMethodOrConstantRest_return retval = new Java_JavaP.annotationMethodOrConstantRest_return();
         retval.start = input.LT(1);
@@ -11231,7 +11234,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 86) ) { return retval; }
-            // JavaP.g:1223:5: (a= annotationMethodRest[$type] | aa= annotationConstantRest[$type] )
+            // JavaP.g:1231:5: (a= annotationMethodRest[$type] | aa= annotationConstantRest[$type] )
             int alt109=2;
             int LA109_0 = input.LA(1);
 
@@ -11261,7 +11264,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             }
             switch (alt109) {
                 case 1 :
-                    // JavaP.g:1223:9: a= annotationMethodRest[$type]
+                    // JavaP.g:1231:9: a= annotationMethodRest[$type]
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -11278,7 +11281,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1224:9: aa= annotationConstantRest[$type]
+                    // JavaP.g:1232:9: aa= annotationConstantRest[$type]
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -11324,7 +11327,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "annotationMethodRest"
-    // JavaP.g:1227:1: annotationMethodRest[TypeReference type] returns [Method element] : name= identifierRule '(' ')' ( defaultValue )? ;
+    // JavaP.g:1235:1: annotationMethodRest[TypeReference type] returns [Method element] : name= identifierRule '(' ')' ( defaultValue )? ;
     public final Java_JavaP.annotationMethodRest_return annotationMethodRest(TypeReference type) throws RecognitionException {
         Java_JavaP.annotationMethodRest_return retval = new Java_JavaP.annotationMethodRest_return();
         retval.start = input.LT(1);
@@ -11343,8 +11346,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 87) ) { return retval; }
-            // JavaP.g:1228:5: (name= identifierRule '(' ')' ( defaultValue )? )
-            // JavaP.g:1228:9: name= identifierRule '(' ')' ( defaultValue )?
+            // JavaP.g:1236:5: (name= identifierRule '(' ')' ( defaultValue )? )
+            // JavaP.g:1236:9: name= identifierRule '(' ')' ( defaultValue )?
             {
             root_0 = (Object)adaptor.nil();
 
@@ -11369,7 +11372,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                        setName(retval.element,name.start);
                       
             }
-            // JavaP.g:1231:11: ( defaultValue )?
+            // JavaP.g:1239:11: ( defaultValue )?
             int alt110=2;
             int LA110_0 = input.LA(1);
 
@@ -11378,7 +11381,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             }
             switch (alt110) {
                 case 1 :
-                    // JavaP.g:1231:12: defaultValue
+                    // JavaP.g:1239:12: defaultValue
                     {
                     pushFollow(FOLLOW_defaultValue_in_annotationMethodRest5424);
                     defaultValue150=defaultValue();
@@ -11425,7 +11428,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "annotationConstantRest"
-    // JavaP.g:1234:1: annotationConstantRest[TypeReference type] returns [MemberVariableDeclarator element] : decls= variableDeclarators ;
+    // JavaP.g:1242:1: annotationConstantRest[TypeReference type] returns [MemberVariableDeclarator element] : decls= variableDeclarators ;
     public final Java_JavaP.annotationConstantRest_return annotationConstantRest(TypeReference type) throws RecognitionException {
         Java_JavaP.annotationConstantRest_return retval = new Java_JavaP.annotationConstantRest_return();
         retval.start = input.LT(1);
@@ -11438,8 +11441,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 88) ) { return retval; }
-            // JavaP.g:1235:5: (decls= variableDeclarators )
-            // JavaP.g:1235:9: decls= variableDeclarators
+            // JavaP.g:1243:5: (decls= variableDeclarators )
+            // JavaP.g:1243:9: decls= variableDeclarators
             {
             root_0 = (Object)adaptor.nil();
 
@@ -11486,7 +11489,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "defaultValue"
-    // JavaP.g:1243:1: defaultValue : 'default' elementValue ;
+    // JavaP.g:1251:1: defaultValue : 'default' elementValue ;
     public final Java_JavaP.defaultValue_return defaultValue() throws RecognitionException {
         Java_JavaP.defaultValue_return retval = new Java_JavaP.defaultValue_return();
         retval.start = input.LT(1);
@@ -11501,8 +11504,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 89) ) { return retval; }
-            // JavaP.g:1244:5: ( 'default' elementValue )
-            // JavaP.g:1244:9: 'default' elementValue
+            // JavaP.g:1252:5: ( 'default' elementValue )
+            // JavaP.g:1252:9: 'default' elementValue
             {
             root_0 = (Object)adaptor.nil();
 
@@ -11548,7 +11551,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "block"
-    // JavaP.g:1249:1: block returns [Block element] : '{' (stat= blockStatement )* '}' ;
+    // JavaP.g:1257:1: block returns [Block element] : '{' (stat= blockStatement )* '}' ;
     public final Java_JavaP.block_return block() throws RecognitionException {
         Java_JavaP.block_return retval = new Java_JavaP.block_return();
         retval.start = input.LT(1);
@@ -11565,8 +11568,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 90) ) { return retval; }
-            // JavaP.g:1250:5: ( '{' (stat= blockStatement )* '}' )
-            // JavaP.g:1250:9: '{' (stat= blockStatement )* '}'
+            // JavaP.g:1258:5: ( '{' (stat= blockStatement )* '}' )
+            // JavaP.g:1258:9: '{' (stat= blockStatement )* '}'
             {
             root_0 = (Object)adaptor.nil();
 
@@ -11578,7 +11581,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             if ( state.backtracking==0 ) {
               retval.element = new Block();
             }
-            // JavaP.g:1250:45: (stat= blockStatement )*
+            // JavaP.g:1258:45: (stat= blockStatement )*
             loop111:
             do {
                 int alt111=2;
@@ -11591,7 +11594,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt111) {
             	case 1 :
-            	    // JavaP.g:1250:46: stat= blockStatement
+            	    // JavaP.g:1258:46: stat= blockStatement
             	    {
             	    pushFollow(FOLLOW_blockStatement_in_block5517);
             	    stat=blockStatement();
@@ -11647,7 +11650,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "blockStatement"
-    // JavaP.g:1253:1: blockStatement returns [Statement element] : (local= localVariableDeclarationStatement | cd= classOrInterfaceDeclaration | stat= statement );
+    // JavaP.g:1261:1: blockStatement returns [Statement element] : (local= localVariableDeclarationStatement | cd= classOrInterfaceDeclaration | stat= statement );
     public final Java_JavaP.blockStatement_return blockStatement() throws RecognitionException {
         Java_JavaP.blockStatement_return retval = new Java_JavaP.blockStatement_return();
         retval.start = input.LT(1);
@@ -11664,12 +11667,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 91) ) { return retval; }
-            // JavaP.g:1255:5: (local= localVariableDeclarationStatement | cd= classOrInterfaceDeclaration | stat= statement )
+            // JavaP.g:1263:5: (local= localVariableDeclarationStatement | cd= classOrInterfaceDeclaration | stat= statement )
             int alt112=3;
             alt112 = dfa112.predict(input);
             switch (alt112) {
                 case 1 :
-                    // JavaP.g:1255:9: local= localVariableDeclarationStatement
+                    // JavaP.g:1263:9: local= localVariableDeclarationStatement
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -11686,7 +11689,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1256:9: cd= classOrInterfaceDeclaration
+                    // JavaP.g:1264:9: cd= classOrInterfaceDeclaration
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -11703,7 +11706,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 3 :
-                    // JavaP.g:1257:9: stat= statement
+                    // JavaP.g:1265:9: stat= statement
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -11752,7 +11755,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "localVariableDeclarationStatement"
-    // JavaP.g:1260:1: localVariableDeclarationStatement returns [Statement element] : local= localVariableDeclaration ';' ;
+    // JavaP.g:1268:1: localVariableDeclarationStatement returns [Statement element] : local= localVariableDeclaration ';' ;
     public final Java_JavaP.localVariableDeclarationStatement_return localVariableDeclarationStatement() throws RecognitionException {
         Java_JavaP.localVariableDeclarationStatement_return retval = new Java_JavaP.localVariableDeclarationStatement_return();
         retval.start = input.LT(1);
@@ -11767,8 +11770,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 92) ) { return retval; }
-            // JavaP.g:1261:5: (local= localVariableDeclaration ';' )
-            // JavaP.g:1261:10: local= localVariableDeclaration ';'
+            // JavaP.g:1269:5: (local= localVariableDeclaration ';' )
+            // JavaP.g:1269:10: local= localVariableDeclaration ';'
             {
             root_0 = (Object)adaptor.nil();
 
@@ -11817,7 +11820,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "localVariableDeclaration"
-    // JavaP.g:1264:1: localVariableDeclaration returns [LocalVariableDeclarator element] : mods= variableModifiers ref= type decls= variableDeclarators ;
+    // JavaP.g:1272:1: localVariableDeclaration returns [LocalVariableDeclarator element] : mods= variableModifiers ref= type decls= variableDeclarators ;
     public final Java_JavaP.localVariableDeclaration_return localVariableDeclaration() throws RecognitionException {
         Java_JavaP.localVariableDeclaration_return retval = new Java_JavaP.localVariableDeclaration_return();
         retval.start = input.LT(1);
@@ -11834,8 +11837,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 93) ) { return retval; }
-            // JavaP.g:1265:5: (mods= variableModifiers ref= type decls= variableDeclarators )
-            // JavaP.g:1265:9: mods= variableModifiers ref= type decls= variableDeclarators
+            // JavaP.g:1273:5: (mods= variableModifiers ref= type decls= variableDeclarators )
+            // JavaP.g:1273:9: mods= variableModifiers ref= type decls= variableDeclarators
             {
             root_0 = (Object)adaptor.nil();
 
@@ -11897,7 +11900,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "variableModifiers"
-    // JavaP.g:1269:1: variableModifiers returns [List<Modifier> element] : (mod= variableModifier )* ;
+    // JavaP.g:1277:1: variableModifiers returns [List<Modifier> element] : (mod= variableModifier )* ;
     public final Java_JavaP.variableModifiers_return variableModifiers() throws RecognitionException {
         Java_JavaP.variableModifiers_return retval = new Java_JavaP.variableModifiers_return();
         retval.start = input.LT(1);
@@ -11911,12 +11914,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         retval.element = new ArrayList<Modifier>();
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 94) ) { return retval; }
-            // JavaP.g:1271:5: ( (mod= variableModifier )* )
-            // JavaP.g:1271:9: (mod= variableModifier )*
+            // JavaP.g:1279:5: ( (mod= variableModifier )* )
+            // JavaP.g:1279:9: (mod= variableModifier )*
             {
             root_0 = (Object)adaptor.nil();
 
-            // JavaP.g:1271:9: (mod= variableModifier )*
+            // JavaP.g:1279:9: (mod= variableModifier )*
             loop113:
             do {
                 int alt113=2;
@@ -11929,7 +11932,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt113) {
             	case 1 :
-            	    // JavaP.g:1271:10: mod= variableModifier
+            	    // JavaP.g:1279:10: mod= variableModifier
             	    {
             	    pushFollow(FOLLOW_variableModifier_in_variableModifiers5689);
             	    mod=variableModifier();
@@ -11980,7 +11983,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "statement"
-    // JavaP.g:1274:1: statement returns [Statement element] : (bl= block | ASSERT asexpr= expression ( ':' asexprx= expression )? ';' | ifkey= 'if' ifexpr= parExpression ifif= statement ( options {k=1; } : elsekey= 'else' ifelse= statement )? | forkey= 'for' '(' forc= forControl ')' forstat= statement | whilkey= 'while' wexs= parExpression wstat= statement | dokey= 'do' dostat= statement whilekey= 'while' doex= parExpression ';' | trykey= 'try' (ress= resources )? traaibl= block (cts= catches finkey= 'finally' trybl= block | ctss= catches | finnkey= 'finally' trybll= block )? | switchkey= 'switch' swexpr= parExpression '{' cases= switchBlockStatementGroups '}' | synkey= 'synchronized' synexpr= parExpression synstat= block | retkey= 'return' (retex= expression )? ';' | throwkey= 'throw' threx= expression ';' | breakkey= 'break' (name= identifierRule )? ';' | continuekey= 'continue' (name= identifierRule )? ';' | ';' | stattex= statementExpression ';' | name= identifierRule ':' labstat= statement );
+    // JavaP.g:1282:1: statement returns [Statement element] : (bl= block | ASSERT asexpr= expression ( ':' asexprx= expression )? ';' | ifkey= 'if' ifexpr= parExpression ifif= statement ( options {k=1; } : elsekey= 'else' ifelse= statement )? | forkey= 'for' '(' forc= forControl ')' forstat= statement | whilkey= 'while' wexs= parExpression wstat= statement | dokey= 'do' dostat= statement whilekey= 'while' doex= parExpression ';' | trykey= 'try' (ress= resources )? traaibl= block (cts= catches finkey= 'finally' trybl= block | ctss= catches | finnkey= 'finally' trybll= block )? | switchkey= 'switch' swexpr= parExpression '{' cases= switchBlockStatementGroups '}' | synkey= 'synchronized' synexpr= parExpression synstat= block | retkey= 'return' (retex= expression )? ';' | throwkey= 'throw' threx= expression ';' | breakkey= 'break' (name= identifierRule )? ';' | continuekey= 'continue' (name= identifierRule )? ';' | ';' | stattex= statementExpression ';' | name= identifierRule ':' labstat= statement );
     public final Java_JavaP.statement_return statement() throws RecognitionException {
         Java_JavaP.statement_return retval = new Java_JavaP.statement_return();
         retval.start = input.LT(1);
@@ -12105,12 +12108,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 95) ) { return retval; }
-            // JavaP.g:1277:5: (bl= block | ASSERT asexpr= expression ( ':' asexprx= expression )? ';' | ifkey= 'if' ifexpr= parExpression ifif= statement ( options {k=1; } : elsekey= 'else' ifelse= statement )? | forkey= 'for' '(' forc= forControl ')' forstat= statement | whilkey= 'while' wexs= parExpression wstat= statement | dokey= 'do' dostat= statement whilekey= 'while' doex= parExpression ';' | trykey= 'try' (ress= resources )? traaibl= block (cts= catches finkey= 'finally' trybl= block | ctss= catches | finnkey= 'finally' trybll= block )? | switchkey= 'switch' swexpr= parExpression '{' cases= switchBlockStatementGroups '}' | synkey= 'synchronized' synexpr= parExpression synstat= block | retkey= 'return' (retex= expression )? ';' | throwkey= 'throw' threx= expression ';' | breakkey= 'break' (name= identifierRule )? ';' | continuekey= 'continue' (name= identifierRule )? ';' | ';' | stattex= statementExpression ';' | name= identifierRule ':' labstat= statement )
+            // JavaP.g:1285:5: (bl= block | ASSERT asexpr= expression ( ':' asexprx= expression )? ';' | ifkey= 'if' ifexpr= parExpression ifif= statement ( options {k=1; } : elsekey= 'else' ifelse= statement )? | forkey= 'for' '(' forc= forControl ')' forstat= statement | whilkey= 'while' wexs= parExpression wstat= statement | dokey= 'do' dostat= statement whilekey= 'while' doex= parExpression ';' | trykey= 'try' (ress= resources )? traaibl= block (cts= catches finkey= 'finally' trybl= block | ctss= catches | finnkey= 'finally' trybll= block )? | switchkey= 'switch' swexpr= parExpression '{' cases= switchBlockStatementGroups '}' | synkey= 'synchronized' synexpr= parExpression synstat= block | retkey= 'return' (retex= expression )? ';' | throwkey= 'throw' threx= expression ';' | breakkey= 'break' (name= identifierRule )? ';' | continuekey= 'continue' (name= identifierRule )? ';' | ';' | stattex= statementExpression ';' | name= identifierRule ':' labstat= statement )
             int alt121=16;
             alt121 = dfa121.predict(input);
             switch (alt121) {
                 case 1 :
-                    // JavaP.g:1277:7: bl= block
+                    // JavaP.g:1285:7: bl= block
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -12127,7 +12130,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1278:9: ASSERT asexpr= expression ( ':' asexprx= expression )? ';'
+                    // JavaP.g:1286:9: ASSERT asexpr= expression ( ':' asexprx= expression )? ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -12145,7 +12148,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     if ( state.backtracking==0 ) {
                       retval.element=new AssertStatement(asexpr.element);
                     }
-                    // JavaP.g:1278:87: ( ':' asexprx= expression )?
+                    // JavaP.g:1286:87: ( ':' asexprx= expression )?
                     int alt114=2;
                     int LA114_0 = input.LA(1);
 
@@ -12154,7 +12157,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     switch (alt114) {
                         case 1 :
-                            // JavaP.g:1278:88: ':' asexprx= expression
+                            // JavaP.g:1286:88: ':' asexprx= expression
                             {
                             char_literal157=(Token)match(input,98,FOLLOW_98_in_statement5740); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
@@ -12185,7 +12188,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 3 :
-                    // JavaP.g:1279:9: ifkey= 'if' ifexpr= parExpression ifif= statement ( options {k=1; } : elsekey= 'else' ifelse= statement )?
+                    // JavaP.g:1287:9: ifkey= 'if' ifexpr= parExpression ifif= statement ( options {k=1; } : elsekey= 'else' ifelse= statement )?
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -12206,7 +12209,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     state._fsp--;
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, ifif.getTree());
-                    // JavaP.g:1279:56: ( options {k=1; } : elsekey= 'else' ifelse= statement )?
+                    // JavaP.g:1287:56: ( options {k=1; } : elsekey= 'else' ifelse= statement )?
                     int alt115=2;
                     int LA115_0 = input.LA(1);
 
@@ -12219,7 +12222,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     switch (alt115) {
                         case 1 :
-                            // JavaP.g:1279:72: elsekey= 'else' ifelse= statement
+                            // JavaP.g:1287:72: elsekey= 'else' ifelse= statement
                             {
                             elsekey=(Token)match(input,100,FOLLOW_100_in_statement5782); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
@@ -12250,7 +12253,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 4 :
-                    // JavaP.g:1286:9: forkey= 'for' '(' forc= forControl ')' forstat= statement
+                    // JavaP.g:1294:9: forkey= 'for' '(' forc= forControl ')' forstat= statement
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -12289,7 +12292,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 5 :
-                    // JavaP.g:1289:9: whilkey= 'while' wexs= parExpression wstat= statement
+                    // JavaP.g:1297:9: whilkey= 'while' wexs= parExpression wstat= statement
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -12318,7 +12321,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 6 :
-                    // JavaP.g:1292:9: dokey= 'do' dostat= statement whilekey= 'while' doex= parExpression ';'
+                    // JavaP.g:1300:9: dokey= 'do' dostat= statement whilekey= 'while' doex= parExpression ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -12358,7 +12361,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 7 :
-                    // JavaP.g:1296:9: trykey= 'try' (ress= resources )? traaibl= block (cts= catches finkey= 'finally' trybl= block | ctss= catches | finnkey= 'finally' trybll= block )?
+                    // JavaP.g:1304:9: trykey= 'try' (ress= resources )? traaibl= block (cts= catches finkey= 'finally' trybl= block | ctss= catches | finnkey= 'finally' trybll= block )?
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -12367,7 +12370,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     trykey_tree = (Object)adaptor.create(trykey);
                     adaptor.addChild(root_0, trykey_tree);
                     }
-                    // JavaP.g:1296:26: (ress= resources )?
+                    // JavaP.g:1304:26: (ress= resources )?
                     int alt116=2;
                     int LA116_0 = input.LA(1);
 
@@ -12403,12 +12406,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                                setKeyword(retval.element,trykey);
                                
                     }
-                    // JavaP.g:1302:9: (cts= catches finkey= 'finally' trybl= block | ctss= catches | finnkey= 'finally' trybll= block )?
+                    // JavaP.g:1310:9: (cts= catches finkey= 'finally' trybl= block | ctss= catches | finnkey= 'finally' trybll= block )?
                     int alt117=4;
                     alt117 = dfa117.predict(input);
                     switch (alt117) {
                         case 1 :
-                            // JavaP.g:1302:11: cts= catches finkey= 'finally' trybl= block
+                            // JavaP.g:1310:11: cts= catches finkey= 'finally' trybl= block
                             {
                             pushFollow(FOLLOW_catches_in_statement5944);
                             cts=catches();
@@ -12437,7 +12440,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                             }
                             break;
                         case 2 :
-                            // JavaP.g:1307:11: ctss= catches
+                            // JavaP.g:1315:11: ctss= catches
                             {
                             pushFollow(FOLLOW_catches_in_statement5979);
                             ctss=catches();
@@ -12452,7 +12455,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                             }
                             break;
                         case 3 :
-                            // JavaP.g:1308:13: finnkey= 'finally' trybll= block
+                            // JavaP.g:1316:13: finnkey= 'finally' trybll= block
                             {
                             finnkey=(Token)match(input,105,FOLLOW_105_in_statement5997); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
@@ -12479,7 +12482,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 8 :
-                    // JavaP.g:1312:9: switchkey= 'switch' swexpr= parExpression '{' cases= switchBlockStatementGroups '}'
+                    // JavaP.g:1320:9: switchkey= 'switch' swexpr= parExpression '{' cases= switchBlockStatementGroups '}'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -12521,7 +12524,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 9 :
-                    // JavaP.g:1316:9: synkey= 'synchronized' synexpr= parExpression synstat= block
+                    // JavaP.g:1324:9: synkey= 'synchronized' synexpr= parExpression synstat= block
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -12550,7 +12553,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 10 :
-                    // JavaP.g:1319:9: retkey= 'return' (retex= expression )? ';'
+                    // JavaP.g:1327:9: retkey= 'return' (retex= expression )? ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -12563,7 +12566,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                       retval.element = new ReturnStatement();
                                    setKeyword(retval.element,retkey);
                     }
-                    // JavaP.g:1322:11: (retex= expression )?
+                    // JavaP.g:1330:11: (retex= expression )?
                     int alt118=2;
                     int LA118_0 = input.LA(1);
 
@@ -12572,7 +12575,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     switch (alt118) {
                         case 1 :
-                            // JavaP.g:1322:12: retex= expression
+                            // JavaP.g:1330:12: retex= expression
                             {
                             pushFollow(FOLLOW_expression_in_statement6145);
                             retex=expression();
@@ -12598,7 +12601,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 11 :
-                    // JavaP.g:1323:9: throwkey= 'throw' threx= expression ';'
+                    // JavaP.g:1331:9: throwkey= 'throw' threx= expression ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -12626,7 +12629,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 12 :
-                    // JavaP.g:1327:9: breakkey= 'break' (name= identifierRule )? ';'
+                    // JavaP.g:1335:9: breakkey= 'break' (name= identifierRule )? ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -12639,7 +12642,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                       retval.element = new BreakStatement();
                               setKeyword(retval.element,breakkey);
                     }
-                    // JavaP.g:1330:9: (name= identifierRule )?
+                    // JavaP.g:1338:9: (name= identifierRule )?
                     int alt119=2;
                     int LA119_0 = input.LA(1);
 
@@ -12648,7 +12651,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     switch (alt119) {
                         case 1 :
-                            // JavaP.g:1330:10: name= identifierRule
+                            // JavaP.g:1338:10: name= identifierRule
                             {
                             pushFollow(FOLLOW_identifierRule_in_statement6222);
                             name=identifierRule();
@@ -12674,7 +12677,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 13 :
-                    // JavaP.g:1331:9: continuekey= 'continue' (name= identifierRule )? ';'
+                    // JavaP.g:1339:9: continuekey= 'continue' (name= identifierRule )? ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -12687,7 +12690,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                       retval.element = new ContinueStatement();
                               setKeyword(retval.element,continuekey);
                     }
-                    // JavaP.g:1334:9: (name= identifierRule )?
+                    // JavaP.g:1342:9: (name= identifierRule )?
                     int alt120=2;
                     int LA120_0 = input.LA(1);
 
@@ -12696,7 +12699,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     switch (alt120) {
                         case 1 :
-                            // JavaP.g:1334:10: name= identifierRule
+                            // JavaP.g:1342:10: name= identifierRule
                             {
                             pushFollow(FOLLOW_identifierRule_in_statement6263);
                             name=identifierRule();
@@ -12722,7 +12725,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 14 :
-                    // JavaP.g:1335:9: ';'
+                    // JavaP.g:1343:9: ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -12738,7 +12741,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 15 :
-                    // JavaP.g:1336:9: stattex= statementExpression ';'
+                    // JavaP.g:1344:9: stattex= statementExpression ';'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -12760,7 +12763,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 16 :
-                    // JavaP.g:1337:9: name= identifierRule ':' labstat= statement
+                    // JavaP.g:1345:9: name= identifierRule ':' labstat= statement
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -12821,7 +12824,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "resources"
-    // JavaP.g:1340:1: resources returns [ResourceBlock element] : '(' d= localVariableDeclaration ( ';' decl= localVariableDeclaration )* ( ';' )? ')' ;
+    // JavaP.g:1348:1: resources returns [ResourceBlock element] : '(' d= localVariableDeclaration ( ';' decl= localVariableDeclaration )* ( ';' )? ')' ;
     public final Java_JavaP.resources_return resources() throws RecognitionException {
         Java_JavaP.resources_return retval = new Java_JavaP.resources_return();
         retval.start = input.LT(1);
@@ -12844,8 +12847,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 96) ) { return retval; }
-            // JavaP.g:1341:5: ( '(' d= localVariableDeclaration ( ';' decl= localVariableDeclaration )* ( ';' )? ')' )
-            // JavaP.g:1341:7: '(' d= localVariableDeclaration ( ';' decl= localVariableDeclaration )* ( ';' )? ')'
+            // JavaP.g:1349:5: ( '(' d= localVariableDeclaration ( ';' decl= localVariableDeclaration )* ( ';' )? ')' )
+            // JavaP.g:1349:7: '(' d= localVariableDeclaration ( ';' decl= localVariableDeclaration )* ( ';' )? ')'
             {
             root_0 = (Object)adaptor.nil();
 
@@ -12866,7 +12869,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             if ( state.backtracking==0 ) {
               retval.element.addResource((d!=null?d.element:null));
             }
-            // JavaP.g:1343:11: ( ';' decl= localVariableDeclaration )*
+            // JavaP.g:1351:11: ( ';' decl= localVariableDeclaration )*
             loop122:
             do {
                 int alt122=2;
@@ -12885,7 +12888,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt122) {
             	case 1 :
-            	    // JavaP.g:1343:12: ';' decl= localVariableDeclaration
+            	    // JavaP.g:1351:12: ';' decl= localVariableDeclaration
             	    {
             	    char_literal172=(Token)match(input,48,FOLLOW_48_in_resources6372); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
@@ -12910,7 +12913,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                 }
             } while (true);
 
-            // JavaP.g:1344:11: ( ';' )?
+            // JavaP.g:1352:11: ( ';' )?
             int alt123=2;
             int LA123_0 = input.LA(1);
 
@@ -12919,7 +12922,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             }
             switch (alt123) {
                 case 1 :
-                    // JavaP.g:1344:12: ';'
+                    // JavaP.g:1352:12: ';'
                     {
                     char_literal173=(Token)match(input,48,FOLLOW_48_in_resources6395); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
@@ -12968,7 +12971,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "catches"
-    // JavaP.g:1348:1: catches returns [List<CatchClause> element] : (ct= catchClause )+ ;
+    // JavaP.g:1356:1: catches returns [List<CatchClause> element] : (ct= catchClause )+ ;
     public final Java_JavaP.catches_return catches() throws RecognitionException {
         Java_JavaP.catches_return retval = new Java_JavaP.catches_return();
         retval.start = input.LT(1);
@@ -12981,15 +12984,15 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 97) ) { return retval; }
-            // JavaP.g:1350:5: ( (ct= catchClause )+ )
-            // JavaP.g:1350:9: (ct= catchClause )+
+            // JavaP.g:1358:5: ( (ct= catchClause )+ )
+            // JavaP.g:1358:9: (ct= catchClause )+
             {
             root_0 = (Object)adaptor.nil();
 
             if ( state.backtracking==0 ) {
               retval.element = new ArrayList<CatchClause>();
             }
-            // JavaP.g:1350:58: (ct= catchClause )+
+            // JavaP.g:1358:58: (ct= catchClause )+
             int cnt124=0;
             loop124:
             do {
@@ -13003,7 +13006,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt124) {
             	case 1 :
-            	    // JavaP.g:1350:59: ct= catchClause
+            	    // JavaP.g:1358:59: ct= catchClause
             	    {
             	    pushFollow(FOLLOW_catchClause_in_catches6437);
             	    ct=catchClause();
@@ -13062,7 +13065,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "catchClause"
-    // JavaP.g:1353:1: catchClause returns [CatchClause element] : catchkey= 'catch' '(' par= catchParameter ')' bl= block ;
+    // JavaP.g:1361:1: catchClause returns [CatchClause element] : catchkey= 'catch' '(' par= catchParameter ')' bl= block ;
     public final Java_JavaP.catchClause_return catchClause() throws RecognitionException {
         Java_JavaP.catchClause_return retval = new Java_JavaP.catchClause_return();
         retval.start = input.LT(1);
@@ -13083,8 +13086,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 98) ) { return retval; }
-            // JavaP.g:1355:5: (catchkey= 'catch' '(' par= catchParameter ')' bl= block )
-            // JavaP.g:1355:9: catchkey= 'catch' '(' par= catchParameter ')' bl= block
+            // JavaP.g:1363:5: (catchkey= 'catch' '(' par= catchParameter ')' bl= block )
+            // JavaP.g:1363:9: catchkey= 'catch' '(' par= catchParameter ')' bl= block
             {
             root_0 = (Object)adaptor.nil();
 
@@ -13153,7 +13156,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "catchParameter"
-    // JavaP.g:1362:1: catchParameter returns [FormalParameter element] : mods= variableModifiers tref= possibleUnionType name= variableDeclaratorId ;
+    // JavaP.g:1370:1: catchParameter returns [FormalParameter element] : mods= variableModifiers tref= possibleUnionType name= variableDeclaratorId ;
     public final Java_JavaP.catchParameter_return catchParameter() throws RecognitionException {
         Java_JavaP.catchParameter_return retval = new Java_JavaP.catchParameter_return();
         retval.start = input.LT(1);
@@ -13170,8 +13173,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 99) ) { return retval; }
-            // JavaP.g:1364:5: (mods= variableModifiers tref= possibleUnionType name= variableDeclaratorId )
-            // JavaP.g:1364:9: mods= variableModifiers tref= possibleUnionType name= variableDeclaratorId
+            // JavaP.g:1372:5: (mods= variableModifiers tref= possibleUnionType name= variableDeclaratorId )
+            // JavaP.g:1372:9: mods= variableModifiers tref= possibleUnionType name= variableDeclaratorId
             {
             root_0 = (Object)adaptor.nil();
 
@@ -13232,7 +13235,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "formalParameter"
-    // JavaP.g:1372:1: formalParameter returns [FormalParameter element] : mods= variableModifiers tref= type name= variableDeclaratorId ;
+    // JavaP.g:1380:1: formalParameter returns [FormalParameter element] : mods= variableModifiers tref= type name= variableDeclaratorId ;
     public final Java_JavaP.formalParameter_return formalParameter() throws RecognitionException {
         Java_JavaP.formalParameter_return retval = new Java_JavaP.formalParameter_return();
         retval.start = input.LT(1);
@@ -13249,8 +13252,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 100) ) { return retval; }
-            // JavaP.g:1374:5: (mods= variableModifiers tref= type name= variableDeclaratorId )
-            // JavaP.g:1374:9: mods= variableModifiers tref= type name= variableDeclaratorId
+            // JavaP.g:1382:5: (mods= variableModifiers tref= type name= variableDeclaratorId )
+            // JavaP.g:1382:9: mods= variableModifiers tref= type name= variableDeclaratorId
             {
             root_0 = (Object)adaptor.nil();
 
@@ -13311,7 +13314,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "switchBlockStatementGroups"
-    // JavaP.g:1380:1: switchBlockStatementGroups returns [List<SwitchCase> element] : (cs= switchCase )* ;
+    // JavaP.g:1388:1: switchBlockStatementGroups returns [List<SwitchCase> element] : (cs= switchCase )* ;
     public final Java_JavaP.switchBlockStatementGroups_return switchBlockStatementGroups() throws RecognitionException {
         Java_JavaP.switchBlockStatementGroups_return retval = new Java_JavaP.switchBlockStatementGroups_return();
         retval.start = input.LT(1);
@@ -13324,15 +13327,15 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 101) ) { return retval; }
-            // JavaP.g:1382:5: ( (cs= switchCase )* )
-            // JavaP.g:1382:9: (cs= switchCase )*
+            // JavaP.g:1390:5: ( (cs= switchCase )* )
+            // JavaP.g:1390:9: (cs= switchCase )*
             {
             root_0 = (Object)adaptor.nil();
 
             if ( state.backtracking==0 ) {
               retval.element = new ArrayList<SwitchCase>();
             }
-            // JavaP.g:1382:56: (cs= switchCase )*
+            // JavaP.g:1390:56: (cs= switchCase )*
             loop125:
             do {
                 int alt125=2;
@@ -13345,7 +13348,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt125) {
             	case 1 :
-            	    // JavaP.g:1382:57: cs= switchCase
+            	    // JavaP.g:1390:57: cs= switchCase
             	    {
             	    pushFollow(FOLLOW_switchCase_in_switchBlockStatementGroups6621);
             	    cs=switchCase();
@@ -13399,7 +13402,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "switchCase"
-    // JavaP.g:1389:1: switchCase returns [SwitchCase element] : label= switchLabel ( blockStatement )* ;
+    // JavaP.g:1397:1: switchCase returns [SwitchCase element] : label= switchLabel ( blockStatement )* ;
     public final Java_JavaP.switchCase_return switchCase() throws RecognitionException {
         Java_JavaP.switchCase_return retval = new Java_JavaP.switchCase_return();
         retval.start = input.LT(1);
@@ -13414,8 +13417,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 102) ) { return retval; }
-            // JavaP.g:1391:5: (label= switchLabel ( blockStatement )* )
-            // JavaP.g:1391:9: label= switchLabel ( blockStatement )*
+            // JavaP.g:1399:5: (label= switchLabel ( blockStatement )* )
+            // JavaP.g:1399:9: label= switchLabel ( blockStatement )*
             {
             root_0 = (Object)adaptor.nil();
 
@@ -13428,7 +13431,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             if ( state.backtracking==0 ) {
               retval.element = new JavaSwitchCase(label.element);
             }
-            // JavaP.g:1391:81: ( blockStatement )*
+            // JavaP.g:1399:81: ( blockStatement )*
             loop126:
             do {
                 int alt126=2;
@@ -13492,7 +13495,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "switchLabel"
-    // JavaP.g:1394:1: switchLabel returns [SwitchLabel element] : ( 'case' csexpr= constantExpression ':' | 'case' enumname= enumConstantName ':' | 'default' ':' );
+    // JavaP.g:1402:1: switchLabel returns [SwitchLabel element] : ( 'case' csexpr= constantExpression ':' | 'case' enumname= enumConstantName ':' | 'default' ':' );
     public final Java_JavaP.switchLabel_return switchLabel() throws RecognitionException {
         Java_JavaP.switchLabel_return retval = new Java_JavaP.switchLabel_return();
         retval.start = input.LT(1);
@@ -13519,7 +13522,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 103) ) { return retval; }
-            // JavaP.g:1396:5: ( 'case' csexpr= constantExpression ':' | 'case' enumname= enumConstantName ':' | 'default' ':' )
+            // JavaP.g:1404:5: ( 'case' csexpr= constantExpression ':' | 'case' enumname= enumConstantName ':' | 'default' ':' )
             int alt127=3;
             int LA127_0 = input.LA(1);
 
@@ -13580,7 +13583,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             }
             switch (alt127) {
                 case 1 :
-                    // JavaP.g:1396:9: 'case' csexpr= constantExpression ':'
+                    // JavaP.g:1404:9: 'case' csexpr= constantExpression ':'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -13607,7 +13610,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1397:9: 'case' enumname= enumConstantName ':'
+                    // JavaP.g:1405:9: 'case' enumname= enumConstantName ':'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -13634,7 +13637,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 3 :
-                    // JavaP.g:1398:9: 'default' ':'
+                    // JavaP.g:1406:9: 'default' ':'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -13687,7 +13690,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "forControl"
-    // JavaP.g:1401:1: forControl returns [ForControl element] options {k=3; } : (enh= enhancedForControl | (in= forInit )? ';' (e= expression )? ';' (u= forUpdate )? );
+    // JavaP.g:1409:1: forControl returns [ForControl element] options {k=3; } : (enh= enhancedForControl | (in= forInit )? ';' (e= expression )? ';' (u= forUpdate )? );
     public final Java_JavaP.forControl_return forControl() throws RecognitionException {
         Java_JavaP.forControl_return retval = new Java_JavaP.forControl_return();
         retval.start = input.LT(1);
@@ -13710,12 +13713,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 104) ) { return retval; }
-            // JavaP.g:1404:5: (enh= enhancedForControl | (in= forInit )? ';' (e= expression )? ';' (u= forUpdate )? )
+            // JavaP.g:1412:5: (enh= enhancedForControl | (in= forInit )? ';' (e= expression )? ';' (u= forUpdate )? )
             int alt131=2;
             alt131 = dfa131.predict(input);
             switch (alt131) {
                 case 1 :
-                    // JavaP.g:1404:9: enh= enhancedForControl
+                    // JavaP.g:1412:9: enh= enhancedForControl
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -13732,11 +13735,11 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1405:9: (in= forInit )? ';' (e= expression )? ';' (u= forUpdate )?
+                    // JavaP.g:1413:9: (in= forInit )? ';' (e= expression )? ';' (u= forUpdate )?
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    // JavaP.g:1405:11: (in= forInit )?
+                    // JavaP.g:1413:11: (in= forInit )?
                     int alt128=2;
                     int LA128_0 = input.LA(1);
 
@@ -13764,7 +13767,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     char_literal184_tree = (Object)adaptor.create(char_literal184);
                     adaptor.addChild(root_0, char_literal184_tree);
                     }
-                    // JavaP.g:1405:26: (e= expression )?
+                    // JavaP.g:1413:26: (e= expression )?
                     int alt129=2;
                     int LA129_0 = input.LA(1);
 
@@ -13792,7 +13795,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     char_literal185_tree = (Object)adaptor.create(char_literal185);
                     adaptor.addChild(root_0, char_literal185_tree);
                     }
-                    // JavaP.g:1405:44: (u= forUpdate )?
+                    // JavaP.g:1413:44: (u= forUpdate )?
                     int alt130=2;
                     int LA130_0 = input.LA(1);
 
@@ -13854,7 +13857,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "forInit"
-    // JavaP.g:1408:1: forInit returns [ForInit element] : (local= localVariableDeclaration | el= expressionList );
+    // JavaP.g:1416:1: forInit returns [ForInit element] : (local= localVariableDeclaration | el= expressionList );
     public final Java_JavaP.forInit_return forInit() throws RecognitionException {
         Java_JavaP.forInit_return retval = new Java_JavaP.forInit_return();
         retval.start = input.LT(1);
@@ -13869,12 +13872,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 105) ) { return retval; }
-            // JavaP.g:1410:5: (local= localVariableDeclaration | el= expressionList )
+            // JavaP.g:1418:5: (local= localVariableDeclaration | el= expressionList )
             int alt132=2;
             alt132 = dfa132.predict(input);
             switch (alt132) {
                 case 1 :
-                    // JavaP.g:1410:9: local= localVariableDeclaration
+                    // JavaP.g:1418:9: local= localVariableDeclaration
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -13891,7 +13894,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1411:9: el= expressionList
+                    // JavaP.g:1419:9: el= expressionList
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -13940,7 +13943,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "enhancedForControl"
-    // JavaP.g:1414:1: enhancedForControl returns [ForControl element] : local= localVariableDeclaration ':' ex= expression ;
+    // JavaP.g:1422:1: enhancedForControl returns [ForControl element] : local= localVariableDeclaration ':' ex= expression ;
     public final Java_JavaP.enhancedForControl_return enhancedForControl() throws RecognitionException {
         Java_JavaP.enhancedForControl_return retval = new Java_JavaP.enhancedForControl_return();
         retval.start = input.LT(1);
@@ -13957,8 +13960,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 106) ) { return retval; }
-            // JavaP.g:1416:5: (local= localVariableDeclaration ':' ex= expression )
-            // JavaP.g:1416:9: local= localVariableDeclaration ':' ex= expression
+            // JavaP.g:1424:5: (local= localVariableDeclaration ':' ex= expression )
+            // JavaP.g:1424:9: local= localVariableDeclaration ':' ex= expression
             {
             root_0 = (Object)adaptor.nil();
 
@@ -14016,7 +14019,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "forUpdate"
-    // JavaP.g:1419:1: forUpdate returns [StatementExprList element] : el= expressionList ;
+    // JavaP.g:1427:1: forUpdate returns [StatementExprList element] : el= expressionList ;
     public final Java_JavaP.forUpdate_return forUpdate() throws RecognitionException {
         Java_JavaP.forUpdate_return retval = new Java_JavaP.forUpdate_return();
         retval.start = input.LT(1);
@@ -14029,8 +14032,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 107) ) { return retval; }
-            // JavaP.g:1420:5: (el= expressionList )
-            // JavaP.g:1420:9: el= expressionList
+            // JavaP.g:1428:5: (el= expressionList )
+            // JavaP.g:1428:9: el= expressionList
             {
             root_0 = (Object)adaptor.nil();
 
@@ -14074,7 +14077,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "parExpression"
-    // JavaP.g:1425:1: parExpression returns [Expression element] : s= '(' expr= expression e= ')' ;
+    // JavaP.g:1433:1: parExpression returns [Expression element] : s= '(' expr= expression e= ')' ;
     public final Java_JavaP.parExpression_return parExpression() throws RecognitionException {
         Java_JavaP.parExpression_return retval = new Java_JavaP.parExpression_return();
         retval.start = input.LT(1);
@@ -14095,8 +14098,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 108) ) { return retval; }
-            // JavaP.g:1433:5: (s= '(' expr= expression e= ')' )
-            // JavaP.g:1433:9: s= '(' expr= expression e= ')'
+            // JavaP.g:1441:5: (s= '(' expr= expression e= ')' )
+            // JavaP.g:1441:9: s= '(' expr= expression e= ')'
             {
             root_0 = (Object)adaptor.nil();
 
@@ -14161,7 +14164,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "expressionList"
-    // JavaP.g:1440:1: expressionList returns [List<Expression> element] : e= expression ( ',' ex= expression )* ;
+    // JavaP.g:1448:1: expressionList returns [List<Expression> element] : e= expression ( ',' ex= expression )* ;
     public final Java_JavaP.expressionList_return expressionList() throws RecognitionException {
         Java_JavaP.expressionList_return retval = new Java_JavaP.expressionList_return();
         retval.start = input.LT(1);
@@ -14178,8 +14181,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 109) ) { return retval; }
-            // JavaP.g:1441:5: (e= expression ( ',' ex= expression )* )
-            // JavaP.g:1441:9: e= expression ( ',' ex= expression )*
+            // JavaP.g:1449:5: (e= expression ( ',' ex= expression )* )
+            // JavaP.g:1449:9: e= expression ( ',' ex= expression )*
             {
             root_0 = (Object)adaptor.nil();
 
@@ -14196,7 +14199,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
               if(e.element == null) {System.out.println((e!=null?input.toString(e.start,e.stop):null));throw new RuntimeException("parser error");}
                        retval.element.add(e.element);
             }
-            // JavaP.g:1444:10: ( ',' ex= expression )*
+            // JavaP.g:1452:10: ( ',' ex= expression )*
             loop133:
             do {
                 int alt133=2;
@@ -14209,7 +14212,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt133) {
             	case 1 :
-            	    // JavaP.g:1444:11: ',' ex= expression
+            	    // JavaP.g:1452:11: ',' ex= expression
             	    {
             	    char_literal187=(Token)match(input,63,FOLLOW_63_in_expressionList7008); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
@@ -14265,7 +14268,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "statementExpression"
-    // JavaP.g:1447:1: statementExpression returns [Expression element] : e= expression ;
+    // JavaP.g:1455:1: statementExpression returns [Expression element] : e= expression ;
     public final Java_JavaP.statementExpression_return statementExpression() throws RecognitionException {
         Java_JavaP.statementExpression_return retval = new Java_JavaP.statementExpression_return();
         retval.start = input.LT(1);
@@ -14278,8 +14281,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 110) ) { return retval; }
-            // JavaP.g:1448:5: (e= expression )
-            // JavaP.g:1448:9: e= expression
+            // JavaP.g:1456:5: (e= expression )
+            // JavaP.g:1456:9: e= expression
             {
             root_0 = (Object)adaptor.nil();
 
@@ -14323,7 +14326,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "constantExpression"
-    // JavaP.g:1451:1: constantExpression returns [Expression element] : e= expression ;
+    // JavaP.g:1459:1: constantExpression returns [Expression element] : e= expression ;
     public final Java_JavaP.constantExpression_return constantExpression() throws RecognitionException {
         Java_JavaP.constantExpression_return retval = new Java_JavaP.constantExpression_return();
         retval.start = input.LT(1);
@@ -14336,8 +14339,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 111) ) { return retval; }
-            // JavaP.g:1452:5: (e= expression )
-            // JavaP.g:1452:9: e= expression
+            // JavaP.g:1460:5: (e= expression )
+            // JavaP.g:1460:9: e= expression
             {
             root_0 = (Object)adaptor.nil();
 
@@ -14381,7 +14384,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "expression"
-    // JavaP.g:1455:1: expression returns [Expression element] : ex= conditionalExpression (op= assignmentOperator exx= expression )? ;
+    // JavaP.g:1463:1: expression returns [Expression element] : ex= conditionalExpression (op= assignmentOperator exx= expression )? ;
     public final Java_JavaP.expression_return expression() throws RecognitionException {
         Java_JavaP.expression_return retval = new Java_JavaP.expression_return();
         retval.start = input.LT(1);
@@ -14398,8 +14401,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 112) ) { return retval; }
-            // JavaP.g:1457:5: (ex= conditionalExpression (op= assignmentOperator exx= expression )? )
-            // JavaP.g:1457:9: ex= conditionalExpression (op= assignmentOperator exx= expression )?
+            // JavaP.g:1465:5: (ex= conditionalExpression (op= assignmentOperator exx= expression )? )
+            // JavaP.g:1465:9: ex= conditionalExpression (op= assignmentOperator exx= expression )?
             {
             root_0 = (Object)adaptor.nil();
 
@@ -14412,12 +14415,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             if ( state.backtracking==0 ) {
               retval.element=ex.element;
             }
-            // JavaP.g:1457:63: (op= assignmentOperator exx= expression )?
+            // JavaP.g:1465:63: (op= assignmentOperator exx= expression )?
             int alt134=2;
             alt134 = dfa134.predict(input);
             switch (alt134) {
                 case 1 :
-                    // JavaP.g:1457:64: op= assignmentOperator exx= expression
+                    // JavaP.g:1465:64: op= assignmentOperator exx= expression
                     {
                     pushFollow(FOLLOW_assignmentOperator_in_expression7106);
                     op=assignmentOperator();
@@ -14482,7 +14485,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "assignmentOperator"
-    // JavaP.g:1471:1: assignmentOperator : ( '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '%=' | ( '<' '<' '=' )=>t1= '<' t2= '<' t3= '=' {...}? | ( '>' '>' '>' '=' )=>t1= '>' t2= '>' t3= '>' t4= '=' {...}? | ( '>' '>' '=' )=>t1= '>' t2= '>' t3= '=' {...}?);
+    // JavaP.g:1479:1: assignmentOperator : ( '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '%=' | ( '<' '<' '=' )=>t1= '<' t2= '<' t3= '=' {...}? | ( '>' '>' '>' '=' )=>t1= '>' t2= '>' t3= '>' t4= '=' {...}? | ( '>' '>' '=' )=>t1= '>' t2= '>' t3= '=' {...}?);
     public final Java_JavaP.assignmentOperator_return assignmentOperator() throws RecognitionException {
         Java_JavaP.assignmentOperator_return retval = new Java_JavaP.assignmentOperator_return();
         retval.start = input.LT(1);
@@ -14519,12 +14522,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 113) ) { return retval; }
-            // JavaP.g:1472:5: ( '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '%=' | ( '<' '<' '=' )=>t1= '<' t2= '<' t3= '=' {...}? | ( '>' '>' '>' '=' )=>t1= '>' t2= '>' t3= '>' t4= '=' {...}? | ( '>' '>' '=' )=>t1= '>' t2= '>' t3= '=' {...}?)
+            // JavaP.g:1480:5: ( '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '%=' | ( '<' '<' '=' )=>t1= '<' t2= '<' t3= '=' {...}? | ( '>' '>' '>' '=' )=>t1= '>' t2= '>' t3= '>' t4= '=' {...}? | ( '>' '>' '=' )=>t1= '>' t2= '>' t3= '=' {...}?)
             int alt135=12;
             alt135 = dfa135.predict(input);
             switch (alt135) {
                 case 1 :
-                    // JavaP.g:1472:9: '='
+                    // JavaP.g:1480:9: '='
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -14537,7 +14540,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1473:9: '+='
+                    // JavaP.g:1481:9: '+='
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -14550,7 +14553,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 3 :
-                    // JavaP.g:1474:9: '-='
+                    // JavaP.g:1482:9: '-='
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -14563,7 +14566,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 4 :
-                    // JavaP.g:1475:9: '*='
+                    // JavaP.g:1483:9: '*='
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -14576,7 +14579,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 5 :
-                    // JavaP.g:1476:9: '/='
+                    // JavaP.g:1484:9: '/='
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -14589,7 +14592,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 6 :
-                    // JavaP.g:1477:9: '&='
+                    // JavaP.g:1485:9: '&='
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -14602,7 +14605,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 7 :
-                    // JavaP.g:1478:9: '|='
+                    // JavaP.g:1486:9: '|='
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -14615,7 +14618,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 8 :
-                    // JavaP.g:1479:9: '^='
+                    // JavaP.g:1487:9: '^='
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -14628,7 +14631,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 9 :
-                    // JavaP.g:1480:9: '%='
+                    // JavaP.g:1488:9: '%='
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -14641,7 +14644,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 10 :
-                    // JavaP.g:1481:9: ( '<' '<' '=' )=>t1= '<' t2= '<' t3= '=' {...}?
+                    // JavaP.g:1489:9: ( '<' '<' '=' )=>t1= '<' t2= '<' t3= '=' {...}?
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -14671,7 +14674,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 11 :
-                    // JavaP.g:1486:9: ( '>' '>' '>' '=' )=>t1= '>' t2= '>' t3= '>' t4= '=' {...}?
+                    // JavaP.g:1494:9: ( '>' '>' '>' '=' )=>t1= '>' t2= '>' t3= '>' t4= '=' {...}?
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -14708,7 +14711,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 12 :
-                    // JavaP.g:1493:9: ( '>' '>' '=' )=>t1= '>' t2= '>' t3= '=' {...}?
+                    // JavaP.g:1501:9: ( '>' '>' '=' )=>t1= '>' t2= '>' t3= '=' {...}?
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -14767,7 +14770,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "conditionalExpression"
-    // JavaP.g:1500:1: conditionalExpression returns [Expression element] : ex= conditionalOrExpression ( '?' exx= expression ':' exxx= expression )? ;
+    // JavaP.g:1508:1: conditionalExpression returns [Expression element] : ex= conditionalOrExpression ( '?' exx= expression ':' exxx= expression )? ;
     public final Java_JavaP.conditionalExpression_return conditionalExpression() throws RecognitionException {
         Java_JavaP.conditionalExpression_return retval = new Java_JavaP.conditionalExpression_return();
         retval.start = input.LT(1);
@@ -14788,8 +14791,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 114) ) { return retval; }
-            // JavaP.g:1502:5: (ex= conditionalOrExpression ( '?' exx= expression ':' exxx= expression )? )
-            // JavaP.g:1502:9: ex= conditionalOrExpression ( '?' exx= expression ':' exxx= expression )?
+            // JavaP.g:1510:5: (ex= conditionalOrExpression ( '?' exx= expression ':' exxx= expression )? )
+            // JavaP.g:1510:9: ex= conditionalOrExpression ( '?' exx= expression ':' exxx= expression )?
             {
             root_0 = (Object)adaptor.nil();
 
@@ -14802,7 +14805,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             if ( state.backtracking==0 ) {
               retval.element = ex.element;
             }
-            // JavaP.g:1502:66: ( '?' exx= expression ':' exxx= expression )?
+            // JavaP.g:1510:66: ( '?' exx= expression ':' exxx= expression )?
             int alt136=2;
             int LA136_0 = input.LA(1);
 
@@ -14811,7 +14814,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             }
             switch (alt136) {
                 case 1 :
-                    // JavaP.g:1502:68: '?' exx= expression ':' exxx= expression
+                    // JavaP.g:1510:68: '?' exx= expression ':' exxx= expression
                     {
                     char_literal197=(Token)match(input,88,FOLLOW_88_in_conditionalExpression7387); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
@@ -14880,7 +14883,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "conditionalOrExpression"
-    // JavaP.g:1509:1: conditionalOrExpression returns [Expression element] : ex= conditionalAndExpression ( '||' exx= conditionalAndExpression )* ;
+    // JavaP.g:1517:1: conditionalOrExpression returns [Expression element] : ex= conditionalAndExpression ( '||' exx= conditionalAndExpression )* ;
     public final Java_JavaP.conditionalOrExpression_return conditionalOrExpression() throws RecognitionException {
         Java_JavaP.conditionalOrExpression_return retval = new Java_JavaP.conditionalOrExpression_return();
         retval.start = input.LT(1);
@@ -14897,8 +14900,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 115) ) { return retval; }
-            // JavaP.g:1511:5: (ex= conditionalAndExpression ( '||' exx= conditionalAndExpression )* )
-            // JavaP.g:1511:9: ex= conditionalAndExpression ( '||' exx= conditionalAndExpression )*
+            // JavaP.g:1519:5: (ex= conditionalAndExpression ( '||' exx= conditionalAndExpression )* )
+            // JavaP.g:1519:9: ex= conditionalAndExpression ( '||' exx= conditionalAndExpression )*
             {
             root_0 = (Object)adaptor.nil();
 
@@ -14911,7 +14914,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             if ( state.backtracking==0 ) {
               retval.element = ex.element;
             }
-            // JavaP.g:1511:68: ( '||' exx= conditionalAndExpression )*
+            // JavaP.g:1519:68: ( '||' exx= conditionalAndExpression )*
             loop137:
             do {
                 int alt137=2;
@@ -14924,7 +14927,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt137) {
             	case 1 :
-            	    // JavaP.g:1511:70: '||' exx= conditionalAndExpression
+            	    // JavaP.g:1519:70: '||' exx= conditionalAndExpression
             	    {
             	    string_literal199=(Token)match(input,121,FOLLOW_121_in_conditionalOrExpression7449); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
@@ -14985,7 +14988,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "conditionalAndExpression"
-    // JavaP.g:1517:1: conditionalAndExpression returns [Expression element] : ex= inclusiveOrExpression ( '&&' exx= inclusiveOrExpression )* ;
+    // JavaP.g:1525:1: conditionalAndExpression returns [Expression element] : ex= inclusiveOrExpression ( '&&' exx= inclusiveOrExpression )* ;
     public final Java_JavaP.conditionalAndExpression_return conditionalAndExpression() throws RecognitionException {
         Java_JavaP.conditionalAndExpression_return retval = new Java_JavaP.conditionalAndExpression_return();
         retval.start = input.LT(1);
@@ -15002,8 +15005,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 116) ) { return retval; }
-            // JavaP.g:1519:5: (ex= inclusiveOrExpression ( '&&' exx= inclusiveOrExpression )* )
-            // JavaP.g:1519:9: ex= inclusiveOrExpression ( '&&' exx= inclusiveOrExpression )*
+            // JavaP.g:1527:5: (ex= inclusiveOrExpression ( '&&' exx= inclusiveOrExpression )* )
+            // JavaP.g:1527:9: ex= inclusiveOrExpression ( '&&' exx= inclusiveOrExpression )*
             {
             root_0 = (Object)adaptor.nil();
 
@@ -15016,7 +15019,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             if ( state.backtracking==0 ) {
               retval.element = ex.element;
             }
-            // JavaP.g:1519:65: ( '&&' exx= inclusiveOrExpression )*
+            // JavaP.g:1527:65: ( '&&' exx= inclusiveOrExpression )*
             loop138:
             do {
                 int alt138=2;
@@ -15029,7 +15032,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt138) {
             	case 1 :
-            	    // JavaP.g:1519:67: '&&' exx= inclusiveOrExpression
+            	    // JavaP.g:1527:67: '&&' exx= inclusiveOrExpression
             	    {
             	    string_literal200=(Token)match(input,122,FOLLOW_122_in_conditionalAndExpression7500); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
@@ -15090,7 +15093,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "inclusiveOrExpression"
-    // JavaP.g:1525:1: inclusiveOrExpression returns [Expression element] : ex= exclusiveOrExpression ( '|' exx= exclusiveOrExpression )* ;
+    // JavaP.g:1533:1: inclusiveOrExpression returns [Expression element] : ex= exclusiveOrExpression ( '|' exx= exclusiveOrExpression )* ;
     public final Java_JavaP.inclusiveOrExpression_return inclusiveOrExpression() throws RecognitionException {
         Java_JavaP.inclusiveOrExpression_return retval = new Java_JavaP.inclusiveOrExpression_return();
         retval.start = input.LT(1);
@@ -15107,8 +15110,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 117) ) { return retval; }
-            // JavaP.g:1527:5: (ex= exclusiveOrExpression ( '|' exx= exclusiveOrExpression )* )
-            // JavaP.g:1527:9: ex= exclusiveOrExpression ( '|' exx= exclusiveOrExpression )*
+            // JavaP.g:1535:5: (ex= exclusiveOrExpression ( '|' exx= exclusiveOrExpression )* )
+            // JavaP.g:1535:9: ex= exclusiveOrExpression ( '|' exx= exclusiveOrExpression )*
             {
             root_0 = (Object)adaptor.nil();
 
@@ -15121,7 +15124,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             if ( state.backtracking==0 ) {
               retval.element = ex.element;
             }
-            // JavaP.g:1527:65: ( '|' exx= exclusiveOrExpression )*
+            // JavaP.g:1535:65: ( '|' exx= exclusiveOrExpression )*
             loop139:
             do {
                 int alt139=2;
@@ -15134,7 +15137,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt139) {
             	case 1 :
-            	    // JavaP.g:1527:67: '|' exx= exclusiveOrExpression
+            	    // JavaP.g:1535:67: '|' exx= exclusiveOrExpression
             	    {
             	    char_literal201=(Token)match(input,79,FOLLOW_79_in_inclusiveOrExpression7551); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
@@ -15197,7 +15200,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "exclusiveOrExpression"
-    // JavaP.g:1535:1: exclusiveOrExpression returns [Expression element] : ex= andExpression ( '^' exx= andExpression )* ;
+    // JavaP.g:1543:1: exclusiveOrExpression returns [Expression element] : ex= andExpression ( '^' exx= andExpression )* ;
     public final Java_JavaP.exclusiveOrExpression_return exclusiveOrExpression() throws RecognitionException {
         Java_JavaP.exclusiveOrExpression_return retval = new Java_JavaP.exclusiveOrExpression_return();
         retval.start = input.LT(1);
@@ -15214,8 +15217,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 118) ) { return retval; }
-            // JavaP.g:1537:5: (ex= andExpression ( '^' exx= andExpression )* )
-            // JavaP.g:1537:9: ex= andExpression ( '^' exx= andExpression )*
+            // JavaP.g:1545:5: (ex= andExpression ( '^' exx= andExpression )* )
+            // JavaP.g:1545:9: ex= andExpression ( '^' exx= andExpression )*
             {
             root_0 = (Object)adaptor.nil();
 
@@ -15228,7 +15231,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             if ( state.backtracking==0 ) {
               retval.element = ex.element;
             }
-            // JavaP.g:1537:57: ( '^' exx= andExpression )*
+            // JavaP.g:1545:57: ( '^' exx= andExpression )*
             loop140:
             do {
                 int alt140=2;
@@ -15241,7 +15244,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt140) {
             	case 1 :
-            	    // JavaP.g:1537:59: '^' exx= andExpression
+            	    // JavaP.g:1545:59: '^' exx= andExpression
             	    {
             	    char_literal202=(Token)match(input,123,FOLLOW_123_in_exclusiveOrExpression7602); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
@@ -15304,7 +15307,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "andExpression"
-    // JavaP.g:1545:1: andExpression returns [Expression element] : ex= equalityExpression ( '&' exx= equalityExpression )* ;
+    // JavaP.g:1553:1: andExpression returns [Expression element] : ex= equalityExpression ( '&' exx= equalityExpression )* ;
     public final Java_JavaP.andExpression_return andExpression() throws RecognitionException {
         Java_JavaP.andExpression_return retval = new Java_JavaP.andExpression_return();
         retval.start = input.LT(1);
@@ -15321,8 +15324,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 119) ) { return retval; }
-            // JavaP.g:1547:5: (ex= equalityExpression ( '&' exx= equalityExpression )* )
-            // JavaP.g:1547:9: ex= equalityExpression ( '&' exx= equalityExpression )*
+            // JavaP.g:1555:5: (ex= equalityExpression ( '&' exx= equalityExpression )* )
+            // JavaP.g:1555:9: ex= equalityExpression ( '&' exx= equalityExpression )*
             {
             root_0 = (Object)adaptor.nil();
 
@@ -15335,7 +15338,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             if ( state.backtracking==0 ) {
               retval.element = ex.element;
             }
-            // JavaP.g:1547:62: ( '&' exx= equalityExpression )*
+            // JavaP.g:1555:62: ( '&' exx= equalityExpression )*
             loop141:
             do {
                 int alt141=2;
@@ -15348,7 +15351,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt141) {
             	case 1 :
-            	    // JavaP.g:1547:64: '&' exx= equalityExpression
+            	    // JavaP.g:1555:64: '&' exx= equalityExpression
             	    {
             	    char_literal203=(Token)match(input,65,FOLLOW_65_in_andExpression7650); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
@@ -15411,7 +15414,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "equalityExpression"
-    // JavaP.g:1555:1: equalityExpression returns [Expression element] : ex= instanceOfExpression ( ( '==' | '!=' ) exx= instanceOfExpression )* ;
+    // JavaP.g:1563:1: equalityExpression returns [Expression element] : ex= instanceOfExpression ( ( '==' | '!=' ) exx= instanceOfExpression )* ;
     public final Java_JavaP.equalityExpression_return equalityExpression() throws RecognitionException {
         Java_JavaP.equalityExpression_return retval = new Java_JavaP.equalityExpression_return();
         retval.start = input.LT(1);
@@ -15431,8 +15434,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         String op=null;
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 120) ) { return retval; }
-            // JavaP.g:1558:5: (ex= instanceOfExpression ( ( '==' | '!=' ) exx= instanceOfExpression )* )
-            // JavaP.g:1558:9: ex= instanceOfExpression ( ( '==' | '!=' ) exx= instanceOfExpression )*
+            // JavaP.g:1566:5: (ex= instanceOfExpression ( ( '==' | '!=' ) exx= instanceOfExpression )* )
+            // JavaP.g:1566:9: ex= instanceOfExpression ( ( '==' | '!=' ) exx= instanceOfExpression )*
             {
             root_0 = (Object)adaptor.nil();
 
@@ -15445,7 +15448,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             if ( state.backtracking==0 ) {
               retval.element = ex.element;
             }
-            // JavaP.g:1559:11: ( ( '==' | '!=' ) exx= instanceOfExpression )*
+            // JavaP.g:1567:11: ( ( '==' | '!=' ) exx= instanceOfExpression )*
             loop143:
             do {
                 int alt143=2;
@@ -15458,9 +15461,9 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt143) {
             	case 1 :
-            	    // JavaP.g:1559:13: ( '==' | '!=' ) exx= instanceOfExpression
+            	    // JavaP.g:1567:13: ( '==' | '!=' ) exx= instanceOfExpression
             	    {
-            	    // JavaP.g:1559:13: ( '==' | '!=' )
+            	    // JavaP.g:1567:13: ( '==' | '!=' )
             	    int alt142=2;
             	    int LA142_0 = input.LA(1);
 
@@ -15479,7 +15482,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             	    }
             	    switch (alt142) {
             	        case 1 :
-            	            // JavaP.g:1559:14: '=='
+            	            // JavaP.g:1567:14: '=='
             	            {
             	            string_literal204=(Token)match(input,124,FOLLOW_124_in_equalityExpression7714); if (state.failed) return retval;
             	            if ( state.backtracking==0 ) {
@@ -15493,7 +15496,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             	            }
             	            break;
             	        case 2 :
-            	            // JavaP.g:1559:32: '!='
+            	            // JavaP.g:1567:32: '!='
             	            {
             	            string_literal205=(Token)match(input,125,FOLLOW_125_in_equalityExpression7720); if (state.failed) return retval;
             	            if ( state.backtracking==0 ) {
@@ -15575,7 +15578,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "instanceOfExpression"
-    // JavaP.g:1577:1: instanceOfExpression returns [Expression element] : ex= relationalExpression ( 'instanceof' tref= type )? ;
+    // JavaP.g:1585:1: instanceOfExpression returns [Expression element] : ex= relationalExpression ( 'instanceof' tref= type )? ;
     public final Java_JavaP.instanceOfExpression_return instanceOfExpression() throws RecognitionException {
         Java_JavaP.instanceOfExpression_return retval = new Java_JavaP.instanceOfExpression_return();
         retval.start = input.LT(1);
@@ -15592,8 +15595,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 121) ) { return retval; }
-            // JavaP.g:1579:5: (ex= relationalExpression ( 'instanceof' tref= type )? )
-            // JavaP.g:1579:9: ex= relationalExpression ( 'instanceof' tref= type )?
+            // JavaP.g:1587:5: (ex= relationalExpression ( 'instanceof' tref= type )? )
+            // JavaP.g:1587:9: ex= relationalExpression ( 'instanceof' tref= type )?
             {
             root_0 = (Object)adaptor.nil();
 
@@ -15608,7 +15611,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                           //if(ex.element == null) {throw new Error("retval is null");}
                           retval.element = ex.element;
             }
-            // JavaP.g:1582:8: ( 'instanceof' tref= type )?
+            // JavaP.g:1590:8: ( 'instanceof' tref= type )?
             int alt144=2;
             int LA144_0 = input.LA(1);
 
@@ -15617,7 +15620,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             }
             switch (alt144) {
                 case 1 :
-                    // JavaP.g:1582:9: 'instanceof' tref= type
+                    // JavaP.g:1590:9: 'instanceof' tref= type
                     {
                     string_literal206=(Token)match(input,126,FOLLOW_126_in_instanceOfExpression7781); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
@@ -15675,7 +15678,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "relationalExpression"
-    // JavaP.g:1588:1: relationalExpression returns [Expression element] : ex= shiftExpression (op= relationalOp exx= shiftExpression )* ;
+    // JavaP.g:1596:1: relationalExpression returns [Expression element] : ex= shiftExpression (op= relationalOp exx= shiftExpression )* ;
     public final Java_JavaP.relationalExpression_return relationalExpression() throws RecognitionException {
         Java_JavaP.relationalExpression_return retval = new Java_JavaP.relationalExpression_return();
         retval.start = input.LT(1);
@@ -15692,8 +15695,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 122) ) { return retval; }
-            // JavaP.g:1589:5: (ex= shiftExpression (op= relationalOp exx= shiftExpression )* )
-            // JavaP.g:1589:9: ex= shiftExpression (op= relationalOp exx= shiftExpression )*
+            // JavaP.g:1597:5: (ex= shiftExpression (op= relationalOp exx= shiftExpression )* )
+            // JavaP.g:1597:9: ex= shiftExpression (op= relationalOp exx= shiftExpression )*
             {
             root_0 = (Object)adaptor.nil();
 
@@ -15708,7 +15711,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                             //if(ex.element == null) {throw new Error("retval is null");}
                             retval.element = ex.element;
             }
-            // JavaP.g:1591:45: (op= relationalOp exx= shiftExpression )*
+            // JavaP.g:1599:45: (op= relationalOp exx= shiftExpression )*
             loop145:
             do {
                 int alt145=2;
@@ -15736,7 +15739,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt145) {
             	case 1 :
-            	    // JavaP.g:1591:47: op= relationalOp exx= shiftExpression
+            	    // JavaP.g:1599:47: op= relationalOp exx= shiftExpression
             	    {
             	    pushFollow(FOLLOW_relationalOp_in_relationalExpression7830);
             	    op=relationalOp();
@@ -15796,7 +15799,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "relationalOp"
-    // JavaP.g:1600:1: relationalOp : ( ( '<' '=' )=>t1= '<' t2= '=' {...}? | ( '>' '=' )=>t1= '>' t2= '=' {...}? | '<' | '>' );
+    // JavaP.g:1608:1: relationalOp : ( ( '<' '=' )=>t1= '<' t2= '=' {...}? | ( '>' '=' )=>t1= '>' t2= '=' {...}? | '<' | '>' );
     public final Java_JavaP.relationalOp_return relationalOp() throws RecognitionException {
         Java_JavaP.relationalOp_return retval = new Java_JavaP.relationalOp_return();
         retval.start = input.LT(1);
@@ -15815,7 +15818,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 123) ) { return retval; }
-            // JavaP.g:1601:5: ( ( '<' '=' )=>t1= '<' t2= '=' {...}? | ( '>' '=' )=>t1= '>' t2= '=' {...}? | '<' | '>' )
+            // JavaP.g:1609:5: ( ( '<' '=' )=>t1= '<' t2= '=' {...}? | ( '>' '=' )=>t1= '>' t2= '=' {...}? | '<' | '>' )
             int alt146=4;
             int LA146_0 = input.LA(1);
 
@@ -15862,7 +15865,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             }
             switch (alt146) {
                 case 1 :
-                    // JavaP.g:1601:9: ( '<' '=' )=>t1= '<' t2= '=' {...}?
+                    // JavaP.g:1609:9: ( '<' '=' )=>t1= '<' t2= '=' {...}?
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -15885,7 +15888,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1604:9: ( '>' '=' )=>t1= '>' t2= '=' {...}?
+                    // JavaP.g:1612:9: ( '>' '=' )=>t1= '>' t2= '=' {...}?
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -15908,7 +15911,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 3 :
-                    // JavaP.g:1607:9: '<'
+                    // JavaP.g:1615:9: '<'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -15921,7 +15924,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 4 :
-                    // JavaP.g:1608:9: '>'
+                    // JavaP.g:1616:9: '>'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -15963,7 +15966,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "shiftExpression"
-    // JavaP.g:1611:1: shiftExpression returns [Expression element] : ex= additiveExpression (op= shiftOp exx= additiveExpression )* ;
+    // JavaP.g:1619:1: shiftExpression returns [Expression element] : ex= additiveExpression (op= shiftOp exx= additiveExpression )* ;
     public final Java_JavaP.shiftExpression_return shiftExpression() throws RecognitionException {
         Java_JavaP.shiftExpression_return retval = new Java_JavaP.shiftExpression_return();
         retval.start = input.LT(1);
@@ -15980,8 +15983,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 124) ) { return retval; }
-            // JavaP.g:1612:5: (ex= additiveExpression (op= shiftOp exx= additiveExpression )* )
-            // JavaP.g:1612:9: ex= additiveExpression (op= shiftOp exx= additiveExpression )*
+            // JavaP.g:1620:5: (ex= additiveExpression (op= shiftOp exx= additiveExpression )* )
+            // JavaP.g:1620:9: ex= additiveExpression (op= shiftOp exx= additiveExpression )*
             {
             root_0 = (Object)adaptor.nil();
 
@@ -15994,7 +15997,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             if ( state.backtracking==0 ) {
               check_null(ex.element); retval.element = ex.element;
             }
-            // JavaP.g:1612:86: (op= shiftOp exx= additiveExpression )*
+            // JavaP.g:1620:86: (op= shiftOp exx= additiveExpression )*
             loop147:
             do {
                 int alt147=2;
@@ -16043,7 +16046,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt147) {
             	case 1 :
-            	    // JavaP.g:1612:88: op= shiftOp exx= additiveExpression
+            	    // JavaP.g:1620:88: op= shiftOp exx= additiveExpression
             	    {
             	    pushFollow(FOLLOW_shiftOp_in_shiftExpression7979);
             	    op=shiftOp();
@@ -16103,7 +16106,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "shiftOp"
-    // JavaP.g:1621:1: shiftOp : ( ( '<' '<' )=>t1= '<' t2= '<' {...}? | ( '>' '>' '>' )=>t1= '>' t2= '>' t3= '>' {...}? | ( '>' '>' )=>t1= '>' t2= '>' {...}?);
+    // JavaP.g:1629:1: shiftOp : ( ( '<' '<' )=>t1= '<' t2= '<' {...}? | ( '>' '>' '>' )=>t1= '>' t2= '>' t3= '>' {...}? | ( '>' '>' )=>t1= '>' t2= '>' {...}?);
     public final Java_JavaP.shiftOp_return shiftOp() throws RecognitionException {
         Java_JavaP.shiftOp_return retval = new Java_JavaP.shiftOp_return();
         retval.start = input.LT(1);
@@ -16120,12 +16123,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 125) ) { return retval; }
-            // JavaP.g:1622:5: ( ( '<' '<' )=>t1= '<' t2= '<' {...}? | ( '>' '>' '>' )=>t1= '>' t2= '>' t3= '>' {...}? | ( '>' '>' )=>t1= '>' t2= '>' {...}?)
+            // JavaP.g:1630:5: ( ( '<' '<' )=>t1= '<' t2= '<' {...}? | ( '>' '>' '>' )=>t1= '>' t2= '>' t3= '>' {...}? | ( '>' '>' )=>t1= '>' t2= '>' {...}?)
             int alt148=3;
             alt148 = dfa148.predict(input);
             switch (alt148) {
                 case 1 :
-                    // JavaP.g:1622:9: ( '<' '<' )=>t1= '<' t2= '<' {...}?
+                    // JavaP.g:1630:9: ( '<' '<' )=>t1= '<' t2= '<' {...}?
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -16148,7 +16151,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1625:9: ( '>' '>' '>' )=>t1= '>' t2= '>' t3= '>' {...}?
+                    // JavaP.g:1633:9: ( '>' '>' '>' )=>t1= '>' t2= '>' t3= '>' {...}?
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -16178,7 +16181,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 3 :
-                    // JavaP.g:1630:9: ( '>' '>' )=>t1= '>' t2= '>' {...}?
+                    // JavaP.g:1638:9: ( '>' '>' )=>t1= '>' t2= '>' {...}?
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -16230,7 +16233,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "additiveExpression"
-    // JavaP.g:1636:1: additiveExpression returns [Expression element] : ex= multiplicativeExpression ( ( '+' | '-' ) exx= multiplicativeExpression )* ;
+    // JavaP.g:1644:1: additiveExpression returns [Expression element] : ex= multiplicativeExpression ( ( '+' | '-' ) exx= multiplicativeExpression )* ;
     public final Java_JavaP.additiveExpression_return additiveExpression() throws RecognitionException {
         Java_JavaP.additiveExpression_return retval = new Java_JavaP.additiveExpression_return();
         retval.start = input.LT(1);
@@ -16250,8 +16253,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         String op = null;
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 126) ) { return retval; }
-            // JavaP.g:1638:5: (ex= multiplicativeExpression ( ( '+' | '-' ) exx= multiplicativeExpression )* )
-            // JavaP.g:1638:9: ex= multiplicativeExpression ( ( '+' | '-' ) exx= multiplicativeExpression )*
+            // JavaP.g:1646:5: (ex= multiplicativeExpression ( ( '+' | '-' ) exx= multiplicativeExpression )* )
+            // JavaP.g:1646:9: ex= multiplicativeExpression ( ( '+' | '-' ) exx= multiplicativeExpression )*
             {
             root_0 = (Object)adaptor.nil();
 
@@ -16264,7 +16267,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             if ( state.backtracking==0 ) {
               check_null(ex.element); retval.element = ex.element;
             }
-            // JavaP.g:1638:92: ( ( '+' | '-' ) exx= multiplicativeExpression )*
+            // JavaP.g:1646:92: ( ( '+' | '-' ) exx= multiplicativeExpression )*
             loop150:
             do {
                 int alt150=2;
@@ -16277,9 +16280,9 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt150) {
             	case 1 :
-            	    // JavaP.g:1638:94: ( '+' | '-' ) exx= multiplicativeExpression
+            	    // JavaP.g:1646:94: ( '+' | '-' ) exx= multiplicativeExpression
             	    {
-            	    // JavaP.g:1638:94: ( '+' | '-' )
+            	    // JavaP.g:1646:94: ( '+' | '-' )
             	    int alt149=2;
             	    int LA149_0 = input.LA(1);
 
@@ -16298,7 +16301,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             	    }
             	    switch (alt149) {
             	        case 1 :
-            	            // JavaP.g:1638:95: '+'
+            	            // JavaP.g:1646:95: '+'
             	            {
             	            char_literal209=(Token)match(input,127,FOLLOW_127_in_additiveExpression8147); if (state.failed) return retval;
             	            if ( state.backtracking==0 ) {
@@ -16312,7 +16315,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             	            }
             	            break;
             	        case 2 :
-            	            // JavaP.g:1638:111: '-'
+            	            // JavaP.g:1646:111: '-'
             	            {
             	            char_literal210=(Token)match(input,128,FOLLOW_128_in_additiveExpression8153); if (state.failed) return retval;
             	            if ( state.backtracking==0 ) {
@@ -16381,7 +16384,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "multiplicativeExpression"
-    // JavaP.g:1646:1: multiplicativeExpression returns [Expression element] : ex= unaryExpression ( ( '*' | '/' | '%' ) exx= unaryExpression )* ;
+    // JavaP.g:1654:1: multiplicativeExpression returns [Expression element] : ex= unaryExpression ( ( '*' | '/' | '%' ) exx= unaryExpression )* ;
     public final Java_JavaP.multiplicativeExpression_return multiplicativeExpression() throws RecognitionException {
         Java_JavaP.multiplicativeExpression_return retval = new Java_JavaP.multiplicativeExpression_return();
         retval.start = input.LT(1);
@@ -16403,8 +16406,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         String op = null;
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 127) ) { return retval; }
-            // JavaP.g:1648:5: (ex= unaryExpression ( ( '*' | '/' | '%' ) exx= unaryExpression )* )
-            // JavaP.g:1648:9: ex= unaryExpression ( ( '*' | '/' | '%' ) exx= unaryExpression )*
+            // JavaP.g:1656:5: (ex= unaryExpression ( ( '*' | '/' | '%' ) exx= unaryExpression )* )
+            // JavaP.g:1656:9: ex= unaryExpression ( ( '*' | '/' | '%' ) exx= unaryExpression )*
             {
             root_0 = (Object)adaptor.nil();
 
@@ -16417,7 +16420,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             if ( state.backtracking==0 ) {
               check_null(ex.element); retval.element = ex.element;
             }
-            // JavaP.g:1648:83: ( ( '*' | '/' | '%' ) exx= unaryExpression )*
+            // JavaP.g:1656:83: ( ( '*' | '/' | '%' ) exx= unaryExpression )*
             loop152:
             do {
                 int alt152=2;
@@ -16430,9 +16433,9 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt152) {
             	case 1 :
-            	    // JavaP.g:1648:85: ( '*' | '/' | '%' ) exx= unaryExpression
+            	    // JavaP.g:1656:85: ( '*' | '/' | '%' ) exx= unaryExpression
             	    {
-            	    // JavaP.g:1648:85: ( '*' | '/' | '%' )
+            	    // JavaP.g:1656:85: ( '*' | '/' | '%' )
             	    int alt151=3;
             	    switch ( input.LA(1) ) {
             	    case 52:
@@ -16460,7 +16463,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
             	    switch (alt151) {
             	        case 1 :
-            	            // JavaP.g:1648:87: '*'
+            	            // JavaP.g:1656:87: '*'
             	            {
             	            char_literal211=(Token)match(input,52,FOLLOW_52_in_multiplicativeExpression8205); if (state.failed) return retval;
             	            if ( state.backtracking==0 ) {
@@ -16474,7 +16477,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             	            }
             	            break;
             	        case 2 :
-            	            // JavaP.g:1648:103: '/'
+            	            // JavaP.g:1656:103: '/'
             	            {
             	            char_literal212=(Token)match(input,129,FOLLOW_129_in_multiplicativeExpression8211); if (state.failed) return retval;
             	            if ( state.backtracking==0 ) {
@@ -16488,7 +16491,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             	            }
             	            break;
             	        case 3 :
-            	            // JavaP.g:1648:119: '%'
+            	            // JavaP.g:1656:119: '%'
             	            {
             	            char_literal213=(Token)match(input,130,FOLLOW_130_in_multiplicativeExpression8217); if (state.failed) return retval;
             	            if ( state.backtracking==0 ) {
@@ -16557,7 +16560,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "unaryExpression"
-    // JavaP.g:1656:1: unaryExpression returns [Expression element] : ( '+' ex= unaryExpression | '-' exx= unaryExpression | '++' exxx= unaryExpression | '--' exxxx= unaryExpression | eks= unaryExpressionNotPlusMinus );
+    // JavaP.g:1664:1: unaryExpression returns [Expression element] : ( '+' ex= unaryExpression | '-' exx= unaryExpression | '++' exxx= unaryExpression | '--' exxxx= unaryExpression | eks= unaryExpressionNotPlusMinus );
     public final Java_JavaP.unaryExpression_return unaryExpression() throws RecognitionException {
         Java_JavaP.unaryExpression_return retval = new Java_JavaP.unaryExpression_return();
         retval.start = input.LT(1);
@@ -16586,7 +16589,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 128) ) { return retval; }
-            // JavaP.g:1657:5: ( '+' ex= unaryExpression | '-' exx= unaryExpression | '++' exxx= unaryExpression | '--' exxxx= unaryExpression | eks= unaryExpressionNotPlusMinus )
+            // JavaP.g:1665:5: ( '+' ex= unaryExpression | '-' exx= unaryExpression | '++' exxx= unaryExpression | '--' exxxx= unaryExpression | eks= unaryExpressionNotPlusMinus )
             int alt153=5;
             switch ( input.LA(1) ) {
             case 127:
@@ -16646,7 +16649,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
             switch (alt153) {
                 case 1 :
-                    // JavaP.g:1657:9: '+' ex= unaryExpression
+                    // JavaP.g:1665:9: '+' ex= unaryExpression
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -16670,7 +16673,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1660:9: '-' exx= unaryExpression
+                    // JavaP.g:1668:9: '-' exx= unaryExpression
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -16694,7 +16697,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 3 :
-                    // JavaP.g:1663:9: '++' exxx= unaryExpression
+                    // JavaP.g:1671:9: '++' exxx= unaryExpression
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -16718,7 +16721,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 4 :
-                    // JavaP.g:1666:9: '--' exxxx= unaryExpression
+                    // JavaP.g:1674:9: '--' exxxx= unaryExpression
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -16742,7 +16745,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 5 :
-                    // JavaP.g:1669:9: eks= unaryExpressionNotPlusMinus
+                    // JavaP.g:1677:9: eks= unaryExpressionNotPlusMinus
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -16788,7 +16791,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "unaryExpressionNotPlusMinus"
-    // JavaP.g:1672:1: unaryExpressionNotPlusMinus returns [Expression element] : (a= '~' ex= unaryExpression | b= '!' exx= unaryExpression | castex= castExpression | prim= primary (sel= selector )* (c= '++' | d= '--' )? );
+    // JavaP.g:1680:1: unaryExpressionNotPlusMinus returns [Expression element] : (a= '~' ex= unaryExpression | b= '!' exx= unaryExpression | castex= castExpression | prim= primary (sel= selector )* (c= '++' | d= '--' )? );
     public final Java_JavaP.unaryExpressionNotPlusMinus_return unaryExpressionNotPlusMinus() throws RecognitionException {
         TargetScope_stack.push(new TargetScope_scope());
 
@@ -16823,12 +16826,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 129) ) { return retval; }
-            // JavaP.g:1678:5: (a= '~' ex= unaryExpression | b= '!' exx= unaryExpression | castex= castExpression | prim= primary (sel= selector )* (c= '++' | d= '--' )? )
+            // JavaP.g:1686:5: (a= '~' ex= unaryExpression | b= '!' exx= unaryExpression | castex= castExpression | prim= primary (sel= selector )* (c= '++' | d= '--' )? )
             int alt156=4;
             alt156 = dfa156.predict(input);
             switch (alt156) {
                 case 1 :
-                    // JavaP.g:1678:9: a= '~' ex= unaryExpression
+                    // JavaP.g:1686:9: a= '~' ex= unaryExpression
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -16856,7 +16859,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1683:9: b= '!' exx= unaryExpression
+                    // JavaP.g:1691:9: b= '!' exx= unaryExpression
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -16884,7 +16887,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 3 :
-                    // JavaP.g:1688:9: castex= castExpression
+                    // JavaP.g:1696:9: castex= castExpression
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -16901,7 +16904,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 4 :
-                    // JavaP.g:1689:9: prim= primary (sel= selector )* (c= '++' | d= '--' )?
+                    // JavaP.g:1697:9: prim= primary (sel= selector )* (c= '++' | d= '--' )?
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -16919,7 +16922,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                                   ((TargetScope_scope)TargetScope_stack.peek()).start = start;
                                  
                     }
-                    // JavaP.g:1696:9: (sel= selector )*
+                    // JavaP.g:1704:9: (sel= selector )*
                     loop154:
                     do {
                         int alt154=2;
@@ -16932,7 +16935,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                         switch (alt154) {
                     	case 1 :
-                    	    // JavaP.g:1696:10: sel= selector
+                    	    // JavaP.g:1704:10: sel= selector
                     	    {
                     	    pushFollow(FOLLOW_selector_in_unaryExpressionNotPlusMinus8453);
                     	    sel=selector();
@@ -16956,7 +16959,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                         }
                     } while (true);
 
-                    // JavaP.g:1703:9: (c= '++' | d= '--' )?
+                    // JavaP.g:1711:9: (c= '++' | d= '--' )?
                     int alt155=3;
                     int LA155_0 = input.LA(1);
 
@@ -16968,7 +16971,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     switch (alt155) {
                         case 1 :
-                            // JavaP.g:1704:12: c= '++'
+                            // JavaP.g:1712:12: c= '++'
                             {
                             c=(Token)match(input,131,FOLLOW_131_in_unaryExpressionNotPlusMinus8502); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
@@ -16984,7 +16987,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                             }
                             break;
                         case 2 :
-                            // JavaP.g:1707:12: d= '--'
+                            // JavaP.g:1715:12: d= '--'
                             {
                             d=(Token)match(input,132,FOLLOW_132_in_unaryExpressionNotPlusMinus8519); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
@@ -17037,7 +17040,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "selector"
-    // JavaP.g:1716:1: selector returns [Expression element] : ( '.' name= identifierRule (args= arguments )? | '.' thiskw= 'this' | '.' spkw= 'super' supsuf= superSuffix | '.' newkw= 'new' in= innerCreator | '[' arrex= expression bracket= ']' );
+    // JavaP.g:1724:1: selector returns [Expression element] : ( '.' name= identifierRule (args= arguments )? | '.' thiskw= 'this' | '.' spkw= 'super' supsuf= superSuffix | '.' newkw= 'new' in= innerCreator | '[' arrex= expression bracket= ']' );
     public final Java_JavaP.selector_return selector() throws RecognitionException {
         Java_JavaP.selector_return retval = new Java_JavaP.selector_return();
         retval.start = input.LT(1);
@@ -17081,7 +17084,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 130) ) { return retval; }
-            // JavaP.g:1722:2: ( '.' name= identifierRule (args= arguments )? | '.' thiskw= 'this' | '.' spkw= 'super' supsuf= superSuffix | '.' newkw= 'new' in= innerCreator | '[' arrex= expression bracket= ']' )
+            // JavaP.g:1730:2: ( '.' name= identifierRule (args= arguments )? | '.' thiskw= 'this' | '.' spkw= 'super' supsuf= superSuffix | '.' newkw= 'new' in= innerCreator | '[' arrex= expression bracket= ']' )
             int alt158=5;
             int LA158_0 = input.LA(1);
 
@@ -17128,7 +17131,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             }
             switch (alt158) {
                 case 1 :
-                    // JavaP.g:1723:2: '.' name= identifierRule (args= arguments )?
+                    // JavaP.g:1731:2: '.' name= identifierRule (args= arguments )?
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -17149,7 +17152,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                       	         stop=name.start;
                       	        
                     }
-                    // JavaP.g:1728:6: (args= arguments )?
+                    // JavaP.g:1736:6: (args= arguments )?
                     int alt157=2;
                     int LA157_0 = input.LA(1);
 
@@ -17158,7 +17161,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     switch (alt157) {
                         case 1 :
-                            // JavaP.g:1728:7: args= arguments
+                            // JavaP.g:1736:7: args= arguments
                             {
                             pushFollow(FOLLOW_arguments_in_selector8583);
                             args=arguments();
@@ -17185,7 +17188,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1734:9: '.' thiskw= 'this'
+                    // JavaP.g:1742:9: '.' thiskw= 'this'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -17206,7 +17209,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 3 :
-                    // JavaP.g:1735:9: '.' spkw= 'super' supsuf= superSuffix
+                    // JavaP.g:1743:9: '.' spkw= 'super' supsuf= superSuffix
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -17240,7 +17243,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 4 :
-                    // JavaP.g:1745:9: '.' newkw= 'new' in= innerCreator
+                    // JavaP.g:1753:9: '.' newkw= 'new' in= innerCreator
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -17269,7 +17272,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 5 :
-                    // JavaP.g:1748:9: '[' arrex= expression bracket= ']'
+                    // JavaP.g:1756:9: '[' arrex= expression bracket= ']'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -17328,7 +17331,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "castExpression"
-    // JavaP.g:1755:1: castExpression returns [Expression element] : ( '(' tref= primitiveType ')' unex= unaryExpression | '(' treff= type ')' unexx= unaryExpressionNotPlusMinus );
+    // JavaP.g:1763:1: castExpression returns [Expression element] : ( '(' tref= primitiveType ')' unex= unaryExpression | '(' treff= type ')' unexx= unaryExpressionNotPlusMinus );
     public final Java_JavaP.castExpression_return castExpression() throws RecognitionException {
         Java_JavaP.castExpression_return retval = new Java_JavaP.castExpression_return();
         retval.start = input.LT(1);
@@ -17355,7 +17358,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 131) ) { return retval; }
-            // JavaP.g:1757:5: ( '(' tref= primitiveType ')' unex= unaryExpression | '(' treff= type ')' unexx= unaryExpressionNotPlusMinus )
+            // JavaP.g:1765:5: ( '(' tref= primitiveType ')' unex= unaryExpression | '(' treff= type ')' unexx= unaryExpressionNotPlusMinus )
             int alt159=2;
             int LA159_0 = input.LA(1);
 
@@ -17385,7 +17388,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             }
             switch (alt159) {
                 case 1 :
-                    // JavaP.g:1757:8: '(' tref= primitiveType ')' unex= unaryExpression
+                    // JavaP.g:1765:8: '(' tref= primitiveType ')' unex= unaryExpression
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -17418,7 +17421,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1758:8: '(' treff= type ')' unexx= unaryExpressionNotPlusMinus
+                    // JavaP.g:1766:8: '(' treff= type ')' unexx= unaryExpressionNotPlusMinus
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -17483,7 +17486,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "primary"
-    // JavaP.g:1761:1: primary returns [Expression element] : (parex= parExpression | rubex= identifierSuffixRubbush | skw= 'super' supsuf= superSuffix | nt= nonTargetPrimary | nkw= 'new' cr= creator | morerubex= moreidentifierRuleSuffixRubbish | vt= voidType '.' clkw= 'class' | tref= type '.' clkww= 'class' );
+    // JavaP.g:1769:1: primary returns [Expression element] : (parex= parExpression | rubex= identifierSuffixRubbush | skw= 'super' supsuf= superSuffix | nt= nonTargetPrimary | nkw= 'new' cr= creator | morerubex= moreidentifierRuleSuffixRubbish | vt= voidType '.' clkw= 'class' | tref= type '.' clkww= 'class' );
     public final Java_JavaP.primary_return primary() throws RecognitionException {
         TargetScope_stack.push(new TargetScope_scope());
 
@@ -17528,12 +17531,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 132) ) { return retval; }
-            // JavaP.g:1770:5: (parex= parExpression | rubex= identifierSuffixRubbush | skw= 'super' supsuf= superSuffix | nt= nonTargetPrimary | nkw= 'new' cr= creator | morerubex= moreidentifierRuleSuffixRubbish | vt= voidType '.' clkw= 'class' | tref= type '.' clkww= 'class' )
+            // JavaP.g:1778:5: (parex= parExpression | rubex= identifierSuffixRubbush | skw= 'super' supsuf= superSuffix | nt= nonTargetPrimary | nkw= 'new' cr= creator | morerubex= moreidentifierRuleSuffixRubbish | vt= voidType '.' clkw= 'class' | tref= type '.' clkww= 'class' )
             int alt160=8;
             alt160 = dfa160.predict(input);
             switch (alt160) {
                 case 1 :
-                    // JavaP.g:1770:9: parex= parExpression
+                    // JavaP.g:1778:9: parex= parExpression
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -17550,7 +17553,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1771:9: rubex= identifierSuffixRubbush
+                    // JavaP.g:1779:9: rubex= identifierSuffixRubbush
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -17567,7 +17570,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 3 :
-                    // JavaP.g:1772:10: skw= 'super' supsuf= superSuffix
+                    // JavaP.g:1780:10: skw= 'super' supsuf= superSuffix
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -17600,7 +17603,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 4 :
-                    // JavaP.g:1783:9: nt= nonTargetPrimary
+                    // JavaP.g:1791:9: nt= nonTargetPrimary
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -17617,7 +17620,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 5 :
-                    // JavaP.g:1784:9: nkw= 'new' cr= creator
+                    // JavaP.g:1792:9: nkw= 'new' cr= creator
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -17642,7 +17645,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 6 :
-                    // JavaP.g:1785:9: morerubex= moreidentifierRuleSuffixRubbish
+                    // JavaP.g:1793:9: morerubex= moreidentifierRuleSuffixRubbish
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -17659,7 +17662,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 7 :
-                    // JavaP.g:1786:9: vt= voidType '.' clkw= 'class'
+                    // JavaP.g:1794:9: vt= voidType '.' clkw= 'class'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -17686,7 +17689,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 8 :
-                    // JavaP.g:1787:9: tref= type '.' clkww= 'class'
+                    // JavaP.g:1795:9: tref= type '.' clkww= 'class'
                     {
                     root_0 = (Object)adaptor.nil();
 
@@ -17749,7 +17752,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "nonTargetPrimary"
-    // JavaP.g:1790:1: nonTargetPrimary returns [Expression element] : lit= literal ;
+    // JavaP.g:1798:1: nonTargetPrimary returns [Expression element] : lit= literal ;
     public final Java_JavaP.nonTargetPrimary_return nonTargetPrimary() throws RecognitionException {
         Java_JavaP.nonTargetPrimary_return retval = new Java_JavaP.nonTargetPrimary_return();
         retval.start = input.LT(1);
@@ -17762,8 +17765,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 133) ) { return retval; }
-            // JavaP.g:1791:4: (lit= literal )
-            // JavaP.g:1792:6: lit= literal
+            // JavaP.g:1799:4: (lit= literal )
+            // JavaP.g:1800:6: lit= literal
             {
             root_0 = (Object)adaptor.nil();
 
@@ -17807,7 +17810,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "moreidentifierRuleSuffixRubbish"
-    // JavaP.g:1795:1: moreidentifierRuleSuffixRubbish returns [Expression element] : id= identifierRule ( '.' idx= identifierRule )* ( ( '[' ']' )+ '.' 'class' | arr= arrayAccessSuffixRubbish | arg= argumentsSuffixRubbish | '.' clkw= 'class' | '.' gen= explicitGenericInvocation | '.' thiskw= 'this' | '.' supkw= 'super' supsuf= superSuffix | '.' newkw= 'new' in= innerCreator )? ;
+    // JavaP.g:1803:1: moreidentifierRuleSuffixRubbish returns [Expression element] : id= identifierRule ( '.' idx= identifierRule )* ( ( '[' ']' )+ '.' czkw= 'class' | arr= arrayAccessSuffixRubbish | arg= argumentsSuffixRubbish | '.' clkw= 'class' | '.' gen= explicitGenericInvocation | '.' thiskw= 'this' | '.' supkw= 'super' supsuf= superSuffix | '.' newkw= 'new' in= innerCreator )? ;
     public final Java_JavaP.moreidentifierRuleSuffixRubbish_return moreidentifierRuleSuffixRubbish() throws RecognitionException {
         TargetScope_stack.push(new TargetScope_scope());
 
@@ -17816,6 +17819,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         int moreidentifierRuleSuffixRubbish_StartIndex = input.index();
         Object root_0 = null;
 
+        Token czkw=null;
         Token clkw=null;
         Token thiskw=null;
         Token supkw=null;
@@ -17824,12 +17828,11 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Token char_literal230=null;
         Token char_literal231=null;
         Token char_literal232=null;
-        Token string_literal233=null;
+        Token char_literal233=null;
         Token char_literal234=null;
         Token char_literal235=null;
         Token char_literal236=null;
         Token char_literal237=null;
-        Token char_literal238=null;
         Java_JavaP.identifierRule_return id = null;
 
         Java_JavaP.identifierRule_return idx = null;
@@ -17845,6 +17848,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.innerCreator_return in = null;
 
 
+        Object czkw_tree=null;
         Object clkw_tree=null;
         Object thiskw_tree=null;
         Object supkw_tree=null;
@@ -17853,21 +17857,21 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Object char_literal230_tree=null;
         Object char_literal231_tree=null;
         Object char_literal232_tree=null;
-        Object string_literal233_tree=null;
+        Object char_literal233_tree=null;
         Object char_literal234_tree=null;
         Object char_literal235_tree=null;
         Object char_literal236_tree=null;
         Object char_literal237_tree=null;
-        Object char_literal238_tree=null;
 
 
         Token stop = null;
         CrossReferenceTarget scopeTarget = null;
+        int zzArrayDimension = 0;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 134) ) { return retval; }
-            // JavaP.g:1809:2: (id= identifierRule ( '.' idx= identifierRule )* ( ( '[' ']' )+ '.' 'class' | arr= arrayAccessSuffixRubbish | arg= argumentsSuffixRubbish | '.' clkw= 'class' | '.' gen= explicitGenericInvocation | '.' thiskw= 'this' | '.' supkw= 'super' supsuf= superSuffix | '.' newkw= 'new' in= innerCreator )? )
-            // JavaP.g:1809:4: id= identifierRule ( '.' idx= identifierRule )* ( ( '[' ']' )+ '.' 'class' | arr= arrayAccessSuffixRubbish | arg= argumentsSuffixRubbish | '.' clkw= 'class' | '.' gen= explicitGenericInvocation | '.' thiskw= 'this' | '.' supkw= 'super' supsuf= superSuffix | '.' newkw= 'new' in= innerCreator )?
+            // JavaP.g:1818:2: (id= identifierRule ( '.' idx= identifierRule )* ( ( '[' ']' )+ '.' czkw= 'class' | arr= arrayAccessSuffixRubbish | arg= argumentsSuffixRubbish | '.' clkw= 'class' | '.' gen= explicitGenericInvocation | '.' thiskw= 'this' | '.' supkw= 'super' supsuf= superSuffix | '.' newkw= 'new' in= innerCreator )? )
+            // JavaP.g:1818:4: id= identifierRule ( '.' idx= identifierRule )* ( ( '[' ']' )+ '.' czkw= 'class' | arr= arrayAccessSuffixRubbish | arg= argumentsSuffixRubbish | '.' clkw= 'class' | '.' gen= explicitGenericInvocation | '.' thiskw= 'this' | '.' supkw= 'super' supsuf= superSuffix | '.' newkw= 'new' in= innerCreator )?
             {
             root_0 = (Object)adaptor.nil();
 
@@ -17885,7 +17889,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
               	            //setLocation(((TargetScope_scope)TargetScope_stack.peek()).target,((TargetScope_scope)TargetScope_stack.peek()).start,stop);
               	            
             }
-            // JavaP.g:1816:4: ( '.' idx= identifierRule )*
+            // JavaP.g:1825:4: ( '.' idx= identifierRule )*
             loop161:
             do {
                 int alt161=2;
@@ -17910,7 +17914,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt161) {
             	case 1 :
-            	    // JavaP.g:1816:5: '.' idx= identifierRule
+            	    // JavaP.g:1825:5: '.' idx= identifierRule
             	    {
             	    char_literal229=(Token)match(input,51,FOLLOW_51_in_moreidentifierRuleSuffixRubbish9034); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
@@ -17945,14 +17949,14 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
               	 //The variable reference is only returned if none of the following subrules match.
               	
             }
-            // JavaP.g:1827:1: ( ( '[' ']' )+ '.' 'class' | arr= arrayAccessSuffixRubbish | arg= argumentsSuffixRubbish | '.' clkw= 'class' | '.' gen= explicitGenericInvocation | '.' thiskw= 'this' | '.' supkw= 'super' supsuf= superSuffix | '.' newkw= 'new' in= innerCreator )?
+            // JavaP.g:1836:1: ( ( '[' ']' )+ '.' czkw= 'class' | arr= arrayAccessSuffixRubbish | arg= argumentsSuffixRubbish | '.' clkw= 'class' | '.' gen= explicitGenericInvocation | '.' thiskw= 'this' | '.' supkw= 'super' supsuf= superSuffix | '.' newkw= 'new' in= innerCreator )?
             int alt163=9;
             alt163 = dfa163.predict(input);
             switch (alt163) {
                 case 1 :
-                    // JavaP.g:1827:9: ( '[' ']' )+ '.' 'class'
+                    // JavaP.g:1836:9: ( '[' ']' )+ '.' czkw= 'class'
                     {
-                    // JavaP.g:1827:9: ( '[' ']' )+
+                    // JavaP.g:1836:9: ( '[' ']' )+
                     int cnt162=0;
                     loop162:
                     do {
@@ -17966,7 +17970,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                         switch (alt162) {
                     	case 1 :
-                    	    // JavaP.g:1827:10: '[' ']'
+                    	    // JavaP.g:1836:10: '[' ']'
                     	    {
                     	    char_literal230=(Token)match(input,70,FOLLOW_70_in_moreidentifierRuleSuffixRubbish9068); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
@@ -17977,6 +17981,9 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     	    if ( state.backtracking==0 ) {
                     	    char_literal231_tree = (Object)adaptor.create(char_literal231);
                     	    adaptor.addChild(root_0, char_literal231_tree);
+                    	    }
+                    	    if ( state.backtracking==0 ) {
+                    	      zzArrayDimension++; 
                     	    }
 
                     	    }
@@ -17992,23 +17999,30 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                         cnt162++;
                     } while (true);
 
-                    char_literal232=(Token)match(input,51,FOLLOW_51_in_moreidentifierRuleSuffixRubbish9074); if (state.failed) return retval;
+                    char_literal232=(Token)match(input,51,FOLLOW_51_in_moreidentifierRuleSuffixRubbish9077); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal232_tree = (Object)adaptor.create(char_literal232);
                     adaptor.addChild(root_0, char_literal232_tree);
                     }
-                    string_literal233=(Token)match(input,59,FOLLOW_59_in_moreidentifierRuleSuffixRubbish9076); if (state.failed) return retval;
+                    czkw=(Token)match(input,59,FOLLOW_59_in_moreidentifierRuleSuffixRubbish9081); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal233_tree = (Object)adaptor.create(string_literal233);
-                    adaptor.addChild(root_0, string_literal233_tree);
+                    czkw_tree = (Object)adaptor.create(czkw);
+                    adaptor.addChild(root_0, czkw_tree);
+                    }
+                    if ( state.backtracking==0 ) {
+
+                      retval.element.removeAllMetadata();
+                      retval.element = new ClassLiteral(new ArrayTypeReference(createTypeReference((NamedTarget)((TargetScope_scope)TargetScope_stack.peek()).target), zzArrayDimension));
+                      setLocation(retval.element, ((TargetScope_scope)TargetScope_stack.peek()).start, czkw);
+                             
                     }
 
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1829:9: arr= arrayAccessSuffixRubbish
+                    // JavaP.g:1842:9: arr= arrayAccessSuffixRubbish
                     {
-                    pushFollow(FOLLOW_arrayAccessSuffixRubbish_in_moreidentifierRuleSuffixRubbish9094);
+                    pushFollow(FOLLOW_arrayAccessSuffixRubbish_in_moreidentifierRuleSuffixRubbish9101);
                     arr=arrayAccessSuffixRubbish();
 
                     state._fsp--;
@@ -18021,9 +18035,9 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 3 :
-                    // JavaP.g:1830:9: arg= argumentsSuffixRubbish
+                    // JavaP.g:1843:9: arg= argumentsSuffixRubbish
                     {
-                    pushFollow(FOLLOW_argumentsSuffixRubbish_in_moreidentifierRuleSuffixRubbish9108);
+                    pushFollow(FOLLOW_argumentsSuffixRubbish_in_moreidentifierRuleSuffixRubbish9115);
                     arg=argumentsSuffixRubbish();
 
                     state._fsp--;
@@ -18038,14 +18052,14 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 4 :
-                    // JavaP.g:1833:9: '.' clkw= 'class'
+                    // JavaP.g:1846:9: '.' clkw= 'class'
                     {
-                    char_literal234=(Token)match(input,51,FOLLOW_51_in_moreidentifierRuleSuffixRubbish9121); if (state.failed) return retval;
+                    char_literal233=(Token)match(input,51,FOLLOW_51_in_moreidentifierRuleSuffixRubbish9128); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal234_tree = (Object)adaptor.create(char_literal234);
-                    adaptor.addChild(root_0, char_literal234_tree);
+                    char_literal233_tree = (Object)adaptor.create(char_literal233);
+                    adaptor.addChild(root_0, char_literal233_tree);
                     }
-                    clkw=(Token)match(input,59,FOLLOW_59_in_moreidentifierRuleSuffixRubbish9125); if (state.failed) return retval;
+                    clkw=(Token)match(input,59,FOLLOW_59_in_moreidentifierRuleSuffixRubbish9132); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     clkw_tree = (Object)adaptor.create(clkw);
                     adaptor.addChild(root_0, clkw_tree);
@@ -18060,14 +18074,14 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 5 :
-                    // JavaP.g:1838:9: '.' gen= explicitGenericInvocation
+                    // JavaP.g:1851:9: '.' gen= explicitGenericInvocation
                     {
-                    char_literal235=(Token)match(input,51,FOLLOW_51_in_moreidentifierRuleSuffixRubbish9146); if (state.failed) return retval;
+                    char_literal234=(Token)match(input,51,FOLLOW_51_in_moreidentifierRuleSuffixRubbish9153); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal235_tree = (Object)adaptor.create(char_literal235);
-                    adaptor.addChild(root_0, char_literal235_tree);
+                    char_literal234_tree = (Object)adaptor.create(char_literal234);
+                    adaptor.addChild(root_0, char_literal234_tree);
                     }
-                    pushFollow(FOLLOW_explicitGenericInvocation_in_moreidentifierRuleSuffixRubbish9150);
+                    pushFollow(FOLLOW_explicitGenericInvocation_in_moreidentifierRuleSuffixRubbish9157);
                     gen=explicitGenericInvocation();
 
                     state._fsp--;
@@ -18080,14 +18094,14 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 6 :
-                    // JavaP.g:1839:9: '.' thiskw= 'this'
+                    // JavaP.g:1852:9: '.' thiskw= 'this'
                     {
-                    char_literal236=(Token)match(input,51,FOLLOW_51_in_moreidentifierRuleSuffixRubbish9163); if (state.failed) return retval;
+                    char_literal235=(Token)match(input,51,FOLLOW_51_in_moreidentifierRuleSuffixRubbish9170); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal236_tree = (Object)adaptor.create(char_literal236);
-                    adaptor.addChild(root_0, char_literal236_tree);
+                    char_literal235_tree = (Object)adaptor.create(char_literal235);
+                    adaptor.addChild(root_0, char_literal235_tree);
                     }
-                    thiskw=(Token)match(input,93,FOLLOW_93_in_moreidentifierRuleSuffixRubbish9167); if (state.failed) return retval;
+                    thiskw=(Token)match(input,93,FOLLOW_93_in_moreidentifierRuleSuffixRubbish9174); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     thiskw_tree = (Object)adaptor.create(thiskw);
                     adaptor.addChild(root_0, thiskw_tree);
@@ -18103,19 +18117,19 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 7 :
-                    // JavaP.g:1845:9: '.' supkw= 'super' supsuf= superSuffix
+                    // JavaP.g:1858:9: '.' supkw= 'super' supsuf= superSuffix
                     {
-                    char_literal237=(Token)match(input,51,FOLLOW_51_in_moreidentifierRuleSuffixRubbish9187); if (state.failed) return retval;
+                    char_literal236=(Token)match(input,51,FOLLOW_51_in_moreidentifierRuleSuffixRubbish9194); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal237_tree = (Object)adaptor.create(char_literal237);
-                    adaptor.addChild(root_0, char_literal237_tree);
+                    char_literal236_tree = (Object)adaptor.create(char_literal236);
+                    adaptor.addChild(root_0, char_literal236_tree);
                     }
-                    supkw=(Token)match(input,89,FOLLOW_89_in_moreidentifierRuleSuffixRubbish9191); if (state.failed) return retval;
+                    supkw=(Token)match(input,89,FOLLOW_89_in_moreidentifierRuleSuffixRubbish9198); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     supkw_tree = (Object)adaptor.create(supkw);
                     adaptor.addChild(root_0, supkw_tree);
                     }
-                    pushFollow(FOLLOW_superSuffix_in_moreidentifierRuleSuffixRubbish9207);
+                    pushFollow(FOLLOW_superSuffix_in_moreidentifierRuleSuffixRubbish9214);
                     supsuf=superSuffix();
 
                     state._fsp--;
@@ -18135,19 +18149,19 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 8 :
-                    // JavaP.g:1854:9: '.' newkw= 'new' in= innerCreator
+                    // JavaP.g:1867:9: '.' newkw= 'new' in= innerCreator
                     {
-                    char_literal238=(Token)match(input,51,FOLLOW_51_in_moreidentifierRuleSuffixRubbish9219); if (state.failed) return retval;
+                    char_literal237=(Token)match(input,51,FOLLOW_51_in_moreidentifierRuleSuffixRubbish9226); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal238_tree = (Object)adaptor.create(char_literal238);
-                    adaptor.addChild(root_0, char_literal238_tree);
+                    char_literal237_tree = (Object)adaptor.create(char_literal237);
+                    adaptor.addChild(root_0, char_literal237_tree);
                     }
-                    newkw=(Token)match(input,135,FOLLOW_135_in_moreidentifierRuleSuffixRubbish9223); if (state.failed) return retval;
+                    newkw=(Token)match(input,135,FOLLOW_135_in_moreidentifierRuleSuffixRubbish9230); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     newkw_tree = (Object)adaptor.create(newkw);
                     adaptor.addChild(root_0, newkw_tree);
                     }
-                    pushFollow(FOLLOW_innerCreator_in_moreidentifierRuleSuffixRubbish9227);
+                    pushFollow(FOLLOW_innerCreator_in_moreidentifierRuleSuffixRubbish9234);
                     in=innerCreator();
 
                     state._fsp--;
@@ -18205,7 +18219,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "identifierSuffixRubbush"
-    // JavaP.g:1857:1: identifierSuffixRubbush returns [Expression element] : 'this' ( '.' id= identifierRule )* (arr= arrayAccessSuffixRubbish | arg= argumentsSuffixRubbish | '.' 'class' | '.' gen= explicitGenericInvocation | '.' supkw= 'super' supsuf= superSuffix | '.' newkw= 'new' in= innerCreator )? ;
+    // JavaP.g:1870:1: identifierSuffixRubbush returns [Expression element] : 'this' ( '.' id= identifierRule )* (arr= arrayAccessSuffixRubbish | arg= argumentsSuffixRubbish | '.' 'class' | '.' gen= explicitGenericInvocation | '.' supkw= 'super' supsuf= superSuffix | '.' newkw= 'new' in= innerCreator )? ;
     public final Java_JavaP.identifierSuffixRubbush_return identifierSuffixRubbush() throws RecognitionException {
         TargetScope_stack.push(new TargetScope_scope());
 
@@ -18216,13 +18230,13 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         Token supkw=null;
         Token newkw=null;
-        Token string_literal239=null;
+        Token string_literal238=null;
+        Token char_literal239=null;
         Token char_literal240=null;
-        Token char_literal241=null;
-        Token string_literal242=null;
+        Token string_literal241=null;
+        Token char_literal242=null;
         Token char_literal243=null;
         Token char_literal244=null;
-        Token char_literal245=null;
         Java_JavaP.identifierRule_return id = null;
 
         Java_JavaP.arrayAccessSuffixRubbish_return arr = null;
@@ -18238,30 +18252,30 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         Object supkw_tree=null;
         Object newkw_tree=null;
-        Object string_literal239_tree=null;
+        Object string_literal238_tree=null;
+        Object char_literal239_tree=null;
         Object char_literal240_tree=null;
-        Object char_literal241_tree=null;
-        Object string_literal242_tree=null;
+        Object string_literal241_tree=null;
+        Object char_literal242_tree=null;
         Object char_literal243_tree=null;
         Object char_literal244_tree=null;
-        Object char_literal245_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 135) ) { return retval; }
-            // JavaP.g:1859:2: ( 'this' ( '.' id= identifierRule )* (arr= arrayAccessSuffixRubbish | arg= argumentsSuffixRubbish | '.' 'class' | '.' gen= explicitGenericInvocation | '.' supkw= 'super' supsuf= superSuffix | '.' newkw= 'new' in= innerCreator )? )
-            // JavaP.g:1859:4: 'this' ( '.' id= identifierRule )* (arr= arrayAccessSuffixRubbish | arg= argumentsSuffixRubbish | '.' 'class' | '.' gen= explicitGenericInvocation | '.' supkw= 'super' supsuf= superSuffix | '.' newkw= 'new' in= innerCreator )?
+            // JavaP.g:1872:2: ( 'this' ( '.' id= identifierRule )* (arr= arrayAccessSuffixRubbish | arg= argumentsSuffixRubbish | '.' 'class' | '.' gen= explicitGenericInvocation | '.' supkw= 'super' supsuf= superSuffix | '.' newkw= 'new' in= innerCreator )? )
+            // JavaP.g:1872:4: 'this' ( '.' id= identifierRule )* (arr= arrayAccessSuffixRubbish | arg= argumentsSuffixRubbish | '.' 'class' | '.' gen= explicitGenericInvocation | '.' supkw= 'super' supsuf= superSuffix | '.' newkw= 'new' in= innerCreator )?
             {
             root_0 = (Object)adaptor.nil();
 
-            string_literal239=(Token)match(input,93,FOLLOW_93_in_identifierSuffixRubbush9251); if (state.failed) return retval;
+            string_literal238=(Token)match(input,93,FOLLOW_93_in_identifierSuffixRubbush9258); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            string_literal239_tree = (Object)adaptor.create(string_literal239);
-            adaptor.addChild(root_0, string_literal239_tree);
+            string_literal238_tree = (Object)adaptor.create(string_literal238);
+            adaptor.addChild(root_0, string_literal238_tree);
             }
             if ( state.backtracking==0 ) {
               ((TargetScope_scope)TargetScope_stack.peek()).target = new ThisLiteral();
             }
-            // JavaP.g:1859:54: ( '.' id= identifierRule )*
+            // JavaP.g:1872:54: ( '.' id= identifierRule )*
             loop164:
             do {
                 int alt164=2;
@@ -18286,14 +18300,14 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt164) {
             	case 1 :
-            	    // JavaP.g:1859:55: '.' id= identifierRule
+            	    // JavaP.g:1872:55: '.' id= identifierRule
             	    {
-            	    char_literal240=(Token)match(input,51,FOLLOW_51_in_identifierSuffixRubbush9255); if (state.failed) return retval;
+            	    char_literal239=(Token)match(input,51,FOLLOW_51_in_identifierSuffixRubbush9262); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal240_tree = (Object)adaptor.create(char_literal240);
-            	    adaptor.addChild(root_0, char_literal240_tree);
+            	    char_literal239_tree = (Object)adaptor.create(char_literal239);
+            	    adaptor.addChild(root_0, char_literal239_tree);
             	    }
-            	    pushFollow(FOLLOW_identifierRule_in_identifierSuffixRubbush9259);
+            	    pushFollow(FOLLOW_identifierRule_in_identifierSuffixRubbush9266);
             	    id=identifierRule();
 
             	    state._fsp--;
@@ -18318,14 +18332,14 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
               	  retval.element = expressionFactory().createNameExpression(((NamedTarget)((TargetScope_scope)TargetScope_stack.peek()).target).name(),cloneTargetOfTarget((NamedTarget)((TargetScope_scope)TargetScope_stack.peek()).target));
               	 }
             }
-            // JavaP.g:1865:4: (arr= arrayAccessSuffixRubbish | arg= argumentsSuffixRubbish | '.' 'class' | '.' gen= explicitGenericInvocation | '.' supkw= 'super' supsuf= superSuffix | '.' newkw= 'new' in= innerCreator )?
+            // JavaP.g:1878:4: (arr= arrayAccessSuffixRubbish | arg= argumentsSuffixRubbish | '.' 'class' | '.' gen= explicitGenericInvocation | '.' supkw= 'super' supsuf= superSuffix | '.' newkw= 'new' in= innerCreator )?
             int alt165=7;
             alt165 = dfa165.predict(input);
             switch (alt165) {
                 case 1 :
-                    // JavaP.g:1866:9: arr= arrayAccessSuffixRubbish
+                    // JavaP.g:1879:9: arr= arrayAccessSuffixRubbish
                     {
-                    pushFollow(FOLLOW_arrayAccessSuffixRubbish_in_identifierSuffixRubbush9283);
+                    pushFollow(FOLLOW_arrayAccessSuffixRubbish_in_identifierSuffixRubbush9290);
                     arr=arrayAccessSuffixRubbish();
 
                     state._fsp--;
@@ -18338,9 +18352,9 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1867:9: arg= argumentsSuffixRubbish
+                    // JavaP.g:1880:9: arg= argumentsSuffixRubbish
                     {
-                    pushFollow(FOLLOW_argumentsSuffixRubbish_in_identifierSuffixRubbush9297);
+                    pushFollow(FOLLOW_argumentsSuffixRubbish_in_identifierSuffixRubbush9304);
                     arg=argumentsSuffixRubbish();
 
                     state._fsp--;
@@ -18353,17 +18367,17 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 3 :
-                    // JavaP.g:1868:9: '.' 'class'
+                    // JavaP.g:1881:9: '.' 'class'
                     {
-                    char_literal241=(Token)match(input,51,FOLLOW_51_in_identifierSuffixRubbush9309); if (state.failed) return retval;
+                    char_literal240=(Token)match(input,51,FOLLOW_51_in_identifierSuffixRubbush9316); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal241_tree = (Object)adaptor.create(char_literal241);
-                    adaptor.addChild(root_0, char_literal241_tree);
+                    char_literal240_tree = (Object)adaptor.create(char_literal240);
+                    adaptor.addChild(root_0, char_literal240_tree);
                     }
-                    string_literal242=(Token)match(input,59,FOLLOW_59_in_identifierSuffixRubbush9311); if (state.failed) return retval;
+                    string_literal241=(Token)match(input,59,FOLLOW_59_in_identifierSuffixRubbush9318); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    string_literal242_tree = (Object)adaptor.create(string_literal242);
-                    adaptor.addChild(root_0, string_literal242_tree);
+                    string_literal241_tree = (Object)adaptor.create(string_literal241);
+                    adaptor.addChild(root_0, string_literal241_tree);
                     }
                     if ( state.backtracking==0 ) {
                       retval.element = new ClassLiteral(createTypeReference((NamedTarget)((TargetScope_scope)TargetScope_stack.peek()).target));
@@ -18372,14 +18386,14 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 4 :
-                    // JavaP.g:1869:9: '.' gen= explicitGenericInvocation
+                    // JavaP.g:1882:9: '.' gen= explicitGenericInvocation
                     {
-                    char_literal243=(Token)match(input,51,FOLLOW_51_in_identifierSuffixRubbush9323); if (state.failed) return retval;
+                    char_literal242=(Token)match(input,51,FOLLOW_51_in_identifierSuffixRubbush9330); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal243_tree = (Object)adaptor.create(char_literal243);
-                    adaptor.addChild(root_0, char_literal243_tree);
+                    char_literal242_tree = (Object)adaptor.create(char_literal242);
+                    adaptor.addChild(root_0, char_literal242_tree);
                     }
-                    pushFollow(FOLLOW_explicitGenericInvocation_in_identifierSuffixRubbush9327);
+                    pushFollow(FOLLOW_explicitGenericInvocation_in_identifierSuffixRubbush9334);
                     gen=explicitGenericInvocation();
 
                     state._fsp--;
@@ -18392,19 +18406,19 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 5 :
-                    // JavaP.g:1870:9: '.' supkw= 'super' supsuf= superSuffix
+                    // JavaP.g:1883:9: '.' supkw= 'super' supsuf= superSuffix
                     {
-                    char_literal244=(Token)match(input,51,FOLLOW_51_in_identifierSuffixRubbush9339); if (state.failed) return retval;
+                    char_literal243=(Token)match(input,51,FOLLOW_51_in_identifierSuffixRubbush9346); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal244_tree = (Object)adaptor.create(char_literal244);
-                    adaptor.addChild(root_0, char_literal244_tree);
+                    char_literal243_tree = (Object)adaptor.create(char_literal243);
+                    adaptor.addChild(root_0, char_literal243_tree);
                     }
-                    supkw=(Token)match(input,89,FOLLOW_89_in_identifierSuffixRubbush9343); if (state.failed) return retval;
+                    supkw=(Token)match(input,89,FOLLOW_89_in_identifierSuffixRubbush9350); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     supkw_tree = (Object)adaptor.create(supkw);
                     adaptor.addChild(root_0, supkw_tree);
                     }
-                    pushFollow(FOLLOW_superSuffix_in_identifierSuffixRubbush9347);
+                    pushFollow(FOLLOW_superSuffix_in_identifierSuffixRubbush9354);
                     supsuf=superSuffix();
 
                     state._fsp--;
@@ -18423,19 +18437,19 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 6 :
-                    // JavaP.g:1877:9: '.' newkw= 'new' in= innerCreator
+                    // JavaP.g:1890:9: '.' newkw= 'new' in= innerCreator
                     {
-                    char_literal245=(Token)match(input,51,FOLLOW_51_in_identifierSuffixRubbush9359); if (state.failed) return retval;
+                    char_literal244=(Token)match(input,51,FOLLOW_51_in_identifierSuffixRubbush9366); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    char_literal245_tree = (Object)adaptor.create(char_literal245);
-                    adaptor.addChild(root_0, char_literal245_tree);
+                    char_literal244_tree = (Object)adaptor.create(char_literal244);
+                    adaptor.addChild(root_0, char_literal244_tree);
                     }
-                    newkw=(Token)match(input,135,FOLLOW_135_in_identifierSuffixRubbush9363); if (state.failed) return retval;
+                    newkw=(Token)match(input,135,FOLLOW_135_in_identifierSuffixRubbush9370); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     newkw_tree = (Object)adaptor.create(newkw);
                     adaptor.addChild(root_0, newkw_tree);
                     }
-                    pushFollow(FOLLOW_innerCreator_in_identifierSuffixRubbush9367);
+                    pushFollow(FOLLOW_innerCreator_in_identifierSuffixRubbush9374);
                     in=innerCreator();
 
                     state._fsp--;
@@ -18483,7 +18497,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "argumentsSuffixRubbish"
-    // JavaP.g:1882:1: argumentsSuffixRubbish returns [MethodInvocation element] : args= arguments ;
+    // JavaP.g:1895:1: argumentsSuffixRubbish returns [MethodInvocation element] : args= arguments ;
     public final Java_JavaP.argumentsSuffixRubbish_return argumentsSuffixRubbish() throws RecognitionException {
         Java_JavaP.argumentsSuffixRubbish_return retval = new Java_JavaP.argumentsSuffixRubbish_return();
         retval.start = input.LT(1);
@@ -18496,12 +18510,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 136) ) { return retval; }
-            // JavaP.g:1884:2: (args= arguments )
-            // JavaP.g:1884:4: args= arguments
+            // JavaP.g:1897:2: (args= arguments )
+            // JavaP.g:1897:4: args= arguments
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_arguments_in_argumentsSuffixRubbish9394);
+            pushFollow(FOLLOW_arguments_in_argumentsSuffixRubbish9401);
             args=arguments();
 
             state._fsp--;
@@ -18556,7 +18570,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "arrayAccessSuffixRubbish"
-    // JavaP.g:1905:1: arrayAccessSuffixRubbish returns [Expression element] : (open= '[' arrex= expression close= ']' )+ ;
+    // JavaP.g:1918:1: arrayAccessSuffixRubbish returns [Expression element] : (open= '[' arrex= expression close= ']' )+ ;
     public final Java_JavaP.arrayAccessSuffixRubbish_return arrayAccessSuffixRubbish() throws RecognitionException {
         Java_JavaP.arrayAccessSuffixRubbish_return retval = new Java_JavaP.arrayAccessSuffixRubbish_return();
         retval.start = input.LT(1);
@@ -18573,15 +18587,15 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 137) ) { return retval; }
-            // JavaP.g:1907:2: ( (open= '[' arrex= expression close= ']' )+ )
-            // JavaP.g:1907:4: (open= '[' arrex= expression close= ']' )+
+            // JavaP.g:1920:2: ( (open= '[' arrex= expression close= ']' )+ )
+            // JavaP.g:1920:4: (open= '[' arrex= expression close= ']' )+
             {
             root_0 = (Object)adaptor.nil();
 
             if ( state.backtracking==0 ) {
               retval.element = new ArrayAccessExpression(expressionFactory().createNameExpression(((NamedTarget)((TargetScope_scope)TargetScope_stack.peek()).target).name(),cloneTargetOfTarget((NamedTarget)((TargetScope_scope)TargetScope_stack.peek()).target)));
             }
-            // JavaP.g:1908:10: (open= '[' arrex= expression close= ']' )+
+            // JavaP.g:1921:10: (open= '[' arrex= expression close= ']' )+
             int cnt166=0;
             loop166:
             do {
@@ -18589,20 +18603,20 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                 alt166 = dfa166.predict(input);
                 switch (alt166) {
             	case 1 :
-            	    // JavaP.g:1908:11: open= '[' arrex= expression close= ']'
+            	    // JavaP.g:1921:11: open= '[' arrex= expression close= ']'
             	    {
-            	    open=(Token)match(input,70,FOLLOW_70_in_arrayAccessSuffixRubbish9440); if (state.failed) return retval;
+            	    open=(Token)match(input,70,FOLLOW_70_in_arrayAccessSuffixRubbish9447); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
             	    open_tree = (Object)adaptor.create(open);
             	    adaptor.addChild(root_0, open_tree);
             	    }
-            	    pushFollow(FOLLOW_expression_in_arrayAccessSuffixRubbish9444);
+            	    pushFollow(FOLLOW_expression_in_arrayAccessSuffixRubbish9451);
             	    arrex=expression();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
             	    if ( state.backtracking==0 ) adaptor.addChild(root_0, arrex.getTree());
-            	    close=(Token)match(input,71,FOLLOW_71_in_arrayAccessSuffixRubbish9448); if (state.failed) return retval;
+            	    close=(Token)match(input,71,FOLLOW_71_in_arrayAccessSuffixRubbish9455); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
             	    close_tree = (Object)adaptor.create(close);
             	    adaptor.addChild(root_0, close_tree);
@@ -18661,7 +18675,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "creator"
-    // JavaP.g:1918:1: creator returns [Expression element] : (targs= nonWildcardTypeArguments tx= createdName (dia= '<' '>' )? restx= classCreatorRest | tt= createdName ( '[' ']' )+ init= arrayInitializer | ttt= createdName ( '[' exx= expression ']' )+ ( '[' ']' )* | t= createdName (diam= '<' '>' )? rest= classCreatorRest );
+    // JavaP.g:1931:1: creator returns [Expression element] : (targs= nonWildcardTypeArguments tx= createdName (dia= '<' '>' )? restx= classCreatorRest | tt= createdName ( '[' ']' )+ init= arrayInitializer | ttt= createdName ( '[' exx= expression ']' )+ ( '[' ']' )* | t= createdName (diam= '<' '>' )? rest= classCreatorRest );
     public final Java_JavaP.creator_return creator() throws RecognitionException {
         Java_JavaP.creator_return retval = new Java_JavaP.creator_return();
         retval.start = input.LT(1);
@@ -18670,6 +18684,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         Token dia=null;
         Token diam=null;
+        Token char_literal245=null;
         Token char_literal246=null;
         Token char_literal247=null;
         Token char_literal248=null;
@@ -18677,7 +18692,6 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Token char_literal250=null;
         Token char_literal251=null;
         Token char_literal252=null;
-        Token char_literal253=null;
         Java_JavaP.nonWildcardTypeArguments_return targs = null;
 
         Java_JavaP.createdName_return tx = null;
@@ -18699,6 +18713,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         Object dia_tree=null;
         Object diam_tree=null;
+        Object char_literal245_tree=null;
         Object char_literal246_tree=null;
         Object char_literal247_tree=null;
         Object char_literal248_tree=null;
@@ -18706,32 +18721,31 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Object char_literal250_tree=null;
         Object char_literal251_tree=null;
         Object char_literal252_tree=null;
-        Object char_literal253_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 138) ) { return retval; }
-            // JavaP.g:1921:5: (targs= nonWildcardTypeArguments tx= createdName (dia= '<' '>' )? restx= classCreatorRest | tt= createdName ( '[' ']' )+ init= arrayInitializer | ttt= createdName ( '[' exx= expression ']' )+ ( '[' ']' )* | t= createdName (diam= '<' '>' )? rest= classCreatorRest )
+            // JavaP.g:1934:5: (targs= nonWildcardTypeArguments tx= createdName (dia= '<' '>' )? restx= classCreatorRest | tt= createdName ( '[' ']' )+ init= arrayInitializer | ttt= createdName ( '[' exx= expression ']' )+ ( '[' ']' )* | t= createdName (diam= '<' '>' )? rest= classCreatorRest )
             int alt172=4;
             alt172 = dfa172.predict(input);
             switch (alt172) {
                 case 1 :
-                    // JavaP.g:1921:9: targs= nonWildcardTypeArguments tx= createdName (dia= '<' '>' )? restx= classCreatorRest
+                    // JavaP.g:1934:9: targs= nonWildcardTypeArguments tx= createdName (dia= '<' '>' )? restx= classCreatorRest
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_nonWildcardTypeArguments_in_creator9503);
+                    pushFollow(FOLLOW_nonWildcardTypeArguments_in_creator9510);
                     targs=nonWildcardTypeArguments();
 
                     state._fsp--;
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, targs.getTree());
-                    pushFollow(FOLLOW_createdName_in_creator9507);
+                    pushFollow(FOLLOW_createdName_in_creator9514);
                     tx=createdName();
 
                     state._fsp--;
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, tx.getTree());
-                    // JavaP.g:1921:55: (dia= '<' '>' )?
+                    // JavaP.g:1934:55: (dia= '<' '>' )?
                     int alt167=2;
                     int LA167_0 = input.LA(1);
 
@@ -18740,17 +18754,17 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     switch (alt167) {
                         case 1 :
-                            // JavaP.g:1921:56: dia= '<' '>'
+                            // JavaP.g:1934:56: dia= '<' '>'
                             {
-                            dia=(Token)match(input,62,FOLLOW_62_in_creator9512); if (state.failed) return retval;
+                            dia=(Token)match(input,62,FOLLOW_62_in_creator9519); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
                             dia_tree = (Object)adaptor.create(dia);
                             adaptor.addChild(root_0, dia_tree);
                             }
-                            char_literal246=(Token)match(input,64,FOLLOW_64_in_creator9513); if (state.failed) return retval;
+                            char_literal245=(Token)match(input,64,FOLLOW_64_in_creator9520); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
-                            char_literal246_tree = (Object)adaptor.create(char_literal246);
-                            adaptor.addChild(root_0, char_literal246_tree);
+                            char_literal245_tree = (Object)adaptor.create(char_literal245);
+                            adaptor.addChild(root_0, char_literal245_tree);
                             }
 
                             }
@@ -18758,7 +18772,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                     }
 
-                    pushFollow(FOLLOW_classCreatorRest_in_creator9519);
+                    pushFollow(FOLLOW_classCreatorRest_in_creator9526);
                     restx=classCreatorRest();
 
                     state._fsp--;
@@ -18776,11 +18790,11 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1928:10: tt= createdName ( '[' ']' )+ init= arrayInitializer
+                    // JavaP.g:1941:10: tt= createdName ( '[' ']' )+ init= arrayInitializer
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_createdName_in_creator9543);
+                    pushFollow(FOLLOW_createdName_in_creator9550);
                     tt=createdName();
 
                     state._fsp--;
@@ -18789,7 +18803,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     if ( state.backtracking==0 ) {
                       retval.element = new ArrayCreationExpression(tt.element);
                     }
-                    // JavaP.g:1929:14: ( '[' ']' )+
+                    // JavaP.g:1942:14: ( '[' ']' )+
                     int cnt168=0;
                     loop168:
                     do {
@@ -18803,17 +18817,17 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                         switch (alt168) {
                     	case 1 :
-                    	    // JavaP.g:1929:15: '[' ']'
+                    	    // JavaP.g:1942:15: '[' ']'
                     	    {
-                    	    char_literal247=(Token)match(input,70,FOLLOW_70_in_creator9561); if (state.failed) return retval;
+                    	    char_literal246=(Token)match(input,70,FOLLOW_70_in_creator9568); if (state.failed) return retval;
+                    	    if ( state.backtracking==0 ) {
+                    	    char_literal246_tree = (Object)adaptor.create(char_literal246);
+                    	    adaptor.addChild(root_0, char_literal246_tree);
+                    	    }
+                    	    char_literal247=(Token)match(input,71,FOLLOW_71_in_creator9570); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
                     	    char_literal247_tree = (Object)adaptor.create(char_literal247);
                     	    adaptor.addChild(root_0, char_literal247_tree);
-                    	    }
-                    	    char_literal248=(Token)match(input,71,FOLLOW_71_in_creator9563); if (state.failed) return retval;
-                    	    if ( state.backtracking==0 ) {
-                    	    char_literal248_tree = (Object)adaptor.create(char_literal248);
-                    	    adaptor.addChild(root_0, char_literal248_tree);
                     	    }
                     	    if ( state.backtracking==0 ) {
                     	      ((ArrayCreationExpression)retval.element).addDimensionInitializer(new EmptyArrayIndex(1));
@@ -18832,7 +18846,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                         cnt168++;
                     } while (true);
 
-                    pushFollow(FOLLOW_arrayInitializer_in_creator9571);
+                    pushFollow(FOLLOW_arrayInitializer_in_creator9578);
                     init=arrayInitializer();
 
                     state._fsp--;
@@ -18845,11 +18859,11 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 3 :
-                    // JavaP.g:1931:10: ttt= createdName ( '[' exx= expression ']' )+ ( '[' ']' )*
+                    // JavaP.g:1944:10: ttt= createdName ( '[' exx= expression ']' )+ ( '[' ']' )*
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_createdName_in_creator9594);
+                    pushFollow(FOLLOW_createdName_in_creator9601);
                     ttt=createdName();
 
                     state._fsp--;
@@ -18858,7 +18872,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     if ( state.backtracking==0 ) {
                       retval.element = new ArrayCreationExpression(ttt.element);
                     }
-                    // JavaP.g:1932:11: ( '[' exx= expression ']' )+
+                    // JavaP.g:1945:11: ( '[' exx= expression ']' )+
                     int cnt169=0;
                     loop169:
                     do {
@@ -18866,23 +18880,23 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                         alt169 = dfa169.predict(input);
                         switch (alt169) {
                     	case 1 :
-                    	    // JavaP.g:1932:12: '[' exx= expression ']'
+                    	    // JavaP.g:1945:12: '[' exx= expression ']'
                     	    {
-                    	    char_literal249=(Token)match(input,70,FOLLOW_70_in_creator9610); if (state.failed) return retval;
+                    	    char_literal248=(Token)match(input,70,FOLLOW_70_in_creator9617); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    char_literal249_tree = (Object)adaptor.create(char_literal249);
-                    	    adaptor.addChild(root_0, char_literal249_tree);
+                    	    char_literal248_tree = (Object)adaptor.create(char_literal248);
+                    	    adaptor.addChild(root_0, char_literal248_tree);
                     	    }
-                    	    pushFollow(FOLLOW_expression_in_creator9614);
+                    	    pushFollow(FOLLOW_expression_in_creator9621);
                     	    exx=expression();
 
                     	    state._fsp--;
                     	    if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) adaptor.addChild(root_0, exx.getTree());
-                    	    char_literal250=(Token)match(input,71,FOLLOW_71_in_creator9616); if (state.failed) return retval;
+                    	    char_literal249=(Token)match(input,71,FOLLOW_71_in_creator9623); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
-                    	    char_literal250_tree = (Object)adaptor.create(char_literal250);
-                    	    adaptor.addChild(root_0, char_literal250_tree);
+                    	    char_literal249_tree = (Object)adaptor.create(char_literal249);
+                    	    adaptor.addChild(root_0, char_literal249_tree);
                     	    }
                     	    if ( state.backtracking==0 ) {
                     	      ((ArrayCreationExpression)retval.element).addDimensionInitializer(new FilledArrayIndex(exx.element));
@@ -18901,7 +18915,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                         cnt169++;
                     } while (true);
 
-                    // JavaP.g:1933:13: ( '[' ']' )*
+                    // JavaP.g:1946:13: ( '[' ']' )*
                     loop170:
                     do {
                         int alt170=2;
@@ -18920,17 +18934,17 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                         switch (alt170) {
                     	case 1 :
-                    	    // JavaP.g:1933:14: '[' ']'
+                    	    // JavaP.g:1946:14: '[' ']'
                     	    {
-                    	    char_literal251=(Token)match(input,70,FOLLOW_70_in_creator9635); if (state.failed) return retval;
+                    	    char_literal250=(Token)match(input,70,FOLLOW_70_in_creator9642); if (state.failed) return retval;
+                    	    if ( state.backtracking==0 ) {
+                    	    char_literal250_tree = (Object)adaptor.create(char_literal250);
+                    	    adaptor.addChild(root_0, char_literal250_tree);
+                    	    }
+                    	    char_literal251=(Token)match(input,71,FOLLOW_71_in_creator9644); if (state.failed) return retval;
                     	    if ( state.backtracking==0 ) {
                     	    char_literal251_tree = (Object)adaptor.create(char_literal251);
                     	    adaptor.addChild(root_0, char_literal251_tree);
-                    	    }
-                    	    char_literal252=(Token)match(input,71,FOLLOW_71_in_creator9637); if (state.failed) return retval;
-                    	    if ( state.backtracking==0 ) {
-                    	    char_literal252_tree = (Object)adaptor.create(char_literal252);
-                    	    adaptor.addChild(root_0, char_literal252_tree);
                     	    }
                     	    if ( state.backtracking==0 ) {
                     	      ((ArrayCreationExpression)retval.element).addDimensionInitializer(new EmptyArrayIndex(1));
@@ -18948,17 +18962,17 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 4 :
-                    // JavaP.g:1934:9: t= createdName (diam= '<' '>' )? rest= classCreatorRest
+                    // JavaP.g:1947:9: t= createdName (diam= '<' '>' )? rest= classCreatorRest
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_createdName_in_creator9653);
+                    pushFollow(FOLLOW_createdName_in_creator9660);
                     t=createdName();
 
                     state._fsp--;
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, t.getTree());
-                    // JavaP.g:1934:23: (diam= '<' '>' )?
+                    // JavaP.g:1947:23: (diam= '<' '>' )?
                     int alt171=2;
                     int LA171_0 = input.LA(1);
 
@@ -18967,17 +18981,17 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     switch (alt171) {
                         case 1 :
-                            // JavaP.g:1934:24: diam= '<' '>'
+                            // JavaP.g:1947:24: diam= '<' '>'
                             {
-                            diam=(Token)match(input,62,FOLLOW_62_in_creator9658); if (state.failed) return retval;
+                            diam=(Token)match(input,62,FOLLOW_62_in_creator9665); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
                             diam_tree = (Object)adaptor.create(diam);
                             adaptor.addChild(root_0, diam_tree);
                             }
-                            char_literal253=(Token)match(input,64,FOLLOW_64_in_creator9659); if (state.failed) return retval;
+                            char_literal252=(Token)match(input,64,FOLLOW_64_in_creator9666); if (state.failed) return retval;
                             if ( state.backtracking==0 ) {
-                            char_literal253_tree = (Object)adaptor.create(char_literal253);
-                            adaptor.addChild(root_0, char_literal253_tree);
+                            char_literal252_tree = (Object)adaptor.create(char_literal252);
+                            adaptor.addChild(root_0, char_literal252_tree);
                             }
 
                             }
@@ -18985,7 +18999,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                     }
 
-                    pushFollow(FOLLOW_classCreatorRest_in_creator9665);
+                    pushFollow(FOLLOW_classCreatorRest_in_creator9672);
                     rest=classCreatorRest();
 
                     state._fsp--;
@@ -19034,7 +19048,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "createdName"
-    // JavaP.g:1943:1: createdName returns [JavaTypeReference element] : (cd= classOrInterfaceType | prim= primitiveType );
+    // JavaP.g:1956:1: createdName returns [JavaTypeReference element] : (cd= classOrInterfaceType | prim= primitiveType );
     public final Java_JavaP.createdName_return createdName() throws RecognitionException {
         Java_JavaP.createdName_return retval = new Java_JavaP.createdName_return();
         retval.start = input.LT(1);
@@ -19049,7 +19063,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 139) ) { return retval; }
-            // JavaP.g:1944:5: (cd= classOrInterfaceType | prim= primitiveType )
+            // JavaP.g:1957:5: (cd= classOrInterfaceType | prim= primitiveType )
             int alt173=2;
             int LA173_0 = input.LA(1);
 
@@ -19068,11 +19082,11 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             }
             switch (alt173) {
                 case 1 :
-                    // JavaP.g:1944:9: cd= classOrInterfaceType
+                    // JavaP.g:1957:9: cd= classOrInterfaceType
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_classOrInterfaceType_in_createdName9702);
+                    pushFollow(FOLLOW_classOrInterfaceType_in_createdName9709);
                     cd=classOrInterfaceType();
 
                     state._fsp--;
@@ -19085,11 +19099,11 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     }
                     break;
                 case 2 :
-                    // JavaP.g:1945:9: prim= primitiveType
+                    // JavaP.g:1958:9: prim= primitiveType
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_primitiveType_in_createdName9716);
+                    pushFollow(FOLLOW_primitiveType_in_createdName9723);
                     prim=primitiveType();
 
                     state._fsp--;
@@ -19131,7 +19145,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "innerCreator"
-    // JavaP.g:1950:1: innerCreator returns [ConstructorInvocation element] : (targs= nonWildcardTypeArguments )? name= identifierRule rest= classCreatorRest ;
+    // JavaP.g:1963:1: innerCreator returns [ConstructorInvocation element] : (targs= nonWildcardTypeArguments )? name= identifierRule rest= classCreatorRest ;
     public final Java_JavaP.innerCreator_return innerCreator() throws RecognitionException {
         Java_JavaP.innerCreator_return retval = new Java_JavaP.innerCreator_return();
         retval.start = input.LT(1);
@@ -19148,12 +19162,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 140) ) { return retval; }
-            // JavaP.g:1951:5: ( (targs= nonWildcardTypeArguments )? name= identifierRule rest= classCreatorRest )
-            // JavaP.g:1951:9: (targs= nonWildcardTypeArguments )? name= identifierRule rest= classCreatorRest
+            // JavaP.g:1964:5: ( (targs= nonWildcardTypeArguments )? name= identifierRule rest= classCreatorRest )
+            // JavaP.g:1964:9: (targs= nonWildcardTypeArguments )? name= identifierRule rest= classCreatorRest
             {
             root_0 = (Object)adaptor.nil();
 
-            // JavaP.g:1951:9: (targs= nonWildcardTypeArguments )?
+            // JavaP.g:1964:9: (targs= nonWildcardTypeArguments )?
             int alt174=2;
             int LA174_0 = input.LA(1);
 
@@ -19162,9 +19176,9 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             }
             switch (alt174) {
                 case 1 :
-                    // JavaP.g:1951:10: targs= nonWildcardTypeArguments
+                    // JavaP.g:1964:10: targs= nonWildcardTypeArguments
                     {
-                    pushFollow(FOLLOW_nonWildcardTypeArguments_in_innerCreator9746);
+                    pushFollow(FOLLOW_nonWildcardTypeArguments_in_innerCreator9753);
                     targs=nonWildcardTypeArguments();
 
                     state._fsp--;
@@ -19176,13 +19190,13 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
             }
 
-            pushFollow(FOLLOW_identifierRule_in_innerCreator9760);
+            pushFollow(FOLLOW_identifierRule_in_innerCreator9767);
             name=identifierRule();
 
             state._fsp--;
             if (state.failed) return retval;
             if ( state.backtracking==0 ) adaptor.addChild(root_0, name.getTree());
-            pushFollow(FOLLOW_classCreatorRest_in_innerCreator9764);
+            pushFollow(FOLLOW_classCreatorRest_in_innerCreator9771);
             rest=classCreatorRest();
 
             state._fsp--;
@@ -19230,7 +19244,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "classCreatorRest"
-    // JavaP.g:1965:1: classCreatorRest returns [ClassCreatorRest element] : args= arguments (body= classBody )? ;
+    // JavaP.g:1978:1: classCreatorRest returns [ClassCreatorRest element] : args= arguments (body= classBody )? ;
     public final Java_JavaP.classCreatorRest_return classCreatorRest() throws RecognitionException {
         Java_JavaP.classCreatorRest_return retval = new Java_JavaP.classCreatorRest_return();
         retval.start = input.LT(1);
@@ -19245,12 +19259,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 141) ) { return retval; }
-            // JavaP.g:1966:5: (args= arguments (body= classBody )? )
-            // JavaP.g:1966:9: args= arguments (body= classBody )?
+            // JavaP.g:1979:5: (args= arguments (body= classBody )? )
+            // JavaP.g:1979:9: args= arguments (body= classBody )?
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_arguments_in_classCreatorRest9800);
+            pushFollow(FOLLOW_arguments_in_classCreatorRest9807);
             args=arguments();
 
             state._fsp--;
@@ -19259,7 +19273,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             if ( state.backtracking==0 ) {
               retval.element = new ClassCreatorRest(args.element);
             }
-            // JavaP.g:1966:78: (body= classBody )?
+            // JavaP.g:1979:78: (body= classBody )?
             int alt175=2;
             int LA175_0 = input.LA(1);
 
@@ -19268,9 +19282,9 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             }
             switch (alt175) {
                 case 1 :
-                    // JavaP.g:1966:79: body= classBody
+                    // JavaP.g:1979:79: body= classBody
                     {
-                    pushFollow(FOLLOW_classBody_in_classCreatorRest9806);
+                    pushFollow(FOLLOW_classBody_in_classCreatorRest9813);
                     body=classBody();
 
                     state._fsp--;
@@ -19316,7 +19330,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "explicitGenericInvocation"
-    // JavaP.g:1970:1: explicitGenericInvocation returns [Expression element] : targs= nonWildcardTypeArguments name= identifierRule args= arguments ;
+    // JavaP.g:1983:1: explicitGenericInvocation returns [Expression element] : targs= nonWildcardTypeArguments name= identifierRule args= arguments ;
     public final Java_JavaP.explicitGenericInvocation_return explicitGenericInvocation() throws RecognitionException {
         Java_JavaP.explicitGenericInvocation_return retval = new Java_JavaP.explicitGenericInvocation_return();
         retval.start = input.LT(1);
@@ -19333,24 +19347,24 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 142) ) { return retval; }
-            // JavaP.g:1971:5: (targs= nonWildcardTypeArguments name= identifierRule args= arguments )
-            // JavaP.g:1971:9: targs= nonWildcardTypeArguments name= identifierRule args= arguments
+            // JavaP.g:1984:5: (targs= nonWildcardTypeArguments name= identifierRule args= arguments )
+            // JavaP.g:1984:9: targs= nonWildcardTypeArguments name= identifierRule args= arguments
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_nonWildcardTypeArguments_in_explicitGenericInvocation9836);
+            pushFollow(FOLLOW_nonWildcardTypeArguments_in_explicitGenericInvocation9843);
             targs=nonWildcardTypeArguments();
 
             state._fsp--;
             if (state.failed) return retval;
             if ( state.backtracking==0 ) adaptor.addChild(root_0, targs.getTree());
-            pushFollow(FOLLOW_identifierRule_in_explicitGenericInvocation9840);
+            pushFollow(FOLLOW_identifierRule_in_explicitGenericInvocation9847);
             name=identifierRule();
 
             state._fsp--;
             if (state.failed) return retval;
             if ( state.backtracking==0 ) adaptor.addChild(root_0, name.getTree());
-            pushFollow(FOLLOW_arguments_in_explicitGenericInvocation9844);
+            pushFollow(FOLLOW_arguments_in_explicitGenericInvocation9851);
             args=arguments();
 
             state._fsp--;
@@ -19393,34 +19407,34 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "nonWildcardTypeArguments"
-    // JavaP.g:1978:1: nonWildcardTypeArguments returns [List<TypeArgument> element] : '<' list= typeList '>' ;
+    // JavaP.g:1991:1: nonWildcardTypeArguments returns [List<TypeArgument> element] : '<' list= typeList '>' ;
     public final Java_JavaP.nonWildcardTypeArguments_return nonWildcardTypeArguments() throws RecognitionException {
         Java_JavaP.nonWildcardTypeArguments_return retval = new Java_JavaP.nonWildcardTypeArguments_return();
         retval.start = input.LT(1);
         int nonWildcardTypeArguments_StartIndex = input.index();
         Object root_0 = null;
 
+        Token char_literal253=null;
         Token char_literal254=null;
-        Token char_literal255=null;
         Java_JavaP.typeList_return list = null;
 
 
+        Object char_literal253_tree=null;
         Object char_literal254_tree=null;
-        Object char_literal255_tree=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 143) ) { return retval; }
-            // JavaP.g:1979:5: ( '<' list= typeList '>' )
-            // JavaP.g:1979:9: '<' list= typeList '>'
+            // JavaP.g:1992:5: ( '<' list= typeList '>' )
+            // JavaP.g:1992:9: '<' list= typeList '>'
             {
             root_0 = (Object)adaptor.nil();
 
-            char_literal254=(Token)match(input,62,FOLLOW_62_in_nonWildcardTypeArguments9879); if (state.failed) return retval;
+            char_literal253=(Token)match(input,62,FOLLOW_62_in_nonWildcardTypeArguments9886); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal254_tree = (Object)adaptor.create(char_literal254);
-            adaptor.addChild(root_0, char_literal254_tree);
+            char_literal253_tree = (Object)adaptor.create(char_literal253);
+            adaptor.addChild(root_0, char_literal253_tree);
             }
-            pushFollow(FOLLOW_typeList_in_nonWildcardTypeArguments9883);
+            pushFollow(FOLLOW_typeList_in_nonWildcardTypeArguments9890);
             list=typeList();
 
             state._fsp--;
@@ -19429,10 +19443,10 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             if ( state.backtracking==0 ) {
               retval.element = new ArrayList<TypeArgument>();for(TypeReference tref:list.element){retval.element.add(java().createEqualityTypeArgument(tref));}
             }
-            char_literal255=(Token)match(input,64,FOLLOW_64_in_nonWildcardTypeArguments9886); if (state.failed) return retval;
+            char_literal254=(Token)match(input,64,FOLLOW_64_in_nonWildcardTypeArguments9893); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal255_tree = (Object)adaptor.create(char_literal255);
-            adaptor.addChild(root_0, char_literal255_tree);
+            char_literal254_tree = (Object)adaptor.create(char_literal254);
+            adaptor.addChild(root_0, char_literal254_tree);
             }
 
             }
@@ -19465,20 +19479,20 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "superSuffix"
-    // JavaP.g:1983:1: superSuffix returns [TargetedExpression element] : '.' name= identifierRule (args= arguments )? ;
+    // JavaP.g:1996:1: superSuffix returns [TargetedExpression element] : '.' name= identifierRule (args= arguments )? ;
     public final Java_JavaP.superSuffix_return superSuffix() throws RecognitionException {
         Java_JavaP.superSuffix_return retval = new Java_JavaP.superSuffix_return();
         retval.start = input.LT(1);
         int superSuffix_StartIndex = input.index();
         Object root_0 = null;
 
-        Token char_literal256=null;
+        Token char_literal255=null;
         Java_JavaP.identifierRule_return name = null;
 
         Java_JavaP.arguments_return args = null;
 
 
-        Object char_literal256_tree=null;
+        Object char_literal255_tree=null;
 
 
            Token start=null;
@@ -19486,17 +19500,17 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 144) ) { return retval; }
-            // JavaP.g:1991:5: ( '.' name= identifierRule (args= arguments )? )
-            // JavaP.g:1993:5: '.' name= identifierRule (args= arguments )?
+            // JavaP.g:2004:5: ( '.' name= identifierRule (args= arguments )? )
+            // JavaP.g:2006:5: '.' name= identifierRule (args= arguments )?
             {
             root_0 = (Object)adaptor.nil();
 
-            char_literal256=(Token)match(input,51,FOLLOW_51_in_superSuffix9932); if (state.failed) return retval;
+            char_literal255=(Token)match(input,51,FOLLOW_51_in_superSuffix9939); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal256_tree = (Object)adaptor.create(char_literal256);
-            adaptor.addChild(root_0, char_literal256_tree);
+            char_literal255_tree = (Object)adaptor.create(char_literal255);
+            adaptor.addChild(root_0, char_literal255_tree);
             }
-            pushFollow(FOLLOW_identifierRule_in_superSuffix9936);
+            pushFollow(FOLLOW_identifierRule_in_superSuffix9943);
             name=identifierRule();
 
             state._fsp--;
@@ -19507,7 +19521,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                                        start = name.start;
                                        stop = name.start;
             }
-            // JavaP.g:1996:9: (args= arguments )?
+            // JavaP.g:2009:9: (args= arguments )?
             int alt176=2;
             int LA176_0 = input.LA(1);
 
@@ -19516,9 +19530,9 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             }
             switch (alt176) {
                 case 1 :
-                    // JavaP.g:1996:10: args= arguments
+                    // JavaP.g:2009:10: args= arguments
                     {
-                    pushFollow(FOLLOW_arguments_in_superSuffix9951);
+                    pushFollow(FOLLOW_arguments_in_superSuffix9958);
                     args=arguments();
 
                     state._fsp--;
@@ -19575,35 +19589,35 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "arguments"
-    // JavaP.g:2005:1: arguments returns [List<Expression> element] : '(' (list= expressionList )? ')' ;
+    // JavaP.g:2018:1: arguments returns [List<Expression> element] : '(' (list= expressionList )? ')' ;
     public final Java_JavaP.arguments_return arguments() throws RecognitionException {
         Java_JavaP.arguments_return retval = new Java_JavaP.arguments_return();
         retval.start = input.LT(1);
         int arguments_StartIndex = input.index();
         Object root_0 = null;
 
+        Token char_literal256=null;
         Token char_literal257=null;
-        Token char_literal258=null;
         Java_JavaP.expressionList_return list = null;
 
 
+        Object char_literal256_tree=null;
         Object char_literal257_tree=null;
-        Object char_literal258_tree=null;
 
         retval.element = new ArrayList<Expression>();
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 145) ) { return retval; }
-            // JavaP.g:2007:5: ( '(' (list= expressionList )? ')' )
-            // JavaP.g:2007:9: '(' (list= expressionList )? ')'
+            // JavaP.g:2020:5: ( '(' (list= expressionList )? ')' )
+            // JavaP.g:2020:9: '(' (list= expressionList )? ')'
             {
             root_0 = (Object)adaptor.nil();
 
-            char_literal257=(Token)match(input,90,FOLLOW_90_in_arguments10011); if (state.failed) return retval;
+            char_literal256=(Token)match(input,90,FOLLOW_90_in_arguments10018); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal257_tree = (Object)adaptor.create(char_literal257);
-            adaptor.addChild(root_0, char_literal257_tree);
+            char_literal256_tree = (Object)adaptor.create(char_literal256);
+            adaptor.addChild(root_0, char_literal256_tree);
             }
-            // JavaP.g:2007:13: (list= expressionList )?
+            // JavaP.g:2020:13: (list= expressionList )?
             int alt177=2;
             int LA177_0 = input.LA(1);
 
@@ -19612,9 +19626,9 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             }
             switch (alt177) {
                 case 1 :
-                    // JavaP.g:2007:14: list= expressionList
+                    // JavaP.g:2020:14: list= expressionList
                     {
-                    pushFollow(FOLLOW_expressionList_in_arguments10016);
+                    pushFollow(FOLLOW_expressionList_in_arguments10023);
                     list=expressionList();
 
                     state._fsp--;
@@ -19629,10 +19643,10 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
             }
 
-            char_literal258=(Token)match(input,91,FOLLOW_91_in_arguments10023); if (state.failed) return retval;
+            char_literal257=(Token)match(input,91,FOLLOW_91_in_arguments10030); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
-            char_literal258_tree = (Object)adaptor.create(char_literal258);
-            adaptor.addChild(root_0, char_literal258_tree);
+            char_literal257_tree = (Object)adaptor.create(char_literal257);
+            adaptor.addChild(root_0, char_literal257_tree);
             }
 
             }
@@ -19878,8 +19892,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.formalParameterDecls_return decls = null;
 
 
-        // JavaP.g:1066:9: (mods= variableModifiers t= type id= variableDeclaratorId ( ',' decls= formalParameterDecls )? )
-        // JavaP.g:1066:9: mods= variableModifiers t= type id= variableDeclaratorId ( ',' decls= formalParameterDecls )?
+        // JavaP.g:1074:9: (mods= variableModifiers t= type id= variableDeclaratorId ( ',' decls= formalParameterDecls )? )
+        // JavaP.g:1074:9: mods= variableModifiers t= type id= variableDeclaratorId ( ',' decls= formalParameterDecls )?
         {
         pushFollow(FOLLOW_variableModifiers_in_synpred108_JavaP4414);
         mods=variableModifiers();
@@ -19896,7 +19910,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
         state._fsp--;
         if (state.failed) return ;
-        // JavaP.g:1067:9: ( ',' decls= formalParameterDecls )?
+        // JavaP.g:1075:9: ( ',' decls= formalParameterDecls )?
         int alt190=2;
         int LA190_0 = input.LA(1);
 
@@ -19905,7 +19919,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         }
         switch (alt190) {
             case 1 :
-                // JavaP.g:1067:10: ',' decls= formalParameterDecls
+                // JavaP.g:1075:10: ',' decls= formalParameterDecls
                 {
                 match(input,63,FOLLOW_63_in_synpred108_JavaP4433); if (state.failed) return ;
                 pushFollow(FOLLOW_formalParameterDecls_in_synpred108_JavaP4437);
@@ -19929,8 +19943,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.explicitConstructorInvocation_return inv = null;
 
 
-        // JavaP.g:1091:11: (inv= explicitConstructorInvocation )
-        // JavaP.g:1091:11: inv= explicitConstructorInvocation
+        // JavaP.g:1099:11: (inv= explicitConstructorInvocation )
+        // JavaP.g:1099:11: inv= explicitConstructorInvocation
         {
         pushFollow(FOLLOW_explicitConstructorInvocation_in_synpred109_JavaP4550);
         inv=explicitConstructorInvocation();
@@ -19947,10 +19961,10 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.arguments_return args = null;
 
 
-        // JavaP.g:1097:9: ( ( nonWildcardTypeArguments )? 'this' args= arguments ';' )
-        // JavaP.g:1097:9: ( nonWildcardTypeArguments )? 'this' args= arguments ';'
+        // JavaP.g:1105:9: ( ( nonWildcardTypeArguments )? 'this' args= arguments ';' )
+        // JavaP.g:1105:9: ( nonWildcardTypeArguments )? 'this' args= arguments ';'
         {
-        // JavaP.g:1097:9: ( nonWildcardTypeArguments )?
+        // JavaP.g:1105:9: ( nonWildcardTypeArguments )?
         int alt191=2;
         int LA191_0 = input.LA(1);
 
@@ -19989,8 +20003,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.annotation_return a = null;
 
 
-        // JavaP.g:1158:10: (a= annotation )
-        // JavaP.g:1158:10: a= annotation
+        // JavaP.g:1166:10: (a= annotation )
+        // JavaP.g:1166:10: a= annotation
         {
         pushFollow(FOLLOW_annotation_in_synpred122_JavaP4894);
         a=annotation();
@@ -20007,8 +20021,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.localVariableDeclarationStatement_return local = null;
 
 
-        // JavaP.g:1255:9: (local= localVariableDeclarationStatement )
-        // JavaP.g:1255:9: local= localVariableDeclarationStatement
+        // JavaP.g:1263:9: (local= localVariableDeclarationStatement )
+        // JavaP.g:1263:9: local= localVariableDeclarationStatement
         {
         pushFollow(FOLLOW_localVariableDeclarationStatement_in_synpred145_JavaP5552);
         local=localVariableDeclarationStatement();
@@ -20025,8 +20039,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.classOrInterfaceDeclaration_return cd = null;
 
 
-        // JavaP.g:1256:9: (cd= classOrInterfaceDeclaration )
-        // JavaP.g:1256:9: cd= classOrInterfaceDeclaration
+        // JavaP.g:1264:9: (cd= classOrInterfaceDeclaration )
+        // JavaP.g:1264:9: cd= classOrInterfaceDeclaration
         {
         pushFollow(FOLLOW_classOrInterfaceDeclaration_in_synpred146_JavaP5566);
         cd=classOrInterfaceDeclaration();
@@ -20044,8 +20058,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.statement_return ifelse = null;
 
 
-        // JavaP.g:1279:72: (elsekey= 'else' ifelse= statement )
-        // JavaP.g:1279:72: elsekey= 'else' ifelse= statement
+        // JavaP.g:1287:72: (elsekey= 'else' ifelse= statement )
+        // JavaP.g:1287:72: elsekey= 'else' ifelse= statement
         {
         elsekey=(Token)match(input,100,FOLLOW_100_in_synpred151_JavaP5782); if (state.failed) return ;
         pushFollow(FOLLOW_statement_in_synpred151_JavaP5786);
@@ -20066,8 +20080,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.block_return trybl = null;
 
 
-        // JavaP.g:1302:11: (cts= catches finkey= 'finally' trybl= block )
-        // JavaP.g:1302:11: cts= catches finkey= 'finally' trybl= block
+        // JavaP.g:1310:11: (cts= catches finkey= 'finally' trybl= block )
+        // JavaP.g:1310:11: cts= catches finkey= 'finally' trybl= block
         {
         pushFollow(FOLLOW_catches_in_synpred157_JavaP5944);
         cts=catches();
@@ -20090,8 +20104,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.catches_return ctss = null;
 
 
-        // JavaP.g:1307:11: (ctss= catches )
-        // JavaP.g:1307:11: ctss= catches
+        // JavaP.g:1315:11: (ctss= catches )
+        // JavaP.g:1315:11: ctss= catches
         {
         pushFollow(FOLLOW_catches_in_synpred158_JavaP5979);
         ctss=catches();
@@ -20108,8 +20122,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.constantExpression_return csexpr = null;
 
 
-        // JavaP.g:1396:9: ( 'case' csexpr= constantExpression ':' )
-        // JavaP.g:1396:9: 'case' csexpr= constantExpression ':'
+        // JavaP.g:1404:9: ( 'case' csexpr= constantExpression ':' )
+        // JavaP.g:1404:9: 'case' csexpr= constantExpression ':'
         {
         match(input,112,FOLLOW_112_in_synpred177_JavaP6688); if (state.failed) return ;
         pushFollow(FOLLOW_constantExpression_in_synpred177_JavaP6692);
@@ -20128,8 +20142,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.enumConstantName_return enumname = null;
 
 
-        // JavaP.g:1397:9: ( 'case' enumname= enumConstantName ':' )
-        // JavaP.g:1397:9: 'case' enumname= enumConstantName ':'
+        // JavaP.g:1405:9: ( 'case' enumname= enumConstantName ':' )
+        // JavaP.g:1405:9: 'case' enumname= enumConstantName ':'
         {
         match(input,112,FOLLOW_112_in_synpred178_JavaP6706); if (state.failed) return ;
         pushFollow(FOLLOW_enumConstantName_in_synpred178_JavaP6710);
@@ -20148,8 +20162,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.enhancedForControl_return enh = null;
 
 
-        // JavaP.g:1404:9: (enh= enhancedForControl )
-        // JavaP.g:1404:9: enh= enhancedForControl
+        // JavaP.g:1412:9: (enh= enhancedForControl )
+        // JavaP.g:1412:9: enh= enhancedForControl
         {
         pushFollow(FOLLOW_enhancedForControl_in_synpred179_JavaP6764);
         enh=enhancedForControl();
@@ -20166,8 +20180,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.localVariableDeclaration_return local = null;
 
 
-        // JavaP.g:1410:9: (local= localVariableDeclaration )
-        // JavaP.g:1410:9: local= localVariableDeclaration
+        // JavaP.g:1418:9: (local= localVariableDeclaration )
+        // JavaP.g:1418:9: local= localVariableDeclaration
         {
         pushFollow(FOLLOW_localVariableDeclaration_in_synpred183_JavaP6824);
         local=localVariableDeclaration();
@@ -20186,8 +20200,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.expression_return exx = null;
 
 
-        // JavaP.g:1457:64: (op= assignmentOperator exx= expression )
-        // JavaP.g:1457:64: op= assignmentOperator exx= expression
+        // JavaP.g:1465:64: (op= assignmentOperator exx= expression )
+        // JavaP.g:1465:64: op= assignmentOperator exx= expression
         {
         pushFollow(FOLLOW_assignmentOperator_in_synpred185_JavaP7106);
         op=assignmentOperator();
@@ -20206,8 +20220,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
     // $ANTLR start synpred195_JavaP
     public final void synpred195_JavaP_fragment() throws RecognitionException {   
-        // JavaP.g:1481:9: ( '<' '<' '=' )
-        // JavaP.g:1481:10: '<' '<' '='
+        // JavaP.g:1489:9: ( '<' '<' '=' )
+        // JavaP.g:1489:10: '<' '<' '='
         {
         match(input,62,FOLLOW_62_in_synpred195_JavaP7241); if (state.failed) return ;
         match(input,62,FOLLOW_62_in_synpred195_JavaP7243); if (state.failed) return ;
@@ -20219,8 +20233,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
     // $ANTLR start synpred196_JavaP
     public final void synpred196_JavaP_fragment() throws RecognitionException {   
-        // JavaP.g:1486:9: ( '>' '>' '>' '=' )
-        // JavaP.g:1486:10: '>' '>' '>' '='
+        // JavaP.g:1494:9: ( '>' '>' '>' '=' )
+        // JavaP.g:1494:10: '>' '>' '>' '='
         {
         match(input,64,FOLLOW_64_in_synpred196_JavaP7280); if (state.failed) return ;
         match(input,64,FOLLOW_64_in_synpred196_JavaP7282); if (state.failed) return ;
@@ -20233,8 +20247,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
     // $ANTLR start synpred197_JavaP
     public final void synpred197_JavaP_fragment() throws RecognitionException {   
-        // JavaP.g:1493:9: ( '>' '>' '=' )
-        // JavaP.g:1493:10: '>' '>' '='
+        // JavaP.g:1501:9: ( '>' '>' '=' )
+        // JavaP.g:1501:10: '>' '>' '='
         {
         match(input,64,FOLLOW_64_in_synpred197_JavaP7325); if (state.failed) return ;
         match(input,64,FOLLOW_64_in_synpred197_JavaP7327); if (state.failed) return ;
@@ -20246,8 +20260,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
     // $ANTLR start synpred208_JavaP
     public final void synpred208_JavaP_fragment() throws RecognitionException {   
-        // JavaP.g:1601:9: ( '<' '=' )
-        // JavaP.g:1601:10: '<' '='
+        // JavaP.g:1609:9: ( '<' '=' )
+        // JavaP.g:1609:10: '<' '='
         {
         match(input,62,FOLLOW_62_in_synpred208_JavaP7871); if (state.failed) return ;
         match(input,73,FOLLOW_73_in_synpred208_JavaP7873); if (state.failed) return ;
@@ -20258,8 +20272,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
     // $ANTLR start synpred209_JavaP
     public final void synpred209_JavaP_fragment() throws RecognitionException {   
-        // JavaP.g:1604:9: ( '>' '=' )
-        // JavaP.g:1604:10: '>' '='
+        // JavaP.g:1612:9: ( '>' '=' )
+        // JavaP.g:1612:10: '>' '='
         {
         match(input,64,FOLLOW_64_in_synpred209_JavaP7904); if (state.failed) return ;
         match(input,73,FOLLOW_73_in_synpred209_JavaP7906); if (state.failed) return ;
@@ -20270,8 +20284,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
     // $ANTLR start synpred212_JavaP
     public final void synpred212_JavaP_fragment() throws RecognitionException {   
-        // JavaP.g:1622:9: ( '<' '<' )
-        // JavaP.g:1622:10: '<' '<'
+        // JavaP.g:1630:9: ( '<' '<' )
+        // JavaP.g:1630:10: '<' '<'
         {
         match(input,62,FOLLOW_62_in_synpred212_JavaP8016); if (state.failed) return ;
         match(input,62,FOLLOW_62_in_synpred212_JavaP8018); if (state.failed) return ;
@@ -20282,8 +20296,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
     // $ANTLR start synpred213_JavaP
     public final void synpred213_JavaP_fragment() throws RecognitionException {   
-        // JavaP.g:1625:9: ( '>' '>' '>' )
-        // JavaP.g:1625:10: '>' '>' '>'
+        // JavaP.g:1633:9: ( '>' '>' '>' )
+        // JavaP.g:1633:10: '>' '>' '>'
         {
         match(input,64,FOLLOW_64_in_synpred213_JavaP8049); if (state.failed) return ;
         match(input,64,FOLLOW_64_in_synpred213_JavaP8051); if (state.failed) return ;
@@ -20295,8 +20309,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
     // $ANTLR start synpred214_JavaP
     public final void synpred214_JavaP_fragment() throws RecognitionException {   
-        // JavaP.g:1630:9: ( '>' '>' )
-        // JavaP.g:1630:10: '>' '>'
+        // JavaP.g:1638:9: ( '>' '>' )
+        // JavaP.g:1638:10: '>' '>'
         {
         match(input,64,FOLLOW_64_in_synpred214_JavaP8088); if (state.failed) return ;
         match(input,64,FOLLOW_64_in_synpred214_JavaP8090); if (state.failed) return ;
@@ -20310,8 +20324,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.castExpression_return castex = null;
 
 
-        // JavaP.g:1688:9: (castex= castExpression )
-        // JavaP.g:1688:9: castex= castExpression
+        // JavaP.g:1696:9: (castex= castExpression )
+        // JavaP.g:1696:9: castex= castExpression
         {
         pushFollow(FOLLOW_castExpression_in_synpred226_JavaP8413);
         castex=castExpression();
@@ -20330,8 +20344,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.unaryExpression_return unex = null;
 
 
-        // JavaP.g:1757:8: ( '(' tref= primitiveType ')' unex= unaryExpression )
-        // JavaP.g:1757:8: '(' tref= primitiveType ')' unex= unaryExpression
+        // JavaP.g:1765:8: ( '(' tref= primitiveType ')' unex= unaryExpression )
+        // JavaP.g:1765:8: '(' tref= primitiveType ')' unex= unaryExpression
         {
         match(input,90,FOLLOW_90_in_synpred235_JavaP8740); if (state.failed) return ;
         pushFollow(FOLLOW_primitiveType_in_synpred235_JavaP8744);
@@ -20355,8 +20369,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.moreidentifierRuleSuffixRubbish_return morerubex = null;
 
 
-        // JavaP.g:1785:9: (morerubex= moreidentifierRuleSuffixRubbish )
-        // JavaP.g:1785:9: morerubex= moreidentifierRuleSuffixRubbish
+        // JavaP.g:1793:9: (morerubex= moreidentifierRuleSuffixRubbish )
+        // JavaP.g:1793:9: morerubex= moreidentifierRuleSuffixRubbish
         {
         pushFollow(FOLLOW_moreidentifierRuleSuffixRubbish_in_synpred241_JavaP8910);
         morerubex=moreidentifierRuleSuffixRubbish();
@@ -20373,8 +20387,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.identifierRule_return idx = null;
 
 
-        // JavaP.g:1816:5: ( '.' idx= identifierRule )
-        // JavaP.g:1816:5: '.' idx= identifierRule
+        // JavaP.g:1825:5: ( '.' idx= identifierRule )
+        // JavaP.g:1825:5: '.' idx= identifierRule
         {
         match(input,51,FOLLOW_51_in_synpred243_JavaP9034); if (state.failed) return ;
         pushFollow(FOLLOW_identifierRule_in_synpred243_JavaP9038);
@@ -20389,10 +20403,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
     // $ANTLR start synpred245_JavaP
     public final void synpred245_JavaP_fragment() throws RecognitionException {   
-        // JavaP.g:1827:9: ( ( '[' ']' )+ '.' 'class' )
-        // JavaP.g:1827:9: ( '[' ']' )+ '.' 'class'
+        Token czkw=null;
+
+        // JavaP.g:1836:9: ( ( '[' ']' )+ '.' czkw= 'class' )
+        // JavaP.g:1836:9: ( '[' ']' )+ '.' czkw= 'class'
         {
-        // JavaP.g:1827:9: ( '[' ']' )+
+        // JavaP.g:1836:9: ( '[' ']' )+
         int cnt205=0;
         loop205:
         do {
@@ -20406,7 +20422,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
             switch (alt205) {
         	case 1 :
-        	    // JavaP.g:1827:10: '[' ']'
+        	    // JavaP.g:1836:10: '[' ']'
         	    {
         	    match(input,70,FOLLOW_70_in_synpred245_JavaP9068); if (state.failed) return ;
         	    match(input,71,FOLLOW_71_in_synpred245_JavaP9070); if (state.failed) return ;
@@ -20424,8 +20440,8 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             cnt205++;
         } while (true);
 
-        match(input,51,FOLLOW_51_in_synpred245_JavaP9074); if (state.failed) return ;
-        match(input,59,FOLLOW_59_in_synpred245_JavaP9076); if (state.failed) return ;
+        match(input,51,FOLLOW_51_in_synpred245_JavaP9077); if (state.failed) return ;
+        czkw=(Token)match(input,59,FOLLOW_59_in_synpred245_JavaP9081); if (state.failed) return ;
 
         }
     }
@@ -20436,10 +20452,10 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.arrayAccessSuffixRubbish_return arr = null;
 
 
-        // JavaP.g:1829:9: (arr= arrayAccessSuffixRubbish )
-        // JavaP.g:1829:9: arr= arrayAccessSuffixRubbish
+        // JavaP.g:1842:9: (arr= arrayAccessSuffixRubbish )
+        // JavaP.g:1842:9: arr= arrayAccessSuffixRubbish
         {
-        pushFollow(FOLLOW_arrayAccessSuffixRubbish_in_synpred246_JavaP9094);
+        pushFollow(FOLLOW_arrayAccessSuffixRubbish_in_synpred246_JavaP9101);
         arr=arrayAccessSuffixRubbish();
 
         state._fsp--;
@@ -20453,11 +20469,11 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     public final void synpred248_JavaP_fragment() throws RecognitionException {   
         Token clkw=null;
 
-        // JavaP.g:1833:9: ( '.' clkw= 'class' )
-        // JavaP.g:1833:9: '.' clkw= 'class'
+        // JavaP.g:1846:9: ( '.' clkw= 'class' )
+        // JavaP.g:1846:9: '.' clkw= 'class'
         {
-        match(input,51,FOLLOW_51_in_synpred248_JavaP9121); if (state.failed) return ;
-        clkw=(Token)match(input,59,FOLLOW_59_in_synpred248_JavaP9125); if (state.failed) return ;
+        match(input,51,FOLLOW_51_in_synpred248_JavaP9128); if (state.failed) return ;
+        clkw=(Token)match(input,59,FOLLOW_59_in_synpred248_JavaP9132); if (state.failed) return ;
 
         }
     }
@@ -20468,11 +20484,11 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.explicitGenericInvocation_return gen = null;
 
 
-        // JavaP.g:1838:9: ( '.' gen= explicitGenericInvocation )
-        // JavaP.g:1838:9: '.' gen= explicitGenericInvocation
+        // JavaP.g:1851:9: ( '.' gen= explicitGenericInvocation )
+        // JavaP.g:1851:9: '.' gen= explicitGenericInvocation
         {
-        match(input,51,FOLLOW_51_in_synpred249_JavaP9146); if (state.failed) return ;
-        pushFollow(FOLLOW_explicitGenericInvocation_in_synpred249_JavaP9150);
+        match(input,51,FOLLOW_51_in_synpred249_JavaP9153); if (state.failed) return ;
+        pushFollow(FOLLOW_explicitGenericInvocation_in_synpred249_JavaP9157);
         gen=explicitGenericInvocation();
 
         state._fsp--;
@@ -20486,11 +20502,11 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     public final void synpred250_JavaP_fragment() throws RecognitionException {   
         Token thiskw=null;
 
-        // JavaP.g:1839:9: ( '.' thiskw= 'this' )
-        // JavaP.g:1839:9: '.' thiskw= 'this'
+        // JavaP.g:1852:9: ( '.' thiskw= 'this' )
+        // JavaP.g:1852:9: '.' thiskw= 'this'
         {
-        match(input,51,FOLLOW_51_in_synpred250_JavaP9163); if (state.failed) return ;
-        thiskw=(Token)match(input,93,FOLLOW_93_in_synpred250_JavaP9167); if (state.failed) return ;
+        match(input,51,FOLLOW_51_in_synpred250_JavaP9170); if (state.failed) return ;
+        thiskw=(Token)match(input,93,FOLLOW_93_in_synpred250_JavaP9174); if (state.failed) return ;
 
         }
     }
@@ -20502,12 +20518,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.superSuffix_return supsuf = null;
 
 
-        // JavaP.g:1845:9: ( '.' supkw= 'super' supsuf= superSuffix )
-        // JavaP.g:1845:9: '.' supkw= 'super' supsuf= superSuffix
+        // JavaP.g:1858:9: ( '.' supkw= 'super' supsuf= superSuffix )
+        // JavaP.g:1858:9: '.' supkw= 'super' supsuf= superSuffix
         {
-        match(input,51,FOLLOW_51_in_synpred251_JavaP9187); if (state.failed) return ;
-        supkw=(Token)match(input,89,FOLLOW_89_in_synpred251_JavaP9191); if (state.failed) return ;
-        pushFollow(FOLLOW_superSuffix_in_synpred251_JavaP9207);
+        match(input,51,FOLLOW_51_in_synpred251_JavaP9194); if (state.failed) return ;
+        supkw=(Token)match(input,89,FOLLOW_89_in_synpred251_JavaP9198); if (state.failed) return ;
+        pushFollow(FOLLOW_superSuffix_in_synpred251_JavaP9214);
         supsuf=superSuffix();
 
         state._fsp--;
@@ -20523,12 +20539,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.innerCreator_return in = null;
 
 
-        // JavaP.g:1854:9: ( '.' newkw= 'new' in= innerCreator )
-        // JavaP.g:1854:9: '.' newkw= 'new' in= innerCreator
+        // JavaP.g:1867:9: ( '.' newkw= 'new' in= innerCreator )
+        // JavaP.g:1867:9: '.' newkw= 'new' in= innerCreator
         {
-        match(input,51,FOLLOW_51_in_synpred252_JavaP9219); if (state.failed) return ;
-        newkw=(Token)match(input,135,FOLLOW_135_in_synpred252_JavaP9223); if (state.failed) return ;
-        pushFollow(FOLLOW_innerCreator_in_synpred252_JavaP9227);
+        match(input,51,FOLLOW_51_in_synpred252_JavaP9226); if (state.failed) return ;
+        newkw=(Token)match(input,135,FOLLOW_135_in_synpred252_JavaP9230); if (state.failed) return ;
+        pushFollow(FOLLOW_innerCreator_in_synpred252_JavaP9234);
         in=innerCreator();
 
         state._fsp--;
@@ -20543,11 +20559,11 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.identifierRule_return id = null;
 
 
-        // JavaP.g:1859:55: ( '.' id= identifierRule )
-        // JavaP.g:1859:55: '.' id= identifierRule
+        // JavaP.g:1872:55: ( '.' id= identifierRule )
+        // JavaP.g:1872:55: '.' id= identifierRule
         {
-        match(input,51,FOLLOW_51_in_synpred253_JavaP9255); if (state.failed) return ;
-        pushFollow(FOLLOW_identifierRule_in_synpred253_JavaP9259);
+        match(input,51,FOLLOW_51_in_synpred253_JavaP9262); if (state.failed) return ;
+        pushFollow(FOLLOW_identifierRule_in_synpred253_JavaP9266);
         id=identifierRule();
 
         state._fsp--;
@@ -20562,10 +20578,10 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.arrayAccessSuffixRubbish_return arr = null;
 
 
-        // JavaP.g:1866:9: (arr= arrayAccessSuffixRubbish )
-        // JavaP.g:1866:9: arr= arrayAccessSuffixRubbish
+        // JavaP.g:1879:9: (arr= arrayAccessSuffixRubbish )
+        // JavaP.g:1879:9: arr= arrayAccessSuffixRubbish
         {
-        pushFollow(FOLLOW_arrayAccessSuffixRubbish_in_synpred254_JavaP9283);
+        pushFollow(FOLLOW_arrayAccessSuffixRubbish_in_synpred254_JavaP9290);
         arr=arrayAccessSuffixRubbish();
 
         state._fsp--;
@@ -20577,11 +20593,11 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
     // $ANTLR start synpred256_JavaP
     public final void synpred256_JavaP_fragment() throws RecognitionException {   
-        // JavaP.g:1868:9: ( '.' 'class' )
-        // JavaP.g:1868:9: '.' 'class'
+        // JavaP.g:1881:9: ( '.' 'class' )
+        // JavaP.g:1881:9: '.' 'class'
         {
-        match(input,51,FOLLOW_51_in_synpred256_JavaP9309); if (state.failed) return ;
-        match(input,59,FOLLOW_59_in_synpred256_JavaP9311); if (state.failed) return ;
+        match(input,51,FOLLOW_51_in_synpred256_JavaP9316); if (state.failed) return ;
+        match(input,59,FOLLOW_59_in_synpred256_JavaP9318); if (state.failed) return ;
 
         }
     }
@@ -20592,11 +20608,11 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.explicitGenericInvocation_return gen = null;
 
 
-        // JavaP.g:1869:9: ( '.' gen= explicitGenericInvocation )
-        // JavaP.g:1869:9: '.' gen= explicitGenericInvocation
+        // JavaP.g:1882:9: ( '.' gen= explicitGenericInvocation )
+        // JavaP.g:1882:9: '.' gen= explicitGenericInvocation
         {
-        match(input,51,FOLLOW_51_in_synpred257_JavaP9323); if (state.failed) return ;
-        pushFollow(FOLLOW_explicitGenericInvocation_in_synpred257_JavaP9327);
+        match(input,51,FOLLOW_51_in_synpred257_JavaP9330); if (state.failed) return ;
+        pushFollow(FOLLOW_explicitGenericInvocation_in_synpred257_JavaP9334);
         gen=explicitGenericInvocation();
 
         state._fsp--;
@@ -20612,12 +20628,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.superSuffix_return supsuf = null;
 
 
-        // JavaP.g:1870:9: ( '.' supkw= 'super' supsuf= superSuffix )
-        // JavaP.g:1870:9: '.' supkw= 'super' supsuf= superSuffix
+        // JavaP.g:1883:9: ( '.' supkw= 'super' supsuf= superSuffix )
+        // JavaP.g:1883:9: '.' supkw= 'super' supsuf= superSuffix
         {
-        match(input,51,FOLLOW_51_in_synpred258_JavaP9339); if (state.failed) return ;
-        supkw=(Token)match(input,89,FOLLOW_89_in_synpred258_JavaP9343); if (state.failed) return ;
-        pushFollow(FOLLOW_superSuffix_in_synpred258_JavaP9347);
+        match(input,51,FOLLOW_51_in_synpred258_JavaP9346); if (state.failed) return ;
+        supkw=(Token)match(input,89,FOLLOW_89_in_synpred258_JavaP9350); if (state.failed) return ;
+        pushFollow(FOLLOW_superSuffix_in_synpred258_JavaP9354);
         supsuf=superSuffix();
 
         state._fsp--;
@@ -20633,12 +20649,12 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.innerCreator_return in = null;
 
 
-        // JavaP.g:1877:9: ( '.' newkw= 'new' in= innerCreator )
-        // JavaP.g:1877:9: '.' newkw= 'new' in= innerCreator
+        // JavaP.g:1890:9: ( '.' newkw= 'new' in= innerCreator )
+        // JavaP.g:1890:9: '.' newkw= 'new' in= innerCreator
         {
-        match(input,51,FOLLOW_51_in_synpred259_JavaP9359); if (state.failed) return ;
-        newkw=(Token)match(input,135,FOLLOW_135_in_synpred259_JavaP9363); if (state.failed) return ;
-        pushFollow(FOLLOW_innerCreator_in_synpred259_JavaP9367);
+        match(input,51,FOLLOW_51_in_synpred259_JavaP9366); if (state.failed) return ;
+        newkw=(Token)match(input,135,FOLLOW_135_in_synpred259_JavaP9370); if (state.failed) return ;
+        pushFollow(FOLLOW_innerCreator_in_synpred259_JavaP9374);
         in=innerCreator();
 
         state._fsp--;
@@ -20655,16 +20671,16 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.expression_return arrex = null;
 
 
-        // JavaP.g:1908:11: (open= '[' arrex= expression close= ']' )
-        // JavaP.g:1908:11: open= '[' arrex= expression close= ']'
+        // JavaP.g:1921:11: (open= '[' arrex= expression close= ']' )
+        // JavaP.g:1921:11: open= '[' arrex= expression close= ']'
         {
-        open=(Token)match(input,70,FOLLOW_70_in_synpred260_JavaP9440); if (state.failed) return ;
-        pushFollow(FOLLOW_expression_in_synpred260_JavaP9444);
+        open=(Token)match(input,70,FOLLOW_70_in_synpred260_JavaP9447); if (state.failed) return ;
+        pushFollow(FOLLOW_expression_in_synpred260_JavaP9451);
         arrex=expression();
 
         state._fsp--;
         if (state.failed) return ;
-        close=(Token)match(input,71,FOLLOW_71_in_synpred260_JavaP9448); if (state.failed) return ;
+        close=(Token)match(input,71,FOLLOW_71_in_synpred260_JavaP9455); if (state.failed) return ;
 
         }
     }
@@ -20677,15 +20693,15 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.arrayInitializer_return init = null;
 
 
-        // JavaP.g:1928:10: (tt= createdName ( '[' ']' )+ init= arrayInitializer )
-        // JavaP.g:1928:10: tt= createdName ( '[' ']' )+ init= arrayInitializer
+        // JavaP.g:1941:10: (tt= createdName ( '[' ']' )+ init= arrayInitializer )
+        // JavaP.g:1941:10: tt= createdName ( '[' ']' )+ init= arrayInitializer
         {
-        pushFollow(FOLLOW_createdName_in_synpred264_JavaP9543);
+        pushFollow(FOLLOW_createdName_in_synpred264_JavaP9550);
         tt=createdName();
 
         state._fsp--;
         if (state.failed) return ;
-        // JavaP.g:1929:14: ( '[' ']' )+
+        // JavaP.g:1942:14: ( '[' ']' )+
         int cnt207=0;
         loop207:
         do {
@@ -20699,10 +20715,10 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
             switch (alt207) {
         	case 1 :
-        	    // JavaP.g:1929:15: '[' ']'
+        	    // JavaP.g:1942:15: '[' ']'
         	    {
-        	    match(input,70,FOLLOW_70_in_synpred264_JavaP9561); if (state.failed) return ;
-        	    match(input,71,FOLLOW_71_in_synpred264_JavaP9563); if (state.failed) return ;
+        	    match(input,70,FOLLOW_70_in_synpred264_JavaP9568); if (state.failed) return ;
+        	    match(input,71,FOLLOW_71_in_synpred264_JavaP9570); if (state.failed) return ;
 
         	    }
         	    break;
@@ -20717,7 +20733,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             cnt207++;
         } while (true);
 
-        pushFollow(FOLLOW_arrayInitializer_in_synpred264_JavaP9571);
+        pushFollow(FOLLOW_arrayInitializer_in_synpred264_JavaP9578);
         init=arrayInitializer();
 
         state._fsp--;
@@ -20732,16 +20748,16 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.expression_return exx = null;
 
 
-        // JavaP.g:1932:12: ( '[' exx= expression ']' )
-        // JavaP.g:1932:12: '[' exx= expression ']'
+        // JavaP.g:1945:12: ( '[' exx= expression ']' )
+        // JavaP.g:1945:12: '[' exx= expression ']'
         {
-        match(input,70,FOLLOW_70_in_synpred265_JavaP9610); if (state.failed) return ;
-        pushFollow(FOLLOW_expression_in_synpred265_JavaP9614);
+        match(input,70,FOLLOW_70_in_synpred265_JavaP9617); if (state.failed) return ;
+        pushFollow(FOLLOW_expression_in_synpred265_JavaP9621);
         exx=expression();
 
         state._fsp--;
         if (state.failed) return ;
-        match(input,71,FOLLOW_71_in_synpred265_JavaP9616); if (state.failed) return ;
+        match(input,71,FOLLOW_71_in_synpred265_JavaP9623); if (state.failed) return ;
 
         }
     }
@@ -20754,15 +20770,15 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
         Java_JavaP.expression_return exx = null;
 
 
-        // JavaP.g:1931:10: (ttt= createdName ( '[' exx= expression ']' )+ ( '[' ']' )* )
-        // JavaP.g:1931:10: ttt= createdName ( '[' exx= expression ']' )+ ( '[' ']' )*
+        // JavaP.g:1944:10: (ttt= createdName ( '[' exx= expression ']' )+ ( '[' ']' )* )
+        // JavaP.g:1944:10: ttt= createdName ( '[' exx= expression ']' )+ ( '[' ']' )*
         {
-        pushFollow(FOLLOW_createdName_in_synpred267_JavaP9594);
+        pushFollow(FOLLOW_createdName_in_synpred267_JavaP9601);
         ttt=createdName();
 
         state._fsp--;
         if (state.failed) return ;
-        // JavaP.g:1932:11: ( '[' exx= expression ']' )+
+        // JavaP.g:1945:11: ( '[' exx= expression ']' )+
         int cnt208=0;
         loop208:
         do {
@@ -20782,15 +20798,15 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
             switch (alt208) {
         	case 1 :
-        	    // JavaP.g:1932:12: '[' exx= expression ']'
+        	    // JavaP.g:1945:12: '[' exx= expression ']'
         	    {
-        	    match(input,70,FOLLOW_70_in_synpred267_JavaP9610); if (state.failed) return ;
-        	    pushFollow(FOLLOW_expression_in_synpred267_JavaP9614);
+        	    match(input,70,FOLLOW_70_in_synpred267_JavaP9617); if (state.failed) return ;
+        	    pushFollow(FOLLOW_expression_in_synpred267_JavaP9621);
         	    exx=expression();
 
         	    state._fsp--;
         	    if (state.failed) return ;
-        	    match(input,71,FOLLOW_71_in_synpred267_JavaP9616); if (state.failed) return ;
+        	    match(input,71,FOLLOW_71_in_synpred267_JavaP9623); if (state.failed) return ;
 
         	    }
         	    break;
@@ -20805,7 +20821,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             cnt208++;
         } while (true);
 
-        // JavaP.g:1933:13: ( '[' ']' )*
+        // JavaP.g:1946:13: ( '[' ']' )*
         loop209:
         do {
             int alt209=2;
@@ -20818,10 +20834,10 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
             switch (alt209) {
         	case 1 :
-        	    // JavaP.g:1933:14: '[' ']'
+        	    // JavaP.g:1946:14: '[' ']'
         	    {
-        	    match(input,70,FOLLOW_70_in_synpred267_JavaP9635); if (state.failed) return ;
-        	    match(input,71,FOLLOW_71_in_synpred267_JavaP9637); if (state.failed) return ;
+        	    match(input,70,FOLLOW_70_in_synpred267_JavaP9642); if (state.failed) return ;
+        	    match(input,71,FOLLOW_71_in_synpred267_JavaP9644); if (state.failed) return ;
 
         	    }
         	    break;
@@ -22082,7 +22098,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             this.transition = DFA84_transition;
         }
         public String getDescription() {
-            return "1065:1: formalParameterDecls returns [List<FormalParameter> element] : (mods= variableModifiers t= type id= variableDeclaratorId ( ',' decls= formalParameterDecls )? | modss= variableModifiers tt= type '...' idd= variableDeclaratorId );";
+            return "1073:1: formalParameterDecls returns [List<FormalParameter> element] : (mods= variableModifiers t= type id= variableDeclaratorId ( ',' decls= formalParameterDecls )? | modss= variableModifiers tt= type '...' idd= variableDeclaratorId );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -22367,7 +22383,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             this.transition = DFA85_transition;
         }
         public String getDescription() {
-            return "1091:10: (inv= explicitConstructorInvocation )?";
+            return "1099:10: (inv= explicitConstructorInvocation )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -22766,7 +22782,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             this.transition = DFA90_transition;
         }
         public String getDescription() {
-            return "1095:1: explicitConstructorInvocation returns [MethodInvocation element] : ( ( nonWildcardTypeArguments )? 'this' args= arguments ';' | (prim= primary '.' )? ( nonWildcardTypeArguments )? 'super' argsx= arguments ';' );";
+            return "1103:1: explicitConstructorInvocation returns [MethodInvocation element] : ( ( nonWildcardTypeArguments )? 'this' args= arguments ';' | (prim= primary '.' )? ( nonWildcardTypeArguments )? 'super' argsx= arguments ';' );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -22913,7 +22929,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             this.transition = DFA112_transition;
         }
         public String getDescription() {
-            return "1253:1: blockStatement returns [Statement element] : (local= localVariableDeclarationStatement | cd= classOrInterfaceDeclaration | stat= statement );";
+            return "1261:1: blockStatement returns [Statement element] : (local= localVariableDeclarationStatement | cd= classOrInterfaceDeclaration | stat= statement );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -23162,7 +23178,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             this.transition = DFA121_transition;
         }
         public String getDescription() {
-            return "1274:1: statement returns [Statement element] : (bl= block | ASSERT asexpr= expression ( ':' asexprx= expression )? ';' | ifkey= 'if' ifexpr= parExpression ifif= statement ( options {k=1; } : elsekey= 'else' ifelse= statement )? | forkey= 'for' '(' forc= forControl ')' forstat= statement | whilkey= 'while' wexs= parExpression wstat= statement | dokey= 'do' dostat= statement whilekey= 'while' doex= parExpression ';' | trykey= 'try' (ress= resources )? traaibl= block (cts= catches finkey= 'finally' trybl= block | ctss= catches | finnkey= 'finally' trybll= block )? | switchkey= 'switch' swexpr= parExpression '{' cases= switchBlockStatementGroups '}' | synkey= 'synchronized' synexpr= parExpression synstat= block | retkey= 'return' (retex= expression )? ';' | throwkey= 'throw' threx= expression ';' | breakkey= 'break' (name= identifierRule )? ';' | continuekey= 'continue' (name= identifierRule )? ';' | ';' | stattex= statementExpression ';' | name= identifierRule ':' labstat= statement );";
+            return "1282:1: statement returns [Statement element] : (bl= block | ASSERT asexpr= expression ( ':' asexprx= expression )? ';' | ifkey= 'if' ifexpr= parExpression ifif= statement ( options {k=1; } : elsekey= 'else' ifelse= statement )? | forkey= 'for' '(' forc= forControl ')' forstat= statement | whilkey= 'while' wexs= parExpression wstat= statement | dokey= 'do' dostat= statement whilekey= 'while' doex= parExpression ';' | trykey= 'try' (ress= resources )? traaibl= block (cts= catches finkey= 'finally' trybl= block | ctss= catches | finnkey= 'finally' trybll= block )? | switchkey= 'switch' swexpr= parExpression '{' cases= switchBlockStatementGroups '}' | synkey= 'synchronized' synexpr= parExpression synstat= block | retkey= 'return' (retex= expression )? ';' | throwkey= 'throw' threx= expression ';' | breakkey= 'break' (name= identifierRule )? ';' | continuekey= 'continue' (name= identifierRule )? ';' | ';' | stattex= statementExpression ';' | name= identifierRule ':' labstat= statement );";
         }
     }
     static final String DFA117_eotS =
@@ -23275,7 +23291,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             this.transition = DFA117_transition;
         }
         public String getDescription() {
-            return "1302:9: (cts= catches finkey= 'finally' trybl= block | ctss= catches | finnkey= 'finally' trybll= block )?";
+            return "1310:9: (cts= catches finkey= 'finally' trybl= block | ctss= catches | finnkey= 'finally' trybll= block )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -23686,7 +23702,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             this.transition = DFA131_transition;
         }
         public String getDescription() {
-            return "1401:1: forControl returns [ForControl element] options {k=3; } : (enh= enhancedForControl | (in= forInit )? ';' (e= expression )? ';' (u= forUpdate )? );";
+            return "1409:1: forControl returns [ForControl element] options {k=3; } : (enh= enhancedForControl | (in= forInit )? ';' (e= expression )? ';' (u= forUpdate )? );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -25187,7 +25203,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             this.transition = DFA132_transition;
         }
         public String getDescription() {
-            return "1408:1: forInit returns [ForInit element] : (local= localVariableDeclaration | el= expressionList );";
+            return "1416:1: forInit returns [ForInit element] : (local= localVariableDeclaration | el= expressionList );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -25347,7 +25363,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     static final String DFA134_acceptS =
         "\14\uffff\1\2\1\1";
     static final String DFA134_specialS =
-        "\1\uffff\1\0\1\11\1\6\1\3\1\1\1\12\1\7\1\4\1\2\1\10\1\5\2\uffff}>";
+        "\1\uffff\1\2\1\0\1\11\1\6\1\3\1\1\1\12\1\7\1\4\1\10\1\5\2\uffff}>";
     static final String[] DFA134_transitionS = {
             "\1\14\15\uffff\1\12\1\14\1\13\2\uffff\1\14\3\uffff\1\14\1\uffff"+
             "\1\1\21\uffff\1\14\6\uffff\1\14\16\uffff\1\2\1\3\1\4\1\5\1\6"+
@@ -25397,13 +25413,43 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             this.transition = DFA134_transition;
         }
         public String getDescription() {
-            return "1457:63: (op= assignmentOperator exx= expression )?";
+            return "1465:63: (op= assignmentOperator exx= expression )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
         	int _s = s;
             switch ( s ) {
                     case 0 : 
+                        int LA134_2 = input.LA(1);
+
+                         
+                        int index134_2 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred185_JavaP()) ) {s = 13;}
+
+                        else if ( (true) ) {s = 12;}
+
+                         
+                        input.seek(index134_2);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 1 : 
+                        int LA134_6 = input.LA(1);
+
+                         
+                        int index134_6 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred185_JavaP()) ) {s = 13;}
+
+                        else if ( (true) ) {s = 12;}
+
+                         
+                        input.seek(index134_6);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 2 : 
                         int LA134_1 = input.LA(1);
 
                          
@@ -25418,7 +25464,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                         input.seek(index134_1);
                         if ( s>=0 ) return s;
                         break;
-                    case 1 : 
+                    case 3 : 
                         int LA134_5 = input.LA(1);
 
                          
@@ -25433,7 +25479,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                         input.seek(index134_5);
                         if ( s>=0 ) return s;
                         break;
-                    case 2 : 
+                    case 4 : 
                         int LA134_9 = input.LA(1);
 
                          
@@ -25446,36 +25492,6 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                          
                         input.seek(index134_9);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 3 : 
-                        int LA134_4 = input.LA(1);
-
-                         
-                        int index134_4 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred185_JavaP()) ) {s = 13;}
-
-                        else if ( (true) ) {s = 12;}
-
-                         
-                        input.seek(index134_4);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 4 : 
-                        int LA134_8 = input.LA(1);
-
-                         
-                        int index134_8 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred185_JavaP()) ) {s = 13;}
-
-                        else if ( (true) ) {s = 12;}
-
-                         
-                        input.seek(index134_8);
                         if ( s>=0 ) return s;
                         break;
                     case 5 : 
@@ -25494,10 +25510,10 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                         if ( s>=0 ) return s;
                         break;
                     case 6 : 
-                        int LA134_3 = input.LA(1);
+                        int LA134_4 = input.LA(1);
 
                          
-                        int index134_3 = input.index();
+                        int index134_4 = input.index();
                         input.rewind();
                         s = -1;
                         if ( (synpred185_JavaP()) ) {s = 13;}
@@ -25505,14 +25521,14 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                         else if ( (true) ) {s = 12;}
 
                          
-                        input.seek(index134_3);
+                        input.seek(index134_4);
                         if ( s>=0 ) return s;
                         break;
                     case 7 : 
-                        int LA134_7 = input.LA(1);
+                        int LA134_8 = input.LA(1);
 
                          
-                        int index134_7 = input.index();
+                        int index134_8 = input.index();
                         input.rewind();
                         s = -1;
                         if ( (synpred185_JavaP()) ) {s = 13;}
@@ -25520,7 +25536,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                         else if ( (true) ) {s = 12;}
 
                          
-                        input.seek(index134_7);
+                        input.seek(index134_8);
                         if ( s>=0 ) return s;
                         break;
                     case 8 : 
@@ -25539,10 +25555,10 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                         if ( s>=0 ) return s;
                         break;
                     case 9 : 
-                        int LA134_2 = input.LA(1);
+                        int LA134_3 = input.LA(1);
 
                          
-                        int index134_2 = input.index();
+                        int index134_3 = input.index();
                         input.rewind();
                         s = -1;
                         if ( (synpred185_JavaP()) ) {s = 13;}
@@ -25550,14 +25566,14 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                         else if ( (true) ) {s = 12;}
 
                          
-                        input.seek(index134_2);
+                        input.seek(index134_3);
                         if ( s>=0 ) return s;
                         break;
                     case 10 : 
-                        int LA134_6 = input.LA(1);
+                        int LA134_7 = input.LA(1);
 
                          
-                        int index134_6 = input.index();
+                        int index134_7 = input.index();
                         input.rewind();
                         s = -1;
                         if ( (synpred185_JavaP()) ) {s = 13;}
@@ -25565,7 +25581,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                         else if ( (true) ) {s = 12;}
 
                          
-                        input.seek(index134_6);
+                        input.seek(index134_7);
                         if ( s>=0 ) return s;
                         break;
             }
@@ -25638,7 +25654,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             this.transition = DFA135_transition;
         }
         public String getDescription() {
-            return "1471:1: assignmentOperator : ( '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '%=' | ( '<' '<' '=' )=>t1= '<' t2= '<' t3= '=' {...}? | ( '>' '>' '>' '=' )=>t1= '>' t2= '>' t3= '>' t4= '=' {...}? | ( '>' '>' '=' )=>t1= '>' t2= '>' t3= '=' {...}?);";
+            return "1479:1: assignmentOperator : ( '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '%=' | ( '<' '<' '=' )=>t1= '<' t2= '<' t3= '=' {...}? | ( '>' '>' '>' '=' )=>t1= '>' t2= '>' t3= '>' t4= '=' {...}? | ( '>' '>' '=' )=>t1= '>' t2= '>' t3= '=' {...}?);";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -25711,7 +25727,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     static final String DFA148_acceptS =
         "\1\uffff\1\1\2\uffff\1\2\33\3";
     static final String DFA148_specialS =
-        "\1\1\2\uffff\1\0\34\uffff}>";
+        "\1\0\2\uffff\1\1\34\uffff}>";
     static final String[] DFA148_transitionS = {
             "\1\1\1\uffff\1\2",
             "",
@@ -25780,13 +25796,28 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             this.transition = DFA148_transition;
         }
         public String getDescription() {
-            return "1621:1: shiftOp : ( ( '<' '<' )=>t1= '<' t2= '<' {...}? | ( '>' '>' '>' )=>t1= '>' t2= '>' t3= '>' {...}? | ( '>' '>' )=>t1= '>' t2= '>' {...}?);";
+            return "1629:1: shiftOp : ( ( '<' '<' )=>t1= '<' t2= '<' {...}? | ( '>' '>' '>' )=>t1= '>' t2= '>' t3= '>' {...}? | ( '>' '>' )=>t1= '>' t2= '>' {...}?);";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
         	int _s = s;
             switch ( s ) {
                     case 0 : 
+                        int LA148_0 = input.LA(1);
+
+                         
+                        int index148_0 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (LA148_0==62) && (synpred212_JavaP())) {s = 1;}
+
+                        else if ( (LA148_0==64) ) {s = 2;}
+
+                         
+                        input.seek(index148_0);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 1 : 
                         int LA148_3 = input.LA(1);
 
                          
@@ -25851,21 +25882,6 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                          
                         input.seek(index148_3);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 1 : 
-                        int LA148_0 = input.LA(1);
-
-                         
-                        int index148_0 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA148_0==62) && (synpred212_JavaP())) {s = 1;}
-
-                        else if ( (LA148_0==64) ) {s = 2;}
-
-                         
-                        input.seek(index148_0);
                         if ( s>=0 ) return s;
                         break;
             }
@@ -25947,7 +25963,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             this.transition = DFA156_transition;
         }
         public String getDescription() {
-            return "1672:1: unaryExpressionNotPlusMinus returns [Expression element] : (a= '~' ex= unaryExpression | b= '!' exx= unaryExpression | castex= castExpression | prim= primary (sel= selector )* (c= '++' | d= '--' )? );";
+            return "1680:1: unaryExpressionNotPlusMinus returns [Expression element] : (a= '~' ex= unaryExpression | b= '!' exx= unaryExpression | castex= castExpression | prim= primary (sel= selector )* (c= '++' | d= '--' )? );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -26046,7 +26062,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             this.transition = DFA160_transition;
         }
         public String getDescription() {
-            return "1761:1: primary returns [Expression element] : (parex= parExpression | rubex= identifierSuffixRubbush | skw= 'super' supsuf= superSuffix | nt= nonTargetPrimary | nkw= 'new' cr= creator | morerubex= moreidentifierRuleSuffixRubbish | vt= voidType '.' clkw= 'class' | tref= type '.' clkww= 'class' );";
+            return "1769:1: primary returns [Expression element] : (parex= parExpression | rubex= identifierSuffixRubbush | skw= 'super' supsuf= superSuffix | nt= nonTargetPrimary | nkw= 'new' cr= creator | morerubex= moreidentifierRuleSuffixRubbish | vt= voidType '.' clkw= 'class' | tref= type '.' clkww= 'class' );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -26167,7 +26183,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             this.transition = DFA163_transition;
         }
         public String getDescription() {
-            return "1827:1: ( ( '[' ']' )+ '.' 'class' | arr= arrayAccessSuffixRubbish | arg= argumentsSuffixRubbish | '.' clkw= 'class' | '.' gen= explicitGenericInvocation | '.' thiskw= 'this' | '.' supkw= 'super' supsuf= superSuffix | '.' newkw= 'new' in= innerCreator )?";
+            return "1836:1: ( ( '[' ']' )+ '.' czkw= 'class' | arr= arrayAccessSuffixRubbish | arg= argumentsSuffixRubbish | '.' clkw= 'class' | '.' gen= explicitGenericInvocation | '.' thiskw= 'this' | '.' supkw= 'super' supsuf= superSuffix | '.' newkw= 'new' in= innerCreator )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -26311,7 +26327,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             this.transition = DFA165_transition;
         }
         public String getDescription() {
-            return "1865:4: (arr= arrayAccessSuffixRubbish | arg= argumentsSuffixRubbish | '.' 'class' | '.' gen= explicitGenericInvocation | '.' supkw= 'super' supsuf= superSuffix | '.' newkw= 'new' in= innerCreator )?";
+            return "1878:4: (arr= arrayAccessSuffixRubbish | arg= argumentsSuffixRubbish | '.' 'class' | '.' gen= explicitGenericInvocation | '.' supkw= 'super' supsuf= superSuffix | '.' newkw= 'new' in= innerCreator )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -26446,7 +26462,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             this.transition = DFA166_transition;
         }
         public String getDescription() {
-            return "()+ loopback of 1908:10: (open= '[' arrex= expression close= ']' )+";
+            return "()+ loopback of 1921:10: (open= '[' arrex= expression close= ']' )+";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -26534,7 +26550,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             this.transition = DFA172_transition;
         }
         public String getDescription() {
-            return "1918:1: creator returns [Expression element] : (targs= nonWildcardTypeArguments tx= createdName (dia= '<' '>' )? restx= classCreatorRest | tt= createdName ( '[' ']' )+ init= arrayInitializer | ttt= createdName ( '[' exx= expression ']' )+ ( '[' ']' )* | t= createdName (diam= '<' '>' )? rest= classCreatorRest );";
+            return "1931:1: creator returns [Expression element] : (targs= nonWildcardTypeArguments tx= createdName (dia= '<' '>' )? restx= classCreatorRest | tt= createdName ( '[' ']' )+ init= arrayInitializer | ttt= createdName ( '[' exx= expression ']' )+ ( '[' ']' )* | t= createdName (diam= '<' '>' )? rest= classCreatorRest );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -26786,7 +26802,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             this.transition = DFA169_transition;
         }
         public String getDescription() {
-            return "()+ loopback of 1932:11: ( '[' exx= expression ']' )+";
+            return "()+ loopback of 1945:11: ( '[' exx= expression ']' )+";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -27414,79 +27430,79 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     public static final BitSet FOLLOW_identifierRule_in_moreidentifierRuleSuffixRubbish9038 = new BitSet(new long[]{0x0008000000000002L,0x0000000004000040L});
     public static final BitSet FOLLOW_70_in_moreidentifierRuleSuffixRubbish9068 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
     public static final BitSet FOLLOW_71_in_moreidentifierRuleSuffixRubbish9070 = new BitSet(new long[]{0x0008000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_51_in_moreidentifierRuleSuffixRubbish9074 = new BitSet(new long[]{0x0800000000000000L});
-    public static final BitSet FOLLOW_59_in_moreidentifierRuleSuffixRubbish9076 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_arrayAccessSuffixRubbish_in_moreidentifierRuleSuffixRubbish9094 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_argumentsSuffixRubbish_in_moreidentifierRuleSuffixRubbish9108 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_51_in_moreidentifierRuleSuffixRubbish9121 = new BitSet(new long[]{0x0800000000000000L});
-    public static final BitSet FOLLOW_59_in_moreidentifierRuleSuffixRubbish9125 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_51_in_moreidentifierRuleSuffixRubbish9146 = new BitSet(new long[]{0x4000000000000000L});
-    public static final BitSet FOLLOW_explicitGenericInvocation_in_moreidentifierRuleSuffixRubbish9150 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_51_in_moreidentifierRuleSuffixRubbish9163 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
-    public static final BitSet FOLLOW_93_in_moreidentifierRuleSuffixRubbish9167 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_51_in_moreidentifierRuleSuffixRubbish9187 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_89_in_moreidentifierRuleSuffixRubbish9191 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_superSuffix_in_moreidentifierRuleSuffixRubbish9207 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_51_in_moreidentifierRuleSuffixRubbish9219 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_135_in_moreidentifierRuleSuffixRubbish9223 = new BitSet(new long[]{0x4000080000000000L});
-    public static final BitSet FOLLOW_innerCreator_in_moreidentifierRuleSuffixRubbish9227 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_93_in_identifierSuffixRubbush9251 = new BitSet(new long[]{0x0008000000000002L,0x0000000004000040L});
-    public static final BitSet FOLLOW_51_in_identifierSuffixRubbush9255 = new BitSet(new long[]{0x0000080000000000L});
-    public static final BitSet FOLLOW_identifierRule_in_identifierSuffixRubbush9259 = new BitSet(new long[]{0x0008000000000002L,0x0000000004000040L});
-    public static final BitSet FOLLOW_arrayAccessSuffixRubbish_in_identifierSuffixRubbush9283 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_argumentsSuffixRubbish_in_identifierSuffixRubbush9297 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_51_in_identifierSuffixRubbush9309 = new BitSet(new long[]{0x0800000000000000L});
-    public static final BitSet FOLLOW_59_in_identifierSuffixRubbush9311 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_51_in_identifierSuffixRubbush9323 = new BitSet(new long[]{0x4000000000000000L});
-    public static final BitSet FOLLOW_explicitGenericInvocation_in_identifierSuffixRubbush9327 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_51_in_identifierSuffixRubbush9339 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_89_in_identifierSuffixRubbush9343 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_superSuffix_in_identifierSuffixRubbush9347 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_51_in_identifierSuffixRubbush9359 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_135_in_identifierSuffixRubbush9363 = new BitSet(new long[]{0x4000080000000000L});
-    public static final BitSet FOLLOW_innerCreator_in_identifierSuffixRubbush9367 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_arguments_in_argumentsSuffixRubbish9394 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_70_in_arrayAccessSuffixRubbish9440 = new BitSet(new long[]{0x0000081802000100L,0x80000001E6FF0024L,0x00000000000000F9L});
-    public static final BitSet FOLLOW_expression_in_arrayAccessSuffixRubbish9444 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_71_in_arrayAccessSuffixRubbish9448 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000040L});
-    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_creator9503 = new BitSet(new long[]{0x0000080000000000L,0x0000000000FF0000L});
-    public static final BitSet FOLLOW_createdName_in_creator9507 = new BitSet(new long[]{0x4000000000000000L,0x0000000004000000L});
-    public static final BitSet FOLLOW_62_in_creator9512 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000001L});
-    public static final BitSet FOLLOW_64_in_creator9513 = new BitSet(new long[]{0x4000000000000000L,0x0000000004000000L});
-    public static final BitSet FOLLOW_classCreatorRest_in_creator9519 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_createdName_in_creator9543 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_70_in_creator9561 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_71_in_creator9563 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000044L});
-    public static final BitSet FOLLOW_arrayInitializer_in_creator9571 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_createdName_in_creator9594 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_70_in_creator9610 = new BitSet(new long[]{0x0000081802000100L,0x80000001E6FF0024L,0x00000000000000F9L});
-    public static final BitSet FOLLOW_expression_in_creator9614 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_71_in_creator9616 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000040L});
-    public static final BitSet FOLLOW_70_in_creator9635 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_71_in_creator9637 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000040L});
-    public static final BitSet FOLLOW_createdName_in_creator9653 = new BitSet(new long[]{0x4000000000000000L,0x0000000004000000L});
-    public static final BitSet FOLLOW_62_in_creator9658 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000001L});
-    public static final BitSet FOLLOW_64_in_creator9659 = new BitSet(new long[]{0x4000000000000000L,0x0000000004000000L});
-    public static final BitSet FOLLOW_classCreatorRest_in_creator9665 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classOrInterfaceType_in_createdName9702 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_primitiveType_in_createdName9716 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_innerCreator9746 = new BitSet(new long[]{0x0000080000000000L});
-    public static final BitSet FOLLOW_identifierRule_in_innerCreator9760 = new BitSet(new long[]{0x4000000000000000L,0x0000000004000000L});
-    public static final BitSet FOLLOW_classCreatorRest_in_innerCreator9764 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_arguments_in_classCreatorRest9800 = new BitSet(new long[]{0x3000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_classBody_in_classCreatorRest9806 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_explicitGenericInvocation9836 = new BitSet(new long[]{0x0000080000000000L});
-    public static final BitSet FOLLOW_identifierRule_in_explicitGenericInvocation9840 = new BitSet(new long[]{0x0000000000000000L,0x0000000004000000L});
-    public static final BitSet FOLLOW_arguments_in_explicitGenericInvocation9844 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_62_in_nonWildcardTypeArguments9879 = new BitSet(new long[]{0x0000080000000000L,0x0000000000FF0000L});
-    public static final BitSet FOLLOW_typeList_in_nonWildcardTypeArguments9883 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000001L});
-    public static final BitSet FOLLOW_64_in_nonWildcardTypeArguments9886 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_51_in_superSuffix9932 = new BitSet(new long[]{0x0000080000000000L});
-    public static final BitSet FOLLOW_identifierRule_in_superSuffix9936 = new BitSet(new long[]{0x0000000000000002L,0x0000000004000000L});
-    public static final BitSet FOLLOW_arguments_in_superSuffix9951 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_90_in_arguments10011 = new BitSet(new long[]{0x0200081802000100L,0x80000003EEFF0024L,0x00000000000000F9L});
-    public static final BitSet FOLLOW_expressionList_in_arguments10016 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_91_in_arguments10023 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_51_in_moreidentifierRuleSuffixRubbish9077 = new BitSet(new long[]{0x0800000000000000L});
+    public static final BitSet FOLLOW_59_in_moreidentifierRuleSuffixRubbish9081 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_arrayAccessSuffixRubbish_in_moreidentifierRuleSuffixRubbish9101 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_argumentsSuffixRubbish_in_moreidentifierRuleSuffixRubbish9115 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_51_in_moreidentifierRuleSuffixRubbish9128 = new BitSet(new long[]{0x0800000000000000L});
+    public static final BitSet FOLLOW_59_in_moreidentifierRuleSuffixRubbish9132 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_51_in_moreidentifierRuleSuffixRubbish9153 = new BitSet(new long[]{0x4000000000000000L});
+    public static final BitSet FOLLOW_explicitGenericInvocation_in_moreidentifierRuleSuffixRubbish9157 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_51_in_moreidentifierRuleSuffixRubbish9170 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
+    public static final BitSet FOLLOW_93_in_moreidentifierRuleSuffixRubbish9174 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_51_in_moreidentifierRuleSuffixRubbish9194 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_89_in_moreidentifierRuleSuffixRubbish9198 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_superSuffix_in_moreidentifierRuleSuffixRubbish9214 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_51_in_moreidentifierRuleSuffixRubbish9226 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_135_in_moreidentifierRuleSuffixRubbish9230 = new BitSet(new long[]{0x4000080000000000L});
+    public static final BitSet FOLLOW_innerCreator_in_moreidentifierRuleSuffixRubbish9234 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_93_in_identifierSuffixRubbush9258 = new BitSet(new long[]{0x0008000000000002L,0x0000000004000040L});
+    public static final BitSet FOLLOW_51_in_identifierSuffixRubbush9262 = new BitSet(new long[]{0x0000080000000000L});
+    public static final BitSet FOLLOW_identifierRule_in_identifierSuffixRubbush9266 = new BitSet(new long[]{0x0008000000000002L,0x0000000004000040L});
+    public static final BitSet FOLLOW_arrayAccessSuffixRubbish_in_identifierSuffixRubbush9290 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_argumentsSuffixRubbish_in_identifierSuffixRubbush9304 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_51_in_identifierSuffixRubbush9316 = new BitSet(new long[]{0x0800000000000000L});
+    public static final BitSet FOLLOW_59_in_identifierSuffixRubbush9318 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_51_in_identifierSuffixRubbush9330 = new BitSet(new long[]{0x4000000000000000L});
+    public static final BitSet FOLLOW_explicitGenericInvocation_in_identifierSuffixRubbush9334 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_51_in_identifierSuffixRubbush9346 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_89_in_identifierSuffixRubbush9350 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_superSuffix_in_identifierSuffixRubbush9354 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_51_in_identifierSuffixRubbush9366 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_135_in_identifierSuffixRubbush9370 = new BitSet(new long[]{0x4000080000000000L});
+    public static final BitSet FOLLOW_innerCreator_in_identifierSuffixRubbush9374 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_arguments_in_argumentsSuffixRubbish9401 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_70_in_arrayAccessSuffixRubbish9447 = new BitSet(new long[]{0x0000081802000100L,0x80000001E6FF0024L,0x00000000000000F9L});
+    public static final BitSet FOLLOW_expression_in_arrayAccessSuffixRubbish9451 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_71_in_arrayAccessSuffixRubbish9455 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000040L});
+    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_creator9510 = new BitSet(new long[]{0x0000080000000000L,0x0000000000FF0000L});
+    public static final BitSet FOLLOW_createdName_in_creator9514 = new BitSet(new long[]{0x4000000000000000L,0x0000000004000000L});
+    public static final BitSet FOLLOW_62_in_creator9519 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000001L});
+    public static final BitSet FOLLOW_64_in_creator9520 = new BitSet(new long[]{0x4000000000000000L,0x0000000004000000L});
+    public static final BitSet FOLLOW_classCreatorRest_in_creator9526 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_createdName_in_creator9550 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_70_in_creator9568 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_71_in_creator9570 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000044L});
+    public static final BitSet FOLLOW_arrayInitializer_in_creator9578 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_createdName_in_creator9601 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_70_in_creator9617 = new BitSet(new long[]{0x0000081802000100L,0x80000001E6FF0024L,0x00000000000000F9L});
+    public static final BitSet FOLLOW_expression_in_creator9621 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_71_in_creator9623 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000040L});
+    public static final BitSet FOLLOW_70_in_creator9642 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_71_in_creator9644 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000040L});
+    public static final BitSet FOLLOW_createdName_in_creator9660 = new BitSet(new long[]{0x4000000000000000L,0x0000000004000000L});
+    public static final BitSet FOLLOW_62_in_creator9665 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000001L});
+    public static final BitSet FOLLOW_64_in_creator9666 = new BitSet(new long[]{0x4000000000000000L,0x0000000004000000L});
+    public static final BitSet FOLLOW_classCreatorRest_in_creator9672 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classOrInterfaceType_in_createdName9709 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_primitiveType_in_createdName9723 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_innerCreator9753 = new BitSet(new long[]{0x0000080000000000L});
+    public static final BitSet FOLLOW_identifierRule_in_innerCreator9767 = new BitSet(new long[]{0x4000000000000000L,0x0000000004000000L});
+    public static final BitSet FOLLOW_classCreatorRest_in_innerCreator9771 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_arguments_in_classCreatorRest9807 = new BitSet(new long[]{0x3000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_classBody_in_classCreatorRest9813 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_explicitGenericInvocation9843 = new BitSet(new long[]{0x0000080000000000L});
+    public static final BitSet FOLLOW_identifierRule_in_explicitGenericInvocation9847 = new BitSet(new long[]{0x0000000000000000L,0x0000000004000000L});
+    public static final BitSet FOLLOW_arguments_in_explicitGenericInvocation9851 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_62_in_nonWildcardTypeArguments9886 = new BitSet(new long[]{0x0000080000000000L,0x0000000000FF0000L});
+    public static final BitSet FOLLOW_typeList_in_nonWildcardTypeArguments9890 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000001L});
+    public static final BitSet FOLLOW_64_in_nonWildcardTypeArguments9893 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_51_in_superSuffix9939 = new BitSet(new long[]{0x0000080000000000L});
+    public static final BitSet FOLLOW_identifierRule_in_superSuffix9943 = new BitSet(new long[]{0x0000000000000002L,0x0000000004000000L});
+    public static final BitSet FOLLOW_arguments_in_superSuffix9958 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_90_in_arguments10018 = new BitSet(new long[]{0x0200081802000100L,0x80000003EEFF0024L,0x00000000000000F9L});
+    public static final BitSet FOLLOW_expressionList_in_arguments10023 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_91_in_arguments10030 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_annotations_in_synpred5_JavaP126 = new BitSet(new long[]{0x0FE4808000000000L,0x0000000200000010L});
     public static final BitSet FOLLOW_packageDeclaration_in_synpred5_JavaP142 = new BitSet(new long[]{0x0FE7808000000002L,0x0000000200000010L});
     public static final BitSet FOLLOW_importDeclaration_in_synpred5_JavaP177 = new BitSet(new long[]{0x0FE7808000000002L,0x0000000200000010L});
@@ -27557,49 +27573,49 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     public static final BitSet FOLLOW_identifierRule_in_synpred243_JavaP9038 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_70_in_synpred245_JavaP9068 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
     public static final BitSet FOLLOW_71_in_synpred245_JavaP9070 = new BitSet(new long[]{0x0008000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_51_in_synpred245_JavaP9074 = new BitSet(new long[]{0x0800000000000000L});
-    public static final BitSet FOLLOW_59_in_synpred245_JavaP9076 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_arrayAccessSuffixRubbish_in_synpred246_JavaP9094 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_51_in_synpred248_JavaP9121 = new BitSet(new long[]{0x0800000000000000L});
-    public static final BitSet FOLLOW_59_in_synpred248_JavaP9125 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_51_in_synpred249_JavaP9146 = new BitSet(new long[]{0x4000000000000000L});
-    public static final BitSet FOLLOW_explicitGenericInvocation_in_synpred249_JavaP9150 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_51_in_synpred250_JavaP9163 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
-    public static final BitSet FOLLOW_93_in_synpred250_JavaP9167 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_51_in_synpred251_JavaP9187 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_89_in_synpred251_JavaP9191 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_superSuffix_in_synpred251_JavaP9207 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_51_in_synpred252_JavaP9219 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_135_in_synpred252_JavaP9223 = new BitSet(new long[]{0x4000080000000000L});
-    public static final BitSet FOLLOW_innerCreator_in_synpred252_JavaP9227 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_51_in_synpred253_JavaP9255 = new BitSet(new long[]{0x0000080000000000L});
-    public static final BitSet FOLLOW_identifierRule_in_synpred253_JavaP9259 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_arrayAccessSuffixRubbish_in_synpred254_JavaP9283 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_51_in_synpred256_JavaP9309 = new BitSet(new long[]{0x0800000000000000L});
-    public static final BitSet FOLLOW_59_in_synpred256_JavaP9311 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_51_in_synpred257_JavaP9323 = new BitSet(new long[]{0x4000000000000000L});
-    public static final BitSet FOLLOW_explicitGenericInvocation_in_synpred257_JavaP9327 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_51_in_synpred258_JavaP9339 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_89_in_synpred258_JavaP9343 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_superSuffix_in_synpred258_JavaP9347 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_51_in_synpred259_JavaP9359 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_135_in_synpred259_JavaP9363 = new BitSet(new long[]{0x4000080000000000L});
-    public static final BitSet FOLLOW_innerCreator_in_synpred259_JavaP9367 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_70_in_synpred260_JavaP9440 = new BitSet(new long[]{0x0000081802000100L,0x80000001E6FF0024L,0x00000000000000F9L});
-    public static final BitSet FOLLOW_expression_in_synpred260_JavaP9444 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_71_in_synpred260_JavaP9448 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_createdName_in_synpred264_JavaP9543 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_70_in_synpred264_JavaP9561 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_71_in_synpred264_JavaP9563 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000044L});
-    public static final BitSet FOLLOW_arrayInitializer_in_synpred264_JavaP9571 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_70_in_synpred265_JavaP9610 = new BitSet(new long[]{0x0000081802000100L,0x80000001E6FF0024L,0x00000000000000F9L});
-    public static final BitSet FOLLOW_expression_in_synpred265_JavaP9614 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_71_in_synpred265_JavaP9616 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_createdName_in_synpred267_JavaP9594 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_70_in_synpred267_JavaP9610 = new BitSet(new long[]{0x0000081802000100L,0x80000001E6FF0024L,0x00000000000000F9L});
-    public static final BitSet FOLLOW_expression_in_synpred267_JavaP9614 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_71_in_synpred267_JavaP9616 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000040L});
-    public static final BitSet FOLLOW_70_in_synpred267_JavaP9635 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_71_in_synpred267_JavaP9637 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000040L});
+    public static final BitSet FOLLOW_51_in_synpred245_JavaP9077 = new BitSet(new long[]{0x0800000000000000L});
+    public static final BitSet FOLLOW_59_in_synpred245_JavaP9081 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_arrayAccessSuffixRubbish_in_synpred246_JavaP9101 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_51_in_synpred248_JavaP9128 = new BitSet(new long[]{0x0800000000000000L});
+    public static final BitSet FOLLOW_59_in_synpred248_JavaP9132 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_51_in_synpred249_JavaP9153 = new BitSet(new long[]{0x4000000000000000L});
+    public static final BitSet FOLLOW_explicitGenericInvocation_in_synpred249_JavaP9157 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_51_in_synpred250_JavaP9170 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
+    public static final BitSet FOLLOW_93_in_synpred250_JavaP9174 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_51_in_synpred251_JavaP9194 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_89_in_synpred251_JavaP9198 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_superSuffix_in_synpred251_JavaP9214 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_51_in_synpred252_JavaP9226 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_135_in_synpred252_JavaP9230 = new BitSet(new long[]{0x4000080000000000L});
+    public static final BitSet FOLLOW_innerCreator_in_synpred252_JavaP9234 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_51_in_synpred253_JavaP9262 = new BitSet(new long[]{0x0000080000000000L});
+    public static final BitSet FOLLOW_identifierRule_in_synpred253_JavaP9266 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_arrayAccessSuffixRubbish_in_synpred254_JavaP9290 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_51_in_synpred256_JavaP9316 = new BitSet(new long[]{0x0800000000000000L});
+    public static final BitSet FOLLOW_59_in_synpred256_JavaP9318 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_51_in_synpred257_JavaP9330 = new BitSet(new long[]{0x4000000000000000L});
+    public static final BitSet FOLLOW_explicitGenericInvocation_in_synpred257_JavaP9334 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_51_in_synpred258_JavaP9346 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_89_in_synpred258_JavaP9350 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_superSuffix_in_synpred258_JavaP9354 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_51_in_synpred259_JavaP9366 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_135_in_synpred259_JavaP9370 = new BitSet(new long[]{0x4000080000000000L});
+    public static final BitSet FOLLOW_innerCreator_in_synpred259_JavaP9374 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_70_in_synpred260_JavaP9447 = new BitSet(new long[]{0x0000081802000100L,0x80000001E6FF0024L,0x00000000000000F9L});
+    public static final BitSet FOLLOW_expression_in_synpred260_JavaP9451 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_71_in_synpred260_JavaP9455 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_createdName_in_synpred264_JavaP9550 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_70_in_synpred264_JavaP9568 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_71_in_synpred264_JavaP9570 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000044L});
+    public static final BitSet FOLLOW_arrayInitializer_in_synpred264_JavaP9578 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_70_in_synpred265_JavaP9617 = new BitSet(new long[]{0x0000081802000100L,0x80000001E6FF0024L,0x00000000000000F9L});
+    public static final BitSet FOLLOW_expression_in_synpred265_JavaP9621 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_71_in_synpred265_JavaP9623 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_createdName_in_synpred267_JavaP9601 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_70_in_synpred267_JavaP9617 = new BitSet(new long[]{0x0000081802000100L,0x80000001E6FF0024L,0x00000000000000F9L});
+    public static final BitSet FOLLOW_expression_in_synpred267_JavaP9621 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_71_in_synpred267_JavaP9623 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000040L});
+    public static final BitSet FOLLOW_70_in_synpred267_JavaP9642 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_71_in_synpred267_JavaP9644 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000040L});
 
 }

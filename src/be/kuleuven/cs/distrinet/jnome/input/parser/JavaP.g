@@ -999,7 +999,15 @@ classOrInterfaceType returns [JavaTypeReference element]
              target = (CrossReferenceWithTarget)retval.element;
 	           stop = argsx.stop;
 	          })?
-	        )* ('&' nttt=classOrInterfaceType { retval.element = (JavaTypeReference)retval.element.intersection(nttt.element); stop=nttt.stop;})?
+	        )* ('&' nttt=classOrInterfaceType { 
+                    	 List refs = new ArrayList();
+                    	 refs.add(retval.element);
+                    	 refs.add(nttt.element);
+                    	 retval.element = new JavaIntersectionTypeReference(refs);
+//                       retval.element = (JavaTypeReference)retval.element.intersection(nttt.element); 
+                       stop=nttt.stop;
+	           
+	           })?
 	        {setLocation(retval.element,name.start,stop);}
 	;
 
@@ -1797,6 +1805,7 @@ scope TargetScope;
 @init{
 Token stop = null;
 CrossReferenceTarget scopeTarget = null;
+int zzArrayDimension = 0;
 }
 @after {
 //if(! retval.element.descendants().contains(scopeTarget)) {
@@ -1824,7 +1833,11 @@ CrossReferenceTarget scopeTarget = null;
 	 //setLocation(retval.element, $TargetScope::start, stop);
 	 //The variable reference is only returned if none of the following subrules match.
 	}
-(       ('[' ']')+ '.' 'class'
+(       ('[' ']' {zzArrayDimension++; } )+ '.' czkw='class' {
+retval.element.removeAllMetadata();
+retval.element = new ClassLiteral(new ArrayTypeReference(createTypeReference((NamedTarget)$TargetScope::target), zzArrayDimension));
+setLocation(retval.element, $TargetScope::start, czkw);
+       }
     |
         arr=arrayAccessSuffixRubbish {retval.element = arr.element;}
     |   arg=argumentsSuffixRubbish {

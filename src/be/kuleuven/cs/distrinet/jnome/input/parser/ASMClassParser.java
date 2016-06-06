@@ -95,9 +95,14 @@ import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
 
 public class ASMClassParser {
 
-  public ASMClassParser(ZipFile file, ZipEntry entry, String className, String packageFQN) {
+  private static final int OPCODES = Opcodes.ASM5;
+
+	public ASMClassParser(ZipFile file, ZipEntry entry, String className, String packageFQN) {
     if(className == null) {
-      throw new ChameleonProgrammerException();
+      throw new ChameleonProgrammerException("The class name cannot be null.");
+    }
+    if(className.equals("")) {
+      throw new ChameleonProgrammerException("The class name cannot be the empty string.");
     }
     _jarFile = file;
     _entry = entry;
@@ -162,7 +167,7 @@ public class ASMClassParser {
     InputStream inputStream = new BufferedInputStream(_jarFile.getInputStream(_entry));
     ClassReader reader = new ClassReader(inputStream);
     ClassExtractor extractor = new ClassExtractor(language);
-    reader.accept(extractor, Opcodes.ASM4);
+    reader.accept(extractor, OPCODES);
     inputStream.close();
     Type result = extractor.type();
     if(_children != null) {
@@ -177,8 +182,13 @@ public class ASMClassParser {
     return language.createTypeReference(toDots(tref));
   }
 
-  private String toDots(String name) {
-    return name.replace('/', '.').replace('$', '.');
+  public static String toDots(String name) {
+    String withoutSlashes = name.replace('/', '.');
+    if(withoutSlashes.endsWith("$")) {
+    	return withoutSlashes.substring(0, withoutSlashes.length()-1).replace('$', '.')+"$";
+    } else {
+    	return withoutSlashes.replace('$', '.');
+    }
   }
 
   protected ObjectOrientedFactory factory(Language language) {
@@ -196,7 +206,7 @@ public class ASMClassParser {
     }
 
     public ClassExtractor(Java7 language) {
-      super(Opcodes.ASM4);
+      super(OPCODES);
       _language = language;
       initMethodAccessMap();
       initClassAccessMap();
@@ -422,7 +432,7 @@ public class ASMClassParser {
   protected class MethodExtractor extends SignatureVisitor {
 
     public MethodExtractor(Method method, Java7 language) {
-      super(Opcodes.ASM4);
+      super(OPCODES);
       _method = method;
       _language = language;
     }
@@ -528,7 +538,7 @@ public class ASMClassParser {
     }
 
     public ClassSignatureExtractor(Type type, Java7 language) {
-      super(Opcodes.ASM4);
+      super(OPCODES);
       _type = type;
       _language = language;
     }
@@ -567,7 +577,7 @@ public class ASMClassParser {
   protected class TypeReferenceExtractor extends SignatureVisitor {
 
     public TypeReferenceExtractor(Java7 language) {
-      super(Opcodes.ASM4);
+      super(OPCODES);
       _language = language;
       initPrimitiveMap();
     }

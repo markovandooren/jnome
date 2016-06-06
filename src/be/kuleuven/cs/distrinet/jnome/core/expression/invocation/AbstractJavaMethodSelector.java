@@ -127,7 +127,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 	//		return instantiatedMethodTemplate(method, actualTypeParameters);
 	//	}
 
-	private TypeAssignmentSet actualTypeParameters(M originalMethod, boolean includeNonreference) throws LookupException {
+	private TypeAssignmentSet actualTypeParameters(M originalMethod, boolean includeNonreference, boolean variableArity) throws LookupException {
 		MethodHeader methodHeader = (MethodHeader) originalMethod.header().clone();
 		methodHeader.setOrigin(originalMethod.header());
 		methodHeader.setUniParent(originalMethod.parent());
@@ -149,6 +149,9 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 				List<Expression> actualArguments = invocation().getActualParameters();
 				List<Type> formalParameterTypes = methodHeader.formalParameterTypes();
 				int maxFormalParameterIndex = formalParameterTypes.size() - 1;
+				if(variableArity && originalMethod.lastFormalParameter() instanceof MultiFormalParameter) {
+					maxFormalParameterIndex--;
+				}
 				int nbActualParameters = actualArguments.size();
 				for(int i=0; i< nbActualParameters; i++) {
 					// if the formal parameter type is reference type, add a constraint
@@ -158,10 +161,12 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 					  // adapt if necessary.
 					  int index = i;
 //					  Util.debug(index > maxFormalParameterIndex);
-					  if(index > maxFormalParameterIndex) {
+					  if(variableArity && index > maxFormalParameterIndex) {
 					    index = maxFormalParameterIndex;
+							constraints.add(new SSConstraint(language.reference(argType), ((ArrayType)formalParameterTypes.get(index+1)).elementType()));
+					  } else {
+					  	constraints.add(new SSConstraint(language.reference(argType), formalParameterTypes.get(index)));
 					  }
-						constraints.add(new SSConstraint(language.reference(argType), formalParameterTypes.get(index)));
 					}
 				}
 				typeAssignment = constraints.resolve();
@@ -181,7 +186,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 	 */
 	private MethodSelectionResult<M> matchingApplicableBySubtyping(M method, Java7 java) throws LookupException {
 		if(method.nbFormalParameters() == invocation().nbActualParameters()) {
-			TypeAssignmentSet actualTypeParameters = actualTypeParameters(method, false);
+			TypeAssignmentSet actualTypeParameters = actualTypeParameters(method, false, false);
 			//SLOW We can probably cache the substituted type instead/as well.
 			List<Type> formalParameterTypesInContext = JavaMethodInvocation.formalParameterTypesInContext(method,actualTypeParameters);
 			boolean match = true;
@@ -225,7 +230,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 
 	private MethodSelectionResult<M> matchingApplicableByConversion(M method, Java7 java) throws LookupException {
 		if(method.nbFormalParameters() == invocation().nbActualParameters()) {
-		TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true);
+		TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true,false);
 		List<Type> formalParameterTypesInContext = JavaMethodInvocation.formalParameterTypesInContext(method,actualTypeParameters);
 		boolean match = true;
 		int size = formalParameterTypesInContext.size();
@@ -257,7 +262,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 	public MethodSelectionResult variableApplicableBySubtyping(M method, Java7 java) throws LookupException {
 		boolean match = method.lastFormalParameter() instanceof MultiFormalParameter;
 		if(match) {
-			TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true);
+			TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true,true);
 			List<Type> formalParameterTypesInContext = JavaMethodInvocation.formalParameterTypesInContext(method,actualTypeParameters);
 			int size = formalParameterTypesInContext.size();
 			List<Expression> actualParameters = invocation().getActualParameters();

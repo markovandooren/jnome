@@ -6,6 +6,7 @@ import org.aikodi.chameleon.core.reference.CrossReferenceTarget;
 import org.aikodi.chameleon.oo.expression.MethodInvocation;
 import org.aikodi.chameleon.oo.expression.NameExpression;
 import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.util.Util;
 
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaType;
 
@@ -16,7 +17,7 @@ public class JavaNameExpression extends NameExpression {
 	}
 
 	public JavaNameExpression(String identifier) {
-		super(identifier);
+		this(identifier,null);
 	}
 	
 	@Override

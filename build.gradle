@@ -63,7 +63,7 @@ uploadArchives {
     }
 }
 List shared = [
-     'org.ow2.asm:asm:5.0.3',
+     'org.ow2.asm:asm-debug-all:5.0.4',
      'com.lexicalscope.jewelcli:jewelcli:0.8.5',
      'net.sf.jgrapht:jgrapht:+',
      'org.antlr:antlr:3.2',

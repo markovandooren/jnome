@@ -2,6 +2,7 @@ package be.kuleuven.cs.distrinet.jnome.core.imports;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.declaration.DeclarationContainer;
@@ -58,14 +59,23 @@ public class SingleStaticImport extends Import {
 
 	@Override
 	public <D extends Declaration> List<? extends SelectionResult> directImports(DeclarationSelector<D> selector) throws LookupException {
-		Type type = typeReference().getElement();
-		List<? extends SelectionResult> result;
-		if(selector.selectionName(type).equals(name())) {
-		  result = type.declarations(selector);
-		} else {
-		  result = Lists.create();
+		Type container = typeReference().getElement();
+		List<SelectionResult> result = new ArrayList<>();
+		if(selector.selectionName(container).equals(name())) {
+			List<SelectionResult> members = container.members((DeclarationSelector)selector);
+			for(SelectionResult member: members) {
+				if(member.finalDeclaration().name().equals(name())) {
+					result.add(member);
+				}
+			}
 		}
 		return result;
+//		if(selector.selectionName(container).equals(name())) {
+//		  result = container.declarations(selector);
+//		} else {
+//		  result = Lists.create();
+//		}
+//		return result;
 	}
 	
 	public List<? extends SelectionResult> members() throws LookupException {

@@ -213,14 +213,6 @@ public class RawType extends ClassWithBody implements JavaType {
 
   public boolean convertibleThroughUncheckedConversionAndSubtyping(Type second) throws LookupException {
     return superTypeJudge().get(second) != null;
-    //		Collection<Type> supers = getAllSuperTypes();
-    //		supers.add(this);
-    //		for(Type type: supers) {
-    //			if(type.baseType().sameAs(second.baseType())) {
-    //				return true;
-    //			}
-    //		}
-    //		return false;
   }
 
   /**
@@ -232,51 +224,7 @@ public class RawType extends ClassWithBody implements JavaType {
    @ post \result == this;
    @*/
   public Type erasure() {
-    Java7 language = language(Java7.class);
-    RawType result = _rawTypeCache;
-    if(result == null) {
-      if(is(language.INSTANCE) == Ternary.TRUE) {
-        Type outmostType = farthestAncestor(Type.class);
-        if(outmostType == null) {
-          outmostType = this;
-        }
-        RawType outer;
-        if(outmostType instanceof RawType) {
-          outer = (RawType) outmostType;
-        } else {
-          outer = new RawType(outmostType);
-        }
-        RawType current = outer;
-        List<Type> outerTypes = ancestors(Type.class);
-        outerTypes.add(0, this);
-
-        int size = outerTypes.size();
-        Factory expressionFactory = language().plugin(Factory.class);
-        for(int i = size - 2; i>=0;i--) {
-          NameReference<RawType> simpleRef = expressionFactory.createNameReference(outerTypes.get(i).name(), RawType.class);
-          simpleRef.setUniParent(current);
-          try {
-            current = simpleRef.getElement();
-          } catch (LookupException e) {
-            e.printStackTrace();
-            throw new ChameleonProgrammerException("An inner type of a newly created outer raw type cannot be found",e);
-          }
-        }
-        result = current;
-      } else {
-        // static
-        result = new RawType(this);
-      }
-      _rawTypeCache = result;
-    }
-    return result;	
-  }
-
-  private RawType _rawTypeCache;
-
-  @Override
-  public synchronized void flushLocalCache() {
-    _rawTypeCache = null;
+  	return this;
   }
 
   @Override

@@ -273,7 +273,7 @@ public class RegularJavaType extends RegularType implements JavaType {
 					if (outmostType instanceof RawType) {
 						outer = (RawType) outmostType;
 					} else {
-						outer = new RawType(outmostType);
+						outer = ((JavaType)outmostType).erasure();
 					}
 				}
 				Type current = outer;

@@ -115,7 +115,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 		if(G != null) {
 			TypeParameter ithTypeParameterOfG = G.parameters(TypeParameter.class).get(index);
 			if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
-//				Util.debug(ithTypeParameterOfG instanceof ErasedTypeParameter);
+				//				Util.debug(ithTypeParameterOfG instanceof ErasedTypeParameter);
 				TypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 				// 1)
 				if(arg instanceof EqualityTypeArgument) {

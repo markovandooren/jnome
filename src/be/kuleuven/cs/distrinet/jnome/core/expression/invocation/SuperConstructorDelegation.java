@@ -43,7 +43,7 @@ public class SuperConstructorDelegation extends ConstructorDelegation {
   	if(parent == null) {
   		throw new ChameleonProgrammerException("The super constructor delegation is not inside a type.");
   	}
-  	List<Type> types = parent.getDirectSuperTypes();
+  	List<Type> types = parent.getProperDirectSuperTypes();
 		DeclarationCollector<NormalMethod> collector = new DeclarationCollector<NormalMethod>(selector());
   	for(Type type: types) {
   		type.targetContext().lookUp(collector);

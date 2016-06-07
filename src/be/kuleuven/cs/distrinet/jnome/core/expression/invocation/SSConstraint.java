@@ -155,27 +155,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 						parent().addGenerated(recursive);
 						recursive.setUniParent(parent());
 						result.addAll(recursive.process());
-					} else if(arg instanceof ExtendsWildcard) {
-						final JavaTypeReference typeReference = (JavaTypeReference) ((ExtendsWildcard)arg).typeReference();
-						JavaTypeReference clone = Util.clone(typeReference);
-						final NonLocalJavaTypeReference nonLocal = new NonLocalJavaTypeReference(clone, typeReference.parent());
-            JavaTypeReference V = new JavaExtendsReference(nonLocal);
-						V.setUniParent(ithTypeParameterOfG);
-						EQConstraint recursive = new EQConstraint(V, U.getElement());
-						parent().addGenerated(recursive);
-						recursive.setUniParent(parent());
-						result.addAll(recursive.process());
-					} else if(arg instanceof SuperWildcard) {
-            final JavaTypeReference typeReference = (JavaTypeReference) ((SuperWildcard)arg).typeReference();
-            JavaTypeReference clone = Util.clone(typeReference);
-            final NonLocalJavaTypeReference nonLocal = new NonLocalJavaTypeReference(clone, typeReference.parent());
-						JavaTypeReference V = new JavaSuperReference(nonLocal);
-						V.setUniParent(ithTypeParameterOfG);
-						EQConstraint recursive = new EQConstraint(V, U.getElement());
-						parent().addGenerated(recursive);
-						recursive.setUniParent(parent());
-						result.addAll(recursive.process());
-					}
+					} 
 				}
 			}
 			catch(IndexOutOfBoundsException exc) {
@@ -185,16 +165,9 @@ public class SSConstraint extends FirstPhaseConstraint {
 	}
 
 	private Type GsuperTypeOfA() throws LookupException {
-		Set<Type> supers = ImmutableSet.<Type>builder().addAll(A().getAllSuperTypes()).add(A()).build();
-//		Set<Type> debug = A().getSelfAndAllSuperTypesView();
-//		Util.debug(! debug.containsAll(supers));
-//		Util.debug(! supers.containsAll(debug));
-		Type G = typeWithSameBaseTypeAs(F(), supers);
-//		Type Q = typeWithSameBaseTypeAs(F(), debug);
-//		Util.debug(G!= null && !G.sameAs(Q));
-		return G;
+		return typeWithSameBaseTypeAs(F(), A().getSelfAndAllSuperTypesView());
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.ARef().toString() +" << " +this.F().toString();

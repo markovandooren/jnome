@@ -2,7 +2,7 @@ package test.enumerations;
 
 import java.util.EnumMap;
 
-public class TestMap {
+public class Map {
 	
 	enum A {
 		X(){

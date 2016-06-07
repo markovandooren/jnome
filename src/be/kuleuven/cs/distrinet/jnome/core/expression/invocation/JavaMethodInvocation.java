@@ -28,22 +28,6 @@ public class JavaMethodInvocation extends RegularMethodInvocation {
 
 	public JavaMethodInvocation(String name, CrossReferenceTarget target) {
 		super(name, target);
-		//  	parentLink().addListener(new AssociationListener<Element>() {
-		//      
-		//  		public void notifyElementAdded(Element element) {
-		//  			_trace = new CreationStackTrace();
-		//  		}
-		//  
-		//  		public void notifyElementRemoved(Element element) {
-		//  			_trace = new CreationStackTrace();
-		//  		}
-		//  
-		//  		public void notifyElementReplaced(Element oldElement, Element newElement) {
-		//  			_trace = new CreationStackTrace();
-		//  		}
-		//  		
-		//  	});
-
 	}
 
 	@Override

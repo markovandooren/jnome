@@ -35,22 +35,6 @@ public interface JavaType extends Type {
 			result = Type.super.uniSubtypeOf(other, trace);
 		}
 		return result;
-//		Type snd = ((JavaType)other).captureConversion();
-//		Type sameBase = getSuperType(snd);
-//		boolean result = sameBase != null && sameBase.compatibleParameters(snd, trace);
-//		return result;
 	}
 	
-//	@Override
-//	public default boolean uniSubtypeOf(Type other, TypeFixer trace) throws LookupException {
-//		 boolean result = false;
-//		 if(other instanceof RawType) {
-//			  result = superTypeJudge().get(other) != null;
-//			} else if(other instanceof JavaType) {
-//				Type snd = ((JavaType)other).captureConversion();
-//				Type sameBase = getSuperType(snd);
-//				result = sameBase != null && (sameBase instanceof RawType || sameBase.compatibleParameters(snd, trace));
-//			}
-//			return result;
-//	}
 }

@@ -2,9 +2,9 @@ package test.exceptions;
 
 public class MultiCatch {
 	
-	public void m() {
+	public void m() throws A, B {
 		try {
-			
+			m();
 		}catch(A | B e) {
 			e.getMessage();
 		}

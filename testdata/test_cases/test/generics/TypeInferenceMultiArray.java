@@ -6,7 +6,7 @@ public class TypeInferenceMultiArray {
 	 * Static because the original bug also used a static method.
 	 */
 	public static <T> T m(T[] t) {
-		return t;
+		return t[0];
 	}
 	
 	public void m() {

@@ -1762,8 +1762,8 @@ CrossReferenceTarget old = $TargetScope::target;
 
 castExpression returns [Expression element]
 @after{setLocation(retval.element,retval.start,retval.stop);}
-    :  '(' tref=primitiveType ')' unex=unaryExpression {retval.element = new ClassCastExpression(tref.element,unex.element);}
-    |  '(' treff=type ')' unexx=unaryExpressionNotPlusMinus {retval.element = new ClassCastExpression(treff.element,unexx.element);}
+    :  '(' tref=primitiveType ')' unex=unaryExpression {retval.element = expressionFactory().createClassCastExpression(tref.element,unex.element);}
+    |  '(' treff=type ')' unexx=unaryExpressionNotPlusMinus {retval.element = expressionFactory().createClassCastExpression(treff.element,unexx.element);}
     ;
 
 primary returns [Expression element]

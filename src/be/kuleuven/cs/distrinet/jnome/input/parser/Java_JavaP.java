@@ -1,4 +1,4 @@
-// $ANTLR 3.3 Nov 30, 2010 12:50:56 JavaP.g 2016-06-06 22:43:51
+// $ANTLR 3.3 Nov 30, 2010 12:50:56 JavaP.g 2016-06-07 17:07:31
 
 package be.kuleuven.cs.distrinet.jnome.input.parser;
 
@@ -17415,7 +17415,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, unex.getTree());
                     if ( state.backtracking==0 ) {
-                      retval.element = new ClassCastExpression(tref.element,unex.element);
+                      retval.element = expressionFactory().createClassCastExpression(tref.element,unex.element);
                     }
 
                     }
@@ -17448,7 +17448,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, unexx.getTree());
                     if ( state.backtracking==0 ) {
-                      retval.element = new ClassCastExpression(treff.element,unexx.element);
+                      retval.element = expressionFactory().createClassCastExpression(treff.element,unexx.element);
                     }
 
                     }

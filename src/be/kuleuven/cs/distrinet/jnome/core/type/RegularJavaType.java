@@ -59,50 +59,9 @@ public class RegularJavaType extends RegularType implements JavaType {
 		return result;
 	}
 
-	// private StackOverflowTracer _tracer = new StackOverflowTracer(3);
-
 	public TypeInstantiation createDerivedType(List<TypeArgument> typeArguments) throws LookupException {
-		// if(typeArguments.size() == 1) {
-		// if(_genericCache == null) {
-		// synchronized(this) {
-		// if(_genericCache == null) {
-		// _genericCache = new HashMap<>();
-		// }
-		// }
-		// }
-		// _tracer.push();
-		// Type key = typeArguments.get(0).type();
-		// _tracer.pop();
-		// DerivedType result = _genericCache.get(key);
-		// if(result == null) {
-		// synchronized(this) {
-		// if(result == null) {
-		// result = new JavaDerivedType(this,typeArguments);
-		// _genericCache.put(key, result);
-		// }
-		// }
-		// } else {
-		// //
-		// System.out.println(++COUNT+" generic cache hit for "+name()+"<"+key.name()+">");
-		// }
-		// return result;
-		// }
-
-		// int size = typeArguments.size();
-		// Integer current = COUNTMAP.get(size);
-		// if(current == null) {
-		// current = new Integer(0);
-		// }
-		// Integer value = new Integer(current.intValue() + 1);
-		// System.out.println("Size: "+size+" count: "+value);
-		// COUNTMAP.put(size,value);
 		return new JavaTypeInstantiation(this, typeArguments);
 	}
-
-	// private static int COUNT;
-	// private static Map<Integer,Integer> COUNTMAP = new HashMap<>();
-
-	// private Map<Type,DerivedType> _genericCache;
 
 	protected RegularType cloneSelf() {
 		RegularJavaType regularJavaType = new RegularJavaType(name());

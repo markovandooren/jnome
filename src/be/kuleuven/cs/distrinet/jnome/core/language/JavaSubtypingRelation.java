@@ -184,6 +184,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
    * @throws LookupException
    */
   protected Set<Type> EST(JavaTypeReference U) throws LookupException {
+  	//FIXME This is wrong
     return ((JavaType)U.getElement()).erasure().getSelfAndAllSuperTypesView();
   }
 

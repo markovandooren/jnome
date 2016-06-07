@@ -52,6 +52,7 @@ public class RegularJavaType extends RegularType implements JavaType {
 
 	@Override
 	public boolean assignableTo(Type other) throws LookupException {
+		//FIXME If getDirectSuperTypes is correct, this code should no longer be necessary.
 		boolean result = super.assignableTo(other);
 		if(! result) {
 			result = language(Java7.class).subtypeRelation().convertibleThroughUncheckedConversionAndSubtyping(this, other);

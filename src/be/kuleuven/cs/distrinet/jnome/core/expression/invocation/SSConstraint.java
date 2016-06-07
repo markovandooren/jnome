@@ -40,7 +40,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 		List<SecondPhaseConstraint> result;
 		if(A().is(language().PRIMITIVE_TYPE) == Ternary.TRUE) {
 			result = new ArrayList<SecondPhaseConstraint>();
-			// If A is a primitive type, then A is converted to a reference type U via
+			// JLS7 p.468 If A is a primitive type, then A is converted to a reference type U via
 			// boxing conversion and this algorithm is applied recursively to the constraint
 			// U << F
 			SSConstraint recursive = new SSConstraint(ARef().box(), F());

@@ -143,15 +143,11 @@ public class SSConstraint extends FirstPhaseConstraint {
 	 */
 	public void caseSSFormalBasic(List<SecondPhaseConstraint> result, JavaTypeReference U,
 			int index) throws LookupException {
-		// U = basic.typeReference()
 		Type G = GsuperTypeOfA();
 		if(G != null) {
 			try {
 				TypeParameter ithTypeParameterOfG = G.parameters(TypeParameter.class).get(index);
-
 				if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
-//					Util.debug(ithTypeParameterOfG instanceof ErasedTypeParameter);
-					// Get the i-th type parameter of zuppa: V.
 					TypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 					if(arg instanceof EqualityTypeArgument) {
 						JavaTypeReference V = (JavaTypeReference) ((EqualityTypeArgument)arg).typeReference();

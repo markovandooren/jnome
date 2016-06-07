@@ -52,20 +52,6 @@ public class SSConstraint extends FirstPhaseConstraint {
 		return result;
 	}
 
-//	@Override
-//	public List<SecondPhaseConstraint> processSpecifics() throws LookupException {
-//		List<SecondPhaseConstraint> result = new ArrayList<SecondPhaseConstraint>();
-//		if(A().is(language().PRIMITIVE_TYPE) == Ternary.TRUE) {
-//			// If A is a primitive type, then A is converted to a reference type U via
-//			// boxing conversion and this algorithm is applied recursively to the constraint
-//			// U << F
-//			SSConstraint recursive = new SSConstraint(language().box(ARef(), view().namespace()), F());
-//			recursive.setUniParent(parent());
-//			result.addAll(recursive.process());
-//		} 
-//		return result;
-//	}
-	
 	@Override
 	public FirstPhaseConstraint Array(JavaTypeReference componentType, Type componentTypeReference) {
 		SSConstraint ssConstraint = new SSConstraint(componentType, componentTypeReference);

@@ -30,11 +30,11 @@ import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
  * @author Marko van Dooren
  */
 public class SSConstraint extends FirstPhaseConstraint {
-	
+
 	public SSConstraint(JavaTypeReference A, Type F) {
 		super(A,F);
 	}
-	
+
 	@Override
 	public List<SecondPhaseConstraint> processFirstLevel() throws LookupException {
 		List<SecondPhaseConstraint> result;
@@ -99,8 +99,8 @@ public class SSConstraint extends FirstPhaseConstraint {
 			}
 		}
 	}
-	
-  /**
+
+	/**
 	 * If F has the form G<...,Yk-1,? extends U,Yk+1....>, where U involves Tj, then if A has a supertype that is one of
 	 * 
 	 *  1) G<...,Xk-1,V,Xk+1,...>, where V is a type expression. Then this algorithm is

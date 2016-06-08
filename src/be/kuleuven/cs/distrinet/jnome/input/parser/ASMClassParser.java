@@ -473,6 +473,7 @@ public class ASMClassParser {
           String name = "arg" + _nbArgs++;
           _method.header().addFormalParameter(new FormalParameter(name, tref));
         }
+        
       };
     }
 
@@ -516,6 +517,7 @@ public class ASMClassParser {
         _param.addConstraint(new ExtendsConstraint(tref));
       }
     }
+    
   }
 
   protected class ClassSignatureExtractor extends SignatureVisitor {
@@ -535,6 +537,7 @@ public class ASMClassParser {
       protected void connect(TypeReference tref) {
         _type.addInheritanceRelation(new SubtypeRelation(tref));
       }
+      
     }
 
     public ClassSignatureExtractor(Type type, Java7 language) {
@@ -603,8 +606,10 @@ public class ASMClassParser {
      */
     @Override
     public void visitInnerClassType(String name) {
+    	TypeReference old = _tref;
       _tref = toRef(name,_language);
-      connect(_tref);
+      ((BasicJavaTypeReference)_tref).setTarget(old.clone(old));
+      old.replaceWith(_tref);
     }
     
     private void initPrimitiveMap() {
@@ -653,7 +658,7 @@ public class ASMClassParser {
     protected void connect(TypeReference tref) {
       // do nothing by default;
     }
-
+    
     @Override
     public SignatureVisitor visitArrayType() {
       return new TypeReferenceExtractor(language()) {
@@ -662,6 +667,7 @@ public class ASMClassParser {
           _tref = new ArrayTypeReference((JavaTypeReference) tref);
           TypeReferenceExtractor.this.connect(_tref);
         }
+        
       };
     }
 

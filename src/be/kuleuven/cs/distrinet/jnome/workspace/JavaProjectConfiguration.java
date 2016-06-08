@@ -25,7 +25,7 @@ public class JavaProjectConfiguration extends ProjectConfiguration {
 		if(loader instanceof BaseJavaProjectLoader) {
 			return;
 		}
-		if(loader instanceof JarLoader) {
+		if(loader instanceof JarScanner) {
 			BinaryPath p = createOrGetChild(BinaryPath.class);
 			p.createOrUpdateChild(BinaryPath.Jar.class,loader);
 		} else {
@@ -40,7 +40,7 @@ public class JavaProjectConfiguration extends ProjectConfiguration {
 	  	protected void pathChanged() throws ConfigException {
 	  		try {
 	  			JarFile path = new JarFile(project().absoluteFile(path()));
-					view().addBinary(new JarLoader(path, language(Java7.NAME).plugin(ProjectConfigurator.class).binaryFileFilter()));
+					view().addBinary(new JarScanner(path, language(Java7.NAME).plugin(ProjectConfigurator.class).binaryFileFilter()));
 	  		} catch (ProjectException | IOException e) {
 	  			throw new ConfigException(e);
 	  		}

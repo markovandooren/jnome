@@ -27,7 +27,7 @@ import be.kuleuven.cs.distrinet.jnome.input.ReflectiveClassParser;
  * A class for scanning Java classes from jar files via reflection.
  *
  * This class is not part of the {@link AbstractZipScanner} hierarchy because there are too few similarities
- * and it does not fit in well. Currently, the regular {@link JarLoader} class is recommended, so
+ * and it does not fit in well. Currently, the regular {@link JarScanner} class is recommended, so
  * I'm not going to put in the effort to adapt this class to fit in the {@link AbstractZipScanner} hierarchy.
  * Therefore, it is marked as deprecated, but it does function properly.
  * 

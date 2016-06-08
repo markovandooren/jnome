@@ -20,7 +20,7 @@ import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7LanguageFactory;
 import be.kuleuven.cs.distrinet.jnome.input.BaseJavaProjectLoader;
 import be.kuleuven.cs.distrinet.jnome.input.LazyJavaFileInputSourceFactory;
-import be.kuleuven.cs.distrinet.jnome.workspace.JarLoader;
+import be.kuleuven.cs.distrinet.jnome.workspace.JarScanner;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
 import be.kuleuven.cs.distrinet.rejuse.string.Strings;
@@ -146,7 +146,7 @@ public class JavaEclipseClasspathConfig extends ConfigElement {
 				JarFile file;
 				try {
 					file = new JarFile(_project.absoluteFile(path));
-					_project.views().get(0).addBinary(new JarLoader(file, binaryFileFilter));
+					_project.views().get(0).addBinary(new JarScanner(file, binaryFileFilter));
 				} catch (IOException e) {
 					throw new ProjectException(e);
 				}

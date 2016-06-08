@@ -35,7 +35,7 @@ import org.eclipse.jdt.core.JavaCore;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.input.LazyJavaFileInputSourceFactory;
 import be.kuleuven.cs.distrinet.jnome.input.PredefinedElementsFactory;
-import be.kuleuven.cs.distrinet.jnome.workspace.JarLoader;
+import be.kuleuven.cs.distrinet.jnome.workspace.JarScanner;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
@@ -157,7 +157,7 @@ public class JDTProjectLoader extends LanguagePluginImpl implements EclipseProje
 					if(libfile == null){
 						libfile = new File(path.toString());
 					}
-					JarLoader jarLoader = new JarLoader(new JarFile(libfile), binaryFileFilter);
+					JarScanner jarLoader = new JarScanner(new JarFile(libfile), binaryFileFilter);
 						addToContainer(container, jarLoader);
 				} catch(IOException exc) {
 					exc.printStackTrace();

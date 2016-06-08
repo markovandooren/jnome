@@ -23,11 +23,16 @@ import be.kuleuven.cs.distrinet.jnome.input.parser.ASMClassParser;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
 
-public class JarLoader extends AbstractZipScanner {
+/**
+ * A scanner that scans a jar file.
+ * 
+ * @author Marko van Dooren
+ */
+public class JarScanner extends AbstractZipScanner {
 
 
 	/**
-	 * Create a new jar loader for the jar with the given path, file filter, and base loader setting.
+	 * Create a new jar scanner for the jar with the given path, file filter, and base loader setting.
 	 * 
 	 * @param path The path of the jar file from which elements must be loaded.
 	 * @param filter A filter that selects files in the zip file based on their paths.
@@ -40,7 +45,7 @@ public class JarLoader extends AbstractZipScanner {
    @ post path() == path;
    @ post isBaseLoader() == isBaseLoader;
    @*/
-	public JarLoader(JarFile path, Predicate<? super String,Nothing> filter, boolean isBaseLoader) {
+	public JarScanner(JarFile path, Predicate<? super String,Nothing> filter, boolean isBaseLoader) {
 		super(path, filter, isBaseLoader);
 	}
 
@@ -58,7 +63,7 @@ public class JarLoader extends AbstractZipScanner {
    @ post path() == path;
    @ post isBaseLoader() == false;
    @*/
-	public JarLoader(JarFile path, Predicate<? super String,Nothing> filter) {
+	public JarScanner(JarFile path, Predicate<? super String,Nothing> filter) {
 		this(path, filter, false);
 	}
 

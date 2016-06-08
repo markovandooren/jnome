@@ -18,7 +18,7 @@ import org.aikodi.chameleon.support.member.simplename.operator.prefix.PrefixOper
 import org.aikodi.chameleon.support.modifier.Native;
 import org.aikodi.chameleon.support.modifier.Public;
 import org.aikodi.chameleon.support.modifier.ValueType;
-import org.aikodi.chameleon.workspace.DirectDocumentLoader;
+import org.aikodi.chameleon.workspace.DeclarationLoader;
 import org.aikodi.chameleon.workspace.DocumentScanner;
 import org.aikodi.chameleon.workspace.InputException;
 
@@ -59,7 +59,7 @@ public class PrimitiveTypeFactory {
 		Type booleanT = new PrimitiveType("boolean");
 		booleanT.addModifier(pub);
 		try {
-			new DirectDocumentLoader(booleanT,mm,view(), loader);
+			new DeclarationLoader(booleanT,mm,view(), loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -245,7 +245,7 @@ public class PrimitiveTypeFactory {
 		Public pub = new Public();
 		Type doubleT = new PrimitiveType("double");
 		try {
-			new DirectDocumentLoader(doubleT,mm,view(),loader);
+			new DeclarationLoader(doubleT,mm,view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -271,7 +271,7 @@ public class PrimitiveTypeFactory {
 			}
 		};
 		try {
-			new DirectDocumentLoader(longT,mm,view(),loader);
+			new DeclarationLoader(longT,mm,view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -297,7 +297,7 @@ public class PrimitiveTypeFactory {
 			}
 		};
 		try {
-			new DirectDocumentLoader(floatT,mm,view(),loader);
+			new DeclarationLoader(floatT,mm,view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -342,7 +342,7 @@ public class PrimitiveTypeFactory {
 			}
 		};
 		try {
-			new DirectDocumentLoader(intT,mm,view(),loader);
+			new DeclarationLoader(intT,mm,view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -372,7 +372,7 @@ public class PrimitiveTypeFactory {
 			}
 		};
 		try {
-			new DirectDocumentLoader(byteT,mm,view(),loader);
+			new DeclarationLoader(byteT,mm,view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -402,7 +402,7 @@ public class PrimitiveTypeFactory {
 			}
 		};
 		try {
-			new DirectDocumentLoader(shortT,mm,view(),loader);
+			new DeclarationLoader(shortT,mm,view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -432,7 +432,7 @@ public class PrimitiveTypeFactory {
 			}
 		};
 		try {
-			new DirectDocumentLoader(charT,mm,view(),loader);
+			new DeclarationLoader(charT,mm,view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}
@@ -458,7 +458,7 @@ public class PrimitiveTypeFactory {
 
 		}; // toevoeging gebeurt door de constructor
 		try {
-			new DirectDocumentLoader(voidT,mm,view(),loader);
+			new DeclarationLoader(voidT,mm,view(),loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}

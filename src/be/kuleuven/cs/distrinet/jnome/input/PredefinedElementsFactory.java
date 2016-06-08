@@ -6,7 +6,7 @@ import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.support.member.simplename.operator.Operator;
 import org.aikodi.chameleon.util.Util;
-import org.aikodi.chameleon.workspace.DirectDocumentLoader;
+import org.aikodi.chameleon.workspace.DeclarationLoader;
 import org.aikodi.chameleon.workspace.DocumentScanner;
 import org.aikodi.chameleon.workspace.InputException;
 import org.aikodi.chameleon.workspace.View;
@@ -15,31 +15,37 @@ import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.NullType;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 
+/**
+ * A class for initializing the predefined elements of Java 7.
+ * This includes the primitive types and the operators.
+ * 
+ * @author Marko van Dooren
+ */
 public class PredefinedElementsFactory {
 
-	public PredefinedElementsFactory(JavaView view, DocumentScanner loader) {
+	public PredefinedElementsFactory(JavaView view, DocumentScanner scanner) {
 		_view = view;
-		_loader = loader;
+		_scanner = scanner;
 	}
 	
-	private DocumentScanner _loader;
+	private DocumentScanner _scanner;
 	
-	public DocumentScanner loader() {
-		return _loader;
+	public DocumentScanner scanner() {
+		return _scanner;
 	}
 	
 	private JavaView _view;
 	
 	public void initializePredefinedElements() {
 		_factory = new PrimitiveTypeFactory(_view);
-		addPrimitives("",loader());
+		addPrimitives("",scanner());
 	  addInfixOperators();
-	  addNullType(loader());
+	  addNullType(scanner());
 	}
 
 	protected void addNullType(DocumentScanner loader) {
     try {
-			new DirectDocumentLoader(new NullType(java()),"",_view,loader);
+			new DeclarationLoader(new NullType(java()),"",_view,loader);
 		} catch (InputException e) {
 			throw new ChameleonProgrammerException(e);
 		}

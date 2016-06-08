@@ -2,11 +2,12 @@ package be.kuleuven.cs.distrinet.jnome.tool.dependency;
 
 import static java.util.stream.DoubleStream.of;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import java.io.IOException;
 import java.io.Writer;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.aikodi.chameleon.analysis.dependency.DependencyAnalysis.HistoryFilter;
 import org.aikodi.chameleon.analysis.dependency.DependencyAnalyzer;
@@ -14,22 +15,18 @@ import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.reference.CrossReference;
 import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.rejuse.exception.Handler;
 import org.aikodi.chameleon.workspace.InputException;
 import org.aikodi.chameleon.workspace.Project;
-import org.jgrapht.ext.ComponentAttributeProvider;
-import org.jgrapht.ext.DOTExporter;
-import org.jgrapht.ext.EdgeNameProvider;
-import org.jgrapht.ext.VertexNameProvider;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.ListenableDirectedGraph;
+import org.aikodi.rejuse.exception.Handler;
 
 import be.kuleuven.cs.distrinet.jnome.analysis.dependency.JavaDependencyOptions;
 import be.kuleuven.cs.distrinet.jnome.tool.JavaDeclarationDecomposer;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 import be.kuleuven.cs.distrinet.rejuse.contract.Contracts;
 import be.kuleuven.cs.distrinet.rejuse.function.Function;
+import be.kuleuven.cs.distrinet.rejuse.graph.Edge;
 import be.kuleuven.cs.distrinet.rejuse.graph.Graph;
+import be.kuleuven.cs.distrinet.rejuse.graph.Node;
 import be.kuleuven.cs.distrinet.rejuse.graph.Path;
 import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
 
@@ -57,64 +54,111 @@ public class JavaDependencyAnalyzer extends DependencyAnalyzer<Type> {
     return new JavaDeclarationDecomposer();
   }
 
-  protected DOTExporter<Element, DefaultEdge> createExporter() {
-    return new DOTExporter<Element,DefaultEdge>(new VertexNameProvider<Element>() {
+//  protected DOTExporter<Element, DefaultEdge> createExporter() {
+//    return new DOTExporter<Element,DefaultEdge>(new VertexNameProvider<Element>() {
+//
+//      @Override
+//      public String getVertexName(Element arg0) {
+//        if(arg0 instanceof Type) {
+//          String result = ((Type)arg0).getFullyQualifiedName().replace('.', '_');
+//          result = result.replace(',', '_');
+//          result = result.replace(' ', '_');
+//          return result;
+//        } else {
+//          throw new IllegalArgumentException();
+//        }
+//      }
+//    }, new VertexNameProvider<Element>() {
+//
+//      @Override
+//      public String getVertexName(Element arg0) {
+//        if(arg0 instanceof Type) {
+//          String result = ((Type)arg0).name().replace('.', '_');
+//          result = result.replace(',', '_');
+//          result = result.replace(' ', '_');
+//          return result;
+//        } else {
+//          throw new IllegalArgumentException();
+//        }
+//      }
+//    }, new EdgeNameProvider<DefaultEdge>() {
+//
+//      @Override
+//      public String getEdgeName(DefaultEdge arg0) {
+//        return "";
+//      }
+//    }, new ComponentAttributeProvider<Element>() {
+//
+//      @Override
+//      public Map<String, String> getComponentAttributes(Element arg0) {
+//        Map<String,String> result = new HashMap<>();
+//        result.put("shape", "box");
+//        return result;
+//      }
+//    }, new ComponentAttributeProvider<DefaultEdge>() {
+//
+//      @Override
+//      public Map<String, String> getComponentAttributes(DefaultEdge arg0) {
+//        Map<String,String> result = new HashMap<>();
+//        return result;
+//      }
+//    }
+//
+//
+//        );
+//  }
 
-      @Override
-      public String getVertexName(Element arg0) {
-        if(arg0 instanceof Type) {
-          String result = ((Type)arg0).getFullyQualifiedName().replace('.', '_');
-          result = result.replace(',', '_');
-          result = result.replace(' ', '_');
-          return result;
-        } else {
-          throw new IllegalArgumentException();
-        }
-      }
-    }, new VertexNameProvider<Element>() {
+  public static class DOTWriter {
+  	public void write(Graph<Type> graph, Writer stream) throws IOException {
+  		List<Path<Type>> simpleCycles = graph.simpleCycles();
+  		Set<Type> involvedInCycle = simpleCycles.stream().flatMap(p -> p.nodes().stream()).map(n -> n.object()).collect(Collectors.toSet());
+  		Set<Edge<Type>> cycleEdges = simpleCycles.stream().flatMap(p -> p.getEdges().stream()).collect(Collectors.toSet());
+  		stream.write("digraph G {\n");
+  		writeNodes(graph,stream, involvedInCycle);
+  		writeEdges(graph,stream, cycleEdges);
+  		stream.write("}\n");
+  	}
 
-      @Override
-      public String getVertexName(Element arg0) {
-        if(arg0 instanceof Type) {
-          String result = ((Type)arg0).name().replace('.', '_');
-          result = result.replace(',', '_');
-          result = result.replace(' ', '_');
-          return result;
-        } else {
-          throw new IllegalArgumentException();
-        }
-      }
-    }, new EdgeNameProvider<DefaultEdge>() {
+		private void writeEdges(Graph<Type> graph, Writer stream, Set<Edge<Type>> cycleEdges) throws IOException {
+			for(Edge<Type> n: graph.edges()) {
+				String color ="";
+				if(cycleEdges.contains(n)) {
+					color = "color=\"red\"";
+				}
+				stream.write(name(n.getFirst().object()) + " -> " +name(n.getSecond().object())+ "[ label=\"\" "+color+" ];\n");
+			};
+		}
 
-      @Override
-      public String getEdgeName(DefaultEdge arg0) {
-        return "";
-      }
-    }, new ComponentAttributeProvider<Element>() {
+		private void writeNodes(Graph<Type> graph, Writer stream,Set<Type> types) throws IOException {
+			for(Node<Type> n: graph.nodes()){
+				stream.write(name(n.object()) + "[ label=\""+n.object().name() + "\" " + attributes(n.object(), types) +" ];\n");
+			};
+		}
+		
+		private String attributes(Type type, Set<Type> types) {
+			String standard = "shape=\"box\"";
+			if(types.contains(type)) {
+			return standard+" color=\"red\" fontcolor=\"red\"";
+			} else {
+				return standard;
+			}
+		}
 
-      @Override
-      public Map<String, String> getComponentAttributes(Element arg0) {
-        Map<String,String> result = new HashMap<>();
-        result.put("shape", "box");
-        return result;
-      }
-    }, new ComponentAttributeProvider<DefaultEdge>() {
-
-      @Override
-      public Map<String, String> getComponentAttributes(DefaultEdge arg0) {
-        Map<String,String> result = new HashMap<>();
-        return result;
-      }
-    }
-
-
-        );
+		private String name(Type element) {
+      String result = ((Type)element).getFullyQualifiedName().replace('.', '_');
+      result = result.replace(',', '_');
+      result = result.replace(' ', '_');
+      return result;
+		}
   }
-
-  public void visualize(Writer writer) throws InputException {
-    ListenableDirectedGraph<Element, DefaultEdge> graph = buildDependencyGraph();
-    DOTExporter<Element,DefaultEdge> exporter = createExporter();
-    exporter.export(writer, graph);
+  
+  public void visualize(Writer writer) throws InputException, IOException {
+//    ListenableDirectedGraph<Element, DefaultEdge> graph = buildDependencyGraph();
+//    DOTExporter<Element,DefaultEdge> exporter = createExporter();
+//    exporter.export(writer, graph);
+  	Graph graph = dependencyResult(Handler.printer(System.out), Handler.printer(System.out)).graph();
+    new DOTWriter().write(graph, writer);
+    
   }
   
   public void computeStats(Writer writer, Writer cycleWriter) throws IOException {
@@ -122,41 +166,43 @@ public class JavaDependencyAnalyzer extends DependencyAnalyzer<Type> {
     double[] dependencies = graph.nodes().stream().mapToDouble(n -> n.nbOutgoingEdges()).toArray();
     double averageDependencies = of(dependencies).average().orElse(0);
     double maxDependencies = of(dependencies).max().orElse(0);
-    List<Path<Element>> simpleCycles = graph.simpleCycles();
-    int nbSimpleCycles = simpleCycles.size();
+//    List<Path<Element>> simpleCycles = graph.simpleCycles();
+    List<Path<Element>> dumbCycles = graph.simpleCycles();
+//    int nbSimpleCycles = simpleCycles.size();
+    int nbDumbCycles = dumbCycles.size();
     writer.write("Average dependencies: "+averageDependencies+"\n");
     writer.write("Max dependencies: "+maxDependencies+"\n");
-    writer.write("Number of simple cycles: "+nbSimpleCycles+"\n");
+    writer.write("Number of simple cycles: "+nbDumbCycles+"\n");
     writer.close();
-    for(Path<Element> cycle: simpleCycles) {
+    for(Path<Element> cycle: dumbCycles) {
       cycleWriter.write(""+cycle+"\n");
     }
     cycleWriter.close();
   }
 
-  private GraphBuilder<Element> createGraphBuilder(final ListenableDirectedGraph<Element, DefaultEdge> graph) {
-    return new GraphBuilder<Element>() {
+//  private GraphBuilder<Element> createGraphBuilder(final ListenableDirectedGraph<Element, DefaultEdge> graph) {
+//    return new GraphBuilder<Element>() {
+//
+//      @Override
+//      public void addVertex(Element v) {
+//        graph.addVertex(v);
+//      }
+//
+//      @Override
+//      public void addEdge(Element first, Element second) {
+//        addVertex(first);
+//        addVertex(second);
+//        graph.addEdge(first, second);
+//      }
+//    };
+//  }
 
-      @Override
-      public void addVertex(Element v) {
-        graph.addVertex(v);
-      }
-
-      @Override
-      public void addEdge(Element first, Element second) {
-        addVertex(first);
-        addVertex(second);
-        graph.addEdge(first, second);
-      }
-    };
-  }
-
-  private ListenableDirectedGraph<Element, DefaultEdge> buildDependencyGraph() throws InputException {
-    ListenableDirectedGraph<Element, DefaultEdge> graph = new ListenableDirectedGraph<>(DefaultEdge.class);
-    GraphBuilder<Element> builder = createGraphBuilder(graph);
-    buildGraph(builder, Handler.printer(System.out), Handler.printer(System.out));
-    return graph;
-  }
+//  private ListenableDirectedGraph<Element, DefaultEdge> buildDependencyGraph() throws InputException {
+//    ListenableDirectedGraph<Element, DefaultEdge> graph = new ListenableDirectedGraph<>(DefaultEdge.class);
+//    GraphBuilder<Element> builder = createGraphBuilder(graph);
+//    buildGraph(builder, Handler.printer(System.out), Handler.printer(System.out));
+//    return graph;
+//  }
 
   @Override
   protected UniversalPredicate<Type, Nothing> sourcePredicate() {

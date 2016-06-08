@@ -17,7 +17,7 @@ public class JavaTypeVariable extends TypeVariable implements JavaType {
   
   @Override
   public TypeVariable cloneSelf() {
-    return new JavaTypeVariable(name(), aliasedType(), parameter());
+    return new JavaTypeVariable(name(), indirectionTarget(), parameter());
   }
 
   // 

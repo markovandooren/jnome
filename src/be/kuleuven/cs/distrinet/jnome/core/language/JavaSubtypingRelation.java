@@ -453,73 +453,60 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		// of this stupid case.
 		boolean uncheckedConversion = false;
 		if(first instanceof NullType) {
-			return second.isTrue(java().REFERENCE_TYPE);
-		}
-		if(first instanceof TypeIndirection) {
-			return convertibleThroughMethodInvocationConversion(((TypeIndirection)first).aliasedType(), second, indicator);
-		} 
-//		else if(second instanceof TypeIndirection) {
-//			return convertibleThroughMethodInvocationConversion(first, ((TypeIndirection)second).aliasedType(), indicator);
-//		}
-
-		// A) Identity conversion 
-		if(first.sameAs(second)) {
-			result = true;
-		}
-		// B) Widening conversion
-		else if(convertibleThroughWideningPrimitiveConversion(first, second)) {
-			// the result cannot be a raw type so no unchecked conversion is required.
-			result = true;
-		}
-		// C) unboxing and optional widening conversion.
-		else if(convertibleThroughUnboxingAndOptionalWidening(first,second)) {
-			result = true;
-		}
-		// D) boxing and widening reference conversion.
-		else if(convertibleThroughBoxingAndOptionalWidening(first,second)){
-			// can't be raw, so no unchecked conversion can apply
-			result = true;
+			result = second.isTrue(java().REFERENCE_TYPE);
 		} else {
-			if(BUG) {
-				// E) reference widening
-				Type superType = first.getSuperType(second);
-				if(superType != null) {
-					if(superType.sameAs(second)) {
-						result = true;
-					} else {
-						if(convertibleThroughUncheckedConversionAndSubtyping(superType, second)) {
-							uncheckedConversion = true;
-							result = true;
-						}
+			if(first instanceof InstantiatedParameterType) {
+				Type aliasedType = ((InstantiatedParameterType)first).aliasedType();
+				result = convertibleThroughMethodInvocationConversion(aliasedType, second, indicator);
+			} else {
+				//FIXME This does not occur in tests. Can it actually occur?
+				if(second instanceof InstantiatedParameterType) {
+					return convertibleThroughMethodInvocationConversion(first, ((InstantiatedParameterType)second).aliasedType(), indicator);
+				}
 
+				// A) Identity conversion 
+				if(first.sameAs(second)) {
+					result = true;
+				}
+				// B) Widening conversion
+				else if(convertibleThroughWideningPrimitiveConversion(first, second)) {
+					// the result cannot be a raw type so no unchecked conversion is required.
+					result = true;
+				}
+				// C) unboxing and optional widening conversion.
+				else if(convertibleThroughUnboxingAndOptionalWidening(first,second)) {
+					result = true;
+				}
+				// D) boxing and widening reference conversion.
+				else if(convertibleThroughBoxingAndOptionalWidening(first,second)){
+					// can't be raw, so no unchecked conversion can apply
+					result = true;
+				} else {
+
+					// E) reference widening
+					result = first.subtypeOf(second);
+					//      if(superType != null) {
+					if(! result) {
+						//        if(superType.sameAs(second)) {
+						//          result = true;
+						//        } else {
+						Type superType = first.getSuperType(second);
+						if(superType != null) {
+							if(convertibleThroughUncheckedConversionAndSubtyping(superType, second)) {
+								uncheckedConversion = true;
+								result = true;
+							}
+						}
+						//        }
 					}
 				}
-			} else {
-				// E) reference widening
-				result = first.subtypeOf(second);
-				//      if(superType != null) {
-				if(! result) {
-					//        if(superType.sameAs(second)) {
-					//          result = true;
-					//        } else {
-					Type superType = first.getSuperType(second);
-					if(superType != null) {
-						if(convertibleThroughUncheckedConversionAndSubtyping(superType, second)) {
-							uncheckedConversion = true;
-							result = true;
-						}
-					}
-					//        }
+				if(uncheckedConversion) {
+					indicator.set();
 				}
 			}
 		}
-		if(uncheckedConversion) {
-			indicator.set();
-		}
 		return result;
 	}
-	private final boolean BUG=false;
-
 	private boolean convertibleThroughBoxingAndOptionalWidening(Type first, Type second) throws LookupException {
 		boolean result = false;
 		if(first.is(java().PRIMITIVE_TYPE) == Ternary.TRUE) {

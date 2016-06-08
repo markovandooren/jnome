@@ -13,7 +13,7 @@ public class JavaInstantiatedParameterType extends InstantiatedParameterType imp
 
   @Override
   public JavaInstantiatedParameterType cloneSelf() {
-    return new JavaInstantiatedParameterType(name(), aliasedType(),parameter());
+    return new JavaInstantiatedParameterType(name(), indirectionTarget(),parameter());
   }
 
   @Override

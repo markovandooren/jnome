@@ -33,7 +33,7 @@ public class JavaLazyFormalAlias extends LazyFormalAlias implements JavaType {
 		//      return true;
 		//    }
 		trace.add(other, parameter());
-		return aliasedType().subtypeOf(other, trace);
+		return indirectionTarget().subtypeOf(other, trace);
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class JavaLazyFormalAlias extends LazyFormalAlias implements JavaType {
 			return true;
 		}
 		trace.add(other, parameter());
-		return other.subtypeOf(aliasedType(), trace);
+		return other.subtypeOf(indirectionTarget(), trace);
 	}
 
 }

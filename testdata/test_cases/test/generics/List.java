@@ -14,4 +14,9 @@ public class List<T> {
     public void add(T t) {
     }
 	
+//    
+//    public void m() {
+//    	List<? extends CharSequence> l = null;
+//    	l.add("");
+//    }
 }

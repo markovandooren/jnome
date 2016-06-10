@@ -57,7 +57,7 @@ uploadArchives {
         repository(url: "scp://webssh.ugent.be/users/m/mcvdoore/WWW/repository/") {
             authentication(userName: "mcvdoore")
         }
-        pom.version = '1.2.20'
+        pom.version = '1.2.21'
         pom.groupId = 'markovandooren'
         pom.artifactId = 'jnome'
     }
@@ -72,7 +72,7 @@ List shared = [
 ]
 
 dependencies {
-   compile group: 'markovandooren', name: 'chameleon', version: '1.2.20'
+   compile group: 'markovandooren', name: 'chameleon', version: '1.2.21'
    compile shared
 }
 

@@ -16,11 +16,12 @@ import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.member.Member;
 import org.aikodi.chameleon.oo.method.RegularImplementation;
 import org.aikodi.chameleon.oo.method.SimpleNameMethodHeader;
+import org.aikodi.chameleon.oo.plugin.ObjectOrientedFactory;
 import org.aikodi.chameleon.oo.statement.Block;
-import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.RegularType;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeElement;
+import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.generics.TypeArgument;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.oo.type.inheritance.InheritanceRelation;
@@ -31,19 +32,18 @@ import org.aikodi.chameleon.support.modifier.Native;
 import org.aikodi.chameleon.support.modifier.Public;
 import org.aikodi.chameleon.support.statement.StatementExpression;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
+
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.SuperConstructorDelegation;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
-import be.kuleuven.cs.distrinet.jnome.core.language.JavaSubtypingRelation;
 import be.kuleuven.cs.distrinet.jnome.core.method.JavaMethod;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.JavaConstructor;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 import be.kuleuven.cs.distrinet.rejuse.property.PropertySet;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableList.Builder;
-
-public class RegularJavaType extends RegularType implements JavaType {
+public class RegularJavaType extends AbstractJavaType {
 
 	public RegularJavaType(String name) {
 		super(name);
@@ -114,62 +114,22 @@ public class RegularJavaType extends RegularType implements JavaType {
 		_implicitMemberCache = null;
 	}
 
-	/**
-	 * A Java reference type has a default constructor when no other constructor
-	 * is present.
-	 */
-	@Override
-	public List<Member> implicitMembers() {
-		if (_implicitMemberCache == null) {
-			_implicitMemberCache = buildImplicitMembersCache();
-		}
-		return _implicitMemberCache;
-	}
-
 	protected List<Member> buildImplicitMembersCache() {
 		Builder<Member> builder = ImmutableList.<Member> builder();
 		NormalMethod defaultDefaultConstructor = defaultDefaultConstructor();
 		if (defaultDefaultConstructor != null) {
 			builder.add(defaultDefaultConstructor);
 		}
-		NormalMethod classMethod = getClassMethod();
+		NormalMethod classMethod = getClassMethod(this);
 		if (classMethod != null) {
 			builder.add(classMethod);
 		}
 		return builder.build();
 	}
 
-	private List<Member> _implicitMemberCache;
 
-	/**
-	 * This is actually cheating because the getClass method in Java is a member
-	 * of Object. Maybe we should set the parent to Object instead of the current
-	 * class. Anyhow, the Java language specification cheats as well.
-	 * 
-	 * @return
-	 */
-	public NormalMethod getClassMethod() {
-		if (_getClassMethod == null) {
-			synchronized(this) {
-				if (_getClassMethod == null) {
-					if (view(JavaView.class).topLevelType() != this) {
-						Java7 language = language(Java7.class);
-						BasicJavaTypeReference returnType = language.createTypeReference("java.lang.Class");
-						JavaTypeReference erasedThisType = language.createTypeReference(name());
-						TypeArgument arg = language.createExtendsWildcard(erasedThisType);
-						returnType.addArgument(arg);
-						_getClassMethod = new NormalMethod(new SimpleNameMethodHeader("getClass", returnType));
-						_getClassMethod.addModifier(new Public());
-						_getClassMethod.addModifier(new Native());
-						_getClassMethod.setUniParent(body());
-					}
-				}
-			}
-		}
-		return _getClassMethod;
-	}
 
-	private NormalMethod _getClassMethod;
+//	private NormalMethod _getClassMethod;
 
 	/**
 	 * If the added element is a constructor, the default default constructor is

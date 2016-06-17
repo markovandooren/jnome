@@ -8,6 +8,7 @@ import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.AbstractInstantiatedTypeParameter;
+import org.aikodi.chameleon.oo.type.generics.CapturedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeArgument;
 import org.aikodi.chameleon.oo.type.generics.EqualityTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.ExtendsWildcard;
@@ -156,6 +157,17 @@ public class SSConstraint extends FirstPhaseConstraint {
 						recursive.setUniParent(parent());
 						result.addAll(recursive.process());
 					} 
+				} else if(ithTypeParameterOfG instanceof CapturedTypeParameter) {
+					CapturedTypeParameter captured = (CapturedTypeParameter) ithTypeParameterOfG;
+//					captured.
+					Type t = captured.selectionDeclaration();
+					JavaTypeReference V = language().reference(t);
+					EQConstraint recursive = new EQConstraint(V, U.getElement());
+					parent().addGenerated(recursive);
+					recursive.setUniParent(parent());
+					result.addAll(recursive.process());
+
+//					System.out.print(t.name());
 				}
 			}
 			catch(IndexOutOfBoundsException exc) {

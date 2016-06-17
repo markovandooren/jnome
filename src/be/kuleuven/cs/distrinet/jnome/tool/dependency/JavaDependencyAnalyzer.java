@@ -111,18 +111,18 @@ public class JavaDependencyAnalyzer extends DependencyAnalyzer<Type> {
   public static class DOTWriter {
   	public void write(Graph<Type> graph, Writer stream) throws IOException {
   		List<Path<Type>> simpleCycles = graph.simpleCycles();
-  		Set<Type> involvedInCycle = simpleCycles.stream().flatMap(p -> p.nodes().stream()).map(n -> n.object()).collect(Collectors.toSet());
-  		Set<Edge<Type>> cycleEdges = simpleCycles.stream().flatMap(p -> p.getEdges().stream()).collect(Collectors.toSet());
+  		Set<Type> involvedInCycle = simpleCycles.stream().flatMap(p -> p.nodes().stream().map(x -> x.object())).collect(Collectors.toSet());
+//  		Set<Edge<Type>> cycleEdges = simpleCycles.stream().flatMap(p -> p.getEdges().stream()).collect(Collectors.toSet());
   		stream.write("digraph G {\n");
   		writeNodes(graph,stream, involvedInCycle);
-  		writeEdges(graph,stream, cycleEdges);
+  		writeEdges(graph,stream, involvedInCycle);
   		stream.write("}\n");
   	}
 
-		private void writeEdges(Graph<Type> graph, Writer stream, Set<Edge<Type>> cycleEdges) throws IOException {
+		private void writeEdges(Graph<Type> graph, Writer stream, Set<Type> cycleEdges) throws IOException {
 			for(Edge<Type> n: graph.edges()) {
 				String color ="";
-				if(cycleEdges.contains(n)) {
+				if(cycleEdges.contains(n.getFirst().object())) {
 					color = "color=\"red\"";
 				}
 				stream.write(name(n.getFirst().object()) + " -> " +name(n.getSecond().object())+ "[ label=\"\" "+color+" ];\n");
@@ -166,16 +166,24 @@ public class JavaDependencyAnalyzer extends DependencyAnalyzer<Type> {
     double[] dependencies = graph.nodes().stream().mapToDouble(n -> n.nbOutgoingEdges()).toArray();
     double averageDependencies = of(dependencies).average().orElse(0);
     double maxDependencies = of(dependencies).max().orElse(0);
-//    List<Path<Element>> simpleCycles = graph.simpleCycles();
-    List<Path<Element>> dumbCycles = graph.simpleCycles();
-//    int nbSimpleCycles = simpleCycles.size();
-    int nbDumbCycles = dumbCycles.size();
+    long start = System.nanoTime();
+    List<Path<Element>> simpleCycles = graph.simpleCycles();
+    long stop = System.nanoTime();
+//    DecimalFormat myFormatter = new DecimalFormat("###,###,###,###.###,###,###");
+//    String output = myFormatter.format((stop-start)/1000000000.0);
+    System.out.println("Computing simple cycles took "+(stop-start)/1000000000.0+" seconds");
+//    List<Path<Element>> dumbCycles = graph.simpleCycles();
+    int nbSimpleCycles = simpleCycles.size();
+//    int nbDumbCycles = dumbCycles.size();
+//    Util.debug(nbSimpleCycles != nbDumbCycles);
     writer.write("Average dependencies: "+averageDependencies+"\n");
     writer.write("Max dependencies: "+maxDependencies+"\n");
-    writer.write("Number of simple cycles: "+nbDumbCycles+"\n");
+    writer.write("Number of simple cycles: "+nbSimpleCycles+"\n");
     writer.close();
-    for(Path<Element> cycle: dumbCycles) {
-      cycleWriter.write(""+cycle+"\n");
+    for(Path<Element> cycle: simpleCycles) {
+    	String out = cycle.toString();//cycle.stream().map(e -> e.toString()).collect(Collectors.joining(" -> "));
+      cycleWriter.write(out);
+      cycleWriter.write("\n");
     }
     cycleWriter.close();
   }

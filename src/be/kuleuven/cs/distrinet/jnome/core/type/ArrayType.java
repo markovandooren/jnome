@@ -1,27 +1,34 @@
 package be.kuleuven.cs.distrinet.jnome.core.type;
 
 
+import java.util.List;
+
 import org.aikodi.chameleon.core.element.Element;
+import org.aikodi.chameleon.core.lookup.DeclarationSelector;
 import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.lookup.SelectionResult;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.member.Member;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.method.SimpleNameMethodHeader;
-import org.aikodi.chameleon.oo.type.RegularType;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeFixer;
 import org.aikodi.chameleon.oo.type.inheritance.SubtypeRelation;
 import org.aikodi.chameleon.oo.variable.RegularMemberVariable;
 import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
 import org.aikodi.chameleon.support.modifier.Final;
+import org.aikodi.chameleon.util.Util;
 import org.aikodi.chameleon.workspace.View;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
-import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 
 /**
  * @author Marko van Dooren
  */
-public class ArrayType extends RegularType implements JavaType {
+public class ArrayType extends AbstractJavaType implements JavaType {
   ArrayType(Type type) {
     super(getArrayName(type.name()));
     //FIXME: copy the modifiers?
@@ -153,4 +160,14 @@ public class ArrayType extends RegularType implements JavaType {
   		return JavaType.super.subtypeOf(other, trace);
   	}
   }
+  
+	protected List<Member> buildImplicitMembersCache() {
+		Builder<Member> builder = ImmutableList.<Member> builder();
+		NormalMethod classMethod = getClassMethod(this);
+		if (classMethod != null) {
+			builder.add(classMethod);
+		}
+		return builder.build();
+	}
+
 }

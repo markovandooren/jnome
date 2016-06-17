@@ -12,6 +12,7 @@ import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
+import be.kuleuven.cs.distrinet.jnome.core.type.JavaType;
 
 public class JavaMethod extends NormalMethod {
 		
@@ -23,6 +24,11 @@ public class JavaMethod extends NormalMethod {
     return new JavaMethod(null);
   }
 
+	@Override
+	public Type returnType() throws LookupException {
+		return ((JavaType)super.returnType()).captureConversion();
+	}
+	
 	public MemberRelationSelector<Method> overridesSelector() {
 		return new MemberRelationSelector<Method>(Method.class,this,_overridesSelector);
 	}

@@ -128,26 +128,24 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 	//	}
 
 	private TypeAssignmentSet actualTypeParameters(M originalMethod, boolean includeNonreference, boolean variableArity) throws LookupException {
-		MethodHeader methodHeader = (MethodHeader) originalMethod.header().clone();
-		methodHeader.setOrigin(originalMethod.header());
-		methodHeader.setUniParent(originalMethod.parent());
-		List<TypeParameter> typeParameters = methodHeader.typeParameters();
+		MethodHeader clonedHeader = originalMethod.header();
+		List<TypeParameter> clonedTypeParameters = clonedHeader.typeParameters();
 		TypeAssignmentSet typeAssignment;
-		int size = typeParameters.size();
-		if(size > 0 && (typeParameters.get(0) instanceof FormalTypeParameter)) {
+		int size = clonedTypeParameters.size();
+		if(size > 0 && (clonedTypeParameters.get(0) instanceof FormalTypeParameter)) {
 			if(invocation().hasTypeArguments()) {
 				List<TypeArgument> typeArguments = invocation().typeArguments();
-				typeAssignment = new TypeAssignmentSet(typeParameters);
+				typeAssignment = new TypeAssignmentSet(clonedTypeParameters);
 				int nbActualTypeArguments = typeArguments.size();
 				for(int i=0; i< nbActualTypeArguments; i++) {
-					typeAssignment.add(new ActualTypeAssignment(typeParameters.get(i),typeArguments.get(i).upperBound()));
+					typeAssignment.add(new ActualTypeAssignment(clonedTypeParameters.get(i),typeArguments.get(i).upperBound()));
 				}
 			} else {
 				Java7 language = originalMethod.language(Java7.class);
 				// perform type inference
-				FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(invocation(),methodHeader);
+				FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(invocation(),clonedHeader);
 				List<Expression> actualArguments = invocation().getActualParameters();
-				List<Type> formalParameterTypes = methodHeader.formalParameterTypes();
+				List<Type> formalParameterTypes = clonedHeader.formalParameterTypes();
 				int maxFormalParameterIndex = formalParameterTypes.size() - 1;
 				if(variableArity && originalMethod.lastFormalParameter() instanceof MultiFormalParameter) {
 					maxFormalParameterIndex--;
@@ -160,7 +158,6 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 					  //FIXME Check if substitution is ever done on the type reference, and
 					  // adapt if necessary.
 					  int index = i;
-//					  Util.debug(index > maxFormalParameterIndex);
 					  if(variableArity && index > maxFormalParameterIndex) {
 					    index = maxFormalParameterIndex;
 							constraints.add(new SSConstraint(language.reference(argType), ((ArrayType)formalParameterTypes.get(index+1)).elementType()));
@@ -170,10 +167,6 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 					}
 				}
 				typeAssignment = constraints.resolve();
-			}
-			List<TypeParameter> originalParameters = originalMethod.typeParameters();
-			for(int i = 0; i < size; i++) {
-				typeAssignment.substitute(typeParameters.get(i), originalParameters.get(i));
 			}
 		} else {
 			typeAssignment = null;
@@ -303,9 +296,6 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 	}
 
 	protected void applyOrder(List<MethodSelectionResult<M>> tmp) throws LookupException {
-//		if(_order == null) {
-//			_order = new JavaMostSpecificMethodOrder<MethodSelectionResult>(invocation());
-//		}
 		int size = tmp.size();
 		int i=0;
 		outer: while(i< size) {

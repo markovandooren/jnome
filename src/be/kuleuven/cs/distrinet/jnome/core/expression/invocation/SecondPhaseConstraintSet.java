@@ -3,6 +3,7 @@ package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collector;
 
 import org.aikodi.chameleon.core.language.WrongLanguageException;
 import org.aikodi.chameleon.core.lookup.LookupException;
@@ -46,9 +47,6 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		}
 		return Us;
 	}
-	
-
-
 	
 	private Type leastUpperBound(List<? extends JavaTypeReference> Us, Java7 language) throws LookupException {
 		return language.subtypeRelation().leastUpperBound(Us);
@@ -112,7 +110,6 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
   	} else {
   		// Perform under the assumption that S is java.lang.Object
   		if(! unresolvedParameters().isEmpty()) {
-//  			TypeParameter typeParameter = typeParameters().get(0);
   			View view = invocation().view();
 				ObjectOrientedLanguage language = (ObjectOrientedLanguage) view.language();
   			processUnresolved((JavaTypeReference) language.createTypeReferenceInNamespace(language.getDefaultSuperClassFQN(),view.namespace()));
@@ -164,19 +161,39 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		// JLS: ..., and then, for each remaining constraint of the form Ti <: Uk, the argument
 		//      Ti is inferred to be glb(U1,...,Uk)
 		seconds.processSubtypeConstraints();
-		// SPEED why not use the 'java' var and view from above? 
-		// not going to change this during the refactoring, too risky
+		//Any remaining type variable T that has not yet been inferred is then inferred
+		// to have type Object . If a previously inferred type variable P uses T , then P is
+		// inferred to be P [T =Object ].
 		for(TypeParameter param: seconds.unresolvedParameters()) {
 			seconds.add(new ActualTypeAssignment(param, java.getDefaultSuperClass(view.namespace())));
 		}
+  	//FIXME Perform substitution
+		
+		
 		for(TypeParameter param: unresolvedParameters()) {
 			add(seconds.assignments().assignment(param));
 		}
 	}
 	
+	public void substituteRHS(JavaTypeReference tref, EqualTypeConstraint eq) throws LookupException {
+		for(SecondPhaseConstraint constraint: constraints()) {
+			if(constraint != eq) {
+				if(constraint.typeParameter().sameAs(eq.typeParameter())) {
+					remove(constraint);
+				} else {
+					final TypeParameter tp = eq.typeParameter();
+					JavaTypeReference uRef = constraint.URef();
+					NonLocalJavaTypeReference.replace(tref, tp, uRef);
+				}
+			}
+		}
+	}
+	
+
+	
+	
 	private void processSubtypeConstraints() throws LookupException {
-		// WARNING
-		// INCOMPLETE
+		// WARNING INCOMPLETE (but I should have written why :/ )
 		for(TypeParameter p: typeParameters()) {
 			boolean hasSubConstraints = false;
 			for(SecondPhaseConstraint constraint: constraints()) {
@@ -186,7 +203,30 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 				}
 			}
 			if(hasSubConstraints) {
-				add(new ActualTypeAssignment(p, glb(p)));
+				Type glb = glb(p);
+				add(new ActualTypeAssignment(p, glb));
+				JavaTypeReference tref = (JavaTypeReference) glb.language(ObjectOrientedLanguage.class).reference(glb);
+        // WARNING As far as I can tell, this is not in the Java language specification.
+				// In the language specification, the substitution is done only when equality
+				// constraints have been generated and when there are no constraints (then Object is used).
+				//
+				// If the JLS is not incomplete on this point, we are missing a constraint.
+				//
+				// Without this substitution however, there is a problem where there a subtype constraint
+				// is created for a parameter that uses another parameter in its bounds. For example
+				// in the Java 8 method <T, C extends Collection<T>> Collector<T, ?, C> 
+				// {@link java.util.stream.Collectors#toCollection(Supplier<C>)}. The constraint
+				// for C is 'C <: Collection<T>>'. Type T, however, should not escape the method and be
+				// part of the inferred type. Because there cannot be a loop in the bounds according
+				// to the language specification, we can safely perform the substitution.
+				// FIXME We don't actually perform that check. Since we iterate over each parameter only
+				// once, at most we would get an incorrect result. Still, we should throw an exception instead.
+				for(SecondPhaseConstraint constraint: constraints()) {
+					if(! constraint.typeParameter().sameAs(p)) {
+  					JavaTypeReference uRef = constraint.URef();
+				    NonLocalJavaTypeReference.replace(tref, p, uRef);
+					}
+				}
 			}
 		}
 

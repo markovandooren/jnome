@@ -29,6 +29,9 @@ public class EqualTypeConstraint extends SecondPhaseConstraint {
 			if(parameter.sameAs(typeParameter())) {
 				// Otherwise, if U is Tj, then this constraint carries no information and may be discarded.
 			} else {
+				// Otherwise, the constraint is of the form T j = T k for j ≠ k. Then all constraints
+				// involving T j are rewritten such that T j is replaced with T k , and processing
+				// continues with the next type variable.
 				JavaTypeReference tref = typeParameter().language(Java7.class).createTypeReference(parameter.signature().name());
 				tref.setUniParent(parameter);
 				substituteRHS(tref);
@@ -36,6 +39,10 @@ public class EqualTypeConstraint extends SecondPhaseConstraint {
 				parent().add(new IndirectTypeAssignment(typeParameter(), U.parameter()));
 			}
 		} else {
+      // If U is not one of the type parameters of the method, then U is the type inferred
+			// for T j . Then all remaining constraints involving T j are rewritten such that T j is
+      // replaced with U . There are necessarily no further equality constraints involving
+      // T j , and processing continues with the next type parameter, if any.
 			substituteRHS(URef());
 			parent().add(new ActualTypeAssignment(typeParameter(), Utype));
 		}
@@ -47,18 +54,9 @@ public class EqualTypeConstraint extends SecondPhaseConstraint {
 	 * The clone will direct its lookup to the parent of the given type reference to avoid name capture.
 	 */
 	private void substituteRHS(JavaTypeReference tref) throws LookupException {
-		for(SecondPhaseConstraint constraint: parent().constraints()) {
-			if(constraint != this) {
-				if(constraint.typeParameter().sameAs(typeParameter())) {
-					parent().remove(constraint);
-				} else {
-					final TypeParameter tp = typeParameter();
-					JavaTypeReference uRef = constraint.URef();
-					NonLocalJavaTypeReference.replace(tref, tp, uRef);
-				}
-			}
-		}
+		parent().substituteRHS(tref, this);
 	}
+
 
 	private void substitute(TypeParameter param) throws LookupException {
 		for(SecondPhaseConstraint constraint: parent().constraints()) {

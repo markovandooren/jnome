@@ -34,6 +34,7 @@ public interface JavaType extends Type {
 		} else {
 			result = Type.super.uniSubtypeOf(other, trace);
 		}
+		Object y = null;
 		return result;
 	}
 	

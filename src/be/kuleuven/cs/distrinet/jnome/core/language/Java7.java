@@ -631,26 +631,26 @@ public class Java7 extends ObjectOrientedLanguage {
 	}
 
 	//TODO Remove this method. It is used only in the deprecated JLo compiler.
-	public BasicJavaTypeReference createExpandedTypeReference(Type type) throws LookupException {
-		BasicJavaTypeReference result = createTypeReference(type.getFullyQualifiedName());
-		if(! (type instanceof TypeIndirection)) {
-			for(TypeParameter par: type.parameters(TypeParameter.class)) {
-				if(par instanceof InstantiatedTypeParameter) {
-					InstantiatedTypeParameter inst = (InstantiatedTypeParameter) par;
-					TypeArgument argument = inst.argument();
-					TypeArgument clone = Util.clone(argument);
-					if(argument instanceof TypeArgumentWithTypeReference) {
-						TypeArgumentWithTypeReference arg = (TypeArgumentWithTypeReference) argument;
-						TypeReference tref = arg.typeReference();
-						Type t = tref.getElement();
-						((TypeArgumentWithTypeReference)clone).setTypeReference(createExpandedTypeReference(t));
-					}
-					result.addArgument(clone);
-				}
-			}
-		}
-		return result;
-	}
+//	public BasicJavaTypeReference createExpandedTypeReference(Type type) throws LookupException {
+//		BasicJavaTypeReference result = createTypeReference(type.getFullyQualifiedName());
+//		if(! (type instanceof TypeIndirection)) {
+//			for(TypeParameter par: type.parameters(TypeParameter.class)) {
+//				if(par instanceof InstantiatedTypeParameter) {
+//					InstantiatedTypeParameter inst = (InstantiatedTypeParameter) par;
+//					TypeArgument argument = inst.argument();
+//					TypeArgument clone = Util.clone(argument);
+//					if(argument instanceof TypeArgumentWithTypeReference) {
+//						TypeArgumentWithTypeReference arg = (TypeArgumentWithTypeReference) argument;
+//						TypeReference tref = arg.typeReference();
+//						Type t = tref.getElement();
+//						((TypeArgumentWithTypeReference)clone).setTypeReference(createExpandedTypeReference(t));
+//					}
+//					result.addArgument(clone);
+//				}
+//			}
+//		}
+//		return result;
+//	}
 
 
 	@Override

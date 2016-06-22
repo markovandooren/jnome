@@ -210,10 +210,10 @@ public class JavaTypeInstantiation extends TypeInstantiation implements JavaType
 
 
 	@Override
-	public <D extends Declaration> List<? extends SelectionResult> declarations(DeclarationSelector<D> selector)
+	public <D extends Declaration> List<? extends SelectionResult<D>> declarations(DeclarationSelector<D> selector)
 			throws LookupException {
 		Type captureConversion = captureConversion();
-		List<? extends SelectionResult> result;
+		List<? extends SelectionResult<D>> result;
 		if(captureConversion != this) {
 			result = captureConversion.declarations(selector);
 		} else {

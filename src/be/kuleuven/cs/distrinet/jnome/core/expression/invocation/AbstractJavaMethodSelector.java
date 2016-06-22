@@ -291,7 +291,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void filter(List<? extends SelectionResult> selected) throws LookupException {
+	public void filter(List<? extends SelectionResult<M>> selected) throws LookupException {
 		applyOrder((List)selected);
 	}
 
@@ -327,16 +327,6 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 	public boolean canSelect(Class<? extends Declaration> type) {
 		return _type.isAssignableFrom(type);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	public boolean contains(MethodSelectionResult firstResult, MethodSelectionResult secondResult) throws LookupException {
 		boolean result = false;

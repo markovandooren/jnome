@@ -64,7 +64,6 @@ public abstract class JavaTest extends CompositeTest {
 		  .flatMap(v -> v.scanners(DocumentScanner.class).stream())
 		  .flatMap(s -> s.documentLoaders().stream())
 		  .mapToLong(l -> l.loadTime()).sum()/1000000); 
-		
 	}
 
 	public ElementProvider<Type> typeProvider() {

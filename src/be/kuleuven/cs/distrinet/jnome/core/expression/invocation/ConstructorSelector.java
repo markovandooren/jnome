@@ -95,7 +95,7 @@ public class ConstructorSelector extends AbstractConstructorSelector {
 	}
 
 	@Override
-	public MethodSelectionResult<NormalMethod> createSelectionResult(Method method, TypeAssignmentSet typeAssignment, int phase,
+	public MethodSelectionResult<NormalMethod> createSelectionResult(NormalMethod method, TypeAssignmentSet typeAssignment, int phase,
 			boolean requiredUncheckedConversion) {
 		return new ConstructorSelectionResult((NormalMethod)method, typeAssignment, phase, requiredUncheckedConversion);
 	}

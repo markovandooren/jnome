@@ -40,12 +40,7 @@ public class JavaMethodSelector<M extends Method> extends AbstractJavaMethodSele
   	
   	
     public boolean correctSignature(Signature signature) throws LookupException {
-  		boolean result = false;
-  		if(signature instanceof SignatureWithParameters) {
-  		 SignatureWithParameters sig = (SignatureWithParameters)signature;
-  			result = sig.name().equals(invocation().name());
-  		}
-  		return result;
+    	return signature.name().equals(invocation().name());
     }
 
     @Override

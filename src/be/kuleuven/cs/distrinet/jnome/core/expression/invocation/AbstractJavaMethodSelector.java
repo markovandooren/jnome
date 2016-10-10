@@ -17,6 +17,7 @@ import org.aikodi.chameleon.oo.type.generics.TypeArgument;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.util.Util;
+import org.junit.Ignore;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.language.JavaSubtypingRelation;
@@ -57,7 +58,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 			for(int i = 0; i< size; i++) {
 				Declaration decl = selectionCandidates.get(i);
 //				Util.debug(decl.name().equals("antMatchers") && invocation() instanceof JavaMethodInvocation && ((JavaMethodInvocation)invocation()).name().equals("antMatchers"));
-				if(_type.isInstance(decl)) {
+				if(selectedClass().isInstance(decl)) {
 					M method = (M) decl;
 					int nbFormals = method.nbFormalParameters();
 					// If caching is enable, selected based on the name will already have been
@@ -252,7 +253,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 
 
 
-	public MethodSelectionResult variableApplicableBySubtyping(M method, Java7 java) throws LookupException {
+	protected MethodSelectionResult<M> variableApplicableBySubtyping(M method, Java7 java) throws LookupException {
 		boolean match = method.lastFormalParameter() instanceof MultiFormalParameter;
 		if(match) {
 			TypeAssignmentSet actualTypeParameters = actualTypeParameters(method,true,true);
@@ -285,8 +286,8 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 		return null;
 	}
 
-	public MethodSelectionResult createSelectionResult(Method method, TypeAssignmentSet typeAssignment, int phase, boolean requiredUncheckedConversion) {
-		return new BasicMethodSelectionResult(method, typeAssignment,phase,requiredUncheckedConversion);
+	protected MethodSelectionResult<M> createSelectionResult(M method, TypeAssignmentSet typeAssignment, int phase, boolean requiredUncheckedConversion) {
+		return new BasicMethodSelectionResult<>(method, typeAssignment,phase,requiredUncheckedConversion);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -319,13 +320,13 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 		}
 	}
 
-	public Class<M> selectedClass() {
+	protected Class<M> selectedClass() {
 		return _type;
 	}
 
 	@Override
 	public boolean canSelect(Class<? extends Declaration> type) {
-		return _type.isAssignableFrom(type);
+		return selectedClass().isAssignableFrom(type);
 	}
 	
 	public boolean contains(MethodSelectionResult firstResult, MethodSelectionResult secondResult) throws LookupException {
@@ -353,7 +354,7 @@ public abstract class AbstractJavaMethodSelector<M extends Method> implements De
 		return result;
 	}
 
-	public boolean containsVariableArity(MethodSelectionResult firstResult, MethodSelectionResult secondResult) throws LookupException {
+	protected boolean containsVariableArity(MethodSelectionResult firstResult, MethodSelectionResult secondResult) throws LookupException {
 		Method first = firstResult.template();
 		Method second = secondResult.template();
 

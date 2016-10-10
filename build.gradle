@@ -67,6 +67,7 @@ List shared = [
      'com.lexicalscope.jewelcli:jewelcli:0.8.5',
      'net.sf.jgrapht:jgrapht:+',
      'org.antlr:antlr:3.2',
+     'org.antlr:antlr4:4.5.3',
      'org.apache.logging.log4j:log4j-api:2.6',
      'org.apache.logging.log4j:log4j-core:2.6',
 ]
@@ -106,4 +107,8 @@ task makeZip(type: Zip) {
       into '.'
     }
 }
-
+task antlr4(type: JavaExec) {
+  main = 'org.antlr.v4.Tool'
+  classpath = sourceSets.main.runtimeClasspath
+  args '-visitor', '-package','org.aikodi.java8.parser','src/org/aikodi/java8/parser/Java8.g4'
+}

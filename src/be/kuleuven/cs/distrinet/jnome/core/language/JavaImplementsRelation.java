@@ -21,8 +21,6 @@ public class JavaImplementsRelation extends StrictPartialOrder<Member> {
 	  if((!first.sameAs(second)) && (first instanceof Method) && (second instanceof Method)) {
 	    Method method1 = (Method) first;
 	    Method method2 = (Method) second;
-//	    result = checkDefined(method1);
-//	    if(result) {
 	    	result = !checkDefined(method2);
 	    	result = result && first.name().equals(second.name());
 	    	if(result) {

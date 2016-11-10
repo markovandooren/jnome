@@ -1,5 +1,6 @@
 package be.kuleuven.cs.distrinet.jnome.core.method;
 
+import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.member.DeclarationComparator;
 import org.aikodi.chameleon.oo.member.Member;
@@ -33,10 +34,8 @@ public class JavaMethod extends NormalMethod {
 		return new MemberRelationSelector<Method>(Method.class,this,_overridesSelector);
 	}
 
-  public OverridesRelation<? extends Member> overridesRelation() {
-  	return _overridesSelector;
-  }
-  
+	
+	
 	private static OverridesRelation<Method> _overridesSelector = new OverridesRelation<Method>(Method.class) {
 		
 		@Override
@@ -60,6 +59,15 @@ public class JavaMethod extends NormalMethod {
 
 	};
 
+	/** 
+	 * FIXME This should be used in a validation rule. The check that is done during
+	 * lookup is {@link Declaration#compatibleSignature(Declaration)}. In correct Java code,
+	 * the sameAs check for types will give the correct result because any infinite types
+	 * must have the same structure in both methods anyway. 
+	 * If the code is not correct, however, that may not be the case. The lookup will then 
+	 * (correctly) give two results and fail, but the actual error
+	 * is not in the invocation but in the definition. For now, that is not detected.
+	 */
 	private static boolean subSignature(Method first, Method second) throws LookupException {
 		boolean result = first.sameKind(second) && ((Type)first.nearestAncestor(Type.class)).subtypeOf((Type)second.nearestAncestor(Type.class));
 		if(result) {

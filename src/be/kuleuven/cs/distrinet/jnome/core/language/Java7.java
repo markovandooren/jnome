@@ -130,7 +130,7 @@ public class Java7 extends ObjectOrientedLanguage {
 
 	protected static final String JAVA_LANG_INTEGER = "java.lang.Integer";
 
-	private static final String BOOLEAN = "boolean";
+	protected static final String BOOLEAN = "boolean";
 
 	protected static final String VOID = "void";
 
@@ -138,7 +138,7 @@ public class Java7 extends ObjectOrientedLanguage {
 
 	protected static final String LONG = "long";
 
-	private static final String FLOAT = "float";
+	protected static final String FLOAT = "float";
 
 	protected static final String DOUBLE = "double";
 
@@ -246,6 +246,13 @@ public class Java7 extends ObjectOrientedLanguage {
 		return result;
 	}
 
+	/**
+	 * FIXME Move this method to the Java type references themselves.
+	 * This code is no longer experimental.
+	 * 
+	 * @param ref
+	 * @return
+	 */
 	public <T extends CrossReference<? extends Declaration>> CrossReference<? extends Declaration> erasure(T ref) {
 		CrossReference result = null;
 		if(ref instanceof JavaTypeReference) {

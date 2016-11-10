@@ -23,10 +23,10 @@ import org.aikodi.chameleon.core.reference.CrossReferenceWithName;
 import org.aikodi.chameleon.core.reference.ElementReference;
 import org.aikodi.chameleon.core.relation.EquivalenceRelation;
 import org.aikodi.chameleon.core.relation.StrictPartialOrder;
+import org.aikodi.chameleon.core.variable.Variable;
 import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.expression.NamedTarget;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
-import org.aikodi.chameleon.oo.member.Member;
 import org.aikodi.chameleon.oo.member.SignatureWithParameters;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.type.ConstrainedTypeReference;
@@ -59,7 +59,6 @@ import org.aikodi.chameleon.oo.type.generics.TypeConstraint;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeVariable;
 import org.aikodi.chameleon.oo.type.inheritance.AbstractInheritanceRelation;
-import org.aikodi.chameleon.oo.variable.MemberVariable;
 import org.aikodi.chameleon.oo.variable.VariableDeclarator;
 import org.aikodi.chameleon.support.member.simplename.variable.MemberVariableDeclarator;
 import org.aikodi.chameleon.support.modifier.PrivateProperty;
@@ -101,7 +100,6 @@ import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 import be.kuleuven.cs.distrinet.rejuse.junit.BasicRevision;
 import be.kuleuven.cs.distrinet.rejuse.junit.Revision;
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
-import be.kuleuven.cs.distrinet.rejuse.property.PropertyUniverse;
 
 /**
  * A class representing the Java programming language.
@@ -155,8 +153,8 @@ public class Java7 extends ObjectOrientedLanguage {
 		super(name, lookupFactory, version);
 		STRICTFP = add(new StaticChameleonProperty("strictfp", Declaration.class));
 		SYNCHRONIZED = add(new StaticChameleonProperty("synchronized", Method.class));
-		TRANSIENT = add(new StaticChameleonProperty("transient", MemberVariable.class));
-		VOLATILE = add(new StaticChameleonProperty("volatile", MemberVariable.class));
+		TRANSIENT = add(new StaticChameleonProperty("transient", Variable.class));
+		VOLATILE = add(new StaticChameleonProperty("volatile", Variable.class));
 		IMPLEMENTS_RELATION = add(new StaticChameleonProperty("implements", AbstractInheritanceRelation.class));
 		PROTECTED = add(new ProtectedProperty(SCOPE_MUTEX));
 		PRIVATE = add(new PrivateProperty(SCOPE_MUTEX));
@@ -330,9 +328,9 @@ public class Java7 extends ObjectOrientedLanguage {
 		}
 	}
 
-	private final class JavaEquivalenceRelation extends EquivalenceRelation<Member> {
+	private final class JavaEquivalenceRelation extends EquivalenceRelation<Declaration> {
 		@Override
-		public boolean contains(Member first, Member second) throws LookupException {
+		public boolean contains(Declaration first, Declaration second) throws LookupException {
 			return first.equals(second);
 		}
 	}
@@ -393,11 +391,11 @@ public class Java7 extends ObjectOrientedLanguage {
 	}
 
 	private PropertyRule<Type> TYPE_REFERENCE_BY_DEFAULT;
-	private PropertyRule<Member> MEMBER_OVERRIDABLE_BY_DEFAULT;
-	private PropertyRule<Member> MEMBER_INHERITABLE_BY_DEFAULT;
-	private PropertyRule<Member> TYPE_EXTENSIBLE_BY_DEFAULT;
+	private PropertyRule<Declaration> MEMBER_OVERRIDABLE_BY_DEFAULT;
+	private PropertyRule<Declaration> MEMBER_INHERITABLE_BY_DEFAULT;
+	private PropertyRule<Declaration> TYPE_EXTENSIBLE_BY_DEFAULT;
 
-	public PropertyRule<Member> ruleMemberOverridableByDefault() {
+	public PropertyRule<Declaration> ruleMemberOverridableByDefault() {
 		return MEMBER_OVERRIDABLE_BY_DEFAULT;
 	}
 
@@ -447,7 +445,7 @@ public class Java7 extends ObjectOrientedLanguage {
 	//		
 	//		private JavaHidesRelation _hidesRelation = new JavaHidesRelation();
 
-	public StrictPartialOrder<Member> implementsRelation() {
+	public StrictPartialOrder<Declaration> implementsRelation() {
 		return _implementsRelation;
 	}
 
@@ -459,7 +457,7 @@ public class Java7 extends ObjectOrientedLanguage {
 	}
 
 	@Override
-	public EquivalenceRelation<Member> equivalenceRelation() {
+	public EquivalenceRelation<Declaration> equivalenceRelation() {
 		return _equivalenceRelation;
 	}
 

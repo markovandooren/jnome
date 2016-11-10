@@ -2,7 +2,6 @@ package be.kuleuven.cs.distrinet.jnome.core.imports;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.declaration.DeclarationContainer;
@@ -15,11 +14,8 @@ import org.aikodi.chameleon.core.namespacedeclaration.Import;
 import org.aikodi.chameleon.core.validation.Valid;
 import org.aikodi.chameleon.core.validation.Verification;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
-import org.aikodi.chameleon.oo.member.Member;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
-import org.aikodi.chameleon.util.Lists;
-import org.aikodi.chameleon.util.Util;
 import org.aikodi.chameleon.util.association.Single;
 
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
@@ -83,8 +79,8 @@ public class SingleStaticImport extends Import {
 		return selector().selection(type.declarations());
 	}
 	
-	public DeclarationSelector<Member> selector() {
-		return new TwoPhaseDeclarationSelector<Member>() {
+	public DeclarationSelector<Declaration> selector() {
+		return new TwoPhaseDeclarationSelector<Declaration>() {
 
 //			@Override
 //			public WeakPartialOrder<Member> order() {
@@ -92,7 +88,7 @@ public class SingleStaticImport extends Import {
 //			}
 			
 			@Override
-			protected void applyOrder(List<SelectionResult<Member>> tmp) throws LookupException {
+			protected void applyOrder(List<SelectionResult<Declaration>> tmp) throws LookupException {
 				
 			}
 
@@ -102,12 +98,12 @@ public class SingleStaticImport extends Import {
 			}
 
 			@Override
-			public Class<Member> selectedClass() {
-				return Member.class;
+			public Class<Declaration> selectedClass() {
+				return Declaration.class;
 			}
 
 			@Override
-			public boolean selectedRegardlessOfName(Member declaration) throws LookupException {
+			public boolean selectedRegardlessOfName(Declaration declaration) throws LookupException {
 				ObjectOrientedLanguage language = (ObjectOrientedLanguage) declaration.language(ObjectOrientedLanguage.class);
 				return declaration.is(language.CLASS) == Ternary.TRUE;
 			}

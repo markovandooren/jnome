@@ -3,12 +3,10 @@ package be.kuleuven.cs.distrinet.jnome.core.type;
 
 import java.util.List;
 
+import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.element.Element;
-import org.aikodi.chameleon.core.lookup.DeclarationSelector;
 import org.aikodi.chameleon.core.lookup.LookupException;
-import org.aikodi.chameleon.core.lookup.SelectionResult;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
-import org.aikodi.chameleon.oo.member.Member;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.method.SimpleNameMethodHeader;
 import org.aikodi.chameleon.oo.type.Type;
@@ -17,7 +15,6 @@ import org.aikodi.chameleon.oo.type.inheritance.SubtypeRelation;
 import org.aikodi.chameleon.oo.variable.RegularMemberVariable;
 import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
 import org.aikodi.chameleon.support.modifier.Final;
-import org.aikodi.chameleon.util.Util;
 import org.aikodi.chameleon.workspace.View;
 
 import com.google.common.collect.ImmutableList;
@@ -161,8 +158,8 @@ public class ArrayType extends AbstractJavaType implements JavaType {
   	}
   }
   
-	protected List<Member> buildImplicitMembersCache() {
-		Builder<Member> builder = ImmutableList.<Member> builder();
+	protected List<Declaration> buildImplicitMembersCache() {
+		Builder<Declaration> builder = ImmutableList.<Declaration> builder();
 		NormalMethod classMethod = getClassMethod(this);
 		if (classMethod != null) {
 			builder.add(classMethod);

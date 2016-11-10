@@ -2,7 +2,7 @@ package be.kuleuven.cs.distrinet.jnome.core.type;
 
 import java.util.List;
 
-import org.aikodi.chameleon.oo.member.Member;
+import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeVariable;
@@ -26,18 +26,18 @@ public class JavaTypeVariable extends TypeVariable implements JavaType {
   }
 
   @Override
-  public List<Member> implicitMembers() {
+  public List<Declaration> implicitMembers() {
   	if(_implicits == null) {
   		synchronized(this) {
   	  	if(_implicits == null) {
-  	  		_implicits = ImmutableList.<Member>builder().add(AbstractJavaType.getClassMethod(this)).build();
+  	  		_implicits = ImmutableList.<Declaration>builder().add(AbstractJavaType.getClassMethod(this)).build();
   	  	}  			
   		}
   	}
   	return _implicits;
   }
   
-  private List<Member> _implicits;
+  private List<Declaration> _implicits;
   
   // 
 //  @Override

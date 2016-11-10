@@ -3,20 +3,20 @@
  */
 package be.kuleuven.cs.distrinet.jnome.core.language;
 
+import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.relation.StrictPartialOrder;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
-import org.aikodi.chameleon.oo.member.Member;
 import org.aikodi.chameleon.oo.member.SignatureWithParameters;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.type.Type;
 
 import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 
-public class JavaImplementsRelation extends StrictPartialOrder<Member> {
+public class JavaImplementsRelation extends StrictPartialOrder<Declaration> {
 
 	@Override
-	public boolean contains(Member first, Member second) throws LookupException {
+	public boolean contains(Declaration first, Declaration second) throws LookupException {
 	  boolean result = false;
 	  if((!first.sameAs(second)) && (first instanceof Method) && (second instanceof Method)) {
 	    Method method1 = (Method) first;
@@ -40,7 +40,7 @@ public class JavaImplementsRelation extends StrictPartialOrder<Member> {
 	  return result; 
 	}
 
-	public boolean checkDefined(Member member) throws LookupException {
+	public boolean checkDefined(Declaration member) throws LookupException {
 		Ternary temp1 = member.is(member.language(ObjectOrientedLanguage.class).DEFINED);
 		boolean defined1;
 		if(temp1 == Ternary.TRUE) {
@@ -55,7 +55,7 @@ public class JavaImplementsRelation extends StrictPartialOrder<Member> {
 	}
 
 	@Override
-	public boolean equal(Member first, Member second) {
+	public boolean equal(Declaration first, Declaration second) {
 		return first == second;
 	}
 	

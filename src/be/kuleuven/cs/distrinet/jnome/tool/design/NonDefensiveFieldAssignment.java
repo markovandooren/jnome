@@ -17,15 +17,13 @@ import org.aikodi.chameleon.oo.statement.Block;
 import org.aikodi.chameleon.oo.statement.Statement;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.variable.FormalParameter;
-import org.aikodi.chameleon.oo.variable.MemberVariable;
+import org.aikodi.chameleon.oo.variable.RegularMemberVariable;
 import org.aikodi.chameleon.support.expression.AssignmentExpression;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
-import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
 import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
-import be.kuleuven.cs.distrinet.rejuse.tree.TreeStructure;
 
 /**
  * Check whether a parameter is assigned to a field without being
@@ -72,7 +70,7 @@ public class NonDefensiveFieldAssignment extends Analysis<AssignmentExpression,V
 			final Method method = assignment.nearestAncestor(Method.class);
 			if(method != null && method.isTrue(method.language(Java7.class).PUBLIC)) {
 				Variable v = assignment.variable();
-				if(v instanceof MemberVariable) {
+				if(v instanceof RegularMemberVariable) {
 					Expression e = assignment.getValue();
 					if(e instanceof CrossReference) {
 						final Declaration rhs = ((CrossReference) e).getElement();

@@ -16,6 +16,7 @@ import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 
 import org.aikodi.chameleon.core.document.Document;
 
+import org.aikodi.chameleon.core.declaration.Declarator;
 import org.aikodi.chameleon.oo.member.DeclarationWithParametersHeader;
 import org.aikodi.chameleon.oo.member.SimpleNameDeclarationWithParametersHeader;
 import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
@@ -30,8 +31,6 @@ import org.aikodi.chameleon.oo.expression.*;
 import org.aikodi.chameleon.core.reference.*;
 
 import org.aikodi.chameleon.core.language.Language;
-
-import org.aikodi.chameleon.oo.member.Member;
 
 import org.aikodi.chameleon.oo.method.*;
 

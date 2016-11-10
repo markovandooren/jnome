@@ -4,11 +4,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.document.Document;
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.input.ParseException;
-import org.aikodi.chameleon.oo.member.Member;
 import org.aikodi.chameleon.support.input.ChameleonANTLR3Parser;
 import org.aikodi.chameleon.support.input.ModelFactoryUsingANTLR3;
 import org.aikodi.chameleon.workspace.View;
@@ -51,7 +51,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR3 {
     try {
       InputStream inputStream = new ByteArrayInputStream(text.getBytes("UTF-8"));
       Element result = null;
-      if (element instanceof Member) {
+      if (element instanceof Declaration) {
         result = ((JavaParser) getParser(inputStream, element.view())).memberDecl().element;
       }
       return result;

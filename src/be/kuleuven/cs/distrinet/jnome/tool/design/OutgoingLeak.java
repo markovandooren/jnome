@@ -11,7 +11,7 @@ import org.aikodi.chameleon.core.variable.Variable;
 import org.aikodi.chameleon.oo.expression.Expression;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.chameleon.oo.variable.MemberVariable;
+import org.aikodi.chameleon.oo.variable.RegularMemberVariable;
 import org.aikodi.chameleon.support.statement.ReturnStatement;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
@@ -57,8 +57,8 @@ public class OutgoingLeak extends Analysis<ReturnStatement, Verification,LookupE
             if(expr instanceof CrossReference) {
                 Declaration declaration = ((CrossReference) expr).getElement();
             		Java7 language = statement.language(Java7.class);
-                if(declaration instanceof MemberVariable && declaration.isTrue(language.INSTANCE)) {
-                    Type type = ((MemberVariable) declaration).getType();
+                if(declaration instanceof RegularMemberVariable && declaration.isTrue(language.INSTANCE)) {
+                    Type type = ((RegularMemberVariable) declaration).getType();
                     if((!Predicates.IMMUTABLE_COLLECTION.eval(type)) && Predicates.COLLECTION.eval(type)) {
                         result = new OutgoingCollectionEncapsulationViolation(nearestAncestor, (Variable) declaration);
                     }

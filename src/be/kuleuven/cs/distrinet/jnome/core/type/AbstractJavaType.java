@@ -2,7 +2,7 @@ package be.kuleuven.cs.distrinet.jnome.core.type;
 
 import java.util.List;
 
-import org.aikodi.chameleon.oo.member.Member;
+import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.oo.method.SimpleNameMethodHeader;
 import org.aikodi.chameleon.oo.plugin.ObjectOrientedFactory;
 import org.aikodi.chameleon.oo.type.ClassImpl;
@@ -17,14 +17,14 @@ import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
 
 public abstract class AbstractJavaType extends RegularType implements JavaType {
 
-	protected List<Member> _implicitMemberCache;
+	protected List<Declaration> _implicitMemberCache;
 
 	/**
 	 * A Java reference type has a default constructor when no other constructor
 	 * is present.
 	 */
 	@Override
-	public List<Member> implicitMembers() {
+	public List<Declaration> implicitMembers() {
 		if (_implicitMemberCache == null) {
 			_implicitMemberCache = buildImplicitMembersCache();
 		}
@@ -35,7 +35,7 @@ public abstract class AbstractJavaType extends RegularType implements JavaType {
 		super(name);
 	}
 
-	protected abstract List<Member> buildImplicitMembersCache();
+	protected abstract List<Declaration> buildImplicitMembersCache();
 
 	/**
 	 * This is actually cheating because the getClass method in Java is a member

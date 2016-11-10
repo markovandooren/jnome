@@ -3,16 +3,14 @@ package be.kuleuven.cs.distrinet.jnome.core.type;
 import java.util.Collections;
 import java.util.List;
 
+import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.declaration.Declarator;
 import org.aikodi.chameleon.core.element.Element;
-import org.aikodi.chameleon.core.factory.Factory;
 import org.aikodi.chameleon.core.lookup.DeclarationSelector;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.lookup.SelectionResult;
-import org.aikodi.chameleon.core.reference.NameReference;
 import org.aikodi.chameleon.core.tag.TagImpl;
-import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
-import org.aikodi.chameleon.oo.member.Member;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.type.ClassWithBody;
 import org.aikodi.chameleon.oo.type.Type;
@@ -35,15 +33,15 @@ import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 
 public class RawType extends ClassWithBody implements JavaType {
 
-  private ImmutableList<Member> _implicitMembers;
+  private ImmutableList<Declaration> _implicitMembers;
 
   @Override
-  public List<Member> implicitMembers() {
+  public List<Declaration> implicitMembers() {
     return _implicitMembers;
   }
 
   @Override
-  public <D extends Member> List<? extends SelectionResult> implicitMembers(DeclarationSelector<D> selector) throws LookupException {
+  public <D extends Declaration> List<? extends SelectionResult> implicitMembers(DeclarationSelector<D> selector) throws LookupException {
     return selector.selection(_implicitMembers);
   }
 
@@ -126,10 +124,10 @@ public class RawType extends ClassWithBody implements JavaType {
   }
 
   private void copyImplicitMembers(Type original) {
-    Builder<Member> builder = ImmutableList.<Member>builder();
-    List<Member> implicits = original.implicitMembers();
-    for(Member m: implicits) {
-      Member clone = clone(m);
+    Builder<Declaration> builder = ImmutableList.<Declaration>builder();
+    List<Declaration> implicits = original.implicitMembers();
+    for(Declaration m: implicits) {
+    	Declaration clone = clone(m);
       clone.setUniParent(body());
       builder.add(clone);
     }
@@ -158,7 +156,7 @@ public class RawType extends ClassWithBody implements JavaType {
   }
 
   private void eraseMethods() {
-    for(TypeElement element: directlyDeclaredElements()) {
+    for(Declarator element: directlyDeclaredElements()) {
       if(element instanceof Method) {
         Method method = (Method)element;
         eraseTypeParameters(method.typeParameters());

@@ -2,13 +2,13 @@ package be.kuleuven.cs.distrinet.jnome.core.type;
 
 import java.util.List;
 
+import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.lookup.DeclarationSelector;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.lookup.SelectionResult;
 import org.aikodi.chameleon.core.property.ChameleonProperty;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
-import org.aikodi.chameleon.oo.member.Member;
 import org.aikodi.chameleon.oo.method.SimpleNameMethodHeader;
 import org.aikodi.chameleon.oo.plugin.ObjectOrientedFactory;
 import org.aikodi.chameleon.oo.type.RegularType;
@@ -29,8 +29,8 @@ public abstract class AnonymousType extends RegularType implements JavaType {
 		super(name);
 	}
 	
-	public List<Member> localMembers() throws LookupException {
-		List<Member> result = super.localMembers();
+	public List<Declaration> localMembers() throws LookupException {
+		List<Declaration> result = super.localMembers();
 		List<NormalMethod> superMembers = implicitConstructors();
 	  result.addAll(superMembers);
 		return result;
@@ -69,7 +69,7 @@ public abstract class AnonymousType extends RegularType implements JavaType {
 		return cons;
 	}
 
-	public <D extends Member> List<? extends SelectionResult> localMembers(DeclarationSelector<D> selector) throws LookupException {
+	public <D extends Declaration> List<? extends SelectionResult> localMembers(DeclarationSelector<D> selector) throws LookupException {
 		List<SelectionResult> result = (List)super.localMembers(selector);
 		List<NormalMethod> superMembers = implicitConstructors();
 	  result.addAll(selector.selection(superMembers));

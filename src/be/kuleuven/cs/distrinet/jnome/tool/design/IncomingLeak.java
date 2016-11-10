@@ -13,7 +13,7 @@ import org.aikodi.chameleon.oo.expression.Expression;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.variable.FormalParameter;
-import org.aikodi.chameleon.oo.variable.MemberVariable;
+import org.aikodi.chameleon.oo.variable.RegularMemberVariable;
 import org.aikodi.chameleon.support.expression.AssignmentExpression;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
@@ -57,7 +57,7 @@ public class IncomingLeak extends Analysis<AssignmentExpression, Verification, M
 		Java7 language = method.language(Java7.class);
 		if(method != null && Predicates.EXTERNALLY_ACCESSIBLE.eval(method)) {
 			Variable v = assignment.variable();
-			if(v instanceof MemberVariable && v.isTrue(language.INSTANCE)) {
+			if(v instanceof RegularMemberVariable && v.isTrue(language.INSTANCE)) {
 				Expression e = assignment.getValue();
 				if(e instanceof CrossReference) {
 					Declaration rhs = ((CrossReference) e).getElement();

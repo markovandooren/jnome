@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.aikodi.chameleon.core.declaration.Declarator;
 import org.aikodi.chameleon.core.document.Document;
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.modifier.ElementWithModifiers;
@@ -608,7 +609,7 @@ public class Java7Syntax extends Syntax {
     result.append("{\n");
     indent();
     
-    List<? extends TypeElement> members = type.directlyDeclaredElements();
+    List<? extends Declarator> members = type.directlyDeclaredElements();
     // Members
     for(Element element: members) {
       result.append(toCode((Element)element));

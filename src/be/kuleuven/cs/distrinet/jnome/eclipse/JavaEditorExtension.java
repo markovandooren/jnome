@@ -1,21 +1,22 @@
 package be.kuleuven.cs.distrinet.jnome.eclipse;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+
+import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.modifier.Modifier;
+import org.aikodi.chameleon.core.variable.Variable;
 import org.aikodi.chameleon.eclipse.connector.EclipseEditorExtension;
 import org.aikodi.chameleon.eclipse.presentation.treeview.CompositeIconProvider;
 import org.aikodi.chameleon.eclipse.presentation.treeview.DefaultIconProvider;
 import org.aikodi.chameleon.eclipse.presentation.treeview.IconProvider;
 import org.aikodi.chameleon.exception.ModelException;
-import org.aikodi.chameleon.oo.member.Member;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.variable.FormalParameter;
-import org.aikodi.chameleon.oo.variable.MemberVariable;
 import org.aikodi.chameleon.plugin.output.Syntax;
 import org.aikodi.chameleon.support.modifier.Abstract;
 import org.aikodi.chameleon.support.modifier.Constructor;
@@ -38,8 +39,8 @@ public class JavaEditorExtension extends EclipseEditorExtension {
 	public JavaEditorExtension() {
 		ACCESS_ICON_DECORATOR = new AccessIconDecorator();
 		CLASS_ICON_PROVIDER = new ClassIconProvider(ACCESS_ICON_DECORATOR);
-		FIELD_ICON_PROVIDER = new DefaultIconProvider("field", MemberVariable.class,ACCESS_ICON_DECORATOR);
-		MEMBER_ICON_PROVIDER = new DefaultIconProvider("member", Member.class,ACCESS_ICON_DECORATOR);
+		FIELD_ICON_PROVIDER = new DefaultIconProvider("field", Variable.class,ACCESS_ICON_DECORATOR);
+		MEMBER_ICON_PROVIDER = new DefaultIconProvider("member", Declaration.class,ACCESS_ICON_DECORATOR);
 	}
 
 	public JavaEditorExtension clone() {

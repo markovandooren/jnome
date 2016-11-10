@@ -3,7 +3,6 @@ package be.kuleuven.cs.distrinet.jnome.core.method;
 import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.member.DeclarationComparator;
-import org.aikodi.chameleon.oo.member.Member;
 import org.aikodi.chameleon.oo.member.MemberRelationSelector;
 import org.aikodi.chameleon.oo.member.OverridesRelation;
 import org.aikodi.chameleon.oo.member.SignatureWithParameters;
@@ -45,7 +44,7 @@ public class JavaMethod extends NormalMethod {
 	};
 	
 
-	public MemberRelationSelector<? extends Member> aliasSelector() {
+	public MemberRelationSelector<? extends Declaration> aliasSelector() {
 		return new MemberRelationSelector<Method>(Method.class,this,_aliasRelation);
 	};
 

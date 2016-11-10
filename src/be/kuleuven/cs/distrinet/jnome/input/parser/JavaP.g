@@ -599,7 +599,7 @@ enumBody returns [ClassBody element]
              for(EnumConstant el: csts.element) {
                 retval.element.add(el);
              }
-            })? ','? (decls=enumBodyDeclarations {for(TypeElement el: decls.element){retval.element.add(el);}})? '}'
+            })? ','? (decls=enumBodyDeclarations {for(Declarator el: decls.element){retval.element.add(el);}})? '}'
     ;
 
 enumConstants returns [List<EnumConstant> element]
@@ -610,8 +610,8 @@ enumConstant returns [EnumConstant element]
     :   annotations? name=identifierRule {retval.element = new EnumConstant($name.text);} (args=arguments {retval.element.addAllParameters(args.element);})? (body=classBody {retval.element.setBody(body.element);})?
     ;
 
-enumBodyDeclarations returns [List<TypeElement> element]
-    :   ';' {retval.element= new ArrayList<TypeElement>();} (decl=classBodyDeclaration {retval.element.add(decl.element);})*
+enumBodyDeclarations returns [List<Declarator> element]
+    :   ';' {retval.element= new ArrayList<Declarator>();} (decl=classBodyDeclaration {retval.element.add(decl.element);})*
     ;
 
 interfaceDeclaration returns [Type element]
@@ -655,7 +655,7 @@ interfaceBody returns [ClassBody element]
             '}'
     ;
 
-classBodyDeclaration returns [TypeElement element]
+classBodyDeclaration returns [Declarator element]
 @init{
   Token start=null;
   Token stop=null;
@@ -671,7 +671,7 @@ classBodyDeclaration returns [TypeElement element]
        }
     ;
 
-memberDecl returns [TypeElement element]
+memberDecl returns [Declarator element]
     :   gen=genericMethodOrConstructorDecl {retval.element = gen.element;}
     |   mem=memberDeclaration {retval.element = mem.element;}
     |   vmd=voidMethodDeclaration {retval.element = vmd.element;}
@@ -707,7 +707,7 @@ scope MethodScope;
              constructorDeclaratorRest
 	;
 
-memberDeclaration returns [TypeElement element]
+memberDeclaration returns [Declarator element]
     :   method=methodDeclaration {retval.element=method.element;}
     |   field=fieldDeclaration {retval.element=field.element;}
     ;
@@ -745,12 +745,12 @@ fieldDeclaration returns [MemberVariableDeclarator element]
     :   ref=type {retval.element = new MemberVariableDeclarator(ref.element);} decls=variableDeclarators {for(VariableDeclaration decl: decls.element) {retval.element.add(decl);}} ';'
     ;
 
-interfaceBodyDeclaration returns [TypeElement element]
+interfaceBodyDeclaration returns [Declarator element]
     :   mods=modifiers decl=interfaceMemberDecl {retval.element = decl.element; for(Modifier mod: mods.element){retval.element.addModifier(mod);}}
     |   ';'
     ;
 
-interfaceMemberDecl returns [TypeElement element]
+interfaceMemberDecl returns [Declarator element]
     :   decl=interfaceMethodOrFieldDecl {retval.element = decl.element;}
     |   decl2=interfaceGenericMethodDecl {retval.element = decl2.element;}
     |   decl5=voidInterfaceMethodDeclaration {retval.element = decl5.element;}
@@ -767,7 +767,7 @@ scope MethodScope;
     	   } voidInterfaceMethodDeclaratorRest
     	;
 
-interfaceMethodOrFieldDecl returns [TypeElement element]
+interfaceMethodOrFieldDecl returns [Declarator element]
     :   cst=interfaceConstant {retval.element = cst.element;}
     |   m=interfaceMethod {retval.element = m.element;}
     ;
@@ -837,7 +837,7 @@ interfaceMethodDeclaratorRest
        {setKeyword($MethodScope::method,thrkw);}
     ;
 
-interfaceGenericMethodDecl returns [TypeElement element]
+interfaceGenericMethodDecl returns [Declarator element]
     :   typeParameters (type | 'void') identifierRule
         interfaceMethodDeclaratorRest
     ;
@@ -1207,7 +1207,7 @@ annotationTypeBody returns [ClassBody element]
     :   '{' (annotationTypeElementDeclaration)* '}'
     ;
 
-annotationTypeElementDeclaration returns [TypeElement element]
+annotationTypeElementDeclaration returns [Declarator element]
     :   mods=modifiers rest=annotationTypeElementRest
        {
          retval.element = rest.element;
@@ -1217,7 +1217,7 @@ annotationTypeElementDeclaration returns [TypeElement element]
        }
     ;
 
-annotationTypeElementRest returns [TypeElement element]
+annotationTypeElementRest returns [Declarator element]
     :   t=type ann=annotationMethodOrConstantRest[$t.element] {retval.element = ann.element;}
 
     ';'
@@ -1227,7 +1227,7 @@ annotationTypeElementRest returns [TypeElement element]
     |   an=annotationTypeDeclaration {retval.element = an.element;} ';'?
     ;
 
-annotationMethodOrConstantRest[TypeReference type] returns [TypeElement element]
+annotationMethodOrConstantRest[TypeReference type] returns [Declarator element]
     :   a=annotationMethodRest[$type] {retval.element = a.element;}
     |   aa=annotationConstantRest[$type] {retval.element = aa.element;}
     ;

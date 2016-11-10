@@ -1,7 +1,7 @@
 package be.kuleuven.cs.distrinet.jnome.tool;
 
+import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.lookup.LookupException;
-import org.aikodi.chameleon.oo.member.Member;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.view.ObjectOrientedView;
 
@@ -33,7 +33,7 @@ public class Predicates {
 		return result;
 	};
 
-	public final static Predicate<Member, LookupException> EXTERNALLY_ACCESSIBLE = member -> {
+	public final static Predicate<Declaration, LookupException> EXTERNALLY_ACCESSIBLE = member -> {
 		Java7 language = member.language(Java7.class);
 		return member.isTrue(language.PUBLIC) ||
 				member.isTrue(language.PACKAGE_ACCESSIBLE);

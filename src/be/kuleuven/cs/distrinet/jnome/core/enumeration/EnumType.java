@@ -1,15 +1,12 @@
 package be.kuleuven.cs.distrinet.jnome.core.enumeration;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
 
-import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
+import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.property.ChameleonProperty;
 import org.aikodi.chameleon.core.tag.TagImpl;
-import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
-import org.aikodi.chameleon.oo.member.Member;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.plugin.ObjectOrientedFactory;
 import org.aikodi.chameleon.oo.type.TypeReference;
@@ -21,6 +18,9 @@ import org.aikodi.chameleon.support.modifier.Private;
 import org.aikodi.chameleon.support.modifier.Public;
 import org.aikodi.chameleon.support.modifier.Static;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
+
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.method.JavaMethod;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
@@ -28,9 +28,6 @@ import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
 import be.kuleuven.cs.distrinet.rejuse.property.PropertySet;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableList.Builder;
 
 /**
  * A class for enum types in Java. Enum types in Java differ from
@@ -63,8 +60,8 @@ public class EnumType extends RegularJavaType {
 	 * </ul>
 	 */
 	@Override
-	protected List<Member> buildImplicitMembersCache() {
-		Builder<Member> builder = ImmutableList.<Member>builder();
+	protected List<Declaration> buildImplicitMembersCache() {
+		Builder<Declaration> builder = ImmutableList.<Declaration>builder();
 		builder.addAll(super.buildImplicitMembersCache());
 		builder.add(values());
 		builder.add(valueOf());

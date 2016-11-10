@@ -1,4 +1,4 @@
-// $ANTLR 3.3 Nov 30, 2010 12:50:56 JavaP.g 2016-06-07 17:07:31
+// $ANTLR 3.3 Nov 30, 2010 12:50:56 JavaP.g 2016-11-10 13:42:23
 
 package be.kuleuven.cs.distrinet.jnome.input.parser;
 
@@ -9,6 +9,7 @@ import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 
 import org.aikodi.chameleon.core.document.Document;
 
+import org.aikodi.chameleon.core.declaration.Declarator;
 import org.aikodi.chameleon.oo.member.DeclarationWithParametersHeader;
 import org.aikodi.chameleon.oo.member.SimpleNameDeclarationWithParametersHeader;
 import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
@@ -23,8 +24,6 @@ import org.aikodi.chameleon.oo.expression.*;
 import org.aikodi.chameleon.core.reference.*;
 
 import org.aikodi.chameleon.core.language.Language;
-
-import org.aikodi.chameleon.oo.member.Member;
 
 import org.aikodi.chameleon.oo.method.*;
 
@@ -2902,7 +2901,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, decls.getTree());
                     if ( state.backtracking==0 ) {
-                      for(TypeElement el: decls.element){retval.element.add(el);}
+                      for(Declarator el: decls.element){retval.element.add(el);}
                     }
 
                     }
@@ -3185,13 +3184,13 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     // $ANTLR end "enumConstant"
 
     public static class enumBodyDeclarations_return extends ParserRuleReturnScope {
-        public List<TypeElement> element;
+        public List<Declarator> element;
         Object tree;
         public Object getTree() { return tree; }
     };
 
     // $ANTLR start "enumBodyDeclarations"
-    // JavaP.g:613:1: enumBodyDeclarations returns [List<TypeElement> element] : ';' (decl= classBodyDeclaration )* ;
+    // JavaP.g:613:1: enumBodyDeclarations returns [List<Declarator> element] : ';' (decl= classBodyDeclaration )* ;
     public final Java_JavaP.enumBodyDeclarations_return enumBodyDeclarations() throws RecognitionException {
         Java_JavaP.enumBodyDeclarations_return retval = new Java_JavaP.enumBodyDeclarations_return();
         retval.start = input.LT(1);
@@ -3217,9 +3216,9 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             adaptor.addChild(root_0, char_literal25_tree);
             }
             if ( state.backtracking==0 ) {
-              retval.element= new ArrayList<TypeElement>();
+              retval.element= new ArrayList<Declarator>();
             }
-            // JavaP.g:614:61: (decl= classBodyDeclaration )*
+            // JavaP.g:614:60: (decl= classBodyDeclaration )*
             loop31:
             do {
                 int alt31=2;
@@ -3232,7 +3231,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
 
                 switch (alt31) {
             	case 1 :
-            	    // JavaP.g:614:62: decl= classBodyDeclaration
+            	    // JavaP.g:614:61: decl= classBodyDeclaration
             	    {
             	    pushFollow(FOLLOW_classBodyDeclaration_in_enumBodyDeclarations1619);
             	    decl=classBodyDeclaration();
@@ -3826,13 +3825,13 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     // $ANTLR end "interfaceBody"
 
     public static class classBodyDeclaration_return extends ParserRuleReturnScope {
-        public TypeElement element;
+        public Declarator element;
         Object tree;
         public Object getTree() { return tree; }
     };
 
     // $ANTLR start "classBodyDeclaration"
-    // JavaP.g:658:1: classBodyDeclaration returns [TypeElement element] : (sckw= ';' | (stkw= 'static' )? bl= block | mods= modifiers decl= memberDecl );
+    // JavaP.g:658:1: classBodyDeclaration returns [Declarator element] : (sckw= ';' | (stkw= 'static' )? bl= block | mods= modifiers decl= memberDecl );
     public final Java_JavaP.classBodyDeclaration_return classBodyDeclaration() throws RecognitionException {
         Java_JavaP.classBodyDeclaration_return retval = new Java_JavaP.classBodyDeclaration_return();
         retval.start = input.LT(1);
@@ -4037,13 +4036,13 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     // $ANTLR end "classBodyDeclaration"
 
     public static class memberDecl_return extends ParserRuleReturnScope {
-        public TypeElement element;
+        public Declarator element;
         Object tree;
         public Object getTree() { return tree; }
     };
 
     // $ANTLR start "memberDecl"
-    // JavaP.g:674:1: memberDecl returns [TypeElement element] : (gen= genericMethodOrConstructorDecl | mem= memberDeclaration | vmd= voidMethodDeclaration | cs= constructorDeclaration | id= interfaceDeclaration | cd= classDeclaration );
+    // JavaP.g:674:1: memberDecl returns [Declarator element] : (gen= genericMethodOrConstructorDecl | mem= memberDeclaration | vmd= voidMethodDeclaration | cs= constructorDeclaration | id= interfaceDeclaration | cd= classDeclaration );
     public final Java_JavaP.memberDecl_return memberDecl() throws RecognitionException {
         Java_JavaP.memberDecl_return retval = new Java_JavaP.memberDecl_return();
         retval.start = input.LT(1);
@@ -4476,13 +4475,13 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     // $ANTLR end "constructorDeclaration"
 
     public static class memberDeclaration_return extends ParserRuleReturnScope {
-        public TypeElement element;
+        public Declarator element;
         Object tree;
         public Object getTree() { return tree; }
     };
 
     // $ANTLR start "memberDeclaration"
-    // JavaP.g:710:1: memberDeclaration returns [TypeElement element] : (method= methodDeclaration | field= fieldDeclaration );
+    // JavaP.g:710:1: memberDeclaration returns [Declarator element] : (method= methodDeclaration | field= fieldDeclaration );
     public final Java_JavaP.memberDeclaration_return memberDeclaration() throws RecognitionException {
         Java_JavaP.memberDeclaration_return retval = new Java_JavaP.memberDeclaration_return();
         retval.start = input.LT(1);
@@ -4975,13 +4974,13 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     // $ANTLR end "fieldDeclaration"
 
     public static class interfaceBodyDeclaration_return extends ParserRuleReturnScope {
-        public TypeElement element;
+        public Declarator element;
         Object tree;
         public Object getTree() { return tree; }
     };
 
     // $ANTLR start "interfaceBodyDeclaration"
-    // JavaP.g:748:1: interfaceBodyDeclaration returns [TypeElement element] : (mods= modifiers decl= interfaceMemberDecl | ';' );
+    // JavaP.g:748:1: interfaceBodyDeclaration returns [Declarator element] : (mods= modifiers decl= interfaceMemberDecl | ';' );
     public final Java_JavaP.interfaceBodyDeclaration_return interfaceBodyDeclaration() throws RecognitionException {
         Java_JavaP.interfaceBodyDeclaration_return retval = new Java_JavaP.interfaceBodyDeclaration_return();
         retval.start = input.LT(1);
@@ -5076,13 +5075,13 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     // $ANTLR end "interfaceBodyDeclaration"
 
     public static class interfaceMemberDecl_return extends ParserRuleReturnScope {
-        public TypeElement element;
+        public Declarator element;
         Object tree;
         public Object getTree() { return tree; }
     };
 
     // $ANTLR start "interfaceMemberDecl"
-    // JavaP.g:753:1: interfaceMemberDecl returns [TypeElement element] : (decl= interfaceMethodOrFieldDecl | decl2= interfaceGenericMethodDecl | decl5= voidInterfaceMethodDeclaration | decl3= interfaceDeclaration | decl4= classDeclaration );
+    // JavaP.g:753:1: interfaceMemberDecl returns [Declarator element] : (decl= interfaceMethodOrFieldDecl | decl2= interfaceGenericMethodDecl | decl5= voidInterfaceMethodDeclaration | decl3= interfaceDeclaration | decl4= classDeclaration );
     public final Java_JavaP.interfaceMemberDecl_return interfaceMemberDecl() throws RecognitionException {
         Java_JavaP.interfaceMemberDecl_return retval = new Java_JavaP.interfaceMemberDecl_return();
         retval.start = input.LT(1);
@@ -5340,13 +5339,13 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     // $ANTLR end "voidInterfaceMethodDeclaration"
 
     public static class interfaceMethodOrFieldDecl_return extends ParserRuleReturnScope {
-        public TypeElement element;
+        public Declarator element;
         Object tree;
         public Object getTree() { return tree; }
     };
 
     // $ANTLR start "interfaceMethodOrFieldDecl"
-    // JavaP.g:770:1: interfaceMethodOrFieldDecl returns [TypeElement element] : (cst= interfaceConstant | m= interfaceMethod );
+    // JavaP.g:770:1: interfaceMethodOrFieldDecl returns [Declarator element] : (cst= interfaceConstant | m= interfaceMethod );
     public final Java_JavaP.interfaceMethodOrFieldDecl_return interfaceMethodOrFieldDecl() throws RecognitionException {
         Java_JavaP.interfaceMethodOrFieldDecl_return retval = new Java_JavaP.interfaceMethodOrFieldDecl_return();
         retval.start = input.LT(1);
@@ -6130,13 +6129,13 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     // $ANTLR end "interfaceMethodDeclaratorRest"
 
     public static class interfaceGenericMethodDecl_return extends ParserRuleReturnScope {
-        public TypeElement element;
+        public Declarator element;
         Object tree;
         public Object getTree() { return tree; }
     };
 
     // $ANTLR start "interfaceGenericMethodDecl"
-    // JavaP.g:840:1: interfaceGenericMethodDecl returns [TypeElement element] : typeParameters ( type | 'void' ) identifierRule interfaceMethodDeclaratorRest ;
+    // JavaP.g:840:1: interfaceGenericMethodDecl returns [Declarator element] : typeParameters ( type | 'void' ) identifierRule interfaceMethodDeclaratorRest ;
     public final Java_JavaP.interfaceGenericMethodDecl_return interfaceGenericMethodDecl() throws RecognitionException {
         Java_JavaP.interfaceGenericMethodDecl_return retval = new Java_JavaP.interfaceGenericMethodDecl_return();
         retval.start = input.LT(1);
@@ -10850,13 +10849,13 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     // $ANTLR end "annotationTypeBody"
 
     public static class annotationTypeElementDeclaration_return extends ParserRuleReturnScope {
-        public TypeElement element;
+        public Declarator element;
         Object tree;
         public Object getTree() { return tree; }
     };
 
     // $ANTLR start "annotationTypeElementDeclaration"
-    // JavaP.g:1210:1: annotationTypeElementDeclaration returns [TypeElement element] : mods= modifiers rest= annotationTypeElementRest ;
+    // JavaP.g:1210:1: annotationTypeElementDeclaration returns [Declarator element] : mods= modifiers rest= annotationTypeElementRest ;
     public final Java_JavaP.annotationTypeElementDeclaration_return annotationTypeElementDeclaration() throws RecognitionException {
         Java_JavaP.annotationTypeElementDeclaration_return retval = new Java_JavaP.annotationTypeElementDeclaration_return();
         retval.start = input.LT(1);
@@ -10921,13 +10920,13 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     // $ANTLR end "annotationTypeElementDeclaration"
 
     public static class annotationTypeElementRest_return extends ParserRuleReturnScope {
-        public TypeElement element;
+        public Declarator element;
         Object tree;
         public Object getTree() { return tree; }
     };
 
     // $ANTLR start "annotationTypeElementRest"
-    // JavaP.g:1220:1: annotationTypeElementRest returns [TypeElement element] : (t= type ann= annotationMethodOrConstantRest[$t.element] ';' | cd= normalClassDeclaration ( ';' )? | id= normalInterfaceDeclaration ( ';' )? | en= enumDeclaration ( ';' )? | an= annotationTypeDeclaration ( ';' )? );
+    // JavaP.g:1220:1: annotationTypeElementRest returns [Declarator element] : (t= type ann= annotationMethodOrConstantRest[$t.element] ';' | cd= normalClassDeclaration ( ';' )? | id= normalInterfaceDeclaration ( ';' )? | en= enumDeclaration ( ';' )? | an= annotationTypeDeclaration ( ';' )? );
     public final Java_JavaP.annotationTypeElementRest_return annotationTypeElementRest() throws RecognitionException {
         Java_JavaP.annotationTypeElementRest_return retval = new Java_JavaP.annotationTypeElementRest_return();
         retval.start = input.LT(1);
@@ -11213,13 +11212,13 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
     // $ANTLR end "annotationTypeElementRest"
 
     public static class annotationMethodOrConstantRest_return extends ParserRuleReturnScope {
-        public TypeElement element;
+        public Declarator element;
         Object tree;
         public Object getTree() { return tree; }
     };
 
     // $ANTLR start "annotationMethodOrConstantRest"
-    // JavaP.g:1230:1: annotationMethodOrConstantRest[TypeReference type] returns [TypeElement element] : (a= annotationMethodRest[$type] | aa= annotationConstantRest[$type] );
+    // JavaP.g:1230:1: annotationMethodOrConstantRest[TypeReference type] returns [Declarator element] : (a= annotationMethodRest[$type] | aa= annotationConstantRest[$type] );
     public final Java_JavaP.annotationMethodOrConstantRest_return annotationMethodOrConstantRest(TypeReference type) throws RecognitionException {
         Java_JavaP.annotationMethodOrConstantRest_return retval = new Java_JavaP.annotationMethodOrConstantRest_return();
         retval.start = input.LT(1);
@@ -21683,7 +21682,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             this.transition = DFA41_transition;
         }
         public String getDescription() {
-            return "710:1: memberDeclaration returns [TypeElement element] : (method= methodDeclaration | field= fieldDeclaration );";
+            return "710:1: memberDeclaration returns [Declarator element] : (method= methodDeclaration | field= fieldDeclaration );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -21889,7 +21888,7 @@ public class Java_JavaP extends ChameleonANTLR3Parser {
             this.transition = DFA46_transition;
         }
         public String getDescription() {
-            return "770:1: interfaceMethodOrFieldDecl returns [TypeElement element] : (cst= interfaceConstant | m= interfaceMethod );";
+            return "770:1: interfaceMethodOrFieldDecl returns [Declarator element] : (cst= interfaceConstant | m= interfaceMethod );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;

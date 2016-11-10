@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.declaration.Declarator;
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.factory.Factory;
 import org.aikodi.chameleon.core.lookup.LookupException;
@@ -13,10 +15,8 @@ import org.aikodi.chameleon.core.reference.NameReference;
 import org.aikodi.chameleon.core.tag.TagImpl;
 import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
-import org.aikodi.chameleon.oo.member.Member;
 import org.aikodi.chameleon.oo.method.RegularImplementation;
 import org.aikodi.chameleon.oo.method.SimpleNameMethodHeader;
-import org.aikodi.chameleon.oo.plugin.ObjectOrientedFactory;
 import org.aikodi.chameleon.oo.statement.Block;
 import org.aikodi.chameleon.oo.type.RegularType;
 import org.aikodi.chameleon.oo.type.Type;
@@ -28,7 +28,6 @@ import org.aikodi.chameleon.oo.type.inheritance.InheritanceRelation;
 import org.aikodi.chameleon.oo.type.inheritance.SubtypeRelation;
 import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
 import org.aikodi.chameleon.support.modifier.Constructor;
-import org.aikodi.chameleon.support.modifier.Native;
 import org.aikodi.chameleon.support.modifier.Public;
 import org.aikodi.chameleon.support.statement.StatementExpression;
 
@@ -114,8 +113,8 @@ public class RegularJavaType extends AbstractJavaType {
 		_implicitMemberCache = null;
 	}
 
-	protected List<Member> buildImplicitMembersCache() {
-		Builder<Member> builder = ImmutableList.<Member> builder();
+	protected List<Declaration> buildImplicitMembersCache() {
+		Builder<Declaration> builder = ImmutableList.<Declaration> builder();
 		NormalMethod defaultDefaultConstructor = defaultDefaultConstructor();
 		if (defaultDefaultConstructor != null) {
 			builder.add(defaultDefaultConstructor);
@@ -174,8 +173,8 @@ public class RegularJavaType extends AbstractJavaType {
 	 */
 	public void reactOnDescendantRemoved(Element element) {
 		if (isConstructor(element)) {
-			List<TypeElement> elements = body().elements();
-			for (TypeElement el : elements) {
+			List<Declarator> elements = body().elements();
+			for (Declarator el : elements) {
 				if (isConstructor(el)) {
 					return;
 				}

@@ -1,22 +1,20 @@
 package be.kuleuven.cs.distrinet.jnome.core.enumeration;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.lookup.LocalLookupContext;
-import org.aikodi.chameleon.core.lookup.LookupContext;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.validation.Valid;
 import org.aikodi.chameleon.core.validation.Verification;
 import org.aikodi.chameleon.oo.expression.Expression;
-import org.aikodi.chameleon.oo.member.Member;
 import org.aikodi.chameleon.oo.member.SimpleNameMember;
 import org.aikodi.chameleon.oo.type.ClassBody;
 import org.aikodi.chameleon.oo.type.ClassWithBody;
 import org.aikodi.chameleon.oo.type.DeclarationWithType;
 import org.aikodi.chameleon.oo.type.RegularType;
 import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.util.Util;
 import org.aikodi.chameleon.util.association.Multi;
 import org.aikodi.chameleon.util.association.Single;
 
@@ -31,10 +29,8 @@ public class EnumConstant extends SimpleNameMember implements DeclarationWithTyp
 		return new EnumConstant(name());
 	}
 
-	public List<Member> getIntroducedMembers() {
-		List<Member> result = new ArrayList<Member>();
-		result.add(this);
-		return result;
+	public List<Declaration> getIntroducedMembers() {
+		return Util.createNonNullList(this);
 	}
 
 	/**

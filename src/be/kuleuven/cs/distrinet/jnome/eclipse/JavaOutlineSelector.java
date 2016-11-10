@@ -23,7 +23,7 @@ public class JavaOutlineSelector extends ChameleonOutlineSelector {
 		List<Element> result = super.outlineChildren(element);
 		if(element instanceof MemberVariableDeclarator) {
 			MemberVariableDeclarator decl = (MemberVariableDeclarator) element;
-			result.addAll(decl.getIntroducedMembers());
+			result.addAll(decl.declaredDeclarations());
 		}
 		return result;
 	}

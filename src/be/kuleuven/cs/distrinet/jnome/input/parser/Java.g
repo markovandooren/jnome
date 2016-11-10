@@ -62,7 +62,6 @@ import org.aikodi.chameleon.oo.type.RegularType;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.ClassWithBody;
 import org.aikodi.chameleon.oo.type.TypeReference;
-import org.aikodi.chameleon.oo.type.TypeElement;
 
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;

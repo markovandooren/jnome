@@ -1,4 +1,4 @@
-// $ANTLR 3.3 Nov 30, 2010 12:50:56 be/kuleuven/cs/distrinet/jnome/input/parser/Java.g 2016-11-10 13:42:22
+// $ANTLR 3.3 Nov 30, 2010 12:50:56 be/kuleuven/cs/distrinet/jnome/input/parser/Java.g 2016-11-10 15:28:36
 
 package be.kuleuven.cs.distrinet.jnome.input.parser;
 
@@ -55,7 +55,6 @@ import org.aikodi.chameleon.oo.type.RegularType;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.ClassWithBody;
 import org.aikodi.chameleon.oo.type.TypeReference;
-import org.aikodi.chameleon.oo.type.TypeElement;
 
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
@@ -396,7 +395,7 @@ public class JavaParser extends ChameleonANTLR3Parser {
     };
 
     // $ANTLR start "stuff"
-    // be/kuleuven/cs/distrinet/jnome/input/parser/Java.g:224:1: stuff : Identifier ;
+    // be/kuleuven/cs/distrinet/jnome/input/parser/Java.g:223:1: stuff : Identifier ;
     public final JavaParser.stuff_return stuff() throws RecognitionException {
         JavaParser.stuff_return retval = new JavaParser.stuff_return();
         retval.start = input.LT(1);
@@ -409,8 +408,8 @@ public class JavaParser extends ChameleonANTLR3Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 419) ) { return retval; }
-            // be/kuleuven/cs/distrinet/jnome/input/parser/Java.g:224:7: ( Identifier )
-            // be/kuleuven/cs/distrinet/jnome/input/parser/Java.g:224:9: Identifier
+            // be/kuleuven/cs/distrinet/jnome/input/parser/Java.g:223:7: ( Identifier )
+            // be/kuleuven/cs/distrinet/jnome/input/parser/Java.g:223:9: Identifier
             {
             root_0 = (Object)adaptor.nil();
 

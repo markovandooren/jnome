@@ -14,7 +14,6 @@ import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.type.ClassWithBody;
 import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.chameleon.oo.type.TypeElement;
 import org.aikodi.chameleon.oo.type.TypeFixer;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.EqualityTypeArgument;

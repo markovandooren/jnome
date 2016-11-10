@@ -1,12 +1,13 @@
 package be.kuleuven.cs.distrinet.jnome.output;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import org.aikodi.chameleon.core.declaration.Declarator;
 import org.aikodi.chameleon.core.document.Document;
@@ -36,14 +37,13 @@ import org.aikodi.chameleon.oo.namespacedeclaration.TypeImport;
 import org.aikodi.chameleon.oo.statement.Block;
 import org.aikodi.chameleon.oo.type.RegularType;
 import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.chameleon.oo.type.TypeElement;
 import org.aikodi.chameleon.oo.type.TypeReference;
-import org.aikodi.chameleon.oo.type.generics.TypeArgument;
 import org.aikodi.chameleon.oo.type.generics.EqualityTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.ExtendsConstraint;
 import org.aikodi.chameleon.oo.type.generics.ExtendsWildcard;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.SuperWildcard;
+import org.aikodi.chameleon.oo.type.generics.TypeArgument;
 import org.aikodi.chameleon.oo.type.generics.TypeConstraint;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.oo.type.inheritance.AbstractInheritanceRelation;
@@ -107,7 +107,6 @@ import org.aikodi.chameleon.support.tool.Arguments;
 import org.aikodi.chameleon.support.type.EmptyTypeElement;
 import org.aikodi.chameleon.support.type.StaticInitializer;
 import org.aikodi.chameleon.support.variable.LocalVariableDeclarator;
-import org.aikodi.chameleon.util.Util;
 
 import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayAccessExpression;
 import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayCreationExpression;

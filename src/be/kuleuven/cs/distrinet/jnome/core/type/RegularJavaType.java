@@ -20,7 +20,6 @@ import org.aikodi.chameleon.oo.method.SimpleNameMethodHeader;
 import org.aikodi.chameleon.oo.statement.Block;
 import org.aikodi.chameleon.oo.type.RegularType;
 import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.chameleon.oo.type.TypeElement;
 import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.generics.TypeArgument;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
@@ -135,7 +134,7 @@ public class RegularJavaType extends AbstractJavaType {
 	 * removed.
 	 */
 	public void reactOnDescendantAdded(Element element) {
-		if (element instanceof TypeElement) {
+		if (element instanceof Declarator) {
 			if (isConstructor(element)) {
 				clearDefaultDefaultConstructor();
 			}
@@ -158,7 +157,7 @@ public class RegularJavaType extends AbstractJavaType {
 		// the type
 		// and the constructor aren't connected to the model during parsing.
 		// The suck is strong in this one
-		List<Modifier> mods = ((TypeElement) element).modifiers();
+		List<Modifier> mods = ((Declarator) element).modifiers();
 		for (Modifier mod : mods) {
 			if (mod instanceof JavaConstructor) {
 				return true;

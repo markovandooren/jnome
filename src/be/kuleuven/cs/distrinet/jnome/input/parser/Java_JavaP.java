@@ -1,4 +1,4 @@
-// $ANTLR 3.3 Nov 30, 2010 12:50:56 JavaP.g 2016-11-10 13:42:23
+// $ANTLR 3.3 Nov 30, 2010 12:50:56 JavaP.g 2016-11-10 15:28:37
 
 package be.kuleuven.cs.distrinet.jnome.input.parser;
 
@@ -55,7 +55,6 @@ import org.aikodi.chameleon.oo.type.RegularType;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.ClassWithBody;
 import org.aikodi.chameleon.oo.type.TypeReference;
-import org.aikodi.chameleon.oo.type.TypeElement;
 
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;

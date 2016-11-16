@@ -10,9 +10,9 @@ import org.aikodi.chameleon.core.validation.Verification;
 import org.aikodi.chameleon.core.variable.Variable;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.variable.VariableDeclaration;
+import org.aikodi.rejuse.action.Nothing;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
-import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 
 /**
  * @author Marko van Dooren

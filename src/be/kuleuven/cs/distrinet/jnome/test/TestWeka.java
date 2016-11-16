@@ -8,8 +8,7 @@ import org.aikodi.chameleon.test.provider.BasicDescendantProvider;
 import org.aikodi.chameleon.test.provider.BasicNamespaceProvider;
 import org.aikodi.chameleon.test.provider.ElementProvider;
 import org.aikodi.chameleon.workspace.View;
-
-import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
+import org.aikodi.rejuse.predicate.SafePredicate;
 
 /**
  * @author Marko van Dooren

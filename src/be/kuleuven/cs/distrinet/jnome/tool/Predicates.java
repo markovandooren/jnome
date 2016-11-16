@@ -4,10 +4,10 @@ import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.view.ObjectOrientedView;
+import org.aikodi.rejuse.predicate.Predicate;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
-import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
 
 public class Predicates {
 

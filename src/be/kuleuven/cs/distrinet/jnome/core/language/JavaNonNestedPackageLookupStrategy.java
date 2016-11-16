@@ -8,8 +8,7 @@ import org.aikodi.chameleon.core.lookup.LocalLookupContext;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.lookup.SelectionResult;
 import org.aikodi.chameleon.core.namespace.Namespace;
-
-import be.kuleuven.cs.distrinet.rejuse.java.collections.TypeFilter;
+import org.aikodi.rejuse.java.collections.TypeFilter;
 
 /**
  * A lookup strategy that searches for declarations withing a package but

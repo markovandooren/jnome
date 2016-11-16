@@ -33,21 +33,21 @@ import org.aikodi.chameleon.ui.widget.tree.TristateTreeSelector;
 import org.aikodi.chameleon.util.action.GuardedTreeWalker;
 import org.aikodi.chameleon.util.action.TopDown;
 import org.aikodi.chameleon.workspace.Project;
+import org.aikodi.rejuse.action.Nothing;
 import org.aikodi.rejuse.exception.Handler;
+import org.aikodi.rejuse.function.Function;
+import org.aikodi.rejuse.graph.UniEdge;
+import org.aikodi.rejuse.predicate.True;
+import org.aikodi.rejuse.predicate.TypePredicate;
+import org.aikodi.rejuse.predicate.UniversalPredicate;
+import org.aikodi.rejuse.tree.PrunedTreeStructure;
+import org.aikodi.rejuse.tree.TreePredicate;
+import org.aikodi.rejuse.tree.TreeStructure;
 
 import com.google.common.collect.ImmutableList;
 
 import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
 import be.kuleuven.cs.distrinet.jnome.tool.JavaDeclarationDecomposer;
-import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
-import be.kuleuven.cs.distrinet.rejuse.function.Function;
-import be.kuleuven.cs.distrinet.rejuse.graph.UniEdge;
-import be.kuleuven.cs.distrinet.rejuse.predicate.True;
-import be.kuleuven.cs.distrinet.rejuse.predicate.TypePredicate;
-import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
-import be.kuleuven.cs.distrinet.rejuse.tree.PrunedTreeStructure;
-import be.kuleuven.cs.distrinet.rejuse.tree.TreePredicate;
-import be.kuleuven.cs.distrinet.rejuse.tree.TreeStructure;
 
 public class JavaDependencyOptions extends DependencyOptions {
   

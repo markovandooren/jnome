@@ -29,6 +29,8 @@ import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
 import org.aikodi.chameleon.support.modifier.Constructor;
 import org.aikodi.chameleon.support.modifier.Public;
 import org.aikodi.chameleon.support.statement.StatementExpression;
+import org.aikodi.rejuse.logic.ternary.Ternary;
+import org.aikodi.rejuse.property.PropertySet;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
@@ -38,8 +40,6 @@ import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.method.JavaMethod;
 import be.kuleuven.cs.distrinet.jnome.core.modifier.JavaConstructor;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
-import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
-import be.kuleuven.cs.distrinet.rejuse.property.PropertySet;
 
 public class RegularJavaType extends AbstractJavaType {
 

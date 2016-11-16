@@ -17,11 +17,10 @@ import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
 import org.aikodi.chameleon.support.modifier.Constructor;
 import org.aikodi.chameleon.support.modifier.Public;
-
-import be.kuleuven.cs.distrinet.rejuse.collection.CollectionOperations;
-import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
-import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
-import be.kuleuven.cs.distrinet.rejuse.property.PropertySet;
+import org.aikodi.rejuse.collection.CollectionOperations;
+import org.aikodi.rejuse.logic.ternary.Ternary;
+import org.aikodi.rejuse.predicate.SafePredicate;
+import org.aikodi.rejuse.property.PropertySet;
 
 public abstract class AnonymousType extends RegularType implements JavaType {
 

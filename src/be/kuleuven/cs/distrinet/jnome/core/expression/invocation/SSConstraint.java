@@ -16,12 +16,12 @@ import org.aikodi.chameleon.oo.type.generics.InstantiatedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.SuperWildcard;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.util.Util;
+import org.aikodi.rejuse.logic.ternary.Ternary;
 
 import com.google.common.collect.ImmutableSet;
 
 import be.kuleuven.cs.distrinet.jnome.core.type.ErasedTypeParameter;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
-import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 
 /**
  * A << F See Java language Specification (v3.0 p. 453)

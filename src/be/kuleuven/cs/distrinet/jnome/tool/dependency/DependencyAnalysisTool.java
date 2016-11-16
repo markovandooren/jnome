@@ -19,17 +19,17 @@ import org.aikodi.chameleon.oo.view.ObjectOrientedView;
 import org.aikodi.chameleon.util.exception.Handler;
 import org.aikodi.chameleon.workspace.InputException;
 import org.aikodi.chameleon.workspace.Project;
+import org.aikodi.rejuse.action.Nothing;
+import org.aikodi.rejuse.predicate.False;
+import org.aikodi.rejuse.predicate.GlobPredicate;
+import org.aikodi.rejuse.predicate.True;
+import org.aikodi.rejuse.predicate.UniversalPredicate;
 
 import com.lexicalscope.jewel.cli.Option;
 
 import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
 import be.kuleuven.cs.distrinet.jnome.tool.AnalysisTool;
 import be.kuleuven.cs.distrinet.jnome.tool.AnalysisTool.AnalysisOptions;
-import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
-import be.kuleuven.cs.distrinet.rejuse.predicate.False;
-import be.kuleuven.cs.distrinet.rejuse.predicate.GlobPredicate;
-import be.kuleuven.cs.distrinet.rejuse.predicate.True;
-import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
 
 public class DependencyAnalysisTool extends AnalysisTool {
 

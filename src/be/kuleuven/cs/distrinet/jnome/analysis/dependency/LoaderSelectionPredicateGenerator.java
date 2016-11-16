@@ -13,10 +13,9 @@ import org.aikodi.chameleon.ui.widget.tree.DocumentScannerContentProvider.Projec
 import org.aikodi.chameleon.ui.widget.tree.DocumentScannerContentProvider.ScannerGroupNode;
 import org.aikodi.chameleon.ui.widget.tree.DocumentScannerContentProvider.SourceNode;
 import org.aikodi.chameleon.workspace.DocumentScanner;
-
-import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
-import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
-import be.kuleuven.cs.distrinet.rejuse.tree.TreePredicate;
+import org.aikodi.rejuse.action.Nothing;
+import org.aikodi.rejuse.predicate.UniversalPredicate;
+import org.aikodi.rejuse.tree.TreePredicate;
 
 public class LoaderSelectionPredicateGenerator extends TristateTreePruner<Object, Element> {
 	

@@ -2,8 +2,7 @@ package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
-
-import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
+import org.aikodi.rejuse.association.SingleAssociation;
 
 public abstract class TypeAssignment {
 	

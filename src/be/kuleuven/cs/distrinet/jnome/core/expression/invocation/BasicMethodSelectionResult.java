@@ -11,13 +11,13 @@ import org.aikodi.chameleon.oo.type.generics.EqualityTypeArgument;
 import org.aikodi.chameleon.oo.type.generics.InstantiatedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.util.Util;
+import org.aikodi.rejuse.association.SingleAssociation;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.DirectJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeInstantiation;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
-import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
 
 public class BasicMethodSelectionResult<M extends Method> implements MethodSelectionResult<M> {
 

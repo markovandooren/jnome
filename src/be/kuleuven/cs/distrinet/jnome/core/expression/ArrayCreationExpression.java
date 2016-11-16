@@ -14,11 +14,11 @@ import org.aikodi.chameleon.support.expression.ArrayIndex;
 import org.aikodi.chameleon.util.Util;
 import org.aikodi.chameleon.util.association.Multi;
 import org.aikodi.chameleon.util.association.Single;
+import org.aikodi.rejuse.association.OrderedMultiAssociation;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
-import be.kuleuven.cs.distrinet.rejuse.association.OrderedMultiAssociation;
 
 /**
  * @author Marko van Dooren

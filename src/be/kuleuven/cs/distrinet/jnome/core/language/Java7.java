@@ -70,6 +70,9 @@ import org.aikodi.chameleon.support.rule.member.MemberOverridableByDefault;
 import org.aikodi.chameleon.support.rule.member.TypeExtensibleByDefault;
 import org.aikodi.chameleon.util.Util;
 import org.aikodi.chameleon.workspace.View;
+import org.aikodi.rejuse.junit.BasicRevision;
+import org.aikodi.rejuse.junit.Revision;
+import org.aikodi.rejuse.logic.ternary.Ternary;
 
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaExtendsReference;
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.JavaSuperReference;
@@ -97,9 +100,6 @@ import be.kuleuven.cs.distrinet.jnome.core.type.PureWildcard;
 import be.kuleuven.cs.distrinet.jnome.core.type.RawType;
 import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
-import be.kuleuven.cs.distrinet.rejuse.junit.BasicRevision;
-import be.kuleuven.cs.distrinet.rejuse.junit.Revision;
-import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 
 /**
  * A class representing the Java programming language.

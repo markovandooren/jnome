@@ -10,11 +10,11 @@ import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.UnionType;
 import org.aikodi.chameleon.oo.type.generics.TypeVariable;
 import org.aikodi.chameleon.util.Lists;
+import org.aikodi.rejuse.action.Nothing;
+import org.aikodi.rejuse.function.Function;
 
 import be.kuleuven.cs.distrinet.jnome.core.type.AnonymousType;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
-import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
-import be.kuleuven.cs.distrinet.rejuse.function.Function;
 
 public class JavaDeclarationDecomposer implements Function<Declaration, List<Declaration>, Nothing> {
   

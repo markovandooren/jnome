@@ -15,15 +15,15 @@ import org.aikodi.chameleon.workspace.Project;
 import org.aikodi.chameleon.workspace.ProjectConfigurator;
 import org.aikodi.chameleon.workspace.ProjectException;
 import org.aikodi.chameleon.workspace.View;
+import org.aikodi.rejuse.action.Nothing;
+import org.aikodi.rejuse.predicate.Predicate;
+import org.aikodi.rejuse.string.Strings;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7LanguageFactory;
 import be.kuleuven.cs.distrinet.jnome.input.BaseJavaProjectLoader;
 import be.kuleuven.cs.distrinet.jnome.input.LazyJavaFileInputSourceFactory;
 import be.kuleuven.cs.distrinet.jnome.workspace.JarScanner;
-import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
-import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
-import be.kuleuven.cs.distrinet.rejuse.string.Strings;
 
 public class JavaEclipseClasspathConfig extends ConfigElement {
 

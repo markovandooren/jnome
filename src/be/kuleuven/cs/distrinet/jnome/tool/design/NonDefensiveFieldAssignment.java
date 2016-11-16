@@ -19,11 +19,11 @@ import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.variable.FormalParameter;
 import org.aikodi.chameleon.oo.variable.RegularMemberVariable;
 import org.aikodi.chameleon.support.expression.AssignmentExpression;
+import org.aikodi.rejuse.action.Nothing;
+import org.aikodi.rejuse.predicate.UniversalPredicate;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
-import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
-import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
 
 /**
  * Check whether a parameter is assigned to a field without being

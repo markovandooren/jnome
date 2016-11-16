@@ -17,8 +17,7 @@ import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.util.association.Single;
-
-import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
+import org.aikodi.rejuse.logic.ternary.Ternary;
 
 public class SingleStaticImport extends Import {
 

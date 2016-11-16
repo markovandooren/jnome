@@ -67,6 +67,7 @@ import org.aikodi.chameleon.support.modifier.Static;
 import org.aikodi.chameleon.util.Pair;
 import org.aikodi.chameleon.util.Util;
 import org.aikodi.chameleon.workspace.Project;
+import org.aikodi.rejuse.association.SingleAssociation;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
@@ -91,7 +92,6 @@ import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.variable.JavaVariableDeclaration;
 import be.kuleuven.cs.distrinet.jnome.core.variable.MultiFormalParameter;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
-import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
 
 public class ASMClassParser {
 

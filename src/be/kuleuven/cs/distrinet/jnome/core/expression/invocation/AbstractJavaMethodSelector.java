@@ -17,6 +17,7 @@ import org.aikodi.chameleon.oo.type.generics.TypeArgument;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.util.Util;
+import org.aikodi.rejuse.logic.ternary.Ternary;
 import org.junit.Ignore;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
@@ -24,7 +25,6 @@ import be.kuleuven.cs.distrinet.jnome.core.language.JavaSubtypingRelation;
 import be.kuleuven.cs.distrinet.jnome.core.language.JavaSubtypingRelation.UncheckedConversionIndicator;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.variable.MultiFormalParameter;
-import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
 
 public abstract class AbstractJavaMethodSelector<M extends Method> implements DeclarationSelector<M> {
 

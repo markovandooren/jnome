@@ -18,6 +18,7 @@ import org.aikodi.chameleon.workspace.LanguageRepository;
 import org.aikodi.chameleon.workspace.Project;
 import org.aikodi.chameleon.workspace.Workspace;
 import org.aikodi.chameleon.workspace.XMLProjectLoader;
+import org.aikodi.rejuse.io.FileUtils;
 
 import com.lexicalscope.jewel.cli.ArgumentValidationException;
 import com.lexicalscope.jewel.cli.Cli;
@@ -28,7 +29,6 @@ import com.lexicalscope.jewel.cli.Option;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7LanguageFactory;
 import be.kuleuven.cs.distrinet.jnome.input.eclipse.JavaEclipseProjectConfig;
-import be.kuleuven.cs.distrinet.rejuse.io.FileUtils;
 
 public abstract class AnalysisTool extends Tool {
 

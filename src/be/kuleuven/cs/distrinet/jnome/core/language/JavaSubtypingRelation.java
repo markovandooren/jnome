@@ -3,8 +3,8 @@
  */
 package be.kuleuven.cs.distrinet.jnome.core.language;
 
-import static be.kuleuven.cs.distrinet.rejuse.collection.CollectionOperations.exists;
-import static be.kuleuven.cs.distrinet.rejuse.collection.CollectionOperations.forAll;
+import static org.aikodi.rejuse.collection.CollectionOperations.exists;
+import static org.aikodi.rejuse.collection.CollectionOperations.forAll;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,6 +33,9 @@ import org.aikodi.chameleon.oo.type.generics.InstantiatedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.SuperWildcard;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.util.Util;
+import org.aikodi.rejuse.collection.CollectionOperations;
+import org.aikodi.rejuse.logic.ternary.Ternary;
+import org.aikodi.rejuse.predicate.Predicate;
 
 import be.kuleuven.cs.distrinet.jnome.core.expression.invocation.NonLocalJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
@@ -43,9 +46,6 @@ import be.kuleuven.cs.distrinet.jnome.core.type.NullType;
 import be.kuleuven.cs.distrinet.jnome.core.type.PureWildcard;
 import be.kuleuven.cs.distrinet.jnome.core.type.RawType;
 import be.kuleuven.cs.distrinet.jnome.workspace.JavaView;
-import be.kuleuven.cs.distrinet.rejuse.collection.CollectionOperations;
-import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
-import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;

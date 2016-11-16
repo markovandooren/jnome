@@ -10,9 +10,8 @@ import org.aikodi.chameleon.oo.expression.MethodInvocation;
 import org.aikodi.chameleon.oo.method.MethodHeader;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
-
-import be.kuleuven.cs.distrinet.rejuse.association.OrderedMultiAssociation;
-import be.kuleuven.cs.distrinet.rejuse.predicate.TypePredicate;
+import org.aikodi.rejuse.association.OrderedMultiAssociation;
+import org.aikodi.rejuse.predicate.TypePredicate;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;

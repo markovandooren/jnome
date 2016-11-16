@@ -7,9 +7,8 @@ import org.aikodi.chameleon.analysis.Analysis;
 import org.aikodi.chameleon.analysis.Result;
 import org.aikodi.chameleon.core.reference.CrossReferenceTarget;
 import org.aikodi.chameleon.oo.expression.MethodInvocation;
+import org.aikodi.rejuse.action.Nothing;
 import org.aikodi.rejuse.exception.Handler;
-
-import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
 
 public class ChainLength extends Analysis<MethodInvocation, ChainLength.LengthResult,Nothing> {
 

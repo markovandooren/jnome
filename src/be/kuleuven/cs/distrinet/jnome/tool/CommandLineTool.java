@@ -14,10 +14,10 @@ import org.aikodi.chameleon.workspace.LanguageRepository;
 import org.aikodi.chameleon.workspace.Project;
 import org.aikodi.chameleon.workspace.View;
 import org.aikodi.chameleon.workspace.Workspace;
+import org.aikodi.rejuse.predicate.Predicate;
+import org.aikodi.rejuse.predicate.SafePredicate;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7LanguageFactory;
-import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
-import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 
 public abstract class CommandLineTool {
 

@@ -12,9 +12,9 @@ import org.aikodi.chameleon.oo.type.IntersectionTypeReference;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+import org.aikodi.rejuse.contract.Contracts;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
-import be.kuleuven.cs.distrinet.rejuse.contract.Contracts;
 
 public class DirectJavaTypeReference extends ElementImpl implements JavaTypeReference {
 

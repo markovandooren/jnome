@@ -9,8 +9,7 @@ import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.support.expression.AssignmentExpression;
 import org.aikodi.chameleon.support.statement.StatementExpression;
-
-import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
+import org.aikodi.rejuse.action.Nothing;
 
 public class AssignmentAsExpression extends Analysis<AssignmentExpression, Verification,Nothing>{
 

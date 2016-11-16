@@ -3,9 +3,8 @@ package be.kuleuven.cs.distrinet.jnome.tool.dependency;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.modifier.AnnotationModifier;
 import org.aikodi.chameleon.oo.type.Type;
-
-import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
-import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
+import org.aikodi.rejuse.action.Nothing;
+import org.aikodi.rejuse.predicate.UniversalPredicate;
 
 public class NoAnnotationOfType extends UniversalPredicate<Type,Nothing> {
 

@@ -20,9 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.aikodi.chameleon.util.Util;
-
-import be.kuleuven.cs.distrinet.rejuse.java.collections.RobustVisitor;
-import be.kuleuven.cs.distrinet.rejuse.java.collections.Visitor;
+import org.aikodi.rejuse.java.collections.RobustVisitor;
+import org.aikodi.rejuse.java.collections.Visitor;
 
 /**
  * @author marko

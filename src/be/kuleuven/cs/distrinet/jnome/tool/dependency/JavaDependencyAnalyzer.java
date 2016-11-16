@@ -17,18 +17,18 @@ import org.aikodi.chameleon.core.reference.CrossReference;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.workspace.InputException;
 import org.aikodi.chameleon.workspace.Project;
+import org.aikodi.rejuse.action.Nothing;
+import org.aikodi.rejuse.contract.Contracts;
 import org.aikodi.rejuse.exception.Handler;
+import org.aikodi.rejuse.function.Function;
+import org.aikodi.rejuse.graph.Edge;
+import org.aikodi.rejuse.graph.Graph;
+import org.aikodi.rejuse.graph.Node;
+import org.aikodi.rejuse.graph.Path;
+import org.aikodi.rejuse.predicate.UniversalPredicate;
 
 import be.kuleuven.cs.distrinet.jnome.analysis.dependency.JavaDependencyOptions;
 import be.kuleuven.cs.distrinet.jnome.tool.JavaDeclarationDecomposer;
-import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
-import be.kuleuven.cs.distrinet.rejuse.contract.Contracts;
-import be.kuleuven.cs.distrinet.rejuse.function.Function;
-import be.kuleuven.cs.distrinet.rejuse.graph.Edge;
-import be.kuleuven.cs.distrinet.rejuse.graph.Graph;
-import be.kuleuven.cs.distrinet.rejuse.graph.Node;
-import be.kuleuven.cs.distrinet.rejuse.graph.Path;
-import be.kuleuven.cs.distrinet.rejuse.predicate.UniversalPredicate;
 
 public class JavaDependencyAnalyzer extends DependencyAnalyzer<Type> {
 

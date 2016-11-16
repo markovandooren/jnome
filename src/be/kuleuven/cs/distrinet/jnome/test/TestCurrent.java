@@ -8,7 +8,6 @@ import java.util.Collection;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
-import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.namespace.Namespace;
@@ -21,6 +20,7 @@ import org.aikodi.chameleon.workspace.ConfigException;
 import org.aikodi.chameleon.workspace.Project;
 import org.aikodi.chameleon.workspace.ProjectException;
 import org.aikodi.chameleon.workspace.View;
+import org.aikodi.rejuse.predicate.SafePredicate;
 import org.junit.Test;
 
 /**

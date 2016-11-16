@@ -18,10 +18,10 @@ import org.aikodi.chameleon.workspace.AbstractZipScanner;
 import org.aikodi.chameleon.workspace.DocumentScanner;
 import org.aikodi.chameleon.workspace.FileScanner;
 import org.aikodi.chameleon.workspace.InputException;
+import org.aikodi.rejuse.action.Nothing;
+import org.aikodi.rejuse.predicate.Predicate;
 
 import be.kuleuven.cs.distrinet.jnome.input.parser.ASMClassParser;
-import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
-import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
 
 /**
  * A scanner that scans a jar file.

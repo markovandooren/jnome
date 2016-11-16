@@ -14,13 +14,13 @@ import org.aikodi.chameleon.workspace.ProjectConfiguratorImpl;
 import org.aikodi.chameleon.workspace.ProjectException;
 import org.aikodi.chameleon.workspace.View;
 import org.aikodi.chameleon.workspace.Workspace;
+import org.aikodi.rejuse.action.Nothing;
+import org.aikodi.rejuse.predicate.Predicate;
+import org.aikodi.rejuse.predicate.SafePredicate;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.input.BaseJavaProjectLoader;
 import be.kuleuven.cs.distrinet.jnome.input.LazyJavaFileInputSourceFactory;
-import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
-import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
-import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 
 /**
  * A class for configuring Java projects.

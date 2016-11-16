@@ -10,10 +10,10 @@ import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+import org.aikodi.rejuse.association.OrderedMultiAssociation;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
-import be.kuleuven.cs.distrinet.rejuse.association.OrderedMultiAssociation;
 
 public class TypeAssignmentSet {
 

@@ -107,6 +107,9 @@ import org.aikodi.chameleon.support.tool.Arguments;
 import org.aikodi.chameleon.support.type.EmptyTypeElement;
 import org.aikodi.chameleon.support.type.StaticInitializer;
 import org.aikodi.chameleon.support.variable.LocalVariableDeclarator;
+import org.aikodi.rejuse.java.collections.Visitor;
+import org.aikodi.rejuse.logic.ternary.Ternary;
+import org.aikodi.rejuse.predicate.SafePredicate;
 
 import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayAccessExpression;
 import be.kuleuven.cs.distrinet.jnome.core.expression.ArrayCreationExpression;
@@ -126,9 +129,6 @@ import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaIntersectionTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.PureWildcard;
-import be.kuleuven.cs.distrinet.rejuse.java.collections.Visitor;
-import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
-import be.kuleuven.cs.distrinet.rejuse.predicate.SafePredicate;
 
 /**
  * @author Marko van Dooren

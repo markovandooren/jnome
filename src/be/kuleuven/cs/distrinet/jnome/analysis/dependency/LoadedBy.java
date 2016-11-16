@@ -4,9 +4,8 @@ import org.aikodi.chameleon.core.document.Document;
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.namespace.Namespace;
 import org.aikodi.chameleon.workspace.DocumentScanner;
-
-import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
-import be.kuleuven.cs.distrinet.rejuse.tree.TreePredicate;
+import org.aikodi.rejuse.action.Nothing;
+import org.aikodi.rejuse.tree.TreePredicate;
 
 public class LoadedBy extends TreePredicate<Element, Nothing> {
 	private final DocumentScanner currentLoader;

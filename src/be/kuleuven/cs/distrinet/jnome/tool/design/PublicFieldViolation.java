@@ -7,10 +7,10 @@ import org.aikodi.chameleon.core.validation.Verification;
 import org.aikodi.chameleon.core.variable.Variable;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.variable.VariableDeclaration;
+import org.aikodi.rejuse.action.Nothing;
+import org.aikodi.rejuse.tree.TreeStructure;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
-import be.kuleuven.cs.distrinet.rejuse.action.Nothing;
-import be.kuleuven.cs.distrinet.rejuse.tree.TreeStructure;
 
 public class PublicFieldViolation extends Analysis<VariableDeclaration, Verification,Nothing> {
 

@@ -12,10 +12,9 @@ import org.aikodi.chameleon.core.property.DynamicChameleonProperty;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.view.ObjectOrientedView;
-
-import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
-import be.kuleuven.cs.distrinet.rejuse.property.PropertyMutex;
-import be.kuleuven.cs.distrinet.rejuse.property.PropertyUniverse;
+import org.aikodi.rejuse.logic.ternary.Ternary;
+import org.aikodi.rejuse.property.PropertyMutex;
+import org.aikodi.rejuse.property.PropertyUniverse;
 
 /**
  * A property that determines if a Java class represents

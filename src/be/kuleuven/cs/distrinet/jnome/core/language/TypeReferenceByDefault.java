@@ -5,8 +5,7 @@ import org.aikodi.chameleon.core.property.ChameleonProperty;
 import org.aikodi.chameleon.core.property.PropertyRule;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.type.Type;
-
-import be.kuleuven.cs.distrinet.rejuse.property.PropertySet;
+import org.aikodi.rejuse.property.PropertySet;
 
 public class TypeReferenceByDefault extends PropertyRule<Type> {
 

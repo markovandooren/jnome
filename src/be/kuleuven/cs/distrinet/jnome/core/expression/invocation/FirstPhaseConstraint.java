@@ -1,6 +1,6 @@
 package be.kuleuven.cs.distrinet.jnome.core.expression.invocation;
 
-import static be.kuleuven.cs.distrinet.rejuse.collection.CollectionOperations.exists;
+import static org.aikodi.rejuse.collection.CollectionOperations.exists;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,14 +23,14 @@ import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeVariable;
 import org.aikodi.chameleon.util.Util;
 import org.aikodi.chameleon.workspace.View;
+import org.aikodi.rejuse.logic.ternary.Ternary;
+import org.aikodi.rejuse.predicate.Predicate;
 
 import be.kuleuven.cs.distrinet.jnome.core.language.Java7;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayType;
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
-import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
-import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
 
 /**
  * A = type()

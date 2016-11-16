@@ -10,8 +10,7 @@ import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.member.SignatureWithParameters;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.type.Type;
-
-import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
+import org.aikodi.rejuse.logic.ternary.Ternary;
 
 public class JavaImplementsRelation extends StrictPartialOrder<Declaration> {
 

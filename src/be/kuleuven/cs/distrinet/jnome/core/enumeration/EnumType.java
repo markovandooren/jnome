@@ -17,6 +17,7 @@ import org.aikodi.chameleon.support.modifier.Final;
 import org.aikodi.chameleon.support.modifier.Private;
 import org.aikodi.chameleon.support.modifier.Public;
 import org.aikodi.chameleon.support.modifier.Static;
+import org.aikodi.rejuse.property.PropertySet;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
@@ -27,7 +28,6 @@ import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.BasicJavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.RegularJavaType;
-import be.kuleuven.cs.distrinet.rejuse.property.PropertySet;
 
 /**
  * A class for enum types in Java. Enum types in Java differ from

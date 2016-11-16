@@ -6,8 +6,7 @@ import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.property.ChameleonProperty;
 import org.aikodi.chameleon.core.property.PropertyRule;
 import org.aikodi.chameleon.support.member.simplename.variable.MemberVariableDeclarator;
-
-import be.kuleuven.cs.distrinet.rejuse.property.PropertySet;
+import org.aikodi.rejuse.property.PropertySet;
 
 public class MemberPackageAccessibleByDefault extends PropertyRule<Declarator> {
 

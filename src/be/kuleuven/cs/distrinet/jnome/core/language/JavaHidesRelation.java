@@ -10,8 +10,7 @@ import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.variable.RegularMemberVariable;
 import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
-
-import be.kuleuven.cs.distrinet.rejuse.logic.ternary.Ternary;
+import org.aikodi.rejuse.logic.ternary.Ternary;
 
 public class JavaHidesRelation extends StrictPartialOrder<Declaration> {
 	@Override

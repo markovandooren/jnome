@@ -17,13 +17,13 @@ import org.aikodi.chameleon.oo.type.NonLocalTypeReference;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.util.Util;
+import org.aikodi.rejuse.association.SingleAssociation;
+import org.aikodi.rejuse.predicate.AbstractPredicate;
+import org.aikodi.rejuse.predicate.Predicate;
 
 import be.kuleuven.cs.distrinet.jnome.core.type.ArrayTypeReference;
 import be.kuleuven.cs.distrinet.jnome.core.type.JavaTypeReference;
 import be.kuleuven.cs.distrinet.jnome.input.OldExtractor;
-import be.kuleuven.cs.distrinet.rejuse.association.SingleAssociation;
-import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
-import be.kuleuven.cs.distrinet.rejuse.predicate.Predicate;
 
 public class NonLocalJavaTypeReference extends NonLocalTypeReference implements JavaTypeReference {
 

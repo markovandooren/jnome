@@ -8,9 +8,8 @@ import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.namespacedeclaration.DemandImport;
 import org.aikodi.chameleon.core.reference.NameReference;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
-
-import be.kuleuven.cs.distrinet.rejuse.collection.CollectionOperations;
-import be.kuleuven.cs.distrinet.rejuse.predicate.AbstractPredicate;
+import org.aikodi.rejuse.collection.CollectionOperations;
+import org.aikodi.rejuse.predicate.AbstractPredicate;
 
 public class StaticDemandImport extends DemandImport {
 

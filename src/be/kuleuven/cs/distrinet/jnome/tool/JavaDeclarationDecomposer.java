@@ -45,7 +45,7 @@ public class JavaDeclarationDecomposer implements Function<Declaration, List<Dec
       while(type instanceof TypeVariable) {
         type = type.nearestAncestor(Type.class);
       }
-      AnonymousType anon = type.farthestAncestorOrSelf(AnonymousType.class);
+      AnonymousType anon = type.lexical().farthestAncestorOrSelf(AnonymousType.class);
       if(anon != null) {
         type = anon.nearestAncestor(Type.class);
       }

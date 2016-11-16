@@ -45,7 +45,7 @@ public class SuspiciousCastAnalysis extends Analysis<Method,Verification, Lookup
 			Type type = invocation.getElement().nearestAncestor(Type.class);
 			CrossReferenceTarget target = invocation.getTarget();
 			if(target != null) {
-				Type container = target.targetContext().declarationContainer().nearestAncestorOrSelf(Type.class);
+				Type container = target.targetContext().declarationContainer().lexical().nearestAncestorOrSelf(Type.class);
 				ClassCastExpression surroundingCast = invocation.nearestAncestor(ClassCastExpression.class);
 				boolean subtype = false;
 				for(Type c: castTypes) {

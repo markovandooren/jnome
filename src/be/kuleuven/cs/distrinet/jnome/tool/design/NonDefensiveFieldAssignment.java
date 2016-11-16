@@ -78,7 +78,7 @@ public class NonDefensiveFieldAssignment extends Analysis<AssignmentExpression,V
 							Type booleanType = assignment.view(JavaView.class).primitiveType("boolean");
 							if(! ((FormalParameter) rhs).getType().sameAs(booleanType)) {
 								boolean notMentioned = true;
-								Statement stat = assignment.farthestAncestor(new UniversalPredicate<Statement,Nothing>(Statement.class) {
+								Statement stat = assignment.lexical().farthestAncestor(new UniversalPredicate<Statement,Nothing>(Statement.class) {
 									@Override
 									public boolean uncheckedEval(Statement s) {
 										// If s.parent() == the implementation object, then we have reached the

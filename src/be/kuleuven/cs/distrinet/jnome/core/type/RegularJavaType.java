@@ -219,7 +219,7 @@ public class RegularJavaType extends AbstractJavaType {
 		Type result = _rawTypeCache;
 		if (result == null) {
 			if (is(language.INSTANCE) == Ternary.TRUE) {
-				Type outmostType = farthestAncestor(Type.class);
+				Type outmostType = lexical().farthestAncestor(Type.class);
 				Type outer;
 				if (outmostType == null) {
 //					outmostType = this;

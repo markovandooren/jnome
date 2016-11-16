@@ -106,7 +106,7 @@ public class DependencyAnalysisTool extends AnalysisTool {
 
 			@Override
 			public boolean uncheckedEval(Type type)  {
-				return type.nearestAncestorOrSelf(AnonymousType.class) == null;
+				return type.lexical().nearestAncestorOrSelf(AnonymousType.class) == null;
 			}
 
 		};
@@ -164,7 +164,7 @@ public class DependencyAnalysisTool extends AnalysisTool {
 			@Override
 			public boolean uncheckedEval(CrossReference object) throws LookupException{
 				Declaration element = object.getElement();
-				Type t = element.nearestAncestorOrSelf(Type.class);
+				Type t = element.lexical().nearestAncestorOrSelf(Type.class);
 				if(t != null) {
 					return hierarchyPredicate.eval(t);
 				} else {
@@ -183,7 +183,7 @@ public class DependencyAnalysisTool extends AnalysisTool {
 			@Override
 			public boolean uncheckedEval(CrossReference object) throws LookupException{
 				Declaration element = object.getElement();
-				Type t = element.nearestAncestorOrSelf(Type.class);
+				Type t = element.lexical().nearestAncestorOrSelf(Type.class);
 				if(t != null) {
 					return targetPredicate.eval(t);
 				} else {

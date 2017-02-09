@@ -19,7 +19,7 @@ sourceSets {
   main {
     java {
       srcDir 'src'
-      exclude 'be/kuleuven/cs/distrinet/jnome/eclipse/**'
+      exclude 'org/aikodi/java/eclipse/**'
       //exclude 'be/kuleuven/cs/distrinet/jnome/tool/dependency/**'
       //exclude 'be/kuleuven/cs/distrinet/jnome/tool/design/**'
       //exclude 'be/kuleuven/cs/distrinet/jnome/tool/syntax/**'
@@ -28,7 +28,7 @@ sourceSets {
   test {
     java {
       srcDir 'src'
-      exclude 'be/kuleuven/cs/distrinet/jnome/eclipse/**'
+      exclude 'org/aikodi/java/eclipse/**'
       //exclude 'be/kuleuven/cs/distrinet/jnome/tool/dependency/**'
       //exclude 'be/kuleuven/cs/distrinet/jnome/tool/design/**'
       //exclude 'be/kuleuven/cs/distrinet/jnome/tool/syntax/**'
@@ -73,7 +73,8 @@ List shared = [
 ]
 
 dependencies {
-   compile group: 'markovandooren', name: 'chameleon', version: '1.2.21'
+   compile project(':chameleon')
+   //compile group: 'markovandooren', name: 'chameleon', version: '1.2.21'
    compile shared
 }
 

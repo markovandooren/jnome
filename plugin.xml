@@ -6,7 +6,7 @@
          name="Jnome Eclipse"
          point="chameleon.eclipse.language">
          <bootstrapper
-          class="be.kuleuven.cs.distrinet.jnome.eclipse.Bootstrapper">
+          class="org.aikodi.java.eclipse.Bootstrapper">
          </bootstrapper>
    </extension>
 
@@ -21,7 +21,7 @@
       <menuContribution
             locationURI="popup:org.eclipse.ui.popup.any?after=additions">
          <command
-               commandId="be.kuleuven.cs.distrinet.jnome.actions.project.AddChameleonNature"
+               commandId="org.aikodi.java.actions.project.AddChameleonNature"
                label="Enable Chameleon Analysis">
             <!--<visibleWhen>
               	<test property="chameleon.properties.isJDTProject" forcePluginActivation="true"/>
@@ -54,14 +54,14 @@
     <command
         name="Add Chameleon Background Analysis Nature"
         description="Add Chameleon Background Analysis Nature"
-        id="be.kuleuven.cs.distrinet.jnome.actions.project.AddChameleonNature">
+        id="org.aikodi.java.actions.project.AddChameleonNature">
     </command>
   </extension>
 
   <extension point="org.eclipse.ui.handlers">
     <handler
             class="org.aikodi.chameleon.eclipse.nature.AddBackgroundNature"
-            commandId="be.kuleuven.cs.distrinet.jnome.actions.project.AddChameleonNature">
+            commandId="org.aikodi.java.actions.project.AddChameleonNature">
     </handler>
   </extension>
 

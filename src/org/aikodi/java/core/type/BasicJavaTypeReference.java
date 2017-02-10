@@ -1,8 +1,10 @@
 package org.aikodi.java.core.type;
 
-import java.lang.ref.SoftReference;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import java.lang.ref.SoftReference;
 
 import org.aikodi.chameleon.core.Config;
 import org.aikodi.chameleon.core.declaration.Declaration;
@@ -29,36 +31,50 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 	public BasicJavaTypeReference(CrossReferenceTarget target, String name) {
   	super(target,name);
   }
-  /**
+
+	/**
    * THIS ONLY WORKS WHEN THE NAMED TARGET CONSISTS ENTIRELY OF NAMEDTARGETS.
    * @param target
    */
   public BasicJavaTypeReference(NamedTarget target) {
-  	this(target.getTarget() == null ? null : typeReferenceTarget((NamedTarget) target.getTarget()), target.name());
+  	this(target.getTarget() == null ? null : typeReferenceTarget((NamedTarget) target.getTarget(), _typeReferenceTargetTypes), target.name());
   }
   
   public BasicJavaTypeReference(String fqn) {
-  	this(typeReferenceTarget(Util.getAllButLastPart(fqn)),Util.getLastPart(fqn));
+  	this(typeReferenceTarget(Util.getAllButLastPart(fqn),_typeReferenceTargetTypes),Util.getLastPart(fqn));
   }
   
-  protected static CrossReferenceTarget typeReferenceTarget(NamedTarget target) {
+  public BasicJavaTypeReference(String fqn, Set<? extends Class<? extends Declaration>> classes) {
+  	this(typeReferenceTarget(Util.getAllButLastPart(fqn),set(classes)),Util.getLastPart(fqn));
+  }
+  
+  private static Set<? extends Class<? extends Declaration>> set(Set<? extends Class<? extends Declaration>> classes) {
+  	Set<Class<? extends Declaration>> result = new HashSet<>(classes);
+  	result.addAll(_typeReferenceTargetTypes);
+  	return result;
+  }
+  
+  protected static CrossReferenceTarget typeReferenceTarget(NamedTarget target, Set<? extends Class<? extends Declaration>> classes) {
   	if(target == null) {
   		return null;
   	} else {
   		CrossReferenceTarget t = target.getTarget();
   		if(t == null) {
-  			return new MultiTypeReference<Declaration>(target.name(), _typeReferenceTargetTypes,Declaration.class,Declaration.class);
+  			return new MultiTypeReference<Declaration>(target.name(), classes,Declaration.class,Declaration.class);
   		} else {
-  			return new MultiTypeReference<Declaration>(typeReferenceTarget((NamedTarget) t),target.name(), _typeReferenceTargetTypes,Declaration.class);
+  			return new MultiTypeReference<Declaration>(typeReferenceTarget((NamedTarget) t,classes),target.name(), classes ,Declaration.class);
   		}
   	}
   }
   
   public static CrossReferenceTarget typeReferenceTarget(String fqn) {
-		return fqn == null ? null : new MultiTypeReference<Declaration>(fqn, _typeReferenceTargetTypes,Declaration.class,Declaration.class);
+		return typeReferenceTarget(fqn, _typeReferenceTargetTypes);
+  }
+  public static CrossReferenceTarget typeReferenceTarget(String fqn, Set<? extends Class<? extends Declaration>> classes) {
+		return fqn == null ? null : new MultiTypeReference<Declaration>(fqn, classes,Declaration.class,Declaration.class);
   }
   
-	private static Set _typeReferenceTargetTypes = ImmutableSet.<Class>builder().add(Type.class).add(Namespace.class).build();
+	private static Set<Class<? extends Declaration>> _typeReferenceTargetTypes = ImmutableSet.<Class<? extends Declaration>>builder().add(Type.class).add(Namespace.class).build();
 
 //  @Override
 //  protected void notifyParentRemoved(Element element) {

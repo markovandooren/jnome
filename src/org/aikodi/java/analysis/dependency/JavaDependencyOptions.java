@@ -42,6 +42,7 @@ import org.aikodi.rejuse.graph.UniEdge;
 import org.aikodi.rejuse.predicate.True;
 import org.aikodi.rejuse.predicate.TypePredicate;
 import org.aikodi.rejuse.predicate.UniversalPredicate;
+import org.aikodi.rejuse.tree.GuardedTreeStructure;
 import org.aikodi.rejuse.tree.PrunedTreeStructure;
 import org.aikodi.rejuse.tree.TreePredicate;
 import org.aikodi.rejuse.tree.TreeStructure;
@@ -115,11 +116,12 @@ public class JavaDependencyOptions extends DependencyOptions {
         and2, 
         dependencyPredicate2,
         historyFilter2);
-    TreeStructure<Element> logicalStructure = _root.logical();
-    PrunedTreeStructure<Element> sourceStructure = new PrunedTreeStructure(logicalStructure, source);
+    TreeStructure<Element, LookupException> logicalStructure = _root.logical();
+    PrunedTreeStructure<Element, LookupException> sourceStructure = new PrunedTreeStructure(logicalStructure, source);
     GuardedTreeWalker<Element, LookupException, Nothing> guardedTreeWalker = new GuardedTreeWalker<>(dependencyAnalysis, Handler.resume());
     TopDown<Element, Nothing> topDown = new TopDown<>(guardedTreeWalker);
-    topDown.traverse(sourceStructure);
+    GuardedTreeStructure<Element, LookupException, Nothing> guardedTree = new GuardedTreeStructure<Element, LookupException, Nothing>(sourceStructure, Handler.<LookupException>resume());
+    topDown.traverse(guardedTree);
     DependencyResult result = dependencyAnalysis.result();
     return result;
   }

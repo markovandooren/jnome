@@ -90,6 +90,11 @@ public class RawType extends ClassWithBody implements JavaType {
   }
 
   @Override
+  public String getFullyQualifiedName() {
+  	return _baseType.getFullyQualifiedName();
+  }
+  
+  @Override
   public boolean hasInheritanceRelation(InheritanceRelation relation) throws LookupException {
     return super.hasInheritanceRelation(relation) || relation.hasMetadata(IMPLICIT_CHILD);
   }

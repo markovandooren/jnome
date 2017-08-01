@@ -243,7 +243,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		List<Type> Us = new ArrayList<Type>();
 		Type TjType = null;
 		for(JavaTypeReference URef: URefs) {
-			List<TypeReference> descendants = URef.descendants(TypeReference.class);
+			List<TypeReference> descendants = URef.lexical().descendants(TypeReference.class);
 			descendants.add(URef);
 			for(TypeReference tref: descendants) {
 				Type type = tref.getElement();

@@ -29,10 +29,10 @@ public class SuspiciousCastAnalysis extends Analysis<Method,Verification, Lookup
 
 	@Override
 	protected void analyze(Method element) throws LookupException {
-		List<RegularMethodInvocation> invocations = element.descendants(RegularMethodInvocation.class);
+		List<RegularMethodInvocation> invocations = element.lexical().descendants(RegularMethodInvocation.class);
 		List<CrossReferenceTarget> filter = invocations.stream().map(i -> i.getTarget()).filter(t -> t != null).collect(Collectors.toList());
 		Set<Type> targetTypes = new LinkedHashSet<>();
-		List<ClassCastExpression> casts = element.descendants(ClassCastExpression.class);
+		List<ClassCastExpression> casts = element.lexical().descendants(ClassCastExpression.class);
 		Set<Type> castTypes = new LinkedHashSet<>();
 		for(ClassCastExpression cast : casts) {
 			Type type = cast.getType();

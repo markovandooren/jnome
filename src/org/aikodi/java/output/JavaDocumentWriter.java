@@ -26,7 +26,7 @@ public class JavaDocumentWriter extends DocumentWriter {
 	
 	private Type mainType(Document compilationUnit) throws LookupException, ModelException {
 		Type result = null;
-		for(Type type: compilationUnit.descendants(Type.class)) {
+		for(Type type: compilationUnit.lexical().descendants(Type.class)) {
 			if((type.nearestAncestor(Type.class) == null) && ((result == null) || (type.scope().ge(result.scope())))) {
 				result = type;
 			}

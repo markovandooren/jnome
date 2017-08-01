@@ -18,7 +18,7 @@ public class NoAnnotationOfType extends UniversalPredicate<Type,Nothing> {
 	
 	@Override
 	public boolean uncheckedEval(Type object) {
-		for(AnnotationModifier mod: object.descendants(AnnotationModifier.class)) {
+		for(AnnotationModifier mod: object.lexical().descendants(AnnotationModifier.class)) {
 			try {
 				if(mod.type().subtypeOf(_type)) {
 					return false;

@@ -540,7 +540,7 @@ public class Java7Syntax extends Syntax {
   
   public String toCodeCompilationUnit(Document cu)  {
     StringBuffer result = new StringBuffer();
-  	for(NamespaceDeclaration part: cu.namespaceDeclarations()) {
+  	for(NamespaceDeclaration part: cu.children(NamespaceDeclaration.class)) {
   		result.append(toCodeNamespaceDeclaration(part));
   	}
   	return result.toString();

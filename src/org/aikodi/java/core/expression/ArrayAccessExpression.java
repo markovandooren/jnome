@@ -27,7 +27,7 @@ public class ArrayAccessExpression extends Expression implements Assignable {
     setTarget(target);
   }
 
-	private Single<Expression> _target = new Single<Expression>(this,false);
+	private Single<Expression> _target = new Single<Expression>(this, false, "target");
 
 
   public Expression getTarget() {

@@ -61,7 +61,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 							TypeParameter clone = (TypeParameter) par.clone();
 							formalArgs.add(clone);
 						}
-						Type GG = G.language(ObjectOrientedLanguage.class).createDerivedType(TypeParameter.class,formalArgs, G);
+						Type GG = G.language(ObjectOrientedLanguage.class).instantiatedType(TypeParameter.class,formalArgs, G);
 						GG.setUniParent(G.parent());
 					  // replace the index-th parameter with a clone of type reference U.
 						TypeParameter oldParameter = GG.parameters(TypeParameter.class).get(index);
@@ -123,7 +123,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 						TypeParameter clone = (TypeParameter) par.clone();
 						formalArgs.add(clone);
 					}
-					Type GG = G.language(ObjectOrientedLanguage.class).createDerivedType(TypeParameter.class,formalArgs, G);
+					Type GG = G.language(ObjectOrientedLanguage.class).instantiatedType(TypeParameter.class,formalArgs, G);
 					GG.setUniParent(G.parent());
 				  // replace the index-th parameter with a clone of type reference U.
 					TypeParameter oldParameter = GG.parameters(TypeParameter.class).get(index);
@@ -184,7 +184,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 						TypeParameter clone = (TypeParameter) par.clone();
 						formalArgs.add(clone);
 					}
-					Type GG = G.language(ObjectOrientedLanguage.class).createDerivedType(TypeParameter.class,formalArgs, G);
+					Type GG = G.language(ObjectOrientedLanguage.class).instantiatedType(TypeParameter.class,formalArgs, G);
 					GG.setUniParent(G.parent());
 				  // replace the index-th parameter with a clone of type reference U.
 					TypeParameter oldParameter = GG.parameters(TypeParameter.class).get(index);

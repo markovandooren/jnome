@@ -1,11 +1,15 @@
 package org.aikodi.java.test;
 
+import org.aikodi.chameleon.core.element.TestElement;
+import org.aikodi.chameleon.test.events.TestEvents;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	TestRejuse.class
+	TestEvents.class
+	,TestElement.class
+	,TestRejuse.class
 	,TestJnome.class
 	,TestAntlr.class
 	,TestCustomCases.class

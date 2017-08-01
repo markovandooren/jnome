@@ -8,6 +8,7 @@ import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.namespace.DocumentLoaderNamespace;
 import org.aikodi.chameleon.core.namespace.Namespace;
+import org.aikodi.chameleon.core.namespacedeclaration.NamespaceDeclaration;
 import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.workspace.DocumentLoaderImpl;
 import org.aikodi.chameleon.workspace.DocumentScanner;
@@ -49,7 +50,7 @@ public class LazyClassFileDocumentLoader extends DocumentLoaderImpl implements L
 		} catch (InputException e) {
 			throw new LookupException("Error opening file",e);
 		}
-		List<Declaration> list = (List)rawDocument().namespaceDeclarations().get(0).declarations();
+		List<Declaration> list = (List)rawDocument().children(NamespaceDeclaration.class).get(0).declarations();
 		List<Declaration> result = new ArrayList<Declaration>();
 		for(Declaration decl: list) {
 				if(decl.name().equals(name)) {

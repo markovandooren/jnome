@@ -666,7 +666,7 @@ public class Java7 extends ObjectOrientedLanguage {
 		return new BasicJavaTypeReference(target);
 	}
 
-	public <P extends Parameter> TypeInstantiation createDerivedType(Class<P> kind, List<P> parameters, Type baseType) {
+	public <P extends Parameter> TypeInstantiation instantiatedType(Class<P> kind, List<P> parameters, Type baseType) {
 		return new JavaTypeInstantiation(kind, parameters, baseType);
 	}
 

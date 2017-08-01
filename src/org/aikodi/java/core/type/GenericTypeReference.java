@@ -46,7 +46,7 @@ public class GenericTypeReference extends ElementImpl implements JavaTypeReferen
   
   private Multi<TypeArgument> _genericParameters = new Multi<TypeArgument>(this);
 
-  private Single<BasicJavaTypeReference> _target = new Single<BasicJavaTypeReference>(this,true);
+  private Single<BasicJavaTypeReference> _target = new Single<BasicJavaTypeReference>(this, true, "target");
 
   public BasicJavaTypeReference target() {
   	return _target.getOtherEnd();

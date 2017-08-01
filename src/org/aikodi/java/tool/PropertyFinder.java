@@ -24,7 +24,7 @@ public class PropertyFinder extends CommandLineTool {
 	   */
 	  public PropertyFinder(String[] args) throws Exception {
 	  	super(args);
-		  List<Type> types = view().namespace().descendants(Type.class);
+		  List<Type> types = view().namespace().lexical().descendants(Type.class);
 		  findProperties(types,"set","get");
 		  findPairs(types,"set","get");
 		  findPairs(types,"add","remove");
@@ -50,7 +50,7 @@ public class PropertyFinder extends CommandLineTool {
 		  				String otherName = getter.name();
 		  				if(otherName.equals(second+X)) {
 		  					if(! type.isTrue(lang.INTERFACE)) {
-			  					List<AssignmentExpression> exprs = method.descendants(AssignmentExpression.class);
+			  					List<AssignmentExpression> exprs = method.lexical().descendants(AssignmentExpression.class);
 			  					if(exprs.size() == 1) {
 			  						AssignmentExpression e = exprs.get(0);
 			  						String varName = null;
@@ -58,7 +58,7 @@ public class PropertyFinder extends CommandLineTool {
 			  							varName = ((NameExpression)e.variableExpression()).name();
 			  						} 
 			  						boolean found = false;
-			  						List<NameExpression> reads = method.descendants(NameExpression.class);
+			  						List<NameExpression> reads = method.lexical().descendants(NameExpression.class);
 			  						for(NameExpression read:reads) {
 			  							if(read.name().equals(varName)) {
 					  						pairsInClasses++;

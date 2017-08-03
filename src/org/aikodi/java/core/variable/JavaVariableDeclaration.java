@@ -10,10 +10,10 @@ import org.aikodi.java.core.type.ArrayTypeReference;
 import org.aikodi.java.core.type.JavaTypeReference;
 
 /**
- * Because the idiots who created Java had to allow array brackets after the name of a variable, we
+ * Because the Java allows array brackets after the name of a variable, we
  * need a separate subclass.
  * 
- * @author Marko
+ * @author Marko van Dooren
  */
 public class JavaVariableDeclaration extends VariableDeclaration {
 	
@@ -64,7 +64,7 @@ public class JavaVariableDeclaration extends VariableDeclaration {
 
  public TypeReference typeReference() {
 	 int arrayDimension = arrayDimension();
-	 VariableDeclarator variableDeclarator = nearestAncestor(VariableDeclarator.class);
+	 VariableDeclarator variableDeclarator = lexical().nearestAncestor(VariableDeclarator.class);
 	JavaTypeReference result = (JavaTypeReference) variableDeclarator.typeReference();
 	 if(arrayDimension > 0) {
 	   result = new ArrayTypeReference(clone(result),arrayDimension);

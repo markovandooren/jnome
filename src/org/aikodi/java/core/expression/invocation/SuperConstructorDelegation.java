@@ -39,7 +39,7 @@ public class SuperConstructorDelegation extends ConstructorDelegation {
 
   @Override
   public NormalMethod getElement() throws LookupException {
-  	Type parent = nearestAncestor(Type.class);
+  	Type parent = lexical().nearestAncestor(Type.class);
   	if(parent == null) {
   		throw new ChameleonProgrammerException("The super constructor delegation is not inside a type.");
   	}

@@ -27,7 +27,7 @@ public class JavaSwitchCase extends SwitchCase {
 	@Override
 	public LookupContext lookupContext(Element child) throws LookupException {
 		if(getLabel() == child) {
-			SwitchStatement switchStatement = nearestAncestor(SwitchStatement.class);
+			SwitchStatement switchStatement = lexical().nearestAncestor(SwitchStatement.class);
 			Type type = switchStatement.getExpression().getType();
 			if(type instanceof EnumType) {
 				return type.localContext();

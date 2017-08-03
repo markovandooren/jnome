@@ -26,7 +26,7 @@ public class AnonymousInnerClass extends AbstractAnonymousInnerClass {
 	}
 	
 	public TypeReference typeReference() {
-		return nearestAncestor(ConstructorInvocation.class).getTypeReference();
+		return lexical().nearestAncestor(ConstructorInvocation.class).getTypeReference();
 	}
 
 	@Override

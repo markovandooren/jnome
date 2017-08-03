@@ -81,7 +81,7 @@ public class ConstructorInvocation extends RegularMethodInvocation implements De
 
 
 
-  private Single<Type> _anonymousType = new Single<Type>(this);
+  private Single<Type> _anonymousType = new Single<Type>(this, "anonymous type");
 
   public void setBody(ClassBody body) {
     if(body == null) {

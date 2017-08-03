@@ -24,10 +24,10 @@ public class JavaNamedTarget extends NamedTarget {
 		Declaration result = super.getElement();
 		if(result instanceof DeclarationWithType) {
 			result = ((DeclarationWithType)result).declarationType();
-			final MethodInvocation method = nearestAncestor(MethodInvocation.class);
-			if(method != null) { // does not work yet because of bug in Java7.reference(Type) with multiple constraints
-				final Declaration declaration = nearestAncestor(Declaration.class);
-				if(method.hasAncestor(declaration)) 
+			final MethodInvocation method = lexical().nearestAncestor(MethodInvocation.class);
+			if(method != null) { // FIXME TODO Check this: does not work yet because of bug in Java7.reference(Type) with multiple constraints
+				final Declaration declaration = lexical().nearestAncestor(Declaration.class);
+				if(method.lexical().hasAncestor(declaration)) 
 						result = ((JavaType) result).captureConversion();
 			}
 		}

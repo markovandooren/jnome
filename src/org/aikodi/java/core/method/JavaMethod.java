@@ -67,7 +67,8 @@ public class JavaMethod extends NormalMethod {
 	 * is not in the invocation but in the definition. For now, that is not detected.
 	 */
 	private static boolean subSignature(Method first, Method second) throws LookupException {
-		boolean result = first.sameKind(second) && ((Type)first.nearestAncestor(Type.class)).subtypeOf((Type)second.nearestAncestor(Type.class));
+		boolean result = first.sameKind(second) && ((Type)first.lexical().nearestAncestor(Type.class))
+				.subtypeOf((Type)second.lexical().nearestAncestor(Type.class));
 		if(result) {
 			SignatureWithParameters signature1 = first.signature();
 			SignatureWithParameters signature2 = second.signature();

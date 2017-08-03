@@ -39,8 +39,8 @@ public class IncomingLeak extends Analysis<AssignmentExpression, Verification, M
 
 		@Override
 		public String message() {
-			Method m = _parameter.nearestAncestor(Method.class);
-			Type t = m.nearestAncestor(Type.class);
+			Method m = _parameter.lexical().nearestAncestor(Method.class);
+			Type t = m.lexical().nearestAncestor(Type.class);
 			String msg = "Encapsulation error. Potential incoming leak of internal state: collection parameter "+_parameter.name()+ 
 					" of public method "+m.name()+" in "+t.getFullyQualifiedName()+ 
 					" is directly assigned to field "+_member.name();
@@ -52,7 +52,7 @@ public class IncomingLeak extends Analysis<AssignmentExpression, Verification, M
 	@Override
 	public void analyze(AssignmentExpression assignment) throws LookupException {
 		Verification result = Valid.create();
-		Method method = assignment.nearestAncestor(Method.class);
+		Method method = assignment.lexical().nearestAncestor(Method.class);
 		Java7 language = method.language(Java7.class);
 		if(method != null && Predicates.EXTERNALLY_ACCESSIBLE.eval(method)) {
 			Variable v = assignment.variable();

@@ -24,8 +24,8 @@ public class AssignmentAsExpression extends Analysis<AssignmentExpression, Verif
     }
 
     private static String msg(AssignmentExpression element) {
-    	Type type = element.nearestAncestor(Type.class);
-    	Method method = element.nearestAncestor(Method.class);
+    	Type type = element.lexical().nearestAncestor(Type.class);
+    	Method method = element.lexical().nearestAncestor(Method.class);
     	String methodName = method == null ? "" : "method "+method.name()+" of ";
     	return "An assignment to variable "+element.variableExpression().toString()+" in " + methodName  +"class "+type.getFullyQualifiedName()+" is used as an expression. This can have unintented effects.";
     }

@@ -42,11 +42,11 @@ public class JavaDeclarationDecomposer implements Function<Declaration, List<Dec
         type = ((TypeInstantiation)type).baseType();
       }
       while(type instanceof TypeVariable) {
-        type = type.nearestAncestor(Type.class);
+        type = type.lexical().nearestAncestor(Type.class);
       }
       AnonymousType anon = type.lexical().farthestAncestorOrSelf(AnonymousType.class);
       if(anon != null) {
-        type = anon.nearestAncestor(Type.class);
+        type = anon.lexical().nearestAncestor(Type.class);
       }
     }
     return Lists.create(type);

@@ -21,7 +21,7 @@ public class LoadedBy extends TreePredicate<Element, Nothing> {
 		if(t instanceof Namespace) {
 			return currentLoader.namespaces().contains(t);
 		} else {
-			Document document = t.nearestAncestor(Document.class);
+			Document document = t.lexical().nearestAncestor(Document.class);
 			// The signature of a namespace is not part of document.
 			if(document != null) {
 				DocumentScanner loader = document.loader().scanner();
@@ -51,13 +51,13 @@ public class LoadedBy extends TreePredicate<Element, Nothing> {
 		boolean result = false;
 		if(node instanceof Namespace) {
 			for(Namespace ns: currentLoader.namespaces()) {
-				if(ns == node || ns.hasAncestor(node)) {
+				if(ns == node || ns.lexical().hasAncestor(node)) {
 					result = true;
 					break;
 				}
 			}
 		} else {
-			Document document = node.nearestAncestor(Document.class);
+			Document document = node.lexical().nearestAncestor(Document.class);
 			// The signature of a namespace is not part of document.
 			if(document != null) {
 				DocumentScanner loader = document.loader().scanner();

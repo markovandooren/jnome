@@ -230,7 +230,7 @@ public class JavaDependencyOptions extends DependencyOptions {
 
           @Override
           public boolean uncheckedEval(Dependency t) throws Nothing {
-            return ! ((Element) t.target()).hasAncestor((Element)t.source());
+            return ! ((Element) t.target()).lexical().hasAncestor((Element)t.source());
           }
         }, "Ignore lexical descendants",false);
   }

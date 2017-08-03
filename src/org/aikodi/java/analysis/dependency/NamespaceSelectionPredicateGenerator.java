@@ -42,7 +42,7 @@ public class NamespaceSelectionPredicateGenerator extends TristateTreePruner<Obj
 
 				@Override
 				public boolean canSucceedBeyond(Element node) {
-					return node == currentNamespace || currentNamespace.hasAncestor(node) || node.hasAncestor(currentNamespace);
+					return node == currentNamespace || currentNamespace.lexical().hasAncestor(node) || node.lexical().hasAncestor(currentNamespace);
 				};
 
 
@@ -67,7 +67,7 @@ public class NamespaceSelectionPredicateGenerator extends TristateTreePruner<Obj
 				@Override
 				public boolean uncheckedEval(Element t) throws Nothing {
 					Namespace namespace = nearestNamespace(t);
-					return namespace == currentNamespace || namespace.hasAncestor(currentNamespace);
+					return namespace == currentNamespace || namespace.lexical().hasAncestor(currentNamespace);
 				}
 
 				private Namespace nearestNamespace(Element t) {
@@ -80,7 +80,7 @@ public class NamespaceSelectionPredicateGenerator extends TristateTreePruner<Obj
 
 				@Override
 				public boolean canSucceedBeyond(Element node) {
-					return node == currentNamespace || currentNamespace.hasAncestor(node) || node.logical().hasAncestorOrSelf(currentNamespace);
+					return node == currentNamespace || currentNamespace.lexical().hasAncestor(node) || node.logical().hasAncestorOrSelf(currentNamespace);
 				};
 
 			};

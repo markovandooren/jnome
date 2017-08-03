@@ -94,7 +94,7 @@ public class DependencyAnalysisTool extends AnalysisTool {
 
 		@Override
 		public boolean uncheckedEval(Object object) {
-			return ((CrossReference)object).nearestAncestor(InheritanceRelation.class) == null;
+			return ((CrossReference)object).lexical().nearestAncestor(InheritanceRelation.class) == null;
 		}
 	};
 
@@ -147,7 +147,7 @@ public class DependencyAnalysisTool extends AnalysisTool {
 
 					@Override
 					public boolean uncheckedEval(Type object) {
-						return new GlobPredicate(string,'.').eval(object.nearestAncestor(NamespaceDeclaration.class).namespace().fullyQualifiedName());
+						return new GlobPredicate(string,'.').eval(object.lexical().nearestAncestor(NamespaceDeclaration.class).namespace().fullyQualifiedName());
 					}
 
 				}).makeUniversal(Type.class);

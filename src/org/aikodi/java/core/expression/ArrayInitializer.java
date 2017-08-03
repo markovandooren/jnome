@@ -59,7 +59,7 @@ public class ArrayInitializer extends Expression {
       return ((Variable)parent).getType();
     }
     else if (parent instanceof JavaVariableDeclaration) {
-    	return nearestAncestor(JavaVariableDeclaration.class).typeReference().getElement();
+    	return lexical().nearestAncestor(JavaVariableDeclaration.class).typeReference().getElement();
     }
     else {
       throw new ChameleonProgrammerException("Cannot determine type of array initializer based on the parent.");

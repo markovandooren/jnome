@@ -113,7 +113,7 @@ public class ConstructorSelector extends AbstractConstructorSelector {
 		BasicJavaTypeReference returnTypeReference = (BasicJavaTypeReference) method.returnTypeReference();
 		method.setUniParent(decl.parent());
 		method.setOrigin(decl);
-		Type type = decl.nearestAncestor(Type.class);
+		Type type = decl.lexical().nearestAncestor(Type.class);
 		Java7 language = invocation.language(Java7.class);
 		for (TypeParameter param : type.parameters(TypeParameter.class)) {
 			method.header().addTypeParameter(Util.clone(param));

@@ -1547,7 +1547,7 @@ public class Java7Syntax extends Syntax {
     int i = 1;
     for(Type type:types) {
       String fileName = type.name()+".java";
-      String packageFQN = type.nearestAncestor(NamespaceDeclaration.class).namespace().fullyQualifiedName();
+      String packageFQN = type.lexical().nearestAncestor(NamespaceDeclaration.class).namespace().fullyQualifiedName();
       String relDirName = packageFQN.replace('.', File.separatorChar);
       File out = new File(arguments.getOutputDirName()+File.separatorChar + relDirName + File.separatorChar + fileName);
       

@@ -66,7 +66,7 @@ public class EnumConstant extends SimpleNameMember implements DeclarationWithTyp
 //  
 //  private Single<ClassBody> _body = new Single<ClassBody>(this);
 
-	private Single<ClassWithBody> _anonymousType = new Single<ClassWithBody>(this);
+	private Single<ClassWithBody> _anonymousType = new Single<ClassWithBody>(this, "type");
 	
 	public void setBody(ClassBody body) {
 		if(body == null) {
@@ -106,7 +106,7 @@ public class EnumConstant extends SimpleNameMember implements DeclarationWithTyp
 	}
 
 	public Type declarationType() throws LookupException {
-		return nearestAncestor(Type.class);
+		return lexical().nearestAncestor(Type.class);
 	}
 
 //	public LocalLookupContext<?> targetContext() throws LookupException {
@@ -146,7 +146,7 @@ public class EnumConstant extends SimpleNameMember implements DeclarationWithTyp
 	public LocalLookupContext<?> targetContext() throws LookupException {
 		Type type = getAnonymousType();
 		if(type == null) {
-		  return nearestAncestor(EnumType.class).targetContext();
+		  return lexical().nearestAncestor(EnumType.class).targetContext();
 		}
     return type.targetContext();
 	}

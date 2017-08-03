@@ -21,13 +21,13 @@ public class JavaDocumentWriter extends DocumentWriter {
 	}
 
 	public String directoryName(Document compilationUnit) throws LookupException, ModelException {
-		return mainType(compilationUnit).nearestAncestor(NamespaceDeclaration.class).namespaceReference().toString();
+		return mainType(compilationUnit).lexical().nearestAncestor(NamespaceDeclaration.class).namespaceReference().toString();
 	}
 	
 	private Type mainType(Document compilationUnit) throws LookupException, ModelException {
 		Type result = null;
 		for(Type type: compilationUnit.lexical().descendants(Type.class)) {
-			if((type.nearestAncestor(Type.class) == null) && ((result == null) || (type.scope().ge(result.scope())))) {
+			if((type.lexical().nearestAncestor(Type.class) == null) && ((result == null) || (type.scope().ge(result.scope())))) {
 				result = type;
 			}
 		}

@@ -69,7 +69,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 
 		@Override
 		public Element lookupParent() {
-			return nearestAncestor(TypeParameter.class);
+			return lexical().nearestAncestor(TypeParameter.class);
 		}
 
 		@Override

@@ -51,8 +51,8 @@ public class NonDefensiveFieldAssignment extends Analysis<AssignmentExpression,V
 		
 		@Override
 		public String message() {
-			Method m = _parameter.nearestAncestor(Method.class);
-			Type t = m.nearestAncestor(Type.class);
+			Method m = _parameter.lexical().nearestAncestor(Method.class);
+			Type t = m.lexical().nearestAncestor(Type.class);
 			return "Warning: encapsulation: unchecked assignment to internal state: parameter "+_parameter.name()+ 
 					         " of public method "+m.name()+" in "+t.getFullyQualifiedName()+ 
 					         " is assigned to field "+_member.name()+
@@ -66,7 +66,7 @@ public class NonDefensiveFieldAssignment extends Analysis<AssignmentExpression,V
 	@Override
 	protected void analyze(AssignmentExpression assignment) throws LookupException {
 		Verification result = Valid.create();
-			final Method method = assignment.nearestAncestor(Method.class);
+			final Method method = assignment.lexical().nearestAncestor(Method.class);
 			if(method != null && method.isTrue(method.language(Java7.class).PUBLIC)) {
 				Variable v = assignment.variable();
 				if(v instanceof RegularMemberVariable) {
@@ -83,7 +83,7 @@ public class NonDefensiveFieldAssignment extends Analysis<AssignmentExpression,V
 										// If s.parent() == the implementation object, then we have reached the
 										// block of the implementation, so we have to stop before that to object
 										// the child statement of the block of the implementation
-										return (! (s.parent() instanceof Implementation)) && s.nearestAncestor(Method.class) == method;
+										return (! (s.parent() instanceof Implementation)) && s.lexical().nearestAncestor(Method.class) == method;
 									}
 								});
 								Block b = (Block) stat.parent();

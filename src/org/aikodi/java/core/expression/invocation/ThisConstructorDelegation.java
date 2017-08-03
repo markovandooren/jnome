@@ -29,7 +29,7 @@ public class ThisConstructorDelegation extends ConstructorDelegation {
   @Override
   public NormalMethod getElement() throws LookupException {
 		DeclarationCollector<NormalMethod> collector = new DeclarationCollector<NormalMethod>(selector());
-	  nearestAncestor(ClassBody.class).lexicalContext().lookUp(collector);
+		lexical().nearestAncestor(ClassBody.class).lexicalContext().lookUp(collector);
 	  return collector.result();
   }
 

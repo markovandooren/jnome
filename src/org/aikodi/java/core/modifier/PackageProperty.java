@@ -25,7 +25,7 @@ public class PackageProperty extends ScopeProperty {
 
 	public Scope scope(Element element) throws LookupException {
 		try {
-			return new NamespaceScope(((Type)element).nearestAncestor(NamespaceDeclaration.class).namespace());
+			return new NamespaceScope(((Type)element).lexical().nearestAncestor(NamespaceDeclaration.class).namespace());
 		} catch (ClassCastException exc) {
 			throw new LookupException("The given element is not a type");
 		}

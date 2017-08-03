@@ -41,11 +41,11 @@ public class SuspiciousCastAnalysis extends Analysis<Method,Verification, Lookup
 			}
 		}
 		for(MethodInvocation invocation: invocations) {
-			Type type = invocation.getElement().nearestAncestor(Type.class);
+			Type type = invocation.getElement().lexical().nearestAncestor(Type.class);
 			CrossReferenceTarget target = invocation.getTarget();
 			if(target != null) {
 				Type container = target.targetContext().declarationContainer().lexical().nearestAncestorOrSelf(Type.class);
-				ClassCastExpression surroundingCast = invocation.nearestAncestor(ClassCastExpression.class);
+				ClassCastExpression surroundingCast = invocation.lexical().nearestAncestor(ClassCastExpression.class);
 				boolean subtype = false;
 				for(Type c: castTypes) {
 					subtype = subtype || container.subtypeOf(c);
@@ -55,7 +55,7 @@ public class SuspiciousCastAnalysis extends Analysis<Method,Verification, Lookup
 				}
 			}
 		}
-		Type thisType = element.nearestAncestor(Type.class);
+		Type thisType = element.lexical().nearestAncestor(Type.class);
 		targetTypes.removeAll(thisType.getSelfAndAllSuperTypesView());
 		for(Type cType: castTypes) {
 			for(Type tType: targetTypes) {

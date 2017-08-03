@@ -20,7 +20,7 @@ public class DimensionInitializer extends ElementImpl {
 	/**
 	 * EXPRESSION
 	 */
-	private Single<Expression> _expression = new Single<Expression>(this);
+	private Single<Expression> _expression = new Single<Expression>(this, "expression");
 
   public Expression getExpression() {
     return _expression.getOtherEnd();

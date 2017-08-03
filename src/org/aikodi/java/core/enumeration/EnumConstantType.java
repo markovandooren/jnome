@@ -21,7 +21,7 @@ public class EnumConstantType extends AbstractAnonymousInnerClass {
 
 	@Override
 	protected TypeReference typeReference() {
-		EnumType nearestAncestor = nearestAncestor(EnumType.class);
+		EnumType nearestAncestor = lexical().nearestAncestor(EnumType.class);
 		BasicJavaTypeReference result = language(Java7.class).createTypeReference(nearestAncestor.name());
 		result.setUniParent(nearestAncestor);
 		return result;
@@ -29,7 +29,7 @@ public class EnumConstantType extends AbstractAnonymousInnerClass {
 	
 	@Override
 	public SimpleNameSignature signature() {
-		SimpleNameSignature result = (SimpleNameSignature) nearestAncestor(EnumConstant.class).signature();
+		SimpleNameSignature result = (SimpleNameSignature) lexical().nearestAncestor(EnumConstant.class).signature();
 		return result;
 	}
 	

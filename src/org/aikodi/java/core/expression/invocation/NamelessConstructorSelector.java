@@ -33,6 +33,6 @@ public class NamelessConstructorSelector extends AbstractConstructorSelector {
 
 	@Override
 	public String selectionName(DeclarationContainer container) {
-		return _constructorDelegation.nearestAncestor(Type.class).name();
+		return _constructorDelegation.lexical().nearestAncestor(Type.class).name();
 	}
 }

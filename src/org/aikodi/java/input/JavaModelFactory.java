@@ -55,7 +55,7 @@ public class JavaModelFactory extends ModelFactoryUsingANTLR3 {
       }
       return result;
     } catch (RecognitionException exc) {
-      throw new ParseException(element.nearestAncestor(Document.class));
+      throw new ParseException(element.lexical().nearestAncestor(Document.class));
     } catch (IOException exc) {
       throw new ChameleonProgrammerException("Parsing of a string caused an IOException", exc);
     }

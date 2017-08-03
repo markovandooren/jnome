@@ -235,7 +235,7 @@ public class RegularJavaType extends AbstractJavaType {
 					}
 				}
 				Type current = outer;
-				List<Type> outerTypes = ancestors(Type.class);
+				List<Type> outerTypes = lexical().ancestors(Type.class);
 				outerTypes.add(0, this);
 
 				int size = outerTypes.size();

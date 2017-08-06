@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.aikodi.chameleon.core.declaration.Signature;
+import org.aikodi.chameleon.core.declaration.Name;
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.lookup.LookupContext;
 import org.aikodi.chameleon.core.lookup.LookupException;
@@ -45,7 +46,11 @@ public abstract class AbstractAnonymousInnerClass extends AnonymousType {
 
 	@Override
 	public void setSignature(Signature signature) {
-		throw new ChameleonProgrammerException();
+		if(! (signature.name().equals("") && signature instanceof Name)) {
+			throw new ChameleonProgrammerException();
+		} else {
+			super.setSignature(signature);
+		}
 	}
 	
 

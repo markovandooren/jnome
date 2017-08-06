@@ -1,6 +1,6 @@
 package org.aikodi.java.core.variable;
 
-import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
+import org.aikodi.chameleon.core.declaration.Name;
 import org.aikodi.chameleon.oo.variable.FormalParameter;
 import org.aikodi.java.core.type.JavaTypeReference;
 

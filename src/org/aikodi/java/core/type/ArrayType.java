@@ -30,7 +30,7 @@ public class ArrayType extends AbstractJavaType implements JavaType {
     //FIXME: copy the modifiers?
     //addModifier(type.getAccessModifier());
     _type = type;
-    setUniParent(type.parent());
+    setUniParent(type.lexical().parent());
     Java7 language = type.language(Java7.class);
 		JavaTypeReference jtr = language.createTypeReference("int");
 		

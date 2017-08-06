@@ -696,7 +696,7 @@ public class Java7 extends ObjectOrientedLanguage {
 			result.setUniParent(rootNamespace);
 			for(Type t: ((IntersectionType)type).types()) {
 				JavaTypeReference reference = reference(t);
-				Element oldParent = reference.parent();
+				Element oldParent = reference.lexical().parent();
 				reference.setUniParent(null);
 				// first clean up the uni link, we must add it to the non-local reference.
 				TypeReference nl = createNonLocalTypeReference(reference, oldParent);
@@ -708,7 +708,7 @@ public class Java7 extends ObjectOrientedLanguage {
 			result.setUniParent(rootNamespace);
 			for(Type t: ((UnionType)type).types()) {
 				JavaTypeReference reference = reference(t);
-				Element oldParent = reference.parent();
+				Element oldParent = reference.lexical().parent();
 				reference.setUniParent(null);
 				// first clean up the uni link, we must add it to the non-local reference.
 				TypeReference nl = createNonLocalTypeReference(reference, oldParent);
@@ -717,14 +717,14 @@ public class Java7 extends ObjectOrientedLanguage {
 		}
 		else if (type instanceof ArrayType) {
 			JavaTypeReference reference = reference(((ArrayType)type).elementType());
-			Element oldParent = reference.parent();
+			Element oldParent = reference.lexical().parent();
 			reference.setUniParent(null);
 			result = new ArrayTypeReference(reference);
 			result.setUniParent(oldParent);
 		}	else if (type instanceof TypeInstantiation){
 			BasicJavaTypeReference tref = new BasicJavaTypeReference(type.name());
-			result = new NonLocalJavaTypeReference(tref,type.parent());
-			result.setUniParent(type.parent());
+			result = new NonLocalJavaTypeReference(tref,type.lexical().parent());
+			result.setUniParent(type.lexical().parent());
 			// next setup the generic parameters.
 			for(TypeParameter parameter: type.parameters(TypeParameter.class)) {
 				cloneActualTypeArguments(parameter,tref);
@@ -760,13 +760,13 @@ public class Java7 extends ObjectOrientedLanguage {
 			result = (JavaTypeReference) createTypeReferenceInNamespace(type.getFullyQualifiedName(),rootNamespace);
 		} else if (type instanceof ExtendsWildcardType) {
 			JavaTypeReference reference = reference(((ExtendsWildcardType)type).bound());
-			Element parent = reference.parent();
+			Element parent = reference.lexical().parent();
 			reference.setUniParent(null);
 			result = new JavaExtendsReference(reference);
 			result.setUniParent(parent);
 		} else if (type instanceof SuperWildcardType) {
 			JavaTypeReference reference = reference(((SuperWildcardType)type).bound());
-			Element parent = reference.parent();
+			Element parent = reference.lexical().parent();
 			reference.setUniParent(null);
 			result = new JavaSuperReference(reference);
 			result.setUniParent(parent);
@@ -792,7 +792,7 @@ public class Java7 extends ObjectOrientedLanguage {
 		else {
 			throw new ChameleonProgrammerException("Type of type is "+type.getClass().getName());
 		}
-		if(result.parent() == null) {
+		if(result.lexical().parent() == null) {
 			throw new ChameleonProgrammerException();
 		}
 		return result;

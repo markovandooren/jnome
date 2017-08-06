@@ -108,7 +108,7 @@ public class EnumType extends RegularJavaType {
 	@Override
 	public PropertySet<Element, ChameleonProperty> inherentProperties() {
 		PropertySet<Element, ChameleonProperty> result = new PropertySet<Element, ChameleonProperty>();
-		for(EnumConstant constant: body().children(EnumConstant.class)) {
+		for(EnumConstant constant: body().lexical().children(EnumConstant.class)) {
 			if(constant.body() != null) {
 				Final finalModifier = new Final();
 				finalModifier.setUniParent(this);

@@ -56,7 +56,7 @@ public class IncomingLeak extends Analysis<AssignmentExpression, Verification, M
 		Java7 language = method.language(Java7.class);
 		if(method != null && Predicates.EXTERNALLY_ACCESSIBLE.eval(method)) {
 			Variable v = assignment.variable();
-			if(v instanceof RegularMemberVariable && v.isTrue(language.INSTANCE)) {
+			if(v instanceof RegularMemberVariable && v.is(language.INSTANCE).isTrue()) {
 				Expression e = assignment.getValue();
 				if(e instanceof CrossReference) {
 					Declaration rhs = ((CrossReference) e).getElement();

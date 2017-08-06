@@ -68,7 +68,7 @@ public class LazyReflectiveDocumentLoader extends DocumentLoaderImpl implements 
 		// Since we load a class file, there is only 1 top-level declaration: the class or interface defined in the class file.
 		// Other top-level classes or interface in the same source file must be package accessible and are stored in their own
 		// class files.
-		return (List<Declaration>) (List)rawDocument().children(NamespaceDeclaration.class).get(0).children(Type.class);
+		return (List<Declaration>) (List)rawDocument().lexical().children(NamespaceDeclaration.class).get(0).lexical().children(Type.class);
 	}
 
 	@Override

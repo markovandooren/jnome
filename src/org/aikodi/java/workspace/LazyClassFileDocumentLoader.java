@@ -50,7 +50,7 @@ public class LazyClassFileDocumentLoader extends DocumentLoaderImpl implements L
 		} catch (InputException e) {
 			throw new LookupException("Error opening file",e);
 		}
-		List<Declaration> list = (List)rawDocument().children(NamespaceDeclaration.class).get(0).declarations();
+		List<Declaration> list = (List)rawDocument().lexical().children(NamespaceDeclaration.class).get(0).declarations();
 		List<Declaration> result = new ArrayList<Declaration>();
 		for(Declaration decl: list) {
 				if(decl.name().equals(name)) {

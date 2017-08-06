@@ -6,7 +6,6 @@ import java.util.Set;
 
 import java.lang.ref.SoftReference;
 
-import org.aikodi.chameleon.core.Config;
 import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.lookup.LookupException;
@@ -156,7 +155,7 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 					// This is going to give trouble if there is a special lexical context
 					// selection for 'type' in its parent.
 					// set to the type itself? seems dangerous as well.
-					result.setUniParent(type.parent());
+					result.setUniParent(type.lexical().parent());
 				} else if(type instanceof RegularType){
 					// create raw type if necessary. The erasure method will check that.
 					result = language.erasure(type);
@@ -205,17 +204,11 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
   }
   
   protected synchronized Type getGenericCache() {
-  	Type result = null;
-  	if(Config.cacheElementReferences() == true) {
-  	  result = (_genericCache == null ? null : _genericCache.get());
-  	}
-  	return result;
+  	return (_genericCache == null ? null : _genericCache.get());
   }
   
   protected synchronized void setGenericCache(Type value) {
-    	if(Config.cacheElementReferences() == true) {
-    		_genericCache = new SoftReference<Type>(value);
-    	}
+ 		_genericCache = new SoftReference<Type>(value);
   }
   
   public String toString(Set<Element> visited) {

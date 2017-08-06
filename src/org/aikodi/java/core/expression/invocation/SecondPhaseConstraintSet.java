@@ -283,7 +283,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 
 	private JavaTypeReference substitutedReference(JavaTypeReference RRef) throws LookupException {
 		JavaTypeReference RprimeRef = Util.clone(RRef);
-		RprimeRef.setUniParent(RRef.parent());
+		RprimeRef.setUniParent(RRef.lexical().parent());
 		// Let R' = R[T1=B(T1) ... Tn=B(Tn)] where B(Ti) is the type inferred for Ti in the previous section, or Ti if no type was inferred.
 		for(TypeAssignment assignment: assignments().assignments()) {
 			Type type = assignment.type();

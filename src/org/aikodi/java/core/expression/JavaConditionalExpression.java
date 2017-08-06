@@ -31,8 +31,8 @@ public class JavaConditionalExpression extends ConditionalExpression {
 			Type second = getSecond().getType();
 			Java7 java = language(Java7.class);
 			JavaView view = view(JavaView.class);
-			boolean firstPrimitive = first.isTrue(java.VALUE_TYPE);
-			boolean secondPrimitive = second.isTrue(java.VALUE_TYPE);
+			boolean firstPrimitive = first.is(java.VALUE_TYPE).isTrue();
+			boolean secondPrimitive = second.is(java.VALUE_TYPE).isTrue();
 			Type boxFirst = java.box(first);
 			Type boxSecond = java.box(second);
 			if(firstPrimitive || secondPrimitive) {
@@ -46,7 +46,7 @@ public class JavaConditionalExpression extends ConditionalExpression {
 			}
 			if(result == null) {
 				if(java.convertibleToNumeric(first) && java.convertibleToNumeric(second)) {
-					Namespace root = root();
+					Namespace root = namespace().defaultNamespace();
 					Type tByte = root.find("java.lang.Byte", Type.class);
 					Type tbyte = view.primitiveType("byte");
 					Type tShort = java.findType("java.lang.Short", root);

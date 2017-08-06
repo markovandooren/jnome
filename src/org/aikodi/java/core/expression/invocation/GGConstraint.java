@@ -62,10 +62,10 @@ public class GGConstraint extends FirstPhaseConstraint {
 							formalArgs.add(clone);
 						}
 						Type GG = G.language(ObjectOrientedLanguage.class).instantiatedType(TypeParameter.class,formalArgs, G);
-						GG.setUniParent(G.parent());
+						GG.setUniParent(G.lexical().parent());
 					  // replace the index-th parameter with a clone of type reference U.
 						TypeParameter oldParameter = GG.parameters(TypeParameter.class).get(index);
-					  EqualityTypeArgument actual = (EqualityTypeArgument) U.parent();
+					  EqualityTypeArgument actual = (EqualityTypeArgument) U.lexical().parent();
 						TypeParameter newParameter = new InstantiatedTypeParameter(oldParameter.name(), actual);
 					  GG.replaceParameter(TypeParameter.class,oldParameter, newParameter);
 //						Type V=typeWithSameBaseTypeAs(H, GG.getAllSuperTypes());
@@ -124,10 +124,10 @@ public class GGConstraint extends FirstPhaseConstraint {
 						formalArgs.add(clone);
 					}
 					Type GG = G.language(ObjectOrientedLanguage.class).instantiatedType(TypeParameter.class,formalArgs, G);
-					GG.setUniParent(G.parent());
+					GG.setUniParent(G.lexical().parent());
 				  // replace the index-th parameter with a clone of type reference U.
 					TypeParameter oldParameter = GG.parameters(TypeParameter.class).get(index);
-				  EqualityTypeArgument actual = (EqualityTypeArgument) U.parent();
+				  EqualityTypeArgument actual = (EqualityTypeArgument) U.lexical().parent();
 					TypeParameter newParameter = new InstantiatedTypeParameter(oldParameter.name(), actual);
 				  GG.replaceParameter(TypeParameter.class,oldParameter, newParameter);
 //					Type V=typeWithSameBaseTypeAs(H, GG.getAllSuperTypes());
@@ -138,7 +138,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 						EqualityTypeArgument basic = (EqualityTypeArgument) inst.argument();
 						TypeReference typeReference = basic.typeReference();
 						ExtendsWildcard ext = par.language(Java7.class).createExtendsWildcard(Util.clone(typeReference));
-						ext.setUniParent(typeReference.parent());
+						ext.setUniParent(typeReference.lexical().parent());
 						TypeParameter newP = new InstantiatedTypeParameter(par.name(),ext);
 						V.replaceParameter(TypeParameter.class,par, newP);
 					}
@@ -185,10 +185,10 @@ public class GGConstraint extends FirstPhaseConstraint {
 						formalArgs.add(clone);
 					}
 					Type GG = G.language(ObjectOrientedLanguage.class).instantiatedType(TypeParameter.class,formalArgs, G);
-					GG.setUniParent(G.parent());
+					GG.setUniParent(G.lexical().parent());
 				  // replace the index-th parameter with a clone of type reference U.
 					TypeParameter oldParameter = GG.parameters(TypeParameter.class).get(index);
-				  EqualityTypeArgument actual = (EqualityTypeArgument) U.parent();
+				  EqualityTypeArgument actual = (EqualityTypeArgument) U.lexical().parent();
 					TypeParameter newParameter = new InstantiatedTypeParameter(oldParameter.name(), actual);
 				  GG.replaceParameter(TypeParameter.class,oldParameter, newParameter);
 //					Type V=typeWithSameBaseTypeAs(H, GG.getAllSuperTypes());
@@ -199,7 +199,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 						EqualityTypeArgument basic = (EqualityTypeArgument) inst.argument();
 						TypeReference typeReference = basic.typeReference();
 						SuperWildcard ext = par.language(Java7.class).createSuperWildcard(Util.clone(typeReference));
-						ext.setUniParent(typeReference.parent());
+						ext.setUniParent(typeReference.lexical().parent());
 						TypeParameter newP = new InstantiatedTypeParameter(par.name(),ext);
 						V.replaceParameter(TypeParameter.class,par, newP);
 					}

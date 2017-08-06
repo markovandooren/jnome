@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.aikodi.chameleon.core.Config;
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.language.Language;
 import org.aikodi.chameleon.core.namespace.Namespace;
@@ -24,7 +23,6 @@ public abstract class CommandLineTool {
     if(args.length < 2) {
       System.out.println("Usage: java packageName.ToolName "+"xmlConfigFile @recursivePackageFQN* #packageFQN* $typeFQN*");
     }
-    Config.setCaching(true);
     LanguageRepository repo = new LanguageRepository();
 		Workspace workspace = new Workspace(repo);
     repo.add(new Java7LanguageFactory().create());
@@ -57,7 +55,7 @@ public abstract class CommandLineTool {
 		List<E> result = new ArrayList<E>();
 		for(Namespace ns: namespaces()) {
 			//System.out.println("Analyzing "+type.getFullyQualifiedName());
-			result.addAll(ns.descendants(kind, safe));
+			result.addAll(ns.lexical().descendants(kind, safe));
 		}
 		return result;
 	}
@@ -65,7 +63,7 @@ public abstract class CommandLineTool {
 	public <E extends Element,X extends Exception> List<E> find(Class<E> kind, Predicate<E,X> unsafe) throws X {
 		List<E> result = new ArrayList<E>();
 		for(Namespace ns: namespaces()) {
-			result.addAll(ns.descendants(kind, unsafe));
+			result.addAll(ns.lexical().descendants(kind, unsafe));
 		}
 		return result;
 	}

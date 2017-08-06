@@ -540,7 +540,7 @@ public class Java7Syntax extends Syntax {
   
   public String toCodeCompilationUnit(Document cu)  {
     StringBuffer result = new StringBuffer();
-  	for(NamespaceDeclaration part: cu.children(NamespaceDeclaration.class)) {
+  	for(NamespaceDeclaration part: cu.lexical().children(NamespaceDeclaration.class)) {
   		result.append(toCodeNamespaceDeclaration(part));
   	}
   	return result.toString();
@@ -621,7 +621,7 @@ public class Java7Syntax extends Syntax {
   }
   
   public boolean isAnonymousClass(Element element) {
-    return (element instanceof Type) && (element.parent() instanceof ConstructorInvocation);
+    return (element instanceof Type) && (element.lexical().parent() instanceof ConstructorInvocation);
   }
   
   public String toCodeAnonymousClass(Type type)  {
@@ -1557,10 +1557,8 @@ public class Java7Syntax extends Syntax {
       parent.mkdirs();
       out.createNewFile();
       FileWriter fw = new FileWriter(out);
-      fw.write(writer.toCode((Element)type.parent()));
+      fw.write(writer.toCode((Element)type.lexical().parent()));
       fw.close();
-      
-      
       i++;
     }
   }

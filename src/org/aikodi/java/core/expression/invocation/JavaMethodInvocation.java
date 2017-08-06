@@ -84,7 +84,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation {
 				TypeReference tref = par.getTypeReference();
 				TypeReference clone = Util.clone(tref);
 				ReferenceStub stub = new ReferenceStub(clone);
-				stub.setUniParent(tref.parent());
+				stub.setUniParent(tref.lexical().parent());
 				references.add(clone);
 			}
 			result = new ArrayList<Type>();

@@ -67,7 +67,7 @@ public class NonDefensiveFieldAssignment extends Analysis<AssignmentExpression,V
 	protected void analyze(AssignmentExpression assignment) throws LookupException {
 		Verification result = Valid.create();
 			final Method method = assignment.lexical().nearestAncestor(Method.class);
-			if(method != null && method.isTrue(method.language(Java7.class).PUBLIC)) {
+			if(method != null && method.is(method.language(Java7.class).PUBLIC).isTrue()) {
 				Variable v = assignment.variable();
 				if(v instanceof RegularMemberVariable) {
 					Expression e = assignment.getValue();
@@ -83,13 +83,13 @@ public class NonDefensiveFieldAssignment extends Analysis<AssignmentExpression,V
 										// If s.parent() == the implementation object, then we have reached the
 										// block of the implementation, so we have to stop before that to object
 										// the child statement of the block of the implementation
-										return (! (s.parent() instanceof Implementation)) && s.lexical().nearestAncestor(Method.class) == method;
+										return (! (s.lexical().parent() instanceof Implementation)) && s.lexical().nearestAncestor(Method.class) == method;
 									}
 								});
-								Block b = (Block) stat.parent();
+								Block b = (Block) stat.lexical().parent();
 								List<Statement> befores = b.statementsBefore(stat);
 								for(Statement before : befores) {
-									List<CrossReference> crefs = before.descendants(CrossReference.class, cref -> cref.getElement().sameAs(rhs));
+									List<CrossReference> crefs = before.lexical().descendants(CrossReference.class, cref -> cref.getElement().sameAs(rhs));
 									if(! crefs.isEmpty()) {
 										notMentioned = false; 
 									}

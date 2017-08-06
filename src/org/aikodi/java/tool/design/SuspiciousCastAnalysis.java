@@ -59,7 +59,7 @@ public class SuspiciousCastAnalysis extends Analysis<Method,Verification, Lookup
 		targetTypes.removeAll(thisType.getSelfAndAllSuperTypesView());
 		for(Type cType: castTypes) {
 			for(Type tType: targetTypes) {
-				if(cType.isTrue(element.language(Java7.class).REFERENCE_TYPE) && cType.subtypeOf(tType) && !tType.subtypeOf(cType)) {
+				if(cType.is(element.language(Java7.class).REFERENCE_TYPE).isTrue() && cType.subtypeOf(tType) && !tType.subtypeOf(cType)) {
 					BasicProblem problem = new SuspiciousCast(element,"Method "+thisType.getFullyQualifiedName()+"."+element.name()+""
 							+ " calls a method on a target of type "+tType.getFullyQualifiedName()+" and performs a cast to "+cType.getFullyQualifiedName()+
 							", which is a subtype of "+tType.name()+". This is suspicious.");

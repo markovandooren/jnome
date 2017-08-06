@@ -108,7 +108,7 @@ public class GenericTypeReference extends ElementImpl implements JavaTypeReferen
 					// This is going to give trouble if there is a special lexical context
 					// selection for 'type' in its parent.
 					// set to the type itself? seems dangerous as well.
-					result.setUniParent(type.parent());
+					result.setUniParent(type.lexical().parent());
 				} else if(type instanceof RegularType){
 					// create raw type if necessary. The erasure method will check that.
 					result = language.erasure(type);

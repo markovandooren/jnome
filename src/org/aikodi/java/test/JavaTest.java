@@ -5,7 +5,6 @@ import java.util.concurrent.Executors;
 
 import java.io.File;
 
-import org.aikodi.chameleon.core.Config;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.support.test.ExpressionTest;
 import org.aikodi.chameleon.test.CompositeTest;
@@ -40,11 +39,6 @@ public abstract class JavaTest extends CompositeTest {
 //		Logger.getLogger("chameleon.test.expression").setLevel(Level.FATAL);
 	}
 	
-	@Before
-	public void setMultiThreading() {
-		Config.setSingleThreaded(false);
-	}
-	
   private static ExecutorService threadPool = Executors.newCachedThreadPool();
 
   @Override
@@ -62,7 +56,7 @@ public abstract class JavaTest extends CompositeTest {
 		(double)project.views().stream()
 		  .flatMap(v -> v.scanners(DocumentScanner.class).stream())
 		  .flatMap(s -> s.documentLoaders().stream())
-		  .mapToLong(l -> l.loadTime()).sum()/1000000); 
+		  .mapToLong(l -> l.loadTime()).sum()/1000000);
 	}
 
 	public ElementProvider<Type> typeProvider() {

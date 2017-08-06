@@ -7,7 +7,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	TestEvents.class
+	 TestEvents.class
 	,TestElement.class
 	,TestRejuse.class
 	,TestJnome.class

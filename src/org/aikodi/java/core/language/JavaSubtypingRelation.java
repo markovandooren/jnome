@@ -244,7 +244,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		Type result = first;
 		if(first.nbTypeParameters(TypeParameter.class) > 0) {
 			result = Util.clone(first);
-			result.setUniParent(first.parent());
+			result.setUniParent(first.lexical().parent());
 			List<TypeArgument> firstArguments = arguments(first);
 			List<TypeArgument> secondArguments = arguments(second);
 			int size = firstArguments.size();
@@ -407,7 +407,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 
 		protected TypeArgument createArgument(Type type) throws LookupException {
 			final JavaTypeReference reference = java().reference(type);
-			Element parent = reference.parent();
+			Element parent = reference.lexical().parent();
 			reference.setUniParent(null);
 			final NonLocalJavaTypeReference nonLocal = new NonLocalJavaTypeReference(reference,parent);
 			return java().createExtendsWildcard(nonLocal);

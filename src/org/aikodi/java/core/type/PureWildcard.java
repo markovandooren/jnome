@@ -49,7 +49,7 @@ public class PureWildcard extends TypeArgument {
     if(newConstraints.size() == 0) {
       Java7 java = language(Java7.class);
       BasicJavaTypeReference objectRef = java.createTypeReference(java.getDefaultSuperClassFQN());
-      TypeReference tref = java.createNonLocalTypeReference(objectRef,root());
+      TypeReference tref = java.createNonLocalTypeReference(objectRef,namespace().defaultNamespace());
       newConstraints.add(new ExtendsConstraint(tref));
     }
     return newConstraints;
@@ -73,7 +73,7 @@ public class PureWildcard extends TypeArgument {
   @Override
   public Type type() throws LookupException {
     ExtendsWildcardType result = new ExtendsWildcardType(upperBound());
-    result.setUniParent(root());
+    result.setUniParent(namespace().defaultNamespace());
     return result;
     //		PureWildCardType pureWildCardType = new PureWildCardType(parameterBound());
     //		pureWildCardType.setUniParent(this);

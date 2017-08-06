@@ -54,7 +54,7 @@ public class RawType extends ClassWithBody implements JavaType {
     //		copyImplicitInheritanceRelations(original);
     copyImplicitMembers(original);
     _baseType = original;
-    setUniParent(original.parent());
+    setUniParent(original.lexical().parent());
     setOrigin(original);
     // then erase everything.
     // 1) inheritance relations
@@ -115,7 +115,7 @@ public class RawType extends ClassWithBody implements JavaType {
     _baseType = original;
     setOrigin(original);
 
-    setUniParent(original.parent());
+    setUniParent(original.lexical().parent());
     // 1) inheritance relations
     eraseInheritanceRelations();
     // 2) type parameters

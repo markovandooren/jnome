@@ -100,7 +100,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 				Type componentType = ((ArrayType)A()).elementType();
 				if(componentType.is(language().REFERENCE_TYPE) == Ternary.TRUE) {
 					JavaTypeReference componentTypeReference = ((ArrayTypeReference)Util.clone(ARef())).elementTypeReference();
-					componentTypeReference.setUniParent(ARef().parent());
+					componentTypeReference.setUniParent(ARef().lexical().parent());
 					FirstPhaseConstraint recursive = Array(componentTypeReference, ((ArrayType)F()).elementType());
 					result.addAll(recursive.process());
 					// FIXME: can't we unwrap the entire array dimension at once? This seems rather inefficient.
@@ -186,7 +186,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 	public List<TypeParameter> involvedTypeParameters(JavaTypeReference tref) throws LookupException {
 		Predicate<BasicJavaTypeReference, LookupException> predicate = 
 		    object ->  parent().typeParameters().contains(object.getDeclarator());
-		List<BasicJavaTypeReference> list = tref.descendants(BasicJavaTypeReference.class, predicate);
+		List<BasicJavaTypeReference> list = tref.lexical().descendants(BasicJavaTypeReference.class, predicate);
 		if((tref instanceof BasicJavaTypeReference) && predicate.eval((BasicJavaTypeReference) tref)) {
 			list.add((BasicJavaTypeReference) tref);
 		}

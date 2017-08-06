@@ -18,11 +18,4 @@ public class TestJnome extends JavaTest {
 		return new File(TEST_DATA,"testjnome.xml");
 	}
 	
-	//org.jnome.mm.java.LanguageElementFactory
-
-//	public void setLogLevels() {
-//		super.setLogLevels();
-//		Logger.getLogger("chameleon.test").setLevel(Level.INFO);
-//		Logger.getRootLogger().setLevel(Level.FATAL);
-//	}
 }

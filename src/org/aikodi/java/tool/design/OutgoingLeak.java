@@ -56,7 +56,7 @@ public class OutgoingLeak extends Analysis<ReturnStatement, Verification,LookupE
             if(expr instanceof CrossReference) {
                 Declaration declaration = ((CrossReference) expr).getElement();
             		Java7 language = statement.language(Java7.class);
-                if(declaration instanceof RegularMemberVariable && declaration.isTrue(language.INSTANCE)) {
+                if(declaration instanceof RegularMemberVariable && declaration.is(language.INSTANCE).isTrue()) {
                     Type type = ((RegularMemberVariable) declaration).getType();
                     if((!Predicates.IMMUTABLE_COLLECTION.eval(type)) && Predicates.COLLECTION.eval(type)) {
                         result = new OutgoingCollectionEncapsulationViolation(nearestAncestor, (Variable) declaration);

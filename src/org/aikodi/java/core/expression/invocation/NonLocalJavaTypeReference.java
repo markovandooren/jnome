@@ -54,7 +54,7 @@ public class NonLocalJavaTypeReference extends NonLocalTypeReference implements 
 		ObjectOrientedLanguage lang = in.language(ObjectOrientedLanguage.class);
 		E result = in;
 		Predicate<BasicTypeReference, LookupException> predicate = object -> object.getDeclarator().sameAs(declarator);
-		List<BasicTypeReference> crefs = in.descendants(BasicTypeReference.class, 
+		List<BasicTypeReference> crefs = in.lexical().descendants(BasicTypeReference.class, 
 				predicate);
 		if(in instanceof BasicTypeReference) {
 			BasicTypeReference in2 = (BasicTypeReference) in;
@@ -64,7 +64,7 @@ public class NonLocalJavaTypeReference extends NonLocalTypeReference implements 
 		}
 		for(BasicTypeReference cref: crefs) {
 			TypeReference substitute;
-			Element oldParent = replacement.parent();
+			Element oldParent = replacement.lexical().parent();
 			if(replacement.isDerived()) {
 //				replacement.setUniParent(null);
 			  substitute = lang.createNonLocalTypeReference(Util.clone(replacement),oldParent);
@@ -76,7 +76,7 @@ public class NonLocalJavaTypeReference extends NonLocalTypeReference implements 
 				SingleAssociation crefParentLink = cref.parentLink();
 				crefParentLink.getOtherRelation().replace(crefParentLink, substitute.parentLink());
 			} else {
-				substitute.setUniParent(in.parent());
+				substitute.setUniParent(in.lexical().parent());
 			}
 			if(cref == in) {
 				if(kind.isInstance(substitute)) {

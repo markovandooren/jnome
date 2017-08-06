@@ -18,6 +18,19 @@ import org.aikodi.java.core.type.JavaTypeInstantiation;
 import org.aikodi.java.core.type.JavaTypeReference;
 import org.aikodi.rejuse.association.SingleAssociation;
 
+/**
+ * A class for selecting methods in Java 7.
+ * 
+ * It keeps track of the type assignment that was done,
+ * whether or not unchecked conversion was required,
+ * and in which phase the result was found. This information
+ * is required to be able to search in multiple locations
+ * and afterwards combined the results.
+ * 
+ * @author Marko van Dooren
+ *
+ * @param <M> The kind of method that is being looked up.
+ */
 public class BasicMethodSelectionResult<M extends Method> implements MethodSelectionResult<M> {
 
 	public BasicMethodSelectionResult(M template, TypeAssignmentSet assignment,int phase, boolean requiredUncheckedConversion) {
@@ -84,7 +97,7 @@ public class BasicMethodSelectionResult<M extends Method> implements MethodSelec
 				Type assignedType = _assignment.type(originalPar);
 				Java7 language = _template.language(Java7.class);
 				JavaTypeReference reference = language.reference(assignedType);
-				Element parent = reference.parent();
+				Element parent = reference.lexical().parent();
 				reference.setUniParent(null);
 				EqualityTypeArgument argument = language.createEqualityTypeArgument(reference);
 				argument.setUniParent(parent);

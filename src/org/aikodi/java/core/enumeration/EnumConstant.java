@@ -2,13 +2,14 @@ package org.aikodi.java.core.enumeration;
 
 import java.util.List;
 
+import org.aikodi.chameleon.core.declaration.BasicDeclaration;
 import org.aikodi.chameleon.core.declaration.Declaration;
+import org.aikodi.chameleon.core.declaration.Name;
 import org.aikodi.chameleon.core.lookup.LocalLookupContext;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.validation.Valid;
 import org.aikodi.chameleon.core.validation.Verification;
 import org.aikodi.chameleon.oo.expression.Expression;
-import org.aikodi.chameleon.oo.member.SimpleNameMember;
 import org.aikodi.chameleon.oo.type.ClassBody;
 import org.aikodi.chameleon.oo.type.ClassWithBody;
 import org.aikodi.chameleon.oo.type.DeclarationWithType;
@@ -17,11 +18,12 @@ import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.util.Util;
 import org.aikodi.chameleon.util.association.Multi;
 import org.aikodi.chameleon.util.association.Single;
+import org.aikodi.rejuse.contract.Contracts;
 
-public class EnumConstant extends SimpleNameMember implements DeclarationWithType {
+public class EnumConstant extends BasicDeclaration implements DeclarationWithType {
 
 	public EnumConstant(String name) {
-		setName(name);
+		setSignature(new Name(name));
 	}
 	
 	@Override
@@ -43,9 +45,8 @@ public class EnumConstant extends SimpleNameMember implements DeclarationWithTyp
   }
   
   public void addAllParameters(List<Expression> parameters) {
-  	for(Expression param: parameters) {
-  		addParameter(param);
-  	}
+  	Contracts.notNull(parameters, "The list of parameters cannot be null.");
+  	parameters.forEach(p -> addParameter(p));
   }
 
   public void removeParameter(Expression parameter) {
@@ -56,16 +57,6 @@ public class EnumConstant extends SimpleNameMember implements DeclarationWithTyp
     return _parameters.getOtherEnds();
   }
   
-//  public ClassBody body() {
-//  	return _body.getOtherEnd();
-//  }
-//  
-//  public void setBody(ClassBody body) {
-//  	set(_body,body);
-//  }
-//  
-//  private Single<ClassBody> _body = new Single<ClassBody>(this);
-
 	private Single<ClassWithBody> _anonymousType = new Single<ClassWithBody>(this, "type");
 	
 	public void setBody(ClassBody body) {
@@ -99,49 +90,10 @@ public class EnumConstant extends SimpleNameMember implements DeclarationWithTyp
   	}
   }
 
-
-	@Override
-	public Verification verifySelf() {
-		return Valid.create();
-	}
-
 	public Type declarationType() throws LookupException {
 		return lexical().nearestAncestor(Type.class);
 	}
 
-//	public LocalLookupContext<?> targetContext() throws LookupException {
-//  	Language language = language();
-//  	if(language != null) {
-//		  return language.lookupFactory().createTargetLookupStrategy(this);
-//  	} else {
-//  		throw new LookupException("Element of type "+getClass().getName()+" is not connected to a language. Cannot retrieve target context.");
-//  	}
-//	}
-
-//	public List<? extends Declaration> locallyDeclaredDeclarations() throws LookupException {
-//		return body().declarations();
-//	}
-//
-//	public List<? extends Declaration> declarations() throws LookupException {
-//		List<Declaration> result = new ArrayList<Declaration>();
-//		result.addAll(body().declarations());
-//		result.addAll(nearestAncestor(Type.class).declarations());
-//		return result;
-//	}
-
-//	public <D extends Declaration> List<D> declarations(DeclarationSelector<D> selector) throws LookupException {
-//		return selector.selection(declarations());
-//	}
-
-	public Declaration declarator() {
-		return this;
-	}
-
-	@Override
-	public boolean complete() throws LookupException {
-		return true;
-	}
-	
 	@Override
 	public LocalLookupContext<?> targetContext() throws LookupException {
 		Type type = getAnonymousType();
@@ -151,8 +103,4 @@ public class EnumConstant extends SimpleNameMember implements DeclarationWithTyp
     return type.targetContext();
 	}
 	
-//	@Override
-//	public LookupContext localContext() throws LookupException {
-//		return language().lookupFactory().createLocalLookupStrategy(this);
-//	}
 }

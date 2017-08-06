@@ -1,6 +1,6 @@
 package org.aikodi.java.core.enumeration;
 
-import org.aikodi.chameleon.core.declaration.SimpleNameSignature;
+import org.aikodi.chameleon.core.declaration.Name;
 import org.aikodi.chameleon.oo.type.RegularType;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
@@ -28,8 +28,8 @@ public class EnumConstantType extends AbstractAnonymousInnerClass {
 	}
 	
 	@Override
-	public SimpleNameSignature signature() {
-		SimpleNameSignature result = (SimpleNameSignature) lexical().nearestAncestor(EnumConstant.class).signature();
+	public Name signature() {
+		Name result = (Name) lexical().nearestAncestor(EnumConstant.class).signature();
 		return result;
 	}
 	

@@ -4,15 +4,13 @@
 package org.aikodi.java.core.expression.invocation;
 
 
-import org.aikodi.chameleon.core.declaration.TargetDeclaration;
 import org.aikodi.chameleon.core.lookup.LookupException;
-import org.aikodi.chameleon.oo.expression.NamedTarget;
 import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
+import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeVariable;
 import org.aikodi.java.core.language.Java7;
 import org.aikodi.java.core.type.JavaTypeReference;
-import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
-import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 
 public class EqualTypeConstraint extends SecondPhaseConstraint {
 

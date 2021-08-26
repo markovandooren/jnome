@@ -327,7 +327,7 @@ public class Java7 extends ObjectOrientedLanguage {
 		}
 	}
 
-	private final class JavaEquivalenceRelation extends EquivalenceRelation<Declaration> {
+	private final class JavaEquivalenceRelation implements EquivalenceRelation<Declaration> {
 		@Override
 		public boolean contains(Declaration first, Declaration second) throws LookupException {
 			return first.equals(second);

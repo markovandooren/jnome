@@ -12,7 +12,7 @@ import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.rejuse.logic.ternary.Ternary;
 
-public class JavaImplementsRelation extends StrictPartialOrder<Declaration> {
+public class JavaImplementsRelation implements StrictPartialOrder<Declaration> {
 
 	@Override
 	public boolean contains(Declaration first, Declaration second) throws LookupException {

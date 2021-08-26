@@ -1,18 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
-apply plugin: 'maven'
-//apply plugin: 'org.akhikhl.wuff.eclipse-ide-bundle'
-
-//dependencies {
-//  compile "${eclipseMavenGroup}:org.eclipse.core.commands:+"
-//}
-
 
 repositories {
   mavenCentral()
-  maven {
-    url 'http://users.ugent.be/~mcvdoore/repository'
-  }
 }
 
 sourceSets {
@@ -20,18 +10,12 @@ sourceSets {
     java {
       srcDir 'src'
       exclude 'org/aikodi/java/eclipse/**'
-      //exclude 'be/kuleuven/cs/distrinet/jnome/tool/dependency/**'
-      //exclude 'be/kuleuven/cs/distrinet/jnome/tool/design/**'
-      //exclude 'be/kuleuven/cs/distrinet/jnome/tool/syntax/**'
     }
   }
   test {
     java {
       srcDir 'src'
       exclude 'org/aikodi/java/eclipse/**'
-      //exclude 'be/kuleuven/cs/distrinet/jnome/tool/dependency/**'
-      //exclude 'be/kuleuven/cs/distrinet/jnome/tool/design/**'
-      //exclude 'be/kuleuven/cs/distrinet/jnome/tool/syntax/**'
     }
   }
 }
@@ -40,7 +24,6 @@ test {
   scanForTestClasses false
   include '**/AllTests.class'
   outputs.upToDateWhen { false }
-  jvmArgs '-Xloggc:garbage.log', '-XX:+PrintGCDetails', '-XX:+PrintGCDateStamps'
 }
 
 configurations {
@@ -51,17 +34,17 @@ dependencies {
    deployerJars 'org.apache.maven.wagon:wagon-ssh:2.2'
 }
 
-uploadArchives {
-    repositories.mavenDeployer {
-        configuration = configurations.deployerJars
-        repository(url: "scp://webssh.ugent.be/users/m/mcvdoore/WWW/repository/") {
-            authentication(userName: "mcvdoore")
-        }
-        pom.version = '1.2.21'
-        pom.groupId = 'markovandooren'
-        pom.artifactId = 'jnome'
-    }
-}
+//uploadArchives {
+//    repositories.mavenDeployer {
+//        configuration = configurations.deployerJars
+//        repository(url: "scp://webssh.ugent.be/users/m/mcvdoore/WWW/repository/") {
+//            authentication(userName: "mcvdoore")
+//        }
+//        pom.version = '1.2.21'
+//        pom.groupId = 'markovandooren'
+//        pom.artifactId = 'jnome'
+//    }
+//}
 List shared = [
      'org.ow2.asm:asm-debug-all:5.0.4',
      'com.lexicalscope.jewelcli:jewelcli:0.8.5',
@@ -73,9 +56,10 @@ List shared = [
 ]
 
 dependencies {
-   compile project(':chameleon')
+   implementation project(':chameleon')
+   implementation group: 'junit', name: 'junit', version: '4.+'
    //compile group: 'markovandooren', name: 'chameleon', version: '1.2.21'
-   compile shared
+   implementation shared
 }
 
 
@@ -84,7 +68,7 @@ task testGroupTwo(type: Test) {
 }
 task copyRuntimeLibs(type: Copy) {
     into "lib"
-    from configurations.runtime
+    from configurations.runtimeOnly
   }
 
 configurations {
@@ -97,11 +81,11 @@ dependencies {
   //local shared
 }
 task makeZip(type: Zip) {
-    archiveName = 'jnome.jar'
-    delete new File(archiveName)
-    destinationDir = new File('.')
+    archiveFileName = 'jnome.jar'
+    //delete new File(archiveFileName)
+    destinationDirectory = new File('.')
     duplicatesStrategy = 'exclude'
-    from (configurations.runtime) {
+    from (configurations.runtimeOnly) {
        into '.'
     }
     from (configurations.archives.allArtifacts.getFiles()) {
@@ -109,7 +93,7 @@ task makeZip(type: Zip) {
     }
 }
 task antlr4(type: JavaExec) {
-  main = 'org.antlr.v4.Tool'
+  mainClass = 'org.antlr.v4.Tool'
   classpath = sourceSets.main.runtimeClasspath
   args '-visitor', '-package','org.aikodi.java8.parser','src/org/aikodi/java8/parser/Java8.g4'
 }

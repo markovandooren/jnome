@@ -129,12 +129,10 @@ public class JarScanner extends AbstractZipScanner {
   		String name = entry.getName();
   		if(filter().eval(name)) {
   			String withoutSlashes = Util.getAllButLastPart(name).replace('/', '.');
-				String tmp = withoutSlashes.replace('$', '.');
-  			if(! tmp.matches(".*\\.[0-9].*")) {
-//  				String a = Util.getLastPart(withoutSlashes).replace('$', '.');
-  				String b = ASMClassParser.toDots(Util.getLastPart(withoutSlashes));
-//  				Util.debug(! a.equals(b));
-  				names.add(new Pair<Pair<String,String>, ZipEntry>(new Pair<String,String>(tmp,b), entry));
+				String fullyQualifiedClassName = withoutSlashes.replace('$', '.');
+  			if(! fullyQualifiedClassName.matches(".*\\.[0-9].*")) {
+  				String classNameRelativeToNamespace = ASMClassParser.toDots(Util.getLastPart(withoutSlashes));
+ 				names.add(new Pair<Pair<String,String>, ZipEntry>(new Pair<String,String>(fullyQualifiedClassName,classNameRelativeToNamespace), entry));
   			}
   		}
   	}

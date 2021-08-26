@@ -153,7 +153,7 @@ public class ArrayType extends AbstractJavaType implements JavaType {
   		ArrayType second2 = (ArrayType)other;
   		return this.elementType().subtypeOf(second2.elementType(),trace);
   	} else {
-  		return JavaType.super.subtypeOf(other, trace);
+  		return super.subtypeOf(other, trace);
   	}
   }
   

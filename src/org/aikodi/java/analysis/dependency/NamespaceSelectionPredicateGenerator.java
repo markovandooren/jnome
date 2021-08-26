@@ -8,8 +8,8 @@ import org.aikodi.chameleon.ui.widget.tree.NamespaceNode;
 import org.aikodi.chameleon.ui.widget.tree.TreeNode;
 import org.aikodi.chameleon.ui.widget.tree.TristateTreePruner;
 import org.aikodi.rejuse.action.Nothing;
+import org.aikodi.rejuse.data.tree.TreePredicate;
 import org.aikodi.rejuse.predicate.UniversalPredicate;
-import org.aikodi.rejuse.tree.TreePredicate;
 
 public class NamespaceSelectionPredicateGenerator extends TristateTreePruner<Object, Element> {
 

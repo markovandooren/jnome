@@ -12,7 +12,7 @@ import org.aikodi.chameleon.oo.variable.RegularMemberVariable;
 import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
 import org.aikodi.rejuse.logic.ternary.Ternary;
 
-public class JavaHidesRelation extends StrictPartialOrder<Declaration> {
+public class JavaHidesRelation implements StrictPartialOrder<Declaration> {
 	@Override
 	public boolean contains(Declaration fst, Declaration snd) throws LookupException {
 		Declaration first = fst;

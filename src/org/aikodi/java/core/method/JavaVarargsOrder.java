@@ -11,7 +11,7 @@ import org.aikodi.chameleon.core.relation.WeakPartialOrder;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.java.core.type.ArrayType;
 
-public class JavaVarargsOrder extends WeakPartialOrder<List<Type>> {
+public class JavaVarargsOrder implements WeakPartialOrder<List<Type>> {
 
 	public static JavaVarargsOrder create() {
 		return _protoType; 

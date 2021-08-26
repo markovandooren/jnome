@@ -30,22 +30,21 @@ import org.aikodi.chameleon.ui.widget.tree.DocumentScannerContentProvider.Source
 import org.aikodi.chameleon.ui.widget.tree.TreeViewNodeLabelProvider;
 import org.aikodi.chameleon.ui.widget.tree.TristateTreePruner;
 import org.aikodi.chameleon.ui.widget.tree.TristateTreeSelector;
-import org.aikodi.chameleon.util.action.GuardedTreeWalker;
-import org.aikodi.chameleon.util.action.TopDown;
 import org.aikodi.chameleon.workspace.Project;
 import org.aikodi.java.core.type.AnonymousType;
 import org.aikodi.java.tool.JavaDeclarationDecomposer;
 import org.aikodi.rejuse.action.Nothing;
+import org.aikodi.rejuse.data.graph.UniEdge;
+import org.aikodi.rejuse.data.tree.GuardedTreeStructure;
+import org.aikodi.rejuse.data.tree.PrunedTreeStructure;
+import org.aikodi.rejuse.data.tree.TreePredicate;
+import org.aikodi.rejuse.data.tree.TreeStructure;
+import org.aikodi.rejuse.data.tree.walker.GuardedTreeWalker;
+import org.aikodi.rejuse.data.tree.walker.TopDown;
 import org.aikodi.rejuse.exception.Handler;
 import org.aikodi.rejuse.function.Function;
-import org.aikodi.rejuse.graph.UniEdge;
-import org.aikodi.rejuse.predicate.True;
 import org.aikodi.rejuse.predicate.TypePredicate;
 import org.aikodi.rejuse.predicate.UniversalPredicate;
-import org.aikodi.rejuse.tree.GuardedTreeStructure;
-import org.aikodi.rejuse.tree.PrunedTreeStructure;
-import org.aikodi.rejuse.tree.TreePredicate;
-import org.aikodi.rejuse.tree.TreeStructure;
 
 import com.google.common.collect.ImmutableList;
 
@@ -85,7 +84,7 @@ public class JavaDependencyOptions extends DependencyOptions {
   }
 
   private UniversalPredicate predicate(List<PredicateSelector<?>> selectors) {
-    UniversalPredicate result = new True();
+    UniversalPredicate result = UniversalPredicate.isTrue();
     for(PredicateSelector selector: selectors) {
       result = result.and(selector.predicate());
     }
@@ -98,28 +97,19 @@ public class JavaDependencyOptions extends DependencyOptions {
     TristateTreePruner<Object,Element> generator = new LoaderSelectionPredicateGenerator(new NamespaceSelectionPredicateGenerator(null));
     TreePredicate<? super Element, Nothing> source = generator.create(_source._locationSelector.root(), _source._locationSelector.checked(), _source._locationSelector.grayed());
     UniversalPredicate sourcePredicate = _source.predicate().and(source);
-    UniversalPredicate crossReferencePredicate = _dependencies.crossReferencePredicate();
-    UniversalPredicate targetPredicate = _target.predicate();
-    UniversalPredicate dependencyPredicate = _dependencies.predicate();
-    HistoryFilter<Declaration, Declaration> historyFilter = _dependencies.historyFilter();
     TreePredicate<? super Element, Nothing> targetLocation = generator.create(_target._locationSelector.root(), _target._locationSelector.checked(), _target._locationSelector.grayed());
-    Class<Declaration> sourceType = Declaration.class;
-    UniversalPredicate and2 = targetPredicate.and(targetLocation);
-    UniversalPredicate dependencyPredicate2 = dependencyPredicate;
-    HistoryFilter<Declaration, Declaration> historyFilter2 = historyFilter;
+    UniversalPredicate and2 = _target.predicate().and(targetLocation);
     DependencyAnalysis<Declaration, Declaration> dependencyAnalysis = new DependencyAnalysis<Declaration,Declaration>(
-        sourceType,
+        Declaration.class,
         sourcePredicate, 
-        crossReferencePredicate,
-        sourceType,
+        _dependencies.crossReferencePredicate(),
+        Declaration.class,
         mapper(), 
         and2, 
-        dependencyPredicate2,
-        historyFilter2);
-    TreeStructure<Element, LookupException> logicalStructure = _root.logical();
-    PrunedTreeStructure<Element, LookupException> sourceStructure = new PrunedTreeStructure(logicalStructure, source);
-    GuardedTreeWalker<Element, LookupException, Nothing> guardedTreeWalker = new GuardedTreeWalker<>(dependencyAnalysis, Handler.resume());
-    TopDown<Element, Nothing> topDown = new TopDown<>(guardedTreeWalker);
+        _dependencies.predicate(),
+        _dependencies.historyFilter());
+    PrunedTreeStructure<Element, LookupException> sourceStructure = new PrunedTreeStructure(_root.logical(), source);
+    TopDown<Element, Nothing> topDown = new TopDown<>(new GuardedTreeWalker<>(dependencyAnalysis, Handler.resume()));
     GuardedTreeStructure<Element, LookupException, Nothing> guardedTree = new GuardedTreeStructure<Element, LookupException, Nothing>(sourceStructure, Handler.<LookupException>resume());
     topDown.traverse(guardedTree);
     DependencyResult result = dependencyAnalysis.result();
@@ -203,15 +193,15 @@ public class JavaDependencyOptions extends DependencyOptions {
     return new JavaDeclarationDecomposer();
   }
 
-  private PredicateSelector<? super Dependency<? super Element, ? super CrossReference, ? super Declaration>> noSuperTypes() {
+  private PredicateSelector<? super Dependency<? super Element, ? super CrossReference<?>, ? super Declaration>> noSuperTypes() {
     return new CheckboxPredicateSelector<Dependency<?,?,?>>(
 
         new UniversalPredicate<Dependency, Nothing>(Dependency.class) {
 
           @Override
           public boolean uncheckedEval(Dependency t) throws Nothing {
-            Element target = (Element) t.target();
-            Element source = (Element)t.source();
+            Element target = t.target();
+            Element source = t.source();
             if(source instanceof Type && target instanceof Type) {
               try {
                 return ! ((Type)source).subtypeOf((Type) target);
@@ -223,7 +213,7 @@ public class JavaDependencyOptions extends DependencyOptions {
         }, "Ignore super types",true);
   }
 
-  private PredicateSelector<? super Dependency<? super Element, ? super CrossReference, ? super Declaration>> noDescendants() {
+  private PredicateSelector<? super Dependency<? super Element, ? super CrossReference<?>, ? super Declaration>> noDescendants() {
     return new CheckboxPredicateSelector<Dependency<?,?,?>>(
 
         new UniversalPredicate<Dependency, Nothing>(Dependency.class) {
@@ -235,7 +225,7 @@ public class JavaDependencyOptions extends DependencyOptions {
         }, "Ignore lexical descendants",false);
   }
 
-  private PredicateSelector<? super Dependency<? super Element, ? super CrossReference, ? super Declaration>> noAncestors() {
+  private PredicateSelector<? super Dependency<? super Element, ? super CrossReference<?>, ? super Declaration>> noAncestors() {
     return new CheckboxPredicateSelector<Dependency<?,?,?>>(IGNORE_LEXICAL_ANCESTORS, "Ignore lexical ancestors",true);
   }
 
@@ -324,7 +314,7 @@ public class JavaDependencyOptions extends DependencyOptions {
       public boolean add = true;
     }
 
-    public boolean process(Dependency<Element, CrossReference, Declaration> dependency, DependencyResult result) {
+    public boolean process(Dependency<Element, CrossReference<?>, Declaration> dependency, DependencyResult result) {
       final Container container = new Container(); 
       final Element newSource = dependency.source();
       final Element newTarget = dependency.target();

@@ -10,11 +10,9 @@ import java.util.List;
 import org.aikodi.chameleon.core.namespace.EagerNamespaceFactory;
 import org.aikodi.chameleon.core.namespace.RootNamespace;
 import org.aikodi.chameleon.input.ParseException;
-import org.aikodi.chameleon.support.tool.Arguments;
 import org.aikodi.chameleon.workspace.Project;
 import org.aikodi.java.core.language.Java7;
 import org.aikodi.java.core.language.Java7LanguageFactory;
-import org.aikodi.java.input.EagerJavaFileInputSourceFactory;
 import org.aikodi.java.workspace.JavaView;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,9 +33,6 @@ public abstract class OutputTest {
 		setOutput(output);
 	}
 
-	
-	private Arguments _args;
-	
 	private final String _extension;
 
 	private String _outputDir;

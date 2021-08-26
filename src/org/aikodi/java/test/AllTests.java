@@ -1,6 +1,6 @@
 package org.aikodi.java.test;
 
-import org.aikodi.chameleon.core.element.TestElement;
+import org.aikodi.chameleon.test.TestElement;
 import org.aikodi.chameleon.test.events.TestEvents;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

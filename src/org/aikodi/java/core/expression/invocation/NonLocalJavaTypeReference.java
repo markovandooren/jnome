@@ -4,24 +4,19 @@
 package org.aikodi.java.core.expression.invocation;
 
 import java.util.List;
-import java.util.Set;
 
 import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.element.Element;
-import org.aikodi.chameleon.core.lookup.LookupContext;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.type.BasicTypeReference;
 import org.aikodi.chameleon.oo.type.NonLocalTypeReference;
 import org.aikodi.chameleon.oo.type.TypeReference;
-import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.util.Util;
 import org.aikodi.java.core.type.ArrayTypeReference;
 import org.aikodi.java.core.type.JavaTypeReference;
-import org.aikodi.java.input.OldExtractor;
 import org.aikodi.rejuse.association.SingleAssociation;
-import org.aikodi.rejuse.predicate.AbstractPredicate;
 import org.aikodi.rejuse.predicate.Predicate;
 
 public class NonLocalJavaTypeReference extends NonLocalTypeReference implements JavaTypeReference {

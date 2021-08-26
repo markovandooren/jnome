@@ -39,7 +39,7 @@ public class RawType extends ClassWithBody implements JavaType {
   }
 
   @Override
-  public <D extends Declaration> List<? extends SelectionResult> implicitMembers(DeclarationSelector<D> selector) throws LookupException {
+  public <D extends Declaration> List<? extends SelectionResult<D>> implicitMembers(DeclarationSelector<D> selector) throws LookupException {
     return selector.selection(_implicitMembers);
   }
 

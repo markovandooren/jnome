@@ -5,7 +5,7 @@ import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.namespace.Namespace;
 import org.aikodi.chameleon.workspace.DocumentScanner;
 import org.aikodi.rejuse.action.Nothing;
-import org.aikodi.rejuse.tree.TreePredicate;
+import org.aikodi.rejuse.data.tree.TreePredicate;
 
 public class LoadedBy extends TreePredicate<Element, Nothing> {
 	private final DocumentScanner currentLoader;

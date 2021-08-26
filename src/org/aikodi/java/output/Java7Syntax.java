@@ -5,10 +5,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import org.aikodi.chameleon.core.declaration.Declarator;
 import org.aikodi.chameleon.core.document.Document;
 import org.aikodi.chameleon.core.element.Element;
@@ -103,7 +99,6 @@ import org.aikodi.chameleon.support.statement.SynchronizedStatement;
 import org.aikodi.chameleon.support.statement.ThrowStatement;
 import org.aikodi.chameleon.support.statement.TryStatement;
 import org.aikodi.chameleon.support.statement.WhileStatement;
-import org.aikodi.chameleon.support.tool.Arguments;
 import org.aikodi.chameleon.support.type.EmptyTypeElement;
 import org.aikodi.chameleon.support.type.StaticInitializer;
 import org.aikodi.chameleon.support.variable.LocalVariableDeclarator;
@@ -125,7 +120,6 @@ import org.aikodi.java.core.type.ArrayTypeReference;
 import org.aikodi.java.core.type.BasicJavaTypeReference;
 import org.aikodi.java.core.type.JavaIntersectionTypeReference;
 import org.aikodi.java.core.type.PureWildcard;
-import org.aikodi.rejuse.java.collections.Visitor;
 import org.aikodi.rejuse.logic.ternary.Ternary;
 import org.aikodi.rejuse.predicate.SafePredicate;
 
@@ -826,12 +820,10 @@ public class Java7Syntax extends Syntax {
 
 
 	protected void addModifiers(ElementWithModifiers element, final StringBuffer result) {
-		new Visitor() {
-		  public void visit(Object element) {
-		    result.append((toCodeModifier((Modifier)element)));
+		element.modifiers().forEach(e -> {
+		    result.append((toCodeModifier(e)));
 		    result.append(" ");
-		  }
-		}.applyTo(element.modifiers());
+		  });
 	}
   
 	public boolean isImplementation(Element element) {
@@ -885,21 +877,14 @@ public class Java7Syntax extends Syntax {
 //  }
   
   public String toCodeVariable(FormalParameter var)  {
-    final StringBuffer result = new StringBuffer();
-    new Visitor() {
-      public void visit(Object element) {
+    final StringBuffer result =new StringBuffer();
+    var.modifiers().forEach( element -> {
         result.append((toCodeModifier((Modifier)element)));
         result.append(" ");
-      }
-    }.applyTo(var.modifiers());
+    });
     result.append(toCode(var.getTypeReference()));
     result.append(" ");
     result.append(var.name());
-//      if(var.getInitialization() != null) {
-//      result.append(" = ");
-//      result.append(toCode(var.getInitialization()));
-//      }
-//      result.append(";");
     return result.toString();
   }
   
@@ -1112,11 +1097,7 @@ public class Java7Syntax extends Syntax {
     final StringBuffer result = new StringBuffer();
     List modifiers = local.modifiers();
     if (modifiers.size() != 0) {
-      new Visitor() {
-        public void visit(Object o) {
-          result.append(toCodeModifier((Modifier)o) + " ");
-        }
-      }.applyTo(modifiers);
+    	modifiers.forEach(o -> result.append(toCodeModifier((Modifier)o) + " "));
     }
     result.append(toCode(local.typeReference()));
     result.append(" ");
@@ -1535,33 +1516,6 @@ public class Java7Syntax extends Syntax {
 		return result.toString();
 	}
 
-
-  public static void writeCode(Arguments arguments) throws IOException {
-    Java7Syntax writer = new Java7Syntax(2);
-    List<Type> types = arguments.getTypes();
-    new SafePredicate<Type>() {
-    	public boolean eval(Type t) {
-    		return t.is(((Java7)t.language()).PUBLIC) == Ternary.TRUE;
-    	}
-    }.filter(types);
-    int i = 1;
-    for(Type type:types) {
-      String fileName = type.name()+".java";
-      String packageFQN = type.lexical().nearestAncestor(NamespaceDeclaration.class).namespace().fullyQualifiedName();
-      String relDirName = packageFQN.replace('.', File.separatorChar);
-      File out = new File(arguments.getOutputDirName()+File.separatorChar + relDirName + File.separatorChar + fileName);
-      
-      System.out.println(i + " Writing: "+out.getAbsolutePath());
-      
-      File parent = out.getParentFile();
-      parent.mkdirs();
-      out.createNewFile();
-      FileWriter fw = new FileWriter(out);
-      fw.write(writer.toCode((Element)type.lexical().parent()));
-      fw.close();
-      i++;
-    }
-  }
 
 	@Override
 	public Java7Syntax clone() {

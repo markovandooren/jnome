@@ -23,10 +23,10 @@ import org.aikodi.rejuse.action.Nothing;
 import org.aikodi.rejuse.contract.Contracts;
 import org.aikodi.rejuse.exception.Handler;
 import org.aikodi.rejuse.function.Function;
-import org.aikodi.rejuse.graph.Edge;
-import org.aikodi.rejuse.graph.Graph;
-import org.aikodi.rejuse.graph.Node;
-import org.aikodi.rejuse.graph.Path;
+import org.aikodi.rejuse.data.graph.Edge;
+import org.aikodi.rejuse.data.graph.Graph;
+import org.aikodi.rejuse.data.graph.Node;
+import org.aikodi.rejuse.data.graph.Path;
 import org.aikodi.rejuse.predicate.UniversalPredicate;
 
 public class JavaDependencyAnalyzer extends DependencyAnalyzer<Type> {
@@ -162,7 +162,7 @@ public class JavaDependencyAnalyzer extends DependencyAnalyzer<Type> {
   
   public void computeStats(Writer writer, Writer cycleWriter) throws IOException {
     Graph<Element> graph = dependencyResult(Handler.printer(System.out), Handler.printer(System.out)).graph();
-    double[] dependencies = graph.nodes().stream().mapToDouble(n -> n.nbOutgoingEdges()).toArray();
+    double[] dependencies = graph.nodes().stream().mapToDouble(n -> n.numberOfSuccessorEdges()).toArray();
     double averageDependencies = of(dependencies).average().orElse(0);
     double maxDependencies = of(dependencies).max().orElse(0);
     long start = System.nanoTime();

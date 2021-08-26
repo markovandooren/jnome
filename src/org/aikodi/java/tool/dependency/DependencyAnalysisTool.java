@@ -1,12 +1,13 @@
 package org.aikodi.java.tool.dependency;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.lookup.LookupException;
@@ -16,16 +17,12 @@ import org.aikodi.chameleon.oo.analysis.dependency.NoSubtypeOf;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.inheritance.InheritanceRelation;
 import org.aikodi.chameleon.oo.view.ObjectOrientedView;
-import org.aikodi.chameleon.util.exception.Handler;
 import org.aikodi.chameleon.workspace.InputException;
 import org.aikodi.chameleon.workspace.Project;
 import org.aikodi.java.core.type.AnonymousType;
 import org.aikodi.java.tool.AnalysisTool;
-import org.aikodi.java.tool.AnalysisTool.AnalysisOptions;
 import org.aikodi.rejuse.action.Nothing;
-import org.aikodi.rejuse.predicate.False;
 import org.aikodi.rejuse.predicate.GlobPredicate;
-import org.aikodi.rejuse.predicate.True;
 import org.aikodi.rejuse.predicate.UniversalPredicate;
 
 import com.lexicalscope.jewel.cli.Option;
@@ -113,7 +110,7 @@ public class DependencyAnalysisTool extends AnalysisTool {
 	
 	protected UniversalPredicate<? super Type,Nothing> annotationFilter(AnalysisOptions options, ObjectOrientedView view) {
 		List<String> ignoredAnnotation = ignoredAnnotationTypes((DependencyOptions) options);
-		UniversalPredicate<? super Type,Nothing> filter = new True();
+		UniversalPredicate<? super Type,Nothing> filter = UniversalPredicate.isTrue();
 		for(String fqn: ignoredAnnotation) {
 			try {
 				Type type = view.findType(fqn);
@@ -138,9 +135,9 @@ public class DependencyAnalysisTool extends AnalysisTool {
 		List<String> packageNames = packageNames((DependencyOptions) options);
 		UniversalPredicate<? super Type,Nothing> result;
 		if(packageNames.isEmpty()) {
-			result = new True();
+			result = UniversalPredicate.isTrue();
 		} else {
-			result = new False();
+			result = UniversalPredicate.isFalse();
 			for(final String string: packageNames) {
 				result = result.or(
 						new UniversalPredicate<Type,Nothing>(Type.class) {

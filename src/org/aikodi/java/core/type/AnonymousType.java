@@ -68,8 +68,8 @@ public abstract class AnonymousType extends RegularType implements JavaType {
 		return cons;
 	}
 
-	public <D extends Declaration> List<? extends SelectionResult> localMembers(DeclarationSelector<D> selector) throws LookupException {
-		List<SelectionResult> result = (List)super.localMembers(selector);
+	public <D extends Declaration> List<? extends SelectionResult<D>> localMembers(DeclarationSelector<D> selector) throws LookupException {
+		List<SelectionResult<D>> result = (List)super.localMembers(selector);
 		List<NormalMethod> superMembers = implicitConstructors();
 	  result.addAll(selector.selection(superMembers));
 		return result;

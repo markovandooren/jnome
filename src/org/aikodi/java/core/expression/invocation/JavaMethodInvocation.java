@@ -41,7 +41,7 @@ public class JavaMethodInvocation extends RegularMethodInvocation {
 
 	@Override
 	public NormalMethod getElement() throws LookupException {
-		NormalMethod result = (NormalMethod) getCache();
+		NormalMethod result = (NormalMethod) cache();
 		if(result != null) {
 			return result;
 		}

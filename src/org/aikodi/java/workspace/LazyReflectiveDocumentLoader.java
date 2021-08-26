@@ -61,7 +61,11 @@ public class LazyReflectiveDocumentLoader extends DocumentLoaderImpl implements 
 	@Override
 	public List<Declaration> targetDeclarations(String name) throws LookupException {
 		try {
-			load();
+			if (!_name.equals(name)) {
+				return Collections.emptyList();
+			} else {
+				load();
+			}
 		} catch (InputException e) {
 			throw new LookupException("Error opening file",e);
 		}
@@ -73,7 +77,7 @@ public class LazyReflectiveDocumentLoader extends DocumentLoaderImpl implements 
 
 	@Override
 	protected void doRefresh() throws InputException {
-		Class clazz;
+		Class<?> clazz;
 		try {
 			setDocument(new Document());
 			clazz = _loader.loadClass(_fqn);
@@ -83,7 +87,10 @@ public class LazyReflectiveDocumentLoader extends DocumentLoaderImpl implements 
 		}
 	}
 
-	private ClassLoader _loader;
+	/**
+	 * The class loader to reflectively load the class.
+	 */
+	private final ClassLoader _loader;
 	
 	@Override
 	protected String resourceName() {

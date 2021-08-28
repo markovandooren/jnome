@@ -676,7 +676,7 @@ public class Java7Syntax extends Syntax {
     			result.append(",");
     		}
     	}
-    	result.append(">");
+    	result.append("> ");
     }
 	}
   

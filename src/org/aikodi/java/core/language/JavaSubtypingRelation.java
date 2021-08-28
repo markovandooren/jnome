@@ -19,10 +19,7 @@ import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.language.SubtypeRelation;
 import org.aikodi.chameleon.oo.plugin.ObjectOrientedFactory;
-import org.aikodi.chameleon.oo.type.IntersectionType;
 import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.chameleon.oo.type.TypeFixer;
-import org.aikodi.chameleon.oo.type.TypeIndirection;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.TypeArgument;
 import org.aikodi.chameleon.oo.type.generics.TypeArgumentWithTypeReference;
@@ -489,7 +486,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 						//        if(superType.sameAs(second)) {
 						//          result = true;
 						//        } else {
-						Type superType = first.getSuperType(second);
+						Type superType = first.getSuperTypeWithSameBaseTypeAs(second);
 						if(superType != null) {
 							if(convertibleThroughUncheckedConversionAndSubtyping(superType, second)) {
 								uncheckedConversion = true;

@@ -65,7 +65,12 @@ public class JavaProjectConfigurator extends ProjectConfiguratorImpl implements 
 		public JavaBaseLibraryConfigurator(Language language) {
 			super(language);
 		}
-		
+
+		@Override
+		protected String languageName() {
+			return "Java";
+		}
+
 		@Override
 		protected void addBaseScanner(View view) {
 			try {

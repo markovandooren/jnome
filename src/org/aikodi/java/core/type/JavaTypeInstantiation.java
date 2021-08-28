@@ -54,7 +54,7 @@ public class JavaTypeInstantiation extends TypeInstantiation implements JavaType
 		//FIXME speed avoid creating collection
 		String defaultSuperClassFQN = language(ObjectOrientedLanguage.class).getDefaultSuperClassFQN();
 		if(explicitNonMemberInheritanceRelations().isEmpty() && 
-				(! getFullyQualifiedName().equals(defaultSuperClassFQN)) //"java.lang.Object"
+				(! getFullyQualifiedName().equals(defaultSuperClassFQN))
 				) {
 			InheritanceRelation relation = new SubtypeRelation(language(ObjectOrientedLanguage.class).createTypeReference(defaultSuperClassFQN));
 			relation.setUniParent(this);
@@ -63,7 +63,7 @@ public class JavaTypeInstantiation extends TypeInstantiation implements JavaType
 			result.add(relation);
 			return result;
 		} else {
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		}
 	}
 

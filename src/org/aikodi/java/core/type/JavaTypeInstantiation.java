@@ -13,11 +13,7 @@ import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.lookup.SelectionResult;
 import org.aikodi.chameleon.core.tag.TagImpl;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
-import org.aikodi.chameleon.oo.type.Parameter;
-import org.aikodi.chameleon.oo.type.ParameterSubstitution;
-import org.aikodi.chameleon.oo.type.SuperTypeJudge;
-import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.chameleon.oo.type.TypeInstantiation;
+import org.aikodi.chameleon.oo.type.*;
 import org.aikodi.chameleon.oo.type.generics.CapturedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.InstantiatedTypeParameter;
@@ -33,15 +29,11 @@ import org.aikodi.java.core.language.Java7;
 
 public class JavaTypeInstantiation extends TypeInstantiation implements JavaType {
 
-	public <P extends Parameter> JavaTypeInstantiation(Class<P> kind, List<P> parameters, Type baseType) {
-		super(kind,parameters,baseType);
-	}
-
 	public JavaTypeInstantiation(List<ParameterSubstitution<?>> parameters, Type baseType) {
 		super(parameters, baseType);
 	}
 
-	public JavaTypeInstantiation(ParameterSubstitution substitution, Type baseType) {
+	public JavaTypeInstantiation(ParameterSubstitution<?> substitution, Type baseType) {
 		super(substitution, baseType);
 	}
 
@@ -162,7 +154,7 @@ public class JavaTypeInstantiation extends TypeInstantiation implements JavaType
 				}
 				if(doCapture) {
 					// Everything works as well when we pass 'this' instead of 'base'.
-					result = language(Java7.class).createdCapturedType(new ParameterSubstitution(TypeParameter.class,typeParameters), base);
+					result = language(Java7.class).createdCapturedType(new FunctionalParameterSubstitution(TypeParameter.class,typeParameters), base);
 					result.setUniParent(parent());
 				} 
 			}

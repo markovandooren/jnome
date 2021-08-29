@@ -29,17 +29,7 @@ import org.aikodi.chameleon.oo.expression.NamedTarget;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.member.SignatureWithParameters;
 import org.aikodi.chameleon.oo.method.Method;
-import org.aikodi.chameleon.oo.type.ConstrainedTypeReference;
-import org.aikodi.chameleon.oo.type.IntersectionType;
-import org.aikodi.chameleon.oo.type.IntersectionTypeReference;
-import org.aikodi.chameleon.oo.type.Parameter;
-import org.aikodi.chameleon.oo.type.ParameterSubstitution;
-import org.aikodi.chameleon.oo.type.RegularType;
-import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.chameleon.oo.type.TypeIndirection;
-import org.aikodi.chameleon.oo.type.TypeInstantiation;
-import org.aikodi.chameleon.oo.type.TypeReference;
-import org.aikodi.chameleon.oo.type.UnionType;
+import org.aikodi.chameleon.oo.type.*;
 import org.aikodi.chameleon.oo.type.generics.CapturedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.ConstrainedType;
 import org.aikodi.chameleon.oo.type.generics.EqualityConstraint;
@@ -667,7 +657,7 @@ public class Java7 extends ObjectOrientedLanguage {
 	}
 
 	public <P extends Parameter> TypeInstantiation instantiatedType(Class<P> kind, List<P> parameters, Type baseType) {
-		return new JavaTypeInstantiation(kind, parameters, baseType);
+		return new JavaTypeInstantiation(new FunctionalParameterSubstitution<P>(kind, parameters), baseType);
 	}
 
 	public TypeInstantiation createDerivedType(Type baseType, List<TypeArgument> typeArguments) throws LookupException {
@@ -898,7 +888,7 @@ public class Java7 extends ObjectOrientedLanguage {
 	//			return subtypeRelation.upperBoundNotHigherThan(first, second, trace);
 	//		}
 
-	public Type createdCapturedType(ParameterSubstitution parameterSubstitution, Type base) {
+	public Type createdCapturedType(ParameterSubstitution<?> parameterSubstitution, Type base) {
 		return new CapturedType(parameterSubstitution, base);
 	}
 

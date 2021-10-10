@@ -9,6 +9,7 @@ import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.lookup.SelectionResult;
 import org.aikodi.chameleon.core.property.ChameleonProperty;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguageImpl;
 import org.aikodi.chameleon.oo.method.SimpleNameMethodHeader;
 import org.aikodi.chameleon.oo.plugin.ObjectOrientedFactory;
 import org.aikodi.chameleon.oo.type.RegularType;
@@ -18,8 +19,6 @@ import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
 import org.aikodi.chameleon.support.modifier.Constructor;
 import org.aikodi.chameleon.support.modifier.Public;
 import org.aikodi.rejuse.collection.CollectionOperations;
-import org.aikodi.rejuse.logic.ternary.Ternary;
-import org.aikodi.rejuse.predicate.SafePredicate;
 import org.aikodi.rejuse.property.PropertySet;
 
 public abstract class AnonymousType extends RegularType implements JavaType {
@@ -39,9 +38,9 @@ public abstract class AnonymousType extends RegularType implements JavaType {
 	public PropertySet<Element, ChameleonProperty> inherentProperties() {
 		PropertySet<Element, ChameleonProperty> result = new PropertySet<Element, ChameleonProperty>();
 		ObjectOrientedLanguage language = language(ObjectOrientedLanguage.class);
-		result.add(language.ABSTRACT.inverse());
-		result.add(language.CLASS.inverse());
-		result.add(language.REFINABLE.inverse());
+		result.add(language.ABSTRACT().inverse());
+		result.add(language.CLASS().inverse());
+		result.add(language.REFINABLE().inverse());
 		return result;
 	}
 	
@@ -51,7 +50,7 @@ public abstract class AnonymousType extends RegularType implements JavaType {
 		TypeReference tref = typeReference();
 	  Type writtenType = tref.getElement();
 	  List<NormalMethod> superMembers = writtenType.localMembers(NormalMethod.class);
-	  CollectionOperations.filter(superMembers, m -> m.is(language(ObjectOrientedLanguage.class).CONSTRUCTOR) == Ternary.TRUE);
+	  CollectionOperations.filter(superMembers, m -> m.isTrue(language(ObjectOrientedLanguage.class).CONSTRUCTOR()));
 	  //if the super type is an interface, there will be no constructor, so we must
 	  //create a default constructor.
 	  if(superMembers.isEmpty()) {

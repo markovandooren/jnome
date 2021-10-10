@@ -20,7 +20,7 @@ public class EmptyAbstractType extends Analysis<Type,Verification, LookupExcepti
 
 	@Override
 	protected void analyze(Type type) throws LookupException {
-		if(type.isTrue(type.language(Java7.class).ABSTRACT)) {
+		if(type.isTrue(type.language(Java7.class).ABSTRACT())) {
 			List<Method> methods = type.directlyDeclaredMembers(Method.class);
 			if(methods.isEmpty()) {
 				setResult(result().and(new EmptyAbstractTypeProblem(type, "Abstract type "+type.getFullyQualifiedName()+" does not defined any method.")));

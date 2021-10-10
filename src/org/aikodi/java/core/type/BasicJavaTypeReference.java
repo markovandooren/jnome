@@ -25,65 +25,27 @@ import org.aikodi.java.core.language.Java7;
 
 import com.google.common.collect.ImmutableSet;
 
-public class BasicJavaTypeReference extends BasicTypeReference implements JavaTypeReference, CrossReferenceWithName<Type> {
+public class BasicJavaTypeReference extends org.aikodi.chameleon.oo.type.generics.GenericTypeReference implements JavaTypeReference {
 
 	public BasicJavaTypeReference(CrossReferenceTarget target, String name) {
   	super(target,name);
   }
 
-	/**
+  /**
    * THIS ONLY WORKS WHEN THE NAMED TARGET CONSISTS ENTIRELY OF NAMEDTARGETS.
    * @param target
    */
   public BasicJavaTypeReference(NamedTarget target) {
-  	this(target.getTarget() == null ? null : typeReferenceTarget((NamedTarget) target.getTarget(), _typeReferenceTargetTypes), target.name());
+  	this(target.getTarget() == null ? null : typeReferenceTarget((NamedTarget) target.getTarget(), typeReferenceTargetTypes()), target.name());
   }
   
   public BasicJavaTypeReference(String fqn) {
-  	this(typeReferenceTarget(Util.getAllButLastPart(fqn),_typeReferenceTargetTypes),Util.getLastPart(fqn));
+  	this(typeReferenceTarget(Util.getAllButLastPart(fqn), typeReferenceTargetTypes()),Util.getLastPart(fqn));
   }
   
   public BasicJavaTypeReference(String fqn, Set<? extends Class<? extends Declaration>> classes) {
   	this(typeReferenceTarget(Util.getAllButLastPart(fqn),set(classes)),Util.getLastPart(fqn));
   }
-  
-  private static Set<? extends Class<? extends Declaration>> set(Set<? extends Class<? extends Declaration>> classes) {
-  	Set<Class<? extends Declaration>> result = new HashSet<>(classes);
-  	result.addAll(_typeReferenceTargetTypes);
-  	return result;
-  }
-  
-  protected static CrossReferenceTarget typeReferenceTarget(NamedTarget target, Set<? extends Class<? extends Declaration>> classes) {
-  	if(target == null) {
-  		return null;
-  	} else {
-  		CrossReferenceTarget t = target.getTarget();
-  		if(t == null) {
-  			return new MultiTypeReference<Declaration>(target.name(), classes,Declaration.class,Declaration.class);
-  		} else {
-  			return new MultiTypeReference<Declaration>(typeReferenceTarget((NamedTarget) t,classes),target.name(), classes ,Declaration.class);
-  		}
-  	}
-  }
-  
-  public static CrossReferenceTarget typeReferenceTarget(String fqn) {
-		return typeReferenceTarget(fqn, _typeReferenceTargetTypes);
-  }
-  public static CrossReferenceTarget typeReferenceTarget(String fqn, Set<? extends Class<? extends Declaration>> classes) {
-		return fqn == null ? null : new MultiTypeReference<Declaration>(fqn, classes,Declaration.class,Declaration.class);
-  }
-  
-	private static Set<Class<? extends Declaration>> _typeReferenceTargetTypes = ImmutableSet.<Class<? extends Declaration>>builder().add(Type.class).add(Namespace.class).build();
-
-//  @Override
-//  protected void notifyParentRemoved(Element element) {
-//  	_trace = new CreationStackTrace();
-//  }
-//  
-//  @Override
-//  protected void notifyParentSet(Element element) {
-//  	_trace = new CreationStackTrace();
-//  }
   
   public List<TypeArgument> typeArguments() {
   	return _typeArguments.getOtherEnds();
@@ -108,64 +70,12 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
   	_typeArguments.enableCache();
   }
   
-  public int arrayDimension() {
-  	return 0;
-  }
-  
-  @Override
-  public Type getElement() throws LookupException {
-    Type result = getGenericCache();
-    if(result != null) {
-      return result;
-    }
-    synchronized(this) {
-      if(result != null) {
-        return result;
-      }
-
-      result = super.getElement();
-
-      //First cast result to Type, then back to X.
-      //Because the selector is the connected selector of this Java type reference,
-      //we know that result is a Type.
-      // FILL IN GENERIC PARAMETERS
-      result =convertGenerics((Type)result);
-
-//      if(result != null) {
-        setGenericCache((Type)result);
-        return result;
-//      } else {
-//        throw new LookupException("Result of type reference lookup is null: "+name(),this);
-//      }
-    }
-  }
-
-  private Type convertGenerics(Type type) throws LookupException {
-  	Type result = type;
-//		if (type != null) {
-			if(! (type instanceof RawType)) {
-				Java7 language = language(Java7.class);
-				
-				//Does not work because there is no distinction yet between a diamond empty list and a non-diamond empty list.
-//				if(type.nbTypeParameters(TypeParameter.class) > 0) {
-				
-				if (hasTypeArguments()) {
-					result = language.createDerivedType(type, typeArguments());
-
-					// This is going to give trouble if there is a special lexical context
-					// selection for 'type' in its parent.
-					// set to the type itself? seems dangerous as well.
-					result.setUniParent(type.lexical().parent());
-				} else if(type instanceof RegularType){
-					// create raw type if necessary. The erasure method will check that.
-					result = language.erasure(type);
-				}
-			}
-//		}
-		return result;
+	@Override
+	protected boolean canBeGenericType(Type type) {
+		return ! (type instanceof RawType);
 	}
 
-  public boolean hasTypeArguments() {
+	public boolean hasTypeArguments() {
   	return _typeArguments.size() > 0;
   }
   
@@ -190,27 +100,6 @@ public class BasicJavaTypeReference extends BasicTypeReference implements JavaTy
 		return this;
 	}
 
-	protected Type typeConstructor() throws LookupException {
-	  //FIXME Document why this method skips the overwritten version of getElement(DeclarationSelector)!
-		return super.getElement();
-	}
-	
-  private SoftReference<Type> _genericCache;
-  
-  @Override
-  public synchronized void flushLocalCache() {
-  	super.flushLocalCache();
-  	_genericCache = null;
-  }
-  
-  protected synchronized Type getGenericCache() {
-  	return (_genericCache == null ? null : _genericCache.get());
-  }
-  
-  protected synchronized void setGenericCache(Type value) {
- 		_genericCache = new SoftReference<Type>(value);
-  }
-  
   public String toString(Set<Element> visited) {
   	StringBuffer result = new StringBuffer(super.toString(visited));
   	List<TypeArgument> arguments = typeArguments();

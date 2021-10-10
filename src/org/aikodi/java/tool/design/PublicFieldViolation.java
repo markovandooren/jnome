@@ -21,7 +21,7 @@ public class PublicFieldViolation extends Analysis<VariableDeclaration, Verifica
 		Verification result = Valid.create();
 		Java7 language = declaration.language(Java7.class);
 		Variable variable = declaration.variable();
-		if(variable.isTrue(language.PUBLIC) && variable.isTrue(language.INSTANCE) && (variable.isFalse(language.FINAL))) {
+		if(variable.isTrue(language.PUBLIC) && variable.isTrue(language.INSTANCE()) && (variable.isFalse(language.FINAL()))) {
 			String message = "Encapsulation error. Non-final instance variable "+variable.name() +
 					" in class "+variable.lexical().nearestAncestor(Type.class).getFullyQualifiedName()+" is public.";
 			result = new BasicProblem(declaration, message);

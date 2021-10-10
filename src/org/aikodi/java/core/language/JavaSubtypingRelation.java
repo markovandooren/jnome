@@ -17,8 +17,9 @@ import java.util.Set;
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.exception.ChameleonProgrammerException;
-import org.aikodi.chameleon.oo.language.SubtypeRelation;
+import org.aikodi.chameleon.oo.language.*;
 import org.aikodi.chameleon.oo.plugin.ObjectOrientedFactory;
+import org.aikodi.chameleon.oo.type.BoxableTypeReference;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.TypeArgument;
@@ -40,22 +41,25 @@ import org.aikodi.java.core.type.PureWildcard;
 import org.aikodi.java.core.type.RawType;
 import org.aikodi.java.workspace.JavaView;
 import org.aikodi.rejuse.collection.CollectionOperations;
-import org.aikodi.rejuse.logic.ternary.Ternary;
 import org.aikodi.rejuse.predicate.Predicate;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 
-public class JavaSubtypingRelation extends SubtypeRelation {
+public class JavaSubtypingRelation<L extends ObjectOrientedLanguage & LanguageWithBoxing & LanguageWithErasure> extends SubtypeRelation {
 
-	public JavaSubtypingRelation(Java7 java) {
-		_java = java;
+	public JavaSubtypingRelation(L language) {
+		_language = language;
 	}
 
-	private Java7 _java;
+	private L _language;
 
-	public Java7 java() {
-		return _java;
+	/**
+	 * The language in which to evaluate the relation. Not null.
+	 * @return
+	 */
+	public L language() {
+		return _language;
 	}
 
 	public static class CaptureReference extends NonLocalJavaTypeReference {
@@ -87,9 +91,9 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 	 * the type referenced by that type reference.</li>
 	 * <li>Otherwise
 	 * <ul>
-	 * <li>Let {@link #ST(JavaTypeReference)} of <code>Us.get(i)</code> be the set
+	 * <li>Let {@link #ST(BoxableTypeReference)} of <code>Us.get(i)</code> be the set
 	 * of super types of <code>Us.get(i)</code>.</li>
-	 * <li>Let {@link #EST(JavaTypeReference)} of <code>Us.get(i)</code> be the
+	 * <li>Let {@link #EST(BoxableTypeReference)} of <code>Us.get(i)</code> be the
 	 * set of erased super types of <code>Us.get(i)</code></li>
 	 * </ul>
 	 * </li>
@@ -160,7 +164,6 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 					}
 				}
 				result = tmp;
-				//        result.retainAll(est);
 			}
 		}
 		return result;
@@ -171,7 +174,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 	 * reference.</p>
 	 * 
 	 * <p>The set of erased super types of a type U is the set of types |W| where
-	 * W is in {@link #ST(JavaTypeReference)} of U and |W| is the {@link JavaType#erasure()}
+	 * W is in {@link #ST(BoxableTypeReference)} of U and |W| is the {@link JavaType#erasure()}
 	 * of W.</p>
 	 * 
 	 * @param U A type reference that refers to the type of which the set of erased
@@ -179,7 +182,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 	 * @return
 	 * @throws LookupException
 	 */
-	protected Set<Type> EST(JavaTypeReference U) throws LookupException {
+	protected Set<Type> EST(BoxableTypeReference U) throws LookupException {
 		//FIXME This is wrong
 		return ((JavaType)U.getElement()).erasure().getSelfAndAllSuperTypesView();
 	}
@@ -189,13 +192,13 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		if(candidates.isEmpty()) {
 			throw new LookupException("No candidates for the inferred type");
 		}  else {
-			return java().plugin(ObjectOrientedFactory.class).createIntersectionType(candidates);
+			return language().plugin(ObjectOrientedFactory.class).createIntersectionType(candidates);
 		}
 	}
 
 
 
-	protected Set<Type> ST(JavaTypeReference U) throws LookupException {
+	protected Set<Type> ST(BoxableTypeReference U) throws LookupException {
 		return U.getElement().getSelfAndAllSuperTypesView();
 	}
 
@@ -303,7 +306,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 			} else if(first instanceof SuperWildcard || second instanceof SuperWildcard) {
 				EqualityTypeArgument basic = (EqualityTypeArgument) (first instanceof EqualityTypeArgument? first : second);
 				SuperWildcard ext = (SuperWildcard)(basic == first ? second : first);
-				result = java().createSuperWildcard(glb(typeReferenceList(basic,ext)));
+				result = language().createSuperWildcard(glb(typeReferenceList(basic,ext)));
 			} else {
 				result = null;
 			}
@@ -319,15 +322,15 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 				Type U = ((EqualityTypeArgument)first).type();
 				Type V = ((EqualityTypeArgument)second).type();
 				if(U.sameAs(V)) {
-					result = java().createEqualityTypeArgument(Util.clone(ext.typeReference()));
+					result = language().createEqualityTypeArgument(Util.clone(ext.typeReference()));
 				} else {
-					result = java().createPureWildcard();
+					result = language().createPureWildcard();
 				}
 			} else {
 				result = null;
 			}
 		} else if (first instanceof SuperWildcard && second instanceof SuperWildcard) {
-			result = java().createSuperWildcard(glb(typeReferenceList((SuperWildcard)first,(SuperWildcard)second)));
+			result = language().createSuperWildcard(glb(typeReferenceList((SuperWildcard)first,(SuperWildcard)second)));
 		} else {
 			result = null;
 		}
@@ -403,11 +406,11 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		}
 
 		protected TypeArgument createArgument(Type type) throws LookupException {
-			final JavaTypeReference reference = java().reference(type);
+			final TypeReference reference = language().reference(type);
 			Element parent = reference.lexical().parent();
 			reference.setUniParent(null);
 			final NonLocalJavaTypeReference nonLocal = new NonLocalJavaTypeReference(reference,parent);
-			return java().createExtendsWildcard(nonLocal);
+			return language().createExtendsWildcard(nonLocal);
 		}
 
 		private Binder _next;
@@ -449,7 +452,7 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 		// of this stupid case.
 		boolean uncheckedConversion = false;
 		if(first instanceof NullType) {
-			result = second.isTrue(java().REFERENCE_TYPE);
+			result = second.isTrue(language().REFERENCE_TYPE());
 		} else {
 			if(first instanceof InstantiatedParameterType) {
 				Type aliasedType = ((InstantiatedParameterType)first).aliasedType();
@@ -505,8 +508,8 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 	}
 	private boolean convertibleThroughBoxingAndOptionalWidening(Type first, Type second) throws LookupException {
 		boolean result = false;
-		if(first.is(java().PRIMITIVE_TYPE) == Ternary.TRUE) {
-			Type boxed = java().box(first);
+		if(first.isTrue(language().PRIMITIVE_TYPE())) {
+			Type boxed = language().box(first);
 			result = convertibleThroughWideningReferenceConversion(boxed, second);
 		}
 		return result;
@@ -514,8 +517,8 @@ public class JavaSubtypingRelation extends SubtypeRelation {
 
 	private boolean convertibleThroughUnboxingAndOptionalWidening(Type first, Type second) throws LookupException {
 		boolean result = false;
-		if(first.is(java().UNBOXABLE_TYPE) == Ternary.TRUE) {
-			Type unboxed = java().unbox(first);
+		if(language().isUnboxable(first)) {
+			Type unboxed = language().unbox(first);
 			if(unboxed.sameAs(second)) {
 				result = true;
 			} else {

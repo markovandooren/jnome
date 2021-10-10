@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguageImpl;
+import org.aikodi.chameleon.oo.type.BoxableTypeReference;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.TypeArgument;
@@ -22,7 +24,7 @@ import org.aikodi.java.core.type.JavaTypeReference;
  */
 public class GGConstraint extends FirstPhaseConstraint {
 
-	public GGConstraint(JavaTypeReference A, Type F) {
+	public GGConstraint(BoxableTypeReference A, Type F) {
 		super(A,F);
 	}
 
@@ -31,12 +33,12 @@ public class GGConstraint extends FirstPhaseConstraint {
 //		return null;
 //	}
 	
-	public SubtypeConstraint FequalsTj(TypeParameter declarator, JavaTypeReference type) {
+	public SubtypeConstraint FequalsTj(TypeParameter declarator, BoxableTypeReference type) {
 		return new SubtypeConstraint(declarator, type);
 	}
 
 	@Override
-	public FirstPhaseConstraint Array(JavaTypeReference componentType, Type componentTypeReference) {
+	public FirstPhaseConstraint Array(BoxableTypeReference componentType, Type componentTypeReference) {
 		GGConstraint ggConstraint = new GGConstraint(componentType, componentTypeReference);
 		parent().addGenerated(ggConstraint);
 		ggConstraint.setUniParent(parent());
@@ -44,7 +46,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 	}
 
 	@Override
-	public void caseSSFormalBasic(List<SecondPhaseConstraint> result, JavaTypeReference U, int index) throws LookupException {
+	public void caseSSFormalBasic(List<SecondPhaseConstraint> result, BoxableTypeReference U, int index) throws LookupException {
 		try {
 			if(A().parameters(TypeParameter.class).isEmpty()) {
 				// If A is an instance of a non-generic type, then no constraint is implied on Tj.
@@ -68,7 +70,6 @@ public class GGConstraint extends FirstPhaseConstraint {
 					  EqualityTypeArgument actual = (EqualityTypeArgument) U.lexical().parent();
 						TypeParameter newParameter = new InstantiatedTypeParameter(oldParameter.name(), actual);
 					  GG.replaceParameter(TypeParameter.class,oldParameter, newParameter);
-//						Type V=typeWithSameBaseTypeAs(H, GG.getAllSuperTypes());
 						Type V= GG.superTypeJudge().get(H);
 						if(F().subtypeOf(V)) {
 						  GGConstraint recursive = new GGConstraint(ARef(), V);
@@ -107,7 +108,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 	}
 
 	@Override
-	public void caseSSFormalExtends(List<SecondPhaseConstraint> result, JavaTypeReference U, int index) throws LookupException {
+	public void caseSSFormalExtends(List<SecondPhaseConstraint> result, BoxableTypeReference U, int index) throws LookupException {
 		try {
 			if(A().parameters(TypeParameter.class).isEmpty()) {
 				// If A is an instance of a non-generic type, then no constraint is implied on Tj.
@@ -168,7 +169,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 	}
 
 	@Override
-	public void caseSSFormalSuper(List<SecondPhaseConstraint> result, JavaTypeReference U, int index) throws LookupException {
+	public void caseSSFormalSuper(List<SecondPhaseConstraint> result, BoxableTypeReference U, int index) throws LookupException {
 		try {
 			if(A().parameters(TypeParameter.class).isEmpty()) {
 				// If A is an instance of a non-generic type, then no constraint is implied on Tj.

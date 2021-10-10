@@ -6,6 +6,7 @@ package org.aikodi.java.core.expression.invocation;
 import java.util.List;
 
 import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.oo.type.BoxableTypeReference;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.generics.TypeArgument;
 import org.aikodi.chameleon.oo.type.generics.TypeArgumentWithTypeReference;
@@ -18,7 +19,7 @@ import org.aikodi.java.core.type.JavaTypeReference;
 
 public class EQConstraint extends FirstPhaseConstraint {
 
-	public EQConstraint(JavaTypeReference A, Type F) {
+	public EQConstraint(BoxableTypeReference A, Type F) {
 		super(A,F);
 	}
 
@@ -28,12 +29,12 @@ public class EQConstraint extends FirstPhaseConstraint {
 //	}
 	
 	@Override
-	public EqualTypeConstraint FequalsTj(TypeParameter declarator, JavaTypeReference type) {
+	public EqualTypeConstraint FequalsTj(TypeParameter declarator, BoxableTypeReference type) {
 		return new EqualTypeConstraint(declarator, type);
 	}
 	
 	@Override
-	public FirstPhaseConstraint Array(JavaTypeReference componentType, Type componentTypeReference) {
+	public FirstPhaseConstraint Array(BoxableTypeReference componentType, Type componentTypeReference) {
 		EQConstraint eqConstraint = new EQConstraint(componentType, componentTypeReference);
 		parent().addGenerated(eqConstraint);
 		eqConstraint.setUniParent(parent());
@@ -41,23 +42,23 @@ public class EQConstraint extends FirstPhaseConstraint {
 	}
 
 	@Override
-	public void caseSSFormalBasic(List<SecondPhaseConstraint> result, JavaTypeReference U,
+	public void caseSSFormalBasic(List<SecondPhaseConstraint> result, BoxableTypeReference U,
 			int index) throws LookupException {
 		processCaseSSFormalExtends(result, U, index, EqualityTypeArgument.class);
 	}
 
 	@Override
-	public void caseSSFormalExtends(List<SecondPhaseConstraint> result, JavaTypeReference U, int index)
+	public void caseSSFormalExtends(List<SecondPhaseConstraint> result, BoxableTypeReference U, int index)
 			throws LookupException {
 		processCaseSSFormalExtends(result, U, index, ExtendsWildcard.class);
 	}
 
 	@Override
-	public void caseSSFormalSuper(List<SecondPhaseConstraint> result, JavaTypeReference U, int index) throws LookupException {
+	public void caseSSFormalSuper(List<SecondPhaseConstraint> result, BoxableTypeReference U, int index) throws LookupException {
 		processCaseSSFormalExtends(result, U, index, SuperWildcard.class);
 	}
 
-	private void processCaseSSFormalExtends(List<SecondPhaseConstraint> result, JavaTypeReference U, int index, Class<? extends TypeArgumentWithTypeReference> t)
+	private void processCaseSSFormalExtends(List<SecondPhaseConstraint> result, BoxableTypeReference U, int index, Class<? extends TypeArgumentWithTypeReference> t)
 	throws LookupException {
 		try {
 			TypeParameter ithTypeParameterOfA = A().parameters(TypeParameter.class).get(index);

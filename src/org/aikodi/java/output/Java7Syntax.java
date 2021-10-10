@@ -22,6 +22,7 @@ import org.aikodi.chameleon.oo.expression.MethodInvocation;
 import org.aikodi.chameleon.oo.expression.NameExpression;
 import org.aikodi.chameleon.oo.expression.NamedTarget;
 import org.aikodi.chameleon.oo.expression.VariableReference;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.method.Implementation;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.method.NativeImplementation;
@@ -584,14 +585,14 @@ public class Java7Syntax extends Syntax {
   public boolean isClass(Element element) {
   	if (element instanceof RegularType) {
 //  		element.flushCache();
-  		return ((Type)element).is(((Java7)language()).INTERFACE) != Ternary.TRUE;
+  		return ((Type)element).is(((Java7) language()).INTERFACE()) != Ternary.TRUE;
   	}
   	return false;
   }
   
   public boolean isInterface(Element element) {
     if(element instanceof Type){
-    	return (element).is(((Java7)language()).INTERFACE) == Ternary.TRUE;
+    	return (element).is(((Java7) language()).INTERFACE()) == Ternary.TRUE;
     }
     return false;
   }
@@ -756,7 +757,7 @@ public class Java7Syntax extends Syntax {
 	    
 	    appendTypeParameters(method.typeParameters(), result);
 	    
-	    if(! (method.is(method.language(Java7.class).CONSTRUCTOR) == Ternary.TRUE)) {
+	    if(! (method.isTrue(method.language(ObjectOrientedLanguage.class).CONSTRUCTOR()))) {
 	        result.append(toCode(method.returnTypeReference()));
 	        result.append(" ");
 	      }

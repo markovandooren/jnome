@@ -49,7 +49,7 @@ public class PropertyFinder extends CommandLineTool {
 		  			for(Method getter: type.directlyDeclaredElements(Method.class)) {
 		  				String otherName = getter.name();
 		  				if(otherName.equals(second+X)) {
-		  					if(! type.isTrue(lang.INTERFACE)) {
+		  					if(! type.isTrue(lang.INTERFACE())) {
 			  					List<AssignmentExpression> exprs = method.lexical().descendants(AssignmentExpression.class);
 			  					if(exprs.size() == 1) {
 			  						AssignmentExpression e = exprs.get(0);
@@ -107,7 +107,7 @@ public class PropertyFinder extends CommandLineTool {
 		  					String otherName = getter.name();
 		  					if(otherName.equals(second+X)) {
 //				  		  System.out.println(method.nearestAncestor(Type.class).getFullyQualifiedName()+" : "+X);
-		  				  	if(! type.isTrue(lang.INTERFACE)) {
+		  				  	if(! type.isTrue(lang.INTERFACE())) {
 		  						pairsInClasses++;
 		  				  	} else {
 			  						pairsInInterfaces++;
@@ -144,7 +144,7 @@ public class PropertyFinder extends CommandLineTool {
 									if(thirdName.equals(third+X+"s")) {
 			  						foundThird = true;
 	//				  		  System.out.println(method.nearestAncestor(Type.class).getFullyQualifiedName()+" : "+X);
-										if(! type.isTrue(lang.INTERFACE)) {
+										if(! type.isTrue(lang.INTERFACE())) {
 											pairsInClasses++;
 										} else {
 											pairsInInterfaces++;

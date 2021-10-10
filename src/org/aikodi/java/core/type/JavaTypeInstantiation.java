@@ -13,18 +13,16 @@ import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.lookup.SelectionResult;
 import org.aikodi.chameleon.core.tag.TagImpl;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguageImpl;
 import org.aikodi.chameleon.oo.type.*;
 import org.aikodi.chameleon.oo.type.generics.CapturedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.InstantiatedTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeArgument;
-import org.aikodi.chameleon.oo.type.generics.TypeConstraint;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.oo.type.inheritance.InheritanceRelation;
 import org.aikodi.chameleon.oo.type.inheritance.SubtypeRelation;
 import org.aikodi.chameleon.util.Lists;
-import org.aikodi.chameleon.util.StackOverflowTracer;
-import org.aikodi.java.core.expression.invocation.NonLocalJavaTypeReference;
 import org.aikodi.java.core.language.Java7;
 
 public class JavaTypeInstantiation extends TypeInstantiation implements JavaType {
@@ -44,11 +42,12 @@ public class JavaTypeInstantiation extends TypeInstantiation implements JavaType
 	@Override
 	public List<InheritanceRelation> implicitNonMemberInheritanceRelations() {
 		//FIXME speed avoid creating collection
-		String defaultSuperClassFQN = language(ObjectOrientedLanguage.class).getDefaultSuperClassFQN();
+		ObjectOrientedLanguage language = language(ObjectOrientedLanguage.class);
+		String defaultSuperClassFQN = language.getDefaultSuperClassFQN();
 		if(explicitNonMemberInheritanceRelations().isEmpty() && 
 				(! getFullyQualifiedName().equals(defaultSuperClassFQN))
 				) {
-			InheritanceRelation relation = new SubtypeRelation(language(ObjectOrientedLanguage.class).createTypeReference(defaultSuperClassFQN));
+			InheritanceRelation relation = new SubtypeRelation(language.createTypeReference(defaultSuperClassFQN));
 			relation.setUniParent(this);
 			relation.setMetadata(new TagImpl(), IMPLICIT_CHILD);
 			List<InheritanceRelation> result = new ArrayList<InheritanceRelation>();
@@ -154,13 +153,24 @@ public class JavaTypeInstantiation extends TypeInstantiation implements JavaType
 				}
 				if(doCapture) {
 					// Everything works as well when we pass 'this' instead of 'base'.
-					result = language(Java7.class).createdCapturedType(new FunctionalParameterSubstitution(TypeParameter.class,typeParameters), base);
+					result = createCapturedType(new FunctionalParameterSubstitution<TypeParameter>(TypeParameter.class,typeParameters), base);
 					result.setUniParent(parent());
 				} 
 			}
 			_captureConversion = result;
 		}
 		return _captureConversion;
+	}
+
+	/**
+	 * Create the actual captured type with the given base type and type parameters.
+	 *
+	 * @param substitution The type parameter substitution to apply.
+	 * @param base
+	 * @return
+	 */
+	protected Type createCapturedType(ParameterSubstitution<?> substitution, Type base) {
+		return language(Java7.class).createdCapturedType(substitution, base);
 	}
 
 	public JavaTypeInstantiation clone() {

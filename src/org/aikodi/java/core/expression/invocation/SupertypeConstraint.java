@@ -3,17 +3,12 @@
  */
 package org.aikodi.java.core.expression.invocation;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.aikodi.chameleon.core.lookup.LookupException;
-import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.BoxableTypeReference;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
-import org.aikodi.java.core.type.JavaTypeReference;
 
 public class SupertypeConstraint extends SecondPhaseConstraint {
 
-	public SupertypeConstraint(TypeParameter param, JavaTypeReference type) {
+	public SupertypeConstraint(TypeParameter param, BoxableTypeReference type) {
 		super(param,type);
 	}
 

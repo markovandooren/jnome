@@ -26,7 +26,9 @@ import org.aikodi.chameleon.core.relation.StrictPartialOrder;
 import org.aikodi.chameleon.core.variable.Variable;
 import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.expression.NamedTarget;
-import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.language.LanguageWithBoxing;
+import org.aikodi.chameleon.oo.language.LanguageWithErasure;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguageImpl;
 import org.aikodi.chameleon.oo.member.SignatureWithParameters;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.type.*;
@@ -97,7 +99,7 @@ import org.aikodi.rejuse.logic.ternary.Ternary;
  * 
  * @author Marko van Dooren
  */
-public class Java7 extends ObjectOrientedLanguage {
+public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBoxing, LanguageWithErasure {
 
 	public static final String NAME = "Java";
 
@@ -149,28 +151,27 @@ public class Java7 extends ObjectOrientedLanguage {
 		PRIVATE = add(new PrivateProperty(SCOPE_MUTEX));
 		PUBLIC = add(new PublicProperty(SCOPE_MUTEX));
 		PACKAGE_ACCESSIBLE = add(new PackageProperty(SCOPE_MUTEX));
-		PRIMITIVE_TYPE = add(new PrimitiveTypeProperty("primitive"));
 		NUMERIC_TYPE = add(new NumericTypeProperty("numeric"));
 		REFERENCE_TYPE = PRIMITIVE_TYPE.inverse();
 		UNBOXABLE_TYPE = add(new UnboxableTypeProperty("unboxable"));
 		ANNOTATION_TYPE = add(new StaticChameleonProperty("annotation", Type.class)); 
 		DEFAULT = add(new StaticChameleonProperty("default", Method.class));
-		DEFAULT.addContradiction(ABSTRACT);
+		DEFAULT.addContradiction(ABSTRACT());
 		// In Java, a constructor is a class method
 		// CONSTRUCTOR.addImplication(CLASS);
 		// In Java, constructors are not inheritable
-		CONSTRUCTOR.addImplication(INHERITABLE.inverse());
+		CONSTRUCTOR.addImplication(INHERITABLE().inverse());
 		// A numeric type is a primitive type
 		NUMERIC_TYPE.addImplication(PRIMITIVE_TYPE);
 
-		INHERITABLE.addValidElementType(VariableDeclarator.class);
+		INHERITABLE().addValidElementType(VariableDeclarator.class);
 		PRIVATE.addValidElementType(VariableDeclarator.class);
 		PUBLIC.addValidElementType(VariableDeclarator.class);
 		PROTECTED.addValidElementType(VariableDeclarator.class);
-		OVERRIDABLE.addValidElementType(VariableDeclarator.class);
-		DEFINED.addValidElementType(VariableDeclarator.class);
-		REFINABLE.addValidElementType(MemberVariableDeclarator.class);
-		FINAL.addValidElementType(MemberVariableDeclarator.class);
+		OVERRIDABLE().addValidElementType(VariableDeclarator.class);
+		DEFINED().addValidElementType(VariableDeclarator.class);
+		REFINABLE().addValidElementType(MemberVariableDeclarator.class);
+		FINAL().addValidElementType(MemberVariableDeclarator.class);
 
 		TYPE_WITH_VALUE_SEMANTICS = add(new ValueClass());
 		TYPE_WITH_REFERENCE_SEMANTICS = TYPE_WITH_VALUE_SEMANTICS.inverse();
@@ -182,6 +183,11 @@ public class Java7 extends ObjectOrientedLanguage {
 
 	}
 
+	protected DynamicChameleonProperty createPrimitiveTypeProperty()
+	{
+		return new PrimitiveTypeProperty("primitive");
+	}
+
 	public Java7() {
 		this("Java", new BasicRevision(1,7,0));
 	}
@@ -190,6 +196,11 @@ public class Java7 extends ObjectOrientedLanguage {
 		return new Java7();
 	}
 
+	/**
+	 * Return the erasure of the given type.
+	 *
+	 * @param original
+	 */
 	public Type erasure(Type original) {
 		Type result;
 		if(original instanceof ArrayType) {
@@ -336,8 +347,7 @@ public class Java7 extends ObjectOrientedLanguage {
 	public final StaticChameleonProperty PUBLIC;
 	public final ChameleonProperty PACKAGE_ACCESSIBLE;
 	public final ChameleonProperty IMPLEMENTS_RELATION;
-	public final DynamicChameleonProperty PRIMITIVE_TYPE;	
-	public final DynamicChameleonProperty NUMERIC_TYPE;	
+	public final DynamicChameleonProperty NUMERIC_TYPE;
 	public final ChameleonProperty REFERENCE_TYPE;	
 	public final ChameleonProperty UNBOXABLE_TYPE;
 	public final ChameleonProperty ANNOTATION_TYPE;
@@ -388,11 +398,15 @@ public class Java7 extends ObjectOrientedLanguage {
 		return MEMBER_OVERRIDABLE_BY_DEFAULT;
 	}
 
-	/*@
-   @ also public behavior
-   @
-   @ post \result.equals(getDefaultPackage().findType("java.lang.RuntimeException")); 
-   @*/
+	public ChameleonProperty REFERENCE_TYPE() {
+		return REFERENCE_TYPE;
+	}
+
+   /*@
+   	 @ also public behavior
+   	 @
+   	 @ post \result.equals(getDefaultPackage().findType("java.lang.RuntimeException"));
+   	 @*/
 	@Override
 	public Type getUncheckedException(Namespace ns) throws LookupException {
 		return findType("java.lang.RuntimeException",ns);
@@ -542,23 +556,22 @@ public class Java7 extends ObjectOrientedLanguage {
 
 	private Set<String> _unboxables;
 
-	//SLOW move to JavaView? Or will that be reverted anyway with multiview project
-	//     which should allow the base library to be loaded only once?
-	public Type box(Type type) throws LookupException {
-		if (type.isTrue(PRIMITIVE_TYPE)) {
-			String fqn = type.getFullyQualifiedName();
-			String newFqn = _boxMap.get(fqn);
-			if(newFqn == null) {
-				throw new LookupException("Type "+fqn+" cannot be converted through boxing.");
-			}
-			return findType(newFqn,type.view().namespace());
-		} else {
-			return type;
+	public Type boxedType(Type type) throws LookupException {
+		String fqn = type.getFullyQualifiedName();
+		String boxedFqn = _boxMap.get(fqn);
+		if(boxedFqn == null) {
+			throw new LookupException("Type "+fqn+" cannot be converted through boxing.");
 		}
+
+		return findType(boxedFqn, type.view().namespace());
 	}
 
 	public String boxName(String fqn) {
 		return _boxMap.get(fqn);
+	}
+
+	public boolean isBoxable(Type type) throws LookupException {
+		return type.isTrue(PRIMITIVE_TYPE);
 	}
 
 	public Type unbox(Type type) throws LookupException {
@@ -571,17 +584,17 @@ public class Java7 extends ObjectOrientedLanguage {
 		return findType(newFqn,type.view().namespace());
 	}
 
-	public boolean unboxable(Type type) {
+	public boolean isUnboxable(Type type) {
 		String fqn = type.getFullyQualifiedName();
 		return _unboxMap.get(fqn) != null;
 	}
 
 	public boolean convertibleToNumeric(Type type) {
-		return unboxable(type) || _numericPrimitives.contains(type.getFullyQualifiedName());
+		return isUnboxable(type) || _numericPrimitives.contains(type.getFullyQualifiedName());
 	}
 
-	public JavaTypeReference box(JavaTypeReference aRef, Namespace root) throws LookupException {
-		String newFqn = _boxMap.get(((CrossReferenceWithName)aRef).name());
+	public BoxableTypeReference box(BoxableTypeReference aRef, Namespace root) throws LookupException {
+		String newFqn = _boxMap.get(((CrossReferenceWithName)(aRef)).name());
 		if(newFqn == null) {
 			//throw new LookupException("Type "+fqn+" cannot be converted through boxing.");
 			return aRef;
@@ -934,7 +947,7 @@ public class Java7 extends ObjectOrientedLanguage {
 	}
 
 	private Type unboxIfNecessary(Type type) throws LookupException {
-		if(unboxable(type)) {
+		if(isUnboxable(type)) {
 			return unbox(type);
 		} else {
 			return type;

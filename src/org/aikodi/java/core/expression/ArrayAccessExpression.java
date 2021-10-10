@@ -10,6 +10,7 @@ import org.aikodi.chameleon.core.validation.Verification;
 import org.aikodi.chameleon.oo.expression.Assignable;
 import org.aikodi.chameleon.oo.expression.Expression;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguageImpl;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.support.expression.ArrayIndex;
 import org.aikodi.chameleon.util.Util;

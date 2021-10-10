@@ -14,6 +14,7 @@ import org.aikodi.chameleon.core.namespacedeclaration.Import;
 import org.aikodi.chameleon.core.validation.Valid;
 import org.aikodi.chameleon.core.validation.Verification;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguageImpl;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.util.association.Single;
@@ -103,8 +104,8 @@ public class SingleStaticImport extends Import {
 
 			@Override
 			public boolean selectedRegardlessOfName(Declaration declaration) throws LookupException {
-				ObjectOrientedLanguage language = (ObjectOrientedLanguage) declaration.language(ObjectOrientedLanguage.class);
-				return declaration.is(language.CLASS) == Ternary.TRUE;
+				ObjectOrientedLanguage language = declaration.language(ObjectOrientedLanguage.class);
+				return declaration.is(language.CLASS()) == Ternary.TRUE;
 			}
 
 			@Override

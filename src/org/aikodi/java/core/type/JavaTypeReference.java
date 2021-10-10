@@ -1,6 +1,9 @@
 package org.aikodi.java.core.type;
 
 import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.core.reference.CrossReferenceWithName;
+import org.aikodi.chameleon.oo.type.BoxableTypeReference;
+import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.workspace.View;
 import org.aikodi.java.core.language.Java7;
@@ -10,19 +13,9 @@ import org.aikodi.java.core.language.Java7;
  * 
  * @author Marko van Dooren
  */
-public interface JavaTypeReference extends TypeReference {
+public interface JavaTypeReference extends BoxableTypeReference {
 
-//	public void setArrayDimension(int i);
-	
-//	public JavaTypeReference addArrayDimension(int i);
-	
-//	public int arrayDimension();
-
-//	public Type erasure() throws LookupException;
-	
-//	public List<ActualTypeArgument> typeArguments();
-	
-  public default JavaTypeReference toArray(int arrayDimension) {
+  default JavaTypeReference toArray(int arrayDimension) {
     JavaTypeReference result;
     if(arrayDimension > 0) {
       result = new ArrayTypeReference(clone(this), arrayDimension);
@@ -36,8 +29,8 @@ public interface JavaTypeReference extends TypeReference {
 	
 	public JavaTypeReference componentTypeReference();
 	
-	public default JavaTypeReference box() throws LookupException {
-	  Java7 language = language(Java7.class);
-    return language.box(this, view().namespace());
+	public default BoxableTypeReference box() throws LookupException {
+	    Java7 language = language(Java7.class);
+        return language.box(this, view().namespace());
 	}
 }

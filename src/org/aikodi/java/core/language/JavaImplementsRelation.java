@@ -7,6 +7,7 @@ import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.relation.StrictPartialOrder;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguageImpl;
 import org.aikodi.chameleon.oo.member.SignatureWithParameters;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.type.Type;
@@ -40,15 +41,16 @@ public class JavaImplementsRelation implements StrictPartialOrder<Declaration> {
 	}
 
 	public boolean checkDefined(Declaration member) throws LookupException {
-		Ternary temp1 = member.is(member.language(ObjectOrientedLanguage.class).DEFINED);
+		ObjectOrientedLanguage language = member.language(ObjectOrientedLanguage.class);
+		Ternary temp1 = member.is(language.DEFINED());
 		boolean defined1;
 		if(temp1 == Ternary.TRUE) {
 		  defined1 = true;
 		} else if (temp1 == Ternary.FALSE) {
 		  defined1 = false;
 		} else {
-			temp1 = member.is(member.language(ObjectOrientedLanguage.class).DEFINED);
-		  throw new LookupException("The definedness of the first element could not be determined.");
+			member.is(language.DEFINED());
+		  	throw new LookupException("The definedness of the first element could not be determined.");
 		}
 		return defined1;
 	}

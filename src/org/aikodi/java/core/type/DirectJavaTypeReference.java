@@ -2,16 +2,9 @@ package org.aikodi.java.core.type;
 
 import java.util.Set;
 
-import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.element.ElementImpl;
-import org.aikodi.chameleon.core.lookup.LookupContext;
-import org.aikodi.chameleon.core.lookup.LookupException;
-import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
-import org.aikodi.chameleon.oo.type.IntersectionTypeReference;
 import org.aikodi.chameleon.oo.type.Type;
-import org.aikodi.chameleon.oo.type.TypeReference;
-import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.java.core.language.Java7;
 import org.aikodi.rejuse.contract.Contracts;
 

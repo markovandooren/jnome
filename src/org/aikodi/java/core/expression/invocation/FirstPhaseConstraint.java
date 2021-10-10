@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguageImpl;
+import org.aikodi.chameleon.oo.type.BoxableTypeReference;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeInstantiation;
 import org.aikodi.chameleon.oo.type.generics.CapturedTypeParameter;
@@ -40,31 +42,25 @@ import org.aikodi.rejuse.predicate.Predicate;
 public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstraint, FirstPhaseConstraintSet> {
 	
 	/**
-	 * 
-	 * @param type
-	 * @param tref
+	 * Create a new first phase constraint.
+	 * @param A
+	 * @param F
 	 */
-	public FirstPhaseConstraint(JavaTypeReference A, Type F) {
+	public FirstPhaseConstraint(BoxableTypeReference A, Type F) {
 	  _A = A;
 	  _F = F;
 	}
 	
-	private JavaTypeReference _A;
+	private BoxableTypeReference _A;
 	
 	public Type A() throws LookupException {
 		return _A.getElement();
 	}
 	
-	public JavaTypeReference ARef() {
+	public BoxableTypeReference ARef() {
 		return _A;
 	}
 	
-//	private JavaTypeReference _typeReference;
-//	
-//	public JavaTypeReference typeReference() {
-//		return _typeReference;
-//	}
-//	
 	public Type F() {
 		return _F;
 	}
@@ -106,7 +102,7 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 					// FIXME: can't we unwrap the entire array dimension at once? This seems rather inefficient.
 				}
 			}
-		} else if(A().is(language().PRIMITIVE_TYPE) != Ternary.TRUE){
+		} else if(!A().isTrue(language().PRIMITIVE_TYPE())){
 				// i is the index of the parameter we are processing.
 				// V= the type reference of the i-th type parameter of some supertype G of A.
 			List<TypeArgument> actualsOfF = new ArrayList<TypeArgument>();
@@ -127,17 +123,17 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 				int i = 0;
 				for(TypeArgument typeArgumentOfFormalParameter: actualsOfF) {
 					if(typeArgumentOfFormalParameter instanceof EqualityTypeArgument) {
-						JavaTypeReference U = (JavaTypeReference) ((EqualityTypeArgument)typeArgumentOfFormalParameter).typeReference();
+						BoxableTypeReference U = (BoxableTypeReference) ((EqualityTypeArgument)typeArgumentOfFormalParameter).typeReference();
 						if(involvesTypeParameter(U)) {
 						  caseSSFormalBasic(result, U, i);
 						}
 					} else if(typeArgumentOfFormalParameter instanceof ExtendsWildcard) {
-						JavaTypeReference U = (JavaTypeReference) ((ExtendsWildcard)typeArgumentOfFormalParameter).typeReference();
+						BoxableTypeReference U = (BoxableTypeReference) ((ExtendsWildcard)typeArgumentOfFormalParameter).typeReference();
 						if(involvesTypeParameter(U)) {
 						  caseSSFormalExtends(result, U, i);
 						}
 					} else if(typeArgumentOfFormalParameter instanceof SuperWildcard) {
-						JavaTypeReference U = (JavaTypeReference) ((SuperWildcard)typeArgumentOfFormalParameter).typeReference();
+						BoxableTypeReference U = (BoxableTypeReference) ((SuperWildcard)typeArgumentOfFormalParameter).typeReference();
 						if(involvesTypeParameter(U)) {
 							caseSSFormalSuper(result, U, i);
 						}
@@ -151,22 +147,22 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 		return result;
 	}
 	
-	public abstract void caseSSFormalBasic(List<SecondPhaseConstraint> result, JavaTypeReference U,
+	public abstract void caseSSFormalBasic(List<SecondPhaseConstraint> result, BoxableTypeReference U,
 			int index) throws LookupException;
 	
-	public abstract void caseSSFormalExtends(List<SecondPhaseConstraint> result, JavaTypeReference U,
+	public abstract void caseSSFormalExtends(List<SecondPhaseConstraint> result, BoxableTypeReference U,
 			int index) throws LookupException;
 	
-	public abstract void caseSSFormalSuper(List<SecondPhaseConstraint> result, JavaTypeReference U,
+	public abstract void caseSSFormalSuper(List<SecondPhaseConstraint> result, BoxableTypeReference U,
 			int index) throws LookupException;
 	
-	public abstract SecondPhaseConstraint FequalsTj(TypeParameter declarator, JavaTypeReference type);
+	public abstract SecondPhaseConstraint FequalsTj(TypeParameter declarator, BoxableTypeReference type);
 	
-	public abstract FirstPhaseConstraint Array(JavaTypeReference componentType, Type componentTypeReference);
+	public abstract FirstPhaseConstraint Array(BoxableTypeReference componentType, Type componentTypeReference);
 	
 //	public abstract List<SecondPhaseConstraint> processSpecifics() throws LookupException;
 	
-	public boolean involvesTypeParameter(JavaTypeReference tref) throws LookupException {
+	public boolean involvesTypeParameter(BoxableTypeReference tref) throws LookupException {
 		return ! involvedTypeParameters(tref).isEmpty();
 	}
 	
@@ -180,10 +176,10 @@ public abstract class FirstPhaseConstraint extends Constraint<FirstPhaseConstrai
 	
 	public boolean involvesTypeParameter(TypeArgument arg) throws LookupException {
 		return (arg instanceof TypeArgumentWithTypeReference) &&
-		    involvesTypeParameter((JavaTypeReference) ((TypeArgumentWithTypeReference)arg).typeReference());
+		    involvesTypeParameter((BoxableTypeReference) ((TypeArgumentWithTypeReference)arg).typeReference());
 	}
 	
-	public List<TypeParameter> involvedTypeParameters(JavaTypeReference tref) throws LookupException {
+	public List<TypeParameter> involvedTypeParameters(BoxableTypeReference tref) throws LookupException {
 		Predicate<BasicJavaTypeReference, LookupException> predicate = 
 		    object ->  parent().typeParameters().contains(object.getDeclarator());
 		List<BasicJavaTypeReference> list = tref.lexical().descendants(BasicJavaTypeReference.class, predicate);

@@ -6,12 +6,12 @@ import org.aikodi.chameleon.core.validation.Valid;
 import org.aikodi.chameleon.core.validation.Verification;
 import org.aikodi.chameleon.oo.expression.Expression;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguageImpl;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.util.association.Single;
 import org.aikodi.java.core.language.Java7;
 import org.aikodi.java.core.type.BasicJavaTypeReference;
-import org.aikodi.java.core.type.JavaEqualityTypeArgument;
 
 /**
  * @author Marko van Dooren

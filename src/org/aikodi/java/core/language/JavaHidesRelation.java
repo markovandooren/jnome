@@ -7,6 +7,7 @@ import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.relation.StrictPartialOrder;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguageImpl;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.variable.RegularMemberVariable;
 import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
@@ -20,7 +21,7 @@ public class JavaHidesRelation implements StrictPartialOrder<Declaration> {
 		boolean result = false;
 		if((first instanceof NormalMethod) && (second instanceof NormalMethod)) {
 			result = first.lexical().nearestAncestor(Type.class).subtypeOf(second.lexical().nearestAncestor(Type.class)) &&
-			         (first.is(first.language(ObjectOrientedLanguage.class).CLASS) == Ternary.TRUE) && 
+			         (first.isTrue(first.language(ObjectOrientedLanguage.class).CLASS())) &&
 			          first.sameSignatureAs(second);
 		} else if(first instanceof RegularMemberVariable && second instanceof RegularMemberVariable) {
 			 result = first.lexical().nearestAncestor(Type.class).subtypeOf(second.lexical().nearestAncestor(Type.class)) &&

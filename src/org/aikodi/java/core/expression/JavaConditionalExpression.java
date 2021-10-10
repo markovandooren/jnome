@@ -2,7 +2,6 @@ package org.aikodi.java.core.expression;
 
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.namespace.Namespace;
-import org.aikodi.chameleon.core.namespacedeclaration.NamespaceDeclaration;
 import org.aikodi.chameleon.oo.expression.Expression;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.support.expression.ConditionalExpression;
@@ -31,8 +30,8 @@ public class JavaConditionalExpression extends ConditionalExpression {
 			Type second = getSecond().getType();
 			Java7 java = language(Java7.class);
 			JavaView view = view(JavaView.class);
-			boolean firstPrimitive = first.is(java.VALUE_TYPE).isTrue();
-			boolean secondPrimitive = second.is(java.VALUE_TYPE).isTrue();
+			boolean firstPrimitive = first.is(java.VALUE_TYPE()).isTrue();
+			boolean secondPrimitive = second.is(java.VALUE_TYPE()).isTrue();
 			Type boxFirst = java.box(first);
 			Type boxSecond = java.box(second);
 			if(firstPrimitive || secondPrimitive) {

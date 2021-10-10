@@ -3,16 +3,16 @@ package org.aikodi.java.core.expression.invocation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collector;
 
 import org.aikodi.chameleon.core.language.WrongLanguageException;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.expression.MethodInvocation;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguageImpl;
 import org.aikodi.chameleon.oo.method.MethodHeader;
 import org.aikodi.chameleon.oo.plugin.ObjectOrientedFactory;
-import org.aikodi.chameleon.oo.type.IntersectionType;
+import org.aikodi.chameleon.oo.type.BoxableTypeReference;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.TypeVariable;
@@ -37,8 +37,8 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	
 	private FirstPhaseConstraintSet _origin;
 
-	private List<JavaTypeReference> Us(TypeParameter Tj, Class<? extends SecondPhaseConstraint> kind) throws LookupException {
-		List<JavaTypeReference> Us = new ArrayList<JavaTypeReference>();
+	private List<BoxableTypeReference> Us(TypeParameter Tj, Class<? extends SecondPhaseConstraint> kind) throws LookupException {
+		List<BoxableTypeReference> Us = new ArrayList<BoxableTypeReference>();
 		for(SecondPhaseConstraint constraint: constraints()) {
 			if((kind.isInstance(constraint)) && constraint.typeParameter().sameAs(Tj)) {
 				Us.add(constraint.URef());
@@ -47,7 +47,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		return Us;
 	}
 	
-	private Type leastUpperBound(List<? extends JavaTypeReference> Us, Java7 language) throws LookupException {
+	private Type leastUpperBound(List<? extends BoxableTypeReference> Us, Java7 language) throws LookupException {
 		return language.subtypeRelation().leastUpperBound(Us);
 	}
 
@@ -62,7 +62,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 				}
 			}
 			if(hasSuperConstraints) {
-				List<JavaTypeReference> Us = Us(p, SupertypeConstraint.class);
+				List<BoxableTypeReference> Us = Us(p, SupertypeConstraint.class);
 				if(language == null) {
 					language = p.language(Java7.class);
 				}
@@ -116,27 +116,27 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
   	}
   }
 
-  private JavaTypeReference box(JavaTypeReference ref) throws WrongLanguageException, LookupException {
+  private BoxableTypeReference box(BoxableTypeReference ref) throws WrongLanguageException, LookupException {
   	return ref.box();
   }
   
-	private void processUnresolved(JavaTypeReference Sref) throws LookupException {
+	private void processUnresolved(BoxableTypeReference Sref) throws LookupException {
 		// WARNING
 		// INCOMPLETE see processSubtypeConstraints
-		JavaTypeReference RRef = (JavaTypeReference) invokedGenericMethod().returnTypeReference();
+		BoxableTypeReference RRef = (BoxableTypeReference) invokedGenericMethod().returnTypeReference();
 		FirstPhaseConstraintSet constraints = new FirstPhaseConstraintSet(invocation(), invokedGenericMethod());
 		View view = RRef.view();
-		JavaTypeReference SprimeRef = box(Sref);
+		BoxableTypeReference SprimeRef = box(Sref);
 		Java7 java = view.language(Java7.class);
 		if(! RRef.getElement().sameAs(java.voidType(RRef.view().namespace()))) {
 		  // the constraint S >> R', provided R is not void	
-			JavaTypeReference RprimeRef = substitutedReference(RRef);
+			BoxableTypeReference RprimeRef = substitutedReference(RRef);
 			constraints.add(new GGConstraint(SprimeRef, RprimeRef.getElement()));
 		}
 		// additional constraints Bi[T1=B(T1) ... Tn=B(Tn)] >> Ti where Bi is the declared bound of Ti
 		for(TypeParameter param: typeParameters()) {
-			JavaTypeReference Bi = (JavaTypeReference) param.upperBoundReference();
-			JavaTypeReference BiAfterSubstitution= substitutedReference(Bi);
+			BoxableTypeReference Bi = (JavaTypeReference) param.upperBoundReference();
+			BoxableTypeReference BiAfterSubstitution = substitutedReference(Bi);
 			
 			Type Ti = (Type) param.selectionDeclaration();
 			Type BTi = assignments().type(param);
@@ -174,22 +174,19 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		}
 	}
 	
-	public void substituteRHS(JavaTypeReference tref, EqualTypeConstraint eq) throws LookupException {
+	public void substituteRHS(BoxableTypeReference tref, EqualTypeConstraint eq) throws LookupException {
 		for(SecondPhaseConstraint constraint: constraints()) {
 			if(constraint != eq) {
 				if(constraint.typeParameter().sameAs(eq.typeParameter())) {
 					remove(constraint);
 				} else {
 					final TypeParameter tp = eq.typeParameter();
-					JavaTypeReference uRef = constraint.URef();
+					TypeReference uRef = constraint.URef();
 					NonLocalJavaTypeReference.replace(tref, tp, uRef);
 				}
 			}
 		}
 	}
-	
-
-	
 	
 	private void processSubtypeConstraints() throws LookupException {
 		// WARNING INCOMPLETE (but I should have written why :/ )
@@ -222,7 +219,7 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 				// once, at most we would get an incorrect result. Still, we should throw an exception instead.
 				for(SecondPhaseConstraint constraint: constraints()) {
 					if(! constraint.typeParameter().sameAs(p)) {
-  					JavaTypeReference uRef = constraint.URef();
+  					TypeReference uRef = constraint.URef();
 				    NonLocalJavaTypeReference.replace(tref, p, uRef);
 					}
 				}
@@ -238,11 +235,11 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		// that any other references to Tj are properly rerouted
 		// to the 'fresh type variable X' which will just
 		// be a clone of Tj with glb(URefs) as its extends constraint bound.
-		List<JavaTypeReference> URefs = Us(Tj, SubtypeConstraint.class);
+		List<BoxableTypeReference> URefs = Us(Tj, SubtypeConstraint.class);
 		boolean recursive = false;
 		List<Type> Us = new ArrayList<Type>();
 		Type TjType = null;
-		for(JavaTypeReference URef: URefs) {
+		for(TypeReference URef: URefs) {
 			List<TypeReference> descendants = URef.lexical().descendants(TypeReference.class);
 			descendants.add(URef);
 			for(TypeReference tref: descendants) {
@@ -281,15 +278,14 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 	
 
 
-	private JavaTypeReference substitutedReference(JavaTypeReference RRef) throws LookupException {
-		JavaTypeReference RprimeRef = Util.clone(RRef);
+	private BoxableTypeReference substitutedReference(BoxableTypeReference RRef) throws LookupException {
+		BoxableTypeReference RprimeRef = Util.clone(RRef);
 		RprimeRef.setUniParent(RRef.lexical().parent());
 		// Let R' = R[T1=B(T1) ... Tn=B(Tn)] where B(Ti) is the type inferred for Ti in the previous section, or Ti if no type was inferred.
 		for(TypeAssignment assignment: assignments().assignments()) {
 			Type type = assignment.type();
-			JavaTypeReference replacement = RRef.language(Java7.class).reference(type);
-//			replacement.setUniParent(RRef.language().defaultNamespace()); XXX
-			RprimeRef = (JavaTypeReference) NonLocalJavaTypeReference.replace(replacement, assignment.parameter(), RprimeRef);
+			BoxableTypeReference replacement = RRef.language(Java7.class).reference(type);
+			RprimeRef = (BoxableTypeReference) NonLocalJavaTypeReference.replace(replacement, assignment.parameter(), RprimeRef);
 		}
 		return RprimeRef;
 	}
@@ -298,7 +294,6 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
   	if(! inContextOfAssignmentConversion()) {
   		throw new ChameleonProgrammerException();
   	} else {
-//  		return new DirectJavaTypeReference(((AssignmentExpression)invocation().parent()).getVariable().getType());
   		return ((TypeParameter)typeParameters().get(0)).language(Java7.class).reference(((AssignmentExpression)invocation().parent()).variableExpression().getType());
   	}
   }

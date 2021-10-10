@@ -15,6 +15,7 @@ import org.aikodi.chameleon.core.reference.NameReference;
 import org.aikodi.chameleon.core.tag.TagImpl;
 import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguageImpl;
 import org.aikodi.chameleon.oo.method.RegularImplementation;
 import org.aikodi.chameleon.oo.method.SimpleNameMethodHeader;
 import org.aikodi.chameleon.oo.statement.Block;
@@ -147,7 +148,7 @@ public class RegularJavaType extends AbstractJavaType {
 	@Override
 	public PropertySet<Element, ChameleonProperty> inherentProperties() {
 		PropertySet<Element, ChameleonProperty> result = new PropertySet<Element, ChameleonProperty>();
-		result.add(language(ObjectOrientedLanguage.class).OVERRIDABLE.inverse());
+		result.add(language(ObjectOrientedLanguage.class).OVERRIDABLE().inverse());
 		return result;
 	}
 
@@ -217,7 +218,7 @@ public class RegularJavaType extends AbstractJavaType {
 		Java7 language = language(Java7.class);
 		Type result = _rawTypeCache;
 		if (result == null) {
-			if (is(language.INSTANCE) == Ternary.TRUE) {
+			if (is(language.INSTANCE()) == Ternary.TRUE) {
 				Type outmostType = lexical().farthestAncestor(Type.class);
 				Type outer;
 				if (outmostType == null) {

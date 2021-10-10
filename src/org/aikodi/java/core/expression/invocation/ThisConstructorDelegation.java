@@ -3,6 +3,7 @@ package org.aikodi.java.core.expression.invocation;
 import org.aikodi.chameleon.core.lookup.DeclarationCollector;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguageImpl;
 import org.aikodi.chameleon.oo.type.ClassBody;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;

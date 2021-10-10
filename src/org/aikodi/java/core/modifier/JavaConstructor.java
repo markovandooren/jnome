@@ -3,6 +3,7 @@ package org.aikodi.java.core.modifier;
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.property.ChameleonProperty;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguageImpl;
 import org.aikodi.chameleon.support.modifier.Constructor;
 import org.aikodi.rejuse.property.PropertySet;
 /**
@@ -25,7 +26,7 @@ public class JavaConstructor extends Constructor {
    @*/
   public PropertySet<Element,ChameleonProperty> impliedProperties() {
   	PropertySet<Element,ChameleonProperty> result = super.impliedProperties();
-    result.add(language(ObjectOrientedLanguage.class).INHERITABLE.inverse());
+    result.add(language(ObjectOrientedLanguage.class).INHERITABLE().inverse());
     return result;
   }
   

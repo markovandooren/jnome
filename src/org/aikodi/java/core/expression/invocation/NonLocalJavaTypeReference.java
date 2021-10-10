@@ -10,7 +10,9 @@ import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguageImpl;
 import org.aikodi.chameleon.oo.type.BasicTypeReference;
+import org.aikodi.chameleon.oo.type.BoxableTypeReference;
 import org.aikodi.chameleon.oo.type.NonLocalTypeReference;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.util.Util;
@@ -21,13 +23,7 @@ import org.aikodi.rejuse.predicate.Predicate;
 
 public class NonLocalJavaTypeReference extends NonLocalTypeReference implements JavaTypeReference {
 
-//	private CreationStackTrace _trace = new CreationStackTrace();
-	
-	public NonLocalJavaTypeReference(JavaTypeReference tref) {
-    super(tref);
-	}
-	
-	public NonLocalJavaTypeReference(JavaTypeReference tref, Element lookupParent) {
+	public NonLocalJavaTypeReference(TypeReference tref, Element lookupParent) {
 	   super(tref,lookupParent);
 	}
 	
@@ -110,7 +106,7 @@ public class NonLocalJavaTypeReference extends NonLocalTypeReference implements 
 	}
 
 	@Override
-	  public JavaTypeReference box() throws LookupException {
+	  public BoxableTypeReference box() throws LookupException {
 	    return componentTypeReference().box(); 
 	  }
 

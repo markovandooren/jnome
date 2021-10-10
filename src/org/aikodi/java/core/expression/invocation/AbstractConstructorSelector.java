@@ -6,6 +6,7 @@ import java.util.List;
 import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.declaration.Signature;
 import org.aikodi.chameleon.core.lookup.LookupException;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
 import org.aikodi.java.core.language.Java7;
 
@@ -16,10 +17,10 @@ public abstract class AbstractConstructorSelector extends AbstractJavaMethodSele
 	}
 
 	public List<Declaration> withoutNonConstructors(List<? extends Declaration> selectionCandidates) throws LookupException {
-		Java7 language = invocation().language(Java7.class);
+		ObjectOrientedLanguage language = invocation().language(ObjectOrientedLanguage.class);
 		List<Declaration> tmp = new ArrayList<Declaration>();
 		for(Declaration decl: selectionCandidates) {
-			if(decl.isTrue(language.CONSTRUCTOR)) {
+			if(decl.isTrue(language.CONSTRUCTOR())) {
 				tmp.add(decl);
 			}
 		}

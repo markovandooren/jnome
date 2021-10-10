@@ -20,7 +20,7 @@ public class ClassIconProvider extends AbstractIconProvider {
 	public String baseIconName(Element element) {
 		String result;
 		Java7 language = element.language(Java7.class);
-		if(element.isTrue(language.INTERFACE)) {
+		if(element.isTrue(language.INTERFACE())) {
 			result = "interface";
 		} else {
 			result = "class";

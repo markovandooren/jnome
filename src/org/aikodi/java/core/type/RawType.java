@@ -11,6 +11,7 @@ import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.core.lookup.SelectionResult;
 import org.aikodi.chameleon.core.tag.TagImpl;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguageImpl;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.type.ClassWithBody;
 import org.aikodi.chameleon.oo.type.Type;
@@ -141,7 +142,7 @@ public class RawType extends ClassWithBody implements JavaType {
     List<Type> childTypes = directlyDeclaredElements(Type.class);
     Java7 language = language(Java7.class);
     for(Type type:childTypes) {
-      if(type.is(language.INSTANCE) == Ternary.TRUE) {
+      if(type.is(language.INSTANCE()) == Ternary.TRUE) {
         // create raw type that does not erase anything
         RawType raw = new RawType((Type) type.origin(),false);
         SingleAssociation parentLink = type.parentLink();

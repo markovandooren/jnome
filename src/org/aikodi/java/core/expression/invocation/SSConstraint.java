@@ -162,7 +162,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 				} else if(ithTypeParameterOfG instanceof CapturedTypeParameter) {
 					CapturedTypeParameter captured = (CapturedTypeParameter) ithTypeParameterOfG;
 					Type t = captured.selectionDeclaration();
-					JavaTypeReference V = language().reference(t);
+					BoxableTypeReference V = language().reference(t);
 					EQConstraint recursive = new EQConstraint(V, U.getElement());
 					parent().addGenerated(recursive);
 					recursive.setUniParent(parent());

@@ -142,6 +142,7 @@ public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBox
 	}
 	protected Java7(String name, LookupContextFactory lookupFactory,Revision version) {
 		super(name, lookupFactory, version);
+
 		STRICTFP = add(new StaticChameleonProperty("strictfp", Declaration.class));
 		SYNCHRONIZED = add(new StaticChameleonProperty("synchronized", Method.class));
 		TRANSIENT = add(new StaticChameleonProperty("transient", Variable.class));
@@ -179,13 +180,11 @@ public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBox
 		for(String string: new String[]{"==","!=","+","++","-","--","*","/","+=","-=","*=","/=","&","&&","|","||","^","!","&=","|=","^=","<<=",">>=",">>>+","%","<",">","<=",">=","%=","<<",">>",">>>"}) {
 			_operatorNames.add(string);
 		}
-		initNameMaps();
-
 	}
 
 	protected DynamicChameleonProperty createPrimitiveTypeProperty()
 	{
-		return new PrimitiveTypeProperty("primitive");
+		return new PrimitiveTypeProperty("primitive", namesOfPrimitiveTypes());
 	}
 
 	public Java7() {
@@ -202,13 +201,17 @@ public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBox
 	 * @param original
 	 */
 	public Type erasure(Type original) {
+		return erasedType(original);
+	}
+
+	public static Type erasedType(Type original) {
 		Type result;
 		if(original instanceof ArrayType) {
 			result = ((ArrayType) original).erasure();
-		} 
+		}
 		else if(original instanceof TypeVariable){
 			result = original;
-		} 
+		}
 		else {
 			try {
 				if(original.nbTypeParameters(TypeParameter.class) > 0 && (original.parameter(TypeParameter.class,0) instanceof FormalTypeParameter)) {
@@ -310,10 +313,13 @@ public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBox
 		}
 	}
 
-	private class PrimitiveTypeProperty extends DynamicChameleonProperty {
-		private PrimitiveTypeProperty(String name) {
+	public static class PrimitiveTypeProperty extends DynamicChameleonProperty {
+		public PrimitiveTypeProperty(String name, Set<String> primitives) {
 			super(name, Type.class);
+			_primitives = new HashSet<>(primitives);
 		}
+
+		private Set<String> _primitives;
 
 		@Override
 		public Ternary selfAppliesTo(Element element) {
@@ -471,15 +477,6 @@ public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBox
 		return _subtypingRelation;
 	}
 
-	//		public Type getDefaultSuperClass(Namespace root) throws LookupException {
-	//			  TypeReference typeRef = createTypeReferenceInNamespace(getDefaultSuperClassFQN(),root);
-	//		    Type result = typeRef.getType();
-	//		    if (result==null) {
-	//		        throw new LookupException("Default super class "+getDefaultSuperClassFQN()+" not found.");
-	//		    }
-	//		    return result;
-	//		}
-
 	private JavaSubtypingRelation _subtypingRelation = new JavaSubtypingRelation(this);
 
 	/**
@@ -491,59 +488,74 @@ public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBox
 		return Character.isJavaIdentifierPart(character);
 	}
 
-	@Override
-	protected void initializeValidityRules() {
-
+	protected void initNameMaps() {
+		_boxMap = boxMap();
+		_unboxMap = unboxMap();
+		_numericPrimitives = namesOfNumericPrimitives();
+		_unboxables = unboxables();
 	}
 
-	//		@Override
-	//		protected Language cloneThis() {
-	//			return new Java(null);
-	//		}
+	public static Map<String, String> boxMap() {
+		Map<String, String> result = new HashMap<String,String>();
+		result.put(BOOLEAN, JAVA_LANG_BOOLEAN);
+		result.put(INT, JAVA_LANG_INTEGER);
+		result.put(LONG, JAVA_LANG_LONG);
+		result.put(FLOAT, JAVA_LANG_FLOAT);
+		result.put(DOUBLE, JAVA_LANG_DOUBLE);
+		result.put(BYTE, JAVA_LANG_BYTE);
+		result.put(CHAR, JAVA_LANG_CHARACTER);
+		result.put(SHORT, JAVA_LANG_SHORT);
+		return result;
+	}
 
-	protected void initNameMaps() {
-		_boxMap = new HashMap<String,String>();
-		_boxMap.put(BOOLEAN, JAVA_LANG_BOOLEAN);
-		_boxMap.put(INT, JAVA_LANG_INTEGER);
-		_boxMap.put(LONG, JAVA_LANG_LONG);
-		_boxMap.put(FLOAT, JAVA_LANG_FLOAT);
-		_boxMap.put(DOUBLE, JAVA_LANG_DOUBLE);
-		_boxMap.put(BYTE, JAVA_LANG_BYTE);
-		_boxMap.put(CHAR, JAVA_LANG_CHARACTER);
-		_boxMap.put(SHORT, JAVA_LANG_SHORT);
+	public static Map<String, String> unboxMap() {
+		Map<String, String> result = new HashMap<String,String>();
+		result.put(JAVA_LANG_BOOLEAN, BOOLEAN);
+		result.put(JAVA_LANG_INTEGER, INT);
+		result.put(JAVA_LANG_LONG, LONG);
+		result.put(JAVA_LANG_FLOAT, FLOAT);
+		result.put(JAVA_LANG_DOUBLE, DOUBLE);
+		result.put(JAVA_LANG_BYTE, BYTE);
+		result.put(JAVA_LANG_CHARACTER, CHAR);
+		result.put(JAVA_LANG_SHORT, SHORT);
+		return result;
+	}
 
-		_unboxMap = new HashMap<String,String>();
-		_unboxMap.put(JAVA_LANG_BOOLEAN, BOOLEAN);
-		_unboxMap.put(JAVA_LANG_INTEGER, INT);
-		_unboxMap.put(JAVA_LANG_LONG, LONG);
-		_unboxMap.put(JAVA_LANG_FLOAT, FLOAT);
-		_unboxMap.put(JAVA_LANG_DOUBLE, DOUBLE);
-		_unboxMap.put(JAVA_LANG_BYTE, BYTE);
-		_unboxMap.put(JAVA_LANG_CHARACTER, CHAR);
-		_unboxMap.put(JAVA_LANG_SHORT, SHORT);
+	public static Set<String> unboxables() {
+		Set<String> result = new HashSet<String>();
+		result.add(JAVA_LANG_INTEGER);
+		result.add(JAVA_LANG_LONG);
+		result.add(JAVA_LANG_FLOAT);
+		result.add(JAVA_LANG_DOUBLE);
+		result.add(JAVA_LANG_BOOLEAN);
+		result.add(JAVA_LANG_BYTE);
+		result.add(JAVA_LANG_CHARACTER);
+		result.add(JAVA_LANG_SHORT);
+		return result;
+	}
 
-		_numericPrimitives = new HashSet<String>();
-		_numericPrimitives.add(INT);
-		_numericPrimitives.add(LONG);
-		_numericPrimitives.add(FLOAT);
-		_numericPrimitives.add(DOUBLE);
-		_numericPrimitives.add(BYTE);
-		_numericPrimitives.add(CHAR);
-		_numericPrimitives.add(SHORT);
+	public static Set<String> namesOfNumericPrimitives() {
+		Set<String> numericPrimitives = new HashSet<String>();
+		numericPrimitives.add(INT);
+		numericPrimitives.add(LONG);
+		numericPrimitives.add(FLOAT);
+		numericPrimitives.add(DOUBLE);
+		numericPrimitives.add(BYTE);
+		numericPrimitives.add(CHAR);
+		numericPrimitives.add(SHORT);
+		return numericPrimitives;
+	}
 
-		_primitives = new HashSet<String>(_numericPrimitives);
-		_primitives.add(BOOLEAN);
-		_primitives.add(VOID);
-
-		_unboxables = new HashSet<String>();
-		_unboxables.add(JAVA_LANG_INTEGER);
-		_unboxables.add(JAVA_LANG_LONG);
-		_unboxables.add(JAVA_LANG_FLOAT);
-		_unboxables.add(JAVA_LANG_DOUBLE);
-		_unboxables.add(JAVA_LANG_BOOLEAN);
-		_unboxables.add(JAVA_LANG_BYTE);
-		_unboxables.add(JAVA_LANG_CHARACTER);
-		_unboxables.add(JAVA_LANG_SHORT);
+	/**
+	 * Return the names of the primitive types.
+	 * @return A non-null set that contains the names of the numeric types
+	 * plus "void" and "boolean".
+	 */
+	public static Set<String> namesOfPrimitiveTypes() {
+		Set<String> result = namesOfNumericPrimitives();
+		result.add(BOOLEAN);
+		result.add(VOID);
+		return result;
 	}
 
 	private Map<String,String> _boxMap;
@@ -551,8 +563,6 @@ public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBox
 	private Map<String,String> _unboxMap;
 
 	private Set<String> _numericPrimitives;
-
-	private Set<String> _primitives;
 
 	private Set<String> _unboxables;
 
@@ -599,24 +609,14 @@ public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBox
 			//throw new LookupException("Type "+fqn+" cannot be converted through boxing.");
 			return aRef;
 		}
-		JavaTypeReference result = createTypeReference(newFqn);
+		BoxableTypeReference result = createTypeReference(newFqn);
 		result.setUniParent(root);
 		return result;
 	}
 
 	@Override
 	public BasicJavaTypeReference createTypeReference(String fqn) {
-		//			Type t = _primitiveCache.get(fqn);
-		//			if(t != null) {
-		//				return new PrimitiveTypeReference(fqn,t);
-		//			} else {
-		//			String first = Util.getAllButLastPart(fqn);
-		//			if(first == null) {
 		return new BasicJavaTypeReference(fqn);
-		//			} else {
-		//				return new BasicJavaTypeReference(createTypeReferenceTarget(first),Util.getLastPart(fqn));
-		//			}
-		//			}
 	}
 
 	public CrossReferenceTarget createTypeReferenceTarget(String fqn) {
@@ -636,29 +636,6 @@ public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBox
 		}
 		return result;
 	}
-
-	//TODO Remove this method. It is used only in the deprecated JLo compiler.
-//	public BasicJavaTypeReference createExpandedTypeReference(Type type) throws LookupException {
-//		BasicJavaTypeReference result = createTypeReference(type.getFullyQualifiedName());
-//		if(! (type instanceof TypeIndirection)) {
-//			for(TypeParameter par: type.parameters(TypeParameter.class)) {
-//				if(par instanceof InstantiatedTypeParameter) {
-//					InstantiatedTypeParameter inst = (InstantiatedTypeParameter) par;
-//					TypeArgument argument = inst.argument();
-//					TypeArgument clone = Util.clone(argument);
-//					if(argument instanceof TypeArgumentWithTypeReference) {
-//						TypeArgumentWithTypeReference arg = (TypeArgumentWithTypeReference) argument;
-//						TypeReference tref = arg.typeReference();
-//						Type t = tref.getElement();
-//						((TypeArgumentWithTypeReference)clone).setTypeReference(createExpandedTypeReference(t));
-//					}
-//					result.addArgument(clone);
-//				}
-//			}
-//		}
-//		return result;
-//	}
-
 
 	@Override
 	public BasicJavaTypeReference createTypeReference(CrossReference<? extends Declaration> target, String name) {
@@ -688,8 +665,8 @@ public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBox
 	//FIXME get rid of this monster. Now that the code has stabilized
 	//      it should be merged into the classes and a method should be
 	//      added to JavaType.
-	public JavaTypeReference reference(Type type) {
-		JavaTypeReference result;
+	public BoxableTypeReference reference(Type type) {
+		BoxableTypeReference result;
 		Namespace rootNamespace = type.view().namespace();
 		if(type instanceof NullType) {
 			return new DirectJavaTypeReference(type);
@@ -697,8 +674,8 @@ public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBox
 			IntersectionType intersection = (IntersectionType) type;
 			result = new JavaIntersectionTypeReference();
 			result.setUniParent(rootNamespace);
-			for(Type t: ((IntersectionType)type).types()) {
-				JavaTypeReference reference = reference(t);
+			for(Type t: intersection.types()) {
+				TypeReference reference = reference(t);
 				Element oldParent = reference.lexical().parent();
 				reference.setUniParent(null);
 				// first clean up the uni link, we must add it to the non-local reference.
@@ -710,7 +687,7 @@ public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBox
 			result = new JavaUnionTypeReference();
 			result.setUniParent(rootNamespace);
 			for(Type t: ((UnionType)type).types()) {
-				JavaTypeReference reference = reference(t);
+				TypeReference reference = reference(t);
 				Element oldParent = reference.lexical().parent();
 				reference.setUniParent(null);
 				// first clean up the uni link, we must add it to the non-local reference.
@@ -719,10 +696,10 @@ public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBox
 			}
 		}
 		else if (type instanceof ArrayType) {
-			JavaTypeReference reference = reference(((ArrayType)type).elementType());
+			TypeReference reference = reference(((ArrayType)type).elementType());
 			Element oldParent = reference.lexical().parent();
 			reference.setUniParent(null);
-			result = new ArrayTypeReference(reference);
+			result = new ArrayTypeReference((JavaTypeReference) reference);
 			result.setUniParent(oldParent);
 		}	else if (type instanceof TypeInstantiation){
 			BasicJavaTypeReference tref = new BasicJavaTypeReference(type.name());
@@ -762,36 +739,20 @@ public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBox
 		} else if (type instanceof RawType) {
 			result = (JavaTypeReference) createTypeReferenceInNamespace(type.getFullyQualifiedName(),rootNamespace);
 		} else if (type instanceof ExtendsWildcardType) {
-			JavaTypeReference reference = reference(((ExtendsWildcardType)type).bound());
+			TypeReference reference = reference(((ExtendsWildcardType)type).bound());
 			Element parent = reference.lexical().parent();
 			reference.setUniParent(null);
 			result = new JavaExtendsReference(reference);
 			result.setUniParent(parent);
 		} else if (type instanceof SuperWildcardType) {
-			JavaTypeReference reference = reference(((SuperWildcardType)type).bound());
+			TypeReference reference = reference(((SuperWildcardType)type).bound());
 			Element parent = reference.lexical().parent();
 			reference.setUniParent(null);
 			result = new JavaSuperReference(reference);
 			result.setUniParent(parent);
 		} else if (type instanceof ConstrainedType) {
-			result = new JavaConstrainedTypeReference();
-			ConstrainedType constrainedType = (ConstrainedType) type;
-			Type up = constrainedType.upperBound();
-			TypeReference upRef = reference(up);
-			upRef.setUniParent(null);
-			Type low = constrainedType.lowerBound();
-			TypeReference lowRef = reference(low);
-			lowRef.setUniParent(null);
-			((ConstrainedTypeReference)result).addConstraint(new ExtendsConstraint(upRef));
-			((ConstrainedTypeReference)result).addConstraint(new SuperConstraint(lowRef));
-			result.setUniParent(rootNamespace);
+			result = (BoxableTypeReference)((ConstrainedType) type).reference();
 		}
-		//			else if (type instanceof PureWildCardType) {
-		//				result = (JavaTypeReference) createPureWildcard();
-		//				// A pure wildcard type has the original pure wildcard as its parent. The parent of the new reference is the parent of
-		//				// the original pure wildcard.
-		//				result.setUniParent(type.parent().parent());
-		//			}
 		else {
 			throw new ChameleonProgrammerException("Type of type is "+type.getClass().getName());
 		}
@@ -866,13 +827,9 @@ public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBox
 		}
 	}
 
-	public <E extends Element> E replace(TypeReference replacement, Declaration declarator, E in, Class<E> kind) throws LookupException {
-		return NonLocalJavaTypeReference.replace(replacement, declarator, in,kind);
-	}
-
 	@Override
-	public TypeReference createNonLocalTypeReference(TypeReference tref, Element lookupParent) {
-		return new NonLocalJavaTypeReference((JavaTypeReference) tref, lookupParent);
+	public TypeReference createNonLocalTypeReference(TypeReference tref, Element lookupTarget) {
+		return new NonLocalJavaTypeReference((JavaTypeReference) tref, lookupTarget);
 	}
 
 	@Override

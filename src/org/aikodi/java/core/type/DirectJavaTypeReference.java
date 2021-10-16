@@ -34,13 +34,13 @@ public class DirectJavaTypeReference extends ElementImpl implements JavaTypeRefe
 	@Override
 	public JavaTypeReference erasedReference() {
 		Java7 java = language(Java7.class);
-		return java.reference(java.erasure(_type));
+		return (JavaTypeReference) java.reference(java.erasure(_type));
 	}
 
 	@Override
 	public JavaTypeReference componentTypeReference() {
 		if(_type instanceof ArrayType) {
-			return language(Java7.class).reference(_type).componentTypeReference();
+			return ((JavaTypeReference)language(Java7.class).reference(_type)).componentTypeReference();
 		} else {
 			return this;
 		}

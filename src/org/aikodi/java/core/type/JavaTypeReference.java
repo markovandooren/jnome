@@ -25,12 +25,8 @@ public interface JavaTypeReference extends BoxableTypeReference {
     return result;
   }
 	
-	public JavaTypeReference erasedReference();
+	JavaTypeReference erasedReference();
 	
-	public JavaTypeReference componentTypeReference();
+	JavaTypeReference componentTypeReference();
 	
-	public default BoxableTypeReference box() throws LookupException {
-	    Java7 language = language(Java7.class);
-        return language.box(this, view().namespace());
-	}
 }

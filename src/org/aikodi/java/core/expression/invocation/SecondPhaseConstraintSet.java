@@ -8,6 +8,7 @@ import org.aikodi.chameleon.core.language.WrongLanguageException;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.expression.MethodInvocation;
+import org.aikodi.chameleon.oo.language.LanguageWithBoxing;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguageImpl;
 import org.aikodi.chameleon.oo.method.MethodHeader;
@@ -284,13 +285,13 @@ public class SecondPhaseConstraintSet extends ConstraintSet<SecondPhaseConstrain
 		// Let R' = R[T1=B(T1) ... Tn=B(Tn)] where B(Ti) is the type inferred for Ti in the previous section, or Ti if no type was inferred.
 		for(TypeAssignment assignment: assignments().assignments()) {
 			Type type = assignment.type();
-			BoxableTypeReference replacement = RRef.language(Java7.class).reference(type);
+			BoxableTypeReference replacement = RRef.language(LanguageWithBoxing.class).reference(type);
 			RprimeRef = (BoxableTypeReference) NonLocalJavaTypeReference.replace(replacement, assignment.parameter(), RprimeRef);
 		}
 		return RprimeRef;
 	}
   
-	private JavaTypeReference S() throws LookupException {
+	private BoxableTypeReference S() throws LookupException {
   	if(! inContextOfAssignmentConversion()) {
   		throw new ChameleonProgrammerException();
   	} else {

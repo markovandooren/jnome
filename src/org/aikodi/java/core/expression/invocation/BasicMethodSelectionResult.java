@@ -96,7 +96,7 @@ public class BasicMethodSelectionResult<M extends Method> implements MethodSelec
 				// we detach the signature from the clone.
 				Type assignedType = _assignment.type(originalPar);
 				Java7 language = _template.language(Java7.class);
-				JavaTypeReference reference = language.reference(assignedType);
+				TypeReference reference = language.reference(assignedType);
 				Element parent = reference.lexical().parent();
 				reference.setUniParent(null);
 				EqualityTypeArgument argument = language.createEqualityTypeArgument(reference);

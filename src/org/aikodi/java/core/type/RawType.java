@@ -239,4 +239,8 @@ public class RawType extends ClassWithBody implements JavaType {
   public boolean uniSupertypeOf(Type other, TypeFixer trace) throws LookupException {
     return other.superTypeJudge().get(this) != null;
   }
+
+  public TypeReference reference() {
+    return language(ObjectOrientedLanguage.class).createTypeReferenceInNamespace(getFullyQualifiedName(), view().namespace());
+  }
 }

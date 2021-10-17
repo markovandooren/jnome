@@ -660,40 +660,29 @@ public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBox
 		} else if (type instanceof TypeInstantiation){
 			result = ((TypeInstantiation)type).reference();
 		} else if (type instanceof TypeVariable) {
-			result = createTypeReference(type.name());
-			result.setUniParent(((TypeVariable)type).parameter().parent());
+			result = ((TypeVariable)type).reference();
 		} else if (type instanceof InstantiatedParameterType) {
-			result = createTypeReference(type.name());
-			result.setUniParent(((InstantiatedParameterType)type).parameter().parent());
+			result = ((InstantiatedParameterType)type).reference();
 		} else if (type instanceof AnonymousInnerClass) {
-			BasicJavaTypeReference typeReference = ((AnonymousInnerClass)type).invocation().getTypeReference();
-			result = Util.clone(typeReference);
-			result.setUniParent(typeReference.parent());
+			result = ((AnonymousInnerClass)type).reference();
 		} else if (type instanceof RegularType) {
 			// for now, if this code is invoked, there are no generic parameters.
-			result = createTypeReferenceInNamespace(type.getFullyQualifiedName(),rootNamespace);
-			if(type.nbTypeParameters(TypeParameter.class) > 0) {
-				for(TypeParameter tpar: type.parameters(TypeParameter.class)) {
-					Element lookupParent = tpar;
-					TypeReference nameref = createTypeReference(tpar.name());
-					TypeReference tref = new NonLocalJavaTypeReference(nameref, lookupParent);
-					((BasicJavaTypeReference)result).addArgument(createEqualityTypeArgument(tref));
-				}
+			List<TypeParameter> parameters = type.parameters(TypeParameter.class);
+			List<TypeArgument> arguments = new ArrayList<>();
+			for(TypeParameter tpar: parameters) {
+				Element lookupParent = tpar;
+				TypeReference nameref = createTypeReference(tpar.name());
+				TypeReference tref = createNonLocalTypeReference(nameref, lookupParent);
+				arguments.add(createEqualityTypeArgument(tref));
 			}
+			result = createTypeReference(type.getFullyQualifiedName(), parameters, arguments);
+			result.setUniParent(rootNamespace);
 		} else if (type instanceof RawType) {
-			result = createTypeReferenceInNamespace(type.getFullyQualifiedName(),rootNamespace);
+			result = ((RawType)type).reference();
 		} else if (type instanceof ExtendsWildcardType) {
-			TypeReference reference = reference(((ExtendsWildcardType)type).bound());
-			Element parent = reference.lexical().parent();
-			reference.setUniParent(null);
-			result = new ExtendsReference(reference);
-			result.setUniParent(parent);
+			result = ((ExtendsWildcardType)type).reference();
 		} else if (type instanceof SuperWildcardType) {
-			TypeReference reference = reference(((SuperWildcardType)type).bound());
-			Element parent = reference.lexical().parent();
-			reference.setUniParent(null);
-			result = new JavaSuperReference(reference);
-			result.setUniParent(parent);
+			result = ((SuperWildcardType)type).reference();
 		} else if (type instanceof ConstrainedType) {
 			result = ((ConstrainedType) type).reference();
 		}
@@ -704,6 +693,25 @@ public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBox
 			throw new ChameleonProgrammerException();
 		}
 		return result;
+	}
+
+	@Override
+	public TypeReference createTypeReference(String fqn, List<TypeParameter> parameters, List<TypeArgument> arguments) {
+		BasicJavaTypeReference result = new BasicJavaTypeReference(fqn);
+		for (TypeArgument arg : arguments) {
+			result.addArgument(arg);
+		}
+		return result;
+	}
+
+	@Override
+	public TypeReference createSuperReference(TypeReference reference) {
+		return new JavaSuperReference(reference);
+	}
+
+	@Override
+	public TypeReference createExtendsReference(TypeReference reference) {
+		return new ExtendsReference(reference);
 	}
 
 	@Override

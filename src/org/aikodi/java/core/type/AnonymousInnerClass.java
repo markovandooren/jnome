@@ -4,6 +4,7 @@ import org.aikodi.chameleon.core.declaration.Name;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
+import org.aikodi.chameleon.util.Util;
 import org.aikodi.java.core.expression.invocation.ConstructorInvocation;
 
 public class AnonymousInnerClass extends AbstractAnonymousInnerClass {
@@ -47,10 +48,11 @@ public class AnonymousInnerClass extends AbstractAnonymousInnerClass {
 		anonymousInnerClass.parameterBlock(TypeParameter.class).disconnect();
 		return anonymousInnerClass;
 	}
-	
-//	@Override
-//	public List<InheritanceRelation> inheritanceRelations() {
-//		compile
-//	}
-	
+
+    public TypeReference reference() {
+		TypeReference typeReference = invocation().getTypeReference();
+		TypeReference result = Util.clone(typeReference);
+		result.setUniParent(typeReference.lexical().parent());
+		return result;
+    }
 }

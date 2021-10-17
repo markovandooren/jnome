@@ -12,6 +12,7 @@ import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.method.SimpleNameMethodHeader;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeFixer;
+import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.inheritance.SubtypeRelation;
 import org.aikodi.chameleon.oo.variable.RegularMemberVariable;
 import org.aikodi.chameleon.support.member.simplename.method.NormalMethod;
@@ -49,7 +50,7 @@ public class ArrayType extends AbstractJavaType implements JavaType {
     Method clone = new NormalMethod(new SimpleNameMethodHeader("clone", returnType));
     add(clone);
     // JLS3 4.10.3 p.64
-    // FIXME May these should be implicit inheritance relations. Not that important, though, as
+    // FIXME Maybe these should be implicit inheritance relations. Not that important, though, as
     //       these cannot be manipulated by programmers anyway.
     addInheritanceRelation(new SubtypeRelation(language.createTypeReference("java.lang.Object")));
     addInheritanceRelation(new SubtypeRelation(language.createTypeReference("java.lang.Cloneable")));
@@ -80,13 +81,12 @@ public class ArrayType extends AbstractJavaType implements JavaType {
   
   /**
 	 * @param string
-	 * @param dimension
 	 * @return
 	 */
 	private static String getArrayName(String string) {
 		StringBuffer result = new StringBuffer(string);
-    result.append("[]"); 
-    return result.toString();
+        result.append("[]");
+        return result.toString();
 	}
 
 	/**
@@ -167,4 +167,12 @@ public class ArrayType extends AbstractJavaType implements JavaType {
 		return builder.build();
 	}
 
+    public TypeReference reference() {
+        TypeReference reference = language(ObjectOrientedLanguage.class).reference(elementType());
+        Element oldParent = reference.lexical().parent();
+        reference.setUniParent(null);
+        ArrayTypeReference result = new ArrayTypeReference((JavaTypeReference) reference);
+        result.setUniParent(oldParent);
+        return result;
+    }
 }

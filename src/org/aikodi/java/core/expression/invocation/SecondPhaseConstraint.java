@@ -4,23 +4,21 @@
 package org.aikodi.java.core.expression.invocation;
 
 import org.aikodi.chameleon.core.lookup.LookupException;
-import org.aikodi.chameleon.oo.type.BoxableTypeReference;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.java.core.language.Java7;
-import org.aikodi.java.core.type.JavaTypeReference;
 
 public abstract class SecondPhaseConstraint extends Constraint<SecondPhaseConstraint, SecondPhaseConstraintSet> {
 	
-	public SecondPhaseConstraint(TypeParameter param, BoxableTypeReference typeReference) {
+	public SecondPhaseConstraint(TypeParameter param, TypeReference typeReference) {
 	  _UReference = typeReference;	
 	  _typeParameter = param;
 	}
 	
-	private BoxableTypeReference _UReference;
+	private TypeReference _UReference;
 	
-	public BoxableTypeReference URef() {
+	public TypeReference URef() {
 		return _UReference;
 	}
 	

@@ -7,6 +7,7 @@ import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.element.ElementImpl;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.type.Type;
+import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.util.association.Single;
 
 /**
@@ -34,7 +35,7 @@ public class ArrayTypeReference  extends ElementImpl implements JavaTypeReferenc
    @
    @ pre arrayDimension > 0;
    @*/
-	public ArrayTypeReference(JavaTypeReference elementType, int arrayDimension) {
+	public ArrayTypeReference(TypeReference elementType, int arrayDimension) {
 		if(arrayDimension > 1) {
 			set(_elementType,new ArrayTypeReference(elementType, arrayDimension - 1));
 		} else {
@@ -42,18 +43,18 @@ public class ArrayTypeReference  extends ElementImpl implements JavaTypeReferenc
 		}
 	}
 	
-	public ArrayTypeReference(JavaTypeReference elementType) {
+	public ArrayTypeReference(TypeReference elementType) {
 		this(elementType,1);
 	}
 	
-  public JavaTypeReference elementTypeReference() {
+  public TypeReference elementTypeReference() {
   	return _elementType.getOtherEnd();
   }
   
-  private Single<JavaTypeReference> _elementType = new Single<JavaTypeReference>(this);
+  private Single<TypeReference> _elementType = new Single<TypeReference>(this);
 
-	public JavaTypeReference erasedReference() {
-		JavaTypeReference erasedReference = elementTypeReference().erasedReference();
+	public TypeReference erasedReference() {
+		TypeReference erasedReference = ((JavaTypeReference)elementTypeReference()).erasedReference();
 		ArrayTypeReference result = new ArrayTypeReference(erasedReference);
 		return result;
 	}
@@ -64,11 +65,6 @@ public class ArrayTypeReference  extends ElementImpl implements JavaTypeReferenc
 
 	public Type getElement() throws LookupException {
 		return ArrayType.create(elementTypeReference().getElement());
-	}
-
-
-	public JavaTypeReference componentTypeReference() {
-		return elementTypeReference().componentTypeReference();
 	}
 
 	@Override

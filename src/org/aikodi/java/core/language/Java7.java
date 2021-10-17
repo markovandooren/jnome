@@ -1,12 +1,7 @@
 package org.aikodi.java.core.language;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.aikodi.chameleon.core.declaration.Declaration;
 import org.aikodi.chameleon.core.element.Element;
@@ -32,24 +27,7 @@ import org.aikodi.chameleon.oo.language.ObjectOrientedLanguageImpl;
 import org.aikodi.chameleon.oo.member.SignatureWithParameters;
 import org.aikodi.chameleon.oo.method.Method;
 import org.aikodi.chameleon.oo.type.*;
-import org.aikodi.chameleon.oo.type.generics.CapturedTypeParameter;
-import org.aikodi.chameleon.oo.type.generics.ConstrainedType;
-import org.aikodi.chameleon.oo.type.generics.EqualityConstraint;
-import org.aikodi.chameleon.oo.type.generics.EqualityTypeArgument;
-import org.aikodi.chameleon.oo.type.generics.ExtendsConstraint;
-import org.aikodi.chameleon.oo.type.generics.ExtendsWildcard;
-import org.aikodi.chameleon.oo.type.generics.ExtendsWildcardType;
-import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
-import org.aikodi.chameleon.oo.type.generics.InstantiatedParameterType;
-import org.aikodi.chameleon.oo.type.generics.InstantiatedTypeParameter;
-import org.aikodi.chameleon.oo.type.generics.SuperConstraint;
-import org.aikodi.chameleon.oo.type.generics.SuperWildcard;
-import org.aikodi.chameleon.oo.type.generics.SuperWildcardType;
-import org.aikodi.chameleon.oo.type.generics.TypeArgument;
-import org.aikodi.chameleon.oo.type.generics.TypeArgumentWithTypeReference;
-import org.aikodi.chameleon.oo.type.generics.TypeConstraint;
-import org.aikodi.chameleon.oo.type.generics.TypeParameter;
-import org.aikodi.chameleon.oo.type.generics.TypeVariable;
+import org.aikodi.chameleon.oo.type.generics.*;
 import org.aikodi.chameleon.oo.type.inheritance.AbstractInheritanceRelation;
 import org.aikodi.chameleon.oo.variable.VariableDeclarator;
 import org.aikodi.chameleon.support.member.simplename.variable.MemberVariableDeclarator;
@@ -62,14 +40,13 @@ import org.aikodi.chameleon.support.rule.member.MemberOverridableByDefault;
 import org.aikodi.chameleon.support.rule.member.TypeExtensibleByDefault;
 import org.aikodi.chameleon.util.Util;
 import org.aikodi.chameleon.workspace.View;
-import org.aikodi.java.core.expression.invocation.JavaExtendsReference;
+import org.aikodi.java.core.expression.invocation.ExtendsReference;
 import org.aikodi.java.core.expression.invocation.JavaSuperReference;
 import org.aikodi.java.core.expression.invocation.NonLocalJavaTypeReference;
 import org.aikodi.java.core.modifier.PackageProperty;
 import org.aikodi.java.core.property.ValueClass;
 import org.aikodi.java.core.type.AnonymousInnerClass;
 import org.aikodi.java.core.type.ArrayType;
-import org.aikodi.java.core.type.ArrayTypeReference;
 import org.aikodi.java.core.type.BasicJavaTypeReference;
 import org.aikodi.java.core.type.CapturedType;
 import org.aikodi.java.core.type.DirectJavaTypeReference;
@@ -241,7 +218,7 @@ public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBox
 		result.setUniParent(signature.parent());
 		for(TypeReference tref : signature.typeReferences()) {
 			JavaTypeReference jref = (JavaTypeReference) tref;
-			JavaTypeReference erasedReference = jref.erasedReference();
+			TypeReference erasedReference = jref.erasedReference();
 			result.add(erasedReference);
 		}
 		return result;
@@ -603,13 +580,15 @@ public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBox
 		return isUnboxable(type) || _numericPrimitives.contains(type.getFullyQualifiedName());
 	}
 
-	public BoxableTypeReference box(BoxableTypeReference aRef, Namespace root) throws LookupException {
-		String newFqn = _boxMap.get(((CrossReferenceWithName)(aRef)).name());
-		if(newFqn == null) {
-			//throw new LookupException("Type "+fqn+" cannot be converted through boxing.");
+	public TypeReference box(TypeReference aRef, Namespace root) throws LookupException {
+		if (! (aRef instanceof CrossReferenceWithName)) {
 			return aRef;
 		}
-		BoxableTypeReference result = createTypeReference(newFqn);
+		String newFqn = _boxMap.get(((CrossReferenceWithName)(aRef)).name());
+		if(newFqn == null) {
+			return aRef;
+		}
+		TypeReference result = createTypeReference(newFqn);
 		result.setUniParent(root);
 		return result;
 	}
@@ -655,94 +634,59 @@ public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBox
 	}
 
 	@Override
-	public IntersectionTypeReference createIntersectionReference(TypeReference first, TypeReference second) {
-		List<TypeReference> list = new ArrayList<TypeReference>(2);
-		list.add(first);
-		list.add(second);
-		return new JavaIntersectionTypeReference(list);
+	public IntersectionTypeReference createIntersectionReference(TypeReference... types) {
+		return new JavaIntersectionTypeReference(Arrays.asList(types));
+	}
+
+	@Override
+	public UnionTypeReference createUnionReference(TypeReference... types) {
+		return new JavaUnionTypeReference(Arrays.asList(types));
 	}
 
 	//FIXME get rid of this monster. Now that the code has stabilized
 	//      it should be merged into the classes and a method should be
 	//      added to JavaType.
-	public BoxableTypeReference reference(Type type) {
-		BoxableTypeReference result;
+	public TypeReference reference(Type type) {
+		TypeReference result;
 		Namespace rootNamespace = type.view().namespace();
 		if(type instanceof NullType) {
 			return new DirectJavaTypeReference(type);
 		} else if(type instanceof IntersectionType) {
-			IntersectionType intersection = (IntersectionType) type;
-			result = new JavaIntersectionTypeReference();
-			result.setUniParent(rootNamespace);
-			for(Type t: intersection.types()) {
-				TypeReference reference = reference(t);
-				Element oldParent = reference.lexical().parent();
-				reference.setUniParent(null);
-				// first clean up the uni link, we must add it to the non-local reference.
-				TypeReference nl = createNonLocalTypeReference(reference, oldParent);
-				((JavaIntersectionTypeReference)result).add(nl);
-			}
+			result = ((IntersectionType)type).reference();
 		} else if(type instanceof UnionType) {
-			UnionType intersection = (UnionType) type;
-			result = new JavaUnionTypeReference();
-			result.setUniParent(rootNamespace);
-			for(Type t: ((UnionType)type).types()) {
-				TypeReference reference = reference(t);
-				Element oldParent = reference.lexical().parent();
-				reference.setUniParent(null);
-				// first clean up the uni link, we must add it to the non-local reference.
-				TypeReference nl = createNonLocalTypeReference(reference, oldParent);
-				((JavaUnionTypeReference)result).add(nl);
-			}
-		}
-		else if (type instanceof ArrayType) {
-			TypeReference reference = reference(((ArrayType)type).elementType());
-			Element oldParent = reference.lexical().parent();
-			reference.setUniParent(null);
-			result = new ArrayTypeReference((JavaTypeReference) reference);
-			result.setUniParent(oldParent);
-		}	else if (type instanceof TypeInstantiation){
-			BasicJavaTypeReference tref = new BasicJavaTypeReference(type.name());
-			result = new NonLocalJavaTypeReference(tref,type.lexical().parent());
-			result.setUniParent(type.lexical().parent());
-			// next setup the generic parameters.
-			for(TypeParameter parameter: type.parameters(TypeParameter.class)) {
-				cloneActualTypeArguments(parameter,tref);
-			}
+			result = ((UnionType)type).reference();
+		} else if (type instanceof ArrayType) {
+			result = ((ArrayType)type).reference();
+		} else if (type instanceof TypeInstantiation){
+			result = ((TypeInstantiation)type).reference();
 		} else if (type instanceof TypeVariable) {
-			//result = new NonLocalJavaTypeReference(new BasicJavaTypeReference(type.signature().name()),type.parent());
-			result = new BasicJavaTypeReference(type.name());
+			result = createTypeReference(type.name());
 			result.setUniParent(((TypeVariable)type).parameter().parent());
 		} else if (type instanceof InstantiatedParameterType) {
-			//result = new NonLocalJavaTypeReference(new BasicJavaTypeReference(type.signature().name()),type.parent());
-			result = new BasicJavaTypeReference(type.name());
+			result = createTypeReference(type.name());
 			result.setUniParent(((InstantiatedParameterType)type).parameter().parent());
 		} else if (type instanceof AnonymousInnerClass) {
-			//				throw new Error();
 			BasicJavaTypeReference typeReference = ((AnonymousInnerClass)type).invocation().getTypeReference();
 			result = Util.clone(typeReference);
 			result.setUniParent(typeReference.parent());
-			//				String fqn = typeReference.getElement().getFullyQualifiedName();
-			//				result = (JavaTypeReference) createTypeReferenceInNamespace(fqn,rootNamespace);
 		} else if (type instanceof RegularType) {
 			// for now, if this code is invoked, there are no generic parameters.
-			result = (JavaTypeReference) createTypeReferenceInNamespace(type.getFullyQualifiedName(),rootNamespace);
+			result = createTypeReferenceInNamespace(type.getFullyQualifiedName(),rootNamespace);
 			if(type.nbTypeParameters(TypeParameter.class) > 0) {
-				//					throw new ChameleonProgrammerException("requesting reference of RegularType with type parameters");
 				for(TypeParameter tpar: type.parameters(TypeParameter.class)) {
 					Element lookupParent = tpar;
-					JavaTypeReference nameref = createTypeReference(tpar.name());
+					TypeReference nameref = createTypeReference(tpar.name());
 					TypeReference tref = new NonLocalJavaTypeReference(nameref, lookupParent);
 					((BasicJavaTypeReference)result).addArgument(createEqualityTypeArgument(tref));
 				}
 			}
 		} else if (type instanceof RawType) {
-			result = (JavaTypeReference) createTypeReferenceInNamespace(type.getFullyQualifiedName(),rootNamespace);
+			result = createTypeReferenceInNamespace(type.getFullyQualifiedName(),rootNamespace);
 		} else if (type instanceof ExtendsWildcardType) {
 			TypeReference reference = reference(((ExtendsWildcardType)type).bound());
 			Element parent = reference.lexical().parent();
 			reference.setUniParent(null);
-			result = new JavaExtendsReference(reference);
+			result = new ExtendsReference(reference);
 			result.setUniParent(parent);
 		} else if (type instanceof SuperWildcardType) {
 			TypeReference reference = reference(((SuperWildcardType)type).bound());
@@ -751,7 +695,7 @@ public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBox
 			result = new JavaSuperReference(reference);
 			result.setUniParent(parent);
 		} else if (type instanceof ConstrainedType) {
-			result = (BoxableTypeReference)((ConstrainedType) type).reference();
+			result = ((ConstrainedType) type).reference();
 		}
 		else {
 			throw new ChameleonProgrammerException("Type of type is "+type.getClass().getName());
@@ -760,33 +704,6 @@ public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBox
 			throw new ChameleonProgrammerException();
 		}
 		return result;
-	}
-
-	public void cloneActualTypeArguments(TypeParameter parameter, BasicJavaTypeReference tref) {
-		TypeArgument result = null;
-		if(parameter instanceof InstantiatedTypeParameter) {
-			TypeArgument argument = ((InstantiatedTypeParameter)parameter).argument();
-			result = Util.clone(argument);
-			if(result instanceof TypeArgumentWithTypeReference) {
-				TypeArgumentWithTypeReference argWithRef = (TypeArgumentWithTypeReference) result;
-				//it will be detached from the cloned argument automatically
-				NonLocalJavaTypeReference ref = new NonLocalJavaTypeReference((JavaTypeReference) argWithRef.typeReference(),argument);
-				argWithRef.setTypeReference(ref);
-			}
-			tref.addArgument(result);
-		} else {
-			try {
-				if(! (parameter instanceof CapturedTypeParameter)) {
-					throw new Error();
-				}
-				TypeReference ref = new DirectJavaTypeReference(parameter.selectionDeclaration());
-				result = parameter.language(Java7.class).createEqualityTypeArgument(ref);
-				tref.addArgument(result);
-			} catch (LookupException e) {
-				//FIXME A type reference alias would get rid of this try-catch block.
-				throw new ChameleonProgrammerException(e);
-			}
-		}
 	}
 
 	@Override
@@ -828,7 +745,7 @@ public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBox
 	}
 
 	@Override
-	public TypeReference createNonLocalTypeReference(TypeReference tref, Element lookupTarget) {
+	public NonLocalTypeReference createNonLocalTypeReference(TypeReference tref, Element lookupTarget) {
 		return new NonLocalJavaTypeReference((JavaTypeReference) tref, lookupTarget);
 	}
 
@@ -836,6 +753,11 @@ public class Java7 extends ObjectOrientedLanguageImpl implements LanguageWithBox
 	public EqualityTypeArgument createEqualityTypeArgument(TypeReference tref) {
 		JavaEqualityTypeArgument result = new JavaEqualityTypeArgument(tref);
 		return result;
+	}
+
+	@Override
+	public TypeReference createDirectTypeReference(Type type) {
+		return new DirectJavaTypeReference(type);
 	}
 
 	@Override

@@ -11,7 +11,7 @@ import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.SuperWildcardType;
 
-public class JavaSuperReference extends WildCardReference<JavaSuperReference> {
+public class JavaSuperReference extends WildCardReference {
 
 	public JavaSuperReference(TypeReference tref) {
 		super(tref);

@@ -9,10 +9,6 @@ public class JavaConstrainedTypeReference extends ConstrainedTypeReference imple
     
   }
   
-//  public ConstrainedTypeReference(List<TypeConstraint> constraints) {
-//    constraints.forEach(c -> addConstraint(c));
-//  }
-  
   @Override
   public JavaTypeReference erasedReference() {
     JavaTypeReference result = cloneSelf();
@@ -24,16 +20,11 @@ public class JavaConstrainedTypeReference extends ConstrainedTypeReference imple
   }
 
   @Override
-  public JavaTypeReference componentTypeReference() {
-    return this;
-  }
-
-  @Override
   protected JavaConstrainedTypeReference cloneSelf() {
     return new JavaConstrainedTypeReference();
   }
 
-  
+
   {
     _typeConstraints.enableCache();
   }

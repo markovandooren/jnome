@@ -5,7 +5,7 @@ package org.aikodi.java.core.expression.invocation;
 
 
 import org.aikodi.chameleon.core.lookup.LookupException;
-import org.aikodi.chameleon.oo.type.BoxableTypeReference;
+import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.generics.FormalTypeParameter;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
@@ -15,7 +15,7 @@ import org.aikodi.java.core.type.JavaTypeReference;
 
 public class EqualTypeConstraint extends SecondPhaseConstraint {
 
-	public EqualTypeConstraint(TypeParameter param, BoxableTypeReference type) {
+	public EqualTypeConstraint(TypeParameter param, TypeReference type) {
 		super(param,type);
 	}
 	
@@ -51,7 +51,7 @@ public class EqualTypeConstraint extends SecondPhaseConstraint {
 	 * Replace the typeParameter() of this constraint with a clone of the given type reference in the other constraints.
 	 * The clone will direct its lookup to the parent of the given type reference to avoid name capture.
 	 */
-	private void substituteRHS(BoxableTypeReference tref) throws LookupException {
+	private void substituteRHS(TypeReference tref) throws LookupException {
 		parent().substituteRHS(tref, this);
 	}
 

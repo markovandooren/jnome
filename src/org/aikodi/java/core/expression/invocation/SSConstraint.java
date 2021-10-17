@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.aikodi.chameleon.core.lookup.LookupException;
-import org.aikodi.chameleon.oo.type.BoxableTypeReference;
+import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.AbstractInstantiatedTypeParameter;
@@ -32,7 +32,7 @@ import com.google.common.collect.ImmutableSet;
  */
 public class SSConstraint extends FirstPhaseConstraint {
 
-	public SSConstraint(BoxableTypeReference A, Type F) {
+	public SSConstraint(TypeReference A, Type F) {
 		super(A,F);
 	}
 
@@ -44,7 +44,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 			// JLS7 p.468 If A is a primitive type, then A is converted to a reference type U via
 			// boxing conversion and this algorithm is applied recursively to the constraint
 			// U << F
-			SSConstraint recursive = new SSConstraint(ARef().box(), F());
+			SSConstraint recursive = new SSConstraint(language().box(ARef(), ARef().view().namespace()), F());
 			recursive.setUniParent(parent());
 			result.addAll(recursive.process());
 		} else {
@@ -54,7 +54,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 	}
 
 	@Override
-	public FirstPhaseConstraint Array(BoxableTypeReference componentType, Type componentTypeReference) {
+	public FirstPhaseConstraint Array(TypeReference componentType, Type componentTypeReference) {
 		SSConstraint ssConstraint = new SSConstraint(componentType, componentTypeReference);
 		ssConstraint.setUniParent(parent());
 		return ssConstraint;
@@ -62,7 +62,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 
 
 	@Override
-	public SupertypeConstraint FequalsTj(TypeParameter declarator, BoxableTypeReference type) {
+	public SupertypeConstraint FequalsTj(TypeParameter declarator, TypeReference type) {
 		return new SupertypeConstraint(declarator, type);
 	}
 
@@ -74,7 +74,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 	 *  2) G<...,Xk-1,? super V,Xk+1,...>, where V is a type expression. Then this algorithm is
 	 *     applied recursively to the constraint V>>U
 	 */
-	public void caseSSFormalSuper(List<SecondPhaseConstraint> result, BoxableTypeReference U,
+	public void caseSSFormalSuper(List<SecondPhaseConstraint> result, TypeReference U,
 			int index) throws LookupException {
 		Type G = GsuperTypeOfA();
 		if(G != null) {
@@ -111,7 +111,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 	 *     applied recursively to the constraint V<<U
 	 */
 	@Override
-	public void caseSSFormalExtends(List<SecondPhaseConstraint> result, BoxableTypeReference U,
+	public void caseSSFormalExtends(List<SecondPhaseConstraint> result, TypeReference U,
 			int index) throws LookupException {
 
 		Type G = GsuperTypeOfA();
@@ -122,14 +122,14 @@ public class SSConstraint extends FirstPhaseConstraint {
 				TypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 				// 1)
 				if(arg instanceof EqualityTypeArgument) {
-					BoxableTypeReference V = (BoxableTypeReference) ((EqualityTypeArgument)arg).typeReference();
+					TypeReference V = (TypeReference) ((EqualityTypeArgument)arg).typeReference();
 					SSConstraint recursive = new SSConstraint(V, U.getElement());
 					recursive.setUniParent(parent());
 					result.addAll(recursive.process());
 				} 
 				// 2)
 				else if (arg instanceof ExtendsWildcard) {
-					BoxableTypeReference V = (BoxableTypeReference) ((ExtendsWildcard)arg).typeReference();
+					TypeReference V = (TypeReference) ((ExtendsWildcard)arg).typeReference();
 					SSConstraint recursive = new SSConstraint(V, U.getElement());
 					recursive.setUniParent(parent());
 					result.addAll(recursive.process());
@@ -144,7 +144,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 	 * the in A has a supertype of the form G<...,Xk-1,V,Xk+1,...> where V is a type expression, this algorithm 
 	 * is applied recursively to the constraint V = U. 
 	 */
-	public void caseSSFormalBasic(List<SecondPhaseConstraint> result, BoxableTypeReference U,
+	public void caseSSFormalBasic(List<SecondPhaseConstraint> result, TypeReference U,
 			int index) throws LookupException {
 		Type G = GsuperTypeOfA();
 		if(G != null) {
@@ -153,7 +153,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 				if(ithTypeParameterOfG instanceof InstantiatedTypeParameter) {
 					TypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfG).argument();
 					if(arg instanceof EqualityTypeArgument) {
-						BoxableTypeReference V = (BoxableTypeReference) ((EqualityTypeArgument)arg).typeReference();
+						TypeReference V = (TypeReference) ((EqualityTypeArgument)arg).typeReference();
 						EQConstraint recursive = new EQConstraint(V, U.getElement());
 						parent().addGenerated(recursive);
 						recursive.setUniParent(parent());
@@ -162,7 +162,7 @@ public class SSConstraint extends FirstPhaseConstraint {
 				} else if(ithTypeParameterOfG instanceof CapturedTypeParameter) {
 					CapturedTypeParameter captured = (CapturedTypeParameter) ithTypeParameterOfG;
 					Type t = captured.selectionDeclaration();
-					BoxableTypeReference V = language().reference(t);
+					TypeReference V = language().reference(t);
 					EQConstraint recursive = new EQConstraint(V, U.getElement());
 					parent().addGenerated(recursive);
 					recursive.setUniParent(parent());

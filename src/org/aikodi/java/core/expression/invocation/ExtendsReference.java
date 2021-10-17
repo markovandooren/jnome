@@ -11,15 +11,15 @@ import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.ExtendsWildcardType;
 
-public class JavaExtendsReference extends WildCardReference {
+public class ExtendsReference extends WildCardReference {
 
-	public JavaExtendsReference(TypeReference tref) {
+	public ExtendsReference(TypeReference tref) {
 		super(tref);
 	}
 	
 	@Override
-	protected JavaExtendsReference cloneSelf() {
-		return new JavaExtendsReference(null);
+	protected ExtendsReference cloneSelf() {
+		return new ExtendsReference(null);
 	}
 
 	public Type getElement() throws LookupException {

@@ -6,7 +6,7 @@ import java.util.List;
 import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.language.ObjectOrientedLanguageImpl;
-import org.aikodi.chameleon.oo.type.BoxableTypeReference;
+import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.TypeArgument;
@@ -24,7 +24,7 @@ import org.aikodi.java.core.type.JavaTypeReference;
  */
 public class GGConstraint extends FirstPhaseConstraint {
 
-	public GGConstraint(BoxableTypeReference A, Type F) {
+	public GGConstraint(TypeReference A, Type F) {
 		super(A,F);
 	}
 
@@ -33,12 +33,12 @@ public class GGConstraint extends FirstPhaseConstraint {
 //		return null;
 //	}
 	
-	public SubtypeConstraint FequalsTj(TypeParameter declarator, BoxableTypeReference type) {
+	public SubtypeConstraint FequalsTj(TypeParameter declarator, TypeReference type) {
 		return new SubtypeConstraint(declarator, type);
 	}
 
 	@Override
-	public FirstPhaseConstraint Array(BoxableTypeReference componentType, Type componentTypeReference) {
+	public FirstPhaseConstraint Array(TypeReference componentType, Type componentTypeReference) {
 		GGConstraint ggConstraint = new GGConstraint(componentType, componentTypeReference);
 		parent().addGenerated(ggConstraint);
 		ggConstraint.setUniParent(parent());
@@ -46,7 +46,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 	}
 
 	@Override
-	public void caseSSFormalBasic(List<SecondPhaseConstraint> result, BoxableTypeReference U, int index) throws LookupException {
+	public void caseSSFormalBasic(List<SecondPhaseConstraint> result, TypeReference U, int index) throws LookupException {
 		try {
 			if(A().parameters(TypeParameter.class).isEmpty()) {
 				// If A is an instance of a non-generic type, then no constraint is implied on Tj.
@@ -82,17 +82,17 @@ public class GGConstraint extends FirstPhaseConstraint {
 						if(ithTypeParameterOfA instanceof InstantiatedTypeParameter) {
 							TypeArgument arg = ((InstantiatedTypeParameter)ithTypeParameterOfA).argument();
 							if(arg instanceof EqualityTypeArgument) {
-								EQConstraint recursive = new EQConstraint((JavaTypeReference) ((EqualityTypeArgument)arg).typeReference(), U.getElement());
+								EQConstraint recursive = new EQConstraint(((EqualityTypeArgument)arg).typeReference(), U.getElement());
 								parent().addGenerated(recursive);
 								recursive.setUniParent(parent());
 								result.addAll(recursive.process());
 							} else if(arg instanceof ExtendsWildcard) {
-								GGConstraint recursive = new GGConstraint((JavaTypeReference) ((ExtendsWildcard)arg).typeReference(), U.getElement());
+								GGConstraint recursive = new GGConstraint(((ExtendsWildcard)arg).typeReference(), U.getElement());
 								parent().addGenerated(recursive);
 								recursive.setUniParent(parent());
 								result.addAll(recursive.process());
 							} else if(arg instanceof SuperWildcard) {
-								SSConstraint recursive = new SSConstraint((JavaTypeReference) ((SuperWildcard)arg).typeReference(), U.getElement());
+								SSConstraint recursive = new SSConstraint(((SuperWildcard)arg).typeReference(), U.getElement());
 								recursive.setUniParent(parent());
 								result.addAll(recursive.process());
 							}
@@ -108,7 +108,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 	}
 
 	@Override
-	public void caseSSFormalExtends(List<SecondPhaseConstraint> result, BoxableTypeReference U, int index) throws LookupException {
+	public void caseSSFormalExtends(List<SecondPhaseConstraint> result, TypeReference U, int index) throws LookupException {
 		try {
 			if(A().parameters(TypeParameter.class).isEmpty()) {
 				// If A is an instance of a non-generic type, then no constraint is implied on Tj.
@@ -169,7 +169,7 @@ public class GGConstraint extends FirstPhaseConstraint {
 	}
 
 	@Override
-	public void caseSSFormalSuper(List<SecondPhaseConstraint> result, BoxableTypeReference U, int index) throws LookupException {
+	public void caseSSFormalSuper(List<SecondPhaseConstraint> result, TypeReference U, int index) throws LookupException {
 		try {
 			if(A().parameters(TypeParameter.class).isEmpty()) {
 				// If A is an instance of a non-generic type, then no constraint is implied on Tj.

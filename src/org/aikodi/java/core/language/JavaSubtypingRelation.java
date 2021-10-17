@@ -19,7 +19,7 @@ import org.aikodi.chameleon.core.lookup.LookupException;
 import org.aikodi.chameleon.exception.ChameleonProgrammerException;
 import org.aikodi.chameleon.oo.language.*;
 import org.aikodi.chameleon.oo.plugin.ObjectOrientedFactory;
-import org.aikodi.chameleon.oo.type.BoxableTypeReference;
+import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.TypeArgument;
@@ -91,9 +91,9 @@ public class JavaSubtypingRelation<L extends ObjectOrientedLanguage & LanguageWi
 	 * the type referenced by that type reference.</li>
 	 * <li>Otherwise
 	 * <ul>
-	 * <li>Let {@link #ST(BoxableTypeReference)} of <code>Us.get(i)</code> be the set
+	 * <li>Let {@link #ST(TypeReference)} of <code>Us.get(i)</code> be the set
 	 * of super types of <code>Us.get(i)</code>.</li>
-	 * <li>Let {@link #EST(BoxableTypeReference)} of <code>Us.get(i)</code> be the
+	 * <li>Let {@link #EST(TypeReference)} of <code>Us.get(i)</code> be the
 	 * set of erased super types of <code>Us.get(i)</code></li>
 	 * </ul>
 	 * </li>
@@ -174,7 +174,7 @@ public class JavaSubtypingRelation<L extends ObjectOrientedLanguage & LanguageWi
 	 * reference.</p>
 	 * 
 	 * <p>The set of erased super types of a type U is the set of types |W| where
-	 * W is in {@link #ST(BoxableTypeReference)} of U and |W| is the {@link JavaType#erasure()}
+	 * W is in {@link #ST(TypeReference)} of U and |W| is the {@link JavaType#erasure()}
 	 * of W.</p>
 	 * 
 	 * @param U A type reference that refers to the type of which the set of erased
@@ -182,7 +182,7 @@ public class JavaSubtypingRelation<L extends ObjectOrientedLanguage & LanguageWi
 	 * @return
 	 * @throws LookupException
 	 */
-	protected Set<Type> EST(BoxableTypeReference U) throws LookupException {
+	protected Set<Type> EST(TypeReference U) throws LookupException {
 		//FIXME This is wrong
 		return ((JavaType)U.getElement()).erasure().getSelfAndAllSuperTypesView();
 	}
@@ -198,7 +198,7 @@ public class JavaSubtypingRelation<L extends ObjectOrientedLanguage & LanguageWi
 
 
 
-	protected Set<Type> ST(BoxableTypeReference U) throws LookupException {
+	protected Set<Type> ST(TypeReference U) throws LookupException {
 		return U.getElement().getSelfAndAllSuperTypesView();
 	}
 

@@ -14,7 +14,7 @@ import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 import org.aikodi.chameleon.util.association.Single;
 import org.aikodi.java.core.type.JavaTypeReference;
 
-public abstract class WildCardReference<E extends WildCardReference> extends ElementImpl implements JavaTypeReference {
+public abstract class WildCardReference extends ElementImpl implements JavaTypeReference {
 	
 		public WildCardReference(TypeReference tref) {
 			set(_tref,tref);

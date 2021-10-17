@@ -166,7 +166,7 @@ public class RawType extends ClassWithBody implements JavaType {
         eraseTypeParameters(method.typeParameters());
         for(FormalParameter param: method.formalParameters()) {
           JavaTypeReference typeReference = (JavaTypeReference) param.getTypeReference();
-          JavaTypeReference erasedReference = typeReference.erasedReference();
+          TypeReference erasedReference = typeReference.erasedReference();
           param.setTypeReference(erasedReference);
         }
         // erase return type reference
@@ -180,7 +180,7 @@ public class RawType extends ClassWithBody implements JavaType {
     //      It probably has a reason but I was so stupid not to document it.
     for(SubtypeRelation relation: nonMemberInheritanceRelations(SubtypeRelation.class)) {
       JavaTypeReference superClassReference = (JavaTypeReference) relation.superClassReference();
-      JavaTypeReference erasedReference = superClassReference.erasedReference();
+      TypeReference erasedReference = superClassReference.erasedReference();
       relation.setSuperClassReference(erasedReference);
     }
   }
@@ -190,7 +190,7 @@ public class RawType extends ClassWithBody implements JavaType {
     for(TypeParameter typeParameter: parameters) {
       FormalTypeParameter param = (FormalTypeParameter) typeParameter;
       JavaTypeReference upperBoundReference = (JavaTypeReference) param.upperBoundReference();
-      JavaTypeReference erased = upperBoundReference.erasedReference();
+      TypeReference erased = upperBoundReference.erasedReference();
       EqualityTypeArgument argument = language.createEqualityTypeArgument(erased);
       ErasedTypeParameter newParameter = new ErasedTypeParameter(typeParameter.name(),argument);
       argument.setUniParent(newParameter);

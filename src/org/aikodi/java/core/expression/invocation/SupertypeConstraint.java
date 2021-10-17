@@ -3,12 +3,12 @@
  */
 package org.aikodi.java.core.expression.invocation;
 
-import org.aikodi.chameleon.oo.type.BoxableTypeReference;
+import org.aikodi.chameleon.oo.type.TypeReference;
 import org.aikodi.chameleon.oo.type.generics.TypeParameter;
 
 public class SupertypeConstraint extends SecondPhaseConstraint {
 
-	public SupertypeConstraint(TypeParameter param, BoxableTypeReference type) {
+	public SupertypeConstraint(TypeParameter param, TypeReference type) {
 		super(param,type);
 	}
 

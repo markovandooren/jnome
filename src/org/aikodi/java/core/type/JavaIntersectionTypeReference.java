@@ -50,7 +50,7 @@ public class JavaIntersectionTypeReference extends IntersectionTypeReference imp
 		return Collections.EMPTY_LIST;
 	}
 
-	public JavaTypeReference erasedReference() {
+	public TypeReference erasedReference() {
 		return ((JavaTypeReference)elementAt(0)).erasedReference();
 	}
 

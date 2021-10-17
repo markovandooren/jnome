@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.aikodi.chameleon.core.element.Element;
 import org.aikodi.chameleon.core.element.ElementImpl;
+import org.aikodi.chameleon.oo.language.ObjectOrientedLanguage;
 import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.java.core.language.Java7;
 import org.aikodi.rejuse.contract.Contracts;
@@ -33,17 +34,8 @@ public class DirectJavaTypeReference extends ElementImpl implements JavaTypeRefe
 
 	@Override
 	public JavaTypeReference erasedReference() {
-		Java7 java = language(Java7.class);
+		ObjectOrientedLanguage java = language(ObjectOrientedLanguage.class);
 		return (JavaTypeReference) java.reference(java.erasure(_type));
-	}
-
-	@Override
-	public JavaTypeReference componentTypeReference() {
-		if(_type instanceof ArrayType) {
-			return ((JavaTypeReference)language(Java7.class).reference(_type)).componentTypeReference();
-		} else {
-			return this;
-		}
 	}
 
 	@Override
@@ -56,6 +48,6 @@ public class DirectJavaTypeReference extends ElementImpl implements JavaTypeRefe
 	 */
 	@Override
 	public String toString(Set<Element> visited) {
-		return language(Java7.class).reference(getElement()).toString(visited);
+		return language(ObjectOrientedLanguage.class).reference(getElement()).toString(visited);
 	}
 }

@@ -1,19 +1,13 @@
 package org.aikodi.java.core.type;
 
-import org.aikodi.chameleon.core.lookup.LookupException;
-import org.aikodi.chameleon.core.reference.CrossReferenceWithName;
-import org.aikodi.chameleon.oo.type.BoxableTypeReference;
-import org.aikodi.chameleon.oo.type.Type;
 import org.aikodi.chameleon.oo.type.TypeReference;
-import org.aikodi.chameleon.workspace.View;
-import org.aikodi.java.core.language.Java7;
 
 /**
  * A class for Java type references. They add support for array types and generic parameters.
  * 
  * @author Marko van Dooren
  */
-public interface JavaTypeReference extends BoxableTypeReference {
+public interface JavaTypeReference extends TypeReference {
 
   default JavaTypeReference toArray(int arrayDimension) {
     JavaTypeReference result;
@@ -25,8 +19,5 @@ public interface JavaTypeReference extends BoxableTypeReference {
     return result;
   }
 	
-	JavaTypeReference erasedReference();
-	
-	JavaTypeReference componentTypeReference();
-	
+	TypeReference erasedReference();
 }
